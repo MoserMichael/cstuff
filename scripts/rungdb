@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+
+if (scalar(@ARGV) == 0) {
+
+print <<EOF
+./rungdb <process> <command line arguments>
+-------------------------------------------
+runs gdb debugger and sets debugee current 
+command line to that passed as argument.
+EOF
+;
+exit(1);
+}
+
+$proc_name = $ARGV[0];
+
+shift;
+
+$cmd_line = join(' ',@ARGV);
+
+$scr_file = "/tmp/gdb-src-$$.scr";
+
+open(SCR_FILE,">$scr_file") || die "Can't open $scr_file";
+print SCR_FILE "set args $cmd_line\nb main\nr";
+close(SCR_FILE);
+
+$cmd="gdb $proc_name --command=$scr_file";
+
+system($cmd);
+
+unlink($scr_file);
