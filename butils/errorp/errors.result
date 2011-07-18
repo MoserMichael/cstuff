@@ -1,0 +1,95 @@
+------------------------------
+ERROR: recursion bottom. returns -1 errno 0
+-----------------------------
+ip 0x80489fa from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+errorp at errorp.c:85
+
+ip 0x8048784 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:15
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x8048799 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+fact at errorp.c:17
+
+ip 0x80487c0 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+main at errorp.c:30
+
+ip 0x40045e37 from /lib/i386-linux-gnu/libc-2.13.so
+??
+??:0
+
+ip 0x80486d1 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+_start at ??:0
+
+------------------------------
+ERROR: error in error. returns -1 errno 0
+-----------------------------
+ip 0x80489fa from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+errorp at errorp.c:85
+
+ip 0x80487ef from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+main at errorp.c:33
+
+ip 0x40045e37 from /lib/i386-linux-gnu/libc-2.13.so
+??
+??:0
+
+ip 0x80486d1 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+_start at ??:0
+

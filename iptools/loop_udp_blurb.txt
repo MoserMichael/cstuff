@@ -1,0 +1,22 @@
+loop_udp -i <infile> [-s] [-f <filter>] [-n]
+
+Print specific information on all udp packets in input capture file.
+It shows the following information
+  seq(#) 	  - sequence number
+  time(sec.usec)  - time of packet 
+  ipv4_src        - source ip
+  udp_port 	  - udp port
+  ipv4_dst 	  - destination ip
+  udp_dst 	  - destination port
+  data_len 	  - length of UDP payload
+  data		  - hexadecimal dump of UDP payload.
+
+By default, IP fragments are reassembled into packets, this requires that fragments have been
+captured and are present in the capture file.
+
+For whatever reason I could not bring tshark to show packet data, so i did my own, by using libpcap;
+
+ -i <infile>	- input capture file
+ -s		- don't show header line
+ -f <filter>	- filter expression (for syntax see man pcap-filter(7))
+ -n		- don't reassemble fragments, (default is to reassemble them)

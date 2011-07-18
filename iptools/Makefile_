@@ -1,0 +1,91 @@
+C=gcc
+
+STRICT= -Wall -Werror -Wextra
+
+UN=$(shell uname)
+
+
+OS_TYPE:=$(shell uname -s)
+OS_VERSION:=$(shell uname -r | sed -e 's\#/\#-\#g' -e 's\#(\#-\#g' -e 's\#)\#-\#g' )
+
+ifeq "$(PL)" ""
+  CFLAGS+=-m32
+  LDFLAGS+=-m32
+  PF=32bit
+  LIBPCAP_DIR_LINUX=/users/dcline/libpcap/1.1.1/$(PLATFORM)
+else
+  CFLAGS+=-m64
+  LDFLAGS+=-m64
+  PF=64bit
+  LIBPCAP_DIR_LINUX=/users/dcline/libpcap/1.1.1-64bit/$(PLATFORM)
+endif
+
+INSTALL_DIR=../ssh-tools-install/$(OS_TYPE)-$(OS_VERSION)-$(PF)
+INSTALL_FILE=install -m 0755 -t
+INSTALL_D=install -m 0775 -d 
+
+ifeq "$(strip $(shell uname))" "Linux"
+OS=LINUX
+else
+OS=CYGWIN
+endif
+
+LIBPCAP_DIR_CYGWIN=/usr/local/
+LIBPCAP_DIR=$(LIBPCAP_DIR_$(OS))
+
+
+
+LIBS_CYGWIN=-L$(LIBPCAP_DIR)/lib -lwpcap
+LIBS_LINUX=-L$(LIBPCAP_DIR)/lib -lpcap
+LIBS=$(LIBS_$(OS)) -lpthread -Lcutils -lcutils
+
+
+CFLAGS += -g $(STRICT) -I. -I$(LIBPCAP_DIR)/include
+LDFLAGS +=$(PLAF)
+
+
+   
+
+.PHONY: install
+all : cutils udpsim loop_udp captest
+
+CUTILS_OBJS=$(shell ls cutils/*.o)
+
+loop_udp : loop_udp.o loop_lib.o loop_udp_blurb.o 	
+	gcc $(LDFLAGS) -o $@ $^ -lc $(LIBS) $(CUTILS_OBJS)
+ 
+udpsim : sourcecheck.o udpsim.o tokparser.o subst.o loop_lib.o udpsim_blurb.o hex.o sleeep.o
+	gcc $(LDFLAGS) -o $@ $^ -lc $(LIBS) 
+ 
+captest : captest.o loop_lib.o captest_blurb.o
+	gcc $(LDFLAGS) -o $@ $^ -lc $(LIBS) 
+	
+
+udpsim_blurb.c : udpsim_blurb.txt
+	perl make-blurb.pl $<
+
+loop_udp_blurb.c : loop_udp_blurb.txt
+	perl make-blurb.pl $<
+
+captest_blurb.c : captest_blurb.txt
+	perl make-blurb.pl $<
+
+.PHONY: cutils
+cutils :
+	make -C cutils PL=$(PL)
+
+
+.PHONY: install
+clean :
+	rm -f udpsim loop_udp
+	find . -name '*.o' | xargs rm -f
+	
+
+
+.PHONY: install
+install: all
+	$(INSTALL_D)    $(INSTALL_DIR)
+	$(INSTALL_FILE) $(INSTALL_DIR)  loop_udp
+	$(INSTALL_FILE) $(INSTALL_DIR)  udpsim
+	$(INSTALL_FILE) $(INSTALL_DIR)  captest
+	$(INSTALL_FILE) $(INSTALL_DIR)  runudpsim.sh

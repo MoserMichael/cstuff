@@ -1,0 +1,19 @@
+
+educational programming language
+
+- does not have enterprise features for 'programming in the large'
+  Features to cut - namespaces, exceptions, 
+
+- no classes please; normal users put all their file on the desktop
+  instead of creating hirarchies of folder ;- i.e. they are not good at creating and maintaining hirarchies.
+
+- what to do about references? different approaches
+    - cut them (like basic)
+    - make the syntax explicit (like have a special assignment operator for references only) 
+
+- core types: scalar, list/dyn-array , hash
+
+- type constructors for arrays hashes.
+
+- can't use variable before it is declared (i.e. assigned) (the STRICT Principle)
+   

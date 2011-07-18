@@ -1,0 +1,11 @@
+
+./captest -i <interface ip> -w <output file> [-f <filter expression>]
+
+Captures packets with libpcap, and dumps them into output file. 
+This program tests the functioning of libpcap.
+
+
+Options:
+	-i <interface ip>	ip address of interface
+	-w <output file>	output file (pcap format)
+	-f <filter expression>	(for syntax see man pcap-filter(7))
