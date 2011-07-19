@@ -35,10 +35,13 @@ add-solib-compiler-flags=CFLAGS+=-fPIC
 #-
 # Macro installs a file.
 #-
-install-a-file=$(shell install -m 0755 -t $(2) $(1))
+define install-a-file
+  $(info installing $(1) to directory $(2))
+  $(shell install -m 0755 -t $(2) $(1))
+endef
 
 define install-mkdir
-  $$(if $$(subst $(1),,$$(wildcard $(1))),,$$(shell install -d $(1) -m 775))
+  $$(if $$(subst $(1),,$$(wildcard $(1))),,$$(info Create installation directory $(1))$$(shell install -d $(1) -m 775))
 endef
 
 # flag for producing preprocessor output

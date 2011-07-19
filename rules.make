@@ -66,7 +66,7 @@ OBJECT_DIR=$(BIN_ROOT_DIR)/obj$(CURWD)
 #SHOW_RULES=1
 
 # default installation prefix, set value if it is not defined.
-DEFAULT_INSTALL_PREFIX?=/usr/local
+INSTALL_PREFIX?=/usr/local
 
 ###
 # This is an obscure exercise: 
@@ -272,7 +272,7 @@ $(1)__clean_xxx : PRJ_RESULT_FILE=$(BIN_ROOT_DIR)/$(2)/lib$(1).so
 $(1)__run_xxx :
 
 .PHONY: install_target_xx__$(1)
-install_target_xx__$(1) : $($(1)_INSTALL)
+install_target_xx__$(1) :
 	$$(eval $$(call install-a-file,$$(call make_shared_lib_name,$(1),$(2)),$$(PREFIX)/lib))
 	
 endef
@@ -459,12 +459,17 @@ clean: build_pre_subdirs $(addsuffix __clean_xxx,$(TARGETS) $(TESTS)) build_post
 
 # -- make install target --
 .PHONY: install
-install: PREFIX?=$(DEFAULT_INSTALL_PREFIX)
+install: PREFIX?=$(INSTALL_PREFIX)
 
-install: build_pre_subdirs $(addprefix install_target_xx__,$(TARGETS)) build_post_subdirs  
+.PHONY: install
+install: install_create_all_install_dirs build_pre_subdirs $(addprefix install_target_xx__,$(TARGETS)) $(addsuffix _INSTALL,$(TARGETS)) build_post_subdirs  
+
+.PHONY: install_create_all_install_dirs
+install_create_all_install_dirs :
 	$(eval $(call install-mkdir,$(PREFIX)/bin))
 	$(eval $(call install-mkdir,$(PREFIX)/lib))
 	$(eval $(call install-mkdir,$(PREFIX)/etc))
+
 
 #----------------------
 # common rules

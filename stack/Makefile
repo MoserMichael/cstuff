@@ -18,6 +18,7 @@ stack_LIBS=c
 
 stack_POSTBUILD=./stack.sh
 
+   
 # ---------------------------------------
 
 tst_TYPE=exe
@@ -81,3 +82,8 @@ tstgcc_CFLAGS=-fstack-protector-all
 # ---------------------------------------
 
 include $(TOPDIR)/rules.make
+
+.PHONY: stack_INSTALL
+stack_INSTALL:
+	$(call install-a-file,../scripts/readerrors.pl,$(PREFIX)/bin)
+ 
