@@ -1,0 +1,36 @@
+---
+layout: post
+title: Making sense of a core dump that occurred at remote location
+---
+
+h2. {{ page.title }}
+<p class="publish_date">18 July 2011</p>
+
+One thing that happens to C/C++ programs is that they crash at customer sites, usually a "Core dump":http://en.wikipedia.org/wiki/Core_dump  is left after the crash .
+Now it happens that core dump is sent to you from a remote customer site, and joy and wonder, you can't get a meaningful stack trace out of it. (Usually that is the point to start loud chanting of the 'Segmentation violation - Core dumped blues":http://www.netfunny.com/rhf/jokes/92q3/coredb.html
+Now	
+- One reason may be that the "stack is smashed":http://en.wikipedia.org/wiki/Stack_buffer_overflow in this case you can't get any information, sorry. (well we can help here, but that's a different story ...)
+- Another reason is that you have compiled the program with Optimization and frame pointer omission enabled, in this case you won't see any information either. Don't do that ( add -fno-frame-pointer-omission) . Well actually "Yossi Kreinin" http://www.yosefk.com/", with a "very clever trick":http://www.yosefk.com/blog/getting-the-call-stack-without-a-frame-pointer.html
+- The third one (very likely) is that the crash occurs in a shared library (libc,pthread, oracle client, etc), and it can't be traced, because your system has a slightly different versions of this shared library as compared to what you have locally on your machine. Now this situation can be solved, so now it's scripting time (Perl to the rescue)
+- 
+The script does the following:
+- Get path of all dependent shared libraries (parse result of ldd <executable> )
+- Copy shared libraries , the core file, the binary file and make an archive out of this
+- Create a shell script that instructs GDB to use the copied shared libraries instead of what you got on your system. (here goes the trick)
+Now "here is the script":https://github.com/MoserMichael/cstuff/blob/master/scripts/gather-libs.pl  that does it all.
+
+h3. How to tell gdb to look at different set of share libraries.
+
+Gdb has a command 
+bq. set solib-absolute-path  <path>
+It tells gdb to look for shared libraries from under <path>. Now the archive contains script run.sh ; which writes the following gdb script to a temporary file
+<pre>
+set solib-absolute-prefix .
+core-file <core file name>
+</pre>
+Then it starts gdb with this generated script (-x option of gdb). 
+Now doing a script that writes another one is a trick that has some magic in it ... 
+
+
+
+
