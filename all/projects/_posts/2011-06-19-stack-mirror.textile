@@ -111,7 +111,9 @@ ip 0x80485e7 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/te
 fact
 test.c:38
 </pre>
+
 h3. How does it work?
+
 Compiler option -finstrument-function is usually used for building profilers; for each function the compiler inserts two function calls; on entering the function it calls __cyg_profile_func_enter on leaving the function it calls __cyg_profile_func_exit  .
 The tool implements these two functions; on entering an application function the tool records the function return address, and when it is time to leave this function it checks if that address has been modified; if that is the case then we know that the stack was smashed here right by this function. 
 As a side effect we maintain a copy of current thread stack for application functions (hence the name StackMirror) ; thread local storage pointer points to a stack data structure allocated on heap memory; each entry stores the return address and base pointer address, on function exit the content of base pointer address is checked.
