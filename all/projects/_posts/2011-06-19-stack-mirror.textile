@@ -7,7 +7,7 @@ h2. {{ page.title }}
 <p class="publish_date">19 July 2011</p>
 
 Debugging stack smashers is hard. Usually you have to solve these bugs with logs + divide and conquer. Even "valgrind":http://valgrind.org/ can't help here ! 
-GCC has the compiler options  -fstack-protector-all , but it does not give accurate stack traces, it is more designed to shut down an application so as to avoid remote exploit of a buffer overflow error.
+GCC has the compiler options  -fstack-protector-all , but it does not give accurate stack traces, it is more designed to shut down an application so as to avoid "remote exploit":http://insecure.org/stf/smashstack.html  of a buffer overflow error.
 
 So a new open source tool is presented here that can help with most such cases; StackMirror to the rescue! It detects stack smashers and reports an accurate stack trace of the function that caused it.
 
