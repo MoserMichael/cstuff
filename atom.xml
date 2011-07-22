@@ -5,22 +5,21 @@ layout: nil
 <feed xmlns="http://www.w3.org/2005/Atom">
  
  <title>4xFlavor</title>
- <link href="http://danhixon.github.com/atom.xml" rel="self"/>
- <link href="http://danhixon.github.com/"/>
+ <link href="http://mosermichael.github.com/cstuff/atom.xml" rel="self"/>
+ <link href="http://mosermichael.github.com/cstuff/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
  <id>http://danhixon.github.com/</id>
  <author>
    <name>Michael Moser</name>
-   <email>danhixon@gmail.com</email>
  </author>
 
  {% for post in site.posts %}
  <entry>
    <title>{{ post.title }}</title>
-   <link href="http://danhixon.github.com{{ post.url }}"/>
+   <link href="http://mosermichael.github.com/cstuff/{{ post.url | replace_first:'/all','/cstuff/all' }}"/>
    <updated>{{ post.date | date_to_xmlschema }}</updated>
-   <id>http://danhixon.github.com{{ post.id }}</id>
-   <content type="html">{{ post.content | xml_escape }}</content>
+   <id>http://mosermichael.github.com/cstuff/{{ post.id }}</id>
+   <content type="html">  {{post.categories | replace:'all',''}} | {{ post.content | xml_escape }}</content>
  </entry>
  {% endfor %}
  
