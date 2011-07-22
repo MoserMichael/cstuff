@@ -25,7 +25,7 @@ sync
 
 up all/blog/_posts blog
 up all/projects/_posts projects
-up all/ramble/_posts ramble
+up all/ramblings/_posts ramble
 
 git commit -a -m "Update site"
 git push origin gh-pages
