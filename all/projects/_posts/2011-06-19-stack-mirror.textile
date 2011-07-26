@@ -35,7 +35,7 @@ Prior to running your program, please set the following environment variable
 Please note that value of LD_PRELOAD must be the full path name of libstack.so
 
 Run you program, if it smashes the stack and we are ok then an error message of the following form is displayed. Don't worry, it will be formatted in the next step.
-==
+<notextile>
 <pre>
 
 ERROR: Stack corruption detected
@@ -74,13 +74,13 @@ frame 12 ip: 0x40049e37
 40033000-4018d000 00000000 /lib/i386-linux-gnu/libc-2.13.so
 *** eof stack ***
 </pre>
-==
+</notextile>
 
 Save this error message to a file crash.log and run 
        /usr/local/bin/readerrors.pl crash.log
 It should you an message as follows:
-==
 
+<notextile>
 <pre>
 -----------------------------
 ERROR: Stack corruption detected
@@ -117,7 +117,7 @@ ip 0x80485e7 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/te
 fact
 test.c:38
 </pre>
-==
+</notextile>
 
 h3. How does it work?
 
