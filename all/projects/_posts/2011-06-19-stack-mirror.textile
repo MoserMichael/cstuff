@@ -35,6 +35,7 @@ Prior to running your program, please set the following environment variable
 Please note that value of LD_PRELOAD must be the full path name of libstack.so
 
 Run you program, if it smashes the stack and we are ok then an error message of the following form is displayed. Don't worry; it will be formatted in the next step.
+
 <notextile>
 <pre>
 
