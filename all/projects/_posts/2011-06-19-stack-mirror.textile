@@ -6,7 +6,7 @@ title: StackMirror tool for fixing stack problems
 h2. {{ page.title }}
 <p class="publish_date">19 July 2011</p>
 
-Debugging "buffer overruns":http://en.wikipedia.org/wiki/Buffer_overflow is hard. Usually you have to solve these bugs with logs + divide and conquer. Even "valgrind":http://valgrind.org/ can't help here ! 
+Debugging "buffer overruns":http://en.wikipedia.org/wiki/Buffer_overflow is hard. Usually you have to solve these bugs with logs + apply divide and conquer techniques. Even "valgrind":http://valgrind.org/ can't help here ! 
 GCC has the compiler options  -fstack-protector-all , but it does not give accurate stack traces, it is more designed to shut down an application so as to avoid "remote exploit":http://insecure.org/stf/smashstack.html  of a buffer overflow error.
 
 So a new open source tool is presented here that can help with most such cases; StackMirror to the rescue! It detects even the nastiest stack smashers and reports an accurate stack trace of the function that caused it.
@@ -35,7 +35,9 @@ Prior to running your program, please set the following environment variable
 Please note that value of LD_PRELOAD must be the full path name of libstack.so
 
 Run you program, if it smashes the stack and we are ok then an error message of the following form is displayed. Don't worry, it will be formatted in the next step.
+==
 <pre>
+
 ERROR: Stack corruption detected
 **** start stack ***
 frame 0 ip: 0x80484e4
@@ -72,9 +74,13 @@ frame 12 ip: 0x40049e37
 40033000-4018d000 00000000 /lib/i386-linux-gnu/libc-2.13.so
 *** eof stack ***
 </pre>
+==
+
 Save this error message to a file crash.log and run 
        /usr/local/bin/readerrors.pl crash.log
 It should you an message as follows:
+==
+
 <pre>
 -----------------------------
 ERROR: Stack corruption detected
@@ -111,12 +117,14 @@ ip 0x80485e7 from /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/te
 fact
 test.c:38
 </pre>
+==
 
 h3. How does it work?
 
 Compiler option -finstrument-function is usually used for building profilers; for each function the compiler inserts two function calls; on entering the function it calls __cyg_profile_func_enter on leaving the function it calls __cyg_profile_func_exit  .
 The tool implements these two functions; on entering an application function the tool records the function return address, and when it is time to leave this function it checks if that address has been modified; if that is the case then we know that the stack was smashed here right by this function. 
-As a side effect we maintain a copy of current thread stack for application functions (hence the name StackMirror) ; thread local storage pointer points to a stack data structure allocated on heap memory; each entry stores the return address and base pointer address, on function exit the content of base pointer address is checked.
-When an error occurs, the stack frames are printed to standard output + addresses of the text segment of shared libraries + executable modules is printed to standard error.
-This log is then processed after the crash and resolved to function names + line numbers. There are also custom versions that either dump core or invoke a debugger when an error occurs.
+
+In more detail: For each application thread a stack data structure is maintained and referenced by a thread local storage entry. For each function call this stack keeps an entry; this entry contains the function return address, the function frame pointer address and the value received from dereferencing the frame pointer address.  Typically the value obtained from dereferencing of frame pointer address is the return address from the called function. The stack entry is created when __cyg_profile_func_enter is called. When the function is left and __cyg_profile_func_exit is called, we check that the value obtained from dereferencing of the frame pointer did not change. If it actually did change, then we know for certain that the stack was overwritten, just right now here by this function. We also have the accurate application stack trace, just by looking at the entries in the stack data structures. So when an error occurs, the return address of all functions is printed to standard error, in addition to that, we print the addresses of the text segment for all shared libraries + executable. This information is then converted (offline after the crash) to symbolic names by the readerrors.pl script ; we do not want to do this at crash time. 
+
+The tool keeps entries that shadow the application stack - hence the name StackMirror. Of course this shadow stack can also be overwritten by some pointer gone wild, but this is much less likely than occurrence of a buffer overflow error. Another limitation is that we only return address of the current function is checked. In some comples example a function call could smash the return address of a calling function; we do not check for that here, (though an even more paranoid version of the tool could do that). We will still get there eventually, as the stack unwinds.
 
