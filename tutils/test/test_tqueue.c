@@ -50,11 +50,11 @@ void TQUEUE_test()
      msg = (int64_t *) malloc(sizeof( int64_t ));
      msg[0] = i;
 
-     TQUEUE_push_block_on_max( &rqueue, msg );
+     TQUEUE_push_block_on_queue_full( &rqueue, msg );
   }
 
   for( i=0; i < THREAD_NUM; i++) {
-     TQUEUE_push_block_on_max( &rqueue, 0 );
+     TQUEUE_push_block_on_queue_full( &rqueue, 0 );
   }
   CYCLIC_BARRIER_await( &cbarrier );
   

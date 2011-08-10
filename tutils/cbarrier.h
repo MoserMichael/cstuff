@@ -11,6 +11,7 @@ typedef struct {
   pthread_cond_t cond;
   int tcount;
   int is_finished;
+  int left;
 } CYCLIC_BARRIER;
 
 

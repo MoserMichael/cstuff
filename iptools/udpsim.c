@@ -34,6 +34,7 @@ typedef struct tagPARAMS {
 
   struct in_addr tx_interface;
   const char *tx_interface_name;
+  int    tx_interface_mtu;
 
   SUBST_RULE subst_rules[ MAX_RULES ];
   int subst_rules_offset;
@@ -49,6 +50,7 @@ typedef struct tagPARAMS {
   int is_dry_run;
   int verbose;
   int no_capture;
+  IP_FRAGMENT_ACTION fragment_action;
 
 } PARAMS;
 
@@ -82,8 +84,9 @@ void parse_cmd_line(int argc, char *argv[]) {
 
   memset( &global_params, 0, sizeof(PARAMS) );
   global_params.subst_rules_offset = global_params.subst_rules_count = 1;
-
-  while ( (c = getopt(argc, argv, "vnhdx:r:c:i:f:y:o:")) != -1) {
+  global_params.fragment_action = IP_FRAGMENT_REASSEMBLE;  
+  
+  while ( (c = getopt(argc, argv, "vnmhdx:r:c:i:f:y:o:")) != -1) {
      switch(c) {
 	case 'h':
 	  print_help();
@@ -96,8 +99,12 @@ void parse_cmd_line(int argc, char *argv[]) {
 	case 'd':
 	  global_params.is_dry_run = 1;
 	  break;
-
+	
 	case 'n':
+	  global_params.fragment_action = IP_FRAMGENT_PASS_AS_IS;
+	  break;
+
+	case 'm':
 	  global_params.no_capture = 1;
 	  break;
 	
@@ -167,7 +174,11 @@ void parse_cmd_line(int argc, char *argv[]) {
   if ( ( global_params.tx_interface_name = is_interface_address( &global_params.tx_interface ) ) == 0 ) {
      error_msg("tx interface value (-i parameter) is not a network interface on this host\n");
   }
-
+  global_params.tx_interface_mtu  =  get_interface_mtu( &global_params.tx_interface );
+  if (global_params.tx_interface_mtu == -1) {
+    error_msg( "Can't get MTU size of outgoing interface %s\n", 
+	    global_params.tx_interface_name );
+  }
 }
 
 
@@ -288,7 +299,7 @@ void * capture_filter_thread( void * arg )
 
 
   if (global_params.verbose) {
-    fprintf(stderr,"Capture started.\n\tDevice:\t%s\n\tFilter:\t%s\n\tOutput:\t%s\n", global_params.tx_interface_name, filter_cmd, file_path );
+    fprintf(stderr,"Capture started.\n\tDevice:\t%s\n\tDevice MTU:\t%d\n\tFilter:\t%s\n\tOutput:\t%s\n", global_params.tx_interface_name, global_params.tx_interface_mtu, filter_cmd, file_path );
   }
 
   pthread_mutex_lock( &count_mutex );
@@ -404,6 +415,8 @@ int transform_packet( int64_t count, const struct pcap_pkthdr *pkthdr, struct ip
     }
   //}
 
+
+
   delay_packet( pkthdr->ts );
 
   if (global_params.verbose > 1) {
@@ -494,7 +507,7 @@ void do_replay_mode()
 #endif
 
   gettimeofday( &start_time, 0);
-  inspect_udp_on_ipv4( global_params.capture_file, global_params.filter_expression, IP_FRAMGENT_PASS_AS_IS, dump_udp_on_ipv4_replay_mode );
+  inspect_udp_on_ipv4( global_params.capture_file, global_params.filter_expression, global_params.fragment_action , dump_udp_on_ipv4_replay_mode );
   gettimeofday( &finish_time, 0);
   timersub( &finish_time, &start_time, &diff_time);
   close( raw_sock );
@@ -544,7 +557,7 @@ void dump_udp_on_ipv4_dry_run (PACKET_DATA *data) //int64_t count, const struct 
 
 void do_dry_run_mode()
 {
-  inspect_udp_on_ipv4( global_params.capture_file, global_params.filter_expression, IP_FRAMGENT_PASS_AS_IS, dump_udp_on_ipv4_dry_run );
+  inspect_udp_on_ipv4( global_params.capture_file, global_params.filter_expression,  global_params.fragment_action, dump_udp_on_ipv4_dry_run );
 }
 
 

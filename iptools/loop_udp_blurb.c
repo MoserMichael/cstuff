@@ -24,7 +24,7 @@ void print_help() {
 	" -i <infile>	- input capture file\n"
 	" -s		- don't show header line\n"
 	" -f <filter>	- filter expression (for syntax see man pcap-filter(7))\n"
-	" -n		- don't reassemble fragments, (default is to reassemble them)\n"
+	" -n		- don't reassemble IP fragments, (default is to reassemble them)\n"
   );
   exit(1);
 }  

@@ -4,7 +4,7 @@
 #include <vtest/vtest.h>
 #include <unistd.h>
 
-#define THREAD_NUM 100
+#define THREAD_NUM  50
 
 static int counter;
 static pthread_mutex_t counter_mutex  = PTHREAD_MUTEX_INITIALIZER;
@@ -33,7 +33,7 @@ void TBARRIER_test()
   CYCLIC_BARRIER_init( &cbarrier, THREAD_NUM  + 1 );
 
   for( i=0; i < THREAD_NUM; i++) {
-    pthread_create( &th[ i ], 0, test_thread, &cbarrier );
+    VASSERT( pthread_create( &th[ i ], 0, test_thread, &cbarrier ) == 0 );
   }
 
   CYCLIC_BARRIER_await( &cbarrier );

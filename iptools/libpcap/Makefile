@@ -6,3 +6,9 @@ include $(TOPDIR)/rules.make
 all :
 	./build.sh
 
+
+clean :
+	./build.sh clean
+
+cleanall :
+	./build.sh clean

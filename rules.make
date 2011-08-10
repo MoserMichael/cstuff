@@ -166,22 +166,23 @@ $(1)_objdir_create :
 # - define implicit rules that place targets into subdirectory per target.
 
 $$(OBJECT_DIR)/$(1)/%.o: %.c
+	$(echo "huhu $$<" )
 	$$(call make-depend,$$<,$$@,$$(subst .o,.d,$$@))
-	$$(CC) $$(CPPFLAGS) $$(CFLAGS) $$($(1)_CFLAGS) $$(EXTERNAL_CFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
 ifneq "$(strip $(CPP_LISTING))" ""
 	$$(CC) $$(PREPROCESSOR_FLAG) $$(CPPFLAGS) $$(CFLAGS) $$($(1)_CFLAGS) $$(EXTERNAL_CFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).i,$$(basename $$<)) 
 endif
+	$$(CC) $$(CPPFLAGS) $$(CFLAGS) $$($(1)_CFLAGS) $$(EXTERNAL_CFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
 ifneq "$(strip $(ASM_LISTING))" ""
-	$$(CC)  $$(ASM_LISTING_FLAG) $$(CPPFLAGS) $$(CFLAGS) $$($(1)_CFLAGS) $$(EXTERNAL_CFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).S,$$(basename $$<))
+	$$(CC)  $$(ASM_LISTING_FLAG) $$(CPPFLAGS) $$(CFLAGS) $$($$<_FLAGS) $$(EXTERNAL_CFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).S,$$(basename $$<))
 endif
 
 
 $$(OBJECT_DIR)/$(1)/%.o: %.cpp
 	$$(call make-depend,$$<,$$@,$$(subst .o,.d,$$@))
-	$$(CXX) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
 ifneq "$(strip $(CPP_LISTING))" ""
-	$$(CXX) $$(PREPROCESSOR_FLAG) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).i,$$(basename $$<))
+	$$(CXX) $$(PREPROCESSOR_FLAG) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CXXFLAGS) $$($$<_FLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).i,$$(basename $$<))
 endif
+	$$(CXX) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
 ifneq "$(strip $(ASM_LISTING))" ""
 	$$(CXX) $$(ASM_LISTING_FLAG) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).S,$$(basename $$<))
 endif
@@ -235,6 +236,7 @@ $(1)__clean_xxx :
 
 .DEFAULT: $(1)_INSTALL
 $(1)_INSTALL:
+
 
 endef
 
@@ -295,7 +297,7 @@ build_xxx__$(1) : PRJ_TYPE_NAME:=Static library
 
 build_xxx__$(1) : PRJ_RESULT_FILE = $(BIN_ROOT_DIR)/$(2)/lib$(1).a
 
-build_xxx__$(1) : directory_setup $(1)_objdir_create banner_xxx_$(1) $(1)_pre_build $$(BIN_ROOT_DIR)/$(2)/lib$(1).a $(1)_post_build 
+build_xxx__$(1) : directory_setup $(1)_objdir_create banner_xxx_$(1) $$($(1)_DEPENDENCIES) $(1)_pre_build $$(BIN_ROOT_DIR)/$(2)/lib$(1).a $(1)_post_build 
 
 $(BIN_ROOT_DIR)/$(2)/lib$(1).a : $(objects_$(1)) 
 	$$(eval $$(call display_build_banner,$(1),$$(PRJ_TYPE_NAME),$$(CURWD)))
@@ -332,7 +334,7 @@ build_xxx__$(1) : PRJ_TYPE_NAME:=Executable
 
 build_xxx__$(1) : PRJ_RESULT_FILE=$(BIN_ROOT_DIR)/bin/$(1)
 
-build_xxx__$(1) : directory_setup $(1)_objdir_create banner_xxx_$(1) $(1)_pre_build $(BIN_ROOT_DIR)/bin/$(1) $(1)_post_build  
+build_xxx__$(1) : directory_setup $(1)_objdir_create banner_xxx_$(1) $$($(1)_DEPENDENCIES) $(1)_pre_build $(BIN_ROOT_DIR)/bin/$(1) $(1)_post_build  
 
 $(BIN_ROOT_DIR)/bin/$(1) : $$(objects_$(1))  
 	$(CC)  -o $(BIN_ROOT_DIR)/bin/$(1) $(LDFLAGS) $$($(1)_LDFLAGS) $$(EXTERNAL_LDFLAGS) $$(objects_$(1)) $$(addprefix -L,$$(DEPENDENCY_PATH)) $$(addprefix -l,$$($(1)_LIBS)) 
@@ -369,7 +371,7 @@ build_xxx__$(1) : DEPENDENCY_PATH+=$$(BIN_ROOT_DIR)/test
 
 build_xxx__$(1) : PRJ_RESULT_FILE=$(BIN_ROOT_DIR)/test/$(1)
 
-build_xxx__$(1) : $(1)_objdir_create directory_setup banner_xxx_$(1) $(1)_pre_build $(BIN_ROOT_DIR)/test/$(1) $(1)_post_build  
+build_xxx__$(1) : $(1)_objdir_create directory_setup banner_xxx_$(1) $$($(1)_DEPENDENCIES) $(1)_pre_build $(BIN_ROOT_DIR)/test/$(1) $(1)_post_build  
 
 $(BIN_ROOT_DIR)/test/$(1) : $$(objects_$(1)) 
 	$$(CC)  -o $$(BIN_ROOT_DIR)/test/$(1) $$(LDFLAGS) $$($(1)_LDFLAGS) $$(EXTERNAL_LDFLAGS) $$(objects_$(1)) $$(addprefix -L,$$(DEPENDENCY_PATH)) $$(addprefix -l,$$($(1)_LIBS))

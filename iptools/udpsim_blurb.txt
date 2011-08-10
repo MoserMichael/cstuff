@@ -1,4 +1,4 @@
-udpsim [-d] -x <capture_file> -c <capture-host> -i <tx-interface> [-p <tx-substitution-port>] [-r <tx-substitution-port-range>] [-f <outgoing-filter-expression>] [-n]
+udpsim [-d] -x <capture_file> -c <capture-host> -i <tx-interface> [-p <tx-substitution-port>] [-r <tx-substitution-port-range>] [-f <outgoing-filter-expression>] [-n] [-m]
 
 Resends outgoing UDP traffic from capture file. 
 
@@ -75,6 +75,9 @@ The substution rule file includes the following directives:
 	For syntax of filter expression see see man pcap-filter(7)
 
 -n
+	don't reassemble IP fragments, (default is to reassemble them).	
+
+-m
 	No packet capture is performed during this run.
 
 

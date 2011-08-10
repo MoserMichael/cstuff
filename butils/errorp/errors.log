@@ -23,27 +23,27 @@ frame 19 ip: 0x8048799
 frame 20 ip: 0x8048799
 frame 21 ip: 0x8048799
 frame 22 ip: 0x80487c0
-frame 23 ip: 0x40045e37
+frame 23 ip: 0x40046e37
 frame 24 ip: 0x80486d1
 
-08048000-08049000 00000000 /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+08048000-08049000 00000000 /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/test/errorp
 40000000-4001c000 00000000 /lib/i386-linux-gnu/ld-2.13.so
 4001e000-4001f000 00000000 [vdso]
-4002f000-40189000 00000000 /lib/i386-linux-gnu/libc-2.13.so
-40192000-401ac000 00000000 /lib/i386-linux-gnu/libgcc_s.so.1
+40030000-4018a000 00000000 /lib/i386-linux-gnu/libc-2.13.so
+40193000-401ad000 00000000 /lib/i386-linux-gnu/libgcc_s.so.1
 *** eof stack ***
 
 ERROR: error in error. returns -1 errno 0
 *** start stack ***
 frame 0 ip: 0x80489fa
 frame 1 ip: 0x80487ef
-frame 2 ip: 0x40045e37
+frame 2 ip: 0x40046e37
 frame 3 ip: 0x80486d1
 
-08048000-08049000 00000000 /home/mmoser/archive/cstuff/GNU-Linux-2.6.38-8-generic-i686/test/errorp
+08048000-08049000 00000000 /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/test/errorp
 40000000-4001c000 00000000 /lib/i386-linux-gnu/ld-2.13.so
 4001e000-4001f000 00000000 [vdso]
-4002f000-40189000 00000000 /lib/i386-linux-gnu/libc-2.13.so
-40192000-401ac000 00000000 /lib/i386-linux-gnu/libgcc_s.so.1
+40030000-4018a000 00000000 /lib/i386-linux-gnu/libc-2.13.so
+40193000-401ad000 00000000 /lib/i386-linux-gnu/libgcc_s.so.1
 *** eof stack ***
 

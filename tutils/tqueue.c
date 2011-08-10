@@ -3,6 +3,7 @@
 #include "tqueue.h"
 #include <errno.h>
 #include <stdio.h>
+#include <butils/errorp.h>
 
 typedef struct tagTQUEUE_Entry {
   DLIST_entry  dlist;
@@ -15,9 +16,11 @@ int TQUEUE_init(TQUEUE *queue, size_t max_count )
   pthread_mutex_init( &queue->mutex, 0 );
   pthread_cond_init( &queue->cond_empty, 0 );
   pthread_cond_init( &queue->cond_max, 0 );
+
   DLIST_init( &queue->dlist );
 
   queue->max_count = max_count;  
+  queue->waiting_empty = 0;
   return 0;
 }
 
@@ -40,12 +43,43 @@ static int push_entry(DLIST *lst, void *data )
   return 0;
 }
 
-
-int TQUEUE_push_block_on_max(TQUEUE *queue, void *entry)
+int   TQUEUE_push_exit_message(TQUEUE *queue)
 {
+  int rt = 0,r;
+  TQUEUE_Entry *entry; 
 
-  if (pthread_mutex_lock(&queue->mutex)) {
-    perror("pthread_mutex_lock failed");
+  if ((r = pthread_mutex_lock(&queue->mutex)) != 0) {
+    errorp(r, "pthread_mutex_lock failed");
+    return -1;
+  }
+  entry = (TQUEUE_Entry *) malloc( sizeof(TQUEUE_Entry) );
+  entry->entry = 0;
+  
+  if (entry) {
+    DLIST_push_back( &queue->dlist, (DLIST_entry *) entry );
+    if (DLIST_size( &queue->dlist ) == 1) {
+      if ((r = pthread_cond_signal( &queue->cond_empty )) != 0) {
+	errorp(r, "pthread_cond_signal failed");
+      }
+    }
+  } else {
+    rt = -1;
+  }
+
+  if ((r = pthread_mutex_unlock( &queue->mutex )) != 0) {
+    errorp( r, "pthread_mutex_unlock failed");
+    return -1;
+  }
+   
+  return rt;
+}
+
+int TQUEUE_push_block_on_queue_full(TQUEUE *queue, void *entry)
+{
+  int r;
+
+  if ((r = pthread_mutex_lock(&queue->mutex)) != 0 ) {
+    errorp(r,"pthread_mutex_lock failed");
     return -1;
   }
   int rt = 0;
@@ -53,32 +87,35 @@ int TQUEUE_push_block_on_max(TQUEUE *queue, void *entry)
   if (queue->max_count != 0 &&
       DLIST_size( &queue->dlist ) >= queue->max_count) {
 	
-      if (pthread_cond_wait( &queue->cond_max, &queue->mutex )) {
-	perror("pthread_cond_wait failed");
+      if ((r = pthread_cond_wait( &queue->cond_max, &queue->mutex )) != 0 ) {
+	errorp(r,"pthread_cond_wait failed");
       }
   }
   
   if (!push_entry( &queue->dlist, entry )) {
-    if (DLIST_size( &queue->dlist ) == 1) {
-      if (pthread_cond_signal( &queue->cond_empty )) {
-	perror("pthread_cond_signal failed");
+    if (queue->waiting_empty > 0) {
+      if ((r = pthread_cond_signal( &queue->cond_empty )) != 0)  {
+	errorp(r, "pthread_cond_signal failed");
       }
     }
   } else {
     rt = -1;
   }
 
-  pthread_mutex_unlock( &queue->mutex );
+  if ((r = pthread_mutex_unlock( &queue->mutex )) != 0) {
+    errorp(r, "pthread_mutex_unlock fails");
+    return -1;
+  }
   return rt;
 
 }
 
-int TQUEUE_push_fail_on_maximum(TQUEUE *queue, void *entry)
+int TQUEUE_push_fail_on_queue_full(TQUEUE *queue, void *entry)
 {
-  int rt = 0;
+  int rt = 0, r;
 
-  if (pthread_mutex_lock(&queue->mutex)) {
-    perror("pthread_mutex_lock failed");
+  if ((r = pthread_mutex_lock(&queue->mutex)) != 0) {
+    errorp(r, "pthread_mutex_lock failed");
     return -1;
   }
 
@@ -88,21 +125,50 @@ int TQUEUE_push_fail_on_maximum(TQUEUE *queue, void *entry)
   } else {
   
     if (! push_entry( &queue->dlist, entry )) {
-      if (DLIST_size( &queue->dlist ) == 1) {
+      if (queue->waiting_empty > 0) {
          rt = pthread_cond_signal( &queue->cond_empty );
          if (rt) {
-	   perror("pthread_cond_signal failed");
+	   errorp(rt, "pthread_cond_signal failed");
 	 } 
       }
     } else {
       rt = -1;
     }
   }
-  pthread_mutex_unlock( &queue->mutex );
+  if ((r = pthread_mutex_unlock( &queue->mutex )) != 0) {
+    errorp(r, "pthread_mutex_unlock failed");
+    return -1;
+  }
 
   return rt;
 }
 
+
+int   TQUEUE_pop_non_blocking(TQUEUE *queue, void **rret)
+{
+    TQUEUE_Entry  *entry = 0;
+    void *ret = 0;
+
+    if (pthread_mutex_lock(&queue->mutex)) {
+      perror("pthread_mutex_lock failed");
+      return 0;
+    }
+    if (!DLIST_isempty( &queue->dlist)) {
+        entry = (TQUEUE_Entry  *) DLIST_pop_back( &queue->dlist );
+    }
+    pthread_mutex_unlock( &queue->mutex );
+
+    if (entry) {
+      ret = entry->entry;
+      free(entry);
+    }
+
+    if (ret != 0) {
+      return 0;
+    }
+    *rret = ret;
+    return -1;
+}
 
 void *TQUEUE_pop(TQUEUE *queue)
 {
@@ -116,15 +182,18 @@ void *TQUEUE_pop(TQUEUE *queue)
     }
 
     if (DLIST_isempty( &queue->dlist ) ) {
+         queue->waiting_empty ++;
          rt = pthread_cond_wait( &queue->cond_empty, &queue->mutex );
 	 if (rt) {
 	   perror("pthread_cond_wait failed");
 	 }
+         queue->waiting_empty --;
     }
 
     entry = (TQUEUE_Entry  *) DLIST_pop_back( &queue->dlist );
     if (entry) {
       ret = entry->entry;
+      free(entry);
     }
 
 

@@ -6,12 +6,13 @@
 
 void TBARRIER_test();
 void TQUEUE_test();
-
+void TPOOL_test();
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( TBARRIER_test )
 	VTEST_TESTN( TQUEUE_test )
+	VTEST_TESTN( TPOOL_test )
 VTEST_END_SUITE
 
 

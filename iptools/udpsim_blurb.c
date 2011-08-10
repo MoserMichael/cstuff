@@ -3,7 +3,7 @@
 
 void print_help() {
   fprintf(stderr,"%s",
-	"udpsim [-d] -x <capture_file> -c <capture-host> -i <tx-interface> [-p <tx-substitution-port>] [-r <tx-substitution-port-range>] [-f <outgoing-filter-expression>] [-n]\n"
+	"udpsim [-d] -x <capture_file> -c <capture-host> -i <tx-interface> [-p <tx-substitution-port>] [-r <tx-substitution-port-range>] [-f <outgoing-filter-expression>] [-n] [-m]\n"
 	"\n"
 	"Resends outgoing UDP traffic from capture file.\n"
 	"\n"
@@ -80,6 +80,9 @@ void print_help() {
 	"	For syntax of filter expression see see man pcap-filter(7)\n"
 	"\n"
 	"-n\n"
+	"	don't reassemble IP fragments, (default is to reassemble them).\n"
+	"\n"
+	"-m\n"
 	"	No packet capture is performed during this run.\n"
 	"\n"
 	"\n"

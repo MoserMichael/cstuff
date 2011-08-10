@@ -19,4 +19,4 @@ For whatever reason I could not bring tshark to show packet data, so i did my ow
  -i <infile>	- input capture file
  -s		- don't show header line
  -f <filter>	- filter expression (for syntax see man pcap-filter(7))
- -n		- don't reassemble fragments, (default is to reassemble them)
+ -n		- don't reassemble IP fragments, (default is to reassemble them)

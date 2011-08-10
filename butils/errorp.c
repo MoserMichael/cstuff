@@ -116,7 +116,7 @@ void dump_modules()
   
   buf_start = 0;
   while(1) {
-    n = read(fd, buf + buf_start, sizeof(buf) );
+    n = read(fd, buf + buf_start, sizeof(buf) - buf_start );
     if (n <= 0) {
       break;
     }
