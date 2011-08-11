@@ -9,7 +9,7 @@ An enormous feeling of accomplishment grips me - I changed the ringtone on my ce
 
 First thing is to find some piece of music on "youtube":http://youtube.com that would fit the occasion.
 
-Then I had to figure out how to download it (One option is to use the "Fast Video Download plugin":https://addons.mozilla.org/en-US/firefox/addon/fast-video-download-with-searc/ for "firefox": http://www.mozilla.com/  (actually the wide range of plug-ins keeps me from switching to "Chrome": http://www.google.com/chrome/ browser )
+Then I had to figure out how to download it (One option is to use the "Fast Video Download plugin":https://addons.mozilla.org/en-US/firefox/addon/fast-video-download-with-searc/ for "firefox":http://www.mozilla.com/  (actually the wide range of plug-ins keeps me from switching to "Chrome":http://www.google.com/chrome/ browser )
 
 Now the downloaded result is in flv format; Next thing is to convert the resulting flv file to mp3 formatby using "ffmpeg":http://www.ffmpeg.org/ converter. The following command does it (good old command line to the rescue)
 ffmpeg -I <flv file name> out.mp3 
