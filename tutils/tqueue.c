@@ -57,7 +57,7 @@ int   TQUEUE_push_exit_message(TQUEUE *queue)
   
   if (entry) {
     DLIST_push_back( &queue->dlist, (DLIST_entry *) entry );
-    if (DLIST_size( &queue->dlist ) == 1) {
+    if (queue->waiting_empty > 0) {
       if ((r = pthread_cond_signal( &queue->cond_empty )) != 0) {
 	errorp(r, "pthread_cond_signal failed");
       }

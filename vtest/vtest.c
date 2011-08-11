@@ -11,6 +11,18 @@
 #include <windows.h>
 #endif
 
+
+/**
+
+ @mainpage
+
+ All this is a very small XUnit type testing framework.
+
+ Usage is explained in example file
+
+ @example example.c
+*/
+
 VTEST_RUNNER_IMPL * vtest_impl;
 static char *g_suite_name;
 

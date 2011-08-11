@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mkdir -p ../docs/cstuff
+doxygen  oct-ds.doxygen
+
