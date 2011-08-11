@@ -1,0 +1,56 @@
+---
+layout: post
+title:  Stuff that computer do
+---
+
+h3. I did it! 
+
+An enormous feeling of accomplishment grips me - I changed the ringtone on my cell phone.
+
+First thing is to find some piece of music on "youtube":http://youtube.com that would fit the occasion.
+
+Then I had to figure out how to download it (One option is to use the "Fast Video Download plugin":https://addons.mozilla.org/en-US/firefox/addon/fast-video-download-with-searc/ for "firefox": http://www.mozilla.com/  (actually the wide range of plug-ins keeps me from switching to "Chrome": http://www.google.com/chrome/ browser )
+
+Now the downloaded result is in flv format; Next thing is to convert the resulting flv file to mp3 formatby using "ffmpeg":http://www.ffmpeg.org/ converter. The following command does it (good old command line to the rescue)
+ffmpeg -I <flv file name> out.mp3 
+
+
+Then one has to can edit the mp3 file with the "audacity": http://audacity.sourceforge.net/ sound editor, and cut out the portion of the tune that will be the ringtone. Now the result can only be saved to mp3 format after downloading an additional of "lame converter for audacity":http://lame.buanzo.com.ar/
+
+Next thing is an enormously complex operation that one has to do in order hook up Windows with the Bluetooth device on my cell phone;
+
+*First Windows has to see the Bluetooth device; luckily the laptop comes with a Bluetooth radio;  In windows 7 control panel search for 'Add a Bluetooth device' and add your cell phone; 
+* Pair the laptop with the phone (On laptop screen a number appears that has to be punched into the cell phone)
+* The directory where you copy the file has to be made 'visible via bluetooth'
+* One the Laptop search for the "Bluetooth file transfer wizard" to the cell phone.  Select file to copy and wait (I can't describe all the detail, but in the end it did work probably after turning on this option and that option on the phone, pure magic).
+
+Next is to find the file on the cell phone's file system; then I had to find a hidden option in an extremely confusing menu system that would turn a mp3 file in to a ring tone.
+
+Now one general question remains though; why is every little thing you want to do with a computer turning into a seven stage process?
+
+That reminds me of the lamentations from the "netsnmp FAQ":http://www.net-snmp.org/docs/FAQ.html#What_is_the_Official_Slogan_of_the_net_snmp_coders_list_  which says 
+<pre>
+What is the Official Slogan of the net-snmp-coders list?
+-------------------------------------------------------
+
+  "The current implementation is non-obvious and may need to be improved."
+	(with thanks to Rohit Dube)
+
+  And an alternate, added 26-Apr-2000:
+  
+  "In theory, it shouldn't be that hard, but it just needs to be done."
+</pre>
+	
+Another point is this
+The Song "Wenn der Topf aber nun ein Loch hat" in German
+
+<notextile>
+<iframe width="425" height="349" src="http://www.youtube.com/embed/3C11AlNqaOo" frameborder="0" allowfullscreen></iframe>
+</notextile>
+
+The English version "There's a whole in Bucket"
+<notextile>
+<iframe width="560" height="349" src="http://www.youtube.com/embed/rBHdZj-qkeQ" frameborder="0" allowfullscreen></iframe>
+</notextile>
+
+Now this song is supposed to introduce kids to long-wound and tedious industrial processes. Isn't it? Nursery rhymes as the foundation of the wealth of nations! Applause, applause for this genuine contribution!!!  Well, at least I can prove that my claims are ridiculous - as nothing suspecting little kid certainly did not understand the coded message in these songs, namely that I am up for a lot of tedious work going through the process of fixing and fixings pots that is (or maybe they are actually honey jars, but that would be a different story).
