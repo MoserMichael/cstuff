@@ -21,6 +21,8 @@ function up
   done
 }
 
+cp -rf ../cstuff_bak/docs docs
+
 sync
 
 up all/blog/_posts blog
