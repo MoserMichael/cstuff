@@ -11,20 +11,13 @@ function redirect
   HAS_REDIRECT=on
 }
 
-function remove_password_from_log
-{
-  sed -e s#${PASSWORD}#XXXX#g <${LOG_FILE} >${LOG_FILE}.1
-  mv -f ${LOG_FILE}.1 ${LOG_FILE}
-}
-
 
 function undo_redirect
 {
   if [ "x$HAS_REDIRECT" = "xon" ]; then
     set +x
     exec 1>&6 6>&-
-    #remove_password_from_log
-   fi
+  fi
 }
 
 function usage
@@ -41,21 +34,21 @@ EOF
   fi
 
 cat <<EOF
-./maketrust.sh  -m <hostname> -u <user> [ -p <password> | -P | -d]
+./maketrust.sh  -m <hostname> -u <user> [ -p <password> | -P | -d | -h]
 
-Script for creating automatic login relationship between current account and
-account <user> specified by option -u on host <hostname> specified by option -m
+Script for automating setup of trusted key between the currently logged on user on current host name 
+on the one hande, and the remote <hostname> and <user> account on the other hand.
 
-If the command succeeds then SSH/SCP/SFTP commands part of OpenSSH will not require a password on host <hostname> when used from current user on this machine.
+If the command succeeds then SSH/SCP/SFTP commands will not require a password 
+when logging on to <user>@<hostname>, while your are logged in on the current user on current host.
 
-The password:
- can either be entered by value with -p <password> parameter;
- if -P specified then it is read from stdandard input.
-
-
-This script automates the process described here
-http://www.csua.berkeley.edu/~ranga/notes/ssh_nopass.html
-and
+Command line options
+    -m Remote host name
+    -u Remote user
+    -p password of remote machine (-P option is preferable, if you do not want others to 
+       see your password with ps command, while this script is running).
+    -P prompt the user to enter command via terminal.
+    -d (optional) trace additional commands to maketrust.log and maketrust.log.expect files.
 
 EOF
    exit 1
@@ -82,7 +75,10 @@ expect "assword:" {
 }
 EOF
 
-  return $? 
+   if $?; then
+    usage "Failed to copy file $(readlink -f $local_file) to $ssh_uh:$remote_file"
+   fi
+   return $? 
 }
 
 
@@ -119,7 +115,10 @@ expect "assword:" {
       }
 }
 EOF
-
+   if $?; then
+    usage "Failed to run ${cmd} on ${ssh_uh}"
+   fi
+ 
   return $? 
 }
 
@@ -137,6 +136,28 @@ fi
 
 }
 
+function check_requirements
+{
+  local msg="is not installed in the current path. path $PATH"
+
+  if ! which expect ; then
+     usage "expect $msg"
+  fi
+
+  if ! which scp ; then 
+     usage "scp $msg"
+  fi
+
+  if ! which ssh ; then 
+     usage "ssh $msg"
+  fi
+
+  if ! which ssh-keygen ; then 
+     usage "ssh $msg"
+  fi
+
+}
+
 function trust_me
 {
 
@@ -144,7 +165,7 @@ function trust_me
   local lfile=$local_install_dir/id_dsa
 
   if [ -f $lfile ]; then
-    usage "it seems that a key already exists for access from ${USERNAME}@${HOSTNAME} to ${RUSERNAME}@${RHOSTNAME}"
+    usage "A trusted key already exists for access from ${USERNAME}@${HOSTNAME} to ${RUSERNAME}@${RHOSTNAME}"
   fi
 
   local tmp_dir=.tmpdir.$$
@@ -181,8 +202,7 @@ if [ ! -f authorized_keys ]; then
    ln -sf authorized_keys2 authorized_keys
 fi
 chmod 0600 authorized_keys2
-
-#rm -f ${TMP_FILE}
+rm -f ~/${TMP_FILE}
 echo "trustMe"
 EOF
  
@@ -192,10 +212,8 @@ EOF
  
 
   mkdir -p $local_install_dir
- 
   cp -f id_dsa*  $local_install_dir
  
-  local_install_dir=`dirname  $local_install_dir`
   chmod 0700 $local_install_dir
   local_install_dir=`dirname  $local_install_dir`
   chmod 0700 $local_install_dir
@@ -209,15 +227,13 @@ EOF
   add_line_to_config config  "IdentityFile ~/.ssh/ident/%u@%l/%r@%h/id_dsa"
   add_line_to_config config  "IdentityFile ~/.ssh/id_rsa"
   add_line_to_config config  "IdentityFile ~/.ssh/id_dsa"
-
   chmod  0600 config
   popd
 
   popd
-  #rm -rf $tmp_dir
+  rm -rf $tmp_dir
 
 }
-
 
 
 while getopts "hdPp:u:m:" OPT 
@@ -252,7 +268,7 @@ fi
 
 redirect
 
-
+check_requirements
 trust_me
 
 undo_redirect
