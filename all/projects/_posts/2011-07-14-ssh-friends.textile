@@ -15,9 +15,11 @@ First of all the script can be "seen here":https://github.com/MoserMichael/cstuf
 <pre>
 ./maketrust.sh  -m <hostname> -u <user> [ -p <password> | -P | -d | -h]
 
-Script for automating setup of trusted key between the currently logged on user on current host name on the one hand, and the remote <hostname> and <user> account on the other hand.
+This script automates setup of trusted key between the currently logged on user account 
+on the current host on the one hand, and the remote <hostname> and <user> account on the other hand.
 
-If the command succeeds then SSH/SCP/SFTP commands will not require a password when logging on to <user>@<hostname>, while your are logged in on the current user on current host.
+If the command succeeds then SSH/SCP/SFTP commands will not require a password when logging on 
+to <user>@<hostname>, while your are logged in on the current user on current host.
 
 Command line options
     -m Remote host name
@@ -33,16 +35,23 @@ So the process is as follows
 o $HOSTNAME  and $USERNAME are the local host and user names.
 o $RHOSTNAME and $RUSERNAME  are the remote host and user names.
 - On the local computer the public and private key pair is created
+<pre>
   ssh-keygen -t dsa -f id_dsa -P ''"
+         </pre>
 - On the local computer installs the public and private key pair
+<pre>
 mkdir -p ~/.ssh/${USERNAME }@${ HOSTNAME}/${RUSERNAME}@${RHOSTNAME}
 mv id_dsa ~/.ssh/${USERNAME }@${ HOSTNAME}/${RUSERNAME}@${RHOSTNAME}
  mv id_dsa.pub ~/.ssh/${USERNAME }@${ HOSTNAME}/${RUSERNAME}@${RHOSTNAME}
+    </pre>
 - On the local computer: edit the local machine's SSH configuration so that it will pick up the correct public/private key pair.
 Add the following line to ~/.ssh/config file
+<pre>
 IdentityFile ~/.ssh/ident/%u@%l/%r@%h/id_dsa
+           </pre>
 Now the last two steps were very important:  SSH will now look for the keys in specific location, and you can install multiple keys without them interfering with one another; I did not find any tutorial that gets it right in this respect.
 - Set correct permissions (only the current user should be allowed to read from .ssh)
+<pre>
    chmod 0700  ~/.ssh 
    chmod 0700  ~/.ssh/${USERNAME }@${ HOSTNAME}
              chmod 0700  ~/.ssh/${USERNAME }@${ HOSTNAME}/${RUSERNAME}@${RHOSTNAME}
@@ -50,16 +59,26 @@ Now the last two steps were very important:  SSH will now look for the keys in s
     chmod 0600 ~/.ssh/config
         chmod 0600 ~/.ssh/${USERNAME }@${ HOSTNAME}/${RUSERNAME}@${RHOSTNAME}/id_dsa
         chmod 0600 ~/.ssh/${USERNAME }@${ HOSTNAME}/${RUSERNAME}@${RHOSTNAME}/id_dsa.pub
+</pre>
 
 - On the remote machine
 Copy id_dsa.pub to the remote machine
 Append content of id_dsa.pub to ~/.ssh/authorized_keys2
+<pre>
+cat id_dsa.pub >>~/.ssh/authorized_keys2
+</pre>
+
 Create the symbolic link 
+<pre>
    ln -s ~/.ssh/authorized_keys2  ~/.ssh/authorized_keys
+</pre>
+
  Again set all permissions
+<pre>
    chmod 0700  ~/.ssh 
-   chmod 0700  ~/.ssh/authorized_keys
-             chmod 0700  ~/.ssh/ authorized_keys2
+   chmod 0600  ~/.ssh/authorized_keys
+             chmod 0600  ~/.ssh/ authorized_keys2
+</pre>
 
 h3. script magic
 
