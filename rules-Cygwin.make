@@ -92,6 +92,6 @@ else
     CXXFLAGS+=-m64
     LDFLAGS+=-m64
   else
-    $(error architecture $(ARCH) is not supported on $(OS_TYPE) )
+    $(warning architecture $(ARCH) is not explicitly supported on $(OS_TYPE) )
   endif
 endif
