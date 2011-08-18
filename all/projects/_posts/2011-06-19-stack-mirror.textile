@@ -130,3 +130,9 @@ In more detail: For each application thread a stack data structure is maintained
 
 The tool keeps entries that shadow the application stack - hence the name StackMirror. Of course this shadow stack can also be overwritten by some pointer gone wild, but this is much less likely than occurrence of a buffer overflow error. Another limitation is that we only return address of the current function is checked. In some complex example an application function call could smash the return address of a calling function; we do not check for that here, (though an even more paranoid version of the tool could do that). We will still get there eventually, as the stack unwinds.
 
+.h3 Other limitations
+
+This library makes an effort to recover from situations with "setjmp / longjmp":http://en.wikipedia.org/wiki/Setjmp.h trick; this function is a non local form of goto ; it undoes the stack up until some remembered levy.
+However there is one trick that we can't cope with "makecontext / setcontext":http://en.wikipedia.org/wiki/Setcontext If the application decides to do its own cooperative multitasking / user level threading or if it needs co procedures then all our efforts here are toast. 
+Note that it's becoming something of a habit here - for every trick find when it breaks ;-)
+
