@@ -5,8 +5,36 @@ use strict;
 
 my ($file, $generated_parser_file, @lines, $l, @errors, $state, $state_text, %states, $e, $has_errors);
 
+
+sub print_usage
+{
+
+print <<EOF
+Usage:
+ ./parse_bison_report.pl <bison-error-report> <generated-parser-file>
+
+ The script parses a verbose bison report, so that all
+ shift/reduce reduce/reduce conflicts will become obvious at once.
+ As a bonus it deletes the generated parser file if the report contains
+ shift/reduce or reduce/reduce conflicts.
+
+ The arguments:
+   <the file name of bison report>
+   <the file name of the generated parser>
+
+ The bison report is generated as follows:
+    bison --report=all --report-file=pars.report     
+EOF
+;
+  exit(1);
+}
+
 $file = $ARGV[0];
 $generated_parser_file = $ARGV[1];
+
+if (! -f $file || ! -f $generated_parser_file) {
+  print_usage();
+}
 
 open(INFILE,$file);
 @lines=<INFILE>;

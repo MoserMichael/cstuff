@@ -9,6 +9,54 @@ $error_log = $ARGV[0];
 parse_log_file();
 
 
+sub print_usage
+{
+  print <<EOF
+readerrors.pl <error_report_file>
+
+Parses an error report file and extracts stack trace reports; the stack traces
+list stack frame addresses and shared module load addresses. The stack frames
+are translated into function names.
+
+
+A raw stack trace in the error report looks as follows
+
+**** start stack ***
+frame 0 ip: 0x8048520
+frame 1 ip: 0x80485a0
+frame 2 ip: 0x80485a0
+
+08048000-08049000 00000000 /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/test/tstopf
+40000000-4001c000 00000000 /lib/i386-linux-gnu/ld-2.13.so
+4001e000-4001f000 00000000 [vdso]
+40021000-40023000 00000000 /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/lib/libstack.so
+40035000-4018f000 00000000 /lib/i386-linux-gnu/libc-2.13.so
+*** eof stack ***
+
+
+it is translated as follows:
+
+
+ip 0x8048520 from /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/test/tstopf
+crash_me
+test.c:10
+
+ip 0x80485a0 from /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/test/tstopf
+fact
+test.c:30
+
+
+ip 0x8048633 from /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/test/tstopf
+fact
+test.c:38
+
+
+EOF
+;
+
+
+}
+
 sub parse_log_file
 {
 
