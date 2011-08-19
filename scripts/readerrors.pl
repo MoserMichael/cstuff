@@ -5,6 +5,9 @@ use strict;
 my ($error_log,@shared_sections,@frames,$state,@errors);
 
 $error_log = $ARGV[0];
+if (! -f $error_log) {
+  print_usage();
+}
 
 parse_log_file();
 
@@ -53,8 +56,7 @@ test.c:38
 
 EOF
 ;
-
-
+exit(1);
 }
 
 sub parse_log_file
