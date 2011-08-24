@@ -143,6 +143,14 @@ if [ ! -f \$EXE ]; then
   exit 1
 fi
 
+has_dbg_info=`objdump --section-headers \$EXE | grep -F '.debug' | wc -l`
+if [ "x\$has_dbg_info" = "x0" ]; then
+  cat <<EOF
+The executable \$EXE has no debug information.
+Please replace the executable with the same version that includes debug info
+EOF
+  exit 1
+fi
 
 cat >gdb_script <<EOF
 set solib-absolute-prefix .
