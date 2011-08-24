@@ -21,7 +21,7 @@ function up
   done
 }
 
-cp -rf ../cstuff_bak/docs docs
+cp -rf ../cstuff_bak/docs/html docs
 
 sync
 
