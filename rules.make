@@ -493,7 +493,8 @@ build_pre_subdirs : $(addsuffix _build_pre_subdirs_dir, $(PREBUILD_SUBDIRS))
 
 .PHONY: %_build_pre_subdirs_dir
 %_build_pre_subdirs_dir :
-	@cd $* ; $(MAKE) $(OP)
+	$(if $(wildcard $*),,$(error "Can't recurse into directory $* wrong value assigned to PREBUILD_SUBDIRS check your make file"))	
+	@set -e; cd $* ; $(MAKE) $(OP)
 
 
 .PHONY: build_post_subdirs
@@ -501,7 +502,8 @@ build_post_subdirs : $(addsuffix _build_post_subdirs_dir, $(POSTBUILD_SUBDIRS))
 
 .PHONY: %_build_post_subdirs_dir
 %_build_post_subdirs_dir :
-	@cd $* ; $(MAKE) $(OP)
+	$(if $(wildcard $*),,$(error "Can't recurse into directory $* wrong value assigned to POSTBUILD_SUBDIRS check your make file"))	
+	@set -e; cd $* ; $(MAKE) $(OP)
 
 
 .PHONY: cleanall
