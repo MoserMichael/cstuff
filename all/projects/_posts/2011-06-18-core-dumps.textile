@@ -26,8 +26,8 @@ The script does the following:
 - Create a shell script that instructs GDB to use the copied shared libraries instead of what you got on your system. (here goes the trick)
 
 Now "here is the script":https://github.com/MoserMichael/cstuff/blob/master/scripts/gather-libs.pl  that does it all.
-.
-h3 how to use it
+
+h3. how to use it
 
 <pre>
 ./gather-libs.pl -c core.12345 -e exe_file -o out.tbz2
@@ -73,7 +73,7 @@ core-file <core file name>
 Then it starts gdb with this generated script (-x option of gdb). 
 Now doing a script that writes another script is an exercise in magic (small magic alas). 
 
-.h3 Limitations
+h3. Limitations
 
 As always, there are situation when this script does not work properly; For example if the application loads shared libraries dynamically with dlopen / dlsym, then those will not be copied into the archive.
 (Please tell me that this does not happen often on Linux; Sorry).
