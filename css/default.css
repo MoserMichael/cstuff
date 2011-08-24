@@ -86,7 +86,7 @@ line-height: 1.4em;
 width: 650px;
 font-family: 'lucida grande','lucida sans','lucida sans unicode',helvetica,tahoma;
 padding: 5px;
-background-color:#FFB604;
+    background-color:#FFB604;
 color:#222;
 border: solid 1px #fff;
 }
@@ -117,9 +117,9 @@ h1 a:hover { color:#fba919 ;}
 	margin-top:-8px;
 	margin-bottom:0px;
 	text-align:right;
-	font-size:0.8em;
+	font-size:0.5em;
 	width:490px;
-	color: #23af4c;
+	color: #eeebf2;
 
 }
 
@@ -127,7 +127,7 @@ h1 a:hover { color:#fba919 ;}
 .pink { color: #506abf; }
 .green { color: #ae3bbd; }
 .blue { color: #0383c9; }
-.orange { color: #fba919; }
+.orange { color: #b81f99; }
 
 
 a.pink:hover { border: solid 2px #506abf;padding:1px; text-decoration:none;  }
@@ -163,8 +163,8 @@ padding-bottom: 6px;
 }
 
 h3 {
-border-bottom:1px solid #e5e5e5;
-color:#fba919;
+border-bottom:1px solid  #b81f99;
+color:#b81f99;
 font-size:1.4em;
 font-weight: 100;
 margin:10px 0 8px;
@@ -172,7 +172,7 @@ padding:1px 2px 2px 3px;
 }
 
 h4 {
-color: #23af4c;
+color: #b81f99;
 }
 /*** Main wrap and header ***/
 
