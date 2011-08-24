@@ -1,8 +1,7 @@
-                                                                                                                            
 
 TOPDIR?=.
-                                                                                                                            
 
-PREBUILD_SUBDIRS=make-system-test vtest cutils butils tutils stack iptools
+PREBUILD_SUBDIRS=stack
 
 include $(TOPDIR)/rules.make
+
