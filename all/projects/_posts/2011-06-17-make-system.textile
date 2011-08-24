@@ -68,6 +68,7 @@ This means that build target slibuser builds a static link library.
 Each target is built from sources, so either it lists all the source files:
        slibuser_SRC=slibuser.c slibuser2.c slibuser3.c
 Says that build target slibuser is built from the source files slibuser.c slibuser2.c and slibuser3.c
+
 <pre>
 1: TOPDIR=../..
 2:
