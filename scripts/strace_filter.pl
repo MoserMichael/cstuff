@@ -135,7 +135,7 @@ sub printHelp
 ./strace_filter.pl [-A <start time>] [-B <end time>] -i <input_strace_log> -o <output_strace_log>
 
 The utility takes an strace log produced by strace, and filters out all entries
-that fall into a given time range.
+that fall into a given time range. (Either -A or -B option must be specified).
 
 Strace must be used with both -f and -tt options (!!!) , if this script is to work.
 
@@ -150,10 +150,10 @@ Strace must be used with both -f and -tt options (!!!) , if this script is to wo
 
 -A <start time>
 
-    Saves only the packets whose timestamp is on or after start time. The time is given in the following format HH:MM:SS
+    Saves only the lines whose timestamp is on or after start time. The time is given in the following format HH:MM:SS
 -B <stop time>
 
-    Saves only the packets whose timestamp is before stop time. The time is given in the following format HH:MM:SS
+    Saves only the lines whose timestamp is before stop time. The time is given in the following format HH:MM:SS
 -h
 
 EOF
