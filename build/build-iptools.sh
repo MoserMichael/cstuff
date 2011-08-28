@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+set -x
 
 TARGETS="vtest cutils iptools"
 
@@ -13,7 +15,7 @@ pushd ../iptools/libpcap
 make clean
 popd
 
-. common-build.sh
+. ./common-build.sh
 
 
 

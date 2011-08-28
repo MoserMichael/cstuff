@@ -44,13 +44,7 @@ int main()
 	 
   pthread_attr_init( &attr );
   pthread_attr_setdetachstate( &attr, PTHREAD_CREATE_DETACHED );
-  pthread_attr_setstacksize( &attr, PTHREAD_STACK_MIN );
-
-
-  rt = getrlimit( RLIMIT_NPROC, &lm );
-  if (rt != 0) {
-    fprintf(stderr,"failed to get limit. ret %d errno %d\n", rt, errno);
-  }
+  pthread_attr_setstacksize( &attr, PTHREAD_STACK_MIN ); // smallest stack size possible is 16k. 
 
   if (! read_proc_val( "/proc/sys/kernel/threads-max", &tmaxval ) ) {
     fprintf(stderr,"System wide limit on number of threads %ld\n", tmaxval );  
@@ -58,6 +52,10 @@ int main()
     fprintf(stderr,"Can't read system wide limit of threads\n");
   }
 
+  rt = getrlimit( RLIMIT_NPROC, &lm );
+  if (rt != 0) {
+    fprintf(stderr,"failed to get limit. ret %d errno %d\n", rt, errno);
+  }
 
   fprintf(stderr,"Process limit of threads:\n\t");
   if (lm.rlim_cur == RLIM_INFINITY ) {
@@ -71,6 +69,26 @@ int main()
   } else {
     fprintf(stderr,"hard limit: %ld\n", lm.rlim_max );
   }
+
+
+  rt = getrlimit( RLIMIT_NOFILE, &lm );
+  if (rt != 0) {
+    fprintf(stderr,"failed to get limit. ret %d errno %d\n", rt, errno);
+  }
+
+  fprintf(stderr,"Process limit of files:\n\t");
+  if (lm.rlim_cur == RLIM_INFINITY ) {
+    fprintf(stderr,"soft limit: no-limit " );
+  } else {
+    fprintf(stderr,"soft limit: %ld ", lm.rlim_cur );
+  }
+
+  if (lm.rlim_cur == RLIM_INFINITY ) {
+    fprintf(stderr,"hard limit: no-limit\n" );
+  } else {
+    fprintf(stderr,"hard limit: %ld\n", lm.rlim_max );
+  }
+ 
   for(i = 0; ; i++) {
       if ((rt = pthread_create( &pth, &attr, sleeper_thread, 0 ) )  != 0) {
 	    fprintf(stderr,"pthread_create  failed #%d. errno %d\n", i, errno);

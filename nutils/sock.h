@@ -6,17 +6,15 @@
   @brief a usable socket abstraction
 
   When you create a socket(2) then it is blocking by default.
-  This means that you can't set read, write or connect timeouts - it's useless
-  for any practical purposes.
+  This means that you can't specify a timeout while using the socket - that makes it useless for any practical purpose.
 
-  This abstraction creates a non blocking socket, but you can use it 
-  blockingly from a thread, but with specified timeout. 
-  This way you can have 'one thread per connection' in a way that allows you to set read and write timeouts.
+  This abstraction creates a non blocking socket, and you can use it in a blocking manner from a thread, alas you can specify timeouts.
+  This way you can have 'one thread per connection' in a way that allows you to  set timeouts for read, write and connect primitives.
 
   In a way this wrapper replace one set of utterly incomprehensible default behavior (the Berkley socket api) with another set of behaviour (which maybe makes more sense, maybe it doesn't - a matter of taste, as many things are with computers)
 
-  Still, the Berkley socket interface is supposed to create the illusion, that one can do TCP networking without understanding
-  the protocols. That is an illusion, and one simply has to read 'TCP IP Illustrated' by R. Stevens.
+  Still, the Berkley socket interface is supposed to create the illusion, that one can do TCP networking without understanding the protocols. That is an illusion, and one simply has to read 'TCP IP Illustrated' by R. Stevens in order to correct it.
+
 */
 typedef struct tagSOCKCTX {
 

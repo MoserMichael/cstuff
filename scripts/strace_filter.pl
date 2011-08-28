@@ -99,23 +99,36 @@ sub filterIt
       if ($state == 0) {
 	 # throw out all what is less then $start_t time.
          next if (int($hour) < int($start_t[0])); 
-	 next if (int($min)  < int($start_t[1]));
-         next if (int($sec)  < int($start_t[2]));
 	 
+	 if (int($hour) == int($start_t[0])) {
+	   
+	   next if (int($min)  < int($start_t[1]));
+           
+  	   if (int($min)  == int($start_t[1])) {
+             
+	     next if (int($sec)  < int($start_t[2]));
+
+	   }
+         }
 	 $state = 1;	
      }
 
      if ($state == 1) {
          if ($has_end_t == 1) {
+	   last if (int($hour) > int($end_t[0]));
 
-	   last if (int($hour) > int($start_t[0]));
-	   last if (int($min)  > int($start_t[1]));
-           last if (int($sec)  > int($start_t[2]));
+	   if (int($hour) == int($end_t[0])) {
+
+	     last if (int($min)  > int($end_t[1]));
+
+	     if (int($min) == int($end_t[1])) {
+
+	       last if (int($sec)  >= int($end_t[2]));
+             }
+
+           }
          }
-
-
-	
-	print OUTFILE $line;
+ 	 print OUTFILE $line;
      }
 	
    }
@@ -135,11 +148,10 @@ sub printHelp
 ./strace_filter.pl [-A <start time>] [-B <end time>] -i <input_strace_log> -o <output_strace_log>
 
 The utility takes an strace log produced by strace, and filters out all entries
-that fall into a given time range. (Either -A or -B option must be specified).
+that fall into a given time range. The range includes the start time but does not include the end time.
+(it ends right before the end time).
 
-Strace must be used with both -f and -tt options (!!!) , if this script is to work.
-
-
+Strace must be used with both -f and -tt options (!!!) , if this script is to work. The script assumes that the secon column is of the form HH:MM:SS.MICROSECONDS
 
 
 -i <input strace log>
@@ -150,10 +162,10 @@ Strace must be used with both -f and -tt options (!!!) , if this script is to wo
 
 -A <start time>
 
-    Saves only the lines whose timestamp is on or after start time. The time is given in the following format HH:MM:SS
+    Saves only the packets whose timestamp is on or after start time. The time is given in the following format HH:MM:SS
 -B <stop time>
 
-    Saves only the lines whose timestamp is before stop time. The time is given in the following format HH:MM:SS
+    Saves only the packets whose timestamp is before stop time. The time is given in the following format HH:MM:SS
 -h
 
 EOF

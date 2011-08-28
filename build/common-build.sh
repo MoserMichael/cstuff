@@ -25,4 +25,4 @@ cd ..
 
 make cleanall
 
-make test
+make test $@

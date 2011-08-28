@@ -103,12 +103,41 @@ sub test_udpsim
   print("$UDPSIM -v -x $CAPTURE_FILE -c $CAPTURE_CLIENT -i $REPLAY_CLIENT -f \"dst $CAPTURE_SERVER\" -r dst-port,$CAPTURE_SERVER_PORT,$REPLAY_SERVER_PORT -r dst-ip,$CAPTURE_SERVER,$REPLAY_SERVER -o $OUT_DIR/out.cap -y \"host $REPLAY_CLIENT\"");
   #exit(1);
 
+  #
+  # Even when binding to interface other than local - if both ends are on the
+  # same machine, the stuff will go via loopback adapter.
+  # By default loopback adapter has MTU of 16436 bytes, so in order for 
+  # fragmentation to happen in this test, I set the mtu size to 1500 
+  # for the time of the test that is.
+  # after the test I set it back. (caugh caugh).
+  #
+  set_loopback_mtu();
   system("$UDPSIM -v -x $CAPTURE_FILE -c $CAPTURE_CLIENT -i $REPLAY_CLIENT -f \"dst $CAPTURE_SERVER\" -r dst-port,$CAPTURE_SERVER_PORT,$REPLAY_SERVER_PORT -r dst-ip,$CAPTURE_SERVER,$REPLAY_SERVER -o $OUT_DIR/out.cap -y \"host $REPLAY_CLIENT\"");
+  restore_loopback_mtu();
 
   stop_udp_echo();
 
   test_cap_result();
   `rm -f t1`; 
+}
+
+sub  set_loopback_mtu
+{
+  local $mtu_line=`/sbin/ifconfig lo | grep MTU`;
+
+  if ($mtu_line =~ /MTU:(\d+)/) {
+     $prev_mtu=$1;
+
+     `/sbin/ifconfig lo mtu 1500`;
+  }
+
+}
+
+sub restore_loopback_mtu
+{ 
+   if (defined $prev_mtu) {
+     `/sbin/ifconfig lo mtu $prev_mtu`;
+   }	
 }
 
 sub test_cap_result
