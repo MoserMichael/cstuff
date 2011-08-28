@@ -16,13 +16,12 @@ I did this on company time, so the source code of these two programs (all source
 h3. Download instructions
 
 Get "my stuff":https://github.com/MoserMichael/cstuff 
-       chdir stack
-       make
-       (for specific platform builds do make ARCH=x86_64  or make ARCH=i686 )
+       chdir build
+       ./build-iptools.sh
        make install
 the preceeding line will install to /usr/local
-       make install INSTALL_PREFIX=/opt/stack
-will install stuff to prefix /opt/stack
+       make install INSTALL_PREFIX=/opt/iptools
+will install stuff to prefix /opt/iptools
 
 h3. Replay UDP packets with udpsim
 
