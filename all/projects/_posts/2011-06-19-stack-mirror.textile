@@ -23,6 +23,7 @@ h3. Download instructions
 Get "my stuff":https://github.com/MoserMichael/cstuff 
        chdir stack
        make
+       (for specific platform builds do make ARCH=x86_64  or make ARCH=i686 )
        make install
 the preceeding line will install to /usr/local
        make install INSTALL_PREFIX=/opt/stack
