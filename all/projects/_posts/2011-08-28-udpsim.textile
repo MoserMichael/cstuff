@@ -195,7 +195,7 @@ h3. How does udpsim work.
 
 The program builds its own version of LIBPCAP build, the current release version 1.1.1 had some issues that had to be patched locally.
 
-.h3 Known issues 
+h3. Known issues 
 
 On Linux one should use the 32 bit build with 32 bit kernels, and 64 bit build with 64 bit kernels. 
 This is due to a beautiful libpcap issue - packet capture and filtering is running in kernel mode, and the result is passed to user mode via a memory mapped file (zero copy indeed). Now the structure had a long member, which ties it to the current built of the operating system, thankfully this issue was removed in recent versions of the kernel; so checking for this issue would make a total mess.
