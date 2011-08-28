@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  jstack ? the missing manual / debugging java programs
+title:  jstack - the missing manual / debugging java programs
 ---
 
 h2. {{ page.title }}
 <p class="publish_date">29 August 2011</p>
 
 
-The ?jstack?:http://linux.die.net/man/1/jstack-java-1.6.0-openjdk  utility is part of ?Hotspot JVM?:http://en.wikipedia.org/wiki/HotSpot, it is a command line program that obtains the current stack trace of all java threads. Actually it is one of the strong points of java that you can always get a stack trace for all threads of a process / list of all locks. With ?unmanaged? c programs it is not quite so easy, not at all.
+The "jstack":http://linux.die.net/man/1/jstack-java-1.6.0-openjdk  utility is part of "Hotspot JVM":http://en.wikipedia.org/wiki/HotSpot, it is a command line program that obtains the current stack trace of all java threads. Actually it is one of the strong points of java that you can always get a stack trace for all threads of a process / list of all locks. With 'unmanaged' c programs it is not quite so easy, not at all.
 
 So when you are running jstack on Linux (or any other Unix) then there are some details that are missing from the documentations 
 
@@ -19,13 +19,13 @@ Let us trace the system calls for running jstack on process id 10015
 <pre>
 strace -f  -oo /usr/java/jdk1.6.0/bin/jstack  -l  10015
 
-grep ?F ?connect(? o
+grep -F 'connect(' o
 
 11558 connect(6, {sa_family=AF_FILE, path="/tmp/.java_pid10015"}, 110) = 0
 11558 connect(6, {sa_family=AF_FILE, path="/tmp/.java_pid10015"}, 110) = 0
 </pre>
 
-Interestingly jstack uses a ?named pipe?:http://en.wikipedia.org/wiki/Named_pipe with the file name of  /tmp/.java_pid<processed>  in order to communicate with the JVM of the traced process.  Communication via the named pipe goes through a simple string based protocol
+Interestingly jstack uses a "named pipe":http://en.wikipedia.org/wiki/Named_pipe with the file name of  /tmp/.java_pid<processed>  in order to communicate with the JVM of the traced process.  Communication via the named pipe goes through a simple string based protocol
 
 <pre>
 11619 connect(6, {sa_family=AF_FILE, path="/tmp/.java_pid10015"}, 110) = 0
@@ -55,7 +55,7 @@ Interestingly jstack uses a ?named pipe?:http://en.wikipedia.org/wiki/Named_pipe
 11619 read(6, "va.util.concurrent.locks.Abstrac"..., 128) = 128
 </pre>
 
-Aha, so jstack just sends a string command to the traced JVM, and the JVM returns all report lines over the named pipe?s socket.
+Aha, so jstack just sends a string command to the traced JVM, and the JVM returns all report lines over the named pipe's socket.
 
 
 So while the program is running, we can look at the named pipe
@@ -77,11 +77,11 @@ h3. A script to automate usage of jstack
 
 All this can be obtained from system information, just by knowing the process id number.
 - We can see who is running the process, the permissions of the /proc/<pid>/ directory say so (the linux operating system maintains this directory per running process )
-- The /proc/[pid]/maps includes all shared memory ranges used by the process, so each shared library has it?s text/code segment here + full path of the executable that is mapped in.
-     Each Hotspot java process loads a library called libjvm.so ? so by finding the path name of libjvm.so we can infer the path of the used JDK version.
+- The /proc/[pid]/maps includes all shared memory ranges used by the process, so each shared library has it's text/code segment here + full path of the executable that is mapped in.
+     Each Hotspot java process loads a library called libjvm.so - so by finding the path name of libjvm.so we can infer the path of the used JDK version.
 
-The script that can do all this ?is here?:https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack	
+The script that can do all this "is here":https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack	
 
-A similar script ?runs jstack at fixed time intervals?:https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack-loop , this can be used to track locking problems, etc. etc.
+A similar script "runs jstack at fixed time intervals":https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack-loop , this can be used to track locking problems, etc. etc.
 
 
