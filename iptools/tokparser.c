@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #include "tokparser.h"                                                                      
 #include <string.h>                                                                      
 #include <malloc.h>                                                                      

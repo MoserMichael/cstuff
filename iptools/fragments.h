@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #ifndef __FRAGMENTS_X_Y_Z__
 #define __FRAGMENTS_X_Y_Z__
 

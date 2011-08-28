@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #include "loop_lib.h"
 #include <string.h>
 #include <arpa/inet.h>
@@ -6,6 +7,8 @@
 #include <errno.h>
 #include <ifaddrs.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
 
 #include <cutils/bhash.h>
 #include <cutils/dring.h>
@@ -250,6 +253,11 @@ static void dispatcher_handler(u_char *ctx,
     pctx->packets_captured++;
 }
 
+void linux_kernel_check()
+{
+  
+}
+
 
 CAPTURECTX * live_capture_init( const char *device,  const char *filter, const char *file_name, int mode )
 {
@@ -258,6 +266,10 @@ CAPTURECTX * live_capture_init( const char *device,  const char *filter, const c
   char error[ PCAP_ERRBUF_SIZE ];
   bpf_u_int32 SubNet,NetMask;
   struct bpf_program filter_code;
+
+#ifdef __linux
+  linux_kernel_check();
+#endif
 
   ret = (CAPTURECTX *) malloc( sizeof( CAPTURECTX ) );
   if (!ret) {
@@ -464,29 +476,40 @@ uint16_t udp_cksum( struct ip *ip_, struct udphdr *udp_  )
   return ( (uint16_t)(~sum)  );
 }
 
-int get_interface_mtu(struct in_addr *interface_addr  )
+int get_interface_mtu( const char *iface_name     )
 {
    int s;
-   struct sockaddr_in saddr;
-   int rt, port = 10000;
    int opt_val;
+   struct ifreq	ifr;
+
+#if 0   
+   int rt, port = 10000;
+   struct sockaddr_in saddr;
    socklen_t opt_len;
+#endif
 
    s = socket( AF_INET, SOCK_DGRAM, 0);
    if (s == -1) {
      return -1;
    }
 
+#if 0
    saddr.sin_family = AF_INET;
    saddr.sin_addr = *interface_addr;
 
    while(1) {
        saddr.sin_port = ntohs( port );
        rt = bind(s, (struct sockaddr *) &saddr, sizeof(saddr));
+       if (rt == 0) {
+         break;
+       }
+
        if (rt == -1 && errno == EADDRINUSE) {
+         ++port;
 	 continue;
        }
-       port ++;
+
+       return -1;
    }
 
    if (rt == -1) {
@@ -497,11 +520,18 @@ int get_interface_mtu(struct in_addr *interface_addr  )
    if (getsockopt( s, IPPROTO_IP, IP_MTU, (void *) &opt_val, &opt_len ) ) {
      goto err;
    }
+#endif
+
+  memset(&ifr, 0, sizeof(ifr));
+  strncpy(ifr.ifr_name, iface_name, sizeof(ifr.ifr_name));
+
+  if (ioctl(s, SIOCGIFMTU, &ifr) == -1) {
+    return -1;
+  }
+
+   opt_val = ifr.ifr_mtu;
 
    close(s);
    return opt_val;
 
-err:
-   close(s);
-   return -1;
 }

@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 
 #include <unistd.h>
 #include <string.h>

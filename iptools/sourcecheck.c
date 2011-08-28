@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #define _GNU_SOURCE
 #include <cutils/bhash.h>
 #include <stdio.h>

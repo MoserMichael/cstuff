@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -174,7 +175,8 @@ void parse_cmd_line(int argc, char *argv[]) {
   if ( ( global_params.tx_interface_name = is_interface_address( &global_params.tx_interface ) ) == 0 ) {
      error_msg("tx interface value (-i parameter) is not a network interface on this host\n");
   }
-  global_params.tx_interface_mtu  =  get_interface_mtu( &global_params.tx_interface );
+  global_params.tx_interface_mtu  =  get_interface_mtu( global_params.tx_interface_name   );
+
   if (global_params.tx_interface_mtu == -1) {
     error_msg( "Can't get MTU size of outgoing interface %s\n", 
 	    global_params.tx_interface_name );
@@ -380,6 +382,79 @@ void delay_packet( struct timeval tv )
    }
 }
 
+static uint16_t cur_packet_id = 0;
+
+static ssize_t send_fragmented( const void *buf, size_t len, 
+ 		      const struct sockaddr *dest_addr, socklen_t addrlen)
+{
+  char ip_hdr[200];
+  int hdr_len;
+  struct ip * hdr = 0;
+  uint8_t *pos = (uint8_t *) buf;
+  int   offset = 0;
+  int   is_last = 0;
+  size_t to_send;
+  struct udphdr *udp; 
+  int fragment_length;
+
+  ++ cur_packet_id;
+
+  do {
+
+retry:
+
+    if (!hdr) {
+       hdr = (struct ip *) buf;
+       hdr_len = IP_HDR_LEN( (struct ip *) buf );
+       memcpy(ip_hdr, buf, hdr_len );
+
+       udp = (struct udphdr *)  ((uint8_t *) hdr + IP_HDR_LEN( hdr) );
+       UDP_CKSM(udp) = 0;
+
+       fragment_length  = global_params.tx_interface_mtu - hdr_len;
+       fragment_length  >>= 3;
+       fragment_length  <<= 3;
+       fragment_length += hdr_len;
+        
+    } else {
+       hdr = (struct ip *)  pos - hdr_len;
+       memcpy(hdr, ip_hdr, hdr_len);
+       len += hdr_len;
+    }
+
+    if ( (size_t) fragment_length < len ) { 
+      hdr->ip_len = htons( fragment_length );
+      hdr->ip_off = htons( (offset >> 3) | IP_MF );
+      to_send = fragment_length;  
+    } else {
+      hdr->ip_len = htons( len );
+      hdr->ip_off = htons( (offset >> 3) );
+      is_last = 1;
+      to_send = len + hdr_len;
+    }
+    hdr->ip_id = cur_packet_id;
+    hdr->ip_sum = ip_cksum( hdr, IP_LEN(hdr) * 4 );
+
+    if (sendto( raw_sock, hdr, to_send,  0, dest_addr, addrlen ) < 0 ) {
+      if (errno == EMSGSIZE) {
+	// initially it is not know how much is needed for link layer. some trials will show.
+        global_params.tx_interface_mtu  -= 10;
+	hdr = 0;
+	goto retry;
+      }
+      return -1;
+    }
+
+    offset += to_send - IP_HDR_LEN( hdr );
+    buf = ((uint8_t *) hdr) + to_send; 
+    len -= to_send;  
+  } while( !is_last );
+
+  return 0;
+}
+
+
+
 int transform_packet( int64_t count, const struct pcap_pkthdr *pkthdr, struct ip *ip, struct udphdr *udp, const uint8_t *data, size_t size )
 {
   int i;
@@ -405,16 +480,19 @@ int transform_packet( int64_t count, const struct pcap_pkthdr *pkthdr, struct ip
     error_msg("Can't send packet with source port %d, this udp port is already in use on this host.", ntohl( UDP_SPORT(udp) ) );
   }
 
-  //if (modify_flag & MODIFY_FLAG_IP_MODIFIED) {
+  if (modify_flag & MODIFY_FLAG_IP_MODIFIED) {
     ip->ip_sum = ip_cksum( ip, IP_LEN(ip) * 4 );
-  //}
+  }
  
-  //if (modify_flag & MODIFY_FLAG_UDP_MODIFIED) {
+#if 0 
+  if (modify_flag & MODIFY_FLAG_UDP_MODIFIED) {
     if ( UDP_CKSM(udp) != 0) {
       UDP_CKSM(udp) = udp_cksum( ip, udp ); //udp, udp->len );
     }
-  //}
-
+  }
+#else  
+  UDP_CKSM(udp) = 0; 
+#endif
 
 
   delay_packet( pkthdr->ts );
@@ -441,12 +519,20 @@ void dump_udp_on_ipv4_replay_mode (PACKET_DATA *data) //int64_t count, const str
 
  
   if ( sendto( raw_sock, data->ip, ntohs( data->ip->ip_len),  0, (const struct sockaddr *) &sin, sizeof(sin) ) < 0) {
+    if (errno == EMSGSIZE) { // raw mode with HDRINCLUDE does not do fragmentation. sigh.
+       if (send_fragmented( data->ip, ntohs( data->ip->ip_len) , (const struct sockaddr *) &sin, sizeof(sin) ) == 0) {
+	 sent_packet_count ++;
+	 return;
+       }
+    }
     show_packet(stderr, data->count, &data->pkthdr->ts, data->ip, data->udp,  data->ip, ntohs( data->ip->ip_len) );
     error_msg( "Failed to send packet. errno=%d\n", errno );
   } else {
     sent_packet_count ++;
   }
 }
+
+
 
 void stop_capture_filter();
 

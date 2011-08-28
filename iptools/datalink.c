@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #include "datalink.h"
 #include <pcap.h>
 
@@ -6,6 +7,7 @@
 #define ETHERNET_L2_HEADER_SIZE 14
 #define FDDI_HDR_LEN 13
 #define CHDLC_HDRLEN 4
+#define SLL_HDR_LEN  16
 
 typedef int (*SKIP_DATALINK_LAYER) ( const uint8_t **frame, size_t *size );
 
@@ -19,11 +21,13 @@ typedef struct tagDATALINK_INFO {
 static int skip_eth_datalink_header( const uint8_t **frame, size_t *size);
 static int skip_ffdi_header( const uint8_t **frame, size_t *size);
 static int skip_hdlc_header( const uint8_t **frame, size_t *size);
+static int skip_linux_cooked_header( const uint8_t **frame, size_t *size);
  
 static DATALINK_INFO datalink_info [] = {
   { DLT_EN10MB, skip_eth_datalink_header },  
   { DLT_FDDI, skip_ffdi_header },
   { DLT_C_HDLC, skip_hdlc_header },
+  { DLT_LINUX_SLL, skip_linux_cooked_header },
   { -1, 0 }
 };
 
@@ -85,5 +89,12 @@ static int skip_hdlc_header( const uint8_t **frame, size_t *size)
    return 1;
 }
  
+static int skip_linux_cooked_header( const uint8_t **frame, size_t *size)
+{
+   *frame += SLL_HDR_LEN;
+   *size  -= SLL_HDR_LEN;
+   return 1;
+}
 
+ 
 

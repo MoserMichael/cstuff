@@ -2,6 +2,8 @@ TOPDIR=..
 
 
 PREBUILD_SUBDIRS=libpcap
+POSTBUILD_SUBDIRS=test
+
 
 
 TARGETS=loop loop_udp udpsim captest

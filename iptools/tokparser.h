@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #ifndef _TOKPARSER_H_
 #define _TOKPARSER_H_
 

@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #ifndef __HEX_Y_Z__
 #define __HEX_Y_Z__
 

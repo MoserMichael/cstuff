@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #ifndef __DATALINK_H_Y_Z__
 #define __DATALINK_H_Y_Z__
 

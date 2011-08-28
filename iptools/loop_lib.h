@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #ifndef __LOOP_UDP_H__
 #define __LOOP_UDP_H__
 
@@ -93,7 +94,7 @@ void show_packet(FILE *out, int64_t count, const struct timeval *tval, struct ip
 
 const char * is_interface_address( struct in_addr *addr );
 
-int get_interface_mtu(struct in_addr *interface_addr  );
+int get_interface_mtu( const char *iface_name  );
 
 //-----------------------------------------------------
 // Stuff for doing live captures.

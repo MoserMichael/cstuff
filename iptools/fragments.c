@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #include "loop_lib.h"
 #include <string.h>
 #include <arpa/inet.h>
@@ -254,8 +255,9 @@ int process_fragments( PACKET_DATA *data, HASH *fragments, IP_FRAGMENT_ACTION fr
 	 rt = add_fragment( hdr, data );    
 	 if (rt == 1) {
 	    clear_fragment_info( fragments, skey );		    
+	    return 1;
 	 }
-	 return rt;
+   	 return -1; // if fragment not assembled - do not pass higher up
 
      }
 

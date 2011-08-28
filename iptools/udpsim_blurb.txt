@@ -76,6 +76,10 @@ The substution rule file includes the following directives:
 
 -n
 	don't reassemble IP fragments, (default is to reassemble them).	
+	Setting this option means that the MTU of the outgoing interface is
+	not smaller than the MTU of the capture interface, this is relevant
+	if the capture file includes fragments, or outgoing packet will be
+	larger then tx interface MTU.
 
 -m
 	No packet capture is performed during this run.

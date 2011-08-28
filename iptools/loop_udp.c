@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #include "loop_lib.h"
 
 #include <assert.h>
@@ -90,7 +91,7 @@ void parse_cmd_line(int argc, char *argv[]) {
 	case 'f':
            filter = strdup( optarg );
 	   break;
-	case 'b':
+	case 's':
 	   show_hdr = 0;
 	   break;
 	case 'n':

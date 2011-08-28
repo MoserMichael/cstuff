@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #ifndef __SUBST_H_
 #define __SUBST_H_
 

@@ -1,3 +1,4 @@
+/* Copyright NDS Group - 2011 */
 #ifndef __SOURCE_CHECK__H_
 #define __SOURCE_CHECK__H_
 
