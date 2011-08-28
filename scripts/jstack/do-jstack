@@ -1,0 +1,54 @@
+#!/bin/bash
+
+
+#set -x
+set -e
+
+pid=$1
+
+if [ "x$pid" = "x" ]; then
+      cat <<EOF
+Usage: $0 <pid> [ -m -F ]
+
+Description
+
+The script performs the following steps
+ - check is <pid> is that of a running process
+ - check of <pid> is running from the same user account as current account
+ - check is <pid> is that of a java process (running hostpot JVM)
+ - Find jstack from the same JVM as from running process.
+ - run jstack with that version of jvm.
+
+The first command line parameter is the process id to monitor, following
+are additional options passed as is to jstack.
+
+EOF
+   exit 1 
+fi
+
+
+if [ ! -d /proc/$pid ]; then
+  echo "Error: The process $pid is not running"
+  exit 1
+fi
+
+user=`stat -c "%U" /proc/$pid`
+if [ "x$user" != "x$USER" ]; then
+  echo "Error: The process $pid runs under user $user, this script should run under the same account"
+  exit 1
+fi
+
+jvm_so=`grep libjvm.so /proc/$pid/maps |  head -1 | awk '{ print \$6 }'`
+
+jstack_dir=$jvm_so
+while [ ! -f "${jstack_dir}/bin/jstack" ];
+do 
+  if [ "x${jstack_dir}" = "x" ]; then
+     echo "The JDK in $jvm_so not contain jstack, can't run."
+     exit 1
+  fi
+  jstack_dir=`dirname $jstack_dir`
+done
+
+shift 
+$jstack_dir/bin/jstack -l $@ $pid 
