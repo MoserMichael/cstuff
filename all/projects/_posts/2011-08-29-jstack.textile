@@ -7,7 +7,7 @@ h2. {{ page.title }}
 <p class="publish_date">29 August 2011</p>
 
 
-The "jstack":http://linux.die.net/man/1/jstack-java-1.6.0-openjdk  utility is part of "Hotspot JVM":http://en.wikipedia.org/wiki/HotSpot, it is a command line program that obtains the current stack trace of all java threads. Actually it is one of the strong points of java that you can always get a stack trace for all threads of a process / list of all locks. With 'unmanaged' c programs it is not quite so easy, not at all.
+The "jstack":http://linux.die.net/man/1/jstack-java-1.6.0-openjdk  utility is part of "Hotspot JVM":http://en.wikipedia.org/wiki/HotSpot, it is a command line program that obtains the current stack trace of all java threads. Actually it is one of the strong points of java that you can always get a stack trace for all threads of a process and also display all currently held locks. With 'unmanaged' c programs it is not quite so easy, not at all.
 
 So when you are running jstack on Linux (or any other Unix) then there are some details that are missing from the documentations 
 
@@ -71,7 +71,7 @@ Modify: 2011-08-28 11:13:20.000000000 +0300
 Change: 2011-08-28 11:13:20.000000000 +0300
 </pre>
 
-The access permissions says that only one account - the user account that created the java process, can access the named pipe. So be it.
+The access permissions say that only one account, the user account that created the java process, can access the named pipe. Even the root user can't talk to this named pipe directly.
 
 h3. A script to automate usage of jstack
 
@@ -79,7 +79,6 @@ All this can be obtained from system information, just by knowing the process id
 - Can see who is running the process, the permissions and owner of the /proc/[pid]/ directory say so (the linux operating system maintains this directory per running process )
 - The /proc/[pid]/maps includes all shared memory ranges used by the process, so each shared library has it's text/code segment here + full path of the executable that is mapped in.
      Each Hotspot java process loads a library called libjvm.so - so by finding the path name of libjvm.so we can infer the path of the used JDK version.
-
 
 The script that can do all this "is here":https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack	
 It should be used as follows:
@@ -97,11 +96,11 @@ The script performs the following steps
  - run jstack
 
 The first command line parameter is the process id of the java process to monitor,
-after the first option come additional options passed as is to jstack (optional) </pre>
+after the first option come additional options passed as is to jstack (optional) 
+</pre>
 
 
-h3. Script that monitors a given java process.
-
+h3. Script that continuously monitors a given java process
 
 A similar script "runs jstack at fixed time intervals":https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack-loop , this can be used to track locking problems, etc. etc.
 
@@ -115,7 +114,7 @@ Usage: do-jstack-loop -p <pid> [ -d <delay time> ] [ -o <log file> ]
 
 Description
 
-The script runs jstack in a loop with a period of <delay time> (default value 10 secoonds). 
+The script runs jstack in a loop with a period of <delay time> (default value 10 seconds). 
 
 Usage:
     -p <pid>     process to monitor, the process should host the hotspot JVM.
@@ -178,7 +177,7 @@ Full thread dump Java HotSpot(TM) Client VM (20.1-b02 mixed mode, sharing):
 
 </pre>
 
-.h3 log useful data for any process in loop (not just java)
+h3. Log useful data for any process in loop (not just java)
 
 The following script loops and prints some information about a given process, the gathered information can help to determine if there is a leak of some sort.
 
