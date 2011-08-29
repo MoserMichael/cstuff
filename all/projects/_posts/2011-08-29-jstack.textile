@@ -55,7 +55,7 @@ Interestingly jstack uses a "named pipe":http://en.wikipedia.org/wiki/Named_pipe
 11619 read(6, "va.util.concurrent.locks.Abstrac"..., 128) = 128
 </pre>
 
-Aha, so jstack just sends a string command to the traced JVM, and the JVM returns all report lines over the named pipe's socket.
+Aha, so jstack just sends a string command to the traced JVM, and the JVM returns all report lines over the same named pipe's socket.
 
 
 So while the program is running, we can look at the named pipe
@@ -71,37 +71,165 @@ Modify: 2011-08-28 11:13:20.000000000 +0300
 Change: 2011-08-28 11:13:20.000000000 +0300
 </pre>
 
-The access permissions say that only the user account that created the java process can access the named pipe, so be it.
+The access permissions says that only one account - the user account that created the java process, can access the named pipe. So be it.
 
 h3. A script to automate usage of jstack
 
 All this can be obtained from system information, just by knowing the process id number.
-- We can see who is running the process, the permissions of the /proc/[pid]/ directory say so (the linux operating system maintains this directory per running process )
+- Can see who is running the process, the permissions and owner of the /proc/[pid]/ directory say so (the linux operating system maintains this directory per running process )
 - The /proc/[pid]/maps includes all shared memory ranges used by the process, so each shared library has it's text/code segment here + full path of the executable that is mapped in.
      Each Hotspot java process loads a library called libjvm.so - so by finding the path name of libjvm.so we can infer the path of the used JDK version.
 
+
 The script that can do all this "is here":https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack	
+It should be used as follows:
+
+<pre>
+Usage: ./do-jstack <pid> [ -m -F ]
+
+Description
+
+The script performs the following steps
+ - check if <pid> is that of a running process
+ - check if <pid> is running from the same user account as current account
+ - check if <pid> is that of a java process (running hostpot JVM)
+ - Find jstack from the same JVM as that of the running process.
+ - run jstack
+
+The first command line parameter is the process id of the java process to monitor,
+after the first option come additional options passed as is to jstack (optional) </pre>
+
+
+h3. Script that monitors a given java process.
+
 
 A similar script "runs jstack at fixed time intervals":https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack-loop , this can be used to track locking problems, etc. etc.
 
-h3. Script that monitors a given process.
+It also prints the CPU usage of each java thread, the only other program that knows how to display the CPU usage along the stack trace is "visual vm": http://visualvm.java.net/
+This feature is very useful if you want to detect threads that got stuck in infinite loops for example, those will hang around the same location in the code, but will consume high percentage of CPU time.
 
+It also shows Virtual Memory size + Resident set size for the whole process.
+
+<pre>
+Usage: do-jstack-loop -p <pid> [ -d <delay time> ] [ -o <log file> ]
+
+Description
+
+The script runs jstack in a loop with a period of <delay time> (default value 10 secoonds). 
+
+Usage:
+    -p <pid>     process to monitor, the process should host the hotspot JVM.
+    -d <delay>   repeat jstack with this delay (in seconds)
+    -o <logfile> Logs all output to the <logfile>
+
+The script also performs the following steps
+ - check is <pid> is that of a running process
+ - check of <pid> is running from the same user account as current account
+ - check is <pid> is that of a java process (running hostpot JVM)
+ - Find jstack from the same JVM as from running process.
+ - run jstack with that version of jvm.
+
+For each JAVA thread it also shows the Operating system thread id (LWP id) and CPU Usage (in %) of that thread.
+This information can be used to debug applications that got into infinite loops.
+</pre>
+
+The report looks as follows
+
+<pre>
+
+------------------------------------------------------------------------------
+UID        PID  PPID  C    SZ   RSS PSR STIME TTY          TIME CMD
+mmoser   14431  2014 32 70914 11468   0 08:51 pts/0    00:01:54 java -cp . test
+
+2011-08-29 08:57:44
+Full thread dump Java HotSpot(TM) Client VM (20.1-b02 mixed mode, sharing):
+
+=== OS Thread Id: 14449 CPU Usage: 3%  ===
+"Thread-9" prio=10 tid=0xb4636c00 nid=0x3871 waiting on condition [0xb3fd2000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at test$1.run(test.java:19)
+
+   Locked ownable synchronizers:
+	- None
+
+=== OS Thread Id: 14448 CPU Usage: 3%  ===
+"Thread-8" prio=10 tid=0xb4635400 nid=0x3870 waiting on condition [0xb4024000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at test$1.run(test.java:19)
+
+   Locked ownable synchronizers:
+	- None
+
+------------------------------------------------------------------------------
+UID        PID  PPID  C    SZ   RSS PSR STIME TTY          TIME CMD
+mmoser   14431  2014 32 70914 11468   0 08:51 pts/0    00:01:55 java -cp . test
+
+2011-08-29 08:57:46
+Full thread dump Java HotSpot(TM) Client VM (20.1-b02 mixed mode, sharing):
+
+=== OS Thread Id: 15241 CPU Usage: 0%  ===
+"Attach Listener" daemon prio=10 tid=0x08bc3c00 nid=0x3b89 waiting on condition [0x00000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+	- None
+
+</pre>
+
+.h3 log useful data for any process in loop (not just java)
 
 The following script loops and prints some information about a given process, the gathered information can help to determine if there is a leak of some sort.
 
+
 <pre>
-./run_top -p <process id> [ -d <delay> ]
+./run_top -p <process id> [ -d <delay> ] [ -o <log file> ]
+
+Usage:
+    -p <pid>	 process id to monitor
+    -d <delay>	 Optional parameter - delay between measurements in seconds. 
+		 The default value is 10 seconds
+    -o <logfile> write output to log file.
 
 Monitors a process continuously and prints the following statistics into a file
   - Size of resident set size, i.e. the size of physical memory in use
   - Size of Virtual memory, i.e. the size of address space reserved for use
   - Number of threads
   - Number of sockets/files/pipes.
-
-All this information is written to standard output.
-
-Usage:
-    -p <pid>	process id to monitor
-    -d <delay>  	Optional parameter - delay between measurements in seconds. 
-		The default value is 10 seconds
 </pre>
+
+The report looks as follows:
+
+<pre>
+29/8/2011 9:32:17
+    Resident set size:	 11380 kB
+    Virtual memory size: 281232 kB
+    Number of threads:   13
+    Files:		 4
+    Sockets:		 1
+    pipes:	         0
+29/8/2011 9:32:27
+    Resident set size:	 11380 kB
+    Virtual memory size: 281232 kB
+    Number of threads:   13
+    Files:		 4
+    Sockets:		 1
+    pipes:	         0
+29/8/2011 9:32:37
+    Resident set size:	 11380 kB
+    Virtual memory size: 281232 kB
+    Number of threads:   13
+    Files:		 4
+    Sockets:		 1
+    pipes:	         0
+29/8/2011 9:32:47
+    Resident set size:	 11380 kB
+    Virtual memory size: 281232 kB
+    Number of threads:   13
+    Files:		 4
+    Sockets:		 1
+    pipes:	         0
+</pre>
+
+
