@@ -13,14 +13,14 @@ Usage: $0 <pid> [ -m -F ]
 Description
 
 The script performs the following steps
- - check is <pid> is that of a running process
- - check of <pid> is running from the same user account as current account
- - check is <pid> is that of a java process (running hostpot JVM)
- - Find jstack from the same JVM as from running process.
- - run jstack with that version of jvm.
+ - check if <pid> is that of a running process
+ - check if <pid> is running from the same user account as current account
+ - check if <pid> is that of a java process (running hostpot JVM)
+ - Find jstack from the same JVM as that of the running process.
+ - run jstack
 
-The first command line parameter is the process id to monitor, following
-are additional options passed as is to jstack.
+The first command line parameter is the process id of the java process to monitor,
+after the first option come additional options passed as is to jstack (optional)
 
 EOF
    exit 1 

@@ -1,0 +1,98 @@
+#!/bin/bash
+
+
+#set -x
+set -e
+
+pid=$1
+DELAY=10
+LOG_FILE="jstack.log"
+
+function usage()
+{
+   local msg=$1
+
+   if [ "x$msg" != "x" ]; then
+     echo "ERROR: $msg"
+   fi
+
+   cat <<EOF
+Usage: $0 -p <pid> [ -d <delay time> ] [-r <report file>]
+
+Description
+
+The script runs jstack in a loop with a period of <delay time> (default value 10 seconds). 
+The file <report> is written. (default value jstack.log") 
+
+The script also performs the following steps
+ - check is <pid> is that of a running process
+ - check of <pid> is running from the same user account as current account
+ - check is <pid> is that of a java process (running hostpot JVM)
+ - Find jstack from the same JVM as from running process.
+ - run jstack with that version of jvm.
+
+EOF
+   exit 1 
+}
+
+
+while getopts "hdPp:u:m:" OPT 
+do
+	case $OPT in
+	    h)
+		usage
+		;;
+	    p)
+		pid=$OPTARG
+		;;
+	    r)
+		LOG_FILE=$OPTARG
+		;;
+	 esac
+done
+
+if [ "x$pid" = "x" ]; then
+    usage "Missing -p option"
+fi
+
+
+if [ ! -d /proc/$pid ]; then
+  echo "Error: The process $pid is not running"
+  exit 1
+fi
+
+user=`stat -c "%U" /proc/$pid`
+if [ "x$user" != "x$USER" ]; then
+  echo "Error: The process $pid runs under user $user, this script should run under the same account"
+  exit 1
+fi
+
+jvm_so=`grep libjvm.so /proc/$pid/maps |  head -1 | awk '{ print \$6 }'`
+
+jstack_dir=$jvm_so
+while [ ! -f "${jstack_dir}/bin/jstack" ];
+do 
+  if [ "x${jstack_dir}" = "x" ]; then
+     echo "The JDK in $jvm_so not contain jstack, can't run."
+     exit 1
+  fi
+  jstack_dir=`dirname $jstack_dir`
+done
+
+HEADER_LINE=`ps -LF -p $pid | head -1`
+
+rm -f $LOG_FILE || true
+while [ sleep ]; do
+
+  PSREPORT=`ps -Lf -p $pid >>${LOG_FILE}`
+  IFS=$'\n'
+  $jstack_dir/bin/jstack -l $pid >>${LOG_FILE}
+ 
+  for line in $PSREPORT ; do
+     pid=`echo $line | awk {print $2 }`
+     hex_pid = printf "%s" $pid
+  done 
+
+  sleep $DELAY
+done
+

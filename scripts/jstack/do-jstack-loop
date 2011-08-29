@@ -1,28 +1,59 @@
-#!/bin/bash
+#!/usr/bin/perl
+
+use strict;
+
+my (%options,$PID,$DELAY,$LOG_FILE,$jstack_dir);
+
+sgetopt( [ 'h', 'p:', 'd:', 'o:' ],  \%options );
 
 
-#set -x
-set -e
+usage() if (defined $options{'h'});
 
-pid=$1
-DELAY=10
-LOG_FILE="jstack.log"
+$PID=$options{'p'};
+if (! defined $PID ) {
+  usage(" -p option is not defined");
+}
 
-function usage()
+
+$DELAY=10;
+
+if (defined $options{'d'}) {
+  $DELAY = $options{'d'}; 
+  if ($DELAY <= 0) {
+     usage(" -d parameter must be positive integer");
+  }
+}
+
+if (defined $options{'o'}) {
+  $LOG_FILE=$options{'o'};
+}
+
+if (defined $LOG_FILE) {
+  open STDOUT, '>', $LOG_FILE or die "Can't open $LOG_FILE for writing\n";
+} 
+
+checkEnvironment();
+runLoop();
+
+sub usage
 {
-   local msg=$1
+   my $msg=shift;
 
-   if [ "x$msg" != "x" ]; then
-     echo "ERROR: $msg"
-   fi
+   if ( defined $msg ) { 
+     print  "ERROR: $msg\n"
+   }
 
-   cat <<EOF
-Usage: $0 -p <pid> [ -d <delay time> ] [-r <report file>]
+   print <<EOF
+Usage: do-jstack-loop -p <pid> [ -d <delay time> ] [ -o <log file> ]
 
 Description
 
-The script runs jstack in a loop with a period of <delay time> (default value 10 secoonds). 
-The file <report> is written. (default value jstack.log") 
+The script runs jstack in a loop with a period of <delay time> (default value 10 seconds). 
+
+Usage:
+    -p <pid>     process to monitor, the process should host the hotspot JVM.
+    -d <delay>   repeat jstack with this delay (in seconds)
+    -o <logfile> Logs all output to the <logfile>
 
 The script also performs the following steps
  - check is <pid> is that of a running process
@@ -31,57 +62,130 @@ The script also performs the following steps
  - Find jstack from the same JVM as from running process.
  - run jstack with that version of jvm.
 
+For each JAVA thread it also shows the Operating system thread id (LWP id) and CPU Usage (in %) of that thread.
+This information can be used to debug applications that got into infinite loops.
+
 EOF
-   exit 1 
+;
+   exit(1);
 }
 
 
-while getopts "hdPp:u:m:" OPT 
-do
-	case $OPT in
-	    h)
-		usage
-		;;
-	    p)
-		pid=$OPTARG
-		;;
-	    r)
-		LOG_FILE=$OPTARG
-		;;
-	 esac
-done
 
-if [ "x$pid" = "x" ]; then
-    usage "Missing -p option"
-fi
+sub checkEnvironment
+{
+  my ($user,$jvm_so);
+
+  if (! -d "/proc/$PID" ) {
+    print "Error: The process with pid $PID is not running\n";
+    exit(1);
+  }
+  
+  $user=`stat -c "%U" /proc/$PID`;
+  chomp($user);
+  if ( $user ne $ENV{'USER'}) {
+    print "Error: The process with pid $PID runs under user $user, this script should run under the same account\n";
+    exit(1);
+  }
+
+  my @toks =  split(" ",`grep libjvm.so /proc/$PID/maps |  head -1`);  
+  $jvm_so=pop( @toks );
+
+  $jstack_dir=$jvm_so;
+  while(! -f "${jstack_dir}/bin/jstack" ) {
+
+    if ($jstack_dir eq "" || $jstack_dir eq "/") { 
+      print "The JDK in $jvm_so does not contain jstack, can't run.\n";
+      exit(1);
+    }
+    $jstack_dir=`dirname $jstack_dir`;
+    chomp($jstack_dir);
+ }
+}
 
 
-if [ ! -d /proc/$pid ]; then
-  echo "Error: The process $pid is not running"
-  exit 1
-fi
+sub runLoop
+{
+  my ($LINE,$tid,$cpu,$line,$HEADER_LINE,$ps_report_line,,@jstack_lines,@toks,%pid_to_info,$PSREPORT);
 
-user=`stat -c "%U" /proc/$pid`
-if [ "x$user" != "x$USER" ]; then
-  echo "Error: The process $pid runs under user $user, this script should run under the same account"
-  exit 1
-fi
+  $HEADER_LINE=`ps -F -p $PID | head -1`;
+  chomp($HEADER_LINE);
 
-jvm_so=`grep libjvm.so /proc/$pid/maps |  head -1 | awk '{ print \$6 }'`
+  while( -d "/proc/$PID/" ) {
+    %pid_to_info  = ();
 
-jstack_dir=$jvm_so
-while [ ! -f "${jstack_dir}/bin/jstack" ];
-do 
-  if [ "x${jstack_dir}" = "x" ]; then
-     echo "The JDK in $jvm_so not contain jstack, can't run."
-     exit 1
-  fi
-  jstack_dir=`dirname $jstack_dir`
-done
 
-rm -f $LOG_FILE || true
-while [ sleep ]; do
-  $jstack_dir/bin/jstack -l $pid >>${LOG_FILE}
-  sleep $DELAY
-done
+      
+    $ps_report_line = ` ps --no-headers -F -p $PID`;
+
+    $PSREPORT=`ps --no-headers -LF -p $PID`;
+
+    for $line  (split("\n", $PSREPORT) ) {
+       @toks = split(" ",$line); 
+
+       $tid = $toks[3];
+       $cpu = $toks[4];
+       $pid_to_info{ $tid } = "=== OS Thread Id: $tid CPU Usage: ${cpu}\%  ===\n";
+    }
+
+    print <<EOF
+
+------------------------------------------------------------------------------
+$HEADER_LINE
+$ps_report_line
+
+EOF
+;
+ 
+    @jstack_lines = split("\n",`$jstack_dir/bin/jstack -l $PID`);
+    
+    for $line (@jstack_lines) {
+       if ($line =~/nid=(\S+)/) {
+         my $npid = hex( $1 );
+         
+         if (defined $pid_to_info{ $npid } ) { 
+	    print $pid_to_info{ $npid };
+ 	 }
+       }
+       print "$line\n";
+     } 
+     sleep($DELAY);
+  }     
+
+}
+
+
+# ----------------------------------------------------------------------------
+sub sgetopt
+{
+   my $opts = shift;
+   my $resref = shift;
+   my ($i,$argval,$optval,$has_value);
+
+   for($i=0; $i < scalar(@ARGV) ;  ) {
+      $argval = $ARGV[ $i++ ];
+      next if (! substr($argval,0,1) eq "-" && length($argval) == 2);
+      $argval = substr($argval,1);
+      $has_value = 0;
+      foreach $optval (@{ $opts }) {
+	   if ($argval eq substr($optval,0,1)) {
+	      $has_value = 1;
+	      if (index($optval,':') != -1) {
+		 if ($i >=  scalar(@ARGV)) {
+	           print "ERROR: option -$argval must have a value\n";
+		   exit(1);
+		 }
+		 $has_value = 1;
+	         ${ $resref } { $argval } = $ARGV[ $i ++ ];
+	      } else {
+                 ${ $resref } { $argval } = 1;
+	      }
+	   }
+       }
+       if (! $has_value) {
+	 print "ERROR: Command line option -$argval is not defined\n";
+	 exit(1);
+       }
+   }
+}
 

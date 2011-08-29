@@ -7,7 +7,7 @@ my ($log_file,$pid,$delay,%options,@time,@data);
 
 my %options;
 
-sgetopt( [ 'h', 'p:', 'd:' ],  \%options );
+sgetopt( [ 'h', 'p:', 'd:', 'o:' ],  \%options );
 
 $delay = 10;
 
@@ -17,7 +17,12 @@ if (! defined $options{'p'} ) {
   printUsage("-p option not defined");
 }
 $pid = $options{'p'};
-$log_file="run_top_${pid}.log";
+
+$log_file = $options{'o'};
+
+if (defined $log_file) {
+  open STDOUT,'>',$log_file or die "Can't open $log_file for writing";
+}
 
 if (defined $options{'d'}) {
   $delay = $options{'d'};
@@ -74,7 +79,13 @@ sub printUsage
    print "Error: $error\n" if (defined $error);
 
    print <<EOF
-./run_top -p <process id> [ -d <delay> ]
+./run_top -p <process id> [ -d <delay> ] [ -o <log file> ]
+
+Usage:
+    -p <pid>	 process id to monitor
+    -d <delay>	 Optional parameter - delay between measurements in seconds. 
+		 The default value is 10 seconds
+    -o <logfile> write output to log file.
 
 Monitors a process continuously and prints the following statistics into a file
   - Size of resident set size, i.e. the size of physical memory in use
@@ -82,12 +93,6 @@ Monitors a process continuously and prints the following statistics into a file
   - Number of threads
   - Number of sockets/files/pipes.
 
-All this information is written to standard output.
-
-Usage:
-    -p <pid>	process id to monitor
-    -d <delay>  Optional parameter - delay between measurements in seconds. 
-		The default value is 10 seconds
 
 EOF
 ;
@@ -164,6 +169,7 @@ sub sgetopt
       next if (! substr($argval,0,1) eq "-" && length($argval) == 2);
       $argval = substr($argval,1);
       $has_value = 0;
+      
       foreach $optval (@{ $opts }) {
 	   if ($argval eq substr($optval,0,1)) {
 	      $has_value = 1;
