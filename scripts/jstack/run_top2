@@ -1,0 +1,184 @@
+#!/usr/bin/perl
+
+use strict;
+
+
+my ($pid,$delay,%options,@time,@data);
+
+my %options;
+
+sgetopt( [ 'h', 'p:', 'd:' ],  \%options );
+
+$delay = 10;
+
+
+if (! defined $options{'p'} ) {
+  printUsage("-p option not defined");
+}
+$pid = $options{'p'};
+
+if (defined $options{'d'}) {
+  $delay = $options{'d'};
+  if (int($delay) <= 0) {
+     printUsage("-d option value must be positive integer");
+  }
+}
+
+if ( ! -d "/proc/$pid/") { 
+  print "Error: process $pid is not running\m";
+  exit(1);
+}
+
+if (! open(TF,"/proc/$pid/status")) {
+  print "Error: do not have permissions to read information for process $pid\n";
+  exit(1);
+}
+close(TF);
+
+
+while(1) {
+    if ( ! -d "/proc/$pid/") {
+	last;
+    }
+    @time = localtime(time);
+    @data = gather_data();
+    
+    if (scalar( @data ) == 0) {
+      last;
+    }
+
+    $time[5] += 1900;
+    $time[4] += 1;
+
+    print <<EOF
+$time[3]/$time[4]/$time[5] $time[2]:$time[1]:$time[0]
+    Virtual memory size: $data[0]
+    Resident set size:	 $data[1]
+    Number of threads:   $data[2]
+    Files:		 $data[3]
+    Sockets:		 $data[4]
+    pipes:	         $data[5]
+EOF
+;
+    sleep($delay);
+}
+
+sub printUsage
+{
+   my $error = shift;
+
+   print "Error: $error\n" if (defined $error);
+
+   print <<EOF
+./run_top2 -p <process id> [ -d <delay> ]
+
+Monitors a process continuously and prints the following statistics into a file
+  - Size of Virtual memory
+  - Size of resident set size
+  - Number of threads
+  - Number of sockets/files/pipes.
+
+All this information is written info file runtop_<pid> in the current directory.
+
+Usage:
+    -p <pid>	process id to monitor
+    -d <delay>  Optional parameter - delay between measurements in seconds. 
+		The default value is 10 seconds
+
+EOF
+;
+   exit(1);
+}
+
+sub gather_data
+{
+   my ($rss_size, $vm_size, $threads, $num_files, $num_sockets, $num_pipes, $line, $dh, $f, @files, $link_name);
+
+
+   if (! open(TF,"/proc/$pid/status")) {
+     return ();
+   }
+   while(<TF>) {
+    $line = $_;
+    chomp($line);
+
+    if (substr($line,0,7) eq "VmSize:") {
+       $vm_size = trim( substr($line,8) );
+    } elsif (substr($line,0,6) eq "VmRSS:") {
+       $rss_size = trim( substr($line,7) );
+    } elsif (substr($line,0,8) eq "Threads:") {
+       $threads = trim( substr($line, 9 ) );
+       last;
+    }
+   }
+
+   close(TF);
+
+   #gather file data
+   opendir($dh, "/proc/$pid/fd");
+   @files = readdir($dh);
+   closedir($dh);
+
+   $num_files = $num_sockets = $num_pipes = 0;
+
+   for $f (@files) {
+     if ($f eq "." || $f eq "..") {
+       next;
+     }
+     $link_name = readlink("/proc/$pid/fd/$f");
+
+     if (substr($link_name, 0, 5) eq  "pipe:") {
+       $num_pipes ++;
+     } elsif (substr($link_name, 0, 7) eq "socket:") {
+       $num_sockets ++;
+     } else {
+       $num_files ++;
+     }
+   }
+
+
+   return ($vm_size, $rss_size, $threads, $num_files, $num_sockets, $num_pipes);
+}
+
+sub trim
+{
+    my $string = shift;
+    $string =~ s/^\s+//;
+    $string =~ s/\s+$//;
+    return $string;
+}
+
+# ----------------------------------------------------------------------------
+sub sgetopt
+{
+   my $opts = shift;
+   my $resref = shift;
+   my ($i,$argval,$optval,$has_value);
+
+   for($i=0; $i < scalar(@ARGV) ;  ) {
+      $argval = $ARGV[ $i++ ];
+      next if (! substr($argval,0,1) eq "-" && length($argval) == 2);
+      $argval = substr($argval,1);
+      $has_value = 0;
+      foreach $optval (@{ $opts }) {
+	   if ($argval eq substr($optval,0,1)) {
+	      $has_value = 1;
+	      if (index($optval,':') != -1) {
+		 if ($i >=  scalar(@ARGV)) {
+	           print "ERROR: option -$argval must have a value\n";
+		   exit(1);
+		 }
+		 $has_value = 1;
+	         ${ $resref } { $argval } = $ARGV[ $i ++ ];
+	      } else {
+                 ${ $resref } { $argval } = 1;
+	      }
+	   }
+       }
+       if (! $has_value) {
+	 print "ERROR: Command line option -$argval is not defined\n";
+	 exit(1);
+       }
+   }
+}
+
