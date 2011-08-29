@@ -76,7 +76,7 @@ The access permissions say that only the user account that created the java proc
 h3. A script to automate usage of jstack
 
 All this can be obtained from system information, just by knowing the process id number.
-- We can see who is running the process, the permissions of the /proc/<pid>/ directory say so (the linux operating system maintains this directory per running process )
+- We can see who is running the process, the permissions of the /proc/[pid]/ directory say so (the linux operating system maintains this directory per running process )
 - The /proc/[pid]/maps includes all shared memory ranges used by the process, so each shared library has it's text/code segment here + full path of the executable that is mapped in.
      Each Hotspot java process loads a library called libjvm.so - so by finding the path name of libjvm.so we can infer the path of the used JDK version.
 
