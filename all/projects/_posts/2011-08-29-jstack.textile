@@ -84,4 +84,24 @@ The script that can do all this "is here":https://github.com/MoserMichael/cstuff
 
 A similar script "runs jstack at fixed time intervals":https://github.com/MoserMichael/cstuff/blob/master/scripts/jstack/do-jstack-loop , this can be used to track locking problems, etc. etc.
 
+h3. Script that monitors a given process.
 
+
+The following script loops and prints some information about a given process, the gathered information can help to determine if there is a leak of some sort.
+
+<pre>
+./run_top -p <process id> [ -d <delay> ]
+
+Monitors a process continuously and prints the following statistics into a file
+  - Size of resident set size, i.e. the size of physical memory in use
+  - Size of Virtual memory, i.e. the size of address space reserved for use
+  - Number of threads
+  - Number of sockets/files/pipes.
+
+All this information is written to standard output.
+
+Usage:
+    -p <pid>	process id to monitor
+    -d <delay>  	Optional parameter - delay between measurements in seconds. 
+		The default value is 10 seconds
+</pre>
