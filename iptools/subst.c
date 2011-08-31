@@ -6,7 +6,7 @@
 
 #include "loop_lib.h"
 #include "subst.h"
-#include "tokparser.h"
+#include <butils/tokparser.h>
 
 
 TOKENDEF subst_rule_tokens[] =

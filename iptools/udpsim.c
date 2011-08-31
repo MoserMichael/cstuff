@@ -19,7 +19,7 @@
 
 #include "subst.h"
 #include "loop_lib.h"
-#include "hex.h"
+#include <butils/hex.h>
 #include "sourcecheck.h"
 
 
