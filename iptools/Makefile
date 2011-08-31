@@ -33,13 +33,13 @@ loop_udp_LIBS=loop pcap cutils
 
 udpsim_TYPE=exe
 
-udpsim_SRC=sourcecheck.c udpsim.c tokparser.c subst.c udpsim_blurb.c hex.c sleeep.c
+udpsim_SRC=sourcecheck.c udpsim.c subst.c udpsim_blurb.c sleeep.c
 
 udpsim_LIBS=c loop pcap cutils pthread 
 
 udpsim_CFLAGS=-Ilibpcap/inst/inc
 
-udpsim_LIBS=pthread loop pcap cutils 
+udpsim_LIBS=pthread loop pcap cutils butils
 
 # ---------------------------------------
 

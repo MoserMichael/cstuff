@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-TARGETS="make-system-test vtest cutils butils tutils stack iptools"
+TARGETS="make-system-test vtest cutils butils nutils tutils stack iptools"
 
 DIR=`dirname $0`
 
