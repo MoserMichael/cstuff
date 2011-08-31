@@ -13,10 +13,12 @@ extern "C" {
 typedef int (*HEAP_compare) (void *lhs, void *rhs, size_t elmsize);
 
 /**
+ * @defgroup HEAP
  * @brief Heap data structure; all elements in the heap must be of the same size.
  * A heap data structure is an ordered tree where the root node contains the smallest value.
  * The smallest element in the whole heap is alway the top element.
  * This heap is implemented by an array.
+ * @{
  */
 typedef struct  
 {
@@ -178,6 +180,9 @@ M_INLINE int HEAP_findif( HEAP *heap, HEAP_VISITOR eval, void *context, int32_t 
 	return -1;
 }
 
+/**
+ * @}
+ */ 
 
 #ifdef  __cplusplus
 }

@@ -11,6 +11,7 @@ extern "C" {
 
 
 /**
+ * @defgroup DRING
  * @brief Double linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list.
  *
  * In a circularly-linked list, the first and final nodes are linked together. 
@@ -24,6 +25,7 @@ extern "C" {
  *
  * Usage: If the user wants to link his struct(ure) into a list, then he must embed a SLIST_entry into his structure.
  * Access to user defined structure is via embedded DRING.
+ * @{
  */
 typedef struct tagDRING 
 {
@@ -495,6 +497,10 @@ M_INLINE int DRING_check(DRING *header)
 	}
 	return 1;
 }
+
+/**
+ * @}
+ */
 
 #ifdef  __cplusplus
 }

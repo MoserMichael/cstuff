@@ -13,6 +13,7 @@ extern "C" {
 #include <string.h>
 
 /**
+ * @defgroup ARRAY
  * @brief Dynamic array, all elements contained in this structure are of the same size.
  *
  * A dynamic array, growable array, resizable array, dynamic table,
@@ -26,10 +27,9 @@ extern "C" {
  *   - Add an element to the end (constant amortized time)
  *
  * From http://en.wikipedia.org/wiki/Dynamic_array
-
  *
  *
-
+ * @{
  */
 typedef struct  {
 

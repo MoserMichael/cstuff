@@ -12,9 +12,11 @@ extern "C" {
 
 
 /**
- * @brief an entry in double linked list; 
+ * @defgroup DLIST_entry
+ * @brief an entry in double linked list, add to structure as member in order to make structure storable in hash table.
  * If the user wants to link his struct(ure) into a DLIST linked list, then he must embed a DLIST_entry into his structure.
  * Access to user defined structure is via embedded SLIST_entry.
+ * @{
  */
 typedef struct tagDLIST_entry 
 {
@@ -22,8 +24,13 @@ typedef struct tagDLIST_entry
 }  
   DLIST_entry;
 
+/*
+ * @}
+ */
+
 
 /**
+ * @defgroup DLIST
  * @brief Double linked list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list.
  *
  * This double linked list has a list header (DLIST).
@@ -34,6 +41,8 @@ typedef struct tagDLIST_entry
  * Access to user defined structure is via embedded DLIST_entry.
  *
  * The list header contains a counter of elements (feature can be surpressed by defining #define DLIST_NO_ELMCOUNT
+ *
+ * @{
  */
 typedef struct {
 	size_t elmcount;   /** number of elements in list */ 
@@ -648,6 +657,9 @@ M_INLINE int DLIST_check(DLIST *header)
 	return 1;
 }
 
+/**
+ @}
+ */
 
 #ifdef  __cplusplus
 }

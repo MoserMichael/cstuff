@@ -12,12 +12,16 @@ struct tagTHREADPOOL;
 typedef void (*RUNNABLE_HANDLER) (struct tagRUNNABLE *request);
 
 /**
+  @defgroup RUNNABLE
+
   @brief an interface to run a unit of work.
 
   Acts as a work request for thread pool
   Includes a callback that is invoked in order to process the request.
 
   Very similar to java concept of java.lang.Runnable.
+
+  @{ 
  */
 typedef struct tagRUNNABLE {
   RUNNABLE_HANDLER handle_request;
@@ -28,9 +32,16 @@ typedef struct tagRUNNABLE {
  */
 void RUNNABLE_init(RUNNABLE *runnable, RUNNABLE_HANDLER handler);
 
+/**
+ @}
+ */
+
 // ---
 
 /**
+
+ @defgroup THREADPOOL
+ 
  @brief a thread pool with fixed number of worker threads.
 
  The pool has a request queue: New requests are enqueued into it, the worker threads dequeue a work request and invoke the 'run' method of work request.
@@ -47,6 +58,8 @@ void RUNNABLE_init(RUNNABLE *runnable, RUNNABLE_HANDLER handler);
  be able to account for temporary fluctuations of the load; it can accomodate temporary peaks (i.e. short periods of time when the load is higher then the peak load), on condition that the request load later falls back to normal.
 
  You might find this class similar to java class java.util.concurrent.ThreadPoolExicutor when used with a thread pool size.
+
+ @{
  */
 typedef struct tagTHREADPOOL {
   int num_threads;
@@ -106,6 +119,11 @@ Returns 0 on success, -1 on failure
  */
 
 int	    THREADPOOL_send_fail_on_queue_full( THREADPOOL *pool, RUNNABLE *request);
+
+/**
+  @}
+ */
+ 
 
 #endif
 

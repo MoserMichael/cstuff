@@ -3,6 +3,7 @@
 
 
 /**
+  @defgroup SOCKET
   @brief a usable socket abstraction
 
   When you create a socket(2) then it is blocking by default.
@@ -15,6 +16,7 @@
 
   Still, the Berkley socket interface is supposed to create the illusion, that one can do TCP networking without understanding the protocols. That is an illusion, and one simply has to read 'TCP IP Illustrated' by R. Stevens in order to correct it.
 
+* @{
 */
 typedef struct tagSOCKCTX {
 
@@ -62,36 +64,51 @@ typedef struct tagSOCKCTX {
 
 /**
 @brief creates a socket and sets some options
+@param ctx - pointer to socket object.
+@param verbose
+@param flags  - bitmask of SOCKTX_FLAGS_xxx values
 */
 int SOCK_init( SOCKCTX *ctx , int verbose, int flags);
 
 /**
  @brief set read and write buffer sizes; a value of -1 for buffer size is ignored.
+ @param ctx - pointer to socket object.
+ @param read_buffer_size
+ @param write_buffer_size
  */
 int SOCK_send_buffer_sizes( SOCKCTX *ctx, int read_buffer_size, int write_buffer_size);
 
 /**
  @brief connects a sockets with timeout (in seconds)
+ @param ctx - pointer to socket object.
+ @param addr
+ @param addr_size
+ @param connect_timeout
  */
 int SOCK_connect( SOCKCTX *ctx, void *addr, int addr_size, int connect_timeout);
 
 /**
  @brief read some data from a socket with timeout (in seconds)
+ @param ctx - pointer to socket object.
  */
 int SOCK_recv( SOCKCTX *ctx, char *msg, size_t length, int read_timeout );
 
 /**
  @brief read whe whole buffer from a socket with timeout (in seconds)
+ @param ctx - pointer to socket object.
  */
 int SOCK_recv_all( SOCKCTX *ctx, char *msg, size_t length, int read_timeout );
 
 /**
  @brief write whe whole buffer from a socket with timeout (in seconds)
+ @param ctx - pointer to socket object.
  */
 int SOCK_send( SOCKCTX *ctx, void *msg, size_t length, int write_timeout );
 
 /**
- @brief close the socket
+ @brief close the 
+ @param ctx - pointer to socket object.
+socket
  */
 int SOCK_close( SOCKCTX *ctx );
 
@@ -109,10 +126,14 @@ The solution is for the client to terminate the connection ungracefully; instead
 Here the SO_LINGER option is set with timeout of 0 prior to calling close; this results in sending out the RST packet / terminates the connection ungracefully.
 
 Note that there is still a chance that the RST packet will get lost; in this we can only hope that the server will close it's side of the connection due to some connection idle timeout.
+ @param ctx - pointer to socket object.
 */
 
 int SOCK_close_with_reset( SOCKCTX *ctx );
 
+/**
+ * @}
+ */
 
 
 #endif

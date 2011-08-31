@@ -10,6 +10,7 @@ extern "C" {
 #include <cutils/base.h>
 
 /**
+ * @defgroup SRING
  * @brief Single linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next element of the list.
  *
  * In a circularly-linked list, the first and final nodes are linked together. 
@@ -26,6 +27,7 @@ extern "C" {
  *
  * Note: unlike SLIST it is not easy to get the last element in the list; in SLIST we have a pointer to the last element
  * int the list header; with SRING we have to traverse the whole list in order to get to the last element.
+ * @{
  */
 typedef struct tagSRING 
 {
@@ -419,6 +421,11 @@ M_INLINE size_t SRING_check( SRING *head )
 	}
 	return 1;
 }
+
+/**
+ * @}
+ */
+ 
 
 #ifdef  __cplusplus
 }

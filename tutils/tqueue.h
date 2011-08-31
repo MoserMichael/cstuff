@@ -7,8 +7,12 @@
 #include <cutils/dlist.h>
 #include <pthread.h>
 
-/** 
+/**
+ @defgroup TQUEUE
+ 
  @brief Implements a thread safe queue with maximum limit of requess
+
+ @{
  */
 typedef struct tagTQUEUE {
   
@@ -58,6 +62,9 @@ void *TQUEUE_pop(TQUEUE *queue);
 */
 int   TQUEUE_pop_non_blocking(TQUEUE *queue, void **rret);
 
+/**
+ @}
+ */
 
 #endif
 

@@ -11,9 +11,11 @@ extern "C" {
 
 
 /**
- * an entry in single linked list; 
+ * @defgroup SLIST_entry
+ * @brief an entry in single linked list, add to structure as member in order to make structure storable in hash table.
  * If the user wants to link his struct(ure) into a SLIST linked list, then he must embed a DLIST_entry into his structure.
  * Access to user defined structure is via embedded SLIST_entry.
+ * @{
  */
 typedef struct tagSLIST_entry 
 {
@@ -21,8 +23,13 @@ typedef struct tagSLIST_entry
 }  
   SLIST_entry;
 
+/**
+ * @}
+ */
+
 
 /**
+ * @defgroup SLIST
  * @brief Single linked list data structure; where each list element can be of different length.
  *
  * This single linked list has a list header (SLIST).
@@ -33,12 +40,13 @@ typedef struct tagSLIST_entry
  * Access to user defined structure is via embedded SLIST_entry.
  *
  * The list header contains a counter of elements (feature can be surpressed by defining #define SLIST_NO_ELMCOUNT
+ * @{
  */
 typedef struct {
 #ifndef SLIST_NO_ELMCOUNT
 	size_t elmcount;   /** number of elements in list */ 
 #endif
-	struct tagSLIST_entry *prev, *next; /** root.prev - pointer to first element,  root.next - pointer to last element */
+	SLIST_entry *prev, *next; /** root.prev - pointer to first element,  root.next - pointer to last element */
 } SLIST;
 
 
@@ -255,7 +263,7 @@ M_INLINE SLIST_entry *SLIST_get_next( SLIST_entry *cur)
       (loopvarname) = (loopvarnamenext),  (loopvarnamenext) = (loopvarname) ? (loopvarname)->next : 0 )
 
 
-/*
+/**
  * @brief: return number of elements in list
  * if we don't have element count in list (SLIST_NO_ELMCOUNT defined), then the whole list structure is traversed.
  */
@@ -297,7 +305,7 @@ M_INLINE SLIST_entry *SLIST_get_nth( SLIST *list, size_t nth)
 	return elm;
 }
 
-/*
+/**
  * @brief get the nth element of a list as counted from the end of the list.
  * @brief list (IN) the object
  * @brief nth  (IN) index of element to retrieve (null based).
@@ -543,6 +551,9 @@ M_INLINE int SLIST_check(SLIST *header)
 	return 1;
 }
 
+/**
+ * @}
+ */
 
 #ifdef  __cplusplus
 }

@@ -11,9 +11,11 @@ extern "C" {
 #include <cutils/hashfunction.h>
 
 /**
- * @brief Entry in bucket hash table
+ * @defgroup HASH_entry
+ * @brief Entry in bucket hash table, add to structure as member in order to make structure storable in hash table.
  * Each hash table entry has to embed a VBUCKETHASH_Entry as part of its structure.
  * The user of this hash thing can please key/value wherever he likes.  
+ * @{
  */
 typedef struct  {
 	SRING	    entry;
@@ -39,12 +41,18 @@ typedef int     	(*HASH_COMPARE_KEY)	(HASH_Entry *, void *key, ssize_t key_size)
  */
 typedef int		(*HASH_VISITOR)		(HASH_Entry *, void *context);
 
+
+/*
+ * @}
+ */
+
 /**
+ * @defgroup HASH
  * @brief Hash table that is implemented as bucket hash table.
 
  * Element of has is an user defined entry which embeds HASH_Entry structure.
  * 
- *					
+ * @{				
  */
 typedef struct {
 
@@ -398,6 +406,9 @@ M_INLINE int HASH_check(HASH *hash)
 	return 1;
 }
 
+/**
+ @}
+*/
 
 #ifdef  __cplusplus
 }

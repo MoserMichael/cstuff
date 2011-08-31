@@ -4,11 +4,21 @@
 #define __ERRORP_H__
 
 
+/**
+ * @defgroup ERRORP 
+ * @brief error logging with stack trace (not the symbols, just the addresses).
+ * @{
+ */
+
 int  errorp_open_file(const char *file);
 
 void errorp_close_file();
 
 void errorp(int rval, const char *fmt, ... );
+
+/**
+ * @}
+ */
 
 #endif
 

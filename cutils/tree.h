@@ -15,8 +15,11 @@ extern "C" {
 #define TREE_NEXTLEVEL_LEFT
 
 /**
+ * @defgroup TREE
+ * @brief a tree.
  * tree. Each node has variable number of child nodes, the node is embeddable (like ring list).
  * This tree is especially suited for parse trees.
+ * @{
  */
 typedef struct tagTREENODE {
 	struct tagTREENODE *parent;
@@ -796,6 +799,10 @@ M_INLINE int TREE_check_tree(TREENODE *root)
 #endif
 	return 1;
 }
+
+/**
+ * @}
+ */
 
 #ifdef  __cplusplus
 }
