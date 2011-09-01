@@ -106,9 +106,12 @@ The substitution rule file includes the following directives:
 
 -r [src-port-range|dst-port-range],<capture-port-start>,<capture-port-end>,<real-port-start>
 	This option specifies an port substitution rule for outgoing packets.
-	This parameter applies either to the destination port (if first token is dst) or the source port (if first token is src)
-	When sending a packet, the range of port numbers starting with <capture-port-start> and ending with <capture-port-end>
-                    from the capture file will be substituted with value <real-port>+<port in packet from capture>-<capture-port-start>
+	This parameter applies either to the destination port (if first token is dst) 
+	or the source port (if first token is src)
+	When sending a packet, the range of port numbers starting with <capture-port-start> 
+	and ending with <capture-port-end>
+                    from the capture file will be substituted with value 
+	<real-port>+<port in packet from capture>-<capture-port-start>
 	This parameter is optional, multiple occurrences of this option add up.
 
 -r dst-ip,<destination-ip-address-in-capture>,<real-destination-ip-address>
@@ -118,14 +121,15 @@ The substitution rule file includes the following directives:
 -o <output capture file>
         This parameter is optional.
 	File name of capture file of incoming packets.
-        If this option is missing then the capture file will be stored in a file name derived from input file name as
-        <input_capture_file>.in.cap
+        	If this option is missing then the capture file will be stored in a file name 
+	derived from input file name as <input_capture_file>.in.cap
 
 -y <input capture filter>
 	This parameter is optional.
 	An expression that is added to capture filter of incoming packets.
-	By default the capture filter of incoming packets is udp and dst <tx-interface>. If this parameter is present
-        then its value is added to the default capture filter and it is set to udp and <input capture filter>
+	By default the capture filter of incoming packets is udp and dst <tx-interface>. 
+	If this parameter is present then its value is added to the default capture filter 
+	and it is set to udp and <input capture filter>
 	For syntax of filter expression see see man pcap-filter(7)
 
 -n
@@ -140,24 +144,32 @@ The substitution rule file includes the following directives:
 
 
 -d
-	Dry run. No packets are sent during dry run (enabled with -d option); No capture files are created during dry run.
-	Packets data is displayed if it is sent during a simulation run.
-	If the source port of an outgoing packet collides with an UDP port in use, then this command exits with error (status 1).
-	Please note that the list of UDP ports that are used at the moment of invoking this command is considered.
+	Dry run. No packets are sent during dry run (enabled with -d option); 
+	No capture files are created during dry run. Packets data is displayed if 
+	it is sent during a simulation run. If the source port of an outgoing packet 
+	collides with an UDP port in use, then this command exits with error (status 1).
+	Please note that the list of UDP ports that are used at the moment of 
+	invoking this command is considered.
 
 
 Limitations - Linux:
 	user of this program must have root access.
 
-	The program tests if outgoing packets would clash with a bound port, alas list of ports is obtained at start of program run,
+	The program tests if outgoing packets would clash with a bound port, alas 
+	list of ports is obtained at start of program run,
 	this information may not be up to date during the entire simulation run.
 
-	The tool gives the possibility to manipulate the ip addresses and port numbers of outgoing packets, relative to that of the capture.
-	Not all application protocols may allow for such treatment; if your application protocol creates a checksum over the ip or udp headers,
-        	then modification of these parameters will break the checksum (for example IPSEC like protocol over UDP would break).
+	The tool gives the possibility to manipulate the ip addresses and port numbers of 
+	outgoing packets, relative to that of the capture.
+	Not all application protocols may allow for such treatment; if your application 
+	protocol creates a checksum over the ip or udp headers,
+        	then modification of these parameters will break the checksum 
+	(for example IPSEC like protocol over UDP would break).
 
-	On some kernel versions (2.6.18) you will have to run 32 bit version of udpsim on the 32 bit kernel, and 64 bit version on 64 bit kernel.
-	This is since tpacket_hdr structure (from linux/if_packet.h) is shared between kernel and user space and has long in it.
+	On some kernel versions (2.6.18) you will have to run 32 bit version of udpsim 
+	on the 32 bit kernel, and 64 bit version on 64 bit kernel.
+	This is since tpacket_hdr structure (from linux/if_packet.h) is shared between 
+	kernel and user space and has long in it.
 	When in doubt then please rebuild libpcap and udpsim from the sources.
 
 
@@ -168,7 +180,8 @@ Limitations - Windows:
 
 
 General limitations
-       Currently filters are applied before reassembly of packets, so see section on IP fragments. Ups this is probably a bug that has to be fixed.
+       Currently filters are applied before reassembly of packets, so see section on IP fragments. 
+       Ups this is probably a bug that has to be fixed.
 
 Example usage:
 
@@ -266,5 +279,7 @@ Well, at least the TCPDUMP user space could be bothered with IP reassembly? Prob
 
 ... but actually most applications that use UDP should very much avoid IP fragmentation, because it puts a large strain on the system, when packets are broken up on one side, and reassembled on the other side. Of course a fragment might be lost, in this case it has to be resent, so forth. IP fragmentation is generally a thing that an application would like to avoid.
 
+With TCP/IP - IPv4 - there might be a case when IP fragmentation occurs; if the packet goes through multiple hops between routers, and two hops have a MTU that is smaller than the size of a packet. In IPv4 the router would do fragmentation on its own. Now luckily this situation is generally avoided - there is the magical size of 576 bytes, where IP packets are guaranteed to pass without fragmentation. (or supposed to be so).
 
+So fragmentation is sort of an edge case that all systems try to avoid. All systems ? Well there is no such thing, always some exceptions exist ;-)
 
