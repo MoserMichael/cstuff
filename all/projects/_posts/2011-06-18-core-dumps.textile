@@ -98,6 +98,7 @@ Line 2019 loops on all virtual memory ranges; for each range the nested loop at 
 So know we know that the core file is equal to the size of the virtual memory. In principle one could search for consecutive zero ranges, but then it is impossible to tell if a range of zeros is a range of virtual addresses that is not backed by physical memory, or a page of physical memory that is all zero.
 
 The loop that writes the memory ranges.
+
 <pre>
 2019        for (vma = first_vma(current, gate_vma); vma != NULL;
 2020                        vma = next_vma(vma, gate_vma)) {
@@ -126,7 +127,9 @@ The loop that writes the memory ranges.
 2043        }
 </pre>
      
+
      The big function
+
 <pre>
 1868/*
 1869 * Actual dumper
