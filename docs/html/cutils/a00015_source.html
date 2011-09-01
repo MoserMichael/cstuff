@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -50,13 +51,13 @@
 <a name="l00010"></a>00010 <span class="preprocessor"></span>
 <a name="l00011"></a>00011 
 <a name="l00012"></a>00012 
-<a name="l00013"></a><a class="code" href="a00016.html#a73ce0ca18399c5db0bac0491aeadba8d">00013</a> <span class="keywordtype">int</span> <a class="code" href="a00015.html#a73ce0ca18399c5db0bac0491aeadba8d" title="Object constructor; initialise the hash that allows one entry for a given key.">HASH_init</a>(
-<a name="l00014"></a>00014                                         <a class="code" href="a00003.html" title="Hash table that is implemented as bucket hash table.">HASH</a>                    *hash,
+<a name="l00013"></a><a class="code" href="a00035.html#ga73ce0ca18399c5db0bac0491aeadba8d">00013</a> <span class="keywordtype">int</span> <a class="code" href="a00035.html#ga73ce0ca18399c5db0bac0491aeadba8d" title="Object constructor; initialise the hash that allows one entry for a given key.">HASH_init</a>(
+<a name="l00014"></a>00014                                         <a class="code" href="a00003.html">HASH</a>                    *hash,
 <a name="l00015"></a>00015                                         <span class="keywordtype">size_t</span>                           buckets, 
 <a name="l00016"></a>00016                                         <span class="keywordtype">int</span>                  ismultimap,
 <a name="l00017"></a>00017 
-<a name="l00018"></a>00018                                         <a class="code" href="a00016.html#af9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key,
-<a name="l00019"></a>00019                                         <a class="code" href="a00016.html#a11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> hash_func
+<a name="l00018"></a>00018                                         <a class="code" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key,
+<a name="l00019"></a>00019                                         <a class="code" href="a00034.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> hash_func
 <a name="l00020"></a>00020                                         )
 <a name="l00021"></a>00021 {
 <a name="l00022"></a>00022         <span class="keywordtype">size_t</span> i;
@@ -64,32 +65,32 @@
 <a name="l00024"></a>00024         buckets = <a class="code" href="a00032.html#a191e663cb1cc920f6b50f17567ea8c5c">UTIL_round_to_power_of_n</a>( buckets );
 <a name="l00025"></a>00025 
 <a name="l00026"></a>00026 
-<a name="l00027"></a>00027         hash-&gt;<a class="code" href="a00003.html#adfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> = 0;
+<a name="l00027"></a>00027         hash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> = 0;
 <a name="l00028"></a>00028 
 <a name="l00029"></a>00029         <span class="keywordflow">if</span> (!hash_func) {
-<a name="l00030"></a>00030           hash-&gt;<a class="code" href="a00003.html#aa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = <a class="code" href="a00021.html#a1498645507ca3a2df89dabf640fde50d" title="One at a time by Bob Jenkins.">HASHFUNCTION_Bob_Jenkins_one_at_a_time</a>;
+<a name="l00030"></a>00030           hash-&gt;<a class="code" href="a00034.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = <a class="code" href="a00021.html#a1498645507ca3a2df89dabf640fde50d" title="One at a time by Bob Jenkins.">HASHFUNCTION_Bob_Jenkins_one_at_a_time</a>;
 <a name="l00031"></a>00031         } <span class="keywordflow">else</span> {
-<a name="l00032"></a>00032           hash-&gt;<a class="code" href="a00003.html#aa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = hash_func;
+<a name="l00032"></a>00032           hash-&gt;<a class="code" href="a00034.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = hash_func;
 <a name="l00033"></a>00033         }
-<a name="l00034"></a>00034         hash-&gt;<a class="code" href="a00003.html#a9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a> = compare_key;
+<a name="l00034"></a>00034         hash-&gt;<a class="code" href="a00034.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a> = compare_key;
 <a name="l00035"></a>00035 
-<a name="l00036"></a>00036         hash-&gt;<a class="code" href="a00003.html#a1e56521c716b07928dc326eced3b50c0">ismultimap</a> = ismultimap;
+<a name="l00036"></a>00036         hash-&gt;<a class="code" href="a00034.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a> = ismultimap;
 <a name="l00037"></a>00037 
-<a name="l00038"></a>00038         hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = (<a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a> *) malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>) * buckets );
+<a name="l00038"></a>00038         hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = (<a class="code" href="a00010.html">SRING</a> *) malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00010.html">SRING</a>) * buckets );
 <a name="l00039"></a>00039         <span class="keywordflow">if</span> (!hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>) {
 <a name="l00040"></a>00040                 <span class="keywordflow">return</span> -1;
 <a name="l00041"></a>00041         }
-<a name="l00042"></a>00042         hash-&gt;<a class="code" href="a00003.html#a13b4c75f393b997dc965cef4fc2508c1">buckets_size</a> = buckets;
+<a name="l00042"></a>00042         hash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a> = buckets;
 <a name="l00043"></a>00043         
 <a name="l00044"></a>00044         <span class="keywordflow">for</span>(i=0;i&lt;buckets;i++) {
-<a name="l00045"></a>00045           <a class="code" href="a00028.html#a53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>(  &amp;hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[i] );
+<a name="l00045"></a>00045           <a class="code" href="a00042.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>(  &amp;hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[i] );
 <a name="l00046"></a>00046         }
 <a name="l00047"></a>00047 
 <a name="l00048"></a>00048 
-<a name="l00049"></a>00049         hash-&gt;<a class="code" href="a00003.html#a8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a> = 2;
-<a name="l00050"></a>00050         hash-&gt;<a class="code" href="a00003.html#a6f4e674640c97d88dfd2e557d660f147">div_load_factor</a> = 3;
+<a name="l00049"></a>00049         hash-&gt;<a class="code" href="a00034.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a> = 2;
+<a name="l00050"></a>00050         hash-&gt;<a class="code" href="a00034.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a> = 3;
 <a name="l00051"></a>00051 
-<a name="l00052"></a>00052         hash-&gt;<a class="code" href="a00003.html#a00bd0beb9248ca36fff916569eb71526">resize_threshold</a> = (buckets * hash-&gt;<a class="code" href="a00003.html#a8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>) / hash-&gt;<a class="code" href="a00003.html#a6f4e674640c97d88dfd2e557d660f147">div_load_factor</a>;
+<a name="l00052"></a>00052         hash-&gt;<a class="code" href="a00034.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a> = (buckets * hash-&gt;<a class="code" href="a00034.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>) / hash-&gt;<a class="code" href="a00034.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a>;
 <a name="l00053"></a>00053 
 <a name="l00054"></a>00054         <span class="keywordflow">return</span> 0;
 <a name="l00055"></a>00055 }
@@ -97,56 +98,56 @@
 <a name="l00057"></a>00057 
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059 
-<a name="l00060"></a><a class="code" href="a00016.html#acef4d862b25db1563ce621265299fb2e">00060</a> <span class="keywordtype">int</span> <a class="code" href="a00015.html#acef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(<a class="code" href="a00003.html" title="Hash table that is implemented as bucket hash table.">HASH</a>    *hash, <span class="keywordtype">size_t</span> buckets)
+<a name="l00060"></a><a class="code" href="a00035.html#gacef4d862b25db1563ce621265299fb2e">00060</a> <span class="keywordtype">int</span> <a class="code" href="a00035.html#gacef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(<a class="code" href="a00003.html">HASH</a>    *hash, <span class="keywordtype">size_t</span> buckets)
 <a name="l00061"></a>00061 {
-<a name="l00062"></a>00062         <a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a> *pbuckets;
+<a name="l00062"></a>00062         <a class="code" href="a00010.html">SRING</a> *pbuckets;
 <a name="l00063"></a>00063         <span class="keywordtype">size_t</span> i;
-<a name="l00064"></a>00064         <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *cur;
+<a name="l00064"></a>00064         <a class="code" href="a00004.html">HASH_Entry</a> *cur;
 <a name="l00065"></a>00065         <span class="keywordtype">size_t</span> elmcount;
 <a name="l00066"></a>00066 
 <a name="l00067"></a>00067         buckets = <a class="code" href="a00032.html#a191e663cb1cc920f6b50f17567ea8c5c">UTIL_round_to_power_of_n</a>( buckets );
 <a name="l00068"></a>00068 
-<a name="l00069"></a>00069         pbuckets = malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>) * buckets);
+<a name="l00069"></a>00069         pbuckets = malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00010.html">SRING</a>) * buckets);
 <a name="l00070"></a>00070         <span class="keywordflow">if</span> (!pbuckets) {
 <a name="l00071"></a>00071                 <span class="keywordflow">return</span> -1;
 <a name="l00072"></a>00072         }
 <a name="l00073"></a>00073         <span class="keywordflow">for</span>(i=0;i&lt;buckets;i++) {
-<a name="l00074"></a>00074                 <a class="code" href="a00028.html#a53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>( pbuckets + i );
+<a name="l00074"></a>00074                 <a class="code" href="a00042.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>( pbuckets + i );
 <a name="l00075"></a>00075         }
 <a name="l00076"></a>00076 
-<a name="l00077"></a>00077         elmcount = hash-&gt;<a class="code" href="a00003.html#adfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>;
+<a name="l00077"></a>00077         elmcount = hash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>;
 <a name="l00078"></a>00078 
-<a name="l00079"></a>00079         <a class="code" href="a00016.html#a1193ff43ed7c2f743c974d75c39efc93" title="Macro: iterate over all elements in hash table and delete them from the table; allow the user to free...">HASH_DELETEALL</a>(cur,hash)
-<a name="l00080"></a>00080                 i = <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(  cur-&gt;<a class="code" href="a00004.html#a0a321e75db9083da90e2557e6cc24de8">hash</a>, buckets);
-<a name="l00081"></a>00081                 <a class="code" href="a00028.html#a608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( pbuckets + i, (<a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a> *) cur);
-<a name="l00082"></a>00082         <a class="code" href="a00016.html#aee7185cd320df1c4a801762c8f5201b6" title="Macro: close block opened by HASH_DELETEALL.">HASH_DELETEALL_END</a>
+<a name="l00079"></a>00079         <a class="code" href="a00035.html#ga1193ff43ed7c2f743c974d75c39efc93" title="Macro: iterate over all elements in hash table and delete them from the table; allow the user to free...">HASH_DELETEALL</a>(cur,hash)
+<a name="l00080"></a>00080                 i = <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(  cur-&gt;<a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a>, buckets);
+<a name="l00081"></a>00081                 <a class="code" href="a00042.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( pbuckets + i, (<a class="code" href="a00010.html">SRING</a> *) cur);
+<a name="l00082"></a>00082         <a class="code" href="a00035.html#gaee7185cd320df1c4a801762c8f5201b6" title="Macro: close block opened by HASH_DELETEALL.">HASH_DELETEALL_END</a>
 <a name="l00083"></a>00083 
 <a name="l00084"></a>00084         free( hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> );
 <a name="l00085"></a>00085 
 <a name="l00086"></a>00086         hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = pbuckets;
-<a name="l00087"></a>00087         hash-&gt;<a class="code" href="a00003.html#a13b4c75f393b997dc965cef4fc2508c1">buckets_size</a> = buckets;
-<a name="l00088"></a>00088         hash-&gt;<a class="code" href="a00003.html#adfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> = elmcount;
+<a name="l00087"></a>00087         hash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a> = buckets;
+<a name="l00088"></a>00088         hash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> = elmcount;
 <a name="l00089"></a>00089 
 <a name="l00090"></a>00090 
-<a name="l00091"></a>00091         hash-&gt;<a class="code" href="a00003.html#a00bd0beb9248ca36fff916569eb71526">resize_threshold</a> = (buckets * hash-&gt;<a class="code" href="a00003.html#a8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>) / hash-&gt;<a class="code" href="a00003.html#a6f4e674640c97d88dfd2e557d660f147">div_load_factor</a>;
+<a name="l00091"></a>00091         hash-&gt;<a class="code" href="a00034.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a> = (buckets * hash-&gt;<a class="code" href="a00034.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>) / hash-&gt;<a class="code" href="a00034.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a>;
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093         <span class="keywordflow">return</span> 0;
 <a name="l00094"></a>00094 
 <a name="l00095"></a>00095 }
 <a name="l00096"></a>00096 
-<a name="l00097"></a><a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">00097</a> <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *<a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>(        
+<a name="l00097"></a><a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">00097</a> <a class="code" href="a00004.html">HASH_Entry</a> *<a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>(        
 <a name="l00098"></a>00098                                         
-<a name="l00099"></a>00099                                         <a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>           *abucket, 
+<a name="l00099"></a>00099                                         <a class="code" href="a00010.html">SRING</a>           *abucket, 
 <a name="l00100"></a>00100                                         <a class="code" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>       hash, 
-<a name="l00101"></a>00101                                         <a class="code" href="a00016.html#af9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key,
+<a name="l00101"></a>00101                                         <a class="code" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key,
 <a name="l00102"></a>00102                                         <span class="keywordtype">void</span>            *key, 
 <a name="l00103"></a>00103                                         ssize_t          key_size )
 <a name="l00104"></a>00104 {
-<a name="l00105"></a>00105         <a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>   *pos;
+<a name="l00105"></a>00105         <a class="code" href="a00010.html">SRING</a>   *pos;
 <a name="l00106"></a>00106 
-<a name="l00107"></a>00107         <a class="code" href="a00028.html#a39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
-<a name="l00108"></a>00108                 <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *entry = (<a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *) pos;
-<a name="l00109"></a>00109                 <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00004.html#a0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) 
+<a name="l00107"></a>00107         <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
+<a name="l00108"></a>00108                 <a class="code" href="a00004.html">HASH_Entry</a> *entry = (<a class="code" href="a00004.html">HASH_Entry</a> *) pos;
+<a name="l00109"></a>00109                 <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) 
 <a name="l00110"></a>00110                 {
 <a name="l00111"></a>00111                         <span class="keywordflow">if</span> (compare_key( entry, key, key_size ) == 0) {
 <a name="l00112"></a>00112                                 <span class="keywordflow">return</span> entry;
@@ -156,95 +157,95 @@
 <a name="l00116"></a>00116         <span class="keywordflow">return</span> 0;
 <a name="l00117"></a>00117 }
 <a name="l00118"></a>00118 
-<a name="l00119"></a><a class="code" href="a00016.html#a072fef06fb9a516f47771ddd3946bf20">00119</a> <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *<a class="code" href="a00015.html#a072fef06fb9a516f47771ddd3946bf20" title="find entry with given key in hash table; for multimaps this will return the first occurence of the ke...">HASH_find</a>( <a class="code" href="a00003.html" title="Hash table that is implemented as bucket hash table.">HASH</a> *phash, <span class="keywordtype">void</span> *key, ssize_t key_size )
+<a name="l00119"></a><a class="code" href="a00035.html#ga072fef06fb9a516f47771ddd3946bf20">00119</a> <a class="code" href="a00004.html">HASH_Entry</a> *<a class="code" href="a00035.html#ga072fef06fb9a516f47771ddd3946bf20" title="find entry with given key in hash table; for multimaps this will return the first occurence of the ke...">HASH_find</a>( <a class="code" href="a00003.html">HASH</a> *phash, <span class="keywordtype">void</span> *key, ssize_t key_size )
 <a name="l00120"></a>00120 {
-<a name="l00121"></a>00121         <a class="code" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash = phash-&gt;<a class="code" href="a00003.html#aa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );
-<a name="l00122"></a>00122         <span class="keywordtype">int</span>             bucket =   <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00003.html#a13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
-<a name="l00123"></a>00123         <a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>   *abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
+<a name="l00121"></a>00121         <a class="code" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash = phash-&gt;<a class="code" href="a00034.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );
+<a name="l00122"></a>00122         <span class="keywordtype">int</span>             bucket =   <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
+<a name="l00123"></a>00123         <a class="code" href="a00010.html">SRING</a>   *abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
 <a name="l00124"></a>00124         
-<a name="l00125"></a>00125         <span class="keywordflow">return</span> <a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00003.html#a9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
+<a name="l00125"></a>00125         <span class="keywordflow">return</span> <a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00034.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
 <a name="l00126"></a>00126 }
 <a name="l00127"></a>00127 
-<a name="l00128"></a><a class="code" href="a00016.html#a2f20017ef2a49dc235a8bea78b254dd6">00128</a> <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *<a class="code" href="a00015.html#a2f20017ef2a49dc235a8bea78b254dd6" title="for multimaps - find next occurence of key">HASH_find_next</a>( <a class="code" href="a00003.html" title="Hash table that is implemented as bucket hash table.">HASH</a> *phash, <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *prev, <span class="keywordtype">void</span> *key, ssize_t key_size )
+<a name="l00128"></a><a class="code" href="a00035.html#ga2f20017ef2a49dc235a8bea78b254dd6">00128</a> <a class="code" href="a00004.html">HASH_Entry</a> *<a class="code" href="a00035.html#ga2f20017ef2a49dc235a8bea78b254dd6" title="for multimaps - find next occurence of key">HASH_find_next</a>( <a class="code" href="a00003.html">HASH</a> *phash, <a class="code" href="a00004.html">HASH_Entry</a> *prev, <span class="keywordtype">void</span> *key, ssize_t key_size )
 <a name="l00129"></a>00129 {
-<a name="l00130"></a>00130         <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *next;
+<a name="l00130"></a>00130         <a class="code" href="a00004.html">HASH_Entry</a> *next;
 <a name="l00131"></a>00131 
-<a name="l00132"></a>00132         <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00003.html#a1e56521c716b07928dc326eced3b50c0">ismultimap</a>) {
+<a name="l00132"></a>00132         <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00034.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a>) {
 <a name="l00133"></a>00133                 <span class="keywordflow">return</span> 0;
 <a name="l00134"></a>00134         }
 <a name="l00135"></a>00135 
-<a name="l00136"></a>00136         next = (<a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *) prev-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a>.<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
+<a name="l00136"></a>00136         next = (<a class="code" href="a00004.html">HASH_Entry</a> *) prev-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a>.<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
 <a name="l00137"></a>00137         if (!next) {
 <a name="l00138"></a>00138                 <span class="keywordflow">return</span> 0;
 <a name="l00139"></a>00139         }
-<a name="l00140"></a>00140         <span class="keywordflow">if</span> (next-&gt;<a class="code" href="a00004.html#a0a321e75db9083da90e2557e6cc24de8">hash</a> != prev-&gt;<a class="code" href="a00004.html#a0a321e75db9083da90e2557e6cc24de8">hash</a>) {
+<a name="l00140"></a>00140         <span class="keywordflow">if</span> (next-&gt;<a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> != prev-&gt;<a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a>) {
 <a name="l00141"></a>00141                 <span class="keywordflow">return</span> 0;
 <a name="l00142"></a>00142         }
-<a name="l00143"></a>00143         <span class="keywordflow">if</span> (phash-&gt;<a class="code" href="a00003.html#a9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>( next, key, key_size ) != 0) {
+<a name="l00143"></a>00143         <span class="keywordflow">if</span> (phash-&gt;<a class="code" href="a00034.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>( next, key, key_size ) != 0) {
 <a name="l00144"></a>00144                 <span class="keywordflow">return</span> 0;
 <a name="l00145"></a>00145         }
 <a name="l00146"></a>00146         <span class="keywordflow">return</span> next;
 <a name="l00147"></a>00147 }
 <a name="l00148"></a>00148 
-<a name="l00149"></a><a class="code" href="a00016.html#af9ce37d092fe7b3ae217336ef623a7dc">00149</a> <span class="keywordtype">int</span> <a class="code" href="a00015.html#af9ce37d092fe7b3ae217336ef623a7dc" title="insert new entry in hash table">HASH_insert</a>( <a class="code" href="a00003.html" title="Hash table that is implemented as bucket hash table.">HASH</a> *phash, <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *entry, <span class="keywordtype">void</span> *key, ssize_t key_size  )
+<a name="l00149"></a><a class="code" href="a00035.html#gaf9ce37d092fe7b3ae217336ef623a7dc">00149</a> <span class="keywordtype">int</span> <a class="code" href="a00035.html#gaf9ce37d092fe7b3ae217336ef623a7dc" title="insert new entry in hash table">HASH_insert</a>( <a class="code" href="a00003.html">HASH</a> *phash, <a class="code" href="a00004.html">HASH_Entry</a> *entry, <span class="keywordtype">void</span> *key, ssize_t key_size  )
 <a name="l00150"></a>00150 {
 <a name="l00151"></a>00151         <a class="code" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
 <a name="l00152"></a>00152         <span class="keywordtype">int</span>             bucket;
-<a name="l00153"></a>00153         <a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>   *abucket,*fnd;
+<a name="l00153"></a>00153         <a class="code" href="a00010.html">SRING</a>   *abucket,*fnd;
 <a name="l00154"></a>00154 
-<a name="l00155"></a>00155         <span class="keywordflow">if</span> ((phash-&gt;<a class="code" href="a00003.html#adfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> + 1) &gt;= phash-&gt;<a class="code" href="a00003.html#a00bd0beb9248ca36fff916569eb71526">resize_threshold</a>) {
+<a name="l00155"></a>00155         <span class="keywordflow">if</span> ((phash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> + 1) &gt;= phash-&gt;<a class="code" href="a00034.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a>) {
 <a name="l00156"></a>00156 
-<a name="l00157"></a>00157            <span class="keywordflow">if</span> (<a class="code" href="a00015.html#acef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(phash, 2 * phash-&gt;<a class="code" href="a00003.html#a13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>)) {
+<a name="l00157"></a>00157            <span class="keywordflow">if</span> (<a class="code" href="a00035.html#gacef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(phash, 2 * phash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>)) {
 <a name="l00158"></a>00158              <span class="keywordflow">return</span> -1;
 <a name="l00159"></a>00159            }
 <a name="l00160"></a>00160         }
 <a name="l00161"></a>00161 
-<a name="l00162"></a>00162         hash = phash-&gt;<a class="code" href="a00003.html#aa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );       
-<a name="l00163"></a>00163         entry-&gt;<a class="code" href="a00004.html#a0a321e75db9083da90e2557e6cc24de8">hash</a> = hash;
+<a name="l00162"></a>00162         hash = phash-&gt;<a class="code" href="a00034.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );       
+<a name="l00163"></a>00163         entry-&gt;<a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> = hash;
 <a name="l00164"></a>00164 
-<a name="l00165"></a>00165         bucket =   <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00003.html#a13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
+<a name="l00165"></a>00165         bucket =   <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
 <a name="l00166"></a>00166         abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
 <a name="l00167"></a>00167         
 <a name="l00168"></a>00168         
-<a name="l00169"></a>00169         fnd = (<a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a> *) <a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00003.html#a9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
+<a name="l00169"></a>00169         fnd = (<a class="code" href="a00010.html">SRING</a> *) <a class="code" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00034.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
 <a name="l00170"></a>00170 
 <a name="l00171"></a>00171         <span class="comment">/* multimap allows only one entry with the given key */</span>
-<a name="l00172"></a>00172         <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00003.html#a1e56521c716b07928dc326eced3b50c0">ismultimap</a> &amp;&amp; fnd) {
+<a name="l00172"></a>00172         <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00034.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a> &amp;&amp; fnd) {
 <a name="l00173"></a>00173                 <span class="keywordflow">return</span> -1;
 <a name="l00174"></a>00174         }
 <a name="l00175"></a>00175 
 <a name="l00176"></a>00176         <span class="keywordflow">if</span> (fnd) {
-<a name="l00177"></a>00177                 <a class="code" href="a00028.html#a6a2a1950260f3fb3d385bde480e5c976" title="insert new entry after a given entry.">SRING_insert_after</a>( fnd, &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
+<a name="l00177"></a>00177                 <a class="code" href="a00042.html#ga6a2a1950260f3fb3d385bde480e5c976" title="insert new entry after a given entry.">SRING_insert_after</a>( fnd, &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
 <a name="l00178"></a>00178         } <span class="keywordflow">else</span> {
-<a name="l00179"></a>00179                 <a class="code" href="a00028.html#a608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( abucket,  &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
+<a name="l00179"></a>00179                 <a class="code" href="a00042.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( abucket,  &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
 <a name="l00180"></a>00180         }
-<a name="l00181"></a>00181         phash-&gt;<a class="code" href="a00003.html#adfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>++;
+<a name="l00181"></a>00181         phash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>++;
 <a name="l00182"></a>00182 
 <a name="l00183"></a>00183         <span class="keywordflow">return</span> 0;
 <a name="l00184"></a>00184 }
 <a name="l00185"></a>00185 
-<a name="l00186"></a><a class="code" href="a00016.html#a9546382a27adc8b91d70cd6e4c4723c3">00186</a> <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> * <a class="code" href="a00015.html#a3841ec1a9db3bcb2cd6dbd2ba36c4550" title="find first hash table entry and unlink it from its bucket. The caller of this function has to free me...">HASH_unlink</a>( <a class="code" href="a00003.html" title="Hash table that is implemented as bucket hash table.">HASH</a> *phash, <span class="keywordtype">void</span> *key, ssize_t key_size )
+<a name="l00186"></a><a class="code" href="a00035.html#ga9546382a27adc8b91d70cd6e4c4723c3">00186</a> <a class="code" href="a00004.html">HASH_Entry</a> * <a class="code" href="a00035.html#ga9546382a27adc8b91d70cd6e4c4723c3" title="find first hash table entry and unlink it from its bucket. The caller of this function has to free me...">HASH_unlink</a>( <a class="code" href="a00003.html">HASH</a> *phash, <span class="keywordtype">void</span> *key, ssize_t key_size )
 <a name="l00187"></a>00187 {
 <a name="l00188"></a>00188         <a class="code" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
 <a name="l00189"></a>00189         <span class="keywordtype">int</span>             bucket;
-<a name="l00190"></a>00190         <a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>   *abucket;
-<a name="l00191"></a>00191         <a class="code" href="a00010.html" title="Single linked circular list data structure; where each list element can be of different length...">SRING</a>   *pos,*prev;
-<a name="l00192"></a>00192         <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *ret = 0;
+<a name="l00190"></a>00190         <a class="code" href="a00010.html">SRING</a>   *abucket;
+<a name="l00191"></a>00191         <a class="code" href="a00010.html">SRING</a>   *pos,*prev;
+<a name="l00192"></a>00192         <a class="code" href="a00004.html">HASH_Entry</a> *ret = 0;
 <a name="l00193"></a>00193 
 <a name="l00194"></a>00194 
-<a name="l00195"></a>00195         hash =  phash-&gt;<a class="code" href="a00003.html#aa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );      
-<a name="l00196"></a>00196         bucket =   <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00003.html#a13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
+<a name="l00195"></a>00195         hash =  phash-&gt;<a class="code" href="a00034.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );      
+<a name="l00196"></a>00196         bucket =   <a class="code" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
 <a name="l00197"></a>00197         abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
 <a name="l00198"></a>00198 
 <a name="l00199"></a>00199         prev = abucket;
-<a name="l00200"></a>00200         <a class="code" href="a00028.html#a39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
-<a name="l00201"></a>00201                 <a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *entry = (<a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *) pos;
+<a name="l00200"></a>00200         <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
+<a name="l00201"></a>00201                 <a class="code" href="a00004.html">HASH_Entry</a> *entry = (<a class="code" href="a00004.html">HASH_Entry</a> *) pos;
 <a name="l00202"></a>00202 
-<a name="l00203"></a>00203                 <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00004.html#a0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) {
+<a name="l00203"></a>00203                 <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) {
 <a name="l00204"></a>00204                   
-<a name="l00205"></a>00205                         <span class="keywordflow">if</span> (phash-&gt;<a class="code" href="a00003.html#a9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>( entry, key, key_size ) == 0) {
-<a name="l00206"></a>00206                                 ret = (<a class="code" href="a00004.html" title="Entry in bucket hash table Each hash table entry has to embed a VBUCKETHASH_Entry as part of its stru...">HASH_Entry</a> *) <a class="code" href="a00028.html#ab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>(prev);
-<a name="l00207"></a>00207                                 phash-&gt;<a class="code" href="a00003.html#adfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>--;      
+<a name="l00205"></a>00205                         <span class="keywordflow">if</span> (phash-&gt;<a class="code" href="a00034.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>( entry, key, key_size ) == 0) {
+<a name="l00206"></a>00206                                 ret = (<a class="code" href="a00004.html">HASH_Entry</a> *) <a class="code" href="a00042.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>(prev);
+<a name="l00207"></a>00207                                 phash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>--;      
 <a name="l00208"></a>00208                                 <span class="keywordflow">return</span> ret;
 <a name="l00209"></a>00209                         }
 <a name="l00210"></a>00210                 }
@@ -258,7 +259,7 @@
 <a name="l00218"></a>00218 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:20 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

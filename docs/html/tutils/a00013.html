@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for multi threading / objects in plain C: Member List</title>
+<title>Simple tools for multi threading / objects in plain C: RUNNABLE</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -23,32 +23,91 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">CYCLIC_BARRIER Member List</div>  </div>
+<div class="title">RUNNABLE</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00001.html">CYCLIC_BARRIER</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00001.html#af244f45e851fa7682ff656a70e28060b">cond</a></td><td><a class="el" href="a00001.html">CYCLIC_BARRIER</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a062d6ad274f1e91ce8cedc514edb6b9d">initial_count</a></td><td><a class="el" href="a00001.html">CYCLIC_BARRIER</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a775b38f6130cfc743e2032d387ab38d5">is_finished</a></td><td><a class="el" href="a00001.html">CYCLIC_BARRIER</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a70c52685d88e3568279eaab494145035">left</a></td><td><a class="el" href="a00001.html">CYCLIC_BARRIER</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#ae7d60bb4f5f20f2e16e03416357283c5">mutex</a></td><td><a class="el" href="a00001.html">CYCLIC_BARRIER</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#ac9d77335499bee9ef32f865aca90b909">tcount</a></td><td><a class="el" href="a00001.html">CYCLIC_BARRIER</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:27 for Simple tools for multi threading / objects in plain C by&#160;
+
+<p>an interface to run a unit of work.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html">tagRUNNABLE</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagRUNNABLE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga3f3ff8a5ef0014f681395dda3e8e5ca6">RUNNABLE</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga26254071747a14c26402a397d3766f9f">RUNNABLE_init</a> (<a class="el" href="a00002.html">RUNNABLE</a> *runnable, <a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> handler)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a RUNNABLE instance  <a href="#ga26254071747a14c26402a397d3766f9f"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>an interface to run a unit of work. </p>
+<p>Acts as a work request for thread pool Includes a callback that is invoked in order to process the request.</p>
+<p>Very similar to java concept of java.lang.Runnable. </p>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga3f3ff8a5ef0014f681395dda3e8e5ca6"></a><!-- doxytag: member="tpool.h::RUNNABLE" ref="ga3f3ff8a5ef0014f681395dda3e8e5ca6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00002.html">tagRUNNABLE</a>  <a class="el" href="a00002.html">RUNNABLE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga26254071747a14c26402a397d3766f9f"></a><!-- doxytag: member="tpool.h::RUNNABLE_init" ref="ga26254071747a14c26402a397d3766f9f" args="(RUNNABLE *runnable, RUNNABLE_HANDLER handler)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RUNNABLE_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html">RUNNABLE</a> *&#160;</td>
+          <td class="paramname"><em>runnable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a>&#160;</td>
+          <td class="paramname"><em>handler</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>constructs a RUNNABLE instance </p>
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00008">8</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   runnable-&gt;<a class="code" href="a00002.html#a127e2ce895ac78923ce28190c1c793f9">handle_request</a> = handler;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:47 for Simple tools for multi threading / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -48,8 +49,8 @@
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t request_size)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#a178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t index, void *elm, size_t elmsize)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#aa527efc4a7222882143f6eaf88474c2e">ARRAY_set_at</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t index, void *elm, size_t elmsize)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#ga178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t index, void *elm, size_t elmsize)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#gaa527efc4a7222882143f6eaf88474c2e">ARRAY_set_at</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t index, void *elm, size_t elmsize)</td></tr>
 </table>
 <hr/><h2>Function Documentation</h2>
 <a class="anchor" id="a1bd82a22c9afadac7a88445e92161214"></a><!-- doxytag: member="array.c::ARRAY_grow_default" ref="a1bd82a22c9afadac7a88445e92161214" args="(ARRAY *arr, size_t request_size)" -->
@@ -97,154 +98,8 @@ Functions</h2></td></tr>
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="a178c95e99fb2c218963f440c295c8380"></a><!-- doxytag: member="array.c::ARRAY_insert_at" ref="a178c95e99fb2c218963f440c295c8380" args="(ARRAY *arr, size_t index, void *elm, size_t elmsize)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int ARRAY_insert_at </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">ARRAY</a> *&#160;</td>
-          <td class="paramname"><em>arr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>elm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>elmsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
 </div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00012_source.html#l00029">29</a> of file <a class="el" href="a00012_source.html">array.c</a>.</p>
-<div class="fragment"><pre class="fragment">{       
-        <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
-                <span class="keywordflow">return</span> -1;
-        }
-
- 
-        <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>) {
-                <span class="keywordflow">if</span> (<a class="code" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(arr,index+1)) {
-                        <span class="keywordflow">return</span> -1;
-                }
-        }
-
-
-        <span class="keywordflow">if</span> (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> == arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>) {
-                <span class="keywordflow">if</span> (<a class="code" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(arr,arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>+1)) {
-                        <span class="keywordflow">return</span> -1;
-                }
-        }
-
-
-        <span class="keywordflow">if</span> (index &lt; arr-&gt;elmcount) {
-                memmove( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index + 1) * elmsize, 
-                                 arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + index * elmsize, (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> - index) * elmsize);
-
-        } 
-
-        <span class="keywordflow">if</span> (index &lt;= arr-&gt;elmcount) {
-                arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>++;
-        } <span class="keywordflow">else</span> {
-                memset( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>, 
-                                0, 
-                                arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a> * (index - arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) );               
-                arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = index + 1;
-        }
-
-        memcpy(arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index * elmsize), elm, elmsize);
-
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="aa527efc4a7222882143f6eaf88474c2e"></a><!-- doxytag: member="array.c::ARRAY_set_at" ref="aa527efc4a7222882143f6eaf88474c2e" args="(ARRAY *arr, size_t index, void *elm, size_t elmsize)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int ARRAY_set_at </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">ARRAY</a> *&#160;</td>
-          <td class="paramname"><em>arr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>elm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>elmsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00012_source.html#l00071">71</a> of file <a class="el" href="a00012_source.html">array.c</a>.</p>
-<div class="fragment"><pre class="fragment">{       
-        <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
-                <span class="keywordflow">return</span> -1;
-        }
-
- 
-        <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>) {
-                <span class="keywordflow">if</span> (<a class="code" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(arr,index+1)) {
-                        <span class="keywordflow">return</span> -1;
-                }
-        }
-
-
-        memcpy(arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index * elmsize), elm, elmsize);
-        <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) {
-                memset( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>, 
-                                0, 
-                                arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a> * (index - arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) );       
-                arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = index + 1;
-
-        }
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-</div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:21 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

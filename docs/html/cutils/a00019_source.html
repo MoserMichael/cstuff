@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -44,20 +45,20 @@
 <a name="l00004"></a>00004 
 <a name="l00005"></a>00005 
 <a name="l00006"></a>00006 
-<a name="l00007"></a><a class="code" href="a00020.html#acc803a0c5a8bc3ce165f8d8fe5e78ab1">00007</a>  <span class="keywordtype">void</span> <a class="code" href="a00019.html#aa3c2e7117fa6a5a2d14f755f9c9c2751" title="iterate over all elements of a list, callback is invoked for either element of the list...">DRING_foreach</a>( <a class="code" href="a00008.html" title="Double linked circular list data structure; where each list element can be of different length...">DRING</a> *lst, <a class="code" href="a00020.html#a516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, <span class="keywordtype">void</span> *data, <span class="keywordtype">int</span> save_from_del)
+<a name="l00007"></a><a class="code" href="a00038.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1">00007</a>  <span class="keywordtype">void</span> <a class="code" href="a00038.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1" title="iterate over all elements of a list, callback is invoked for either element of the list...">DRING_foreach</a>( <a class="code" href="a00008.html">DRING</a> *lst, <a class="code" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, <span class="keywordtype">void</span> *data, <span class="keywordtype">int</span> save_from_del)
 <a name="l00008"></a>00008 {
-<a name="l00009"></a>00009     <a class="code" href="a00008.html" title="Double linked circular list data structure; where each list element can be of different length...">DRING</a> *cur, *next;
+<a name="l00009"></a>00009     <a class="code" href="a00008.html">DRING</a> *cur, *next;
 <a name="l00010"></a>00010 
 <a name="l00011"></a>00011         <span class="keywordflow">if</span> (!eval) {
 <a name="l00012"></a>00012           <span class="keywordflow">return</span>;
 <a name="l00013"></a>00013         }
 <a name="l00014"></a>00014 
 <a name="l00015"></a>00015         <span class="keywordflow">if</span> (save_from_del) {
-<a name="l00016"></a>00016                 <a class="code" href="a00020.html#aab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, lst) {
+<a name="l00016"></a>00016                 <a class="code" href="a00038.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, lst) {
 <a name="l00017"></a>00017                         eval( cur, data );
 <a name="l00018"></a>00018                 }
 <a name="l00019"></a>00019         } <span class="keywordflow">else</span> {
-<a name="l00020"></a>00020                 <a class="code" href="a00020.html#ac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, lst ) {
+<a name="l00020"></a>00020                 <a class="code" href="a00038.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, lst ) {
 <a name="l00021"></a>00021                         eval( cur, data );
 <a name="l00022"></a>00022                 }
 <a name="l00023"></a>00023         }
@@ -65,21 +66,21 @@
 <a name="l00025"></a>00025 }
 <a name="l00026"></a>00026 
 <a name="l00027"></a>00027 
-<a name="l00028"></a><a class="code" href="a00020.html#a98724ac564245aa77a1a4c55f83fadb9">00028</a>  <span class="keywordtype">void</span> <a class="code" href="a00019.html#a80b3b2a726e29be2ad76e54adc23821a" title="iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.">DRING_foreach_reverse</a>( <a class="code" href="a00008.html" title="Double linked circular list data structure; where each list element can be of different length...">DRING</a> *lst, <a class="code" href="a00020.html#a516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, <span class="keywordtype">void</span> *data, <span class="keywordtype">int</span> save_from_delete)
+<a name="l00028"></a><a class="code" href="a00038.html#ga98724ac564245aa77a1a4c55f83fadb9">00028</a>  <span class="keywordtype">void</span> <a class="code" href="a00038.html#ga98724ac564245aa77a1a4c55f83fadb9" title="iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.">DRING_foreach_reverse</a>( <a class="code" href="a00008.html">DRING</a> *lst, <a class="code" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, <span class="keywordtype">void</span> *data, <span class="keywordtype">int</span> save_from_delete)
 <a name="l00029"></a>00029 {
-<a name="l00030"></a>00030         <a class="code" href="a00008.html" title="Double linked circular list data structure; where each list element can be of different length...">DRING</a> *cur, *next;
+<a name="l00030"></a>00030         <a class="code" href="a00008.html">DRING</a> *cur, *next;
 <a name="l00031"></a>00031 
 <a name="l00032"></a>00032         <span class="keywordflow">if</span> (!eval) {
 <a name="l00033"></a>00033           return ;
 <a name="l00034"></a>00034         }
 <a name="l00035"></a>00035 
 <a name="l00036"></a>00036         <span class="keywordflow">if</span> ( save_from_delete ) {
-<a name="l00037"></a>00037                 <a class="code" href="a00020.html#ac5d159651c812e6785f81bc2dfc73b7d" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_REVERSE_SAVE</a>( cur, next, lst ) {
+<a name="l00037"></a>00037                 <a class="code" href="a00038.html#gac5d159651c812e6785f81bc2dfc73b7d" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_REVERSE_SAVE</a>( cur, next, lst ) {
 <a name="l00038"></a>00038 
 <a name="l00039"></a>00039                         eval( cur, data );
 <a name="l00040"></a>00040                 }
 <a name="l00041"></a>00041         } <span class="keywordflow">else</span> {
-<a name="l00042"></a>00042                 <a class="code" href="a00020.html#a550a7b5adbe2d3325db38c49764bdc8c" title="Macro for iterate over all elements of a list, the list is traversed in reverse direction from last e...">DRING_FOREACH_REVERSE</a>( cur, lst ) {
+<a name="l00042"></a>00042                 <a class="code" href="a00038.html#ga550a7b5adbe2d3325db38c49764bdc8c" title="Macro for iterate over all elements of a list, the list is traversed in reverse direction from last e...">DRING_FOREACH_REVERSE</a>( cur, lst ) {
 <a name="l00043"></a>00043 
 <a name="l00044"></a>00044                         eval( cur, data );
 <a name="l00045"></a>00045                 }
@@ -89,23 +90,23 @@
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051 
-<a name="l00052"></a><a class="code" href="a00020.html#ad8c4485c62148db72ca05f55dcc75709">00052</a>  <span class="keywordtype">void</span> <a class="code" href="a00019.html#ad8c4485c62148db72ca05f55dcc75709" title="insert new element into sorted list; Maintains ordering relationship between elements of linked list ...">DRING_insert_sorted</a>( <a class="code" href="a00008.html" title="Double linked circular list data structure; where each list element can be of different length...">DRING</a> *list, <a class="code" href="a00020.html#a275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="code" href="a00008.html" title="Double linked circular list data structure; where each list element can be of different length...">DRING</a> *newentry) 
+<a name="l00052"></a><a class="code" href="a00038.html#gad8c4485c62148db72ca05f55dcc75709">00052</a>  <span class="keywordtype">void</span> <a class="code" href="a00038.html#gad8c4485c62148db72ca05f55dcc75709" title="insert new element into sorted list; Maintains ordering relationship between elements of linked list ...">DRING_insert_sorted</a>( <a class="code" href="a00008.html">DRING</a> *list, <a class="code" href="a00038.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="code" href="a00008.html">DRING</a> *newentry) 
 <a name="l00053"></a>00053 {
-<a name="l00054"></a>00054         <a class="code" href="a00008.html" title="Double linked circular list data structure; where each list element can be of different length...">DRING</a> *cur;
+<a name="l00054"></a>00054         <a class="code" href="a00008.html">DRING</a> *cur;
 <a name="l00055"></a>00055         
-<a name="l00056"></a>00056         <a class="code" href="a00020.html#ac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, list ) {
+<a name="l00056"></a>00056         <a class="code" href="a00038.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, list ) {
 <a name="l00057"></a>00057                 <span class="keywordflow">if</span> (compare(cur,newentry) &gt; 0) {
-<a name="l00058"></a>00058                         <a class="code" href="a00020.html#a93f762e668a7283b18025310886635ea" title="insert new entry before a given entry.">DRING_insert_before</a>(cur,newentry);
+<a name="l00058"></a>00058                         <a class="code" href="a00038.html#ga93f762e668a7283b18025310886635ea" title="insert new entry before a given entry.">DRING_insert_before</a>(cur,newentry);
 <a name="l00059"></a>00059                         <span class="keywordflow">return</span>;
 <a name="l00060"></a>00060                 }
 <a name="l00061"></a>00061         }
 <a name="l00062"></a>00062 
-<a name="l00063"></a>00063         <a class="code" href="a00020.html#aed724487f6cd26c0b79b875ff3390c61" title="insert element as last in list (used to maintain double ended queue)">DRING_push_back</a>( list, newentry );
+<a name="l00063"></a>00063         <a class="code" href="a00038.html#gaed724487f6cd26c0b79b875ff3390c61" title="insert element as last in list (used to maintain double ended queue)">DRING_push_back</a>( list, newentry );
 <a name="l00064"></a>00064 }
 <a name="l00065"></a>00065 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:21 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

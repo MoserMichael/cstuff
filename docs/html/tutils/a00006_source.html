@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -47,10 +48,10 @@
 <a name="l00007"></a>00007 <span class="preprocessor">#include &lt;butils/errorp.h&gt;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
 <a name="l00009"></a>00009 
-<a name="l00010"></a>00010 <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00006.html#ac3e53070b568d3782fc1d669491808c5">CYCLIC_BARRIER_wait_for_all_to_finish</a>(<a class="code" href="a00001.html" title="synchronization point for a fixed party of threads.">CYCLIC_BARRIER</a> *cond);
+<a name="l00010"></a>00010 <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00006.html#ac3e53070b568d3782fc1d669491808c5">CYCLIC_BARRIER_wait_for_all_to_finish</a>(<a class="code" href="a00001.html">CYCLIC_BARRIER</a> *cond);
 <a name="l00011"></a>00011 
 <a name="l00012"></a>00012 <span class="comment">//------------------------------------------------------------------</span>
-<a name="l00013"></a><a class="code" href="a00007.html#a0fc4eba3b18970f3e4e23d3db8c4f99d">00013</a> <span class="keywordtype">void</span> <a class="code" href="a00006.html#a0fc4eba3b18970f3e4e23d3db8c4f99d" title="initialises a new cyclic barrier">CYCLIC_BARRIER_init</a>(<a class="code" href="a00001.html" title="synchronization point for a fixed party of threads.">CYCLIC_BARRIER</a> *cond, <span class="keywordtype">int</span> num)
+<a name="l00013"></a><a class="code" href="a00012.html#ga0fc4eba3b18970f3e4e23d3db8c4f99d">00013</a> <span class="keywordtype">void</span> <a class="code" href="a00012.html#ga0fc4eba3b18970f3e4e23d3db8c4f99d" title="initialises a new cyclic barrier">CYCLIC_BARRIER_init</a>(<a class="code" href="a00001.html">CYCLIC_BARRIER</a> *cond, <span class="keywordtype">int</span> num)
 <a name="l00014"></a>00014 {
 <a name="l00015"></a>00015     <span class="keywordtype">int</span> rt;
 <a name="l00016"></a>00016 
@@ -69,7 +70,7 @@
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030 
 <a name="l00031"></a>00031 
-<a name="l00032"></a><a class="code" href="a00007.html#ab970fd60f07e77be074031e5c52a45fc">00032</a> <span class="keywordtype">int</span>  <a class="code" href="a00006.html#ab970fd60f07e77be074031e5c52a45fc" title="Returns cyclic barrier to it&#39;s initial state.">CYCLIC_BARRIER_reset</a>(<a class="code" href="a00001.html" title="synchronization point for a fixed party of threads.">CYCLIC_BARRIER</a> *cond)
+<a name="l00032"></a><a class="code" href="a00012.html#gab970fd60f07e77be074031e5c52a45fc">00032</a> <span class="keywordtype">int</span>  <a class="code" href="a00012.html#gab970fd60f07e77be074031e5c52a45fc" title="Returns cyclic barrier to it&#39;s initial state.">CYCLIC_BARRIER_reset</a>(<a class="code" href="a00001.html">CYCLIC_BARRIER</a> *cond)
 <a name="l00033"></a>00033 {
 <a name="l00034"></a>00034     <span class="keywordtype">int</span> rt;
 <a name="l00035"></a>00035 
@@ -94,7 +95,7 @@
 <a name="l00054"></a>00054     <span class="keywordflow">return</span> 0;
 <a name="l00055"></a>00055 }
 <a name="l00056"></a>00056 
-<a name="l00057"></a><a class="code" href="a00007.html#a28aee366454e6f7563c963a2ef96b0ad">00057</a> <span class="keywordtype">int</span> <a class="code" href="a00006.html#a28aee366454e6f7563c963a2ef96b0ad" title="Frees a cyclic barrier.">CYCLIC_BARRIER_free</a>(<a class="code" href="a00001.html" title="synchronization point for a fixed party of threads.">CYCLIC_BARRIER</a>*cond)
+<a name="l00057"></a><a class="code" href="a00012.html#ga28aee366454e6f7563c963a2ef96b0ad">00057</a> <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga28aee366454e6f7563c963a2ef96b0ad" title="Frees a cyclic barrier.">CYCLIC_BARRIER_free</a>(<a class="code" href="a00001.html">CYCLIC_BARRIER</a>*cond)
 <a name="l00058"></a>00058 {
 <a name="l00059"></a>00059     <span class="keywordtype">int</span> rt = 0;
 <a name="l00060"></a>00060    
@@ -113,7 +114,7 @@
 <a name="l00073"></a>00073 }
 <a name="l00074"></a>00074 
 <a name="l00075"></a>00075 
-<a name="l00076"></a><a class="code" href="a00007.html#a60330e74834b5137fd27b8e3ea68351b">00076</a>  <span class="keywordtype">int</span> <a class="code" href="a00006.html#a60330e74834b5137fd27b8e3ea68351b" title="All threads call this function, nobody continues untill all have called this function.">CYCLIC_BARRIER_await</a>(<a class="code" href="a00001.html" title="synchronization point for a fixed party of threads.">CYCLIC_BARRIER</a> *cond)
+<a name="l00076"></a><a class="code" href="a00012.html#ga60330e74834b5137fd27b8e3ea68351b">00076</a>  <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga60330e74834b5137fd27b8e3ea68351b" title="All threads call this function, nobody continues untill all have called this function.">CYCLIC_BARRIER_await</a>(<a class="code" href="a00001.html">CYCLIC_BARRIER</a> *cond)
 <a name="l00077"></a>00077 {
 <a name="l00078"></a>00078     <span class="keywordtype">int</span> rt = 0;
 <a name="l00079"></a>00079 
@@ -146,7 +147,7 @@
 <a name="l00106"></a>00106  }
 <a name="l00107"></a>00107 
 <a name="l00108"></a>00108 
-<a name="l00109"></a><a class="code" href="a00006.html#ac3e53070b568d3782fc1d669491808c5">00109</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00006.html#ac3e53070b568d3782fc1d669491808c5">CYCLIC_BARRIER_wait_for_all_to_finish</a>(<a class="code" href="a00001.html" title="synchronization point for a fixed party of threads.">CYCLIC_BARRIER</a> *cond)
+<a name="l00109"></a><a class="code" href="a00006.html#ac3e53070b568d3782fc1d669491808c5">00109</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00006.html#ac3e53070b568d3782fc1d669491808c5">CYCLIC_BARRIER_wait_for_all_to_finish</a>(<a class="code" href="a00001.html">CYCLIC_BARRIER</a> *cond)
 <a name="l00110"></a>00110 {
 <a name="l00111"></a>00111     <span class="keywordtype">int</span> rt, left;
 <a name="l00112"></a>00112     <span class="keywordtype">int</span> finished, count, init_count;
@@ -197,7 +198,7 @@
 <a name="l00157"></a>00157 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:26 for Simple tools for multi threading / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:47 for Simple tools for multi threading / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -49,252 +50,18 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a26254071747a14c26402a397d3766f9f">RUNNABLE_init</a> (<a class="el" href="a00002.html">RUNNABLE</a> *runnable, <a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> handler)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a RUNNABLE instance  <a href="#a26254071747a14c26402a397d3766f9f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga26254071747a14c26402a397d3766f9f">RUNNABLE_init</a> (<a class="el" href="a00002.html">RUNNABLE</a> *runnable, <a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> handler)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a RUNNABLE instance  <a href="a00013.html#ga26254071747a14c26402a397d3766f9f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#adea6ef467308139cf432ac8bab181b3b">worker_thread</a> (void *arg)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">THREADPOOL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a7b909aed828b50e11051b9147aebb82f">THREADPOOL_init</a> (<a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> process_result, int queue_size, int num_threads, int stack_size_kb)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a thread pool and starts it.  <a href="#a7b909aed828b50e11051b9147aebb82f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ad367dbd16ee8e8924423fdd0a8e737f3">THREADPOOL_close</a> (<a class="el" href="a00003.html">THREADPOOL</a> *pool)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a47bed275260b9a13f7ccc2b1fbe8c76a">THREADPOOL_send_block_on_queue_full</a> (<a class="el" href="a00003.html">THREADPOOL</a> *pool, <a class="el" href="a00002.html">RUNNABLE</a> *request)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">posts a work request to the pool; blocks if request queue limit is reached  <a href="#a47bed275260b9a13f7ccc2b1fbe8c76a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ac119ddd51197dc5e0d8e709f3994a5ae">THREADPOOL_send_fail_on_queue_full</a> (<a class="el" href="a00003.html">THREADPOOL</a> *pool, <a class="el" href="a00002.html">RUNNABLE</a> *request)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">posts a work request to the pool; blocks if request queue limit is reached  <a href="#ac119ddd51197dc5e0d8e709f3994a5ae"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">THREADPOOL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga7b909aed828b50e11051b9147aebb82f">THREADPOOL_init</a> (<a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> process_result, int queue_size, int num_threads, int stack_size_kb)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a thread pool and starts it.  <a href="a00014.html#ga7b909aed828b50e11051b9147aebb82f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gad367dbd16ee8e8924423fdd0a8e737f3">THREADPOOL_close</a> (<a class="el" href="a00003.html">THREADPOOL</a> *pool)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga47bed275260b9a13f7ccc2b1fbe8c76a">THREADPOOL_send_block_on_queue_full</a> (<a class="el" href="a00003.html">THREADPOOL</a> *pool, <a class="el" href="a00002.html">RUNNABLE</a> *request)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">posts a work request to the pool; blocks if request queue limit is reached  <a href="a00014.html#ga47bed275260b9a13f7ccc2b1fbe8c76a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gac119ddd51197dc5e0d8e709f3994a5ae">THREADPOOL_send_fail_on_queue_full</a> (<a class="el" href="a00003.html">THREADPOOL</a> *pool, <a class="el" href="a00002.html">RUNNABLE</a> *request)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">posts a work request to the pool; blocks if request queue limit is reached  <a href="a00014.html#gac119ddd51197dc5e0d8e709f3994a5ae"></a><br/></td></tr>
 </table>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a26254071747a14c26402a397d3766f9f"></a><!-- doxytag: member="tpool.c::RUNNABLE_init" ref="a26254071747a14c26402a397d3766f9f" args="(RUNNABLE *runnable, RUNNABLE_HANDLER handler)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void RUNNABLE_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00002.html">RUNNABLE</a> *&#160;</td>
-          <td class="paramname"><em>runnable</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a>&#160;</td>
-          <td class="paramname"><em>handler</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>constructs a RUNNABLE instance </p>
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00008">8</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-   runnable-&gt;<a class="code" href="a00002.html#a127e2ce895ac78923ce28190c1c793f9">handle_request</a> = handler;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ad367dbd16ee8e8924423fdd0a8e737f3"></a><!-- doxytag: member="tpool.c::THREADPOOL_close" ref="ad367dbd16ee8e8924423fdd0a8e737f3" args="(THREADPOOL *pool)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void THREADPOOL_close </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">THREADPOOL</a> *&#160;</td>
-          <td class="paramname"><em>pool</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00073">73</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordtype">int</span> i;
-
-  <span class="keywordflow">for</span>( i=0; i &lt; pool-&gt;<a class="code" href="a00003.html#a0bbc9bfb92f691411651c63f2de40465">num_threads</a>; i++) {
-    <a class="code" href="a00010.html#ae792121619b59c4ee95afbc8f3ccfc3f" title="push out of order exit message (null message at top of queue)">TQUEUE_push_exit_message</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a>);
-  }
-  <a class="code" href="a00006.html#a60330e74834b5137fd27b8e3ea68351b" title="All threads call this function, nobody continues untill all have called this function.">CYCLIC_BARRIER_await</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a57ebff173542131630ab9542df496a2a">all_finished</a> );
-  free(pool);
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="a7b909aed828b50e11051b9147aebb82f"></a><!-- doxytag: member="tpool.c::THREADPOOL_init" ref="a7b909aed828b50e11051b9147aebb82f" args="(RUNNABLE_HANDLER process_result, int queue_size, int num_threads, int stack_size_kb)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00003.html">THREADPOOL</a>* THREADPOOL_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a>&#160;</td>
-          <td class="paramname"><em>process_result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>queue_size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>num_threads</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>stack_size_kb</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>constructs a thread pool and starts it. </p>
-<p>The method</p>
-<ul>
-<li>creates request queue</li>
-<li>runs fixed number of worker threads</li>
-</ul>
-<p>The worker thread</p>
-<ul>
-<li>fetches a work request from the request queue</li>
-<li>invokes the handle_request callback stpred in the work request</li>
-<li>if process_result callback has been registered: invokes process_result callback (in order to have common policy of processing the results).</li>
-</ul>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">process_result</td><td>a callback that receives work request after invoking it's run method. Value can be 0 (in this case it is not invoked) </td></tr>
-    <tr><td class="paramname">queue_size</td><td>limit on the request queue (for details see THREADPOOL ) </td></tr>
-    <tr><td class="paramname">num_threads</td><td>number of worker threads </td></tr>
-    <tr><td class="paramname">stack_size_kb</td><td>Size of thread pool stack in kilobytes (-1 if default stack size) </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00034">34</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00003.html" title="a thread pool with fixed number of worker threads.">THREADPOOL</a> *pool;
-  pthread_t pth;
-  pthread_attr_t attr;
-  <span class="keywordtype">int</span> i, rt;
-
-  pool = (<a class="code" href="a00003.html" title="a thread pool with fixed number of worker threads.">THREADPOOL</a> *) malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00003.html" title="a thread pool with fixed number of worker threads.">THREADPOOL</a>) );
-  <span class="keywordflow">if</span> (!pool) {
-    <span class="keywordflow">return</span> 0;
-  }
-
-  pool-&gt;<a class="code" href="a00003.html#a135b256b03a34d96456263b584bbddcf">process_result</a> = process_result;
-  pool-&gt;<a class="code" href="a00003.html#a0bbc9bfb92f691411651c63f2de40465">num_threads</a> = num_threads;
-
-  <a class="code" href="a00010.html#a4ae0a31bb2c0162bd58249e5a57a5af9" title="create new queue">TQUEUE_init</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a>, queue_size );
-
-  pthread_attr_init( &amp;attr );
-  pthread_attr_setdetachstate( &amp;attr, PTHREAD_CREATE_DETACHED );
-  pthread_attr_setstacksize( &amp;attr, stack_size_kb * 1024 );
-
-  <span class="keywordflow">for</span>( i = 0; i &lt; num_threads; i++) {
-
-     <span class="keywordflow">if</span> ((rt = pthread_create( &amp;pth, &amp;attr, <a class="code" href="a00008.html#adea6ef467308139cf432ac8bab181b3b">worker_thread</a>, pool ) )  != 0) {
-        <span class="keywordflow">break</span>;
-     }
-  }
-  <span class="keywordflow">if</span> ( i &lt; num_threads) {
-     errorp(rt, <span class="stringliteral">&quot;Can&#39;t create thread # %d&quot;</span>, i);
-     <a class="code" href="a00006.html#a0fc4eba3b18970f3e4e23d3db8c4f99d" title="initialises a new cyclic barrier">CYCLIC_BARRIER_init</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a57ebff173542131630ab9542df496a2a">all_finished</a>, i + 1 );
-     <a class="code" href="a00008.html#ad367dbd16ee8e8924423fdd0a8e737f3">THREADPOOL_close</a>( pool );
-     <span class="keywordflow">return</span> 0;
-  }
-
-  <a class="code" href="a00006.html#a0fc4eba3b18970f3e4e23d3db8c4f99d" title="initialises a new cyclic barrier">CYCLIC_BARRIER_init</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a57ebff173542131630ab9542df496a2a">all_finished</a>, num_threads + 1 );
-
-  <span class="keywordflow">return</span> pool;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="a47bed275260b9a13f7ccc2b1fbe8c76a"></a><!-- doxytag: member="tpool.c::THREADPOOL_send_block_on_queue_full" ref="a47bed275260b9a13f7ccc2b1fbe8c76a" args="(THREADPOOL *pool, RUNNABLE *request)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int THREADPOOL_send_block_on_queue_full </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">THREADPOOL</a> *&#160;</td>
-          <td class="paramname"><em>pool</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00002.html">RUNNABLE</a> *&#160;</td>
-          <td class="paramname"><em>request</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>posts a work request to the pool; blocks if request queue limit is reached </p>
-<p>A request is always queued. If request queue limit is reached then this method blocks until the size of the queue falls back, In this case the request is enqueued and this method returns.</p>
-<p>Returns 0 on success, -1 on failure (can't allocate memory for request) </p>
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00084">84</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">return</span> <a class="code" href="a00010.html#ab61172de6cf3a4f11122696a48665c1b" title="add new entry to queue, block if maximum queue limit has been reached">TQUEUE_push_block_on_queue_full</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a>, request);
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ac119ddd51197dc5e0d8e709f3994a5ae"></a><!-- doxytag: member="tpool.c::THREADPOOL_send_fail_on_queue_full" ref="ac119ddd51197dc5e0d8e709f3994a5ae" args="(THREADPOOL *pool, RUNNABLE *request)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int THREADPOOL_send_fail_on_queue_full </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">THREADPOOL</a> *&#160;</td>
-          <td class="paramname"><em>pool</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00002.html">RUNNABLE</a> *&#160;</td>
-          <td class="paramname"><em>request</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>posts a work request to the pool; blocks if request queue limit is reached </p>
-<p>A request is queued if the request queue did not reach its size limit. If request queue limit is reached then this method returns an error.</p>
-<p>Returns 0 on success, -1 on failure </p>
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00089">89</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">return</span> <a class="code" href="a00010.html#a371657b010acd669b760f72307d7ab99" title="add new entry to queue, fail if maximum queue limit has been reached">TQUEUE_push_fail_on_queue_full</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a>, request);
-}
-</pre></div>
-</div>
-</div>
 <a class="anchor" id="adea6ef467308139cf432ac8bab181b3b"></a><!-- doxytag: member="tpool.c::worker_thread" ref="adea6ef467308139cf432ac8bab181b3b" args="(void *arg)" -->
 <div class="memitem">
 <div class="memproto">
@@ -312,10 +79,10 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="a00008_source.html#l00015">15</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00003.html" title="a thread pool with fixed number of worker threads.">THREADPOOL</a> *pool = (<a class="code" href="a00003.html" title="a thread pool with fixed number of worker threads.">THREADPOOL</a> *) arg;
-  <a class="code" href="a00002.html" title="an interface to run a unit of work.">RUNNABLE</a> *req;
+  <a class="code" href="a00003.html">THREADPOOL</a> *pool = (<a class="code" href="a00003.html">THREADPOOL</a> *) arg;
+  <a class="code" href="a00002.html">RUNNABLE</a> *req;
 
-  <span class="keywordflow">while</span> ( (req = <a class="code" href="a00010.html#a5e62b4b0ebe2d1460cf45f984d0ceed4" title="pop queue, block if empty">TQUEUE_pop</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a> ) ) != 0 ) {
+  <span class="keywordflow">while</span> ( (req = <a class="code" href="a00015.html#ga5e62b4b0ebe2d1460cf45f984d0ceed4" title="pop queue, block if empty">TQUEUE_pop</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a> ) ) != 0 ) {
      
      req-&gt;<a class="code" href="a00002.html#a127e2ce895ac78923ce28190c1c793f9">handle_request</a>( req );
      <span class="keywordflow">if</span> (pool-&gt;<a class="code" href="a00003.html#a135b256b03a34d96456263b584bbddcf">process_result</a> != 0) {
@@ -323,7 +90,7 @@ Functions</h2></td></tr>
      }
   }
 
-  <a class="code" href="a00006.html#a60330e74834b5137fd27b8e3ea68351b" title="All threads call this function, nobody continues untill all have called this function.">CYCLIC_BARRIER_await</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a57ebff173542131630ab9542df496a2a">all_finished</a> );
+  <a class="code" href="a00012.html#ga60330e74834b5137fd27b8e3ea68351b" title="All threads call this function, nobody continues untill all have called this function.">CYCLIC_BARRIER_await</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a57ebff173542131630ab9542df496a2a">all_finished</a> );
 
   <span class="keywordflow">return</span> 0;
 }
@@ -331,7 +98,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:27 for Simple tools for multi threading / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:47 for Simple tools for multi threading / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

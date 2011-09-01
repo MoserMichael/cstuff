@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -44,7 +45,7 @@
 <a name="l00004"></a>00004 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
 <a name="l00005"></a>00005 <span class="preprocessor">#include &lt;memory.h&gt;</span>
 <a name="l00006"></a>00006 
-<a name="l00007"></a><a class="code" href="a00024.html#af33187b5e3ea29b6da1ccf4b2490bc7f">00007</a> <span class="keywordtype">int</span> <a class="code" href="a00023.html#af33187b5e3ea29b6da1ccf4b2490bc7f" title="insert a new element into the heap">HEAP_push</a>( <a class="code" href="a00005.html" title="Heap data structure; all elements in the heap must be of the same size. A heap data structure is an o...">HEAP</a> *heap, <span class="keywordtype">void</span> *element, <span class="keywordtype">size_t</span> elmsize )
+<a name="l00007"></a><a class="code" href="a00039.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f">00007</a> <span class="keywordtype">int</span> <a class="code" href="a00039.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f" title="insert a new element into the heap">HEAP_push</a>( <a class="code" href="a00005.html">HEAP</a> *heap, <span class="keywordtype">void</span> *element, <span class="keywordtype">size_t</span> elmsize )
 <a name="l00008"></a>00008 {
 <a name="l00009"></a>00009         <span class="keywordtype">size_t</span> pos, pos_offset;
 <a name="l00010"></a>00010         <span class="keywordtype">size_t</span> parent, parent_offset;
@@ -97,7 +98,7 @@
 <a name="l00057"></a>00057 }       
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059 
-<a name="l00060"></a><a class="code" href="a00024.html#adb9cc342dba8eb29fe8be37e56a16370">00060</a> <span class="keywordtype">int</span> <a class="code" href="a00023.html#adb9cc342dba8eb29fe8be37e56a16370" title="remove the top element from the heap">HEAP_pop</a>( <a class="code" href="a00005.html" title="Heap data structure; all elements in the heap must be of the same size. A heap data structure is an o...">HEAP</a> *heap)
+<a name="l00060"></a><a class="code" href="a00039.html#gadb9cc342dba8eb29fe8be37e56a16370">00060</a> <span class="keywordtype">int</span> <a class="code" href="a00039.html#gadb9cc342dba8eb29fe8be37e56a16370" title="remove the top element from the heap">HEAP_pop</a>( <a class="code" href="a00005.html">HEAP</a> *heap)
 <a name="l00061"></a>00061 {
 <a name="l00062"></a>00062         <span class="keywordtype">size_t</span> pos, pos_offset;
 <a name="l00063"></a>00063         <span class="keywordtype">size_t</span> left_child, left_child_offset;
@@ -166,7 +167,7 @@
 <a name="l00126"></a>00126 }
 <a name="l00127"></a>00127 
 <a name="l00128"></a>00128 
-<a name="l00129"></a><a class="code" href="a00023.html#a68f48f61e4ae987ccd74d127d7cf7c76">00129</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00023.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>(<a class="code" href="a00005.html" title="Heap data structure; all elements in the heap must be of the same size. A heap data structure is an o...">HEAP</a> *heap, <span class="keywordtype">size_t</span> pos)
+<a name="l00129"></a><a class="code" href="a00023.html#a68f48f61e4ae987ccd74d127d7cf7c76">00129</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00023.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>(<a class="code" href="a00005.html">HEAP</a> *heap, <span class="keywordtype">size_t</span> pos)
 <a name="l00130"></a>00130 {
 <a name="l00131"></a>00131         <span class="keywordtype">size_t</span> elmsize = heap-&gt;<a class="code" href="a00005.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
 <a name="l00132"></a>00132         <span class="keywordtype">size_t</span> pos_left;
@@ -202,7 +203,7 @@
 <a name="l00162"></a>00162 }
 <a name="l00163"></a>00163 
 <a name="l00164"></a>00164 
-<a name="l00165"></a><a class="code" href="a00024.html#a689c175c301ff3025290d37ca5800039">00165</a> <span class="keywordtype">int</span> <a class="code" href="a00023.html#a689c175c301ff3025290d37ca5800039" title="check consistency of heap object.">HEAP_check</a>( <a class="code" href="a00005.html" title="Heap data structure; all elements in the heap must be of the same size. A heap data structure is an o...">HEAP</a> *heap )
+<a name="l00165"></a><a class="code" href="a00039.html#ga689c175c301ff3025290d37ca5800039">00165</a> <span class="keywordtype">int</span> <a class="code" href="a00039.html#ga689c175c301ff3025290d37ca5800039" title="check consistency of heap object.">HEAP_check</a>( <a class="code" href="a00005.html">HEAP</a> *heap )
 <a name="l00166"></a>00166 {
 <a name="l00167"></a>00167 
 <a name="l00168"></a>00168         <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00005.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> &gt; heap-&gt;<a class="code" href="a00005.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a>) {
@@ -215,7 +216,7 @@
 <a name="l00175"></a>00175 }
 <a name="l00176"></a>00176 
 <a name="l00177"></a>00177 
-<a name="l00178"></a><a class="code" href="a00023.html#a0f51edc6a8cf741b8a292e63f59cbd10">00178</a> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00023.html#a0f51edc6a8cf741b8a292e63f59cbd10">visit_sorted</a>(<a class="code" href="a00005.html" title="Heap data structure; all elements in the heap must be of the same size. A heap data structure is an o...">HEAP</a> *heap, <span class="keywordtype">size_t</span> pos, <a class="code" href="a00024.html#a13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, <span class="keywordtype">void</span> *context)
+<a name="l00178"></a><a class="code" href="a00023.html#a0f51edc6a8cf741b8a292e63f59cbd10">00178</a> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00023.html#a0f51edc6a8cf741b8a292e63f59cbd10">visit_sorted</a>(<a class="code" href="a00005.html">HEAP</a> *heap, <span class="keywordtype">size_t</span> pos, <a class="code" href="a00039.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, <span class="keywordtype">void</span> *context)
 <a name="l00179"></a>00179 {
 <a name="l00180"></a>00180         <span class="keywordtype">size_t</span> elmsize = heap-&gt;<a class="code" href="a00005.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
 <a name="l00181"></a>00181         <span class="keywordtype">size_t</span> pos_left;
@@ -242,7 +243,7 @@
 <a name="l00202"></a>00202 
 <a name="l00203"></a>00203 
 <a name="l00204"></a>00204 
-<a name="l00205"></a><a class="code" href="a00024.html#a72dd058aadb08417c5fcb618e9be6833">00205</a> <span class="keywordtype">void</span> <a class="code" href="a00023.html#a72dd058aadb08417c5fcb618e9be6833">HEAP_foreach_sorted</a>( <a class="code" href="a00005.html" title="Heap data structure; all elements in the heap must be of the same size. A heap data structure is an o...">HEAP</a> *heap, <a class="code" href="a00024.html#a13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, <span class="keywordtype">void</span> *context)
+<a name="l00205"></a><a class="code" href="a00039.html#ga72dd058aadb08417c5fcb618e9be6833">00205</a> <span class="keywordtype">void</span> <a class="code" href="a00039.html#ga72dd058aadb08417c5fcb618e9be6833">HEAP_foreach_sorted</a>( <a class="code" href="a00005.html">HEAP</a> *heap, <a class="code" href="a00039.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, <span class="keywordtype">void</span> *context)
 <a name="l00206"></a>00206 {
 <a name="l00207"></a>00207         <a class="code" href="a00023.html#a0f51edc6a8cf741b8a292e63f59cbd10">visit_sorted</a>( heap, 1, eval, context );
 <a name="l00208"></a>00208 }
@@ -250,7 +251,7 @@
 <a name="l00210"></a>00210         
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:21 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

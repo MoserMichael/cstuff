@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -44,7 +45,7 @@
 <a name="l00004"></a>00004 <span class="preprocessor">#include &lt;<a class="code" href="a00013.html">cutils/array.h</a>&gt;</span>
 <a name="l00005"></a>00005 
 <a name="l00006"></a>00006 
-<a name="l00007"></a><a class="code" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">00007</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(<a class="code" href="a00001.html" title="Dynamic array, all elements contained in this structure are of the same size.">ARRAY</a> *arr,<span class="keywordtype">size_t</span> request_size)
+<a name="l00007"></a><a class="code" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">00007</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00012.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(<a class="code" href="a00001.html">ARRAY</a> *arr,<span class="keywordtype">size_t</span> request_size)
 <a name="l00008"></a>00008 {
 <a name="l00009"></a>00009         <span class="keywordtype">size_t</span> sz;
 <a name="l00010"></a>00010         <span class="keywordtype">void</span> *rt;
@@ -66,7 +67,7 @@
 <a name="l00026"></a>00026 
 <a name="l00027"></a>00027 
 <a name="l00028"></a>00028 
-<a name="l00029"></a><a class="code" href="a00013.html#a178c95e99fb2c218963f440c295c8380">00029</a> <span class="keywordtype">int</span> <a class="code" href="a00012.html#a178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a>( <a class="code" href="a00001.html" title="Dynamic array, all elements contained in this structure are of the same size.">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize)
+<a name="l00029"></a><a class="code" href="a00033.html#ga178c95e99fb2c218963f440c295c8380">00029</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize)
 <a name="l00030"></a>00030 {       
 <a name="l00031"></a>00031         <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
 <a name="l00032"></a>00032                 <span class="keywordflow">return</span> -1;
@@ -108,7 +109,7 @@
 <a name="l00068"></a>00068         <span class="keywordflow">return</span> 0;
 <a name="l00069"></a>00069 }
 <a name="l00070"></a>00070 
-<a name="l00071"></a><a class="code" href="a00013.html#aa527efc4a7222882143f6eaf88474c2e">00071</a> <span class="keywordtype">int</span> <a class="code" href="a00012.html#aa527efc4a7222882143f6eaf88474c2e">ARRAY_set_at</a>( <a class="code" href="a00001.html" title="Dynamic array, all elements contained in this structure are of the same size.">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize)
+<a name="l00071"></a><a class="code" href="a00033.html#gaa527efc4a7222882143f6eaf88474c2e">00071</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#gaa527efc4a7222882143f6eaf88474c2e">ARRAY_set_at</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize)
 <a name="l00072"></a>00072 {       
 <a name="l00073"></a>00073         <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
 <a name="l00074"></a>00074                 <span class="keywordflow">return</span> -1;
@@ -135,7 +136,7 @@
 <a name="l00095"></a>00095 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:20 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

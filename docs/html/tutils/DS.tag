@@ -15,29 +15,29 @@
     <member kind="function">
       <type>void</type>
       <name>CYCLIC_BARRIER_init</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a0fc4eba3b18970f3e4e23d3db8c4f99d</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga0fc4eba3b18970f3e4e23d3db8c4f99d</anchor>
       <arglist>(CYCLIC_BARRIER *cond, int num)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>CYCLIC_BARRIER_reset</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>ab970fd60f07e77be074031e5c52a45fc</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>gab970fd60f07e77be074031e5c52a45fc</anchor>
       <arglist>(CYCLIC_BARRIER *cond)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>CYCLIC_BARRIER_free</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a28aee366454e6f7563c963a2ef96b0ad</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga28aee366454e6f7563c963a2ef96b0ad</anchor>
       <arglist>(CYCLIC_BARRIER *cond)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>CYCLIC_BARRIER_await</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a60330e74834b5137fd27b8e3ea68351b</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga60330e74834b5137fd27b8e3ea68351b</anchor>
       <arglist>(CYCLIC_BARRIER *cond)</arglist>
     </member>
   </compound>
@@ -49,29 +49,29 @@
     <member kind="function">
       <type>void</type>
       <name>CYCLIC_BARRIER_init</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>a0fc4eba3b18970f3e4e23d3db8c4f99d</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga0fc4eba3b18970f3e4e23d3db8c4f99d</anchor>
       <arglist>(CYCLIC_BARRIER *cond, int num)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>CYCLIC_BARRIER_free</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>a28aee366454e6f7563c963a2ef96b0ad</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga28aee366454e6f7563c963a2ef96b0ad</anchor>
       <arglist>(CYCLIC_BARRIER *cond)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>CYCLIC_BARRIER_await</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>a60330e74834b5137fd27b8e3ea68351b</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga60330e74834b5137fd27b8e3ea68351b</anchor>
       <arglist>(CYCLIC_BARRIER *cond)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>CYCLIC_BARRIER_reset</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>ab970fd60f07e77be074031e5c52a45fc</anchor>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>gab970fd60f07e77be074031e5c52a45fc</anchor>
       <arglist>(CYCLIC_BARRIER *cond)</arglist>
     </member>
   </compound>
@@ -83,8 +83,8 @@
     <member kind="function">
       <type>void</type>
       <name>RUNNABLE_init</name>
-      <anchorfile>a00008.html</anchorfile>
-      <anchor>a26254071747a14c26402a397d3766f9f</anchor>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga26254071747a14c26402a397d3766f9f</anchor>
       <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler)</arglist>
     </member>
     <member kind="function" static="yes">
@@ -97,29 +97,29 @@
     <member kind="function">
       <type>THREADPOOL *</type>
       <name>THREADPOOL_init</name>
-      <anchorfile>a00008.html</anchorfile>
-      <anchor>a7b909aed828b50e11051b9147aebb82f</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga7b909aed828b50e11051b9147aebb82f</anchor>
       <arglist>(RUNNABLE_HANDLER process_result, int queue_size, int num_threads, int stack_size_kb)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>THREADPOOL_close</name>
-      <anchorfile>a00008.html</anchorfile>
-      <anchor>ad367dbd16ee8e8924423fdd0a8e737f3</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>gad367dbd16ee8e8924423fdd0a8e737f3</anchor>
       <arglist>(THREADPOOL *pool)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>THREADPOOL_send_block_on_queue_full</name>
-      <anchorfile>a00008.html</anchorfile>
-      <anchor>a47bed275260b9a13f7ccc2b1fbe8c76a</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga47bed275260b9a13f7ccc2b1fbe8c76a</anchor>
       <arglist>(THREADPOOL *pool, RUNNABLE *request)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>THREADPOOL_send_fail_on_queue_full</name>
-      <anchorfile>a00008.html</anchorfile>
-      <anchor>ac119ddd51197dc5e0d8e709f3994a5ae</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>gac119ddd51197dc5e0d8e709f3994a5ae</anchor>
       <arglist>(THREADPOOL *pool, RUNNABLE *request)</arglist>
     </member>
   </compound>
@@ -141,50 +141,50 @@
     <member kind="typedef">
       <type>struct tagRUNNABLE</type>
       <name>RUNNABLE</name>
-      <anchorfile>a00009.html</anchorfile>
-      <anchor>a3f3ff8a5ef0014f681395dda3e8e5ca6</anchor>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga3f3ff8a5ef0014f681395dda3e8e5ca6</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>struct tagTHREADPOOL</type>
       <name>THREADPOOL</name>
-      <anchorfile>a00009.html</anchorfile>
-      <anchor>a23469035543918e40160a7c520fa4cac</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga23469035543918e40160a7c520fa4cac</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>RUNNABLE_init</name>
-      <anchorfile>a00009.html</anchorfile>
-      <anchor>a26254071747a14c26402a397d3766f9f</anchor>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga26254071747a14c26402a397d3766f9f</anchor>
       <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler)</arglist>
     </member>
     <member kind="function">
       <type>THREADPOOL *</type>
       <name>THREADPOOL_init</name>
-      <anchorfile>a00009.html</anchorfile>
-      <anchor>a7b909aed828b50e11051b9147aebb82f</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga7b909aed828b50e11051b9147aebb82f</anchor>
       <arglist>(RUNNABLE_HANDLER process_result, int queue_size, int num_threads, int stack_size_kb)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>THREADPOOL_close</name>
-      <anchorfile>a00009.html</anchorfile>
-      <anchor>ad367dbd16ee8e8924423fdd0a8e737f3</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>gad367dbd16ee8e8924423fdd0a8e737f3</anchor>
       <arglist>(THREADPOOL *pool)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>THREADPOOL_send_block_on_queue_full</name>
-      <anchorfile>a00009.html</anchorfile>
-      <anchor>a47bed275260b9a13f7ccc2b1fbe8c76a</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga47bed275260b9a13f7ccc2b1fbe8c76a</anchor>
       <arglist>(THREADPOOL *pool, RUNNABLE *request)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>THREADPOOL_send_fail_on_queue_full</name>
-      <anchorfile>a00009.html</anchorfile>
-      <anchor>ac119ddd51197dc5e0d8e709f3994a5ae</anchor>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>gac119ddd51197dc5e0d8e709f3994a5ae</anchor>
       <arglist>(THREADPOOL *pool, RUNNABLE *request)</arglist>
     </member>
   </compound>
@@ -204,15 +204,15 @@
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_init</name>
-      <anchorfile>a00010.html</anchorfile>
-      <anchor>a4ae0a31bb2c0162bd58249e5a57a5af9</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga4ae0a31bb2c0162bd58249e5a57a5af9</anchor>
       <arglist>(TQUEUE *queue, size_t max_count)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_free</name>
-      <anchorfile>a00010.html</anchorfile>
-      <anchor>ab21f95b31bed20649a5ffa6a3902ce7d</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gab21f95b31bed20649a5ffa6a3902ce7d</anchor>
       <arglist>(TQUEUE *queue)</arglist>
     </member>
     <member kind="function" static="yes">
@@ -225,36 +225,36 @@
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_push_exit_message</name>
-      <anchorfile>a00010.html</anchorfile>
-      <anchor>ae792121619b59c4ee95afbc8f3ccfc3f</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gae792121619b59c4ee95afbc8f3ccfc3f</anchor>
       <arglist>(TQUEUE *queue)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_push_block_on_queue_full</name>
-      <anchorfile>a00010.html</anchorfile>
-      <anchor>ab61172de6cf3a4f11122696a48665c1b</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gab61172de6cf3a4f11122696a48665c1b</anchor>
       <arglist>(TQUEUE *queue, void *entry)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_push_fail_on_queue_full</name>
-      <anchorfile>a00010.html</anchorfile>
-      <anchor>a371657b010acd669b760f72307d7ab99</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga371657b010acd669b760f72307d7ab99</anchor>
       <arglist>(TQUEUE *queue, void *entry)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_pop_non_blocking</name>
-      <anchorfile>a00010.html</anchorfile>
-      <anchor>a6c1810568ce82ed03f5a364ac6e5b151</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga6c1810568ce82ed03f5a364ac6e5b151</anchor>
       <arglist>(TQUEUE *queue, void **rret)</arglist>
     </member>
     <member kind="function">
       <type>void *</type>
       <name>TQUEUE_pop</name>
-      <anchorfile>a00010.html</anchorfile>
-      <anchor>a5e62b4b0ebe2d1460cf45f984d0ceed4</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga5e62b4b0ebe2d1460cf45f984d0ceed4</anchor>
       <arglist>(TQUEUE *queue)</arglist>
     </member>
   </compound>
@@ -266,57 +266,215 @@
     <member kind="typedef">
       <type>struct tagTQUEUE</type>
       <name>TQUEUE</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>a49b01bcaf1b915cafb33b0d8a0c0b267</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga49b01bcaf1b915cafb33b0d8a0c0b267</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_init</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>a4ae0a31bb2c0162bd58249e5a57a5af9</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga4ae0a31bb2c0162bd58249e5a57a5af9</anchor>
       <arglist>(TQUEUE *queue, size_t max_count)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_free</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>ab21f95b31bed20649a5ffa6a3902ce7d</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gab21f95b31bed20649a5ffa6a3902ce7d</anchor>
       <arglist>(TQUEUE *queue)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_push_block_on_queue_full</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>ab61172de6cf3a4f11122696a48665c1b</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gab61172de6cf3a4f11122696a48665c1b</anchor>
       <arglist>(TQUEUE *queue, void *entry)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_push_fail_on_queue_full</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>a371657b010acd669b760f72307d7ab99</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga371657b010acd669b760f72307d7ab99</anchor>
       <arglist>(TQUEUE *queue, void *entry)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_push_exit_message</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>ae792121619b59c4ee95afbc8f3ccfc3f</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gae792121619b59c4ee95afbc8f3ccfc3f</anchor>
       <arglist>(TQUEUE *queue)</arglist>
     </member>
     <member kind="function">
       <type>void *</type>
       <name>TQUEUE_pop</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>a5e62b4b0ebe2d1460cf45f984d0ceed4</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga5e62b4b0ebe2d1460cf45f984d0ceed4</anchor>
       <arglist>(TQUEUE *queue)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>TQUEUE_pop_non_blocking</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>a6c1810568ce82ed03f5a364ac6e5b151</anchor>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga6c1810568ce82ed03f5a364ac6e5b151</anchor>
+      <arglist>(TQUEUE *queue, void **rret)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>CBARRIER</name>
+    <title>CBARRIER</title>
+    <filename>a00012.html</filename>
+    <class kind="struct">CYCLIC_BARRIER</class>
+    <member kind="function">
+      <type>void</type>
+      <name>CYCLIC_BARRIER_init</name>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga0fc4eba3b18970f3e4e23d3db8c4f99d</anchor>
+      <arglist>(CYCLIC_BARRIER *cond, int num)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>CYCLIC_BARRIER_free</name>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga28aee366454e6f7563c963a2ef96b0ad</anchor>
+      <arglist>(CYCLIC_BARRIER *cond)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>CYCLIC_BARRIER_await</name>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga60330e74834b5137fd27b8e3ea68351b</anchor>
+      <arglist>(CYCLIC_BARRIER *cond)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>CYCLIC_BARRIER_reset</name>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>gab970fd60f07e77be074031e5c52a45fc</anchor>
+      <arglist>(CYCLIC_BARRIER *cond)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>RUNNABLE</name>
+    <title>RUNNABLE</title>
+    <filename>a00013.html</filename>
+    <class kind="struct">tagRUNNABLE</class>
+    <member kind="typedef">
+      <type>struct tagRUNNABLE</type>
+      <name>RUNNABLE</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga3f3ff8a5ef0014f681395dda3e8e5ca6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RUNNABLE_init</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga26254071747a14c26402a397d3766f9f</anchor>
+      <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>THREADPOOL</name>
+    <title>THREADPOOL</title>
+    <filename>a00014.html</filename>
+    <class kind="struct">tagTHREADPOOL</class>
+    <subgroup>CBARRIER</subgroup>
+    <member kind="typedef">
+      <type>struct tagTHREADPOOL</type>
+      <name>THREADPOOL</name>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga23469035543918e40160a7c520fa4cac</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>THREADPOOL *</type>
+      <name>THREADPOOL_init</name>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga7b909aed828b50e11051b9147aebb82f</anchor>
+      <arglist>(RUNNABLE_HANDLER process_result, int queue_size, int num_threads, int stack_size_kb)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>THREADPOOL_close</name>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>gad367dbd16ee8e8924423fdd0a8e737f3</anchor>
+      <arglist>(THREADPOOL *pool)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>THREADPOOL_send_block_on_queue_full</name>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>ga47bed275260b9a13f7ccc2b1fbe8c76a</anchor>
+      <arglist>(THREADPOOL *pool, RUNNABLE *request)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>THREADPOOL_send_fail_on_queue_full</name>
+      <anchorfile>a00014.html</anchorfile>
+      <anchor>gac119ddd51197dc5e0d8e709f3994a5ae</anchor>
+      <arglist>(THREADPOOL *pool, RUNNABLE *request)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>TQUEUE</name>
+    <title>TQUEUE</title>
+    <filename>a00015.html</filename>
+    <class kind="struct">tagTQUEUE</class>
+    <member kind="typedef">
+      <type>struct tagTQUEUE</type>
+      <name>TQUEUE</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga49b01bcaf1b915cafb33b0d8a0c0b267</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>TQUEUE_init</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga4ae0a31bb2c0162bd58249e5a57a5af9</anchor>
+      <arglist>(TQUEUE *queue, size_t max_count)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>TQUEUE_free</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gab21f95b31bed20649a5ffa6a3902ce7d</anchor>
+      <arglist>(TQUEUE *queue)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>TQUEUE_push_block_on_queue_full</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gab61172de6cf3a4f11122696a48665c1b</anchor>
+      <arglist>(TQUEUE *queue, void *entry)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>TQUEUE_push_fail_on_queue_full</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga371657b010acd669b760f72307d7ab99</anchor>
+      <arglist>(TQUEUE *queue, void *entry)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>TQUEUE_push_exit_message</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>gae792121619b59c4ee95afbc8f3ccfc3f</anchor>
+      <arglist>(TQUEUE *queue)</arglist>
+    </member>
+    <member kind="function">
+      <type>void *</type>
+      <name>TQUEUE_pop</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga5e62b4b0ebe2d1460cf45f984d0ceed4</anchor>
+      <arglist>(TQUEUE *queue)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>TQUEUE_pop_non_blocking</name>
+      <anchorfile>a00015.html</anchorfile>
+      <anchor>ga6c1810568ce82ed03f5a364ac6e5b151</anchor>
       <arglist>(TQUEUE *queue, void **rret)</arglist>
     </member>
   </compound>

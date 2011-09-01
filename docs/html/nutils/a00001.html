@@ -23,6 +23,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -39,16 +40,13 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">tagSOCKCTX Struct Reference</div>  </div>
+<div class="title">tagSOCKCTX Struct Reference<div class="ingroups"><a class="el" href="a00004.html">SOCKET</a></div></div>  </div>
 </div>
 <div class="contents">
 <!-- doxytag: class="tagSOCKCTX" -->
-<p>a usable socket abstraction  
- <a href="a00001.html#details">More...</a></p>
-
 <p><code>#include &lt;<a class="el" href="a00003_source.html">sock.h</a>&gt;</code></p>
 
-<p><a href="a00005.html">List of all members.</a></p>
+<p><a href="a00006.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -60,12 +58,7 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a090065b6dfa838ecdf5ca535d6befa24">addr_size</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>a usable socket abstraction </p>
-<p>When you create a socket(2) then it is blocking by default. This means that you can't set read, write or connect timeouts - it's useless for any practical purposes.</p>
-<p>This abstraction creates a non blocking socket, but you can use it blockingly from a thread, but with specified timeout. This way you can have 'one thread per connection' in a way that allows you to set read and write timeouts.</p>
-<p>In a way this wrapper replace one set of utterly incomprehensible default behavior (the Berkley socket api) with another set of behaviour (which maybe makes more sense, maybe it doesn't - a matter of taste, as many things are with computers)</p>
-<p>Still, the Berkley socket interface is supposed to create the illusion, that one can do TCP networking without understanding the protocols. That is an illusion, and one simply has to read 'TCP IP Illustrated' by R. Stevens. </p>
-
+<div class="textblock">
 <p>Definition at line <a class="el" href="a00003_source.html#l00021">21</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="a3d6d0b0910922102ef30609abf8e9abf"></a><!-- doxytag: member="tagSOCKCTX::addr" ref="a3d6d0b0910922102ef30609abf8e9abf" args="" -->
@@ -162,7 +155,7 @@ Public Attributes</h2></td></tr>
 <li><a class="el" href="a00003_source.html">sock.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:28 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:47 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

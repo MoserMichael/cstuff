@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: Member List</title>
+<title>Simple data structures / objects in plain C: SLIST_entry</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -23,28 +23,50 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
-<div class="title">HASH_Entry Member List</div>  </div>
+<div class="title">SLIST_entry</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00004.html">HASH_Entry</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a></td><td><a class="el" href="a00004.html">HASH_Entry</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00004.html#a0a321e75db9083da90e2557e6cc24de8">hash</a></td><td><a class="el" href="a00004.html">HASH_Entry</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 23 2011 18:31:24 for Simple data structures / objects in plain C by&#160;
+
+<p>an entry in single linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00006.html">SLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html">tagSLIST_entry</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00009.html">tagSLIST_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00040.html#gaacb00d1a4daaa75eee59c1483cb57b80">SLIST_entry</a></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>an entry in single linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00006.html">SLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry. </p>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="gaacb00d1a4daaa75eee59c1483cb57b80"></a><!-- doxytag: member="slist.h::SLIST_entry" ref="gaacb00d1a4daaa75eee59c1483cb57b80" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00009.html">tagSLIST_entry</a>  
+   <a class="el" href="a00009.html">SLIST_entry</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 12:59:46 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
