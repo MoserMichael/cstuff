@@ -174,9 +174,11 @@ Limitations - Linux:
 
 
 Limitations - Windows:
-        Cygwin must be installed (download here http://cygwin.org/ ) and cygwin/bin directory must be in the path.
-        Winpcap must be installed (download here http://www.winpcap.org/ ) - it is also installed as part of wireshark setup.
-       We can't capture traffic on loopback adapter (winpcap limitation)
+        Cygwin must be installed (download here http://cygwin.org/ ) and 
+        cygwin/bin directory must be in the path.
+        Winpcap must be installed (download here http://www.winpcap.org/ ) - 
+        it is also installed as part of wireshark setup.
+        We can't capture traffic on loopback adapter (winpcap limitation)
 
 
 General limitations
