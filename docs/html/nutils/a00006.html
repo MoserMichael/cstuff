@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: Member List</title>
+<title>Simple tools for networking / objects in plain C: endutil.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,32 +24,303 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tagSOCKCTX Member List</div>  </div>
+<div class="title">endutil.h File Reference</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00001.html">tagSOCKCTX</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a3d6d0b0910922102ef30609abf8e9abf">addr</a></td><td><a class="el" href="a00001.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a090065b6dfa838ecdf5ca535d6befa24">addr_size</a></td><td><a class="el" href="a00001.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a></td><td><a class="el" href="a00001.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a5283ea4aa0d2447d230e37074a0589ef">connected</a></td><td><a class="el" href="a00001.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#addcdd353858c7738ccde887e2fa48501">fd</a></td><td><a class="el" href="a00001.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#aaa34bd395f2c627e0497599095582550">verbose</a></td><td><a class="el" href="a00001.html">tagSOCKCTX</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 17:11:28 for Simple tools for networking / objects in plain C by&#160;
+<div class="textblock"><code>#include &lt;cutils/base.h&gt;</code><br/>
+<code>#include &lt;arpa/inet.h&gt;</code><br/>
+</div>
+<p><a href="a00006_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">QUAD</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#ae404a6642bd93fb60e1bead5bc98fcec">n2h_uint16_t</a>(val)&#160;&#160;&#160;ntohs( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#ac9e2c714095efb500ded4e9f89a8b2fa">n2h_int16_t</a>(val)&#160;&#160;&#160;ntohs( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a6a21ec5233e121a1eae0098d77f35839">n2h_uint32_t</a>(val)&#160;&#160;&#160;ntohl( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a7e8a9e2d792b9d5e86bca73df54f5606">n2h_int32_t</a>(val)&#160;&#160;&#160;ntohl( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a62e912357bd5958e11b6e7b2e9bab027">n2h_int64_t</a>(val)&#160;&#160;&#160;n2h_uint64_t( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a3cb4be5234746b5a549dce04434bb007">h2n_uint16_t</a>(val)&#160;&#160;&#160;htons( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a464eac4c5b9387c7ed39e41edc6f3cd9">h2n_int16_t</a>(val)&#160;&#160;&#160;htons( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a1f036bd2a229c2beed12f7d2dcf9673e">h2n_uint32_t</a>(val)&#160;&#160;&#160;htonl( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a5107680dae342ada3d353b2e6ee66cca">h2n_int32_t</a>(val)&#160;&#160;&#160;htonl( val )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#aedf98671d5859cac442b0056d94ed4d4">h2n_int64_t</a>(val)&#160;&#160;&#160;h2n_uint64_t( val )</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a47c8a374922a6c8a3e1e41d2bcf9023e">n2h_uint64_t</a> (uint64_t val)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#ae3c10aa4c4f3390f1c5dd323ba3be665">h2n_uint64_t</a> (uint64_t val)</td></tr>
+</table>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a464eac4c5b9387c7ed39e41edc6f3cd9"></a><!-- doxytag: member="endutil.h::h2n_int16_t" ref="a464eac4c5b9387c7ed39e41edc6f3cd9" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define h2n_int16_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;htons( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00048">48</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5107680dae342ada3d353b2e6ee66cca"></a><!-- doxytag: member="endutil.h::h2n_int32_t" ref="a5107680dae342ada3d353b2e6ee66cca" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define h2n_int32_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;htonl( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00050">50</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aedf98671d5859cac442b0056d94ed4d4"></a><!-- doxytag: member="endutil.h::h2n_int64_t" ref="aedf98671d5859cac442b0056d94ed4d4" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define h2n_int64_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;h2n_uint64_t( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00051">51</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3cb4be5234746b5a549dce04434bb007"></a><!-- doxytag: member="endutil.h::h2n_uint16_t" ref="a3cb4be5234746b5a549dce04434bb007" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define h2n_uint16_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;htons( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00047">47</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1f036bd2a229c2beed12f7d2dcf9673e"></a><!-- doxytag: member="endutil.h::h2n_uint32_t" ref="a1f036bd2a229c2beed12f7d2dcf9673e" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define h2n_uint32_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;htonl( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00049">49</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac9e2c714095efb500ded4e9f89a8b2fa"></a><!-- doxytag: member="endutil.h::n2h_int16_t" ref="ac9e2c714095efb500ded4e9f89a8b2fa" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define n2h_int16_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;ntohs( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00042">42</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7e8a9e2d792b9d5e86bca73df54f5606"></a><!-- doxytag: member="endutil.h::n2h_int32_t" ref="a7e8a9e2d792b9d5e86bca73df54f5606" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define n2h_int32_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;ntohl( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00044">44</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a62e912357bd5958e11b6e7b2e9bab027"></a><!-- doxytag: member="endutil.h::n2h_int64_t" ref="a62e912357bd5958e11b6e7b2e9bab027" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define n2h_int64_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;n2h_uint64_t( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00045">45</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae404a6642bd93fb60e1bead5bc98fcec"></a><!-- doxytag: member="endutil.h::n2h_uint16_t" ref="ae404a6642bd93fb60e1bead5bc98fcec" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define n2h_uint16_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;ntohs( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00041">41</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6a21ec5233e121a1eae0098d77f35839"></a><!-- doxytag: member="endutil.h::n2h_uint32_t" ref="a6a21ec5233e121a1eae0098d77f35839" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define n2h_uint32_t</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;ntohl( val )</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00043">43</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ae3c10aa4c4f3390f1c5dd323ba3be665"></a><!-- doxytag: member="endutil.h::h2n_uint64_t" ref="ae3c10aa4c4f3390f1c5dd323ba3be665" args="(uint64_t val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE uint64_t h2n_uint64_t </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00028">28</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00001.html">QUAD</a> a,b;
+  
+  a.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a> = val;
+
+  b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> = htonl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> );
+  b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> = htonl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> );
+
+  <span class="keywordflow">return</span> b.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a47c8a374922a6c8a3e1e41d2bcf9023e"></a><!-- doxytag: member="endutil.h::n2h_uint64_t" ref="a47c8a374922a6c8a3e1e41d2bcf9023e" args="(uint64_t val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE uint64_t n2h_uint64_t </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00016">16</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00001.html">QUAD</a> a,b;
+  
+  a.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a> = val;
+
+  b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> = ntohl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> );
+  b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> = ntohl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> );
+
+  <span class="keywordflow">return</span> b.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a>;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Thu Sep 1 2011 21:07:14 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

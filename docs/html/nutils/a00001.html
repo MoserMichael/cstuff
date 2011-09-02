@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: tagSOCKCTX Struct Reference</title>
+<title>Simple tools for networking / objects in plain C: QUAD Union Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,122 +40,89 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">tagSOCKCTX Struct Reference<div class="ingroups"><a class="el" href="a00004.html">SOCKET</a></div></div>  </div>
+<div class="title">QUAD Union Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="tagSOCKCTX" -->
-<p><code>#include &lt;<a class="el" href="a00003_source.html">sock.h</a>&gt;</code></p>
+<!-- doxytag: class="QUAD" -->
+<p><code>#include &lt;<a class="el" href="a00006_source.html">endutil.h</a>&gt;</code></p>
 
-<p><a href="a00006.html">List of all members.</a></p>
+<p><a href="a00012.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#aaa34bd395f2c627e0497599095582550">verbose</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a5283ea4aa0d2447d230e37074a0589ef">connected</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#addcdd353858c7738ccde887e2fa48501">fd</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a3d6d0b0910922102ef30609abf8e9abf">addr</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a090065b6dfa838ecdf5ca535d6befa24">addr_size</a></td></tr>
+<tr><td class="memItemLeft" >struct {</td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a></td></tr>
+<tr><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00003_source.html#l00021">21</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00008">8</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a3d6d0b0910922102ef30609abf8e9abf"></a><!-- doxytag: member="tagSOCKCTX::addr" ref="a3d6d0b0910922102ef30609abf8e9abf" args="" -->
+<a class="anchor" id="a11e20bbb272ef66968e1a258be2e819a"></a><!-- doxytag: member="QUAD::n32" ref="a11e20bbb272ef66968e1a258be2e819a" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void* <a class="el" href="a00001.html#a3d6d0b0910922102ef30609abf8e9abf">tagSOCKCTX::addr</a></td>
+          <td class="memname">struct { ... }   <a class="el" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">QUAD::n32</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00003_source.html#l00028">28</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a090065b6dfa838ecdf5ca535d6befa24"></a><!-- doxytag: member="tagSOCKCTX::addr_size" ref="a090065b6dfa838ecdf5ca535d6befa24" args="" -->
+<a class="anchor" id="a70b5746bfc7e6c117f070976f6721e33"></a><!-- doxytag: member="QUAD::n64" ref="a70b5746bfc7e6c117f070976f6721e33" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="a00001.html#a090065b6dfa838ecdf5ca535d6befa24">tagSOCKCTX::addr_size</a></td>
+          <td class="memname">uint64_t <a class="el" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">QUAD::n64</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00003_source.html#l00029">29</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00013">13</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a21ecb44f25561d43dd4b154348562d6a"></a><!-- doxytag: member="tagSOCKCTX::close_on_peer_close" ref="a21ecb44f25561d43dd4b154348562d6a" args="" -->
+<a class="anchor" id="a5c80742ee93ebb9d799ce40f4a313fee"></a><!-- doxytag: member="QUAD::word_a" ref="a5c80742ee93ebb9d799ce40f4a313fee" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="a00001.html#a21ecb44f25561d43dd4b154348562d6a">tagSOCKCTX::close_on_peer_close</a></td>
+          <td class="memname">uint32_t <a class="el" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">QUAD::word_a</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00003_source.html#l00025">25</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00010">10</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5283ea4aa0d2447d230e37074a0589ef"></a><!-- doxytag: member="tagSOCKCTX::connected" ref="a5283ea4aa0d2447d230e37074a0589ef" args="" -->
+<a class="anchor" id="a63e0faf2a13796e5c56d63ded3c75154"></a><!-- doxytag: member="QUAD::word_b" ref="a63e0faf2a13796e5c56d63ded3c75154" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="a00001.html#a5283ea4aa0d2447d230e37074a0589ef">tagSOCKCTX::connected</a></td>
+          <td class="memname">uint32_t <a class="el" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">QUAD::word_b</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00003_source.html#l00024">24</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00011">11</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="addcdd353858c7738ccde887e2fa48501"></a><!-- doxytag: member="tagSOCKCTX::fd" ref="addcdd353858c7738ccde887e2fa48501" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="a00001.html#addcdd353858c7738ccde887e2fa48501">tagSOCKCTX::fd</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00003_source.html#l00026">26</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaa34bd395f2c627e0497599095582550"></a><!-- doxytag: member="tagSOCKCTX::verbose" ref="aaa34bd395f2c627e0497599095582550" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="a00001.html#aaa34bd395f2c627e0497599095582550">tagSOCKCTX::verbose</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00003_source.html#l00023">23</a> of file <a class="el" href="a00003_source.html">sock.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00003_source.html">sock.h</a></li>
+<hr/>The documentation for this union was generated from the following file:<ul>
+<li><a class="el" href="a00006_source.html">endutil.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 31 2011 17:11:28 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Sep 1 2011 21:07:14 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
