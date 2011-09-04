@@ -5,12 +5,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-void BF_test();
+void BF_test_signed();
+void BF_test_unsigned();
 
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
-	VTEST_TESTN( BF_test )
+	VTEST_TESTN( BF_test_signed )
+	VTEST_TESTN( BF_test_unsigned )
 VTEST_END_SUITE
 
 
