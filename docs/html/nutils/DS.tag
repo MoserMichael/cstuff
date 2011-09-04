@@ -7,6 +7,27 @@
     <includes id="a00005" name="bf.h" local="yes" imported="no">bf.h</includes>
     <member kind="function">
       <type>int</type>
+      <name>BF_compact</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga37819d2886490c212763c865c33364db</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
+      <type>int8_t *</type>
+      <name>BF_get_line</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga09cbe8980a7c0db771e0d6d93235a1d5</anchor>
+      <arglist>(BF *bf, int eof)</arglist>
+    </member>
+    <member kind="function">
+      <type>int8_t *</type>
+      <name>BF_get_line_ext</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gadac43bf1b5b17fe81e700cf4dfb9ee32</anchor>
+      <arglist>(BF *bf, int8_t *eof_line, size_t eof_line_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>BF_check</name>
       <anchorfile>a00009.html</anchorfile>
       <anchor>ga9a5012a3895ade56ca7b1a8bb7309c72</anchor>
@@ -59,6 +80,20 @@
       <name>BF_DECLARE_GET_MACRO</name>
       <anchorfile>a00009.html</anchorfile>
       <anchor>gaef54a2ad2476088707dd143fd0c36c6e</anchor>
+      <arglist>(type)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BF_DECLARE_PUT_UNSAFE_MACRO</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga543fba03a17673a12a4b217faa808b05</anchor>
+      <arglist>(type)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BF_DECLARE_GET_UNSAFE_MACRO</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga94ea6669521af770786a977fb521707b</anchor>
       <arglist>(type)</arglist>
     </member>
     <member kind="typedef">
@@ -138,12 +173,47 @@
       <anchor>ga9e4f956930808566d42dd85d4b0ce24d</anchor>
       <arglist>(BF *bf)</arglist>
     </member>
+    <member kind="function">
+      <type>int</type>
+      <name>BF_compact</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga37819d2886490c212763c865c33364db</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
+      <type>int8_t *</type>
+      <name>BF_get_line</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga09cbe8980a7c0db771e0d6d93235a1d5</anchor>
+      <arglist>(BF *bf, int eof_line)</arglist>
+    </member>
+    <member kind="function">
+      <type>int8_t *</type>
+      <name>BF_get_line_ext</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gadac43bf1b5b17fe81e700cf4dfb9ee32</anchor>
+      <arglist>(BF *bf, int8_t *eof_line, size_t eof_line_size)</arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>endutil.h</name>
     <path>/home/mmoser/archive/cstuff_bak/nutils/</path>
     <filename>a00006</filename>
     <class kind="union">QUAD</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_uint8_t</name>
+      <anchorfile>a00006.html</anchorfile>
+      <anchor>a726255f8ab5a5a70073ac3f3ab086839</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_int8_t</name>
+      <anchorfile>a00006.html</anchorfile>
+      <anchor>af368243836ff0d14473c1843df997767</anchor>
+      <arglist>(val)</arglist>
+    </member>
     <member kind="define">
       <type>#define</type>
       <name>n2h_uint16_t</name>
@@ -177,6 +247,20 @@
       <name>n2h_int64_t</name>
       <anchorfile>a00006.html</anchorfile>
       <anchor>a62e912357bd5958e11b6e7b2e9bab027</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_uint8_t</name>
+      <anchorfile>a00006.html</anchorfile>
+      <anchor>a2f1a37771facd2363384ce2271e57611</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_int8_t</name>
+      <anchorfile>a00006.html</anchorfile>
+      <anchor>ae8bed63462030f0808c9285d93282227</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
@@ -400,6 +484,20 @@
       <anchor>gaef54a2ad2476088707dd143fd0c36c6e</anchor>
       <arglist>(type)</arglist>
     </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BF_DECLARE_PUT_UNSAFE_MACRO</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga543fba03a17673a12a4b217faa808b05</anchor>
+      <arglist>(type)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BF_DECLARE_GET_UNSAFE_MACRO</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga94ea6669521af770786a977fb521707b</anchor>
+      <arglist>(type)</arglist>
+    </member>
     <member kind="typedef">
       <type>struct tagBF</type>
       <name>BF</name>
@@ -476,6 +574,27 @@
       <anchorfile>a00009.html</anchorfile>
       <anchor>ga9e4f956930808566d42dd85d4b0ce24d</anchor>
       <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>BF_compact</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga37819d2886490c212763c865c33364db</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
+      <type>int8_t *</type>
+      <name>BF_get_line</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga09cbe8980a7c0db771e0d6d93235a1d5</anchor>
+      <arglist>(BF *bf, int eof_line)</arglist>
+    </member>
+    <member kind="function">
+      <type>int8_t *</type>
+      <name>BF_get_line_ext</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gadac43bf1b5b17fe81e700cf4dfb9ee32</anchor>
+      <arglist>(BF *bf, int8_t *eof_line, size_t eof_line_size)</arglist>
     </member>
   </compound>
   <compound kind="group">

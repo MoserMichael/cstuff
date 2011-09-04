@@ -79,23 +79,27 @@
 <a name="l00038"></a>00038 }
 <a name="l00039"></a>00039 
 <a name="l00040"></a>00040 
-<a name="l00041"></a><a class="code" href="a00006.html#ae404a6642bd93fb60e1bead5bc98fcec">00041</a> <span class="preprocessor">#define n2h_uint16_t(val) ntohs( val )</span>
-<a name="l00042"></a><a class="code" href="a00006.html#ac9e2c714095efb500ded4e9f89a8b2fa">00042</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int16_t(val)  ntohs( val )</span>
-<a name="l00043"></a><a class="code" href="a00006.html#a6a21ec5233e121a1eae0098d77f35839">00043</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_uint32_t(val) ntohl( val )</span>
-<a name="l00044"></a><a class="code" href="a00006.html#a7e8a9e2d792b9d5e86bca73df54f5606">00044</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int32_t(val)  ntohl( val )</span>
-<a name="l00045"></a><a class="code" href="a00006.html#a62e912357bd5958e11b6e7b2e9bab027">00045</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int64_t(val)  n2h_uint64_t( val )</span>
-<a name="l00046"></a>00046 <span class="preprocessor"></span>
-<a name="l00047"></a><a class="code" href="a00006.html#a3cb4be5234746b5a549dce04434bb007">00047</a> <span class="preprocessor">#define h2n_uint16_t(val) htons( val )</span>
-<a name="l00048"></a><a class="code" href="a00006.html#a464eac4c5b9387c7ed39e41edc6f3cd9">00048</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int16_t(val)  htons( val )</span>
-<a name="l00049"></a><a class="code" href="a00006.html#a1f036bd2a229c2beed12f7d2dcf9673e">00049</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_uint32_t(val) htonl( val ) </span>
-<a name="l00050"></a><a class="code" href="a00006.html#a5107680dae342ada3d353b2e6ee66cca">00050</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int32_t(val)  htonl( val )</span>
-<a name="l00051"></a><a class="code" href="a00006.html#aedf98671d5859cac442b0056d94ed4d4">00051</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int64_t(val)  h2n_uint64_t( val ) </span>
-<a name="l00052"></a>00052 <span class="preprocessor"></span>
-<a name="l00053"></a>00053 <span class="preprocessor">#endif</span>
-<a name="l00054"></a>00054 <span class="preprocessor"></span>
+<a name="l00041"></a><a class="code" href="a00006.html#a726255f8ab5a5a70073ac3f3ab086839">00041</a> <span class="preprocessor">#define n2h_uint8_t(val)  (val)</span>
+<a name="l00042"></a><a class="code" href="a00006.html#af368243836ff0d14473c1843df997767">00042</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int8_t(val)   (val)</span>
+<a name="l00043"></a><a class="code" href="a00006.html#ae404a6642bd93fb60e1bead5bc98fcec">00043</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_uint16_t(val) ntohs( val )</span>
+<a name="l00044"></a><a class="code" href="a00006.html#ac9e2c714095efb500ded4e9f89a8b2fa">00044</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int16_t(val)  ntohs( val )</span>
+<a name="l00045"></a><a class="code" href="a00006.html#a6a21ec5233e121a1eae0098d77f35839">00045</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_uint32_t(val) ntohl( val )</span>
+<a name="l00046"></a><a class="code" href="a00006.html#a7e8a9e2d792b9d5e86bca73df54f5606">00046</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int32_t(val)  ntohl( val )</span>
+<a name="l00047"></a><a class="code" href="a00006.html#a62e912357bd5958e11b6e7b2e9bab027">00047</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int64_t(val)  n2h_uint64_t( val )</span>
+<a name="l00048"></a>00048 <span class="preprocessor"></span>
+<a name="l00049"></a><a class="code" href="a00006.html#a2f1a37771facd2363384ce2271e57611">00049</a> <span class="preprocessor">#define h2n_uint8_t(val)  (val)</span>
+<a name="l00050"></a><a class="code" href="a00006.html#ae8bed63462030f0808c9285d93282227">00050</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int8_t(val)   (val)</span>
+<a name="l00051"></a><a class="code" href="a00006.html#a3cb4be5234746b5a549dce04434bb007">00051</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_uint16_t(val) htons( val )</span>
+<a name="l00052"></a><a class="code" href="a00006.html#a464eac4c5b9387c7ed39e41edc6f3cd9">00052</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int16_t(val)  htons( val )</span>
+<a name="l00053"></a><a class="code" href="a00006.html#a1f036bd2a229c2beed12f7d2dcf9673e">00053</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_uint32_t(val) htonl( val ) </span>
+<a name="l00054"></a><a class="code" href="a00006.html#a5107680dae342ada3d353b2e6ee66cca">00054</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int32_t(val)  htonl( val )</span>
+<a name="l00055"></a><a class="code" href="a00006.html#aedf98671d5859cac442b0056d94ed4d4">00055</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int64_t(val)  h2n_uint64_t( val ) </span>
+<a name="l00056"></a>00056 <span class="preprocessor"></span>
+<a name="l00057"></a>00057 <span class="preprocessor">#endif</span>
+<a name="l00058"></a>00058 <span class="preprocessor"></span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Sep 1 2011 21:07:14 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 20:30:12 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

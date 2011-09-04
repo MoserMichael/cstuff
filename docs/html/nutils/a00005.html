@@ -56,6 +56,8 @@ Classes</h2></td></tr>
 Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>(type)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>(type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(type)</td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagBF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gac141d99aa0f78cafd2acf074517a38cf">BF</a></td></tr>
@@ -81,9 +83,13 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of bytes that cam be read from this buffer (i.e. that BF_get_(type) return )  <a href="a00009.html#ga95f015cf316f26ce7d0ae42feef8a45f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga9e4f956930808566d42dd85d4b0ce24d">BF_can_put</a> (<a class="el" href="a00002.html">BF</a> *bf)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of bytes that cam be placed into this buffer (i.e. that BF_put_(type) places into this buffer )  <a href="a00009.html#ga9e4f956930808566d42dd85d4b0ce24d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga37819d2886490c212763c865c33364db">BF_compact</a> (<a class="el" href="a00002.html">BF</a> *bf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">moves get_pos to start position; moves content between get_pos and put_pos if not empty.a Always succeeds returns 0 if bytes were moved, 1 if buffer was empty to begin with.  <a href="a00009.html#ga37819d2886490c212763c865c33364db"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga09cbe8980a7c0db771e0d6d93235a1d5">BF_get_line</a> (<a class="el" href="a00002.html">BF</a> *bf, int eof_line)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gadac43bf1b5b17fe81e700cf4dfb9ee32">BF_get_line_ext</a> (<a class="el" href="a00002.html">BF</a> *bf, int8_t *eof_line, size_t eof_line_size)</td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Sep 1 2011 21:07:14 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 20:30:12 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
