@@ -105,7 +105,23 @@ M_INLINE size_t BF_can_put( BF *bf )
     return bf->end - bf->put_pos;
 }
 
+/**
+ * @brief moves get_pos to start position; moves content between get_pos and put_pos if not empty.a
+ * Always succeeds
+ * returns 0 if bytes were moved, 1 if buffer was empty to begin with.
+ */
+int BF_compact( BF * bf );
 
+
+/**
+  @ brief get the next line.
+ */
+int8_t *  BF_get_line( BF * bf, int eof_line);
+
+/**
+  @ brief get the next line.
+ */
+int8_t *  BF_get_line_ext( BF * bf, int8_t *eof_line, size_t eof_line_size);
 
 
 #define BF_DECLARE_PUT_MACRO( type ) \
@@ -122,6 +138,8 @@ M_INLINE int BF_put_##type ( BF *bf, type val ) \
    return 0; \
 } 
 
+BF_DECLARE_PUT_MACRO( uint8_t )
+BF_DECLARE_PUT_MACRO( int8_t )
 BF_DECLARE_PUT_MACRO( uint16_t )
 BF_DECLARE_PUT_MACRO( int16_t )
 BF_DECLARE_PUT_MACRO( uint32_t )
@@ -141,12 +159,47 @@ M_INLINE int BF_get_##type ( BF *bf, type *pval ) \
    return 0; \
 }
 
+BF_DECLARE_GET_MACRO( uint8_t )
+BF_DECLARE_GET_MACRO( int8_t )
 BF_DECLARE_GET_MACRO( uint16_t )
 BF_DECLARE_GET_MACRO( int16_t )
 BF_DECLARE_GET_MACRO( uint32_t )
 BF_DECLARE_GET_MACRO( int32_t )
 BF_DECLARE_GET_MACRO( uint64_t )
 BF_DECLARE_GET_MACRO( int64_t )
+
+#define BF_DECLARE_PUT_UNSAFE_MACRO( type ) \
+M_INLINE void BF_put_unsafe_##type ( BF *bf, type val ) \
+{ \
+  type nval = h2n_##type ( val ); \
+  *( ( type *) bf->put_pos) = nval; \
+  bf->put_pos += sizeof ( type ); \
+} 
+
+BF_DECLARE_PUT_UNSAFE_MACRO(uint8_t)
+BF_DECLARE_PUT_UNSAFE_MACRO(int8_t) 
+BF_DECLARE_PUT_UNSAFE_MACRO(uint16_t)
+BF_DECLARE_PUT_UNSAFE_MACRO(int16_t) 
+BF_DECLARE_PUT_UNSAFE_MACRO(uint32_t)
+BF_DECLARE_PUT_UNSAFE_MACRO(int32_t)
+BF_DECLARE_PUT_UNSAFE_MACRO(uint64_t)
+BF_DECLARE_PUT_UNSAFE_MACRO(int64_t)
+
+#define BF_DECLARE_GET_UNSAFE_MACRO( type ) \
+M_INLINE type BF_get_unsafe_##type ( BF *bf ) { \
+   type rval = n2h_##type( *( ( type *) bf->get_pos) ); \
+   bf->get_pos += sizeof( type ); \
+   return rval; \
+}
+
+BF_DECLARE_GET_UNSAFE_MACRO(uint8_t)
+BF_DECLARE_GET_UNSAFE_MACRO(int8_t)
+BF_DECLARE_GET_UNSAFE_MACRO(uint16_t)
+BF_DECLARE_GET_UNSAFE_MACRO(int16_t)
+BF_DECLARE_GET_UNSAFE_MACRO(uint32_t)
+BF_DECLARE_GET_UNSAFE_MACRO(int32_t)
+BF_DECLARE_GET_UNSAFE_MACRO(uint64_t)
+BF_DECLARE_GET_UNSAFE_MACRO(int64_t)
 
 /**
  @}
