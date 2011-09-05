@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: ERRORP</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: strtk.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,163 +25,72 @@
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">ERRORP</div>  </div>
+<div class="title">strtk.h File Reference</div>  </div>
 </div>
 <div class="contents">
-
-<p>error logging with stack trace (not the symbols, just the addresses).  
-<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;cutils/base.h&gt;</code><br/>
+</div>
+<p><a href="a00008_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">tagSTRTK</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a>&#160;&#160;&#160;(( 255 / 8 ) + 1)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga6af25e1d072d3e1ed7d7c0682831155c">STRTK_IS_CHAR</a>(tok, ch)&#160;&#160;&#160;( (tok)-&gt;pattern[ (ch) &gt;&gt; 3 ] &amp;&amp; (1 &lt;&lt; ((ch) &amp; 7))  )</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">macro checks if character is part of character class  <a href="a00013.html#ga6af25e1d072d3e1ed7d7c0682831155c"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagSTRTK</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga76f725215889db6e091bec0b60be9d33">STRTK</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ga766648cd1050284e3170e1122e776b4f">errorp_open_file</a> (const char *file)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ga6911b37ee103e7778baa57f3ef4e1f58">errorp_close_file</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#gaeb8c47ac00ab256e031f9897e3cc4be4">errorp</a> (int rval, const char *fmt,...)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">STRTK_init</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *stop_chars)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initalise a character class  <a href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5">STRTK_spn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class.  <a href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031">STRTK_nspn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class, argument string is limited.  <a href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaf5f9a2448a798742f4c632df8207bee6">STRTK_ntok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize, char **end_tok)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="a00013.html#gaf5f9a2448a798742f4c632df8207bee6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga970da7da688e9d0412ef1e688b340f32">STRTK_tok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, char **end_tok)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="a00013.html#ga970da7da688e9d0412ef1e688b340f32"></a><br/></td></tr>
 </table>
-<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>error logging with stack trace (not the symbols, just the addresses). </p>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="gaeb8c47ac00ab256e031f9897e3cc4be4"></a><!-- doxytag: member="errorp.h::errorp" ref="gaeb8c47ac00ab256e031f9897e3cc4be4" args="(int rval, const char *fmt,...)" -->
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a4718a59241012667de9862df37383a48"></a><!-- doxytag: member="strtk.h::STRTK_PATTERN_SIZE" ref="a4718a59241012667de9862df37383a48" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void errorp </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>rval</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>fmt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define STRTK_PATTERN_SIZE&#160;&#160;&#160;(( 255 / 8 ) + 1)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00002_source.html#l00052">52</a> of file <a class="el" href="a00002_source.html">errorp.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordtype">char</span> buff[ 1024 ];
-  <span class="keywordtype">char</span> *p, *eof;
-  va_list ap;
-  <span class="keywordtype">int</span> len, n;
- 
-<span class="preprocessor">#if __linux__</span>
-<span class="preprocessor"></span>  <span class="keywordtype">void</span> *sframes[ <a class="code" href="a00002.html#afa5bb6221801445761a1f1c41101284f">STACK_FRAMES</a> + 1 ];
-  <span class="keywordtype">int</span> nframes, i;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-  p = buff;
-  eof = p + <span class="keyword">sizeof</span>( buff );
+<p>Definition at line <a class="el" href="a00008_source.html#l00006">6</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
 
-  strcpy( p, <a class="code" href="a00002.html#a2983b695e827265a5b46ab9405446e36">ERROR_TOKEN</a> );
-  p += strlen( <a class="code" href="a00002.html#a2983b695e827265a5b46ab9405446e36">ERROR_TOKEN</a> );
-
-
-  va_start( ap, fmt );
-  len =  vsnprintf( p, eof - p - 1, fmt, ap );
-  va_end( ap );
-  p += len;
-
-  n = snprintf(p, eof - p - 1, <span class="stringliteral">&quot;. returns %d errno %d\n&quot;</span>, rval, errno );
-  p += n;
-   
-  write( <a class="code" href="a00002.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> , buff , p - buff );
-
-<span class="preprocessor">#if __linux__</span>
-<span class="preprocessor"></span>  nframes = backtrace( sframes, <a class="code" href="a00002.html#afa5bb6221801445761a1f1c41101284f">STACK_FRAMES</a> + 1); \
-  write( <a class="code" href="a00002.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a>, <a class="code" href="a00002.html#a1763c9556bd80b7806528729edc98a05">STACK_START</a>, strlen( <a class="code" href="a00002.html#a1763c9556bd80b7806528729edc98a05">STACK_START</a> ) );
-  
-  nframes =  backtrace( sframes, <a class="code" href="a00002.html#afa5bb6221801445761a1f1c41101284f">STACK_FRAMES</a> );
-  <span class="keywordflow">for</span> (i=0; i&lt;nframes; i++) {
-    snprintf( buff, <span class="keyword">sizeof</span>(buff),  <span class="stringliteral">&quot;frame %d ip: %p\n&quot;</span>, i, sframes[ i ]);
-    write( <a class="code" href="a00002.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> , buff, strlen( buff ) );
-  }
-
-  dump_modules();
-  write( <a class="code" href="a00002.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a>, <a class="code" href="a00002.html#ae6fd4cb094a69a8f1f658790e4b4d382">STACK_EOF</a>, strlen( <a class="code" href="a00002.html#ae6fd4cb094a69a8f1f658790e4b4d382">STACK_EOF</a> ) );
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga6911b37ee103e7778baa57f3ef4e1f58"></a><!-- doxytag: member="errorp.h::errorp_close_file" ref="ga6911b37ee103e7778baa57f3ef4e1f58" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void errorp_close_file </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00002_source.html#l00043">43</a> of file <a class="el" href="a00002_source.html">errorp.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">if</span> (<a class="code" href="a00002.html#a5ef1a826bfb22c8590a5773ba030fdd7">FD_ASSIGNED</a> != 1) {
-    close( <a class="code" href="a00002.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> );
-    <a class="code" href="a00002.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> = 2;
-    <a class="code" href="a00002.html#a5ef1a826bfb22c8590a5773ba030fdd7">FD_ASSIGNED</a> = 0;
-  }
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga766648cd1050284e3170e1122e776b4f"></a><!-- doxytag: member="errorp.h::errorp_open_file" ref="ga766648cd1050284e3170e1122e776b4f" args="(const char *file)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int errorp_open_file </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00002_source.html#l00031">31</a> of file <a class="el" href="a00002_source.html">errorp.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordtype">int</span> fd;
-
-  fd = open( file , O_CREAT | O_RDWR, S_IWUSR  | S_IRUSR );
-  <span class="keywordflow">if</span> (fd != -1) {
-    <a class="code" href="a00002.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> = fd;
-    <a class="code" href="a00002.html#a5ef1a826bfb22c8590a5773ba030fdd7">FD_ASSIGNED</a> = 1;
-  }
-  <span class="keywordflow">return</span> fd;
-}
-</pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 20:30:13 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 13:24:30 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: errorp.h Source File</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: errorp.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,37 +36,175 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">errorp.h</div>  </div>
+<div class="title">errorp.c</div>  </div>
 </div>
 <div class="contents">
 <a href="a00003.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) Michael Moser (2011) . 3-clause BSD License applies */</span>
 <a name="l00002"></a>00002 
-<a name="l00003"></a>00003 <span class="preprocessor">#ifndef __ERRORP_H__</span>
-<a name="l00004"></a>00004 <span class="preprocessor"></span><span class="preprocessor">#define __ERRORP_H__</span>
-<a name="l00005"></a>00005 <span class="preprocessor"></span>
-<a name="l00006"></a>00006 <span class="comment"></span>
-<a name="l00007"></a>00007 <span class="comment">/**</span>
-<a name="l00008"></a>00008 <span class="comment"> * @defgroup ERRORP </span>
-<a name="l00009"></a>00009 <span class="comment"> * @brief error logging with stack trace (not the symbols, just the addresses).</span>
-<a name="l00010"></a>00010 <span class="comment"> * @{</span>
-<a name="l00011"></a>00011 <span class="comment"> */</span>
-<a name="l00012"></a>00012 
-<a name="l00013"></a>00013 <span class="keywordtype">int</span>  <a class="code" href="a00008.html#ga766648cd1050284e3170e1122e776b4f">errorp_open_file</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *file);
-<a name="l00014"></a>00014 
-<a name="l00015"></a>00015 <span class="keywordtype">void</span> <a class="code" href="a00008.html#ga6911b37ee103e7778baa57f3ef4e1f58">errorp_close_file</a>();
-<a name="l00016"></a>00016 
-<a name="l00017"></a>00017 <span class="keywordtype">void</span> <a class="code" href="a00008.html#gaeb8c47ac00ab256e031f9897e3cc4be4">errorp</a>(<span class="keywordtype">int</span> rval, <span class="keyword">const</span> <span class="keywordtype">char</span> *fmt, ... );
-<a name="l00018"></a>00018 <span class="comment"></span>
-<a name="l00019"></a>00019 <span class="comment">/**</span>
-<a name="l00020"></a>00020 <span class="comment"> * @}</span>
-<a name="l00021"></a>00021 <span class="comment"> */</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="preprocessor">#endif</span>
-<a name="l00024"></a>00024 <span class="preprocessor"></span>
-<a name="l00025"></a>00025 
+<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;stdarg.h&gt;</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;unistd.h&gt;</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#include &lt;errno.h&gt;</span>
+<a name="l00007"></a>00007 <span class="preprocessor">#include &lt;string.h&gt;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;<a class="code" href="a00004.html">errorp.h</a>&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &lt;sys/types.h&gt;</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;sys/stat.h&gt;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;fcntl.h&gt;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#ifdef __linux__</span>
+<a name="l00013"></a>00013 <span class="preprocessor"></span><span class="preprocessor">#include &lt;execinfo.h&gt;</span>
+<a name="l00014"></a>00014 <span class="preprocessor">#endif</span>
+<a name="l00015"></a>00015 <span class="preprocessor"></span>
+<a name="l00016"></a><a class="code" href="a00003.html#a2983b695e827265a5b46ab9405446e36">00016</a> <span class="preprocessor">#define ERROR_TOKEN &quot;ERROR: &quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor"></span>
+<a name="l00018"></a><a class="code" href="a00003.html#afa5bb6221801445761a1f1c41101284f">00018</a> <span class="preprocessor">#define STACK_FRAMES 30</span>
+<a name="l00019"></a>00019 <span class="preprocessor"></span>
+<a name="l00020"></a><a class="code" href="a00003.html#a1763c9556bd80b7806528729edc98a05">00020</a> <span class="preprocessor">#define STACK_START &quot;*** start stack ***\n&quot;</span>
+<a name="l00021"></a><a class="code" href="a00003.html#ae6fd4cb094a69a8f1f658790e4b4d382">00021</a> <span class="preprocessor"></span><span class="preprocessor">#define STACK_EOF   &quot;\n*** eof stack ***\n\n&quot;</span>
+<a name="l00022"></a>00022 <span class="preprocessor"></span>
+<a name="l00023"></a>00023 
+<a name="l00024"></a><a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">00024</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a>  = 2;
+<a name="l00025"></a><a class="code" href="a00003.html#a5ef1a826bfb22c8590a5773ba030fdd7">00025</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00003.html#a5ef1a826bfb22c8590a5773ba030fdd7">FD_ASSIGNED</a> = 0;
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027 <span class="preprocessor">#ifdef __linux__</span>
+<a name="l00028"></a>00028 <span class="preprocessor"></span><span class="keyword">static</span> <span class="keywordtype">void</span> dump_modules();
+<a name="l00029"></a>00029 <span class="preprocessor">#endif</span>
+<a name="l00030"></a>00030 <span class="preprocessor"></span>
+<a name="l00031"></a><a class="code" href="a00011.html#ga766648cd1050284e3170e1122e776b4f">00031</a> <span class="keywordtype">int</span> <a class="code" href="a00011.html#ga766648cd1050284e3170e1122e776b4f">errorp_open_file</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *file)
+<a name="l00032"></a>00032 {
+<a name="l00033"></a>00033   <span class="keywordtype">int</span> fd;
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035   fd = open( file , O_CREAT | O_RDWR, S_IWUSR  | S_IRUSR );
+<a name="l00036"></a>00036   <span class="keywordflow">if</span> (fd != -1) {
+<a name="l00037"></a>00037     <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> = fd;
+<a name="l00038"></a>00038     <a class="code" href="a00003.html#a5ef1a826bfb22c8590a5773ba030fdd7">FD_ASSIGNED</a> = 1;
+<a name="l00039"></a>00039   }
+<a name="l00040"></a>00040   <span class="keywordflow">return</span> fd;
+<a name="l00041"></a>00041 }
+<a name="l00042"></a>00042 
+<a name="l00043"></a><a class="code" href="a00011.html#ga6911b37ee103e7778baa57f3ef4e1f58">00043</a> <span class="keywordtype">void</span> <a class="code" href="a00011.html#ga6911b37ee103e7778baa57f3ef4e1f58">errorp_close_file</a>()
+<a name="l00044"></a>00044 {
+<a name="l00045"></a>00045   <span class="keywordflow">if</span> (<a class="code" href="a00003.html#a5ef1a826bfb22c8590a5773ba030fdd7">FD_ASSIGNED</a> != 1) {
+<a name="l00046"></a>00046     close( <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> );
+<a name="l00047"></a>00047     <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> = 2;
+<a name="l00048"></a>00048     <a class="code" href="a00003.html#a5ef1a826bfb22c8590a5773ba030fdd7">FD_ASSIGNED</a> = 0;
+<a name="l00049"></a>00049   }
+<a name="l00050"></a>00050 }
+<a name="l00051"></a>00051 
+<a name="l00052"></a><a class="code" href="a00011.html#gaeb8c47ac00ab256e031f9897e3cc4be4">00052</a> <span class="keywordtype">void</span> <a class="code" href="a00011.html#gaeb8c47ac00ab256e031f9897e3cc4be4">errorp</a>(<span class="keywordtype">int</span> rval, <span class="keyword">const</span> <span class="keywordtype">char</span> *fmt, ... ) 
+<a name="l00053"></a>00053 {
+<a name="l00054"></a>00054   <span class="keywordtype">char</span> buff[ 1024 ];
+<a name="l00055"></a>00055   <span class="keywordtype">char</span> *p, *eof;
+<a name="l00056"></a>00056   va_list ap;
+<a name="l00057"></a>00057   <span class="keywordtype">int</span> len, n;
+<a name="l00058"></a>00058  
+<a name="l00059"></a>00059 <span class="preprocessor">#if __linux__</span>
+<a name="l00060"></a>00060 <span class="preprocessor"></span>  <span class="keywordtype">void</span> *sframes[ <a class="code" href="a00003.html#afa5bb6221801445761a1f1c41101284f">STACK_FRAMES</a> + 1 ];
+<a name="l00061"></a>00061   <span class="keywordtype">int</span> nframes, i;
+<a name="l00062"></a>00062 <span class="preprocessor">#endif</span>
+<a name="l00063"></a>00063 <span class="preprocessor"></span>
+<a name="l00064"></a>00064   p = buff;
+<a name="l00065"></a>00065   eof = p + <span class="keyword">sizeof</span>( buff );
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067   strcpy( p, <a class="code" href="a00003.html#a2983b695e827265a5b46ab9405446e36">ERROR_TOKEN</a> );
+<a name="l00068"></a>00068   p += strlen( <a class="code" href="a00003.html#a2983b695e827265a5b46ab9405446e36">ERROR_TOKEN</a> );
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071   va_start( ap, fmt );
+<a name="l00072"></a>00072   len =  vsnprintf( p, eof - p - 1, fmt, ap );
+<a name="l00073"></a>00073   va_end( ap );
+<a name="l00074"></a>00074   p += len;
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076   n = snprintf(p, eof - p - 1, <span class="stringliteral">&quot;. returns %d errno %d\n&quot;</span>, rval, errno );
+<a name="l00077"></a>00077   p += n;
+<a name="l00078"></a>00078    
+<a name="l00079"></a>00079   write( <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> , buff , p - buff );
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081 <span class="preprocessor">#if __linux__</span>
+<a name="l00082"></a>00082 <span class="preprocessor"></span>  nframes = backtrace( sframes, <a class="code" href="a00003.html#afa5bb6221801445761a1f1c41101284f">STACK_FRAMES</a> + 1); \
+<a name="l00083"></a>00083   write( <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a>, <a class="code" href="a00003.html#a1763c9556bd80b7806528729edc98a05">STACK_START</a>, strlen( <a class="code" href="a00003.html#a1763c9556bd80b7806528729edc98a05">STACK_START</a> ) );
+<a name="l00084"></a>00084   
+<a name="l00085"></a>00085   nframes =  backtrace( sframes, <a class="code" href="a00003.html#afa5bb6221801445761a1f1c41101284f">STACK_FRAMES</a> );
+<a name="l00086"></a>00086   <span class="keywordflow">for</span> (i=0; i&lt;nframes; i++) {
+<a name="l00087"></a>00087     snprintf( buff, <span class="keyword">sizeof</span>(buff),  <span class="stringliteral">&quot;frame %d ip: %p\n&quot;</span>, i, sframes[ i ]);
+<a name="l00088"></a>00088     write( <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a> , buff, strlen( buff ) );
+<a name="l00089"></a>00089   }
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091   dump_modules();
+<a name="l00092"></a>00092   write( <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a>, <a class="code" href="a00003.html#ae6fd4cb094a69a8f1f658790e4b4d382">STACK_EOF</a>, strlen( <a class="code" href="a00003.html#ae6fd4cb094a69a8f1f658790e4b4d382">STACK_EOF</a> ) );
+<a name="l00093"></a>00093 <span class="preprocessor">#endif</span>
+<a name="l00094"></a>00094 <span class="preprocessor"></span>}
+<a name="l00095"></a>00095 
+<a name="l00096"></a><a class="code" href="a00003.html#a1503f41ca9996e1cff0c0bd0d52df9b2">00096</a> <span class="preprocessor">#define TOKENS_COUNT        6</span>
+<a name="l00097"></a><a class="code" href="a00003.html#a0b70f2e92ed8af3ef8c75034dd136442">00097</a> <span class="preprocessor"></span><span class="preprocessor">#define TOKENS_ADDRESS      0</span>
+<a name="l00098"></a><a class="code" href="a00003.html#a938e366626f3071da9742542d78db21a">00098</a> <span class="preprocessor"></span><span class="preprocessor">#define TOKENS_PERMISSIONS  1 </span>
+<a name="l00099"></a><a class="code" href="a00003.html#ad1f1c63dd79ab59b3cc6b09666323cb2">00099</a> <span class="preprocessor"></span><span class="preprocessor">#define TOKENS_FILEOFFSET   2</span>
+<a name="l00100"></a><a class="code" href="a00003.html#a21e4c441c78ad666731d68b29c57e365">00100</a> <span class="preprocessor"></span><span class="preprocessor">#define TOKENS_PATH         5</span>
+<a name="l00101"></a>00101 <span class="preprocessor"></span>
+<a name="l00102"></a>00102 <span class="preprocessor">#ifdef __linux__</span>
+<a name="l00103"></a>00103 <span class="preprocessor"></span><span class="keywordtype">void</span> dump_modules()
+<a name="l00104"></a>00104 {
+<a name="l00105"></a>00105   <span class="keywordtype">int</span> fd, n, i, buf_start;
+<a name="l00106"></a>00106   <span class="keywordtype">char</span> buf[ 1024 ], line[30];
+<a name="l00107"></a>00107   <span class="keywordtype">char</span> *pos, *eof_line, *tokens[ <a class="code" href="a00003.html#a1503f41ca9996e1cff0c0bd0d52df9b2">TOKENS_COUNT</a> ];
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109   sprintf(buf,<span class="stringliteral">&quot;/proc/%d/maps&quot;</span>, getpid() );
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112   fd = open( buf, O_RDONLY );
+<a name="l00113"></a>00113   <span class="keywordflow">if</span> (fd == -1) {
+<a name="l00114"></a>00114     <span class="keywordflow">return</span>;
+<a name="l00115"></a>00115   }
+<a name="l00116"></a>00116   
+<a name="l00117"></a>00117   buf_start = 0;
+<a name="l00118"></a>00118   <span class="keywordflow">while</span>(1) {
+<a name="l00119"></a>00119     n = read(fd, buf + buf_start, <span class="keyword">sizeof</span>(buf) - buf_start );
+<a name="l00120"></a>00120     <span class="keywordflow">if</span> (n &lt;= 0) {
+<a name="l00121"></a>00121       <span class="keywordflow">break</span>;
+<a name="l00122"></a>00122     }
+<a name="l00123"></a>00123 
+<a name="l00124"></a>00124     pos = buf;
+<a name="l00125"></a>00125     <span class="keywordflow">while</span>(1) {
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127        eof_line = memchr( pos, <span class="charliteral">&#39;\n&#39;</span>, buf + <span class="keyword">sizeof</span>(buf) - pos );
+<a name="l00128"></a>00128        <span class="keywordflow">if</span> (eof_line == 0) {
+<a name="l00129"></a>00129          <span class="keywordflow">break</span>;
+<a name="l00130"></a>00130        }
+<a name="l00131"></a>00131        
+<a name="l00132"></a>00132        *eof_line = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l00133"></a>00133        <span class="keywordflow">for</span>(i=0; i&lt; <a class="code" href="a00003.html#a1503f41ca9996e1cff0c0bd0d52df9b2">TOKENS_COUNT</a>; i++) {
+<a name="l00134"></a>00134          tokens[ i ] = strtok( !i ? pos : 0,<span class="stringliteral">&quot; &quot;</span>);
+<a name="l00135"></a>00135          <span class="keywordflow">if</span> (! tokens[ i ]) {
+<a name="l00136"></a>00136            <span class="keywordflow">break</span>;
+<a name="l00137"></a>00137          }
+<a name="l00138"></a>00138          <span class="keywordflow">if</span> (i == <a class="code" href="a00003.html#a938e366626f3071da9742542d78db21a">TOKENS_PERMISSIONS</a>) {
+<a name="l00139"></a>00139            <span class="keywordflow">if</span> (strchr( tokens[i], <span class="charliteral">&#39;x&#39;</span>) == 0) {
+<a name="l00140"></a>00140              <span class="keywordflow">break</span>;
+<a name="l00141"></a>00141            }
+<a name="l00142"></a>00142          }
+<a name="l00143"></a>00143        }
+<a name="l00144"></a>00144        <span class="keywordflow">if</span> (i == TOKENS_COUNT) {
+<a name="l00145"></a>00145           snprintf(line, <span class="keyword">sizeof</span>(line) - 1, <span class="stringliteral">&quot;\n%s %s &quot;</span>, tokens[ <a class="code" href="a00003.html#a0b70f2e92ed8af3ef8c75034dd136442">TOKENS_ADDRESS</a> ] , tokens[ <a class="code" href="a00003.html#ad1f1c63dd79ab59b3cc6b09666323cb2">TOKENS_FILEOFFSET</a> ]);
+<a name="l00146"></a>00146           write( <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a>, line, strlen(line) );
+<a name="l00147"></a>00147           write( <a class="code" href="a00003.html#aeabf08bbf5921db02b75ca07b49ee34a">FD_OUT</a>, tokens[ <a class="code" href="a00003.html#a21e4c441c78ad666731d68b29c57e365">TOKENS_PATH</a> ], strlen( tokens[ TOKENS_PATH ] ) );
+<a name="l00148"></a>00148        
+<a name="l00149"></a>00149        }
+<a name="l00150"></a>00150       
+<a name="l00151"></a>00151        pos = eof_line + 1;
+<a name="l00152"></a>00152     }
+<a name="l00153"></a>00153 
+<a name="l00154"></a>00154     buf_start = 0;
+<a name="l00155"></a>00155     <span class="keywordflow">if</span> (pos &lt; (buf + <span class="keyword">sizeof</span>(buf) - 1)) {
+<a name="l00156"></a>00156       buf_start = buf + <span class="keyword">sizeof</span>(buf) - pos;
+<a name="l00157"></a>00157       memmove( buf, pos, buf_start ); 
+<a name="l00158"></a>00158     }
+<a name="l00159"></a>00159   }
+<a name="l00160"></a>00160   close(fd);
+<a name="l00161"></a>00161 
+<a name="l00162"></a>00162 }
+<a name="l00163"></a>00163 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 20:30:13 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 13:24:30 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
