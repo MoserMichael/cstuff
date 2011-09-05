@@ -223,6 +223,13 @@
       <arglist>(STRTK *tok, const char *stop_chars)</arglist>
     </member>
     <member kind="function">
+      <type>M_INLINE void</type>
+      <name>STRTK_add_char</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>gae43120a54e8902f8bd356ee57a9fc7de</anchor>
+      <arglist>(STRTK *tok, uint8_t ch)</arglist>
+    </member>
+    <member kind="function">
       <type>M_INLINE char *</type>
       <name>STRTK_spn</name>
       <anchorfile>a00013.html</anchorfile>
@@ -382,6 +389,13 @@
       <anchorfile>a00013.html</anchorfile>
       <anchor>ga5e8e0f7718ea406cdc754e4d6d9f40fd</anchor>
       <arglist>(STRTK *tok, const char *stop_chars)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE void</type>
+      <name>STRTK_add_char</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>gae43120a54e8902f8bd356ee57a9fc7de</anchor>
+      <arglist>(STRTK *tok, uint8_t ch)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE char *</type>

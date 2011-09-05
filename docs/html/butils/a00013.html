@@ -40,7 +40,7 @@
 </div>
 <div class="contents">
 
-<p>class holds a bitmap of characters, that is later used for tokenisation. Functions like strtok and strpbrk build a bitmap of characters when they are called. They use this bitmap when these function later parse the argument character string, this bitmap is used to check if a character is part of the character set or not.  
+<p>defines a character class. holds a bitmap of characters, that is later used for tokenization.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
@@ -57,6 +57,7 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">STRTK_init</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *stop_chars)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initalise a character class  <a href="#ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a> (<a class="el" href="a00001.html">STRTK</a> *tok, uint8_t ch)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5">STRTK_spn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class.  <a href="#gacbaa999a7ed8334ee4f9c074190522f5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031">STRTK_nspn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize)</td></tr>
@@ -67,8 +68,10 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="#ga970da7da688e9d0412ef1e688b340f32"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>class holds a bitmap of characters, that is later used for tokenisation. Functions like strtok and strpbrk build a bitmap of characters when they are called. They use this bitmap when these function later parse the argument character string, this bitmap is used to check if a character is part of the character set or not. </p>
-<p>The class STRTK holds the bitmap holding the character set, so that creation of this bitmap can be done in separate step from usage, therefore parsing function will not create character bitmap over and over again. </p>
+<p>defines a character class. holds a bitmap of characters, that is later used for tokenization. </p>
+<p>Functions like strtok and strpbrk build a bitmap of characters when they are called. They use this bitmap when these function later parse the argument character string, this bitmap is used to check if a character is part of the character set or not.</p>
+<p>The class STRTK holds the bitmap holding the character set, so that creation of this bitmap can be done in separate step from usage, therefore parsing function will not create character bitmap over and over again.</p>
+<p>I don't know if this is very usefull, a character class bitmap takes 32 bytes, which is two cache lines. So two cache lines have to be moved in order to use this stuff. </p>
 <hr/><h2>Define Documentation</h2>
 <a class="anchor" id="ga6af25e1d072d3e1ed7d7c0682831155c"></a><!-- doxytag: member="strtk.h::STRTK_IS_CHAR" ref="ga6af25e1d072d3e1ed7d7c0682831155c" args="(tok, ch)" -->
 <div class="memitem">
@@ -97,7 +100,7 @@ Functions</h2></td></tr>
 
 <p>macro checks if character is part of character class </p>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00039">39</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00048">48</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
 
 </div>
 </div>
@@ -116,6 +119,38 @@ Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
+<a class="anchor" id="gae43120a54e8902f8bd356ee57a9fc7de"></a><!-- doxytag: member="strtk.h::STRTK_add_char" ref="gae43120a54e8902f8bd356ee57a9fc7de" args="(STRTK *tok, uint8_t ch)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void STRTK_add_char </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">STRTK</a> *&#160;</td>
+          <td class="paramname"><em>tok</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ch</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00040">40</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>[ ch &gt;&gt; 3 ] |= (1 &lt;&lt; (ch &amp; 7));
+}
+</pre></div>
+</div>
+</div>
 <a class="anchor" id="ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><!-- doxytag: member="strtk.h::STRTK_init" ref="ga5e8e0f7718ea406cdc754e4d6d9f40fd" args="(STRTK *tok, const char *stop_chars)" -->
 <div class="memitem">
 <div class="memproto">
@@ -146,15 +181,10 @@ Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="a00007_source.html#l00004">4</a> of file <a class="el" href="a00007_source.html">strtk.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   uint8_t *pos;
-  uint8_t idx, off;
-
   memset( tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>, 0, <a class="code" href="a00008.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a> );
 
   <span class="keywordflow">for</span>( pos = (uint8_t *) stop_chars; *pos != <span class="charliteral">&#39;\0&#39;</span>; ++pos ) {
-     idx = (*pos) &gt;&gt; 3;
-     off = (*pos) &amp;  7;
-
-     tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>[ idx ] |= (1 &lt;&lt; off);
+    <a class="code" href="a00013.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a>( tok, *pos );  
   }
 }
 </pre></div>
@@ -194,7 +224,7 @@ Functions</h2></td></tr>
 <p>Returns token where all characters belong to argument character class, argument string is limited. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the pointer to the next character that is not part of the character class. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00062">62</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00071">71</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
    uint8_t *cpos;
 
@@ -248,7 +278,7 @@ Functions</h2></td></tr>
 <p>tokenize a string . the character class is interpreted as set of white spaces. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the start of token, end_tok returns position right after the token. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00079">79</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00088">88</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
    uint8_t *cpos;
    <span class="keywordtype">char</span> *start_tok;
@@ -298,7 +328,7 @@ Functions</h2></td></tr>
 <p>Returns token where all characters belong to argument character class. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the pointer to the next character that is not part of the character class. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00046">46</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00055">55</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
    uint8_t *cpos;
 
@@ -346,7 +376,7 @@ Functions</h2></td></tr>
 <p>tokenize a string . the character class is interpreted as set of white spaces. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the start of token, end_tok returns position right after the token. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00103">103</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00112">112</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
    uint8_t *cpos;
    <span class="keywordtype">char</span> *start_tok;
@@ -369,7 +399,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 13:24:30 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 16:06:52 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

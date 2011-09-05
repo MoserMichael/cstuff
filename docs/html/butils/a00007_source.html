@@ -45,22 +45,17 @@
 <a name="l00004"></a><a class="code" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">00004</a> <span class="keywordtype">void</span> <a class="code" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd" title="initalise a character class">STRTK_init</a>( <a class="code" href="a00001.html">STRTK</a> *tok , <span class="keyword">const</span> <span class="keywordtype">char</span> *stop_chars )
 <a name="l00005"></a>00005 {
 <a name="l00006"></a>00006   uint8_t *pos;
-<a name="l00007"></a>00007   uint8_t idx, off;
+<a name="l00007"></a>00007   memset( tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>, 0, <a class="code" href="a00008.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a> );
 <a name="l00008"></a>00008 
-<a name="l00009"></a>00009   memset( tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>, 0, <a class="code" href="a00008.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a> );
-<a name="l00010"></a>00010 
-<a name="l00011"></a>00011   <span class="keywordflow">for</span>( pos = (uint8_t *) stop_chars; *pos != <span class="charliteral">&#39;\0&#39;</span>; ++pos ) {
-<a name="l00012"></a>00012      idx = (*pos) &gt;&gt; 3;
-<a name="l00013"></a>00013      off = (*pos) &amp;  7;
+<a name="l00009"></a>00009   <span class="keywordflow">for</span>( pos = (uint8_t *) stop_chars; *pos != <span class="charliteral">&#39;\0&#39;</span>; ++pos ) {
+<a name="l00010"></a>00010     <a class="code" href="a00013.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a>( tok, *pos );  
+<a name="l00011"></a>00011   }
+<a name="l00012"></a>00012 }
+<a name="l00013"></a>00013 
 <a name="l00014"></a>00014 
-<a name="l00015"></a>00015      tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>[ idx ] |= (1 &lt;&lt; off);
-<a name="l00016"></a>00016   }
-<a name="l00017"></a>00017 }
-<a name="l00018"></a>00018 
-<a name="l00019"></a>00019 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 13:24:30 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 16:06:52 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
