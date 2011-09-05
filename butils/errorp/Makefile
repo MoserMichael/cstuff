@@ -8,7 +8,6 @@ TESTS=errorp
 TEST_TOOL=true
 
 
-
 #----------------------------------------
 
 errorp_TYPE=exe

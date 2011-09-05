@@ -1,16 +1,16 @@
 TOPDIR=..
 
-POSTBUILD_SUBDIRS=errorp
+POSTBUILD_SUBDIRS=errorp test
 
-TARGETS:=butils butilssh
+TARGETS:=butils butilssh 
 
-
-# - sexe target compiles all files in current directory with extension *.c
+# --- 
 
 butils_TYPE=lib
 
 butils_SRC_EXTENSION=c
 
+# --- 
 
 butilssh_TYPE=shlib
 
