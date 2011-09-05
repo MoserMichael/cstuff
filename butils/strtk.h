@@ -3,13 +3,14 @@
 
 #include <cutils/base.h>
 
-#define STRTK_PATTERN_SIZE (( 255 / 8 ) + 1)
+#define STRTK_PATTERN_SIZE ( 256 / 8 )
 
 
 /**
  * @defgroup STRTK
  *
- * @brief class holds a bitmap of characters, that is later used for tokenisation.
+ * @brief defines a character class. holds a bitmap of characters, that is later used for tokenization.
+ *
  * Functions like strtok and strpbrk build a bitmap of characters when they are called.
  * They use this bitmap when these function later parse the argument character
  * string, this bitmap is used to check if a character is
@@ -18,6 +19,9 @@
  * The class STRTK holds the bitmap holding the character set, so that creation
  * of this bitmap can be done in separate step from usage, therefore parsing
  * function will not create character bitmap over and over again.
+ *
+ * I don't know if this is very usefull, a character class bitmap takes 32 bytes, which is two cache lines.
+ * So two cache lines have to be moved in order to use this stuff.
  *
  * @{
  */
@@ -32,6 +36,11 @@ typedef struct tagSTRTK {
  * @brief initalise a character class
  */
 void STRTK_init( STRTK *tok , const char *stop_chars );
+
+M_INLINE void STRTK_add_char( STRTK *tok, uint8_t ch )
+{
+  tok->pattern[ ch >> 3 ] |= (1 << (ch & 7));
+}
 
 /**
  * @brief macro checks if character is part of character class
