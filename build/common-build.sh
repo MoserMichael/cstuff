@@ -23,6 +23,6 @@ make_file $TARGETS
 
 cd ..
 
-make cleanall
+make cleanall $@
 
 make test $@

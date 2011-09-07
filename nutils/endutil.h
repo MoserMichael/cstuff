@@ -5,6 +5,18 @@
 #include <arpa/inet.h>
 
 
+/**
+ * @defgroup ENDIAN
+ * @brief normalize the names of endian conversion functions, so that they can be used from macros.
+ * 
+ * n2h_<typename> - convert from network to host byte order
+ * h2n_<typename> - convert from host to network byte order.
+ *
+ * <typename> := int8_t uint8_t int16_t uint16_t int32_t uint32_t int64_t uint64_ta
+ *
+ * @{
+ */
+
 typedef union {
   struct {
      uint32_t word_a;
@@ -54,5 +66,9 @@ M_INLINE uint64_t h2n_uint64_t(uint64_t val)
 #define h2n_int32_t(val)  htonl( val )
 #define h2n_int64_t(val)  h2n_uint64_t( val ) 
 
+/**
+ * @}
+ */
+ 
 #endif
 

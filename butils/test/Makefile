@@ -1,21 +1,23 @@
 TOPDIR=../..
 
 
-TESTS=cutilstestsh cutilstest
+TESTS=butilstestsh butilstest
 
 
-cutilstest_TYPE=exe
 
-cutilstest_SRC_EXTENSION=c
+butilstest_TYPE=exe
 
-cutilstest_LIBS=butils vtest
+butilstest_SRC_EXTENSION=c
+
+butilstest_LIBS=butils vtest
 
 
-cutilstestsh_TYPE=exe
 
-cutilstestsh_SRC_EXTENSION=c
+butilstestsh_TYPE=exe
 
-cutilstestsh_LIBS=butilssh vtest
+butilstestsh_SRC_EXTENSION=c
+
+butilstestsh_LIBS=butilssh vtest
 
 
 
