@@ -53,33 +53,33 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">tagSOCKCTX</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga3adf1d96e791aba989b3bcd0ff855d44">LINGER_OPTION_VALUE</a>&#160;&#160;&#160;300</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga387cd63d9202db79a473a4312e50a6d0">SOCKCTX_FLAGS_NAGLE_ON</a>&#160;&#160;&#160;2</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga4e5ab8d07bf7233fe5358f74f89192d0">SOCKTCX_FLAGS_DONT_CLOSE_ON_PEER_CLOSE</a>&#160;&#160;&#160;4</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga3adf1d96e791aba989b3bcd0ff855d44">LINGER_OPTION_VALUE</a>&#160;&#160;&#160;300</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga387cd63d9202db79a473a4312e50a6d0">SOCKCTX_FLAGS_NAGLE_ON</a>&#160;&#160;&#160;2</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga4e5ab8d07bf7233fe5358f74f89192d0">SOCKTCX_FLAGS_DONT_CLOSE_ON_PEER_CLOSE</a>&#160;&#160;&#160;4</td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00003.html">tagSOCKCTX</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga33ae627ac286035a2b486c6ab593d8af">SOCKCTX</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00003.html">tagSOCKCTX</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga33ae627ac286035a2b486c6ab593d8af">SOCKCTX</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gaa58093540ffae6b2fd5114af70ea9249">SOCK_init</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, int verbose, int flags)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a socket and sets some options  <a href="a00010.html#gaa58093540ffae6b2fd5114af70ea9249"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga691ca5d5947940ef7bb8e05f5f4381ee">SOCK_send_buffer_sizes</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, int read_buffer_size, int write_buffer_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set read and write buffer sizes; a value of -1 for buffer size is ignored.  <a href="a00010.html#ga691ca5d5947940ef7bb8e05f5f4381ee"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga9a6c6d2ae46cdab6fe52e285f9a8990d">SOCK_connect</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, void *addr, int addr_size, int connect_timeout)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">connects a sockets with timeout (in seconds)  <a href="a00010.html#ga9a6c6d2ae46cdab6fe52e285f9a8990d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga29f9645369f83530169a0009c19ed35c">SOCK_recv</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, char *msg, size_t length, int read_timeout)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read some data from a socket with timeout (in seconds)  <a href="a00010.html#ga29f9645369f83530169a0009c19ed35c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga4d44efb92c4cd8cc45d2f7434d0f34bf">SOCK_recv_all</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, char *msg, size_t length, int read_timeout)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read whe whole buffer from a socket with timeout (in seconds)  <a href="a00010.html#ga4d44efb92c4cd8cc45d2f7434d0f34bf"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gabbd75054a6005f6da12fa57a9032495a">SOCK_send</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, void *msg, size_t length, int write_timeout)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">write whe whole buffer from a socket with timeout (in seconds)  <a href="a00010.html#gabbd75054a6005f6da12fa57a9032495a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gad78589add776d85bd1c2e25a9d960eef">SOCK_close</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">close the  <a href="a00010.html#gad78589add776d85bd1c2e25a9d960eef"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gaa4e7c6427b947269086042413e060ed3">SOCK_close_with_reset</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">ungraceful connection termination.  <a href="a00010.html#gaa4e7c6427b947269086042413e060ed3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gaa58093540ffae6b2fd5114af70ea9249">SOCK_init</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, int verbose, int flags)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a socket and sets some options  <a href="a00011.html#gaa58093540ffae6b2fd5114af70ea9249"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga691ca5d5947940ef7bb8e05f5f4381ee">SOCK_send_buffer_sizes</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, int read_buffer_size, int write_buffer_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set read and write buffer sizes; a value of -1 for buffer size is ignored.  <a href="a00011.html#ga691ca5d5947940ef7bb8e05f5f4381ee"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga9a6c6d2ae46cdab6fe52e285f9a8990d">SOCK_connect</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, void *addr, int addr_size, int connect_timeout)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">connects a sockets with timeout (in seconds)  <a href="a00011.html#ga9a6c6d2ae46cdab6fe52e285f9a8990d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga29f9645369f83530169a0009c19ed35c">SOCK_recv</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, char *msg, size_t length, int read_timeout)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read some data from a socket with timeout (in seconds)  <a href="a00011.html#ga29f9645369f83530169a0009c19ed35c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga4d44efb92c4cd8cc45d2f7434d0f34bf">SOCK_recv_all</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, char *msg, size_t length, int read_timeout)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read whe whole buffer from a socket with timeout (in seconds)  <a href="a00011.html#ga4d44efb92c4cd8cc45d2f7434d0f34bf"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gabbd75054a6005f6da12fa57a9032495a">SOCK_send</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx, void *msg, size_t length, int write_timeout)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">write whe whole buffer from a socket with timeout (in seconds)  <a href="a00011.html#gabbd75054a6005f6da12fa57a9032495a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gad78589add776d85bd1c2e25a9d960eef">SOCK_close</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">close the  <a href="a00011.html#gad78589add776d85bd1c2e25a9d960eef"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gaa4e7c6427b947269086042413e060ed3">SOCK_close_with_reset</a> (<a class="el" href="a00003.html">SOCKCTX</a> *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">ungraceful connection termination.  <a href="a00011.html#gaa4e7c6427b947269086042413e060ed3"></a><br/></td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 16:06:51 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:57 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

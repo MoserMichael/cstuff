@@ -203,113 +203,113 @@
     <member kind="define">
       <type>#define</type>
       <name>n2h_uint8_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a726255f8ab5a5a70073ac3f3ab086839</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga726255f8ab5a5a70073ac3f3ab086839</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>n2h_int8_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>af368243836ff0d14473c1843df997767</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gaf368243836ff0d14473c1843df997767</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>n2h_uint16_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>ae404a6642bd93fb60e1bead5bc98fcec</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gae404a6642bd93fb60e1bead5bc98fcec</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>n2h_int16_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>ac9e2c714095efb500ded4e9f89a8b2fa</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gac9e2c714095efb500ded4e9f89a8b2fa</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>n2h_uint32_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a6a21ec5233e121a1eae0098d77f35839</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga6a21ec5233e121a1eae0098d77f35839</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>n2h_int32_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a7e8a9e2d792b9d5e86bca73df54f5606</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga7e8a9e2d792b9d5e86bca73df54f5606</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>n2h_int64_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a62e912357bd5958e11b6e7b2e9bab027</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga62e912357bd5958e11b6e7b2e9bab027</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>h2n_uint8_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a2f1a37771facd2363384ce2271e57611</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga2f1a37771facd2363384ce2271e57611</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>h2n_int8_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>ae8bed63462030f0808c9285d93282227</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gae8bed63462030f0808c9285d93282227</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>h2n_uint16_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a3cb4be5234746b5a549dce04434bb007</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga3cb4be5234746b5a549dce04434bb007</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>h2n_int16_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a464eac4c5b9387c7ed39e41edc6f3cd9</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga464eac4c5b9387c7ed39e41edc6f3cd9</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>h2n_uint32_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a1f036bd2a229c2beed12f7d2dcf9673e</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga1f036bd2a229c2beed12f7d2dcf9673e</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>h2n_int32_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a5107680dae342ada3d353b2e6ee66cca</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga5107680dae342ada3d353b2e6ee66cca</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>h2n_int64_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>aedf98671d5859cac442b0056d94ed4d4</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gaedf98671d5859cac442b0056d94ed4d4</anchor>
       <arglist>(val)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE uint64_t</type>
       <name>n2h_uint64_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>a47c8a374922a6c8a3e1e41d2bcf9023e</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga47c8a374922a6c8a3e1e41d2bcf9023e</anchor>
       <arglist>(uint64_t val)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE uint64_t</type>
       <name>h2n_uint64_t</name>
-      <anchorfile>a00006.html</anchorfile>
-      <anchor>ae3c10aa4c4f3390f1c5dd323ba3be665</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gae3c10aa4c4f3390f1c5dd323ba3be665</anchor>
       <arglist>(uint64_t val)</arglist>
     </member>
   </compound>
@@ -321,56 +321,56 @@
     <member kind="function">
       <type>int</type>
       <name>SOCK_init</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gaa58093540ffae6b2fd5114af70ea9249</anchor>
       <arglist>(SOCKCTX *ctx, int verbose, int flags)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_send_buffer_sizes</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga691ca5d5947940ef7bb8e05f5f4381ee</anchor>
       <arglist>(SOCKCTX *ctx, int read_buffer_size, int write_buffer_size)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_connect</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga9a6c6d2ae46cdab6fe52e285f9a8990d</anchor>
       <arglist>(SOCKCTX *ctx, void *addr, int addr_size, int connect_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv_all</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga4d44efb92c4cd8cc45d2f7434d0f34bf</anchor>
       <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga29f9645369f83530169a0009c19ed35c</anchor>
       <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_send</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gabbd75054a6005f6da12fa57a9032495a</anchor>
       <arglist>(SOCKCTX *ctx, void *bmsg, size_t length, int write_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_close</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gad78589add776d85bd1c2e25a9d960eef</anchor>
       <arglist>(SOCKCTX *ctx)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_close_with_reset</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gaa4e7c6427b947269086042413e060ed3</anchor>
       <arglist>(SOCKCTX *ctx)</arglist>
     </member>
@@ -383,84 +383,84 @@
     <member kind="define">
       <type>#define</type>
       <name>LINGER_OPTION_VALUE</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga3adf1d96e791aba989b3bcd0ff855d44</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>SOCKCTX_FLAGS_NAGLE_ON</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga387cd63d9202db79a473a4312e50a6d0</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>SOCKTCX_FLAGS_DONT_CLOSE_ON_PEER_CLOSE</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga4e5ab8d07bf7233fe5358f74f89192d0</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>struct tagSOCKCTX</type>
       <name>SOCKCTX</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga33ae627ac286035a2b486c6ab593d8af</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_init</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gaa58093540ffae6b2fd5114af70ea9249</anchor>
       <arglist>(SOCKCTX *ctx, int verbose, int flags)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_send_buffer_sizes</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga691ca5d5947940ef7bb8e05f5f4381ee</anchor>
       <arglist>(SOCKCTX *ctx, int read_buffer_size, int write_buffer_size)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_connect</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga9a6c6d2ae46cdab6fe52e285f9a8990d</anchor>
       <arglist>(SOCKCTX *ctx, void *addr, int addr_size, int connect_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga29f9645369f83530169a0009c19ed35c</anchor>
       <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv_all</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga4d44efb92c4cd8cc45d2f7434d0f34bf</anchor>
       <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_send</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gabbd75054a6005f6da12fa57a9032495a</anchor>
       <arglist>(SOCKCTX *ctx, void *msg, size_t length, int write_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_close</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gad78589add776d85bd1c2e25a9d960eef</anchor>
       <arglist>(SOCKCTX *ctx)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_close_with_reset</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gaa4e7c6427b947269086042413e060ed3</anchor>
       <arglist>(SOCKCTX *ctx)</arglist>
     </member>
@@ -598,91 +598,209 @@
     </member>
   </compound>
   <compound kind="group">
+    <name>ENDIAN</name>
+    <title>ENDIAN</title>
+    <filename>a00010.html</filename>
+    <class kind="union">QUAD</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_uint8_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga726255f8ab5a5a70073ac3f3ab086839</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_int8_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gaf368243836ff0d14473c1843df997767</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_uint16_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gae404a6642bd93fb60e1bead5bc98fcec</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_int16_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gac9e2c714095efb500ded4e9f89a8b2fa</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_uint32_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga6a21ec5233e121a1eae0098d77f35839</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_int32_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga7e8a9e2d792b9d5e86bca73df54f5606</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>n2h_int64_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga62e912357bd5958e11b6e7b2e9bab027</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_uint8_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga2f1a37771facd2363384ce2271e57611</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_int8_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gae8bed63462030f0808c9285d93282227</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_uint16_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga3cb4be5234746b5a549dce04434bb007</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_int16_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga464eac4c5b9387c7ed39e41edc6f3cd9</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_uint32_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga1f036bd2a229c2beed12f7d2dcf9673e</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_int32_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga5107680dae342ada3d353b2e6ee66cca</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>h2n_int64_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gaedf98671d5859cac442b0056d94ed4d4</anchor>
+      <arglist>(val)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE uint64_t</type>
+      <name>n2h_uint64_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga47c8a374922a6c8a3e1e41d2bcf9023e</anchor>
+      <arglist>(uint64_t val)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE uint64_t</type>
+      <name>h2n_uint64_t</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>gae3c10aa4c4f3390f1c5dd323ba3be665</anchor>
+      <arglist>(uint64_t val)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
     <name>SOCKET</name>
     <title>SOCKET</title>
-    <filename>a00010.html</filename>
+    <filename>a00011.html</filename>
     <class kind="struct">tagSOCKCTX</class>
     <member kind="define">
       <type>#define</type>
       <name>LINGER_OPTION_VALUE</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga3adf1d96e791aba989b3bcd0ff855d44</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>SOCKCTX_FLAGS_NAGLE_ON</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga387cd63d9202db79a473a4312e50a6d0</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>SOCKTCX_FLAGS_DONT_CLOSE_ON_PEER_CLOSE</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga4e5ab8d07bf7233fe5358f74f89192d0</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>struct tagSOCKCTX</type>
       <name>SOCKCTX</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga33ae627ac286035a2b486c6ab593d8af</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_init</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gaa58093540ffae6b2fd5114af70ea9249</anchor>
       <arglist>(SOCKCTX *ctx, int verbose, int flags)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_send_buffer_sizes</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga691ca5d5947940ef7bb8e05f5f4381ee</anchor>
       <arglist>(SOCKCTX *ctx, int read_buffer_size, int write_buffer_size)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_connect</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga9a6c6d2ae46cdab6fe52e285f9a8990d</anchor>
       <arglist>(SOCKCTX *ctx, void *addr, int addr_size, int connect_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga29f9645369f83530169a0009c19ed35c</anchor>
       <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv_all</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>ga4d44efb92c4cd8cc45d2f7434d0f34bf</anchor>
       <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_send</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gabbd75054a6005f6da12fa57a9032495a</anchor>
       <arglist>(SOCKCTX *ctx, void *msg, size_t length, int write_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_close</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gad78589add776d85bd1c2e25a9d960eef</anchor>
       <arglist>(SOCKCTX *ctx)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_close_with_reset</name>
-      <anchorfile>a00010.html</anchorfile>
+      <anchorfile>a00011.html</anchorfile>
       <anchor>gaa4e7c6427b947269086042413e060ed3</anchor>
       <arglist>(SOCKCTX *ctx)</arglist>
     </member>
@@ -700,14 +818,14 @@
     <member kind="variable">
       <type>uint32_t</type>
       <name>word_a</name>
-      <anchorfile>a00013.html</anchorfile>
+      <anchorfile>a00014.html</anchorfile>
       <anchor>a2db5bcd5253e44e8bfdbad9d284d6b9e</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>uint32_t</type>
       <name>word_b</name>
-      <anchorfile>a00013.html</anchorfile>
+      <anchorfile>a00014.html</anchorfile>
       <anchor>a4add33d2f9e5baaf66da5f3d498ce652</anchor>
       <arglist></arglist>
     </member>

@@ -45,61 +45,77 @@
 <a name="l00004"></a>00004 <span class="preprocessor">#include &lt;cutils/base.h&gt;</span>
 <a name="l00005"></a>00005 <span class="preprocessor">#include &lt;arpa/inet.h&gt;</span>
 <a name="l00006"></a>00006 
-<a name="l00007"></a>00007 
-<a name="l00008"></a><a class="code" href="a00001.html">00008</a> <span class="keyword">typedef</span> <span class="keyword">union </span>{
-<a name="l00009"></a>00009   <span class="keyword">struct </span>{
-<a name="l00010"></a><a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">00010</a>      uint32_t <a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a>;
-<a name="l00011"></a><a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">00011</a>      uint32_t <a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a>;
-<a name="l00012"></a>00012   } n32;
-<a name="l00013"></a><a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">00013</a>   uint64_t <a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a>;
-<a name="l00014"></a>00014 } <a class="code" href="a00001.html">QUAD</a>;
-<a name="l00015"></a>00015 
-<a name="l00016"></a><a class="code" href="a00006.html#a47c8a374922a6c8a3e1e41d2bcf9023e">00016</a> M_INLINE uint64_t <a class="code" href="a00006.html#a47c8a374922a6c8a3e1e41d2bcf9023e">n2h_uint64_t</a>(uint64_t val)
-<a name="l00017"></a>00017 {
-<a name="l00018"></a>00018   <a class="code" href="a00001.html">QUAD</a> a,b;
-<a name="l00019"></a>00019   
-<a name="l00020"></a>00020   a.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a> = val;
-<a name="l00021"></a>00021 
-<a name="l00022"></a>00022   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> = ntohl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> );
-<a name="l00023"></a>00023   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> = ntohl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> );
-<a name="l00024"></a>00024 
-<a name="l00025"></a>00025   <span class="keywordflow">return</span> b.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a>;
-<a name="l00026"></a>00026 }
+<a name="l00007"></a>00007 <span class="comment"></span>
+<a name="l00008"></a>00008 <span class="comment">/**</span>
+<a name="l00009"></a>00009 <span class="comment"> * @defgroup ENDIAN</span>
+<a name="l00010"></a>00010 <span class="comment"> * @brief normalize the names of endian conversion functions, so that they can be used from macros.</span>
+<a name="l00011"></a>00011 <span class="comment"> * </span>
+<a name="l00012"></a>00012 <span class="comment"> * n2h_&lt;typename&gt; - convert from network to host byte order</span>
+<a name="l00013"></a>00013 <span class="comment"> * h2n_&lt;typename&gt; - convert from host to network byte order.</span>
+<a name="l00014"></a>00014 <span class="comment"> *</span>
+<a name="l00015"></a>00015 <span class="comment"> * &lt;typename&gt; := int8_t uint8_t int16_t uint16_t int32_t uint32_t int64_t uint64_ta</span>
+<a name="l00016"></a>00016 <span class="comment"> *</span>
+<a name="l00017"></a>00017 <span class="comment"> * @{</span>
+<a name="l00018"></a>00018 <span class="comment"> */</span>
+<a name="l00019"></a>00019 
+<a name="l00020"></a><a class="code" href="a00001.html">00020</a> <span class="keyword">typedef</span> <span class="keyword">union </span>{
+<a name="l00021"></a>00021   <span class="keyword">struct </span>{
+<a name="l00022"></a><a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">00022</a>      uint32_t <a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a>;
+<a name="l00023"></a><a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">00023</a>      uint32_t <a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a>;
+<a name="l00024"></a>00024   } n32;
+<a name="l00025"></a><a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">00025</a>   uint64_t <a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a>;
+<a name="l00026"></a>00026 } <a class="code" href="a00001.html">QUAD</a>;
 <a name="l00027"></a>00027 
-<a name="l00028"></a><a class="code" href="a00006.html#ae3c10aa4c4f3390f1c5dd323ba3be665">00028</a> M_INLINE uint64_t <a class="code" href="a00006.html#ae3c10aa4c4f3390f1c5dd323ba3be665">h2n_uint64_t</a>(uint64_t val)
+<a name="l00028"></a><a class="code" href="a00010.html#ga47c8a374922a6c8a3e1e41d2bcf9023e">00028</a> M_INLINE uint64_t <a class="code" href="a00010.html#ga47c8a374922a6c8a3e1e41d2bcf9023e">n2h_uint64_t</a>(uint64_t val)
 <a name="l00029"></a>00029 {
 <a name="l00030"></a>00030   <a class="code" href="a00001.html">QUAD</a> a,b;
 <a name="l00031"></a>00031   
 <a name="l00032"></a>00032   a.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a> = val;
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> = htonl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> );
-<a name="l00035"></a>00035   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> = htonl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> );
+<a name="l00034"></a>00034   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> = ntohl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> );
+<a name="l00035"></a>00035   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> = ntohl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> );
 <a name="l00036"></a>00036 
 <a name="l00037"></a>00037   <span class="keywordflow">return</span> b.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a>;
 <a name="l00038"></a>00038 }
 <a name="l00039"></a>00039 
-<a name="l00040"></a>00040 
-<a name="l00041"></a><a class="code" href="a00006.html#a726255f8ab5a5a70073ac3f3ab086839">00041</a> <span class="preprocessor">#define n2h_uint8_t(val)  (val)</span>
-<a name="l00042"></a><a class="code" href="a00006.html#af368243836ff0d14473c1843df997767">00042</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int8_t(val)   (val)</span>
-<a name="l00043"></a><a class="code" href="a00006.html#ae404a6642bd93fb60e1bead5bc98fcec">00043</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_uint16_t(val) ntohs( val )</span>
-<a name="l00044"></a><a class="code" href="a00006.html#ac9e2c714095efb500ded4e9f89a8b2fa">00044</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int16_t(val)  ntohs( val )</span>
-<a name="l00045"></a><a class="code" href="a00006.html#a6a21ec5233e121a1eae0098d77f35839">00045</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_uint32_t(val) ntohl( val )</span>
-<a name="l00046"></a><a class="code" href="a00006.html#a7e8a9e2d792b9d5e86bca73df54f5606">00046</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int32_t(val)  ntohl( val )</span>
-<a name="l00047"></a><a class="code" href="a00006.html#a62e912357bd5958e11b6e7b2e9bab027">00047</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int64_t(val)  n2h_uint64_t( val )</span>
-<a name="l00048"></a>00048 <span class="preprocessor"></span>
-<a name="l00049"></a><a class="code" href="a00006.html#a2f1a37771facd2363384ce2271e57611">00049</a> <span class="preprocessor">#define h2n_uint8_t(val)  (val)</span>
-<a name="l00050"></a><a class="code" href="a00006.html#ae8bed63462030f0808c9285d93282227">00050</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int8_t(val)   (val)</span>
-<a name="l00051"></a><a class="code" href="a00006.html#a3cb4be5234746b5a549dce04434bb007">00051</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_uint16_t(val) htons( val )</span>
-<a name="l00052"></a><a class="code" href="a00006.html#a464eac4c5b9387c7ed39e41edc6f3cd9">00052</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int16_t(val)  htons( val )</span>
-<a name="l00053"></a><a class="code" href="a00006.html#a1f036bd2a229c2beed12f7d2dcf9673e">00053</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_uint32_t(val) htonl( val ) </span>
-<a name="l00054"></a><a class="code" href="a00006.html#a5107680dae342ada3d353b2e6ee66cca">00054</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int32_t(val)  htonl( val )</span>
-<a name="l00055"></a><a class="code" href="a00006.html#aedf98671d5859cac442b0056d94ed4d4">00055</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int64_t(val)  h2n_uint64_t( val ) </span>
-<a name="l00056"></a>00056 <span class="preprocessor"></span>
-<a name="l00057"></a>00057 <span class="preprocessor">#endif</span>
-<a name="l00058"></a>00058 <span class="preprocessor"></span>
+<a name="l00040"></a><a class="code" href="a00010.html#gae3c10aa4c4f3390f1c5dd323ba3be665">00040</a> M_INLINE uint64_t <a class="code" href="a00010.html#gae3c10aa4c4f3390f1c5dd323ba3be665">h2n_uint64_t</a>(uint64_t val)
+<a name="l00041"></a>00041 {
+<a name="l00042"></a>00042   <a class="code" href="a00001.html">QUAD</a> a,b;
+<a name="l00043"></a>00043   
+<a name="l00044"></a>00044   a.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a> = val;
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> = htonl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> );
+<a name="l00047"></a>00047   b.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a> = htonl( a.<a class="code" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a>.<a class="code" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a> );
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049   <span class="keywordflow">return</span> b.<a class="code" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a>;
+<a name="l00050"></a>00050 }
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 
+<a name="l00053"></a><a class="code" href="a00010.html#ga726255f8ab5a5a70073ac3f3ab086839">00053</a> <span class="preprocessor">#define n2h_uint8_t(val)  (val)</span>
+<a name="l00054"></a><a class="code" href="a00010.html#gaf368243836ff0d14473c1843df997767">00054</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int8_t(val)   (val)</span>
+<a name="l00055"></a><a class="code" href="a00010.html#gae404a6642bd93fb60e1bead5bc98fcec">00055</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_uint16_t(val) ntohs( val )</span>
+<a name="l00056"></a><a class="code" href="a00010.html#gac9e2c714095efb500ded4e9f89a8b2fa">00056</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int16_t(val)  ntohs( val )</span>
+<a name="l00057"></a><a class="code" href="a00010.html#ga6a21ec5233e121a1eae0098d77f35839">00057</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_uint32_t(val) ntohl( val )</span>
+<a name="l00058"></a><a class="code" href="a00010.html#ga7e8a9e2d792b9d5e86bca73df54f5606">00058</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int32_t(val)  ntohl( val )</span>
+<a name="l00059"></a><a class="code" href="a00010.html#ga62e912357bd5958e11b6e7b2e9bab027">00059</a> <span class="preprocessor"></span><span class="preprocessor">#define n2h_int64_t(val)  n2h_uint64_t( val )</span>
+<a name="l00060"></a>00060 <span class="preprocessor"></span>
+<a name="l00061"></a><a class="code" href="a00010.html#ga2f1a37771facd2363384ce2271e57611">00061</a> <span class="preprocessor">#define h2n_uint8_t(val)  (val)</span>
+<a name="l00062"></a><a class="code" href="a00010.html#gae8bed63462030f0808c9285d93282227">00062</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int8_t(val)   (val)</span>
+<a name="l00063"></a><a class="code" href="a00010.html#ga3cb4be5234746b5a549dce04434bb007">00063</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_uint16_t(val) htons( val )</span>
+<a name="l00064"></a><a class="code" href="a00010.html#ga464eac4c5b9387c7ed39e41edc6f3cd9">00064</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int16_t(val)  htons( val )</span>
+<a name="l00065"></a><a class="code" href="a00010.html#ga1f036bd2a229c2beed12f7d2dcf9673e">00065</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_uint32_t(val) htonl( val ) </span>
+<a name="l00066"></a><a class="code" href="a00010.html#ga5107680dae342ada3d353b2e6ee66cca">00066</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int32_t(val)  htonl( val )</span>
+<a name="l00067"></a><a class="code" href="a00010.html#gaedf98671d5859cac442b0056d94ed4d4">00067</a> <span class="preprocessor"></span><span class="preprocessor">#define h2n_int64_t(val)  h2n_uint64_t( val ) </span>
+<a name="l00068"></a>00068 <span class="preprocessor"></span><span class="comment"></span>
+<a name="l00069"></a>00069 <span class="comment">/**</span>
+<a name="l00070"></a>00070 <span class="comment"> * @}</span>
+<a name="l00071"></a>00071 <span class="comment"> */</span>
+<a name="l00072"></a>00072  
+<a name="l00073"></a>00073 <span class="preprocessor">#endif</span>
+<a name="l00074"></a>00074 <span class="preprocessor"></span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 5 2011 16:06:51 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:57 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
