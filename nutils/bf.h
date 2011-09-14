@@ -5,7 +5,7 @@
 
 /**
  @defgroup BF
- @brief protocol buffer. idea similar to skb_buff
+ @brief protocol buffer. idea similar to skb_buff, does not own it's data.
  The following invariants hold
 
  START_OF_BUFFER <= start <= get_pos <= put_pos <= end <= END_OF_BUFFER.
@@ -68,6 +68,24 @@ M_INLINE void BF_put_mode( BF *bf )
     bf->put_pos = bf->start;
 }
 
+/**
+ * @brief returns number of bytes that can be returned by _get_
+ */
+M_INLINE size_t BF_get_size( BF *bf )
+{
+  return bf->put_pos - bf->get_pos;
+}
+
+
+/**
+ * @brief returns number of bytes that can be written by _put_
+ */
+M_INLINE size_t BF_put_size( BF *bf )
+{
+  return bf->end - bf->put_pos;
+}
+
+
 /** 
  * @brief set start position, position is relative to start of memory range.
  */
@@ -106,6 +124,14 @@ M_INLINE size_t BF_can_put( BF *bf )
 }
 
 /**
+ * @brief return 1 if the whole buffer is fulled with data (get_pos == start && put_pos == end)
+ */
+M_INLINE int BF_is_full( BF *bf )
+{
+    return bf->get_pos == bf->start && bf->end == bf->put_pos;
+}
+
+/**
  * @brief moves get_pos to start position; moves content between get_pos and put_pos if not empty.a
  * Always succeeds
  * returns 0 if bytes were moved, 1 if buffer was empty to begin with.
@@ -116,12 +142,12 @@ int BF_compact( BF * bf );
 /**
   @ brief get the next line.
  */
-int8_t *  BF_get_line( BF * bf, int eof_line);
+char *  BF_get_line( BF * bf, int eof_line);
 
 /**
   @ brief get the next line.
  */
-int8_t *  BF_get_line_ext( BF * bf, int8_t *eof_line, size_t eof_line_size);
+char *  BF_get_line_ext( BF * bf, const char *eof_line, size_t eof_line_size);
 
 
 #define BF_DECLARE_PUT_MACRO( type ) \

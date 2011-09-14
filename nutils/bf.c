@@ -4,22 +4,29 @@
 
 int BF_compact( BF * bf )
 {
-    if (bf->get_pos != bf->put_pos) {
-	memmove( bf->start, bf->get_pos, bf->put_pos - bf->get_pos );
-	return 0;
-    } else {
-	bf->get_pos = bf->put_pos = bf->start;
-	return 1;
+    size_t bs;
+
+    if (bf->get_pos == bf->put_pos) {
+      bf->get_pos = bf->put_pos = bf->start;
+      return 1;
     }
+    if (bf->get_pos != bf->start) {
+      bs = bf->put_pos - bf->get_pos;	  
+      memmove( bf->start, bf->get_pos, bs );
+      bf->get_pos = bf->start;
+      bf->put_pos = bf->start + bs;
+      return 0;
+    } 
+    return 1;
 }
 
-int8_t *  BF_get_line( BF * bf, int eof)
+char *  BF_get_line( BF * bf, int eof)
 {  
-   int8_t *eof_line, *ret;
+   char *eof_line, *ret;
 
    eof_line =  memchr(bf->get_pos, eof, bf->put_pos - bf->get_pos );
    if (eof_line) {
-      ret = (int8_t *) bf->get_pos;
+      ret = (char *) bf->get_pos;
       *eof_line = '\0';
       bf->get_pos = (uint8_t *) eof_line + 1;
       return ret;
@@ -27,25 +34,25 @@ int8_t *  BF_get_line( BF * bf, int eof)
    return 0;
 }
 
-int8_t *  BF_get_line_ext( BF * bf, int8_t *eof_line, size_t eof_line_size)
+char *  BF_get_line_ext( BF * bf, const char *eof_line, size_t eof_line_size)
 {
-   uint8_t *pos,*next,*ret;
+   char *pos,*next,*ret;
    
-   pos = bf->get_pos;
+   pos = (char *) bf->get_pos;
 
-   do {
-     next = memchr( pos, *eof_line, bf->put_pos - pos );
+   do { 
+     next = (char *) memchr( pos, (int) *eof_line, (char *) bf->put_pos - pos );
      if (!next) {
        return 0;
      }
      if (memcmp(next, eof_line, eof_line_size) == 0) {
-        ret = bf->get_pos;
+        ret = (char *) bf->get_pos;
         *next = '\0';
-	bf->get_pos = next + eof_line_size;
-	return (int8_t *) ret;
+	bf->get_pos = (uint8_t *) (next + eof_line_size);
+	return (char *) ret;
      }
      pos = next + 1;
-   } while( pos < bf->put_pos );
+   } while( pos < (char *) bf->put_pos );
 
    return 0;
 }

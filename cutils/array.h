@@ -185,6 +185,10 @@ M_INLINE int ARRAY_copy_at( ARRAY * arr, size_t index, void *elm, size_t elmsize
 	if (index >= arr->elmcount) {
 		return -1;
 	}
+	
+	if (elmsize != arr->elmsize) {
+		return -1;
+	}
 
 	memcpy( elm, arr->buffer + (index * arr->elmsize), elmsize );
 	return 0;
