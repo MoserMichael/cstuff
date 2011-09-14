@@ -202,6 +202,7 @@ Will first build all targets and then build all test targets
 You can specify a prefix command that will run the test targets; for instance 
  	make test TEST_TOOL=valgrind 
 Here all test programs will be checked by "valgrind":http://valgrind.org/
+Running valgrind on unit tests is something that one definitely wants to do - on the one hand a unit test is supposed to be short, so that valgrind runtime overhead will not be that significant, on the other hand unit tests are supposed to cover a lot of functionality - so this tool will help a lot here.
 Alternatively the following command will not run any tests at all; 
        make test TEST_TOOL=true
 Sometimes you really want to skip running tests, like when running a test is done by a post built step, or if you build with a cross compiler, for instance.
