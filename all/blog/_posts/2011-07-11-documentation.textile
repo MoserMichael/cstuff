@@ -6,9 +6,9 @@ title: My take on software (Re)use
 h2. {{ page.title }}
 <p class="publish_date">11 August 2011</p>
  
-"Code reuse":http://en.wikipedia.org/wiki/Code_reuse is like a "Holy Grail":http://en.wikipedia.org/wiki/Holy_Grail of sorts for software engineering; Magical Powers of productivity are attributed to code reuse, however the concept has proven to be somewhat illusive in practice.  Most attempts to achieve this aim also tend to lead to doubts and frustration. Yosefk has "a long and thorough piece about that":http://www.yosefk.com/blog/redundancy-vs-dependencies-which-is-worse.html 
-
-By the way, the stuff here for "my projects":https://github.com/MoserMichael/cstuff might be usable to others is document "right here":http://mosermichael.github.com/cstuff/docs.html .
+"Code reuse":http://en.wikipedia.org/wiki/Code_reuse is like a "Holy Grail":http://en.wikipedia.org/wiki/Holy_Grail of sorts for software engineering; Magical Powers of productivity are attributed to code reuse, however the concept has proven to be somewhat illusive in practice.  Most attempts to achieve this aim also tend to lead to doubts and frustration. Yosefk has "a long and thorough piece about that":http://www.yosefk.com/blog/redundancy-vs-dependencies-which-is-worse.html  - the argument here is that by using a library one adds dependencies, managing dependencies adds overall complexity (paradoxically) - this complexity is created by the need of managing those dependencies, requires one to adapt to the libraries interface,  creates politics from the need to interact with the author / origin of the said library etc. etc. As usual with software there are tradeoffs to make; as usual the resulting choice is often determined by the character of the person that makes it ;-)
+	
+By the way, the stuff here for "my projects":https://github.com/MoserMichael/cstuff that might be usable to others is document "right here":http://mosermichael.github.com/cstuff/docs.html .
 
 I would like it simpler, so here is my tale: Once upon a time I have worked as a free lance programmer/consultant; the problem here is that the software consultant (me that is) had to determine up front the exact amount of work required for each job. My customers somehow always needed to know how long it takes / how much money they would have to pay me. So after one or two miscalculations I have come up with the following rules.
 * Each entity of work basically needs at least three iterations
