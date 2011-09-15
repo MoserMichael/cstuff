@@ -2,6 +2,7 @@
 #define __URI_X_Y_Z_
 
 #include <cutils/base.h>
+#include <string.h>
 
 // ===============================================================
 
@@ -43,6 +44,12 @@ typedef struct tagURI {
   char *opaque;
 
 } URI;
+
+M_INLINE void URI_init( URI *url )
+{
+  memset( url, 0, sizeof( URI ) );
+  url->port = -1;
+}
 
 
 int URI_parse( URI *url, char *line);

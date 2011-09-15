@@ -7,10 +7,15 @@
 
 void URI_test_ok();
 void URI_test_fail();
+void HTTP_request_ok();
+void HTTP_request_fail();
+
 
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
+	VTEST_TESTN( HTTP_request_ok )
+	VTEST_TESTN( HTTP_request_fail )
 	VTEST_TESTN( URI_test_ok )
 	VTEST_TESTN( URI_test_fail )
 VTEST_END_SUITE

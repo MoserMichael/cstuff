@@ -169,6 +169,10 @@ M_INLINE int parse_segment( URIPARSECTX *ctx, char *ptr, char **next )
 
 //path_segments = segment *( "/" segment )
 M_INLINE int parse_path_segments( URIPARSECTX *ctx, char *ptr, char **next ) {
+  if (parse_segment( ctx, ptr, next ) < 0) {
+    return -1;
+  }
+  ptr = *next;
   while (*ptr == '/') {
     ctx_add_escaped_char( ctx, '/' );
     ptr = *next = ptr + 1;
@@ -511,12 +515,6 @@ int parse_hier_part( URIPARSECTX *ctx, char *ptr , char **next, int parse_opaque
   ctx->rep->fragment =  ctx_finish_escaped_string(ctx); 
   
   return 0;
-}
-
-M_INLINE void URI_init( URI *url )
-{
-  memset( url, 0, sizeof( URI ) );
-  url->port = -1;
 }
 
 int URI_parse( URI *url, char *line )

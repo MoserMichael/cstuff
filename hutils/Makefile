@@ -16,6 +16,8 @@ hutilssh_TYPE=shlib
 
 hutilssh_SRC_EXTENSION=c
 
+hutilssh_LIBS=cutils
+
 
 
 include $(TOPDIR)/rules.make
