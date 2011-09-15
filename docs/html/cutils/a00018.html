@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dlist.h File Reference</title>
+<title>Simple data structures / objects in plain C: dbuf.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,86 +37,23 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Defines</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">dlist.h File Reference</div>  </div>
+<div class="title">dbuf.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00014_source.html">cutils/base.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &quot;<a class="el" href="a00019_source.html">dbuf.h</a>&quot;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
 </div>
 <p><a href="a00018_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html">tagDLIST_entry</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html">DLIST</a></td></tr>
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga563984e90677ff397213299a05ca8d04">DLIST_FOREACH</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="a00037.html#ga563984e90677ff397213299a05ca8d04"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gab21653656a5607e487327ed381a42ffc">DLIST_FOREACH_REVERSE</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element.  <a href="a00037.html#gab21653656a5607e487327ed381a42ffc"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gaa8491f4f93ae66bcd0006914484ec013">DLIST_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="a00037.html#gaa8491f4f93ae66bcd0006914484ec013"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga46f8bbaa697f05c1f4e444ffd04f72d1">DLIST_FOREACH_REVERSE_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element.  <a href="a00037.html#ga46f8bbaa697f05c1f4e444ffd04f72d1"></a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00007.html">tagDLIST_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00036.html#ga8bcfc120d0cdb50aa5e418d3c7dd1bdf">DLIST_entry</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gac53c87d52fbf30ec94612007d2838089">DLIST_VISITOR_V</a> )(<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00007.html">DLIST_entry</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga54b6468514a681ad99c543b7e1f94a32">DLIST_VISITOR</a> )(<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00007.html">DLIST_entry</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gad66eadd6b35614c8b18f1687db7ce300">DLIST_COMPARE</a> )(<a class="el" href="a00007.html">DLIST_entry</a> *, <a class="el" href="a00007.html">DLIST_entry</a> *)</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga4b32655ea9e332581a0bab18857f8adb">DLIST_init</a> (<a class="el" href="a00002.html">DLIST</a> *head)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="a00037.html#ga4b32655ea9e332581a0bab18857f8adb"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gacbf81693b507a588b1abcd3377471558">DLIST_isempty</a> (<a class="el" href="a00002.html">DLIST</a> *head)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="a00037.html#gacbf81693b507a588b1abcd3377471558"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga572203aad7a7d974bcffc50baef3105d">DLIST_insert_before</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00007.html">DLIST_entry</a> *pos, <a class="el" href="a00007.html">DLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry before a given entry.  <a href="a00037.html#ga572203aad7a7d974bcffc50baef3105d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gac7af205a388bf32b16cb8b7c8ecc32f4">DLIST_insert_after</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00007.html">DLIST_entry</a> *pos, <a class="el" href="a00007.html">DLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="a00037.html#gac7af205a388bf32b16cb8b7c8ecc32f4"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga9bbc2c5bac97e9ed491c8fd6f6eae1ce">DLIST_unlink</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00007.html">DLIST_entry</a> *link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a list.  <a href="a00037.html#ga9bbc2c5bac97e9ed491c8fd6f6eae1ce"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gafbf7e8463b8a2615c35175e1b804b8df">DLIST_push_back</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00007.html">DLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain queue)  <a href="a00037.html#gafbf7e8463b8a2615c35175e1b804b8df"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga4da016f9927a26c8d90fe81416684bc7">DLIST_push_front</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00007.html">DLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as first in list (used to maintain queue)  <a href="a00037.html#ga4da016f9927a26c8d90fe81416684bc7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga9145408d5a80137e5660f32c21029d9b">DLIST_pop_front</a> (<a class="el" href="a00002.html">DLIST</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the first element from list (used to maintain double ended queue)  <a href="a00037.html#ga9145408d5a80137e5660f32c21029d9b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga32a3f6d0de35b46dd011702f5873bb72">DLIST_pop_back</a> (<a class="el" href="a00002.html">DLIST</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the last element from list (used to maintain double ended queue)  <a href="a00037.html#ga32a3f6d0de35b46dd011702f5873bb72"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gaefa144f015d6a1283afcb2716b0dc747">DLIST_get_first</a> (<a class="el" href="a00002.html">DLIST</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gae039944967f35a70066609fc5d016942">DLIST_get_last</a> (<a class="el" href="a00002.html">DLIST</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga6af1da3a12a2ca6b60695bbb083d3198">DLIST_get_next</a> (<a class="el" href="a00007.html">DLIST_entry</a> *cur)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gac17b78519ee5c430e2eb4d471e2713ee">DLIST_get_prev</a> (<a class="el" href="a00007.html">DLIST_entry</a> *cur)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga1884ac42bd98ebbf0b7f71bdd67579b6">DLIST_size</a> (<a class="el" href="a00002.html">DLIST</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gaff66f931cabc3fbcf6e420135a135877">DLIST_get_nth</a> (<a class="el" href="a00002.html">DLIST</a> *list, size_t nth)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga4c8a5673bcc07dd3f5f4f7736f7a798d">DLIST_get_nth_reverse</a> (<a class="el" href="a00002.html">DLIST</a> *list, size_t nth)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gaf6188d6ec22905f7ea11335c30b1627f">DLIST_foreach</a> (<a class="el" href="a00002.html">DLIST</a> *lst, <a class="el" href="a00037.html#gac53c87d52fbf30ec94612007d2838089">DLIST_VISITOR_V</a> eval, void *context, int save_from_del)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list. list is traversed from first element to the last element.  <a href="a00037.html#gaf6188d6ec22905f7ea11335c30b1627f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga120a5162547a971d45a2d6446a9c4273">DLIST_foreach_reverse</a> (<a class="el" href="a00002.html">DLIST</a> *lst, <a class="el" href="a00037.html#gac53c87d52fbf30ec94612007d2838089">DLIST_VISITOR_V</a> eval, void *context, int save_from_delete)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list. list is traversed backword from last element to the first element.  <a href="a00037.html#ga120a5162547a971d45a2d6446a9c4273"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gaec008957a6a9b8aca1f29e691f8d929c">DLIST_findif</a> (<a class="el" href="a00002.html">DLIST</a> *lst, <a class="el" href="a00037.html#ga54b6468514a681ad99c543b7e1f94a32">DLIST_VISITOR</a> eval, void *context, int32_t *retval, int save_from_del)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00037.html#gaec008957a6a9b8aca1f29e691f8d929c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00007.html">DLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga37989ca126a98eeab2a6a4310b1edf70">DLIST_findif_reverse</a> (<a class="el" href="a00002.html">DLIST</a> *lst, <a class="el" href="a00037.html#ga54b6468514a681ad99c543b7e1f94a32">DLIST_VISITOR</a> eval, void *context, int32_t *retval, int save_from_delete)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in reverse direction from last element to first element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00037.html#ga37989ca126a98eeab2a6a4310b1edf70"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gab24282d74d6ac2ff24b28e213d3cea15">DLIST_deleteif</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00037.html#ga54b6468514a681ad99c543b7e1f94a32">DLIST_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="a00037.html#gab24282d74d6ac2ff24b28e213d3cea15"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gaa0e8e5379952c2c61e373f576c047792">DLIST_deleteall</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00037.html#gac53c87d52fbf30ec94612007d2838089">DLIST_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="a00037.html#gaa0e8e5379952c2c61e373f576c047792"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga82c92d75b00d2d927eeb44c9413cc1f6">DLIST_insert_sorted</a> (<a class="el" href="a00002.html">DLIST</a> *list, <a class="el" href="a00037.html#gad66eadd6b35614c8b18f1687db7ce300">DLIST_COMPARE</a> compare, <a class="el" href="a00007.html">DLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="a00037.html#ga82c92d75b00d2d927eeb44c9413cc1f6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga078d4f221e97947eeebb89877973a9cf">DLIST_reverse</a> (<a class="el" href="a00002.html">DLIST</a> *lst)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="a00037.html#ga078d4f221e97947eeebb89877973a9cf"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga3152f24ad9c9f817968e6eb04d7f8474">DLIST_check</a> (<a class="el" href="a00002.html">DLIST</a> *header)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of list  <a href="a00037.html#ga3152f24ad9c9f817968e6eb04d7f8474"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#gaa94888e27a335faa77790018995cd6f9">DBUF_add</a> (<a class="el" href="a00007.html">DBUF</a> *buf, void *data, size_t data_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add stuff to a buffer  <a href="a00039.html#gaa94888e27a335faa77790018995cd6f9"></a><br/></td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

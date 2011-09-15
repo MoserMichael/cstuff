@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: array.h Source File</title>
+<title>Simple data structures / objects in plain C: array.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,505 +36,107 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">array.h</div>  </div>
+<div class="title">array.c</div>  </div>
 </div>
 <div class="contents">
 <a href="a00013.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) Michael Moser (2011) . 3-clause BSD License applies */</span>
 <a name="l00002"></a>00002 
-<a name="l00003"></a>00003 <span class="preprocessor">#ifndef __ARRAY_H__</span>
-<a name="l00004"></a>00004 <span class="preprocessor"></span><span class="preprocessor">#define __ARRAY_H__</span>
-<a name="l00005"></a>00005 <span class="preprocessor"></span>
-<a name="l00006"></a>00006 <span class="preprocessor">#ifdef  __cplusplus</span>
-<a name="l00007"></a>00007 <span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {
-<a name="l00008"></a>00008 <span class="preprocessor">#endif</span>
-<a name="l00009"></a>00009 <span class="preprocessor"></span>
-<a name="l00010"></a>00010 
-<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;<a class="code" href="a00014.html">cutils/base.h</a>&gt;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#include &lt;string.h&gt;</span>
-<a name="l00014"></a>00014 <span class="comment"></span>
-<a name="l00015"></a>00015 <span class="comment">/**</span>
-<a name="l00016"></a>00016 <span class="comment"> * @defgroup ARRAY</span>
-<a name="l00017"></a>00017 <span class="comment"> * @brief Dynamic array, all elements contained in this structure are of the same size.</span>
-<a name="l00018"></a>00018 <span class="comment"> *</span>
-<a name="l00019"></a>00019 <span class="comment"> * A dynamic array, growable array, resizable array, dynamic table,</span>
-<a name="l00020"></a>00020 <span class="comment"> * or array list is a data structure, an array which is automatically expanded to </span>
-<a name="l00021"></a>00021 <span class="comment"> * accommodate new objects if filled beyond its current size. </span>
-<a name="l00022"></a>00022 <span class="comment"> * In most ways the dynamic array has performance similar to an array, with the addition </span>
-<a name="l00023"></a>00023 <span class="comment"> * of new operations to add and remove elements from the end:</span>
-<a name="l00024"></a>00024 <span class="comment"> *</span>
-<a name="l00025"></a>00025 <span class="comment"> *   - Getting or setting the value at a particular index (constant time)</span>
-<a name="l00026"></a>00026 <span class="comment"> *   - Iterating over the elements in order (linear time, good cache performance)</span>
-<a name="l00027"></a>00027 <span class="comment"> *   - Add an element to the end (constant amortized time)</span>
-<a name="l00028"></a>00028 <span class="comment"> *</span>
-<a name="l00029"></a>00029 <span class="comment"> * From http://en.wikipedia.org/wiki/Dynamic_array</span>
-<a name="l00030"></a>00030 <span class="comment"> *</span>
-<a name="l00031"></a>00031 <span class="comment"> *</span>
-<a name="l00032"></a>00032 <span class="comment"> * @{</span>
-<a name="l00033"></a>00033 <span class="comment"> */</span>
-<a name="l00034"></a><a class="code" href="a00001.html">00034</a> <span class="keyword">typedef</span> <span class="keyword">struct  </span>{
-<a name="l00035"></a>00035 
-<a name="l00036"></a><a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">00036</a>         <span class="keywordtype">size_t</span>   <a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>;
-<a name="l00037"></a><a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">00037</a>         <span class="keywordtype">size_t</span>   <a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00038"></a><a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">00038</a>         <span class="keywordtype">size_t</span>   <a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00039"></a>00039 
-<a name="l00040"></a><a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">00040</a>         uint8_t  *<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>;
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;<a class="code" href="a00014.html">cutils/array.h</a>&gt;</span>
+<a name="l00005"></a>00005 
+<a name="l00006"></a>00006 
+<a name="l00007"></a><a class="code" href="a00013.html#a1bd82a22c9afadac7a88445e92161214">00007</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="a00013.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(<a class="code" href="a00001.html">ARRAY</a> *arr,<span class="keywordtype">size_t</span> request_size)
+<a name="l00008"></a>00008 {
+<a name="l00009"></a>00009         <span class="keywordtype">size_t</span> sz;
+<a name="l00010"></a>00010         <span class="keywordtype">void</span> *rt;
+<a name="l00011"></a>00011         
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013 
+<a name="l00014"></a>00014         sz = 2 * request_size;
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016         rt = realloc( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>, sz * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>);
+<a name="l00017"></a>00017         <span class="keywordflow">if</span> (!rt) {
+<a name="l00018"></a>00018                 <span class="keywordflow">return</span> -1;
+<a name="l00019"></a>00019         }
+<a name="l00020"></a>00020         arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> = rt;
+<a name="l00021"></a>00021         arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a> = sz;
+<a name="l00022"></a>00022         <span class="keywordflow">return</span> 0;
+<a name="l00023"></a>00023 }
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028 
+<a name="l00029"></a><a class="code" href="a00036.html#ga178c95e99fb2c218963f440c295c8380">00029</a> <span class="keywordtype">int</span> <a class="code" href="a00036.html#ga178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize)
+<a name="l00030"></a>00030 {       
+<a name="l00031"></a>00031         <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
+<a name="l00032"></a>00032                 <span class="keywordflow">return</span> -1;
+<a name="l00033"></a>00033         }
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035  
+<a name="l00036"></a>00036         <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>) {
+<a name="l00037"></a>00037                 <span class="keywordflow">if</span> (<a class="code" href="a00013.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(arr,index+1)) {
+<a name="l00038"></a>00038                         <span class="keywordflow">return</span> -1;
+<a name="l00039"></a>00039                 }
+<a name="l00040"></a>00040         }
 <a name="l00041"></a>00041 
-<a name="l00042"></a>00042 } <a class="code" href="a00001.html">ARRAY</a>;
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044 
-<a name="l00045"></a><a class="code" href="a00033.html#ga694aa4139823d620f5bb031b49aa4f0f">00045</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga694aa4139823d620f5bb031b49aa4f0f">ARRAY_init</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> elmsize, <span class="keywordtype">size_t</span> numofelem)
-<a name="l00046"></a>00046 {
-<a name="l00047"></a>00047         
-<a name="l00048"></a>00048         arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>    = elmsize;
-<a name="l00049"></a>00049         arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>   = 0;
-<a name="l00050"></a>00050         arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>= numofelem;
-<a name="l00051"></a>00051         arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>     = 0;
-<a name="l00052"></a>00052 
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043         <span class="keywordflow">if</span> (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> == arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>) {
+<a name="l00044"></a>00044                 <span class="keywordflow">if</span> (<a class="code" href="a00013.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(arr,arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>+1)) {
+<a name="l00045"></a>00045                         <span class="keywordflow">return</span> -1;
+<a name="l00046"></a>00046                 }
+<a name="l00047"></a>00047         }
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050         <span class="keywordflow">if</span> (index &lt; arr-&gt;elmcount) {
+<a name="l00051"></a>00051                 memmove( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index + 1) * elmsize, 
+<a name="l00052"></a>00052                                  arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + index * elmsize, (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> - index) * elmsize);
 <a name="l00053"></a>00053 
-<a name="l00054"></a>00054         <span class="keywordflow">if</span> (numofelem) {
-<a name="l00055"></a>00055                 <span class="keywordflow">if</span> ((arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> = (uint8_t *) malloc( elmsize * numofelem)) == 0) {
-<a name="l00056"></a>00056                         <span class="keywordflow">return</span> -1;
-<a name="l00057"></a>00057                 }
-<a name="l00058"></a>00058         }
-<a name="l00059"></a>00059         <span class="keywordflow">return</span> 0;
-<a name="l00060"></a>00060 }
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 <span class="comment"></span>
-<a name="l00063"></a>00063 <span class="comment">/**</span>
-<a name="l00064"></a>00064 <span class="comment"> * @brief Allocates a dynamic array from already allocated memory area; </span>
-<a name="l00065"></a>00065 <span class="comment"> *</span>
-<a name="l00066"></a>00066 <span class="comment"> * The memory is not owned by this object, meaning that this dynamic array cannot be resized </span>
-<a name="l00067"></a>00067 <span class="comment"> * (does not grow as maximum size is exceed); data are is not freed in object destructor.</span>
-<a name="l00068"></a>00068 <span class="comment"> * </span>
-<a name="l00069"></a>00069 <span class="comment"> * @param arr           (out) the object</span>
-<a name="l00070"></a>00070 <span class="comment"> * @param elmsize       (in)  size of one element</span>
-<a name="l00071"></a>00071 <span class="comment"> * @param ptr           (in)  memory area that will contain</span>
-<a name="l00072"></a>00072 <span class="comment"> * @param busize        (in)  size of memory area pointed to by ptr (size of Data area passed has to be greater or equal to the size of one element elmsize).</span>
-<a name="l00073"></a>00073 <span class="comment"> * @return 0 if ok -1 on failure.</span>
-<a name="l00074"></a>00074 <span class="comment"> */</span>
-<a name="l00075"></a><a class="code" href="a00033.html#gafd44eaffad9a4b06e18dfdfb7e6c9652">00075</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a>  <span class="keywordtype">int</span> <a class="code" href="a00033.html#gafd44eaffad9a4b06e18dfdfb7e6c9652" title="Allocates a dynamic array from already allocated memory area;.">ARRAY_init_fixed</a>( <a class="code" href="a00001.html">ARRAY</a> * arr, <span class="keywordtype">size_t</span> elmsize, <span class="keywordtype">void</span> *ptr, <span class="keywordtype">size_t</span> bufsize)
-<a name="l00076"></a>00076 {
-<a name="l00077"></a>00077         <span class="keywordflow">if</span> (bufsize &lt; elmsize) {
-<a name="l00078"></a>00078                 <span class="keywordflow">return</span> -1;
-<a name="l00079"></a>00079         }
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081         arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a> = elmsize;
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083         arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = 0;
-<a name="l00084"></a>00084         arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a> = bufsize / elmsize;
-<a name="l00085"></a>00085         arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> = ptr;
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087         <span class="keywordflow">return</span> 0;
-<a name="l00088"></a>00088 }
-<a name="l00089"></a>00089 <span class="comment"></span>
-<a name="l00090"></a>00090 <span class="comment">/** </span>
-<a name="l00091"></a>00091 <span class="comment"> * @brief Macro: Allocate dynamic array on stack</span>
-<a name="l00092"></a>00092 <span class="comment"> *</span>
-<a name="l00093"></a>00093 <span class="comment"> * Warning! this macro uses alloca standard library function - this is not always portable, </span>
-<a name="l00094"></a>00094 <span class="comment"> * and it bombs out when it causes stack overflow.</span>
-<a name="l00095"></a>00095 <span class="comment"> *</span>
-<a name="l00096"></a>00096 <span class="comment"> * @param arr           (out) (type ARRAY *) the object.</span>
-<a name="l00097"></a>00097 <span class="comment"> * @param elmsize       (in)  (type size_t) size of one element</span>
-<a name="l00098"></a>00098 <span class="comment"> * @param numofelem (in)  (type size_t) maximum number of elements.</span>
-<a name="l00099"></a>00099 <span class="comment"> */</span>
-<a name="l00100"></a><a class="code" href="a00033.html#ga563145759e08f5ec765057251f720ebf">00100</a> <span class="preprocessor">#define ARRAY_init_stack( arr, elmsize, numofelem ) \</span>
-<a name="l00101"></a>00101 <span class="preprocessor">do { \</span>
-<a name="l00102"></a>00102 <span class="preprocessor">        (arr)-&gt;ctx = 0; \</span>
-<a name="l00103"></a>00103 <span class="preprocessor">        (arr)-&gt;elmcount = 0; \</span>
-<a name="l00104"></a>00104 <span class="preprocessor">        (arr)-&gt;elmsize = (elmsize); \</span>
-<a name="l00105"></a>00105 <span class="preprocessor">        (arr)-&gt;elmmaxcount = (elmsize) * (numofelem); \</span>
-<a name="l00106"></a>00106 <span class="preprocessor">        (arr)-&gt;buffer = (char *) alloca( (str)-&gt;elmmaxcount ); \</span>
-<a name="l00107"></a>00107 <span class="preprocessor">} while(0);</span>
-<a name="l00108"></a>00108 <span class="preprocessor"></span>
-<a name="l00109"></a>00109 <span class="comment"></span>
-<a name="l00110"></a>00110 <span class="comment">/** </span>
-<a name="l00111"></a>00111 <span class="comment"> * @brief free all memory held by dynamic array (destructor).</span>
-<a name="l00112"></a>00112 <span class="comment"> * @param buf (in out) the object</span>
-<a name="l00113"></a>00113 <span class="comment"> */</span>
-<a name="l00114"></a><a class="code" href="a00033.html#gafed6207d4e648f9653cb2bb5a5ceec43">00114</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> <a class="code" href="a00033.html#gafed6207d4e648f9653cb2bb5a5ceec43" title="free all memory held by dynamic array (destructor).">ARRAY_free</a>( <a class="code" href="a00001.html">ARRAY</a> *arr) 
-<a name="l00115"></a>00115 {
-<a name="l00116"></a>00116         <span class="keywordflow">if</span> (arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>) {
-<a name="l00117"></a>00117                 free( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> );
-<a name="l00118"></a>00118                 arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> = 0;
-<a name="l00119"></a>00119         }
-<a name="l00120"></a>00120 }
-<a name="l00121"></a>00121 
-<a name="l00122"></a><a class="code" href="a00033.html#ga0a21f05148b610f008ab77af9146971e">00122</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a>  <span class="keywordtype">void</span> <a class="code" href="a00033.html#ga0a21f05148b610f008ab77af9146971e">ARRAY_reset</a>( <a class="code" href="a00001.html">ARRAY</a> * arr)
-<a name="l00123"></a>00123 {
-<a name="l00124"></a>00124         arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = 0;
-<a name="l00125"></a>00125 }
-<a name="l00126"></a>00126 <span class="comment"></span>
-<a name="l00127"></a>00127 <span class="comment">/**</span>
-<a name="l00128"></a>00128 <span class="comment"> * @brief returns number of objects that are currently held by this collection.</span>
-<a name="l00129"></a>00129 <span class="comment"> * @param  arr (in) the object</span>
-<a name="l00130"></a>00130 <span class="comment"> * @return </span>
-<a name="l00131"></a>00131 <span class="comment"> */</span>
-<a name="l00132"></a><a class="code" href="a00033.html#gaac3845deec6b60a387315965cf64d267">00132</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">size_t</span> <a class="code" href="a00033.html#gaac3845deec6b60a387315965cf64d267" title="returns number of objects that are currently held by this collection.">ARRAY_size</a>( <a class="code" href="a00001.html">ARRAY</a> *arr) 
-<a name="l00133"></a>00133 {
-<a name="l00134"></a>00134         <span class="keywordflow">return</span> arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00135"></a>00135 }
-<a name="l00136"></a>00136 <span class="comment"></span>
-<a name="l00137"></a>00137 <span class="comment">/** </span>
-<a name="l00138"></a>00138 <span class="comment"> * @brief returns maximum number of elements that can currently be held by this collection.</span>
-<a name="l00139"></a>00139 <span class="comment"> * @param  arr (in) the object</span>
-<a name="l00140"></a>00140 <span class="comment"> * @return </span>
-<a name="l00141"></a>00141 <span class="comment"> */</span>
-<a name="l00142"></a><a class="code" href="a00033.html#ga39032c979a9bb46994242a38d0832339">00142</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">size_t</span> <a class="code" href="a00033.html#ga39032c979a9bb46994242a38d0832339" title="returns maximum number of elements that can currently be held by this collection.">ARRAY_maxsize</a>( <a class="code" href="a00001.html">ARRAY</a> *arr )
-<a name="l00143"></a>00143 {
-<a name="l00144"></a>00144         <span class="keywordflow">return</span> arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>;
-<a name="l00145"></a>00145 }
-<a name="l00146"></a>00146 <span class="comment"></span>
-<a name="l00147"></a>00147 <span class="comment">/**</span>
-<a name="l00148"></a>00148 <span class="comment"> * @brief change size of dynamic array (i.e. change size of memory allocated for array)</span>
-<a name="l00149"></a>00149 <span class="comment"> * If requested size is smaller then the current size, then all skipping elements are discarded.</span>
-<a name="l00150"></a>00150 <span class="comment"> *</span>
-<a name="l00151"></a>00151 <span class="comment"> * @param arr (in out) the object</span>
-<a name="l00152"></a>00152 <span class="comment"> * @param num_elem (in) change maximum number of element to this number. </span>
-<a name="l00153"></a>00153 <span class="comment"> */</span>
-<a name="l00154"></a><a class="code" href="a00033.html#gaa1332b32680cff38fd71bcc58930bb86">00154</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#gaa1332b32680cff38fd71bcc58930bb86" title="change size of dynamic array (i.e. change size of memory allocated for array) If requested size is sm...">ARRAY_resize</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> num_elem) 
-<a name="l00155"></a>00155 {
-<a name="l00156"></a>00156         uint8_t * ptr;
-<a name="l00157"></a>00157 
-<a name="l00158"></a>00158         <span class="keywordflow">if</span> (num_elem &gt; arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>) {
-<a name="l00159"></a>00159                 ptr = realloc( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>, num_elem * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>);
-<a name="l00160"></a>00160                 <span class="keywordflow">if</span> (!ptr) {
-<a name="l00161"></a>00161                         <span class="keywordflow">return</span> -1;
-<a name="l00162"></a>00162                 }
-<a name="l00163"></a>00163                 arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> = ptr;
-<a name="l00164"></a>00164                 arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a> = num_elem;
-<a name="l00165"></a>00165                 <span class="keywordflow">if</span> (num_elem &lt; arr-&gt;elmcount) {
-<a name="l00166"></a>00166                         arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = num_elem;
-<a name="l00167"></a>00167                 }
-<a name="l00168"></a>00168         } <span class="keywordflow">else</span> {
-<a name="l00169"></a>00169                 arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = num_elem;
-<a name="l00170"></a>00170         }
-<a name="l00171"></a>00171         <span class="keywordflow">return</span> 0;
-<a name="l00172"></a>00172 }
-<a name="l00173"></a>00173 
-<a name="l00174"></a><a class="code" href="a00033.html#ga741b102f833e0ee35d7413d12c57f136">00174</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> uint8_t * <a class="code" href="a00033.html#ga741b102f833e0ee35d7413d12c57f136">ARRAY_at</a>( <a class="code" href="a00001.html">ARRAY</a> * arr, <span class="keywordtype">size_t</span> index)                
-<a name="l00175"></a>00175 {
-<a name="l00176"></a>00176         <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) {
-<a name="l00177"></a>00177                 <span class="keywordflow">return</span> 0;
-<a name="l00178"></a>00178         }
-<a name="l00179"></a>00179 
-<a name="l00180"></a>00180         <span class="keywordflow">return</span> arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>);
-<a name="l00181"></a>00181 }
-<a name="l00182"></a>00182 
-<a name="l00183"></a><a class="code" href="a00033.html#gaffc77bae46165067e9b7894e7007d9c7">00183</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#gaffc77bae46165067e9b7894e7007d9c7">ARRAY_copy_at</a>( <a class="code" href="a00001.html">ARRAY</a> * arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize) 
-<a name="l00184"></a>00184 {
-<a name="l00185"></a>00185         <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) {
-<a name="l00186"></a>00186                 <span class="keywordflow">return</span> -1;
-<a name="l00187"></a>00187         }
-<a name="l00188"></a>00188 
-<a name="l00189"></a>00189         memcpy( elm, arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>), elmsize );
-<a name="l00190"></a>00190         <span class="keywordflow">return</span> 0;
-<a name="l00191"></a>00191 }
-<a name="l00192"></a>00192 
-<a name="l00193"></a>00193 <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize);
-<a name="l00194"></a>00194 
-<a name="l00195"></a>00195 <span class="keywordtype">int</span> <a class="code" href="a00033.html#gaa527efc4a7222882143f6eaf88474c2e">ARRAY_set_at</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize);
-<a name="l00196"></a>00196 
-<a name="l00197"></a>00197 
-<a name="l00198"></a><a class="code" href="a00033.html#ga476adf0145ce1808b2427ff0bf4cd6c0">00198</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga476adf0145ce1808b2427ff0bf4cd6c0">ARRAY_delete_at</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index)
-<a name="l00199"></a>00199 {
-<a name="l00200"></a>00200         <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) {
-<a name="l00201"></a>00201                 <span class="keywordflow">return</span> -1;
-<a name="l00202"></a>00202         }
-<a name="l00203"></a>00203         
-<a name="l00204"></a>00204         <span class="keywordflow">if</span> (index &lt; (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> - 1)) {
-<a name="l00205"></a>00205                 <span class="keywordtype">size_t</span> elmsize = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00206"></a>00206 
-<a name="l00207"></a>00207                 memmove( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + index * elmsize,
-<a name="l00208"></a>00208                                  arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index + 1) * elmsize, 
-<a name="l00209"></a>00209                                  (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> - index - 1) * elmsize);
-<a name="l00210"></a>00210                 
-<a name="l00211"></a>00211         } 
-<a name="l00212"></a>00212         --arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00213"></a>00213         <span class="keywordflow">return</span> 0;
-<a name="l00214"></a>00214 }
-<a name="l00215"></a>00215 
-<a name="l00216"></a>00216 
-<a name="l00217"></a><a class="code" href="a00033.html#ga557c0fb20ce197428a69374b47e387e0">00217</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga557c0fb20ce197428a69374b47e387e0">ARRAY_push_back</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize)
-<a name="l00218"></a>00218 {       
-<a name="l00219"></a>00219         <span class="keywordflow">return</span> <a class="code" href="a00033.html#ga178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a>(arr,arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>,elm, elmsize);         
-<a name="l00220"></a>00220 }
-<a name="l00221"></a>00221 
-<a name="l00222"></a>00222 
-<a name="l00223"></a><a class="code" href="a00033.html#ga5c8e00dc4d38ebdb2da305e91887ffdd">00223</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga5c8e00dc4d38ebdb2da305e91887ffdd">ARRAY_pop_back</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">void</span> *ptr, <span class="keywordtype">size_t</span> elmsize )
-<a name="l00224"></a>00224 {
-<a name="l00225"></a>00225         <span class="keywordflow">if</span> (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> &lt;=0) {
-<a name="l00226"></a>00226                 <span class="keywordflow">return</span> -1;
-<a name="l00227"></a>00227         }
-<a name="l00228"></a>00228 
-<a name="l00229"></a>00229         <span class="keywordflow">if</span> (ptr) {
-<a name="l00230"></a>00230                 <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
-<a name="l00231"></a>00231                         <span class="keywordflow">return</span> -1;
-<a name="l00232"></a>00232                 }
-<a name="l00233"></a>00233 
-<a name="l00234"></a>00234                 memcpy( ptr, arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (--arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>, elmsize);
-<a name="l00235"></a>00235         }
-<a name="l00236"></a>00236         <span class="keywordflow">return</span> 0;
-<a name="l00237"></a>00237 }
-<a name="l00238"></a>00238 
-<a name="l00239"></a><a class="code" href="a00033.html#gae28547acd38f72d116742b8009ed9e07">00239</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#gae28547acd38f72d116742b8009ed9e07">ARRAY_stack_top</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">void</span> *ptr, <span class="keywordtype">size_t</span> elmsize )
-<a name="l00240"></a>00240 {
-<a name="l00241"></a>00241         <span class="keywordflow">if</span> (arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> &lt;=0) {
-<a name="l00242"></a>00242                 <span class="keywordflow">return</span> -1;
-<a name="l00243"></a>00243         }
-<a name="l00244"></a>00244 
-<a name="l00245"></a>00245         <span class="keywordflow">if</span> (ptr) {
-<a name="l00246"></a>00246                 <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
-<a name="l00247"></a>00247                         <span class="keywordflow">return</span> -1;
-<a name="l00248"></a>00248                 }
-<a name="l00249"></a>00249 
-<a name="l00250"></a>00250                 memcpy( ptr, arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>, elmsize);
-<a name="l00251"></a>00251         }
-<a name="l00252"></a>00252         <span class="keywordflow">return</span> 0;
-<a name="l00253"></a>00253 }
-<a name="l00254"></a>00254 
-<a name="l00255"></a>00255 <span class="preprocessor">#if 0</span>
-<a name="l00256"></a>00256 <span class="preprocessor"></span>
-<a name="l00257"></a>00257 <span class="preprocessor">#define ARRAY_FOREACH( loopvarname, array )</span>
-<a name="l00258"></a>00258 <span class="preprocessor"></span>  
-<a name="l00259"></a>00259 <span class="preprocessor">#define ARRAY_FOREACH_RANGE( loopvarname, from_idx, to_idx, array )</span>
-<a name="l00260"></a>00260 <span class="preprocessor"></span>
-<a name="l00261"></a>00261 <span class="preprocessor">#define ARRAY_FOREACH_REVERSE( loopvarname, array )</span>
-<a name="l00262"></a>00262 <span class="preprocessor"></span>
-<a name="l00263"></a>00263 <span class="preprocessor">#define ARRAY_FOREACH_REVERSE_RANGE( loopvarname, from_idx, to_idx, array )</span>
-<a name="l00264"></a>00264 <span class="preprocessor"></span>
-<a name="l00265"></a>00265 <span class="preprocessor">#endif</span>
-<a name="l00266"></a>00266 <span class="preprocessor"></span>
-<a name="l00267"></a>00267 <span class="comment">/* Ups: can do this only with gcc typeof, very bad, not portable</span>
-<a name="l00268"></a>00268 <span class="comment"></span>
-<a name="l00269"></a>00269 <span class="comment">#define ARRAY_FOREACH( loopvarname, array )     {\</span>
-<a name="l00270"></a>00270 <span class="comment">        char *ARRAY_FOREACH_##loopvarname_eof = (array)-&gt;buffer + ((array)-&gt;elmcount * (array)-&gt;elmsize); \</span>
-<a name="l00271"></a>00271 <span class="comment">        char *ARRAY_FOREACH_##loopvarname_ptr = (array)-&gt;buffer; \</span>
-<a name="l00272"></a>00272 <span class="comment">        for(;ARRAY_FOREACH_##loopvarname_ptr &lt; ARRAY_FOREACH_##loopvarname_eof; ARRAY_FOREACH_##loopvarname_ptr += (array)-&gt;elmsize) { \</span>
-<a name="l00273"></a>00273 <span class="comment">                loopvarname = (cast-to-type-of-loopvarname) ARRAY_FOREACH_##loopvarname_ptr</span>
-<a name="l00274"></a>00274 <span class="comment">*/</span>
-<a name="l00275"></a>00275 
-<a name="l00276"></a>00276 
-<a name="l00277"></a><a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">00277</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a>)   (<span class="keywordtype">int</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize, <span class="keywordtype">void</span> *context);
-<a name="l00278"></a>00278 
-<a name="l00279"></a><a class="code" href="a00033.html#ga107782865cee682eba1fc89e764f5e03">00279</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> <a class="code" href="a00033.html#ga107782865cee682eba1fc89e764f5e03">ARRAY_foreach</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context)
-<a name="l00280"></a>00280 {
-<a name="l00281"></a>00281         <span class="keywordtype">size_t</span> i;
-<a name="l00282"></a>00282         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00283"></a>00283         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00284"></a>00284         uint8_t *pos;
-<a name="l00285"></a>00285 
-<a name="l00286"></a>00286         <span class="keywordflow">for</span>(pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>, i = 0; i &lt; sz; i++, pos += elmsz) {
-<a name="l00287"></a>00287                 eval( i, pos, elmsz, context ); 
-<a name="l00288"></a>00288         }
-<a name="l00289"></a>00289 }
-<a name="l00290"></a>00290 
-<a name="l00291"></a><a class="code" href="a00033.html#gab0f58e396b81f03d0d96ddbd55672045">00291</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#gab0f58e396b81f03d0d96ddbd55672045">ARRAY_foreach_range</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context, <span class="keywordtype">int</span> from_idx, <span class="keywordtype">int</span> to_idx)
-<a name="l00292"></a>00292 {
-<a name="l00293"></a>00293         <span class="keywordtype">size_t</span> i;
-<a name="l00294"></a>00294         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00295"></a>00295         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00296"></a>00296         uint8_t *pos;
-<a name="l00297"></a>00297 
-<a name="l00298"></a>00298         <span class="keywordflow">if</span> (!(from_idx &gt; 0 &amp;&amp; from_idx &lt; to_idx &amp;&amp; (<span class="keywordtype">size_t</span>) to_idx &lt;  sz)) {
-<a name="l00299"></a>00299                 <span class="keywordflow">return</span> -1;
-<a name="l00300"></a>00300         }
-<a name="l00301"></a>00301 
-<a name="l00302"></a>00302         <span class="keywordflow">for</span>(pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (from_idx * elmsz), i = from_idx; i &lt; (<span class="keywordtype">size_t</span>) to_idx; i++, pos += elmsz) {
-<a name="l00303"></a>00303                 eval( i, pos, elmsz, context ); 
-<a name="l00304"></a>00304         }
-<a name="l00305"></a>00305 
-<a name="l00306"></a>00306         <span class="keywordflow">return</span> 0;
-<a name="l00307"></a>00307 }
-<a name="l00308"></a>00308 
-<a name="l00309"></a>00309 
-<a name="l00310"></a>00310 
-<a name="l00311"></a><a class="code" href="a00033.html#ga348bcb863616489982859044a4907c05">00311</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> <a class="code" href="a00033.html#ga348bcb863616489982859044a4907c05">ARRAY_foreach_reverse</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context)
-<a name="l00312"></a>00312 {
-<a name="l00313"></a>00313         <span class="keywordtype">size_t</span> i;
-<a name="l00314"></a>00314         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00315"></a>00315         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00316"></a>00316         uint8_t *pos;
-<a name="l00317"></a>00317 
-<a name="l00318"></a>00318         <span class="keywordflow">for</span>(pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (elmsz * (sz-1)), i = sz-1; ; i--, pos -= elmsz) {
-<a name="l00319"></a>00319                 eval( i, pos, elmsz, context ); 
-<a name="l00320"></a>00320                 <span class="keywordflow">if</span> (i == 0) {
-<a name="l00321"></a>00321                         <span class="keywordflow">break</span>;
-<a name="l00322"></a>00322                 }
-<a name="l00323"></a>00323         }
-<a name="l00324"></a>00324 }
-<a name="l00325"></a>00325 
-<a name="l00326"></a>00326 
-<a name="l00327"></a><a class="code" href="a00033.html#ga3bb873bda9ffaa686071a4ec35307636">00327</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga3bb873bda9ffaa686071a4ec35307636">ARRAY_foreach_reverse_range</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context, <span class="keywordtype">int</span> from_idx, <span class="keywordtype">int</span> to_idx)
-<a name="l00328"></a>00328 {
-<a name="l00329"></a>00329         <span class="keywordtype">int</span> i;
-<a name="l00330"></a>00330         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00331"></a>00331         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00332"></a>00332         uint8_t *pos;
-<a name="l00333"></a>00333 
-<a name="l00334"></a>00334         <span class="keywordflow">if</span> (!(from_idx &gt; 0 &amp;&amp; from_idx &lt; to_idx &amp;&amp; (<span class="keywordtype">size_t</span>) to_idx &lt; sz)) {
-<a name="l00335"></a>00335                 <span class="keywordflow">return</span> -1;
-<a name="l00336"></a>00336         }
-<a name="l00337"></a>00337 
-<a name="l00338"></a>00338         <span class="keywordflow">for</span>(i = (to_idx - 1), pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (elmsz * i); ; i--, pos -= elmsz) {
-<a name="l00339"></a>00339                 eval( i, pos, elmsz, context ); 
-<a name="l00340"></a>00340                 <span class="keywordflow">if</span> (i == from_idx) {
-<a name="l00341"></a>00341                         <span class="keywordflow">break</span>;
-<a name="l00342"></a>00342                 }
-<a name="l00343"></a>00343         }
-<a name="l00344"></a>00344 
-<a name="l00345"></a>00345         <span class="keywordflow">return</span> 0;
-<a name="l00346"></a>00346 }
-<a name="l00347"></a>00347 
-<a name="l00348"></a>00348 
-<a name="l00349"></a><a class="code" href="a00033.html#ga8862f23900d93ed5753bde771f556414">00349</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga8862f23900d93ed5753bde771f556414">ARRAY_findif</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context, uint32_t *retval)
-<a name="l00350"></a>00350 {
-<a name="l00351"></a>00351         <span class="keywordtype">size_t</span> i;
-<a name="l00352"></a>00352         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00353"></a>00353         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00354"></a>00354         uint32_t ret;
-<a name="l00355"></a>00355         uint8_t *pos;
-<a name="l00356"></a>00356 
-<a name="l00357"></a>00357         <span class="keywordflow">if</span> (!retval) {
-<a name="l00358"></a>00358           *retval = 0;
-<a name="l00359"></a>00359         }
-<a name="l00360"></a>00360 
-<a name="l00361"></a>00361         <span class="keywordflow">for</span>(i = 0, pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>; i &lt; sz; i++, pos += elmsz) {
-<a name="l00362"></a>00362                 <span class="keywordflow">if</span> ( (ret = eval( i, pos, elmsz, context )) != 0) {
-<a name="l00363"></a>00363                         <span class="keywordflow">if</span> (retval) {
-<a name="l00364"></a>00364                                 *retval = ret;
-<a name="l00365"></a>00365                         }
-<a name="l00366"></a>00366                         <span class="keywordflow">return</span> i;
-<a name="l00367"></a>00367                 }
-<a name="l00368"></a>00368         }
-<a name="l00369"></a>00369         <span class="keywordflow">return</span> -1;
-<a name="l00370"></a>00370 }
-<a name="l00371"></a>00371 
-<a name="l00372"></a><a class="code" href="a00033.html#ga903c986f29a84e8ea1b01583f03dac0b">00372</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga903c986f29a84e8ea1b01583f03dac0b">ARRAY_findif_range</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context,  
-<a name="l00373"></a>00373                                                             <span class="keywordtype">int</span> from_idx, <span class="keywordtype">int</span> to_idx, uint32_t *retval)
-<a name="l00374"></a>00374 {
-<a name="l00375"></a>00375         <span class="keywordtype">int</span>  i;
-<a name="l00376"></a>00376         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00377"></a>00377         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00378"></a>00378         uint32_t ret;
-<a name="l00379"></a>00379         uint8_t *pos;
-<a name="l00380"></a>00380 
-<a name="l00381"></a>00381         <span class="keywordflow">if</span> (!retval) {
-<a name="l00382"></a>00382           *retval = 0;
-<a name="l00383"></a>00383         }
-<a name="l00384"></a>00384 
-<a name="l00385"></a>00385         <span class="keywordflow">if</span> (!(from_idx &gt; 0 &amp;&amp; from_idx &lt; to_idx &amp;&amp; (<span class="keywordtype">size_t</span>) to_idx &lt; sz)) {
-<a name="l00386"></a>00386                 <span class="keywordflow">return</span> -1;
-<a name="l00387"></a>00387         }
-<a name="l00388"></a>00388 
-<a name="l00389"></a>00389         <span class="keywordflow">for</span>(i = from_idx, pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (from_idx * elmsz); i &lt; to_idx; i++, pos += elmsz) {
-<a name="l00390"></a>00390                 <span class="keywordflow">if</span> ((ret = eval( i, pos, elmsz, context )) != 0) {
-<a name="l00391"></a>00391                         <span class="keywordflow">if</span> (retval) {
-<a name="l00392"></a>00392                                 *retval = ret;
-<a name="l00393"></a>00393                         }                       
-<a name="l00394"></a>00394                         <span class="keywordflow">return</span> i;
-<a name="l00395"></a>00395                 }
-<a name="l00396"></a>00396         }
-<a name="l00397"></a>00397 
-<a name="l00398"></a>00398         <span class="keywordflow">return</span> -1;
-<a name="l00399"></a>00399 }
-<a name="l00400"></a>00400 
-<a name="l00401"></a>00401 
-<a name="l00402"></a>00402 
-<a name="l00403"></a><a class="code" href="a00033.html#ga41162038e45941474c4b9f7e5254e6d9">00403</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#ga41162038e45941474c4b9f7e5254e6d9">ARRAY_findif_reverse</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context, uint32_t *retval)
-<a name="l00404"></a>00404 {
-<a name="l00405"></a>00405         <span class="keywordtype">size_t</span> i;
-<a name="l00406"></a>00406         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00407"></a>00407         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00408"></a>00408         uint32_t ret;
-<a name="l00409"></a>00409         uint8_t *pos;
-<a name="l00410"></a>00410 
-<a name="l00411"></a>00411         <span class="keywordflow">if</span> (!retval) {
-<a name="l00412"></a>00412           *retval = 0;
-<a name="l00413"></a>00413         }
-<a name="l00414"></a>00414 
-<a name="l00415"></a>00415         <span class="keywordflow">for</span>(i = sz-1, pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (elmsz * (sz-1)); ; i--, pos -= elmsz) {
-<a name="l00416"></a>00416                 <span class="keywordflow">if</span> ((ret = eval( i, pos, elmsz, context )) != 0) {
-<a name="l00417"></a>00417                         <span class="keywordflow">if</span> (retval) {
-<a name="l00418"></a>00418                                 *retval = ret;
-<a name="l00419"></a>00419                         }                       
-<a name="l00420"></a>00420                         <span class="keywordflow">return</span> i;
-<a name="l00421"></a>00421                 }
-<a name="l00422"></a>00422                 <span class="keywordflow">if</span> (i == 0) {
-<a name="l00423"></a>00423                         <span class="keywordflow">break</span>;
-<a name="l00424"></a>00424                 }
-<a name="l00425"></a>00425         }
-<a name="l00426"></a>00426         <span class="keywordflow">return</span> -1;
-<a name="l00427"></a>00427 }
-<a name="l00428"></a>00428 
-<a name="l00429"></a>00429 
-<a name="l00430"></a><a class="code" href="a00033.html#gaa4564f7eefb2ff3f1ca290c216629632">00430</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00033.html#gaa4564f7eefb2ff3f1ca290c216629632">ARRAY_findif_reverse_range</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <a class="code" href="a00033.html#ga4787a36c1aa147cb273c6ea71d28f47b">ARRAY_VISITOR</a> eval, <span class="keywordtype">void</span> *context, 
-<a name="l00431"></a>00431                                                                           <span class="keywordtype">int</span> from_idx, <span class="keywordtype">int</span> to_idx, uint32_t *retval)
-<a name="l00432"></a>00432 {
-<a name="l00433"></a>00433         <span class="keywordtype">int</span> i;
-<a name="l00434"></a>00434         <span class="keywordtype">size_t</span> sz = arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>;
-<a name="l00435"></a>00435         <span class="keywordtype">size_t</span> elmsz = arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>;
-<a name="l00436"></a>00436         uint32_t ret;
-<a name="l00437"></a>00437         uint8_t *pos;
-<a name="l00438"></a>00438 
-<a name="l00439"></a>00439         <span class="keywordflow">if</span> (!retval) {
-<a name="l00440"></a>00440           *retval = 0;
-<a name="l00441"></a>00441         }
-<a name="l00442"></a>00442 
-<a name="l00443"></a>00443         <span class="keywordflow">if</span> (!(from_idx &gt; 0 &amp;&amp; from_idx &lt; to_idx &amp;&amp; (<span class="keywordtype">size_t</span>) to_idx &lt; sz)) {
-<a name="l00444"></a>00444                 <span class="keywordflow">return</span> -1;
-<a name="l00445"></a>00445         }
-<a name="l00446"></a>00446 
-<a name="l00447"></a>00447         <span class="keywordflow">for</span>(i = to_idx - 1, pos = arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (elmsz * i); ; i--, pos -= elmsz) {
-<a name="l00448"></a>00448                 <span class="keywordflow">if</span> ((ret = eval( i, pos, elmsz, context )) != 0) {
-<a name="l00449"></a>00449                         <span class="keywordflow">if</span> (retval) {
-<a name="l00450"></a>00450                                 *retval = ret;
-<a name="l00451"></a>00451                         }                       
-<a name="l00452"></a>00452                         <span class="keywordflow">return</span> i;
-<a name="l00453"></a>00453                 }
-<a name="l00454"></a>00454                 <span class="keywordflow">if</span> (i == from_idx) {
-<a name="l00455"></a>00455                         <span class="keywordflow">break</span>;
-<a name="l00456"></a>00456                 }
-<a name="l00457"></a>00457         }
-<a name="l00458"></a>00458 
-<a name="l00459"></a>00459         <span class="keywordflow">return</span> -1;
-<a name="l00460"></a>00460 }
-<a name="l00461"></a>00461 
-<a name="l00462"></a>00462 <span class="comment"></span>
-<a name="l00463"></a>00463 <span class="comment">/** </span>
-<a name="l00464"></a>00464 <span class="comment"> * @brief iterate over all entries of the array and delete entries that match predicate from the array.</span>
-<a name="l00465"></a>00465 <span class="comment"> * @param list (in) the object.</span>
-<a name="l00466"></a>00466 <span class="comment"> * @param check_if (in) predicate function; the function returns 1 then inspected argument element will be deleted; if argument pointer is NULL then all entries will be deleted. </span>
-<a name="l00467"></a>00467 <span class="comment"> * @param context (in) data pointer passed to every invocation of check_if</span>
-<a name="l00468"></a>00468 <span class="comment"> */</span>
-<a name="l00469"></a>00469 <span class="preprocessor">#if 0</span>
-<a name="l00470"></a>00470 <span class="preprocessor"></span><a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> ARRAY_deleteif( <a class="code" href="a00001.html">ARRAY</a> *list, VDLIST_VISITOR check_if, <span class="keywordtype">void</span> *context)
-<a name="l00471"></a>00471 {
-<a name="l00472"></a>00472     VDLIST_entry *cur,*next,*del;
-<a name="l00473"></a>00473 
-<a name="l00474"></a>00474     VDLIST_FOREACH_SAVE(cur,next,list) {
-<a name="l00475"></a>00475                 <span class="keywordflow">if</span> (!check_if || check_if( list, cur, context))  {
-<a name="l00476"></a>00476                         del = VDLIST_unlink( list, cur );
-<a name="l00477"></a>00477                         <span class="keywordflow">if</span> (free_ctx) {
-<a name="l00478"></a>00478                                 free_ctx-&gt;free( M_MEMBEROF(del,offset_of_link) );
-<a name="l00479"></a>00479                         }
-<a name="l00480"></a>00480                 }
-<a name="l00481"></a>00481         }
-<a name="l00482"></a>00482 }
-<a name="l00483"></a>00483 <span class="preprocessor">#endif</span>
-<a name="l00484"></a>00484 <span class="preprocessor"></span><span class="comment"></span>
-<a name="l00485"></a>00485 <span class="comment">/**</span>
-<a name="l00486"></a>00486 <span class="comment"> * @}</span>
-<a name="l00487"></a>00487 <span class="comment"> */</span>
-<a name="l00488"></a>00488 
-<a name="l00489"></a>00489 <span class="preprocessor">#ifdef  __cplusplus</span>
-<a name="l00490"></a>00490 <span class="preprocessor"></span>}
-<a name="l00491"></a>00491 <span class="preprocessor">#endif</span>
-<a name="l00492"></a>00492 <span class="preprocessor"></span>
-<a name="l00493"></a>00493 <span class="preprocessor">#endif</span>
+<a name="l00054"></a>00054         } 
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056         <span class="keywordflow">if</span> (index &lt;= arr-&gt;elmcount) {
+<a name="l00057"></a>00057                 arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>++;
+<a name="l00058"></a>00058         } <span class="keywordflow">else</span> {
+<a name="l00059"></a>00059                 memset( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>, 
+<a name="l00060"></a>00060                                 0, 
+<a name="l00061"></a>00061                                 arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a> * (index - arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) );               
+<a name="l00062"></a>00062                 arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = index + 1;
+<a name="l00063"></a>00063         }
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065         memcpy(arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index * elmsize), elm, elmsize);
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068         <span class="keywordflow">return</span> 0;
+<a name="l00069"></a>00069 }
+<a name="l00070"></a>00070 
+<a name="l00071"></a><a class="code" href="a00036.html#gaa527efc4a7222882143f6eaf88474c2e">00071</a> <span class="keywordtype">int</span> <a class="code" href="a00036.html#gaa527efc4a7222882143f6eaf88474c2e">ARRAY_set_at</a>( <a class="code" href="a00001.html">ARRAY</a> *arr, <span class="keywordtype">size_t</span> index, <span class="keywordtype">void</span> *elm, <span class="keywordtype">size_t</span> elmsize)
+<a name="l00072"></a>00072 {       
+<a name="l00073"></a>00073         <span class="keywordflow">if</span> (elmsize != arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>) {
+<a name="l00074"></a>00074                 <span class="keywordflow">return</span> -1;
+<a name="l00075"></a>00075         }
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077  
+<a name="l00078"></a>00078         <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a>) {
+<a name="l00079"></a>00079                 <span class="keywordflow">if</span> (<a class="code" href="a00013.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a>(arr,index+1)) {
+<a name="l00080"></a>00080                         <span class="keywordflow">return</span> -1;
+<a name="l00081"></a>00081                 }
+<a name="l00082"></a>00082         }
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085         memcpy(arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + (index * elmsize), elm, elmsize);
+<a name="l00086"></a>00086         <span class="keywordflow">if</span> (index &gt;= arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) {
+<a name="l00087"></a>00087                 memset( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> + arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>, 
+<a name="l00088"></a>00088                                 0, 
+<a name="l00089"></a>00089                                 arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a> * (index - arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a>) );       
+<a name="l00090"></a>00090                 arr-&gt;<a class="code" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a> = index + 1;
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092         }
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094         <span class="keywordflow">return</span> 0;
+<a name="l00095"></a>00095 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

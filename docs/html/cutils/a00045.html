@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: Member List</title>
+<title>Simple data structures / objects in plain C: SLIST</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,30 +24,1258 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">ARRAY Member List</div>  </div>
+<div class="title">SLIST</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00001.html">ARRAY</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:56 for Simple data structures / objects in plain C by&#160;
+
+<p>Single linked list data structure; where each list element can be of different length.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html">SLIST</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga13e3414add243765e1acc420f8a0f478">SLIST_FOREACH</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#ga13e3414add243765e1acc420f8a0f478"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga1fd8f8e8cee04217d15bc9e40dc22874">SLIST_FOREACH_SAVE</a>(loopvarname, loopvarnamenext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#ga1fd8f8e8cee04217d15bc9e40dc22874"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a> )(<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a> )(<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga986253a6f00466c9a8fc577922946578">SLIST_COMPARE</a> )(<a class="el" href="a00010.html">SLIST_entry</a> *, <a class="el" href="a00010.html">SLIST_entry</a> *)</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#gad4951a8a17c4c71dbccf87f25e1d0cc9">SLIST_init</a> (<a class="el" href="a00006.html">SLIST</a> *head)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="#gad4951a8a17c4c71dbccf87f25e1d0cc9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga167ddd6e77f962055cbf23edfae47a55">SLIST_isempty</a> (<a class="el" href="a00006.html">SLIST</a> *head)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="#ga167ddd6e77f962055cbf23edfae47a55"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga28b526884512439a095d0a1f8defbf7a">SLIST_insert_after</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *pos, <a class="el" href="a00010.html">SLIST_entry</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="#ga28b526884512439a095d0a1f8defbf7a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga0242e7614311873394c09036c3f8db31">SLIST_unlink_after</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a list.  <a href="#ga0242e7614311873394c09036c3f8db31"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga162430e86a10d44d37f06f3286336e39">SLIST_push_back</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list.  <a href="#ga162430e86a10d44d37f06f3286336e39"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga9640eb240d27802e9762df5eb890751f">SLIST_push_front</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as first in list (used to maintain queue)  <a href="#ga9640eb240d27802e9762df5eb890751f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga496c6461f8655694a2163dbf2cc2ce3c">SLIST_append</a> (<a class="el" href="a00006.html">SLIST</a> *dest, <a class="el" href="a00006.html">SLIST</a> *src)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">append contents of one list onto the other  <a href="#ga496c6461f8655694a2163dbf2cc2ce3c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga1f0ecce5cb624eee52d5d1385b355296">SLIST_pop_front</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the first element from list (used to maintain queue)  <a href="#ga1f0ecce5cb624eee52d5d1385b355296"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga2e184c75f69621e1ca7d77d762cf3ac4">SLIST_get_first</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#gab1da0b7495c594466c35f43b62ba2fa6">SLIST_get_last</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga0377a487001bec48ddfccf6e3f72653a">SLIST_get_next</a> (<a class="el" href="a00010.html">SLIST_entry</a> *cur)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#gae1806eb6dd23d1489e2a3a87c16a7c89">SLIST_size</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">: return number of elements in list if we don't have element count in list (SLIST_NO_ELMCOUNT defined), then the whole list structure is traversed.  <a href="#gae1806eb6dd23d1489e2a3a87c16a7c89"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga2b16d0912f1762278bd39a3166f2937a">SLIST_get_nth</a> (<a class="el" href="a00006.html">SLIST</a> *list, size_t nth)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga4ed5d1aa0c00b8e6e7208a136cf9836f">SLIST_get_nth_reverse</a> (<a class="el" href="a00006.html">SLIST</a> *list, size_t nth)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get the nth element of a list as counted from the end of the list.  <a href="#ga4ed5d1aa0c00b8e6e7208a136cf9836f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga9a2bcb303e10ce22f43138d974cf6f61">SLIST_foreach</a> (<a class="el" href="a00006.html">SLIST</a> *lst, <a class="el" href="a00045.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a> eval, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list.  <a href="#ga9a2bcb303e10ce22f43138d974cf6f61"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#gab7659684a1854619f6514007a4a2a7ac">SLIST_findif</a> (<a class="el" href="a00006.html">SLIST</a> *lst, <a class="el" href="a00045.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#gab7659684a1854619f6514007a4a2a7ac"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga9d6b9df04f353039015f1f96349d6daf">SLIST_insert_sorted</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00045.html#ga986253a6f00466c9a8fc577922946578">SLIST_COMPARE</a> compare, <a class="el" href="a00010.html">SLIST_entry</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="#ga9d6b9df04f353039015f1f96349d6daf"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#gaa33b9f8d6cfd2573bd33e49ef0dd9b62">SLIST_deleteif</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00045.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="#gaa33b9f8d6cfd2573bd33e49ef0dd9b62"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga1c75f1166c0c6048c115f0de18c2dde2">SLIST_deleteall</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00045.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="#ga1c75f1166c0c6048c115f0de18c2dde2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga0979079d34e30779ee70a356bc46371f">SLIST_reverse</a> (<a class="el" href="a00006.html">SLIST</a> *lst)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="#ga0979079d34e30779ee70a356bc46371f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00045.html#ga69ab9537af27dcf8890148ccdc8d5a27">SLIST_check</a> (<a class="el" href="a00006.html">SLIST</a> *header)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of list This function checks for loops in the list, and if count of elements in list is the same as counter of elements in list header.  <a href="#ga69ab9537af27dcf8890148ccdc8d5a27"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>Single linked list data structure; where each list element can be of different length. </p>
+<p>This single linked list has a list header (<a class="el" href="a00006.html">SLIST</a>). The list header points to the first and last element in the list. last elements next pointer is NULL.</p>
+<p>Usage: If the user wants to link his struct(ure) into a list, then he must embed a SLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry.</p>
+<p>The list header contains a counter of elements (feature can be surpressed by defining #define SLIST_NO_ELMCOUNT </p>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="ga13e3414add243765e1acc420f8a0f478"></a><!-- doxytag: member="slist.h::SLIST_FOREACH" ref="ga13e3414add243765e1acc420f8a0f478" args="(loopvarname, list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SLIST_FOREACH</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">loopvarname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;prev;\
+      (loopvarname) != 0;\
+      (loopvarname) = (loopvarname)-&gt;next )
+</pre></div>
+<p>Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type SLIST_entry *) pointer to the current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00006.html">SLIST</a> *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00250">250</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga1fd8f8e8cee04217d15bc9e40dc22874"></a><!-- doxytag: member="slist.h::SLIST_FOREACH_SAVE" ref="ga1fd8f8e8cee04217d15bc9e40dc22874" args="(loopvarname, loopvarnamenext, list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SLIST_FOREACH_SAVE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">loopvarname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">loopvarnamenext, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;prev, (loopvarnamenext) = (loopvarname) ? (loopvarname)-&gt;next : 0;\
+      (loopvarname) != 0;\
+      (loopvarname) = (loopvarnamenext),  (loopvarnamenext) = (loopvarname) ? (loopvarname)-&gt;next : 0 )
+</pre></div>
+<p>Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvsarname</td><td>(type SLIST_entry *) pointer to the current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00006.html">SLIST</a> *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00260">260</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga986253a6f00466c9a8fc577922946578"></a><!-- doxytag: member="slist.h::SLIST_COMPARE" ref="ga986253a6f00466c9a8fc577922946578" args=")(SLIST_entry *, SLIST_entry *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int32_t(* <a class="el" href="a00045.html#ga986253a6f00466c9a8fc577922946578">SLIST_COMPARE</a>)(<a class="el" href="a00010.html">SLIST_entry</a> *, <a class="el" href="a00010.html">SLIST_entry</a> *)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00056">56</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga7b248c4eed2d3b3cf32fc0329063de57"></a><!-- doxytag: member="slist.h::SLIST_VISITOR" ref="ga7b248c4eed2d3b3cf32fc0329063de57" args=")(SLIST *list, SLIST_entry *entry, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int32_t(* <a class="el" href="a00045.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a>)(<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *entry, void *context)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00055">55</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gac7e7623e772b63394d7aa00c570f8e84"></a><!-- doxytag: member="slist.h::SLIST_VISITOR_V" ref="gac7e7623e772b63394d7aa00c570f8e84" args=")(SLIST *list, SLIST_entry *entry, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* <a class="el" href="a00045.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a>)(<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00010.html">SLIST_entry</a> *entry, void *context)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00054">54</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga496c6461f8655694a2163dbf2cc2ce3c"></a><!-- doxytag: member="slist.h::SLIST_append" ref="ga496c6461f8655694a2163dbf2cc2ce3c" args="(SLIST *dest, SLIST *src)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_append </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>dest</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>append contents of one list onto the other </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dest</td><td></td></tr>
+    <tr><td class="paramname">src</td><td>content of this list is appended onto dest list. postcondition: src list is empty </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00183">183</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (<a class="code" href="a00045.html#ga167ddd6e77f962055cbf23edfae47a55" title="checks if argument list is empty">SLIST_isempty</a>(dest)) {
+                
+                <span class="keywordflow">if</span> (!<a class="code" href="a00045.html#ga167ddd6e77f962055cbf23edfae47a55" title="checks if argument list is empty">SLIST_isempty</a>(src)) {
+
+                        dest-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> = src-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>;
+                        dest-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = src-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>;
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>                        dest-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a> = src-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a>;
+<span class="preprocessor">#endif  </span>
+<span class="preprocessor"></span>
+                        <span class="comment">//SLIST_init(src);</span>
+                } 
+
+        } <span class="keywordflow">else</span> {
+
+                <span class="keywordflow">if</span> (!<a class="code" href="a00045.html#ga167ddd6e77f962055cbf23edfae47a55" title="checks if argument list is empty">SLIST_isempty</a>(src)) {
+                        dest-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> = src-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>;
+                        dest-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = src-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>;
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>                        dest-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a> += src-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a>;
+<span class="preprocessor">#endif  </span>
+<span class="preprocessor"></span>                        <span class="comment">//SLIST_init(src);</span>
+
+                }
+        }
+
+
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga69ab9537af27dcf8890148ccdc8d5a27"></a><!-- doxytag: member="slist.h::SLIST_check" ref="ga69ab9537af27dcf8890148ccdc8d5a27" args="(SLIST *header)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int SLIST_check </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>header</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>check consistency of list This function checks for loops in the list, and if count of elements in list is the same as counter of elements in list header. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">header</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>zero if list contains errors. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00499">499</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00010.html">SLIST_entry</a> *cur,*prev = 0,*fast= 0;
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>        <span class="keywordtype">size_t</span> count = 0;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+        <span class="keywordflow">if</span> (!header-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> || !header-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>) {
+                <span class="keywordflow">if</span> (header-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> || header-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                <span class="keywordflow">return</span> 1;
+        }
+        
+        fast = header-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>;
+        <a class="code" href="a00045.html#ga13e3414add243765e1acc420f8a0f478" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SLIST_FOREACH</a>( cur, header ) {
+
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>                count += 1;
+<span class="preprocessor">#endif      </span>
+<span class="preprocessor"></span>                prev = fast;
+                fast = fast-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                <span class="keywordflow">if</span> (!fast) {
+                        <span class="keywordflow">break</span>;
+                }
+                <span class="keywordflow">if</span> (fast == cur) {
+                        <span class="keywordflow">return</span> 0;
+                }
+
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>                count += 1;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>            prev = fast;
+                fast = fast-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                <span class="keywordflow">if</span> (!fast) {
+                        <span class="keywordflow">break</span>;
+                }
+                <span class="keywordflow">if</span> (fast == cur) {
+                        <span class="keywordflow">return</span> 0;
+                }
+        }
+
+        <span class="keywordflow">if</span> (header-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> != prev) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (header-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a> != count) {
+                <span class="keywordflow">return</span> 0;
+        }
+<span class="preprocessor">#endif  </span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> 1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga1c75f1166c0c6048c115f0de18c2dde2"></a><!-- doxytag: member="slist.h::SLIST_deleteall" ref="ga1c75f1166c0c6048c115f0de18c2dde2" args="(SLIST *list, SLIST_VISITOR_V on_delete, void *context, int offset_of_link)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_deleteall </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00045.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>on_delete</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset_of_link</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>iterate over all entries of the list and delete them. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object</td></tr>
+    <tr><td class="paramname">on_delete(in)</td><td>if not NULL then this callback is called prior to deleting each list element. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) if on_delete is not NULL then this pointer is passed as argument to on_delete.</td></tr>
+    <tr><td class="paramname">free_ctx</td><td>(in) allocation interface used to free data of entry. </td></tr>
+    <tr><td class="paramname">offset_of_link</td><td>(in) offset of SRING in embedded structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00445">445</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="a00010.html">SLIST_entry</a> *cur,*del;
+
+
+        <span class="keywordflow">for</span>(cur = list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>; cur;) {
+    
+                <span class="keywordflow">if</span> (on_delete)  {
+                        on_delete( list, cur, context );
+                }
+
+                cur = cur-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                del = <a class="code" href="a00045.html#ga0242e7614311873394c09036c3f8db31" title="delete an element from a list.">SLIST_unlink_after</a>( list, 0 );
+                <span class="keywordflow">if</span> (offset_of_link != -1) {
+                        free( <a class="code" href="a00015.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del, offset_of_link) );
+                }
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaa33b9f8d6cfd2573bd33e49ef0dd9b62"></a><!-- doxytag: member="slist.h::SLIST_deleteif" ref="gaa33b9f8d6cfd2573bd33e49ef0dd9b62" args="(SLIST *list, SLIST_VISITOR check_if, void *context, int offset_of_link)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_deleteif </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00045.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>check_if</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset_of_link</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">check_if</td><td>(in) predicate function; the function returns 1 then inspected argument element will be deleted; if argument pointer is NULL then all entries will be deleted. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) data pointer passed to every invocation of check_if </td></tr>
+    <tr><td class="paramname">free_ctx</td><td>(in) interface used to free data of entry, is argument pointer is NULL then nothing is freed. </td></tr>
+    <tr><td class="paramname">offset_of_link</td><td>(in) offset of DLIST_entry in embedded structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00410">410</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="a00010.html">SLIST_entry</a> *cur,*prev,*del;
+
+        prev = 0;
+
+        <span class="keywordflow">for</span>(cur = list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>; cur;) {
+    
+                <span class="keywordflow">if</span> (!check_if || check_if( list, cur, context))  {
+
+                        cur = cur-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                        del = <a class="code" href="a00045.html#ga0242e7614311873394c09036c3f8db31" title="delete an element from a list.">SLIST_unlink_after</a>( list, prev );
+                        <span class="keywordflow">if</span> (offset_of_link != -1) {
+                                free( <a class="code" href="a00015.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del, offset_of_link) );
+                        }
+                        
+
+                } <span class="keywordflow">else</span> {
+
+                        prev = cur;
+                        cur = cur-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                }
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gab7659684a1854619f6514007a4a2a7ac"></a><!-- doxytag: member="slist.h::SLIST_findif" ref="gab7659684a1854619f6514007a4a2a7ac" args="(SLIST *lst, SLIST_VISITOR eval, void *context, int32_t *retval)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_findif </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00045.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>retval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">retval</td><td>(out) optional - the first non zero value returned by eval callback, if NULL then ignored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00349">349</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">int</span> ret;
+    <a class="code" href="a00010.html">SLIST_entry</a>  *cur;
+
+        <span class="keywordflow">if</span> (retval) {
+                *retval = 0;
+        }
+
+        <span class="keywordflow">if</span> (!eval) {
+          <span class="keywordflow">return</span> 0;
+        }
+
+        <a class="code" href="a00045.html#ga13e3414add243765e1acc420f8a0f478" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SLIST_FOREACH</a>(  cur, lst ) {
+                ret = eval( lst, cur, context);
+                <span class="keywordflow">if</span> (ret) {
+                        <span class="keywordflow">if</span> (retval) {
+                                *retval = ret;
+                        }
+
+                        <span class="keywordflow">return</span> cur;
+                }
+
+        }
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga9a2bcb303e10ce22f43138d974cf6f61"></a><!-- doxytag: member="slist.h::SLIST_foreach" ref="ga9a2bcb303e10ce22f43138d974cf6f61" args="(SLIST *lst, SLIST_VISITOR_V eval, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_foreach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00045.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>iterate over all elements of a list, callback is invoked for either element of the list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00326">326</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="a00010.html">SLIST_entry</a> *cur;
+
+        <span class="keywordflow">if</span> (!eval) {
+          <span class="keywordflow">return</span>;
+        }
+
+        <a class="code" href="a00045.html#ga13e3414add243765e1acc420f8a0f478" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SLIST_FOREACH</a>( cur, lst) {
+                eval( lst, cur, context);
+        }
+        
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2e184c75f69621e1ca7d77d762cf3ac4"></a><!-- doxytag: member="slist.h::SLIST_get_first" ref="ga2e184c75f69621e1ca7d77d762cf3ac4" args="(SLIST *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_get_first </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00226">226</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gab1da0b7495c594466c35f43b62ba2fa6"></a><!-- doxytag: member="slist.h::SLIST_get_last" ref="gab1da0b7495c594466c35f43b62ba2fa6" args="(SLIST *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_get_last </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00231">231</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0377a487001bec48ddfccf6e3f72653a"></a><!-- doxytag: member="slist.h::SLIST_get_next" ref="ga0377a487001bec48ddfccf6e3f72653a" args="(SLIST_entry *cur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_get_next </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td>
+          <td class="paramname"><em>cur</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00237">237</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> cur-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2b16d0912f1762278bd39a3166f2937a"></a><!-- doxytag: member="slist.h::SLIST_get_nth" ref="ga2b16d0912f1762278bd39a3166f2937a" args="(SLIST *list, size_t nth)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_get_nth </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00290">290</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+
+        <a class="code" href="a00010.html">SLIST_entry</a> *elm;
+
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (nth &gt;= list-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a>) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="keywordflow">for</span>(elm = <a class="code" href="a00045.html#ga2e184c75f69621e1ca7d77d762cf3ac4">SLIST_get_first</a>(list); nth &gt; 0; nth -= 1, elm = <a class="code" href="a00045.html#ga0377a487001bec48ddfccf6e3f72653a">SLIST_get_next</a>(elm)); 
+<span class="preprocessor">#else</span>
+<span class="preprocessor"></span>        <span class="keywordflow">for</span>(elm = <a class="code" href="a00045.html#ga2e184c75f69621e1ca7d77d762cf3ac4">SLIST_get_first</a>(list); elm != 0 &amp;&amp; nth &gt; 0; nth -= 1, elm = <a class="code" href="a00045.html#ga0377a487001bec48ddfccf6e3f72653a">SLIST_get_next</a>(elm)); 
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+        <span class="keywordflow">return</span> elm;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga4ed5d1aa0c00b8e6e7208a136cf9836f"></a><!-- doxytag: member="slist.h::SLIST_get_nth_reverse" ref="ga4ed5d1aa0c00b8e6e7208a136cf9836f" args="(SLIST *list, size_t nth)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_get_nth_reverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>get the nth element of a list as counted from the end of the list. </p>
+<p>list (IN) the object nth (IN) index of element to retrieve (null based). </p>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00313">313</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{       
+        <span class="keywordflow">return</span> <a class="code" href="a00045.html#ga2b16d0912f1762278bd39a3166f2937a">SLIST_get_nth</a>( list, <a class="code" href="a00045.html#gae1806eb6dd23d1489e2a3a87c16a7c89" title=": return number of elements in list if we don&#39;t have element count in list (SLIST_NO_ELMCOUNT defined...">SLIST_size</a>( list ) - nth );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gad4951a8a17c4c71dbccf87f25e1d0cc9"></a><!-- doxytag: member="slist.h::SLIST_init" ref="gad4951a8a17c4c71dbccf87f25e1d0cc9" args="(SLIST *head)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>head</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>initialises an empty list head </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">head</td><td>list head </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00063">63</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{ 
+  head-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = head-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> = 0; 
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>  head-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a> = 0;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga28b526884512439a095d0a1f8defbf7a"></a><!-- doxytag: member="slist.h::SLIST_insert_after" ref="ga28b526884512439a095d0a1f8defbf7a" args="(SLIST *list, SLIST_entry *pos, SLIST_entry *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_insert_after </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new entry after a given entry. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>pointer to list head </td></tr>
+    <tr><td class="paramname">pos</td><td>current posision (newentry inserted after this one). </td></tr>
+    <tr><td class="paramname">newentry</td><td>pointer to new list entry (to be inserted). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00088">88</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (list-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>) {
+
+                <span class="keywordflow">if</span> (pos){
+                
+                        newentry-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> = pos-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                        pos-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> = newentry;
+
+                        <span class="keywordflow">if</span> (!newentry-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>) {
+                                list-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = newentry;
+                        } 
+
+                } <span class="keywordflow">else</span>  {
+                        newentry-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> = list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>;
+                        list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> = newentry;
+                } 
+
+
+        } <span class="keywordflow">else</span> {
+
+                list-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> = newentry;
+                newentry-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> =  0;            
+
+        }
+
+
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>        list-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a> ++;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga9d6b9df04f353039015f1f96349d6daf"></a><!-- doxytag: member="slist.h::SLIST_insert_sorted" ref="ga9d6b9df04f353039015f1f96349d6daf" args="(SLIST *list, SLIST_COMPARE compare, SLIST_entry *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_insert_sorted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00045.html#ga986253a6f00466c9a8fc577922946578">SLIST_COMPARE</a>&#160;</td>
+          <td class="paramname"><em>compare</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">compare</td><td>(in) comparison function. </td></tr>
+    <tr><td class="paramname">newentry</td><td>(in) element that is to be inserted into list. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00385">385</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00010.html">SLIST_entry</a> *cur,*prev;
+        
+        prev = 0;
+        <a class="code" href="a00045.html#ga13e3414add243765e1acc420f8a0f478" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SLIST_FOREACH</a>(  cur, list ) {
+                <span class="keywordflow">if</span> (compare(cur,newentry) &gt; 0) {
+
+                        <a class="code" href="a00045.html#ga28b526884512439a095d0a1f8defbf7a" title="insert new entry after a given entry.">SLIST_insert_after</a>(list, prev,newentry);
+                        <span class="keywordflow">return</span>;
+                }
+                prev = cur;
+        }
+
+        <a class="code" href="a00045.html#ga162430e86a10d44d37f06f3286336e39" title="insert element as last in list.">SLIST_push_back</a>( list, newentry );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga167ddd6e77f962055cbf23edfae47a55"></a><!-- doxytag: member="slist.h::SLIST_isempty" ref="ga167ddd6e77f962055cbf23edfae47a55" args="(SLIST *head)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int SLIST_isempty </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>head</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>checks if argument list is empty </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>pointer to list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>not zero for non empty list. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00076">76</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> head-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> == 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga1f0ecce5cb624eee52d5d1385b355296"></a><!-- doxytag: member="slist.h::SLIST_pop_front" ref="ga1f0ecce5cb624eee52d5d1385b355296" args="(SLIST *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_pop_front </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>remove the first element from list (used to maintain queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the first element of list, NULL if list empty </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00220">220</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> <a class="code" href="a00045.html#ga0242e7614311873394c09036c3f8db31" title="delete an element from a list.">SLIST_unlink_after</a>(list, 0);
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga162430e86a10d44d37f06f3286336e39"></a><!-- doxytag: member="slist.h::SLIST_push_back" ref="ga162430e86a10d44d37f06f3286336e39" args="(SLIST *list, SLIST_entry *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_push_back </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert element as last in list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>list head. </td></tr>
+    <tr><td class="paramname">newentry</td><td>entry to be inserted into list </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00162">162</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00045.html#ga28b526884512439a095d0a1f8defbf7a" title="insert new entry after a given entry.">SLIST_insert_after</a>( list, list-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>, newentry );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga9640eb240d27802e9762df5eb890751f"></a><!-- doxytag: member="slist.h::SLIST_push_front" ref="ga9640eb240d27802e9762df5eb890751f" args="(SLIST *list, SLIST_entry *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_push_front </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert element as first in list (used to maintain queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>list head </td></tr>
+    <tr><td class="paramname">newentry</td><td>entry to be inserted into list </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00172">172</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00045.html#ga28b526884512439a095d0a1f8defbf7a" title="insert new entry after a given entry.">SLIST_insert_after</a>( list, 0, newentry );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0979079d34e30779ee70a356bc46371f"></a><!-- doxytag: member="slist.h::SLIST_reverse" ref="ga0979079d34e30779ee70a356bc46371f" args="(SLIST *lst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void SLIST_reverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>lst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">header</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00471">471</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00010.html">SLIST_entry</a> *cur = lst-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>, *next;
+        <a class="code" href="a00010.html">SLIST_entry</a> *tmp;
+        <span class="keywordflow">if</span> (cur) {
+                next = cur-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                cur-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> = 0;
+
+                <span class="keywordflow">while</span>(next) {
+                        tmp = next-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                        
+                        next-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> = cur;
+                        cur = next;
+                        next = tmp;
+                }
+
+                tmp = lst-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>;
+                lst-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> = lst-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a>;
+                lst-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = tmp;
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gae1806eb6dd23d1489e2a3a87c16a7c89"></a><!-- doxytag: member="slist.h::SLIST_size" ref="gae1806eb6dd23d1489e2a3a87c16a7c89" args="(SLIST *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t SLIST_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>: return number of elements in list if we don't have element count in list (SLIST_NO_ELMCOUNT defined), then the whole list structure is traversed. </p>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00270">270</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a>;
+<span class="preprocessor">#else</span>
+<span class="preprocessor"></span>        <span class="keywordtype">size_t</span> sz;
+        <a class="code" href="a00010.html">SLIST_entry</a> * cur;
+        
+        <a class="code" href="a00045.html#ga13e3414add243765e1acc420f8a0f478" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SLIST_FOREACH</a>( cur, list ) {
+                sz += 1;
+        }
+        <span class="keywordflow">return</span> sz;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0242e7614311873394c09036c3f8db31"></a><!-- doxytag: member="slist.h::SLIST_unlink_after" ref="ga0242e7614311873394c09036c3f8db31" args="(SLIST *list, SLIST_entry *link)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00010.html">SLIST_entry</a>* SLIST_unlink_after </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">SLIST</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00010.html">SLIST_entry</a> *&#160;</td>
+          <td class="paramname"><em>link</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>delete an element from a list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>deletes this list element </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00125">125</a> of file <a class="el" href="a00029_source.html">slist.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00010.html">SLIST_entry</a> *ret;
+
+        <span class="keywordflow">if</span> (!link) {
+                ret = list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>;
+                list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a> = ret-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;
+                <span class="keywordflow">if</span> (!list-&gt;<a class="code" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a>) {
+                        list-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = 0;
+                }
+                
+        } <span class="keywordflow">else</span> {
+                ret = link-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a>;       
+                <span class="keywordflow">if</span> (!ret) {
+                        <span class="keywordflow">return</span> 0;
+                }
+
+                link-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> = ret ? ret-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> : 0;
+
+                <span class="keywordflow">if</span> (link-&gt;<a class="code" href="a00010.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a> == 0) {
+                        list-&gt;<a class="code" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a> = link;
+                }
+
+        }
+<span class="preprocessor">#ifndef SLIST_NO_ELMCOUNT</span>
+<span class="preprocessor"></span>                list-&gt;<a class="code" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a> --;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+        <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

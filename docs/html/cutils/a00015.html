@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: bhash.c File Reference</title>
+<title>Simple data structures / objects in plain C: base.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,131 +37,90 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#define-members">Defines</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Defines</a>  </div>
   <div class="headertitle">
-<div class="title">bhash.c File Reference</div>  </div>
+<div class="title">base.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00016_source.html">cutils/bhash.h</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="a00032_source.html">cutils/util.h</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="a00022_source.html">cutils/hashfunction.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br/>
+<code>#include &lt;stddef.h&gt;</code><br/>
+<code>#include &lt;stdlib.h&gt;</code><br/>
+<code>#include &lt;sys/types.h&gt;</code><br/>
 </div>
 <p><a href="a00015_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, buckets)&#160;&#160;&#160;((hash) &amp; ((buckets) - 1))</td></tr>
-<tr><td colspan="2"><h2><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ga73ce0ca18399c5db0bac0491aeadba8d">HASH_init</a> (<a class="el" href="a00003.html">HASH</a> *hash, size_t buckets, int ismultimap, <a class="el" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key, <a class="el" href="a00034.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> hash_func)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Object constructor; initialise the hash that allows one entry for a given key.  <a href="a00035.html#ga73ce0ca18399c5db0bac0491aeadba8d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#gacef4d862b25db1563ce621265299fb2e">HASH_resize</a> (<a class="el" href="a00003.html">HASH</a> *hash, size_t buckets)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">resize the hash table  <a href="a00035.html#gacef4d862b25db1563ce621265299fb2e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a> (<a class="el" href="a00010.html">SRING</a> *abucket, <a class="el" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash, <a class="el" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key, void *key, ssize_t key_size)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ga072fef06fb9a516f47771ddd3946bf20">HASH_find</a> (<a class="el" href="a00003.html">HASH</a> *phash, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find entry with given key in hash table; for multimaps this will return the first occurence of the key.  <a href="a00035.html#ga072fef06fb9a516f47771ddd3946bf20"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ga2f20017ef2a49dc235a8bea78b254dd6">HASH_find_next</a> (<a class="el" href="a00003.html">HASH</a> *phash, <a class="el" href="a00004.html">HASH_Entry</a> *prev, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">for multimaps - find next occurence of key  <a href="a00035.html#ga2f20017ef2a49dc235a8bea78b254dd6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#gaf9ce37d092fe7b3ae217336ef623a7dc">HASH_insert</a> (<a class="el" href="a00003.html">HASH</a> *phash, <a class="el" href="a00004.html">HASH_Entry</a> *entry, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry in hash table  <a href="a00035.html#gaf9ce37d092fe7b3ae217336ef623a7dc"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ga9546382a27adc8b91d70cd6e4c4723c3">HASH_unlink</a> (<a class="el" href="a00003.html">HASH</a> *phash, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find first hash table entry and unlink it from its bucket. The caller of this function has to free memory held by hash table entry.  <a href="a00035.html#ga9546382a27adc8b91d70cd6e4c4723c3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(ptr, offset)&#160;&#160;&#160;(((uint8_t *) ptr) - offset)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a>&#160;&#160;&#160;static inline</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a8a28f4ccca88db778f9dad279d3ba818">M_UNUSED</a>(x)&#160;&#160;&#160;(void) (x)</td></tr>
 </table>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="acb4c58835714882f70736b2c45188ff4"></a><!-- doxytag: member="bhash.c::ADJUST_HASH" ref="acb4c58835714882f70736b2c45188ff4" args="(hash, buckets)" -->
+<a class="anchor" id="a7b468c9bd3d1f3de0bb47e2ea23ddb1c"></a><!-- doxytag: member="base.h::_MEMBEROF" ref="a7b468c9bd3d1f3de0bb47e2ea23ddb1c" args="(ptr, offset)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ADJUST_HASH</td>
+          <td class="memname">#define _MEMBEROF</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">hash, </td>
+          <td class="paramname">ptr, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">buckets&#160;</td>
+          <td class="paramname">offset&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;((hash) &amp; ((buckets) - 1))</td>
+          <td></td><td>&#160;&#160;&#160;(((uint8_t *) ptr) - offset)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00015_source.html#l00009">9</a> of file <a class="el" href="a00015_source.html">bhash.c</a>.</p>
+<p>Definition at line <a class="el" href="a00015_source.html#l00012">12</a> of file <a class="el" href="a00015_source.html">base.h</a>.</p>
 
 </div>
 </div>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="aa0f01a8d9a72c6a69d0891fd81076bee"></a><!-- doxytag: member="bhash.c::HASH_find_in_bucket" ref="aa0f01a8d9a72c6a69d0891fd81076bee" args="(SRING *abucket, HASH_VALUE hash, HASH_COMPARE_KEY compare_key, void *key, ssize_t key_size)" -->
+<a class="anchor" id="ad8685d2efad5bbbf60ebe6bc79e05350"></a><!-- doxytag: member="base.h::M_INLINE" ref="ad8685d2efad5bbbf60ebe6bc79e05350" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00004.html">HASH_Entry</a>* HASH_find_in_bucket </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
-          <td class="paramname"><em>abucket</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a>&#160;</td>
-          <td class="paramname"><em>compare_key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ssize_t&#160;</td>
-          <td class="paramname"><em>key_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define M_INLINE&#160;&#160;&#160;static inline</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00015_source.html#l00097">97</a> of file <a class="el" href="a00015_source.html">bhash.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00010.html">SRING</a>   *pos;
+<p>Definition at line <a class="el" href="a00015_source.html#l00015">15</a> of file <a class="el" href="a00015_source.html">base.h</a>.</p>
 
-        <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
-                <a class="code" href="a00004.html">HASH_Entry</a> *entry = (<a class="code" href="a00004.html">HASH_Entry</a> *) pos;
-                <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) 
-                {
-                        <span class="keywordflow">if</span> (compare_key( entry, key, key_size ) == 0) {
-                                <span class="keywordflow">return</span> entry;
-                        }
-                }
-        }
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
+</div>
+</div>
+<a class="anchor" id="a8a28f4ccca88db778f9dad279d3ba818"></a><!-- doxytag: member="base.h::M_UNUSED" ref="a8a28f4ccca88db778f9dad279d3ba818" args="(x)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define M_UNUSED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x</td><td>)</td>
+          <td>&#160;&#160;&#160;(void) (x)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00015_source.html#l00016">16</a> of file <a class="el" href="a00015_source.html">base.h</a>.</p>
+
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

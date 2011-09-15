@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: tagDLIST_entry Struct Reference</title>
+<title>Simple data structures / objects in plain C: tagDBUF Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,48 +40,74 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">tagDLIST_entry Struct Reference<div class="ingroups"><a class="el" href="a00036.html">DLIST_entry</a></div></div>  </div>
+<div class="title">tagDBUF Struct Reference<div class="ingroups"><a class="el" href="a00039.html">DBUF</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="tagDLIST_entry" -->
-<p><code>#include &lt;<a class="el" href="a00018_source.html">dlist.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for tagDLIST_entry:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00055.png" border="0" usemap="#tagDLIST__entry_coll__map" alt="Collaboration graph"/></div>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<!-- doxytag: class="tagDBUF" -->
+<p><code>#include &lt;<a class="el" href="a00019_source.html">dbuf.h</a>&gt;</code></p>
 
-<p><a href="a00056.html">List of all members.</a></p>
+<p><a href="a00059.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00007.html">tagDLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aa0d0a39a702ab45e678b018be2ad3d38">next</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00007.html">tagDLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00036.html#ga6353911f6d3fc5c023e5bc6c520adb34">prev</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aa9240201492927bdd3029cd8582fc586">buf_used</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00018_source.html#l00021">21</a> of file <a class="el" href="a00018_source.html">dlist.h</a>.</p>
+<p>Definition at line <a class="el" href="a00019_source.html#l00018">18</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="aa0d0a39a702ab45e678b018be2ad3d38"></a><!-- doxytag: member="tagDLIST_entry::next" ref="aa0d0a39a702ab45e678b018be2ad3d38" args="" -->
+<a class="anchor" id="a3ff05d9dd5224192d29ab9ba86f942e0"></a><!-- doxytag: member="tagDBUF::buf" ref="a3ff05d9dd5224192d29ab9ba86f942e0" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="a00007.html">tagDLIST_entry</a>* <a class="el" href="a00007.html#aa0d0a39a702ab45e678b018be2ad3d38">tagDLIST_entry::next</a></td>
+          <td class="memname">uint8_t* <a class="el" href="a00007.html#a3ff05d9dd5224192d29ab9ba86f942e0">tagDBUF::buf</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00018_source.html#l00023">23</a> of file <a class="el" href="a00018_source.html">dlist.h</a>.</p>
+<p>Definition at line <a class="el" href="a00019_source.html#l00020">20</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9bf75cec63f6286589641d7a7fffa9e9"></a><!-- doxytag: member="tagDBUF::buf_size" ref="a9bf75cec63f6286589641d7a7fffa9e9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00007.html#a9bf75cec63f6286589641d7a7fffa9e9">tagDBUF::buf_size</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00019_source.html#l00022">22</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa9240201492927bdd3029cd8582fc586"></a><!-- doxytag: member="tagDBUF::buf_used" ref="aa9240201492927bdd3029cd8582fc586" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00007.html#aa9240201492927bdd3029cd8582fc586">tagDBUF::buf_used</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00019_source.html#l00021">21</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00018_source.html">dlist.h</a></li>
+<li><a class="el" href="a00019_source.html">dbuf.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:56 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

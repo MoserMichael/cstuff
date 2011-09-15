@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dring.c File Reference</title>
+<title>Simple data structures / objects in plain C: dbuf.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,26 +37,36 @@
 </div>
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">dring.c File Reference</div>  </div>
+<div class="title">dbuf.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00020_source.html">cutils/dring.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00015_source.html">cutils/base.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00019_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html">tagDBUF</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00007.html">tagDBUF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#ga1f96c475343a10aec6b9ce1707e6f382">DBUF</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1">DRING_foreach</a> (<a class="el" href="a00008.html">DRING</a> *lst, <a class="el" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *data, int save_from_del)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list. list is traversed forward from first element to the last element.  <a href="a00038.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga98724ac564245aa77a1a4c55f83fadb9">DRING_foreach_reverse</a> (<a class="el" href="a00008.html">DRING</a> *lst, <a class="el" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *data, int save_from_delete)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.  <a href="a00038.html#ga98724ac564245aa77a1a4c55f83fadb9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gad8c4485c62148db72ca05f55dcc75709">DRING_insert_sorted</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00038.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="el" href="a00008.html">DRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="a00038.html#gad8c4485c62148db72ca05f55dcc75709"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#gad5b419319a7d42a5ef39bfb1c5194f63">DBUF_init</a> (<a class="el" href="a00007.html">DBUF</a> *buf, size_t init_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise a buffer  <a href="a00039.html#gad5b419319a7d42a5ef39bfb1c5194f63"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#gac02203221d9b17f91fa0bd6319d28e05">DBUF_free</a> (<a class="el" href="a00007.html">DBUF</a> *buf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">free memory owned by a buffer  <a href="a00039.html#gac02203221d9b17f91fa0bd6319d28e05"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#gaa94888e27a335faa77790018995cd6f9">DBUF_add</a> (<a class="el" href="a00007.html">DBUF</a> *buf, void *data, size_t data_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add stuff to a buffer  <a href="a00039.html#gaa94888e27a335faa77790018995cd6f9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#ga44c86671ad8db929acee5d0d41f3e672">DBUF_buffer</a> (<a class="el" href="a00007.html">DBUF</a> *buf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#gadb0c848a8655598edea9d155c9236922">DBUF_size</a> (<a class="el" href="a00007.html">DBUF</a> *buf)</td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

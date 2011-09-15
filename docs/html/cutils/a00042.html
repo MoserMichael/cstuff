@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: SRING</title>
+<title>Simple data structures / objects in plain C: DRING</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,73 +36,89 @@
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">SRING</div>  </div>
+<div class="title">DRING</div>  </div>
 </div>
 <div class="contents">
 
-<p>Single linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next element of the list.  
+<p>Double linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html">tagSRING</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html">tagDRING</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1">SRING_FOREACH</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#ga39582582e3bfccf18e39710e75009ad1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga7f6178ad165e9b2f699efd88a3cbca8a">SRING_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="#ga7f6178ad165e9b2f699efd88a3cbca8a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga0e4892ffac6b949a95b1d9b1895433b7">SRING_FOREACH_SAVE_END</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gac8118521928cd5a00b83ee9c0ba48308">DRING_FOREACH</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#gac8118521928cd5a00b83ee9c0ba48308"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga550a7b5adbe2d3325db38c49764bdc8c">DRING_FOREACH_REVERSE</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element.  <a href="#ga550a7b5adbe2d3325db38c49764bdc8c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaab96829db58e4eaa3cec725c9c99ff69">DRING_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="#gaab96829db58e4eaa3cec725c9c99ff69"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gac5d159651c812e6785f81bc2dfc73b7d">DRING_FOREACH_REVERSE_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element.  <a href="#gac5d159651c812e6785f81bc2dfc73b7d"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00010.html">tagSRING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga478bf88a63498eec67b9720586d6bba9">SRING</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a> )(<a class="el" href="a00010.html">SRING</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a> )(<a class="el" href="a00010.html">SRING</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaa197bf51f9b33ec012296a14be9c4838">SRING_COMPARE</a> )(<a class="el" href="a00010.html">SRING</a> *, <a class="el" href="a00010.html">SRING</a> *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00009.html">tagDRING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga4630800b5e50c32e36110b0a6dfcadc0">DRING</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> )(<a class="el" href="a00009.html">DRING</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> )(<a class="el" href="a00009.html">DRING</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> )(<a class="el" href="a00009.html">DRING</a> *, <a class="el" href="a00009.html">DRING</a> *)</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a">SRING_init</a> (<a class="el" href="a00010.html">SRING</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="#ga53ac9788c8cdc9e03a9e343fd7e8b15a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga23aab5b8a7efeacf278b444bb785bc1d">SRING_isempty</a> (<a class="el" href="a00010.html">SRING</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="#ga23aab5b8a7efeacf278b444bb785bc1d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga6a2a1950260f3fb3d385bde480e5c976">SRING_insert_after</a> (<a class="el" href="a00010.html">SRING</a> *list, <a class="el" href="a00010.html">SRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="#ga6a2a1950260f3fb3d385bde480e5c976"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a> (<a class="el" href="a00010.html">SRING</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a> (<a class="el" href="a00010.html">SRING</a> *list, <a class="el" href="a00010.html">SRING</a> *newentry)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga1702358f1edcb1d85df818fdb8a20a23">SRING_pop_front</a> (<a class="el" href="a00010.html">SRING</a> *elem)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the first element from list (used to maintain double ended queue)  <a href="#ga1702358f1edcb1d85df818fdb8a20a23"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaa43e9213ae7d390a22ffd34164a9a8fb">SRING_get_first</a> (<a class="el" href="a00010.html">SRING</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga9bfd87c38a546d0bd880e2ef6afb4308">SRING_get_last</a> (<a class="el" href="a00010.html">SRING</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga02277d246cf87fa74cf2face4271dc46">SRING_get_next</a> (<a class="el" href="a00010.html">SRING</a> *end, <a class="el" href="a00010.html">SRING</a> *cur)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gad00dfbc796c0f39381f8cb207d45a628">SRING_size</a> (<a class="el" href="a00010.html">SRING</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga0bf1663e78699f16d176b4e5eab35760">SRING_get_nth</a> (<a class="el" href="a00010.html">SRING</a> *list, size_t nth)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga4eacc9ad78693d75fc82960853bfc77d">SRING_get_nth_reverse</a> (<a class="el" href="a00010.html">SRING</a> *list, size_t nth)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga948f45c8af2b99aec05ca538b4a07e9e">SRING_foreach</a> (<a class="el" href="a00010.html">SRING</a> *lst, <a class="el" href="a00042.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a> eval, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list.  <a href="#ga948f45c8af2b99aec05ca538b4a07e9e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00010.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga742710ac325213e24ddf5d02ef30bc9c">SRING_findif</a> (<a class="el" href="a00010.html">SRING</a> *lst, <a class="el" href="a00042.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga742710ac325213e24ddf5d02ef30bc9c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga182b8c409d5c05637085210b31950431">SRING_deleteif</a> (<a class="el" href="a00010.html">SRING</a> *list, <a class="el" href="a00042.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="#ga182b8c409d5c05637085210b31950431"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga96914d218afb3f3dac01bf98702e3ef7">SRING_deleteall</a> (<a class="el" href="a00010.html">SRING</a> *list, <a class="el" href="a00042.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="#ga96914d218afb3f3dac01bf98702e3ef7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga6a5cdf3eb278daa953e2f45dc4cb4518">SRING_insert_sorted</a> (<a class="el" href="a00010.html">SRING</a> *list, <a class="el" href="a00042.html#gaa197bf51f9b33ec012296a14be9c4838">SRING_COMPARE</a> compare, <a class="el" href="a00010.html">SRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="#ga6a5cdf3eb278daa953e2f45dc4cb4518"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaff2e874e90de5dbc9c321146a302cba9">SRING_reverse</a> (<a class="el" href="a00010.html">SRING</a> *lst)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="#gaff2e874e90de5dbc9c321146a302cba9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga7d49e006bf25f2d83d15b70caf9f3254">SRING_check</a> (<a class="el" href="a00010.html">SRING</a> *head)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaea5e890f7d1dab572fe3ef6f067e5d26">DRING_init</a> (<a class="el" href="a00009.html">DRING</a> *head)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="#gaea5e890f7d1dab572fe3ef6f067e5d26"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3">DRING_isempty</a> (<a class="el" href="a00009.html">DRING</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="#ga7b28ffdc594d835f2c49cf9e74f7c3b3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga93f762e668a7283b18025310886635ea">DRING_insert_before</a> (<a class="el" href="a00009.html">DRING</a> *list, <a class="el" href="a00009.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry before a given entry.  <a href="#ga93f762e668a7283b18025310886635ea"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gab65d72bd525d11559228b5aa3aa641f0">DRING_insert_after</a> (<a class="el" href="a00009.html">DRING</a> *list, <a class="el" href="a00009.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="#gab65d72bd525d11559228b5aa3aa641f0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gad8c4485c62148db72ca05f55dcc75709">DRING_insert_sorted</a> (<a class="el" href="a00009.html">DRING</a> *list, <a class="el" href="a00042.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="el" href="a00009.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="#gad8c4485c62148db72ca05f55dcc75709"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga81d2db3ee3b83fe28393d45530bed230">DRING_unlink</a> (<a class="el" href="a00009.html">DRING</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a list.  <a href="#ga81d2db3ee3b83fe28393d45530bed230"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaed724487f6cd26c0b79b875ff3390c61">DRING_push_back</a> (<a class="el" href="a00009.html">DRING</a> *list, <a class="el" href="a00009.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain double ended queue)  <a href="#gaed724487f6cd26c0b79b875ff3390c61"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga897228c60f1de15be0799dadea9d0337">DRING_push_front</a> (<a class="el" href="a00009.html">DRING</a> *list, <a class="el" href="a00009.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as first in list (used to maintain double ended queue)  <a href="#ga897228c60f1de15be0799dadea9d0337"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga315bb0f49e0ccbadcc59a5e9258eff19">DRING_pop_front</a> (<a class="el" href="a00009.html">DRING</a> *elem)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove first element from list (used to maintain double ended queue)  <a href="#ga315bb0f49e0ccbadcc59a5e9258eff19"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga50912d37cc30e961dd53ff291b8db05e">DRING_pop_back</a> (<a class="el" href="a00009.html">DRING</a> *elem)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove last element from list (used to maintain double ended queue)  <a href="#ga50912d37cc30e961dd53ff291b8db05e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaa392ee3a23da21ccf4e4ea62bd6c7de8">DRING_get_first</a> (<a class="el" href="a00009.html">DRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gac4fbe3b2aa6b11ce356755c89235b9d4">DRING_get_last</a> (<a class="el" href="a00009.html">DRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga44a51594b007ec843d30bf5c3b3ddc73">DRING_get_next</a> (<a class="el" href="a00009.html">DRING</a> *end, <a class="el" href="a00009.html">DRING</a> *cur)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gae8038a9a107a06bb0fae04cd8f8f7711">DRING_get_prev</a> (<a class="el" href="a00009.html">DRING</a> *end, <a class="el" href="a00009.html">DRING</a> *cur)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gafb5caaea75f7196bd6abe1ac8e81a7f3">DRING_size</a> (<a class="el" href="a00009.html">DRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga7f552929105d5cf0a6f621c6e8463f2d">DRING_get_nth</a> (<a class="el" href="a00009.html">DRING</a> *list, size_t nth)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga82d60185895dcf1deecd14d4a809741f">DRING_get_nth_reverse</a> (<a class="el" href="a00009.html">DRING</a> *list, size_t nth)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1">DRING_foreach</a> (<a class="el" href="a00009.html">DRING</a> *lst, <a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *context, int save_from_del)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list. list is traversed forward from first element to the last element.  <a href="#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga98724ac564245aa77a1a4c55f83fadb9">DRING_foreach_reverse</a> (<a class="el" href="a00009.html">DRING</a> *lst, <a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *context, int save_from_delete)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.  <a href="#ga98724ac564245aa77a1a4c55f83fadb9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga3efd1408b3d08b2253e1bf781306a425">DRING_findif</a> (<a class="el" href="a00009.html">DRING</a> *lst, <a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> eval, void *context, int32_t *retval, int save_from_del)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga3efd1408b3d08b2253e1bf781306a425"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga8d223c41dde7af2a4a154e09bf9c3a03">DRING_find_reverse</a> (<a class="el" href="a00009.html">DRING</a> *lst, <a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> eval, void *context, int32_t *retval, int save_from_delete)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in reverse direction from last element to first element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga8d223c41dde7af2a4a154e09bf9c3a03"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga44b92d9180c58865b9d4a1c6d5d9c37f">DRING_deleteif</a> (<a class="el" href="a00009.html">DRING</a> *list, <a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="#ga44b92d9180c58865b9d4a1c6d5d9c37f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gab49cbee747109aad10c6e6a67c1149d9">DRING_deleteall</a> (<a class="el" href="a00009.html">DRING</a> *list, <a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="#gab49cbee747109aad10c6e6a67c1149d9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga02284390005b102707b116d7de2b7ae6">DRING_reverse</a> (<a class="el" href="a00009.html">DRING</a> *lst)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="#ga02284390005b102707b116d7de2b7ae6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaead03ab9284bb52e1a5204010109b69d">DRING_check</a> (<a class="el" href="a00009.html">DRING</a> *header)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of list  <a href="#gaead03ab9284bb52e1a5204010109b69d"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>Single linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next element of the list. </p>
+<p>Double linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list. </p>
 <p>In a circularly-linked list, the first and final nodes are linked together. To traverse a circular linked list, you begin at any node and follow the list in either direction until you return to the original node. Viewed another way, circularly-linked lists can be seen as having no beginning or end. This type of list is most useful for managing buffers for data ingest, and in cases where you have one object in a list and wish to see all other objects in the list. The pointer pointing to the whole list is usually called the end pointer. (quoted from <a href="http://en.wikipedia.org/wiki/Linked_list">http://en.wikipedia.org/wiki/Linked_list</a> )</p>
-<p>Usage: If the user wants to link his struct(ure) into a list, then he must embed a SLIST_entry into his structure. Access to user defined structure is via embedded DRING.</p>
-<p>Note: unlike <a class="el" href="a00006.html">SLIST</a> it is not easy to get the last element in the list; in <a class="el" href="a00006.html">SLIST</a> we have a pointer to the last element int the list header; with SRING we have to traverse the whole list in order to get to the last element. </p>
+<p>Usage: If the user wants to link his struct(ure) into a list, then he must embed a SLIST_entry into his structure. Access to user defined structure is via embedded DRING. </p>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="ga39582582e3bfccf18e39710e75009ad1"></a><!-- doxytag: member="sring.h::SRING_FOREACH" ref="ga39582582e3bfccf18e39710e75009ad1" args="(loopvarname, list)" -->
+<a class="anchor" id="gac8118521928cd5a00b83ee9c0ba48308"></a><!-- doxytag: member="dring.h::DRING_FOREACH" ref="gac8118521928cd5a00b83ee9c0ba48308" args="(loopvarname, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SRING_FOREACH</td>
+          <td class="memname">#define DRING_FOREACH</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">loopvarname, </td>
@@ -128,22 +144,63 @@ Functions</h2></td></tr>
 <p>Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">loopvarname</td><td>(type SRING *) pointer to the current element </td></tr>
-    <tr><td class="paramname">list</td><td>(type SRING *) pointer to the list that is traversed </td></tr>
+    <tr><td class="paramname">loopvarname</td><td>(type DRING *) pointer to the current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type DRING *) pointer to the list that is traversed </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00146">146</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00204">204</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga7f6178ad165e9b2f699efd88a3cbca8a"></a><!-- doxytag: member="sring.h::SRING_FOREACH_SAVE" ref="ga7f6178ad165e9b2f699efd88a3cbca8a" args="(loopvarname, loopvarnext, list)" -->
+<a class="anchor" id="ga550a7b5adbe2d3325db38c49764bdc8c"></a><!-- doxytag: member="dring.h::DRING_FOREACH_REVERSE" ref="ga550a7b5adbe2d3325db38c49764bdc8c" args="(loopvarname, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SRING_FOREACH_SAVE</td>
+          <td class="memname">#define DRING_FOREACH_REVERSE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">loopvarname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;prev;\
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarname)-&gt;prev )
+</pre></div>
+<p>Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type DRING *) pointer to the current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type DRING *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00214">214</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gac5d159651c812e6785f81bc2dfc73b7d"></a><!-- doxytag: member="dring.h::DRING_FOREACH_REVERSE_SAVE" ref="gac5d159651c812e6785f81bc2dfc73b7d" args="(loopvarname, loopvarnext, list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DRING_FOREACH_REVERSE_SAVE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">loopvarname, </td>
@@ -168,8 +225,57 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">(loopvarname) = (list); (loopvarnext) = (loopvarname)-&gt;next; \
-  <span class="keywordflow">do</span> {
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;prev, (loopvarnext) = (loopvarname)-&gt;prev;\
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarnext), (loopvarnext) = (loopvarname)-&gt;prev )
+</pre></div>
+<p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type DRING *) pointer to the current element </td></tr>
+    <tr><td class="paramname">loopvarnamenext</td><td>(type DRING *) do not modify! pointer to next element after current element (used for iteration). </td></tr>
+    <tr><td class="paramname">list</td><td>(type DRING *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00236">236</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaab96829db58e4eaa3cec725c9c99ff69"></a><!-- doxytag: member="dring.h::DRING_FOREACH_SAVE" ref="gaab96829db58e4eaa3cec725c9c99ff69" args="(loopvarname, loopvarnext, list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DRING_FOREACH_SAVE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">loopvarname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">loopvarnext, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;next, (loopvarnext) = (loopvarname)-&gt;next;\
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarnext), (loopvarnext) = (loopvarname)-&gt;next )
 </pre></div>
 <p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
@@ -181,56 +287,18 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00159">159</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga0e4892ffac6b949a95b1d9b1895433b7"></a><!-- doxytag: member="sring.h::SRING_FOREACH_SAVE_END" ref="ga0e4892ffac6b949a95b1d9b1895433b7" args="(loopvarname, loopvarnext, list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SRING_FOREACH_SAVE_END</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarname, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarnext, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">list&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">(loopvarname) = (loopvarnext); \
-         (loopvarnext) = (loopvarnext)-&gt;next; \
-   } <span class="keywordflow">while</span> ((loopvarname) != (list)-&gt;next );
-</pre></div>
-<p>Definition at line <a class="el" href="a00028_source.html#l00164">164</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00225">225</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="ga478bf88a63498eec67b9720586d6bba9"></a><!-- doxytag: member="sring.h::SRING" ref="ga478bf88a63498eec67b9720586d6bba9" args="" -->
+<a class="anchor" id="ga4630800b5e50c32e36110b0a6dfcadc0"></a><!-- doxytag: member="dring.h::DRING" ref="ga4630800b5e50c32e36110b0a6dfcadc0" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="a00010.html">tagSRING</a>  
-   <a class="el" href="a00010.html">SRING</a></td>
+          <td class="memname">typedef struct <a class="el" href="a00009.html">tagDRING</a>  
+   <a class="el" href="a00009.html">DRING</a></td>
         </tr>
       </table>
 </div>
@@ -238,96 +306,84 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="gaa197bf51f9b33ec012296a14be9c4838"></a><!-- doxytag: member="sring.h::SRING_COMPARE" ref="gaa197bf51f9b33ec012296a14be9c4838" args=")(SRING *, SRING *)" -->
+<a class="anchor" id="ga275575e4b5e7edcaaf471ec1e5f02b5a"></a><!-- doxytag: member="dring.h::DRING_COMPARE" ref="ga275575e4b5e7edcaaf471ec1e5f02b5a" args=")(DRING *, DRING *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int32_t(* <a class="el" href="a00042.html#gaa197bf51f9b33ec012296a14be9c4838">SRING_COMPARE</a>)(<a class="el" href="a00010.html">SRING</a> *, <a class="el" href="a00010.html">SRING</a> *)</td>
+          <td class="memname">typedef int32_t(* <a class="el" href="a00042.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a>)(<a class="el" href="a00009.html">DRING</a> *, <a class="el" href="a00009.html">DRING</a> *)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00040">40</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00039">39</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="gab481e0fe056d133b74281971cb70a90f"></a><!-- doxytag: member="sring.h::SRING_VISITOR" ref="gab481e0fe056d133b74281971cb70a90f" args=")(SRING *entry, void *context)" -->
+<a class="anchor" id="gadbbb7e55996e9a7bc35f1f5bd26b75d0"></a><!-- doxytag: member="dring.h::DRING_VISITOR" ref="gadbbb7e55996e9a7bc35f1f5bd26b75d0" args=")(DRING *entry, void *context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int32_t(* <a class="el" href="a00042.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a>)(<a class="el" href="a00010.html">SRING</a> *entry, void *context)</td>
+          <td class="memname">typedef int32_t(* <a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>)(<a class="el" href="a00009.html">DRING</a> *entry, void *context)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00039">39</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00038">38</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga8fd5f1f287aecfe1a45ad63bd0c38fca"></a><!-- doxytag: member="sring.h::SRING_VISITOR_V" ref="ga8fd5f1f287aecfe1a45ad63bd0c38fca" args=")(SRING *entry, void *context)" -->
+<a class="anchor" id="ga516498a8d915f013d2466856c72a0bd6"></a><!-- doxytag: member="dring.h::DRING_VISITOR_V" ref="ga516498a8d915f013d2466856c72a0bd6" args=")(DRING *entry, void *context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* <a class="el" href="a00042.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a>)(<a class="el" href="a00010.html">SRING</a> *entry, void *context)</td>
+          <td class="memname">typedef void(* <a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>)(<a class="el" href="a00009.html">DRING</a> *entry, void *context)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00038">38</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00037">37</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ga7d49e006bf25f2d83d15b70caf9f3254"></a><!-- doxytag: member="sring.h::SRING_check" ref="ga7d49e006bf25f2d83d15b70caf9f3254" args="(SRING *head)" -->
+<a class="anchor" id="gaead03ab9284bb52e1a5204010109b69d"></a><!-- doxytag: member="dring.h::DRING_check" ref="gaead03ab9284bb52e1a5204010109b69d" args="(DRING *header)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE size_t SRING_check </td>
+          <td class="memname">M_INLINE int DRING_check </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
-          <td class="paramname"><em>head</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>header</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>verify list for consistency, i.e. that it does not have loops. Uses Floyds cycle finding algorithm. <a href="http://en.literateprograms.org/Floyd%27s_cycle-finding_algorithm_%28C%29">http://en.literateprograms.org/Floyd%27s_cycle-finding_algorithm_%28C%29</a> </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>0 if list is inconsistent. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00392">392</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>check consistency of list </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>list header. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>zero if list contains errors. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00487">487</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00010.html">SRING</a> *slow, *fast = head-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
+        <a class="code" href="a00009.html">DRING</a> *cur,*next;
 
-        <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>( slow, head ) {
-                <span class="keywordflow">if</span> (!slow) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                fast = fast-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-                <span class="keywordflow">if</span> (!fast) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                <span class="keywordflow">if</span> (fast == head) {
-                        <span class="keywordflow">return</span> 1;
-                }
-                <span class="keywordflow">if</span> (fast == slow) {
-                        <span class="keywordflow">return</span> 0;
-                }
+        <a class="code" href="a00042.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>( cur, header ) {
 
-                fast = fast-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-                <span class="keywordflow">if</span> (!fast) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                <span class="keywordflow">if</span> (fast == head) {
-                        <span class="keywordflow">return</span> 1;
-                }
-                <span class="keywordflow">if</span> (fast == slow) {
+                next = cur-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                <span class="keywordflow">if</span> (!next || next-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> != cur) {               
                         <span class="keywordflow">return</span> 0;
                 }
         }
@@ -336,20 +392,20 @@ Functions</h2></td></tr>
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga96914d218afb3f3dac01bf98702e3ef7"></a><!-- doxytag: member="sring.h::SRING_deleteall" ref="ga96914d218afb3f3dac01bf98702e3ef7" args="(SRING *list, SRING_VISITOR_V on_delete, void *context, int offset_of_link)" -->
+<a class="anchor" id="gab49cbee747109aad10c6e6a67c1149d9"></a><!-- doxytag: member="dring.h::DRING_deleteall" ref="gab49cbee747109aad10c6e6a67c1149d9" args="(DRING *list, DRING_VISITOR_V on_delete, void *context, int offset_of_link)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void SRING_deleteall </td>
+          <td class="memname">M_INLINE void DRING_deleteall </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00042.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>&#160;</td>
           <td class="paramname"><em>on_delete</em>, </td>
         </tr>
         <tr>
@@ -379,49 +435,43 @@ Functions</h2></td></tr>
     <tr><td class="paramname">list</td><td>(in) the object</td></tr>
     <tr><td class="paramname">on_delete(in)</td><td>if not NULL then this callback is called prior to deleting each list element. </td></tr>
     <tr><td class="paramname">context</td><td>(in) if on_delete is not NULL then this pointer is passed as argument to on_delete.</td></tr>
-    <tr><td class="paramname">free_ctx</td><td>(in) allocation interface used to free data of entry. </td></tr>
-    <tr><td class="paramname">offset_of_link</td><td>(in) offset of SRING in embedded structure. </td></tr>
+    <tr><td class="paramname">free_ctx</td><td>allocation interface used to free data of entry. </td></tr>
+    <tr><td class="paramname">offset_of_link</td><td>offset of DRING in embedded structure. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>nunmber of elements deleted. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00315">315</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00436">436</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-    <a class="code" href="a00010.html">SRING</a> *cur,*prev,*del;
+    <a class="code" href="a00009.html">DRING</a> *cur,*next,*del;
 
-        prev = list;
-
-        <span class="keywordflow">for</span>(cur = prev-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>; cur != list;) {
-    
+    <a class="code" href="a00042.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>(cur,next,list) {
                 <span class="keywordflow">if</span> (on_delete) {
                         on_delete( cur, context);
                 }
-
-                cur = cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-                del = <a class="code" href="a00042.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>( prev );
+                del = <a class="code" href="a00042.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>( cur );
                 <span class="keywordflow">if</span> (offset_of_link != -1) {
-                        free( <a class="code" href="a00014.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del, offset_of_link) );
+                        free( <a class="code" href="a00015.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del,offset_of_link) );
                 }
         }
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga182b8c409d5c05637085210b31950431"></a><!-- doxytag: member="sring.h::SRING_deleteif" ref="ga182b8c409d5c05637085210b31950431" args="(SRING *list, SRING_VISITOR check_if, void *context, int offset_of_link)" -->
+<a class="anchor" id="ga44b92d9180c58865b9d4a1c6d5d9c37f"></a><!-- doxytag: member="dring.h::DRING_deleteif" ref="ga44b92d9180c58865b9d4a1c6d5d9c37f" args="(DRING *list, DRING_VISITOR check_if, void *context, int offset_of_link)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE size_t SRING_deleteif </td>
+          <td class="memname">M_INLINE size_t DRING_deleteif </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00042.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>&#160;</td>
           <td class="paramname"><em>check_if</em>, </td>
         </tr>
         <tr>
@@ -452,34 +502,24 @@ Functions</h2></td></tr>
     <tr><td class="paramname">check_if</td><td>(in) predicate function; the function returns 1 then inspected argument element will be deleted; if argument pointer is NULL then all entries will be deleted. </td></tr>
     <tr><td class="paramname">context</td><td>(in) data pointer passed to every invocation of check_if </td></tr>
     <tr><td class="paramname">free_ctx</td><td>(in) interface used to free data of entry, is argument pointer is NULL then nothing is freed. </td></tr>
-    <tr><td class="paramname">offset_of_link</td><td>(in) offset of SRING in embedded structure. </td></tr>
+    <tr><td class="paramname">offset_of_link</td><td>(in) offset of DRING in embedded structure. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>nunmber of elements deleted. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00276">276</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00409">409</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-    <a class="code" href="a00010.html">SRING</a> *cur,*prev,*del;
-        <span class="keywordtype">size_t</span>  ret;
+    <a class="code" href="a00009.html">DRING</a> *cur,*next,*del;
+        <span class="keywordtype">size_t</span>  ret = 0;
 
-        prev = list;
-        ret = 0;
-
-        <span class="keywordflow">for</span>(cur = prev-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>; cur != list;) {
-    
+    <a class="code" href="a00042.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>(cur,next,list) {
                 <span class="keywordflow">if</span> (!check_if || check_if( cur, context))  {
-
-                        cur = cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-                        del = <a class="code" href="a00042.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>( prev );
+                        del = <a class="code" href="a00042.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>( cur );
                         <span class="keywordflow">if</span> (offset_of_link != -1) {
-                                free( <a class="code" href="a00014.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del, offset_of_link) );
+                                free( <a class="code" href="a00015.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del,offset_of_link) );
                         }
-                        ret++;
-
-                } <span class="keywordflow">else</span> {
-
-                        prev = cur;
-                        cur = cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
+                        ret ++;
                 }
         }
         <span class="keywordflow">return</span> ret;
@@ -487,20 +527,20 @@ Functions</h2></td></tr>
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga742710ac325213e24ddf5d02ef30bc9c"></a><!-- doxytag: member="sring.h::SRING_findif" ref="ga742710ac325213e24ddf5d02ef30bc9c" args="(SRING *lst, SRING_VISITOR eval, void *context, int32_t *retval)" -->
+<a class="anchor" id="ga8d223c41dde7af2a4a154e09bf9c3a03"></a><!-- doxytag: member="dring.h::DRING_find_reverse" ref="ga8d223c41dde7af2a4a154e09bf9c3a03" args="(DRING *lst, DRING_VISITOR eval, void *context, int32_t *retval, int save_from_delete)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_findif </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_find_reverse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>lst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00042.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>&#160;</td>
           <td class="paramname"><em>eval</em>, </td>
         </tr>
         <tr>
@@ -513,7 +553,111 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int32_t *&#160;</td>
-          <td class="paramname"><em>retval</em>&#160;</td>
+          <td class="paramname"><em>retval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_delete</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>find an element within the linked list. callback is invoked for each element of the list, in reverse direction from last element to first element; when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">lastpos</td><td>(out) position in the list that has been found. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00360">360</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">int</span> ret;
+        <a class="code" href="a00009.html">DRING</a> *cur, *next;
+
+        <span class="keywordflow">if</span> (retval) {
+                *retval = 0;
+        }
+
+        <span class="keywordflow">if</span> (!eval) {
+          <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="keywordflow">if</span> ( save_from_delete ) {
+                <a class="code" href="a00042.html#gac5d159651c812e6785f81bc2dfc73b7d" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_REVERSE_SAVE</a>( cur, next, lst ) {
+
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
+                        }
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="a00042.html#ga550a7b5adbe2d3325db38c49764bdc8c" title="Macro for iterate over all elements of a list, the list is traversed in reverse direction from last e...">DRING_FOREACH_REVERSE</a>( cur, lst ) {
+
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
+                        }
+                }
+        }
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga3efd1408b3d08b2253e1bf781306a425"></a><!-- doxytag: member="dring.h::DRING_findif" ref="ga3efd1408b3d08b2253e1bf781306a425" args="(DRING *lst, DRING_VISITOR eval, void *context, int32_t *retval, int save_from_del)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_findif </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00042.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>retval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_del</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -531,60 +675,80 @@ Functions</h2></td></tr>
     <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
     <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
     <tr><td class="paramname">retval</td><td>(out) optional - the first non zero value returned by eval callback, if NULL then ignored. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00242">242</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00310">310</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <span class="keywordtype">int</span> ret;
-        <a class="code" href="a00010.html">SRING</a> *cur;
+    <a class="code" href="a00009.html">DRING</a> *cur, *next;
 
         <span class="keywordflow">if</span> (retval) {
                 *retval = 0;
         }
 
         <span class="keywordflow">if</span> (!eval) {
-          <span class="keywordflow">return</span> 0;
+                <span class="keywordflow">return</span> 0;
         }
 
-        <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(  cur, lst ) {
-                ret = eval( cur, context );
-                <span class="keywordflow">if</span> (ret) {
-                        <span class="keywordflow">if</span> (retval) {
-                                *retval = ret;
+        <span class="keywordflow">if</span> (save_from_del) {
+                <a class="code" href="a00042.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, lst) {
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
                         }
-                        <span class="keywordflow">return</span> cur;
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="a00042.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, lst ) {
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
+                        }
                 }
         }
+                
 
         <span class="keywordflow">return</span> 0;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga948f45c8af2b99aec05ca538b4a07e9e"></a><!-- doxytag: member="sring.h::SRING_foreach" ref="ga948f45c8af2b99aec05ca538b4a07e9e" args="(SRING *lst, SRING_VISITOR_V eval, void *context)" -->
+<a class="anchor" id="gacc803a0c5a8bc3ce165f8d8fe5e78ab1"></a><!-- doxytag: member="dring.h::DRING_foreach" ref="gacc803a0c5a8bc3ce165f8d8fe5e78ab1" args="(DRING *lst, DRING_VISITOR_V eval, void *context, int save_from_del)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void SRING_foreach </td>
+          <td class="memname">void DRING_foreach </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>lst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00042.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>&#160;</td>
           <td class="paramname"><em>eval</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_del</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -595,40 +759,118 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>iterate over all elements of a list, callback is invoked for either element of the list. </p>
+<p>iterate over all elements of a list, callback is invoked for either element of the list. list is traversed forward from first element to the last element. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
     <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
     <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00219">219</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00007">7</a> of file <a class="el" href="a00022_source.html">dring.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00010.html">SRING</a> *cur;
+    <a class="code" href="a00009.html">DRING</a> *cur, *next;
+
+        <span class="keywordflow">if</span> (!eval) {
+          <span class="keywordflow">return</span>;
+        }
+
+        <span class="keywordflow">if</span> (save_from_del) {
+                <a class="code" href="a00042.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, lst) {
+                        eval( cur, data );
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="a00042.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, lst ) {
+                        eval( cur, data );
+                }
+        }
+                
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga98724ac564245aa77a1a4c55f83fadb9"></a><!-- doxytag: member="dring.h::DRING_foreach_reverse" ref="ga98724ac564245aa77a1a4c55f83fadb9" args="(DRING *lst, DRING_VISITOR_V eval, void *context, int save_from_delete)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DRING_foreach_reverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00042.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_delete</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00022_source.html#l00028">28</a> of file <a class="el" href="a00022_source.html">dring.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00009.html">DRING</a> *cur, *next;
 
         <span class="keywordflow">if</span> (!eval) {
           return ;
         }
 
-        <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(  cur, lst ) {
-                eval( cur, context );
+        <span class="keywordflow">if</span> ( save_from_delete ) {
+                <a class="code" href="a00042.html#gac5d159651c812e6785f81bc2dfc73b7d" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_REVERSE_SAVE</a>( cur, next, lst ) {
 
-        }               
+                        eval( cur, data );
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="a00042.html#ga550a7b5adbe2d3325db38c49764bdc8c" title="Macro for iterate over all elements of a list, the list is traversed in reverse direction from last e...">DRING_FOREACH_REVERSE</a>( cur, lst ) {
+
+                        eval( cur, data );
+                }
+        }
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gaa43e9213ae7d390a22ffd34164a9a8fb"></a><!-- doxytag: member="sring.h::SRING_get_first" ref="gaa43e9213ae7d390a22ffd34164a9a8fb" args="(SRING *list)" -->
+<a class="anchor" id="gaa392ee3a23da21ccf4e4ea62bd6c7de8"></a><!-- doxytag: member="dring.h::DRING_get_first" ref="gaa392ee3a23da21ccf4e4ea62bd6c7de8" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_get_first </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_get_first </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
@@ -636,25 +878,24 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00109">109</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00163">163</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-
-  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga23aab5b8a7efeacf278b444bb785bc1d" title="checks if argument list is empty">SRING_isempty</a>(list)) {
+  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>(list)) {
     <span class="keywordflow">return</span> 0;
   }  
-  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga9bfd87c38a546d0bd880e2ef6afb4308"></a><!-- doxytag: member="sring.h::SRING_get_last" ref="ga9bfd87c38a546d0bd880e2ef6afb4308" args="(SRING *list)" -->
+<a class="anchor" id="gac4fbe3b2aa6b11ce356755c89235b9d4"></a><!-- doxytag: member="dring.h::DRING_get_last" ref="gac4fbe3b2aa6b11ce356755c89235b9d4" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_get_last </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_get_last </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
@@ -662,35 +903,30 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00119">119</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00171">171</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00010.html">SRING</a> *cur;
-
-  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga23aab5b8a7efeacf278b444bb785bc1d" title="checks if argument list is empty">SRING_isempty</a>(list)) {
+  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>(list)) {
     <span class="keywordflow">return</span> 0;
-  }  
-  
-  <span class="keywordflow">for</span>(cur = list;cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> != list; cur = cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>);
-
-  <span class="keywordflow">return</span> cur;
+  }
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga02277d246cf87fa74cf2face4271dc46"></a><!-- doxytag: member="sring.h::SRING_get_next" ref="ga02277d246cf87fa74cf2face4271dc46" args="(SRING *end, SRING *cur)" -->
+<a class="anchor" id="ga44a51594b007ec843d30bf5c3b3ddc73"></a><!-- doxytag: member="dring.h::DRING_get_next" ref="ga44a51594b007ec843d30bf5c3b3ddc73" args="(DRING *end, DRING *cur)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_get_next </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_get_next </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>end</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>cur</em>&#160;</td>
         </tr>
         <tr>
@@ -702,25 +938,25 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00132">132</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00180">180</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">if</span> (cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> == end) { 
+  <span class="keywordflow">if</span> (cur-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> == end) { 
     <span class="keywordflow">return</span> 0;
   }
-  <span class="keywordflow">return</span> cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
+  <span class="keywordflow">return</span> cur-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
 
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga0bf1663e78699f16d176b4e5eab35760"></a><!-- doxytag: member="sring.h::SRING_get_nth" ref="ga0bf1663e78699f16d176b4e5eab35760" args="(SRING *list, size_t nth)" -->
+<a class="anchor" id="ga7f552929105d5cf0a6f621c6e8463f2d"></a><!-- doxytag: member="dring.h::DRING_get_nth" ref="ga7f552929105d5cf0a6f621c6e8463f2d" args="(DRING *list, size_t nth)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_get_nth </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_get_nth </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
@@ -738,26 +974,26 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00190">190</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00261">261</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
 
-        <a class="code" href="a00010.html">SRING</a> *elm;
+        <a class="code" href="a00009.html">DRING</a> *elm;
 
-        <span class="keywordflow">for</span>(elm = <a class="code" href="a00042.html#gaa43e9213ae7d390a22ffd34164a9a8fb">SRING_get_first</a>(list); elm != 0 &amp;&amp; nth &gt; 0; nth -= 1, elm = <a class="code" href="a00042.html#ga02277d246cf87fa74cf2face4271dc46">SRING_get_next</a>(list, elm)); 
+        <span class="keywordflow">for</span>(elm = <a class="code" href="a00042.html#gaa392ee3a23da21ccf4e4ea62bd6c7de8">DRING_get_first</a>(list); elm != 0 &amp;&amp; nth &gt; 0; nth -= 1, elm = <a class="code" href="a00042.html#ga44a51594b007ec843d30bf5c3b3ddc73">DRING_get_next</a>(list, elm)); 
 
         <span class="keywordflow">return</span> elm;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga4eacc9ad78693d75fc82960853bfc77d"></a><!-- doxytag: member="sring.h::SRING_get_nth_reverse" ref="ga4eacc9ad78693d75fc82960853bfc77d" args="(SRING *list, size_t nth)" -->
+<a class="anchor" id="ga82d60185895dcf1deecd14d4a809741f"></a><!-- doxytag: member="dring.h::DRING_get_nth_reverse" ref="ga82d60185895dcf1deecd14d4a809741f" args="(DRING *list, size_t nth)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_get_nth_reverse </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_get_nth_reverse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
@@ -775,22 +1011,58 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00206">206</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00277">277</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{       
-        <span class="keywordflow">return</span> <a class="code" href="a00042.html#ga0bf1663e78699f16d176b4e5eab35760">SRING_get_nth</a>( list, <a class="code" href="a00042.html#gad00dfbc796c0f39381f8cb207d45a628">SRING_size</a>( list ) - nth );
+        <span class="keywordflow">return</span> <a class="code" href="a00042.html#ga7f552929105d5cf0a6f621c6e8463f2d">DRING_get_nth</a>( list, <a class="code" href="a00042.html#gafb5caaea75f7196bd6abe1ac8e81a7f3">DRING_size</a>( list ) - nth );
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga53ac9788c8cdc9e03a9e343fd7e8b15a"></a><!-- doxytag: member="sring.h::SRING_init" ref="ga53ac9788c8cdc9e03a9e343fd7e8b15a" args="(SRING *list)" -->
+<a class="anchor" id="gae8038a9a107a06bb0fae04cd8f8f7711"></a><!-- doxytag: member="dring.h::DRING_get_prev" ref="gae8038a9a107a06bb0fae04cd8f8f7711" args="(DRING *end, DRING *cur)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void SRING_init </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_get_prev </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>cur</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00190">190</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (cur-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> == end) { 
+    <span class="keywordflow">return</span> 0;
+  }
+  <span class="keywordflow">return</span> cur-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaea5e890f7d1dab572fe3ef6f067e5d26"></a><!-- doxytag: member="dring.h::DRING_init" ref="gaea5e890f7d1dab572fe3ef6f067e5d26" args="(DRING *head)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DRING_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>head</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -805,27 +1077,27 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00046">46</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00046">46</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{ 
-  list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> = list; 
+  head-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = head-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = head; 
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga6a2a1950260f3fb3d385bde480e5c976"></a><!-- doxytag: member="sring.h::SRING_insert_after" ref="ga6a2a1950260f3fb3d385bde480e5c976" args="(SRING *list, SRING *newentry)" -->
+<a class="anchor" id="gab65d72bd525d11559228b5aa3aa641f0"></a><!-- doxytag: member="dring.h::DRING_insert_after" ref="gab65d72bd525d11559228b5aa3aa641f0" args="(DRING *list, DRING *newentry)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void SRING_insert_after </td>
+          <td class="memname">M_INLINE void DRING_insert_after </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>newentry</em>&#160;</td>
         </tr>
         <tr>
@@ -841,39 +1113,85 @@ Functions</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">newentry</td><td>pointer to new list entry (to be inserted). </td></tr>
-    <tr><td class="paramname">list</td><td>current position (newentry inserted after this one). </td></tr>
+    <tr><td class="paramname">list</td><td>current posision (newentry inserted after this one). </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00066">66</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00083">83</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-   newentry-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> = list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-   list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> = newentry;
+   <a class="code" href="a00042.html#ga93f762e668a7283b18025310886635ea" title="insert new entry before a given entry.">DRING_insert_before</a>( list-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>, newentry );
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga6a5cdf3eb278daa953e2f45dc4cb4518"></a><!-- doxytag: member="sring.h::SRING_insert_sorted" ref="ga6a5cdf3eb278daa953e2f45dc4cb4518" args="(SRING *list, SRING_COMPARE compare, SRING *newentry)" -->
+<a class="anchor" id="ga93f762e668a7283b18025310886635ea"></a><!-- doxytag: member="dring.h::DRING_insert_before" ref="ga93f762e668a7283b18025310886635ea" args="(DRING *list, DRING *newentry)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void SRING_insert_sorted </td>
+          <td class="memname">M_INLINE void DRING_insert_before </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00042.html#gaa197bf51f9b33ec012296a14be9c4838">SRING_COMPARE</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new entry before a given entry. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newentry</td><td>pointer to new list entry (to be inserted). </td></tr>
+    <tr><td class="paramname">list</td><td>current position (newentry inserted before this one). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00067">67</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <a class="code" href="a00009.html">DRING</a> *prev = list-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+
+   prev-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = newentry;    
+   newentry-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = list;
+
+   newentry-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = prev; 
+   list-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = newentry; 
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gad8c4485c62148db72ca05f55dcc75709"></a><!-- doxytag: member="dring.h::DRING_insert_sorted" ref="gad8c4485c62148db72ca05f55dcc75709" args="(DRING *list, DRING_COMPARE compare, DRING *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DRING_insert_sorted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00042.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a>&#160;</td>
           <td class="paramname"><em>compare</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>newentry</em>&#160;</td>
         </tr>
         <tr>
@@ -895,33 +1213,30 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00343">343</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00052">52</a> of file <a class="el" href="a00022_source.html">dring.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00010.html">SRING</a> *cur,*prev;
+        <a class="code" href="a00009.html">DRING</a> *cur;
         
-        prev = list;
-        <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(  cur, list ) {
+        <a class="code" href="a00042.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, list ) {
                 <span class="keywordflow">if</span> (compare(cur,newentry) &gt; 0) {
-
-                        <a class="code" href="a00042.html#ga6a2a1950260f3fb3d385bde480e5c976" title="insert new entry after a given entry.">SRING_insert_after</a>(prev,newentry);
+                        <a class="code" href="a00042.html#ga93f762e668a7283b18025310886635ea" title="insert new entry before a given entry.">DRING_insert_before</a>(cur,newentry);
                         <span class="keywordflow">return</span>;
                 }
-                prev = cur;
         }
 
-        <a class="code" href="a00042.html#ga6a2a1950260f3fb3d385bde480e5c976" title="insert new entry after a given entry.">SRING_insert_after</a>(prev,newentry);
+        <a class="code" href="a00042.html#gaed724487f6cd26c0b79b875ff3390c61" title="insert element as last in list (used to maintain double ended queue)">DRING_push_back</a>( list, newentry );
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga23aab5b8a7efeacf278b444bb785bc1d"></a><!-- doxytag: member="sring.h::SRING_isempty" ref="ga23aab5b8a7efeacf278b444bb785bc1d" args="(SRING *list)" -->
+<a class="anchor" id="ga7b28ffdc594d835f2c49cf9e74f7c3b3"></a><!-- doxytag: member="dring.h::DRING_isempty" ref="ga7b28ffdc594d835f2c49cf9e74f7c3b3" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE int SRING_isempty </td>
+          <td class="memname">M_INLINE int DRING_isempty </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
@@ -938,21 +1253,21 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>not zero for non empty list. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00056">56</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00057">57</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> == list;
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> == list;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga1702358f1edcb1d85df818fdb8a20a23"></a><!-- doxytag: member="sring.h::SRING_pop_front" ref="ga1702358f1edcb1d85df818fdb8a20a23" args="(SRING *elem)" -->
+<a class="anchor" id="ga50912d37cc30e961dd53ff291b8db05e"></a><!-- doxytag: member="dring.h::DRING_pop_back" ref="ga50912d37cc30e961dd53ff291b8db05e" args="(DRING *elem)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_pop_front </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_pop_back </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>elem</em></td><td>)</td>
           <td></td>
         </tr>
@@ -960,7 +1275,45 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>remove the first element from list (used to maintain double ended queue) </p>
+<p>remove last element from list (used to maintain double ended queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">elem</td><td>(in) list head. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the last element of list, NULL if list empty </dd></dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00150">150</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{ 
+  <a class="code" href="a00009.html">DRING</a> *ret;
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>( elem )) {
+    <span class="keywordflow">return</span> 0;
+  }
+  ret = elem-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+  <a class="code" href="a00042.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>(elem-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>);
+  <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga315bb0f49e0ccbadcc59a5e9258eff19"></a><!-- doxytag: member="dring.h::DRING_pop_front" ref="ga315bb0f49e0ccbadcc59a5e9258eff19" args="(DRING *elem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_pop_front </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>elem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>remove first element from list (used to maintain double ended queue) </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">elem</td><td>(in) list head </td></tr>
@@ -969,33 +1322,33 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the first element of list, NULL if list empty </dd></dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00097">97</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00133">133</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00010.html">SRING</a> *ret;
-  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga23aab5b8a7efeacf278b444bb785bc1d" title="checks if argument list is empty">SRING_isempty</a>( elem )) {
+  <a class="code" href="a00009.html">DRING</a> *ret;
+  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>( elem )) {
     <span class="keywordflow">return</span> 0;
   }
-  ret = elem-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-  <a class="code" href="a00042.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>(elem);
+  ret = elem-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+  <a class="code" href="a00042.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>(elem-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>);
   <span class="keywordflow">return</span> ret;  
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga608f3b7787a81834f15eddbc4135d04f"></a><!-- doxytag: member="sring.h::SRING_push_front" ref="ga608f3b7787a81834f15eddbc4135d04f" args="(SRING *list, SRING *newentry)" -->
+<a class="anchor" id="gaed724487f6cd26c0b79b875ff3390c61"></a><!-- doxytag: member="dring.h::DRING_push_back" ref="gaed724487f6cd26c0b79b875ff3390c61" args="(DRING *list, DRING *newentry)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void SRING_push_front </td>
+          <td class="memname">M_INLINE void DRING_push_back </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>newentry</em>&#160;</td>
         </tr>
         <tr>
@@ -1007,21 +1360,71 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00087">87</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>insert element as last in list (used to maintain double ended queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>list head. </td></tr>
+    <tr><td class="paramname">newentry</td><td>entry to be inserted into list </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00113">113</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00042.html#ga6a2a1950260f3fb3d385bde480e5c976" title="insert new entry after a given entry.">SRING_insert_after</a>( list, newentry );
+  <a class="code" href="a00042.html#gab65d72bd525d11559228b5aa3aa641f0" title="insert new entry after a given entry.">DRING_insert_after</a>( list-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>, newentry );
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gaff2e874e90de5dbc9c321146a302cba9"></a><!-- doxytag: member="sring.h::SRING_reverse" ref="gaff2e874e90de5dbc9c321146a302cba9" args="(SRING *lst)" -->
+<a class="anchor" id="ga897228c60f1de15be0799dadea9d0337"></a><!-- doxytag: member="dring.h::DRING_push_front" ref="ga897228c60f1de15be0799dadea9d0337" args="(DRING *list, DRING *newentry)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void SRING_reverse </td>
+          <td class="memname">M_INLINE void DRING_push_front </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert element as first in list (used to maintain double ended queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>list head.s </td></tr>
+    <tr><td class="paramname">newentry</td><td>entry to be inserted into list </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00023_source.html#l00123">123</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00042.html#gab65d72bd525d11559228b5aa3aa641f0" title="insert new entry after a given entry.">DRING_insert_after</a>( list, newentry );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga02284390005b102707b116d7de2b7ae6"></a><!-- doxytag: member="dring.h::DRING_reverse" ref="ga02284390005b102707b116d7de2b7ae6" args="(DRING *lst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DRING_reverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>lst</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1037,35 +1440,41 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00366">366</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00457">457</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00010.html">SRING</a> *cur = lst-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>, *next, *tmp;
+        <a class="code" href="a00009.html">DRING</a> *cur = lst-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>, *next;
+        <a class="code" href="a00009.html">DRING</a> *tmp;
 
         <span class="keywordflow">if</span> (cur) {
-                next = cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-                cur-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> = lst;
+                next = cur-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                cur-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = lst;
 
-                <span class="keywordflow">while</span>(next != lst) {
-                        tmp = next-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
+                <span class="keywordflow">while</span>(next) {
+                        tmp = next-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
                         
-                        next-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> = cur;
+                        next-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = cur;
+                        cur-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = next;
+
                         cur = next;
                         next = tmp;
                 }
-                lst-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> = cur;
+
+                tmp = lst-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+                lst-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = lst-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                lst-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = tmp;
         }
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gad00dfbc796c0f39381f8cb207d45a628"></a><!-- doxytag: member="sring.h::SRING_size" ref="gad00dfbc796c0f39381f8cb207d45a628" args="(SRING *list)" -->
+<a class="anchor" id="gafb5caaea75f7196bd6abe1ac8e81a7f3"></a><!-- doxytag: member="dring.h::DRING_size" ref="gafb5caaea75f7196bd6abe1ac8e81a7f3" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE size_t SRING_size </td>
+          <td class="memname">M_INLINE size_t DRING_size </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1073,12 +1482,12 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00174">174</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00023_source.html#l00245">245</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <span class="keywordtype">size_t</span> sz;
-        <a class="code" href="a00010.html">SRING</a> * cur;
+        <a class="code" href="a00009.html">DRING</a> * cur;
         
-        <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>( cur, list ) {
+        <a class="code" href="a00042.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>( cur, list ) {
                 sz += 1;
         }
         <span class="keywordflow">return</span> sz;
@@ -1086,14 +1495,14 @@ Functions</h2></td></tr>
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gab573cc304039b055762f9251cc551d36"></a><!-- doxytag: member="sring.h::SRING_unlink_after" ref="gab573cc304039b055762f9251cc551d36" args="(SRING *list)" -->
+<a class="anchor" id="ga81d2db3ee3b83fe28393d45530bed230"></a><!-- doxytag: member="dring.h::DRING_unlink" ref="ga81d2db3ee3b83fe28393d45530bed230" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00010.html">SRING</a>* SRING_unlink_after </td>
+          <td class="memname">M_INLINE <a class="el" href="a00009.html">DRING</a>* DRING_unlink </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00010.html">SRING</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1101,23 +1510,25 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00028_source.html#l00073">73</a> of file <a class="el" href="a00028_source.html">sring.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-   <a class="code" href="a00010.html">SRING</a> *ret;
-   
-   <span class="keywordflow">if</span> (<a class="code" href="a00042.html#ga23aab5b8a7efeacf278b444bb785bc1d" title="checks if argument list is empty">SRING_isempty</a>(list)) {
-                <span class="keywordflow">return</span> 0;
-   }
+<p>delete an element from a list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>deletes this list element </td></tr>
+  </table>
+  </dd>
+</dl>
 
-   ret = list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-   list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a> = list-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>-&gt;<a class="code" href="a00010.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-   <span class="keywordflow">return</span> ret;
+<p>Definition at line <a class="el" href="a00023_source.html#l00101">101</a> of file <a class="el" href="a00023_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   list-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = list-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+   list-&gt;<a class="code" href="a00009.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = list-&gt;<a class="code" href="a00009.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+   <span class="keywordflow">return</span> list;
 }
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:56 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

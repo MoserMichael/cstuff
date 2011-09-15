@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: util.c File Reference</title>
+<title>Simple data structures / objects in plain C: sring.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,17 +36,69 @@
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">util.c File Reference</div>  </div>
+<div class="title">sring.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00032_source.html">cutils/util.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00015_source.html">cutils/base.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00031_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html">tagSRING</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga39582582e3bfccf18e39710e75009ad1">SRING_FOREACH</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="a00046.html#ga39582582e3bfccf18e39710e75009ad1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga7f6178ad165e9b2f699efd88a3cbca8a">SRING_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="a00046.html#ga7f6178ad165e9b2f699efd88a3cbca8a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga0e4892ffac6b949a95b1d9b1895433b7">SRING_FOREACH_SAVE_END</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00011.html">tagSRING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga478bf88a63498eec67b9720586d6bba9">SRING</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a> )(<a class="el" href="a00011.html">SRING</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a> )(<a class="el" href="a00011.html">SRING</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#gaa197bf51f9b33ec012296a14be9c4838">SRING_COMPARE</a> )(<a class="el" href="a00011.html">SRING</a> *, <a class="el" href="a00011.html">SRING</a> *)</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a">SRING_init</a> (<a class="el" href="a00011.html">SRING</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="a00046.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga23aab5b8a7efeacf278b444bb785bc1d">SRING_isempty</a> (<a class="el" href="a00011.html">SRING</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="a00046.html#ga23aab5b8a7efeacf278b444bb785bc1d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga6a2a1950260f3fb3d385bde480e5c976">SRING_insert_after</a> (<a class="el" href="a00011.html">SRING</a> *list, <a class="el" href="a00011.html">SRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="a00046.html#ga6a2a1950260f3fb3d385bde480e5c976"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a> (<a class="el" href="a00011.html">SRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a> (<a class="el" href="a00011.html">SRING</a> *list, <a class="el" href="a00011.html">SRING</a> *newentry)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga1702358f1edcb1d85df818fdb8a20a23">SRING_pop_front</a> (<a class="el" href="a00011.html">SRING</a> *elem)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the first element from list (used to maintain double ended queue)  <a href="a00046.html#ga1702358f1edcb1d85df818fdb8a20a23"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#gaa43e9213ae7d390a22ffd34164a9a8fb">SRING_get_first</a> (<a class="el" href="a00011.html">SRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga9bfd87c38a546d0bd880e2ef6afb4308">SRING_get_last</a> (<a class="el" href="a00011.html">SRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga02277d246cf87fa74cf2face4271dc46">SRING_get_next</a> (<a class="el" href="a00011.html">SRING</a> *end, <a class="el" href="a00011.html">SRING</a> *cur)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#gad00dfbc796c0f39381f8cb207d45a628">SRING_size</a> (<a class="el" href="a00011.html">SRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga0bf1663e78699f16d176b4e5eab35760">SRING_get_nth</a> (<a class="el" href="a00011.html">SRING</a> *list, size_t nth)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga4eacc9ad78693d75fc82960853bfc77d">SRING_get_nth_reverse</a> (<a class="el" href="a00011.html">SRING</a> *list, size_t nth)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga948f45c8af2b99aec05ca538b4a07e9e">SRING_foreach</a> (<a class="el" href="a00011.html">SRING</a> *lst, <a class="el" href="a00046.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a> eval, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list.  <a href="a00046.html#ga948f45c8af2b99aec05ca538b4a07e9e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga742710ac325213e24ddf5d02ef30bc9c">SRING_findif</a> (<a class="el" href="a00011.html">SRING</a> *lst, <a class="el" href="a00046.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00046.html#ga742710ac325213e24ddf5d02ef30bc9c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga182b8c409d5c05637085210b31950431">SRING_deleteif</a> (<a class="el" href="a00011.html">SRING</a> *list, <a class="el" href="a00046.html#gab481e0fe056d133b74281971cb70a90f">SRING_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="a00046.html#ga182b8c409d5c05637085210b31950431"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga96914d218afb3f3dac01bf98702e3ef7">SRING_deleteall</a> (<a class="el" href="a00011.html">SRING</a> *list, <a class="el" href="a00046.html#ga8fd5f1f287aecfe1a45ad63bd0c38fca">SRING_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="a00046.html#ga96914d218afb3f3dac01bf98702e3ef7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga6a5cdf3eb278daa953e2f45dc4cb4518">SRING_insert_sorted</a> (<a class="el" href="a00011.html">SRING</a> *list, <a class="el" href="a00046.html#gaa197bf51f9b33ec012296a14be9c4838">SRING_COMPARE</a> compare, <a class="el" href="a00011.html">SRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="a00046.html#ga6a5cdf3eb278daa953e2f45dc4cb4518"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#gaff2e874e90de5dbc9c321146a302cba9">SRING_reverse</a> (<a class="el" href="a00011.html">SRING</a> *lst)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="a00046.html#gaff2e874e90de5dbc9c321146a302cba9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ga7d49e006bf25f2d83d15b70caf9f3254">SRING_check</a> (<a class="el" href="a00011.html">SRING</a> *head)</td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

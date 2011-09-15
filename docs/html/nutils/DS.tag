@@ -13,18 +13,18 @@
       <arglist>(BF *bf)</arglist>
     </member>
     <member kind="function">
-      <type>int8_t *</type>
+      <type>char *</type>
       <name>BF_get_line</name>
       <anchorfile>a00009.html</anchorfile>
-      <anchor>ga09cbe8980a7c0db771e0d6d93235a1d5</anchor>
+      <anchor>gae27decac1bfa136183b23cea293464a2</anchor>
       <arglist>(BF *bf, int eof)</arglist>
     </member>
     <member kind="function">
-      <type>int8_t *</type>
+      <type>char *</type>
       <name>BF_get_line_ext</name>
       <anchorfile>a00009.html</anchorfile>
-      <anchor>gadac43bf1b5b17fe81e700cf4dfb9ee32</anchor>
-      <arglist>(BF *bf, int8_t *eof_line, size_t eof_line_size)</arglist>
+      <anchor>ga42852c881989c7925a70e7fa3a87ee6c</anchor>
+      <arglist>(BF *bf, const char *eof_line, size_t eof_line_size)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -132,6 +132,20 @@
       <arglist>(BF *bf)</arglist>
     </member>
     <member kind="function">
+      <type>M_INLINE size_t</type>
+      <name>BF_get_size</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gaed0d381d2cbad849c7949245ad986f40</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE size_t</type>
+      <name>BF_put_size</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gadf903eda486452455390dade47cd9898</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>BF_set_start</name>
       <anchorfile>a00009.html</anchorfile>
@@ -174,6 +188,13 @@
       <arglist>(BF *bf)</arglist>
     </member>
     <member kind="function">
+      <type>M_INLINE int</type>
+      <name>BF_is_full</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gafb9836bdbbbd3b80a05a72705b256dbd</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>BF_compact</name>
       <anchorfile>a00009.html</anchorfile>
@@ -181,18 +202,18 @@
       <arglist>(BF *bf)</arglist>
     </member>
     <member kind="function">
-      <type>int8_t *</type>
+      <type>char *</type>
       <name>BF_get_line</name>
       <anchorfile>a00009.html</anchorfile>
-      <anchor>ga09cbe8980a7c0db771e0d6d93235a1d5</anchor>
+      <anchor>gae27decac1bfa136183b23cea293464a2</anchor>
       <arglist>(BF *bf, int eof_line)</arglist>
     </member>
     <member kind="function">
-      <type>int8_t *</type>
+      <type>char *</type>
       <name>BF_get_line_ext</name>
       <anchorfile>a00009.html</anchorfile>
-      <anchor>gadac43bf1b5b17fe81e700cf4dfb9ee32</anchor>
-      <arglist>(BF *bf, int8_t *eof_line, size_t eof_line_size)</arglist>
+      <anchor>ga42852c881989c7925a70e7fa3a87ee6c</anchor>
+      <arglist>(BF *bf, const char *eof_line, size_t eof_line_size)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -534,6 +555,20 @@
       <arglist>(BF *bf)</arglist>
     </member>
     <member kind="function">
+      <type>M_INLINE size_t</type>
+      <name>BF_get_size</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gaed0d381d2cbad849c7949245ad986f40</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE size_t</type>
+      <name>BF_put_size</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gadf903eda486452455390dade47cd9898</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>BF_set_start</name>
       <anchorfile>a00009.html</anchorfile>
@@ -576,6 +611,13 @@
       <arglist>(BF *bf)</arglist>
     </member>
     <member kind="function">
+      <type>M_INLINE int</type>
+      <name>BF_is_full</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>gafb9836bdbbbd3b80a05a72705b256dbd</anchor>
+      <arglist>(BF *bf)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>BF_compact</name>
       <anchorfile>a00009.html</anchorfile>
@@ -583,18 +625,18 @@
       <arglist>(BF *bf)</arglist>
     </member>
     <member kind="function">
-      <type>int8_t *</type>
+      <type>char *</type>
       <name>BF_get_line</name>
       <anchorfile>a00009.html</anchorfile>
-      <anchor>ga09cbe8980a7c0db771e0d6d93235a1d5</anchor>
+      <anchor>gae27decac1bfa136183b23cea293464a2</anchor>
       <arglist>(BF *bf, int eof_line)</arglist>
     </member>
     <member kind="function">
-      <type>int8_t *</type>
+      <type>char *</type>
       <name>BF_get_line_ext</name>
       <anchorfile>a00009.html</anchorfile>
-      <anchor>gadac43bf1b5b17fe81e700cf4dfb9ee32</anchor>
-      <arglist>(BF *bf, int8_t *eof_line, size_t eof_line_size)</arglist>
+      <anchor>ga42852c881989c7925a70e7fa3a87ee6c</anchor>
+      <arglist>(BF *bf, const char *eof_line, size_t eof_line_size)</arglist>
     </member>
   </compound>
   <compound kind="group">

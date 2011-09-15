@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: slist.h File Reference</title>
+<title>Simple data structures / objects in plain C: heap.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,77 +37,158 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Defines</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">slist.h File Reference</div>  </div>
+<div class="title">heap.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00014_source.html">cutils/base.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00027_source.html">heap.h</a>&gt;</code><br/>
+<code>#include &lt;stdlib.h&gt;</code><br/>
+<code>#include &lt;memory.h&gt;</code><br/>
 </div>
 <p><a href="a00026_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html">tagSLIST_entry</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html">SLIST</a></td></tr>
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga13e3414add243765e1acc420f8a0f478">SLIST_FOREACH</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="a00041.html#ga13e3414add243765e1acc420f8a0f478"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga1fd8f8e8cee04217d15bc9e40dc22874">SLIST_FOREACH_SAVE</a>(loopvarname, loopvarnamenext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="a00041.html#ga1fd8f8e8cee04217d15bc9e40dc22874"></a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00009.html">tagSLIST_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00040.html#gaacb00d1a4daaa75eee59c1483cb57b80">SLIST_entry</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a> )(<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00009.html">SLIST_entry</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a> )(<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00009.html">SLIST_entry</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga986253a6f00466c9a8fc577922946578">SLIST_COMPARE</a> )(<a class="el" href="a00009.html">SLIST_entry</a> *, <a class="el" href="a00009.html">SLIST_entry</a> *)</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#gad4951a8a17c4c71dbccf87f25e1d0cc9">SLIST_init</a> (<a class="el" href="a00006.html">SLIST</a> *head)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="a00041.html#gad4951a8a17c4c71dbccf87f25e1d0cc9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga167ddd6e77f962055cbf23edfae47a55">SLIST_isempty</a> (<a class="el" href="a00006.html">SLIST</a> *head)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="a00041.html#ga167ddd6e77f962055cbf23edfae47a55"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga28b526884512439a095d0a1f8defbf7a">SLIST_insert_after</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00009.html">SLIST_entry</a> *pos, <a class="el" href="a00009.html">SLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="a00041.html#ga28b526884512439a095d0a1f8defbf7a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga0242e7614311873394c09036c3f8db31">SLIST_unlink_after</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00009.html">SLIST_entry</a> *link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a list.  <a href="a00041.html#ga0242e7614311873394c09036c3f8db31"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga162430e86a10d44d37f06f3286336e39">SLIST_push_back</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00009.html">SLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list.  <a href="a00041.html#ga162430e86a10d44d37f06f3286336e39"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga9640eb240d27802e9762df5eb890751f">SLIST_push_front</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00009.html">SLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as first in list (used to maintain queue)  <a href="a00041.html#ga9640eb240d27802e9762df5eb890751f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga496c6461f8655694a2163dbf2cc2ce3c">SLIST_append</a> (<a class="el" href="a00006.html">SLIST</a> *dest, <a class="el" href="a00006.html">SLIST</a> *src)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">append contents of one list onto the other  <a href="a00041.html#ga496c6461f8655694a2163dbf2cc2ce3c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga1f0ecce5cb624eee52d5d1385b355296">SLIST_pop_front</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the first element from list (used to maintain queue)  <a href="a00041.html#ga1f0ecce5cb624eee52d5d1385b355296"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga2e184c75f69621e1ca7d77d762cf3ac4">SLIST_get_first</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#gab1da0b7495c594466c35f43b62ba2fa6">SLIST_get_last</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga0377a487001bec48ddfccf6e3f72653a">SLIST_get_next</a> (<a class="el" href="a00009.html">SLIST_entry</a> *cur)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#gae1806eb6dd23d1489e2a3a87c16a7c89">SLIST_size</a> (<a class="el" href="a00006.html">SLIST</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">: return number of elements in list if we don't have element count in list (SLIST_NO_ELMCOUNT defined), then the whole list structure is traversed.  <a href="a00041.html#gae1806eb6dd23d1489e2a3a87c16a7c89"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga2b16d0912f1762278bd39a3166f2937a">SLIST_get_nth</a> (<a class="el" href="a00006.html">SLIST</a> *list, size_t nth)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga4ed5d1aa0c00b8e6e7208a136cf9836f">SLIST_get_nth_reverse</a> (<a class="el" href="a00006.html">SLIST</a> *list, size_t nth)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get the nth element of a list as counted from the end of the list.  <a href="a00041.html#ga4ed5d1aa0c00b8e6e7208a136cf9836f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga9a2bcb303e10ce22f43138d974cf6f61">SLIST_foreach</a> (<a class="el" href="a00006.html">SLIST</a> *lst, <a class="el" href="a00041.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a> eval, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list.  <a href="a00041.html#ga9a2bcb303e10ce22f43138d974cf6f61"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html">SLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#gab7659684a1854619f6514007a4a2a7ac">SLIST_findif</a> (<a class="el" href="a00006.html">SLIST</a> *lst, <a class="el" href="a00041.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00041.html#gab7659684a1854619f6514007a4a2a7ac"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga9d6b9df04f353039015f1f96349d6daf">SLIST_insert_sorted</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00041.html#ga986253a6f00466c9a8fc577922946578">SLIST_COMPARE</a> compare, <a class="el" href="a00009.html">SLIST_entry</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="a00041.html#ga9d6b9df04f353039015f1f96349d6daf"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#gaa33b9f8d6cfd2573bd33e49ef0dd9b62">SLIST_deleteif</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00041.html#ga7b248c4eed2d3b3cf32fc0329063de57">SLIST_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="a00041.html#gaa33b9f8d6cfd2573bd33e49ef0dd9b62"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga1c75f1166c0c6048c115f0de18c2dde2">SLIST_deleteall</a> (<a class="el" href="a00006.html">SLIST</a> *list, <a class="el" href="a00041.html#gac7e7623e772b63394d7aa00c570f8e84">SLIST_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="a00041.html#ga1c75f1166c0c6048c115f0de18c2dde2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga0979079d34e30779ee70a356bc46371f">SLIST_reverse</a> (<a class="el" href="a00006.html">SLIST</a> *lst)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="a00041.html#ga0979079d34e30779ee70a356bc46371f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga69ab9537af27dcf8890148ccdc8d5a27">SLIST_check</a> (<a class="el" href="a00006.html">SLIST</a> *header)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of list This function checks for loops in the list, and if count of elements in list is the same as counter of elements in list header.  <a href="a00041.html#ga69ab9537af27dcf8890148ccdc8d5a27"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f">HEAP_push</a> (<a class="el" href="a00005.html">HEAP</a> *heap, void *element, size_t elmsize)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert a new element into the heap  <a href="a00043.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gadb9cc342dba8eb29fe8be37e56a16370">HEAP_pop</a> (<a class="el" href="a00005.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the top element from the heap  <a href="a00043.html#gadb9cc342dba8eb29fe8be37e56a16370"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a> (<a class="el" href="a00005.html">HEAP</a> *heap, size_t pos)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga689c175c301ff3025290d37ca5800039">HEAP_check</a> (<a class="el" href="a00005.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of heap object.  <a href="a00043.html#ga689c175c301ff3025290d37ca5800039"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a0f51edc6a8cf741b8a292e63f59cbd10">visit_sorted</a> (<a class="el" href="a00005.html">HEAP</a> *heap, size_t pos, <a class="el" href="a00043.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga72dd058aadb08417c5fcb618e9be6833">HEAP_foreach_sorted</a> (<a class="el" href="a00005.html">HEAP</a> *heap, <a class="el" href="a00043.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
 </table>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a68f48f61e4ae987ccd74d127d7cf7c76"></a><!-- doxytag: member="heap.c::check_recursive" ref="a68f48f61e4ae987ccd74d127d7cf7c76" args="(HEAP *heap, size_t pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int check_recursive </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00005.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00129">129</a> of file <a class="el" href="a00026_source.html">heap.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> elmsize = heap-&gt;<a class="code" href="a00005.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+        <span class="keywordtype">size_t</span> pos_left;
+        <span class="keywordtype">size_t</span> pos_right;
+
+        pos_left = (2 * pos);
+        <span class="keywordflow">if</span> (pos_left &lt;= heap-&gt;elmcount) {
+
+                <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00005.html#a58d5a3131976055b67894a0ba8467210">compare_func</a>( heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos - 1) * elmsize,  
+                                                            heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos_left - 1) * elmsize, 
+                                                                elmsize) &gt; 0) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                <span class="keywordflow">if</span> (!<a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_left)) {
+                        <span class="keywordflow">return</span> 0;
+                }
+        }
+
+
+        pos_right =   (2 * pos + 1) * elmsize;
+        <span class="keywordflow">if</span> (pos_right &lt;= heap-&gt;elmcount) {
+
+                <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00005.html#a58d5a3131976055b67894a0ba8467210">compare_func</a>( heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos - 1) * elmsize,  
+                                                            heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos_right - 1) * elmsize, 
+                                                            elmsize) &gt; 0) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                <span class="keywordflow">if</span> (!<a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_right)) {
+                        <span class="keywordflow">return</span> 0;
+                }
+        }
+        <span class="keywordflow">return</span> 1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a0f51edc6a8cf741b8a292e63f59cbd10"></a><!-- doxytag: member="heap.c::visit_sorted" ref="a0f51edc6a8cf741b8a292e63f59cbd10" args="(HEAP *heap, size_t pos, HEAP_VISITOR eval, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void visit_sorted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00005.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00043.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00178">178</a> of file <a class="el" href="a00026_source.html">heap.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> elmsize = heap-&gt;<a class="code" href="a00005.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+        <span class="keywordtype">size_t</span> pos_left;
+        <span class="keywordtype">size_t</span> pos_right;
+
+        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00005.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> &gt; heap-&gt;<a class="code" href="a00005.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a>) {
+                <span class="keywordflow">return</span>;
+        }
+
+        pos_left = (2 * pos);
+        <span class="keywordflow">if</span> (pos_left &lt;= heap-&gt;elmcount) {
+
+                <a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_left );
+        }
+
+        pos_right =   (2 * pos + 1) * elmsize;
+        <span class="keywordflow">if</span> (pos_right &lt;= heap-&gt;elmcount) {
+
+                <a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_right );
+        }
+
+        eval( pos, heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos - 1) * elmsize, elmsize, context );
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

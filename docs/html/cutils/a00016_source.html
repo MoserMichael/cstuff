@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: bhash.h Source File</title>
+<title>Simple data structures / objects in plain C: bhash.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,429 +36,230 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">bhash.h</div>  </div>
+<div class="title">bhash.c</div>  </div>
 </div>
 <div class="contents">
 <a href="a00016.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) Michael Moser (2011) . 3-clause BSD License applies */</span>
 <a name="l00002"></a>00002 
-<a name="l00003"></a>00003 <span class="preprocessor">#ifndef _VBUCKETHASH_H_</span>
-<a name="l00004"></a>00004 <span class="preprocessor"></span><span class="preprocessor">#define _VBUCKETHASH_H_</span>
-<a name="l00005"></a>00005 <span class="preprocessor"></span>
-<a name="l00006"></a>00006 <span class="preprocessor">#ifdef  __cplusplus</span>
-<a name="l00007"></a>00007 <span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {
-<a name="l00008"></a>00008 <span class="preprocessor">#endif</span>
-<a name="l00009"></a>00009 <span class="preprocessor"></span>
-<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;<a class="code" href="a00028.html">cutils/sring.h</a>&gt;</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;<a class="code" href="a00022.html">cutils/hashfunction.h</a>&gt;</span>
-<a name="l00012"></a>00012 <span class="comment"></span>
-<a name="l00013"></a>00013 <span class="comment">/**</span>
-<a name="l00014"></a>00014 <span class="comment"> * @defgroup HASH_entry</span>
-<a name="l00015"></a>00015 <span class="comment"> * @brief Entry in bucket hash table, add to structure as member in order to make structure storable in hash table.</span>
-<a name="l00016"></a>00016 <span class="comment"> * Each hash table entry has to embed a VBUCKETHASH_Entry as part of its structure.</span>
-<a name="l00017"></a>00017 <span class="comment"> * The user of this hash thing can please key/value wherever he likes.  </span>
-<a name="l00018"></a>00018 <span class="comment"> * @{</span>
-<a name="l00019"></a>00019 <span class="comment"> */</span>
-<a name="l00020"></a><a class="code" href="a00004.html">00020</a> <span class="keyword">typedef</span> <span class="keyword">struct  </span>{
-<a name="l00021"></a><a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">00021</a>         <a class="code" href="a00010.html">SRING</a>       <a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a>;
-<a name="l00022"></a><a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">00022</a>         <a class="code" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>  <a class="code" href="a00034.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a>;
-<a name="l00023"></a>00023 }
-<a name="l00024"></a>00024         <a class="code" href="a00004.html">HASH_Entry</a>;
+<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;<a class="code" href="a00017.html">cutils/bhash.h</a>&gt;</span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;<a class="code" href="a00035.html">cutils/util.h</a>&gt;</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;<a class="code" href="a00025.html">cutils/hashfunction.h</a>&gt;</span>
+<a name="l00006"></a>00006 
+<a name="l00007"></a>00007 
+<a name="l00008"></a>00008 
+<a name="l00009"></a><a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">00009</a> <span class="preprocessor">#define ADJUST_HASH(hash,buckets) ((hash) &amp; ((buckets) - 1))</span>
+<a name="l00010"></a>00010 <span class="preprocessor"></span>
+<a name="l00011"></a>00011 
+<a name="l00012"></a>00012 
+<a name="l00013"></a><a class="code" href="a00038.html#ga73ce0ca18399c5db0bac0491aeadba8d">00013</a> <span class="keywordtype">int</span> <a class="code" href="a00038.html#ga73ce0ca18399c5db0bac0491aeadba8d" title="Object constructor; initialise the hash that allows one entry for a given key.">HASH_init</a>(
+<a name="l00014"></a>00014                                         <a class="code" href="a00003.html">HASH</a>                    *hash,
+<a name="l00015"></a>00015                                         <span class="keywordtype">size_t</span>                           buckets, 
+<a name="l00016"></a>00016                                         <span class="keywordtype">int</span>                  ismultimap,
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018                                         <a class="code" href="a00037.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key,
+<a name="l00019"></a>00019                                         <a class="code" href="a00037.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> hash_func
+<a name="l00020"></a>00020                                         )
+<a name="l00021"></a>00021 {
+<a name="l00022"></a>00022         <span class="keywordtype">size_t</span> i;
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024         buckets = <a class="code" href="a00035.html#a191e663cb1cc920f6b50f17567ea8c5c">UTIL_round_to_power_of_n</a>( buckets );
 <a name="l00025"></a>00025 
 <a name="l00026"></a>00026 
-<a name="l00027"></a>00027 <span class="comment"></span>
-<a name="l00028"></a>00028 <span class="comment">/**</span>
-<a name="l00029"></a>00029 <span class="comment"> * compute hash value</span>
-<a name="l00030"></a>00030 <span class="comment"> */</span> 
-<a name="l00031"></a><a class="code" href="a00034.html#ga11718c21601b9ee597d31cb7e720c260">00031</a> <span class="keyword">typedef</span> <a class="code" href="a00022.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>      (*<a class="code" href="a00034.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a>)        (<span class="keywordtype">void</span> *data, ssize_t length);
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033 <span class="comment"></span>
-<a name="l00034"></a>00034 <span class="comment">/**</span>
-<a name="l00035"></a>00035 <span class="comment"> * Compare argument key with hash key embedded in entry.</span>
-<a name="l00036"></a>00036 <span class="comment"> */</span>
-<a name="l00037"></a><a class="code" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">00037</a> <span class="keyword">typedef</span> int             (*<a class="code" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a>)     (<a class="code" href="a00004.html">HASH_Entry</a> *, <span class="keywordtype">void</span> *key, ssize_t key_size);
-<a name="l00038"></a>00038 <span class="comment"></span>
-<a name="l00039"></a>00039 <span class="comment">/** </span>
-<a name="l00040"></a>00040 <span class="comment"> * Visit a hash entry.</span>
-<a name="l00041"></a>00041 <span class="comment"> */</span>
-<a name="l00042"></a><a class="code" href="a00034.html#ga1bcff3f62d46d79b790bed89891cd9a5">00042</a> <span class="keyword">typedef</span> int             (*<a class="code" href="a00034.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a>)         (HASH_Entry *, <span class="keywordtype">void</span> *context);
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045 <span class="comment">/*</span>
-<a name="l00046"></a>00046 <span class="comment"> * @}</span>
-<a name="l00047"></a>00047 <span class="comment"> */</span>
-<a name="l00048"></a>00048 <span class="comment"></span>
-<a name="l00049"></a>00049 <span class="comment">/**</span>
-<a name="l00050"></a>00050 <span class="comment"> * @defgroup HASH</span>
-<a name="l00051"></a>00051 <span class="comment"> * @brief Hash table that is implemented as bucket hash table.</span>
-<a name="l00052"></a>00052 <span class="comment"></span>
-<a name="l00053"></a>00053 <span class="comment"> * Element of has is an user defined entry which embeds HASH_Entry structure.</span>
-<a name="l00054"></a>00054 <span class="comment"> * </span>
-<a name="l00055"></a>00055 <span class="comment"> * @{                           </span>
-<a name="l00056"></a>00056 <span class="comment"> */</span>
-<a name="l00057"></a><a class="code" href="a00003.html">00057</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00027"></a>00027         hash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> = 0;
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029         <span class="keywordflow">if</span> (!hash_func) {
+<a name="l00030"></a>00030           hash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = <a class="code" href="a00024.html#a1498645507ca3a2df89dabf640fde50d" title="One at a time by Bob Jenkins.">HASHFUNCTION_Bob_Jenkins_one_at_a_time</a>;
+<a name="l00031"></a>00031         } <span class="keywordflow">else</span> {
+<a name="l00032"></a>00032           hash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = hash_func;
+<a name="l00033"></a>00033         }
+<a name="l00034"></a>00034         hash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a> = compare_key;
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036         hash-&gt;<a class="code" href="a00037.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a> = ismultimap;
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038         hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = (<a class="code" href="a00011.html">SRING</a> *) malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00011.html">SRING</a>) * buckets );
+<a name="l00039"></a>00039         <span class="keywordflow">if</span> (!hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>) {
+<a name="l00040"></a>00040                 <span class="keywordflow">return</span> -1;
+<a name="l00041"></a>00041         }
+<a name="l00042"></a>00042         hash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a> = buckets;
+<a name="l00043"></a>00043         
+<a name="l00044"></a>00044         <span class="keywordflow">for</span>(i=0;i&lt;buckets;i++) {
+<a name="l00045"></a>00045           <a class="code" href="a00046.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>(  &amp;hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[i] );
+<a name="l00046"></a>00046         }
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049         hash-&gt;<a class="code" href="a00037.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a> = 2;
+<a name="l00050"></a>00050         hash-&gt;<a class="code" href="a00037.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a> = 3;
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052         hash-&gt;<a class="code" href="a00037.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a> = (buckets * hash-&gt;<a class="code" href="a00037.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>) / hash-&gt;<a class="code" href="a00037.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a>;
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054         <span class="keywordflow">return</span> 0;
+<a name="l00055"></a>00055 }
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057 
 <a name="l00058"></a>00058 
-<a name="l00059"></a><a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">00059</a>         <a class="code" href="a00010.html">SRING</a> *<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>;
-<a name="l00060"></a>00060 
-<a name="l00061"></a><a class="code" href="a00034.html#ga1e56521c716b07928dc326eced3b50c0">00061</a>         <span class="keywordtype">int</span>     <a class="code" href="a00034.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a>;
-<a name="l00062"></a><a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">00062</a>         <span class="keywordtype">size_t</span>  <a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>;
-<a name="l00063"></a><a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">00063</a>         <span class="keywordtype">size_t</span>  <a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>;
-<a name="l00064"></a><a class="code" href="a00034.html#ga00bd0beb9248ca36fff916569eb71526">00064</a>         <span class="keywordtype">size_t</span>  <a class="code" href="a00034.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a>;
-<a name="l00065"></a>00065 
-<a name="l00066"></a><a class="code" href="a00034.html#ga8713031ba9a40fa717f1d3b8114691c0">00066</a>         <span class="keywordtype">int</span>     <a class="code" href="a00034.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>,div_load_factor;
-<a name="l00067"></a>00067         
+<a name="l00059"></a>00059 
+<a name="l00060"></a><a class="code" href="a00038.html#gacef4d862b25db1563ce621265299fb2e">00060</a> <span class="keywordtype">int</span> <a class="code" href="a00038.html#gacef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(<a class="code" href="a00003.html">HASH</a>    *hash, <span class="keywordtype">size_t</span> buckets)
+<a name="l00061"></a>00061 {
+<a name="l00062"></a>00062         <a class="code" href="a00011.html">SRING</a> *pbuckets;
+<a name="l00063"></a>00063         <span class="keywordtype">size_t</span> i;
+<a name="l00064"></a>00064         <a class="code" href="a00004.html">HASH_Entry</a> *cur;
+<a name="l00065"></a>00065         <span class="keywordtype">size_t</span> elmcount;
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067         buckets = <a class="code" href="a00035.html#a191e663cb1cc920f6b50f17567ea8c5c">UTIL_round_to_power_of_n</a>( buckets );
 <a name="l00068"></a>00068 
-<a name="l00069"></a><a class="code" href="a00034.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">00069</a>         <a class="code" href="a00034.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a>  <a class="code" href="a00034.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>;
-<a name="l00070"></a><a class="code" href="a00034.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">00070</a>         <a class="code" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> <a class="code" href="a00034.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>;
-<a name="l00071"></a>00071 }
-<a name="l00072"></a>00072   <a class="code" href="a00003.html">HASH</a>;
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076 <span class="comment"></span>
-<a name="l00077"></a>00077 <span class="comment">/** </span>
-<a name="l00078"></a>00078 <span class="comment"> *  @brief Object constructor; initialise the hash that allows one entry for a given key.</span>
-<a name="l00079"></a>00079 <span class="comment"></span>
-<a name="l00080"></a>00080 <span class="comment"> *  @param hash                 (out) the object.</span>
-<a name="l00081"></a>00081 <span class="comment"> *  @param buckets              (in) number of buckets - will be rounded to closes power of two (i.e. number of arrays of linked lists structures, each separate list holds elements with same hash number).</span>
-<a name="l00082"></a>00082 <span class="comment"> *  @param hash_func            (in) pointer to hash function</span>
-<a name="l00083"></a>00083 <span class="comment"> *  @param compare              (in) pointer to compare function; compares if two keys are equal, (called when hash value of two entries is equal)</span>
-<a name="l00084"></a>00084 <span class="comment"> </span>
-<a name="l00085"></a>00085 <span class="comment"> *  @returns 0 if ok</span>
-<a name="l00086"></a>00086 <span class="comment"> */</span>                                                             
-<a name="l00087"></a>00087 <span class="keywordtype">int</span> <a class="code" href="a00035.html#ga73ce0ca18399c5db0bac0491aeadba8d" title="Object constructor; initialise the hash that allows one entry for a given key.">HASH_init</a>(
-<a name="l00088"></a>00088                                         <a class="code" href="a00003.html">HASH</a>    *hash, 
-<a name="l00089"></a>00089                                         
-<a name="l00090"></a>00090                                         <span class="keywordtype">size_t</span>  buckets,
-<a name="l00091"></a>00091                                         <span class="keywordtype">int</span>     ismultimap,
+<a name="l00069"></a>00069         pbuckets = malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00011.html">SRING</a>) * buckets);
+<a name="l00070"></a>00070         <span class="keywordflow">if</span> (!pbuckets) {
+<a name="l00071"></a>00071                 <span class="keywordflow">return</span> -1;
+<a name="l00072"></a>00072         }
+<a name="l00073"></a>00073         <span class="keywordflow">for</span>(i=0;i&lt;buckets;i++) {
+<a name="l00074"></a>00074                 <a class="code" href="a00046.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>( pbuckets + i );
+<a name="l00075"></a>00075         }
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077         elmcount = hash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>;
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079         <a class="code" href="a00038.html#ga1193ff43ed7c2f743c974d75c39efc93" title="Macro: iterate over all elements in hash table and delete them from the table; allow the user to free...">HASH_DELETEALL</a>(cur,hash)
+<a name="l00080"></a>00080                 i = <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(  cur-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a>, buckets);
+<a name="l00081"></a>00081                 <a class="code" href="a00046.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( pbuckets + i, (<a class="code" href="a00011.html">SRING</a> *) cur);
+<a name="l00082"></a>00082         <a class="code" href="a00038.html#gaee7185cd320df1c4a801762c8f5201b6" title="Macro: close block opened by HASH_DELETEALL.">HASH_DELETEALL_END</a>
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084         free( hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> );
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086         hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = pbuckets;
+<a name="l00087"></a>00087         hash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a> = buckets;
+<a name="l00088"></a>00088         hash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> = elmcount;
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091         hash-&gt;<a class="code" href="a00037.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a> = (buckets * hash-&gt;<a class="code" href="a00037.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>) / hash-&gt;<a class="code" href="a00037.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a>;
 <a name="l00092"></a>00092 
-<a name="l00093"></a>00093                                         <a class="code" href="a00034.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key,
-<a name="l00094"></a>00094                                         <a class="code" href="a00034.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> hash_func
-<a name="l00095"></a>00095                                         );
+<a name="l00093"></a>00093         <span class="keywordflow">return</span> 0;
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 }
 <a name="l00096"></a>00096 
-<a name="l00097"></a>00097 
-<a name="l00098"></a>00098 
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100 <span class="comment"></span>
-<a name="l00101"></a>00101 <span class="comment">/** </span>
-<a name="l00102"></a>00102 <span class="comment"> * @brief resize the hash table</span>
-<a name="l00103"></a>00103 <span class="comment"></span>
-<a name="l00104"></a>00104 <span class="comment"> * Change number of buckets in hash table. </span>
-<a name="l00105"></a>00105 <span class="comment"> * The function pass over each element in the hash table and insert it into the resized table.</span>
-<a name="l00106"></a>00106 <span class="comment"> </span>
-<a name="l00107"></a>00107 <span class="comment"> * @param hash (in out) the object</span>
-<a name="l00108"></a>00108 <span class="comment"> * @param buckets (in) new number of buckets</span>
-<a name="l00109"></a>00109 <span class="comment"> */</span>
-<a name="l00110"></a>00110 <span class="keywordtype">int</span> <a class="code" href="a00035.html#gacef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(<a class="code" href="a00003.html">HASH</a> *hash, <span class="keywordtype">size_t</span> buckets);
-<a name="l00111"></a>00111 <span class="comment"></span>
-<a name="l00112"></a>00112 <span class="comment">/**</span>
-<a name="l00113"></a>00113 <span class="comment"> * @brief Object destructor; frees a hash table.</span>
-<a name="l00114"></a>00114 <span class="comment"></span>
-<a name="l00115"></a>00115 <span class="comment"> * All elements currently contained in hash table will remain in memory.</span>
-<a name="l00116"></a>00116 <span class="comment"></span>
-<a name="l00117"></a>00117 <span class="comment"> * @param hash (in out) the object</span>
-<a name="l00118"></a>00118 <span class="comment"> */</span>
-<a name="l00119"></a><a class="code" href="a00035.html#ga889a4afc9437f453ed7db27d7bd39d3d">00119</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span>   <a class="code" href="a00035.html#ga889a4afc9437f453ed7db27d7bd39d3d" title="Object destructor; frees a hash table.">HASH_free</a>(<a class="code" href="a00003.html">HASH</a>  *hash)
+<a name="l00097"></a><a class="code" href="a00016.html#aa0f01a8d9a72c6a69d0891fd81076bee">00097</a> <a class="code" href="a00004.html">HASH_Entry</a> *<a class="code" href="a00016.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>(        
+<a name="l00098"></a>00098                                         
+<a name="l00099"></a>00099                                         <a class="code" href="a00011.html">SRING</a>           *abucket, 
+<a name="l00100"></a>00100                                         <a class="code" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>       hash, 
+<a name="l00101"></a>00101                                         <a class="code" href="a00037.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key,
+<a name="l00102"></a>00102                                         <span class="keywordtype">void</span>            *key, 
+<a name="l00103"></a>00103                                         ssize_t          key_size )
+<a name="l00104"></a>00104 {
+<a name="l00105"></a>00105         <a class="code" href="a00011.html">SRING</a>   *pos;
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107         <a class="code" href="a00046.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
+<a name="l00108"></a>00108                 <a class="code" href="a00004.html">HASH_Entry</a> *entry = (<a class="code" href="a00004.html">HASH_Entry</a> *) pos;
+<a name="l00109"></a>00109                 <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) 
+<a name="l00110"></a>00110                 {
+<a name="l00111"></a>00111                         <span class="keywordflow">if</span> (compare_key( entry, key, key_size ) == 0) {
+<a name="l00112"></a>00112                                 <span class="keywordflow">return</span> entry;
+<a name="l00113"></a>00113                         }
+<a name="l00114"></a>00114                 }
+<a name="l00115"></a>00115         }
+<a name="l00116"></a>00116         <span class="keywordflow">return</span> 0;
+<a name="l00117"></a>00117 }
+<a name="l00118"></a>00118 
+<a name="l00119"></a><a class="code" href="a00038.html#ga072fef06fb9a516f47771ddd3946bf20">00119</a> <a class="code" href="a00004.html">HASH_Entry</a> *<a class="code" href="a00038.html#ga072fef06fb9a516f47771ddd3946bf20" title="find entry with given key in hash table; for multimaps this will return the first occurence of the ke...">HASH_find</a>( <a class="code" href="a00003.html">HASH</a> *phash, <span class="keywordtype">void</span> *key, ssize_t key_size )
 <a name="l00120"></a>00120 {
-<a name="l00121"></a>00121    <span class="keywordflow">if</span> (hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>) {
-<a name="l00122"></a>00122         free(hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>);
-<a name="l00123"></a>00123                 hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = 0;
-<a name="l00124"></a>00124    }
-<a name="l00125"></a>00125 }
-<a name="l00126"></a>00126 
+<a name="l00121"></a>00121         <a class="code" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash = phash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );
+<a name="l00122"></a>00122         <span class="keywordtype">int</span>             bucket =   <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
+<a name="l00123"></a>00123         <a class="code" href="a00011.html">SRING</a>   *abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
+<a name="l00124"></a>00124         
+<a name="l00125"></a>00125         <span class="keywordflow">return</span> <a class="code" href="a00016.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
+<a name="l00126"></a>00126 }
 <a name="l00127"></a>00127 
-<a name="l00128"></a>00128 <span class="comment"></span>
-<a name="l00129"></a>00129 <span class="comment">/** </span>
-<a name="l00130"></a>00130 <span class="comment"> * @brief returns number of elements in hash table</span>
-<a name="l00131"></a>00131 <span class="comment"> */</span>
-<a name="l00132"></a><a class="code" href="a00035.html#ga8924e383f82b78dcb693ffcab49188b0">00132</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">size_t</span> <a class="code" href="a00035.html#ga8924e383f82b78dcb693ffcab49188b0" title="returns number of elements in hash table">HASH_size</a>( <a class="code" href="a00003.html">HASH</a> *hash) 
-<a name="l00133"></a>00133 {
-<a name="l00134"></a>00134         <span class="keywordflow">return</span> hash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>;
-<a name="l00135"></a>00135 }
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137 <span class="comment"></span>
-<a name="l00138"></a>00138 <span class="comment">/**</span>
-<a name="l00139"></a>00139 <span class="comment"> * @brief find entry with given key in hash table; for multimaps this will return the first occurence of the key.</span>
-<a name="l00140"></a>00140 <span class="comment"></span>
-<a name="l00141"></a>00141 <span class="comment"> * @param phash         (in) the object</span>
-<a name="l00142"></a>00142 <span class="comment"> * @param key           (in) pointer to key</span>
-<a name="l00143"></a>00143 <span class="comment"> * @param key_size      (in) size of key </span>
-<a name="l00144"></a>00144 <span class="comment"> </span>
-<a name="l00145"></a>00145 <span class="comment"> * @return pointer to entry if found; NULL if not found</span>
-<a name="l00146"></a>00146 <span class="comment"> */</span>
-<a name="l00147"></a>00147 HASH_Entry *<a class="code" href="a00035.html#ga072fef06fb9a516f47771ddd3946bf20" title="find entry with given key in hash table; for multimaps this will return the first occurence of the ke...">HASH_find</a>( <a class="code" href="a00003.html">HASH</a> *phash, <span class="keywordtype">void</span> *key, ssize_t key_size );
+<a name="l00128"></a><a class="code" href="a00038.html#ga2f20017ef2a49dc235a8bea78b254dd6">00128</a> <a class="code" href="a00004.html">HASH_Entry</a> *<a class="code" href="a00038.html#ga2f20017ef2a49dc235a8bea78b254dd6" title="for multimaps - find next occurence of key">HASH_find_next</a>( <a class="code" href="a00003.html">HASH</a> *phash, <a class="code" href="a00004.html">HASH_Entry</a> *prev, <span class="keywordtype">void</span> *key, ssize_t key_size )
+<a name="l00129"></a>00129 {
+<a name="l00130"></a>00130         <a class="code" href="a00004.html">HASH_Entry</a> *next;
+<a name="l00131"></a>00131 
+<a name="l00132"></a>00132         <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00037.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a>) {
+<a name="l00133"></a>00133                 <span class="keywordflow">return</span> 0;
+<a name="l00134"></a>00134         }
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136         next = (<a class="code" href="a00004.html">HASH_Entry</a> *) prev-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a>.<a class="code" href="a00011.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
+<a name="l00137"></a>00137         if (!next) {
+<a name="l00138"></a>00138                 <span class="keywordflow">return</span> 0;
+<a name="l00139"></a>00139         }
+<a name="l00140"></a>00140         <span class="keywordflow">if</span> (next-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> != prev-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a>) {
+<a name="l00141"></a>00141                 <span class="keywordflow">return</span> 0;
+<a name="l00142"></a>00142         }
+<a name="l00143"></a>00143         <span class="keywordflow">if</span> (phash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>( next, key, key_size ) != 0) {
+<a name="l00144"></a>00144                 <span class="keywordflow">return</span> 0;
+<a name="l00145"></a>00145         }
+<a name="l00146"></a>00146         <span class="keywordflow">return</span> next;
+<a name="l00147"></a>00147 }
 <a name="l00148"></a>00148 
-<a name="l00149"></a>00149 <span class="comment"></span>
-<a name="l00150"></a>00150 <span class="comment">/**</span>
-<a name="l00151"></a>00151 <span class="comment"> * @brief for multimaps - find next occurence of key</span>
-<a name="l00152"></a>00152 <span class="comment"> *</span>
-<a name="l00153"></a>00153 <span class="comment"> * Usage to retrive all occurences of a key </span>
-<a name="l00154"></a>00154 <span class="comment"> *</span>
-<a name="l00155"></a>00155 <span class="comment"> *</span>
-<a name="l00156"></a>00156 <span class="comment"> * HASH_Entry * entry;</span>
-<a name="l00157"></a>00157 <span class="comment"> * for( entry = HASH_find(hash, key, sizeof(key) ) ; entry; </span>
-<a name="l00158"></a>00158 <span class="comment"> *      entry =  HASH_find_next(hash, entry, key, sizeof(key) ) {</span>
-<a name="l00159"></a>00159 <span class="comment"> *</span>
-<a name="l00160"></a>00160 <span class="comment"> * }</span>
-<a name="l00161"></a>00161 <span class="comment"> *</span>
-<a name="l00162"></a>00162 <span class="comment"> *</span>
-<a name="l00163"></a>00163 <span class="comment"> * @param phash (in) the object</span>
-<a name="l00164"></a>00164 <span class="comment"> * @param prev  (in) value returned by first invocation of VBUCKETHASH_find or previous invocation of VBUCKETHASH_find_next</span>
-<a name="l00165"></a>00165 <span class="comment"> * @param key   (in) pointer to key</span>
-<a name="l00166"></a>00166 <span class="comment"> * @param key_size (in) size of key. If key is a null terminated string then pass VHASH_STRING as value.</span>
-<a name="l00167"></a>00167 <span class="comment"> * @return pointer to entry if found; NULL if not found</span>
-<a name="l00168"></a>00168 <span class="comment"> */</span>
-<a name="l00169"></a>00169 HASH_Entry *<a class="code" href="a00035.html#ga2f20017ef2a49dc235a8bea78b254dd6" title="for multimaps - find next occurence of key">HASH_find_next</a>( <a class="code" href="a00003.html">HASH</a> *phash, HASH_Entry *prev, <span class="keywordtype">void</span> *key, ssize_t key_size );
-<a name="l00170"></a>00170 <span class="comment"></span>
-<a name="l00171"></a>00171 <span class="comment">/**</span>
-<a name="l00172"></a>00172 <span class="comment"> * @brief insert new entry in hash table</span>
-<a name="l00173"></a>00173 <span class="comment"> * @param hash (in) the object</span>
-<a name="l00174"></a>00174 <span class="comment"> * @param key  (in) key </span>
-<a name="l00175"></a>00175 <span class="comment"> * @param size (in) size of key. If key is a null terminated string then pass VHASH_STRING as value.</span>
-<a name="l00176"></a>00176 <span class="comment"> */</span>
-<a name="l00177"></a>00177 <span class="keywordtype">int</span> <a class="code" href="a00035.html#gaf9ce37d092fe7b3ae217336ef623a7dc" title="insert new entry in hash table">HASH_insert</a>( <a class="code" href="a00003.html">HASH</a> *phash, HASH_Entry *entry, <span class="keywordtype">void</span> *key, ssize_t key_size  );
-<a name="l00178"></a>00178 <span class="comment"></span>
-<a name="l00179"></a>00179 <span class="comment">/**</span>
-<a name="l00180"></a>00180 <span class="comment"> * @brief find first hash table entry and unlink it from its bucket. The caller of this function has to free memory held by hash table entry.</span>
-<a name="l00181"></a>00181 <span class="comment"> * @param hash</span>
-<a name="l00182"></a>00182 <span class="comment"> * @param key</span>
-<a name="l00183"></a>00183 <span class="comment"> * @param size</span>
-<a name="l00184"></a>00184 <span class="comment"> * @returns if entry with given keys exists - pointer to hash table entry.</span>
-<a name="l00185"></a>00185 <span class="comment"> */</span>
-<a name="l00186"></a>00186  HASH_Entry * <a class="code" href="a00035.html#ga9546382a27adc8b91d70cd6e4c4723c3" title="find first hash table entry and unlink it from its bucket. The caller of this function has to free me...">HASH_unlink</a>( <a class="code" href="a00003.html">HASH</a> *hash, <span class="keywordtype">void</span> *key, ssize_t key_size );
-<a name="l00187"></a>00187 
-<a name="l00188"></a>00188 
-<a name="l00189"></a>00189 <span class="comment">/* internal macro not directly used by user */</span>
-<a name="l00190"></a><a class="code" href="a00035.html#gad6e4f490068b19fa3fea075d3b0180f7">00190</a> <span class="preprocessor">#define HASH_BUCKET_FOREACH(cur,bucket) \</span>
-<a name="l00191"></a>00191 <span class="preprocessor">        for((cur) = (HASH_Entry *) ((bucket)-&gt;next);\</span>
-<a name="l00192"></a>00192 <span class="preprocessor">                (SRING *) (cur) != (bucket);\</span>
-<a name="l00193"></a>00193 <span class="preprocessor">                (cur) = (HASH_Entry *) (cur)-&gt;entry.next )</span>
-<a name="l00194"></a>00194 <span class="preprocessor"></span>
-<a name="l00195"></a>00195 <span class="comment"></span>
-<a name="l00196"></a>00196 <span class="comment">/**</span>
-<a name="l00197"></a>00197 <span class="comment"> * @brief Macro: iterate over all elements that match a given key (multimap)</span>
-<a name="l00198"></a>00198 <span class="comment"> *</span>
-<a name="l00199"></a>00199 <span class="comment"> * Usage:</span>
-<a name="l00200"></a>00200 <span class="comment"> *              HASH_Entry *cur;</span>
-<a name="l00201"></a>00201 <span class="comment"> *</span>
-<a name="l00202"></a>00202 <span class="comment"> *              HASH_FOREACH_KEY(cur,hash)  {</span>
-<a name="l00203"></a>00203 <span class="comment"> *                      =do something with cur - don&#39;t delete it=</span>
-<a name="l00204"></a>00204 <span class="comment"> *              }</span>
-<a name="l00205"></a>00205 <span class="comment"> *</span>
-<a name="l00206"></a>00206 <span class="comment"> * @param cur  (type HASH_Entry *) current entry</span>
-<a name="l00207"></a>00207 <span class="comment"> * @param hash (type HASH *) the object</span>
-<a name="l00208"></a>00208 <span class="comment"> * @param key  (type void *) the key</span>
-<a name="l00209"></a>00209 <span class="comment"> * @param key_size  (type size_t) length of key</span>
-<a name="l00210"></a>00210 <span class="comment"> */</span>
-<a name="l00211"></a><a class="code" href="a00035.html#ga7a866beabda7e0bd95e19ae7c708c8c0">00211</a> <span class="preprocessor">#define HASH_FOREACH_KEY(cur,hash,key,key_size) \</span>
-<a name="l00212"></a>00212 <span class="preprocessor">         for( (cur) = HASH_find( (hash), (key), (key_size ) ) ; \</span>
-<a name="l00213"></a>00213 <span class="preprocessor">                  (cur); \</span>
-<a name="l00214"></a>00214 <span class="preprocessor">                  (cur) =  HASH_find_next( (hash), (cur), (key), (key_size) ) )</span>
-<a name="l00215"></a>00215 <span class="preprocessor"></span>
-<a name="l00216"></a>00216 <span class="comment"></span>
-<a name="l00217"></a>00217 <span class="comment">/**</span>
-<a name="l00218"></a>00218 <span class="comment"> * @brief Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in loop code. </span>
-<a name="l00219"></a>00219 <span class="comment"> </span>
-<a name="l00220"></a>00220 <span class="comment"> * @param cur  (type HASH_Entry *) current entry</span>
-<a name="l00221"></a>00221 <span class="comment"> * @param hash (type HASH *) the object</span>
-<a name="l00222"></a>00222 <span class="comment"> * @param key  (type void *) the key</span>
-<a name="l00223"></a>00223 <span class="comment"> * @param key_size  (type size_t) length of key</span>
-<a name="l00224"></a>00224 <span class="comment"> </span>
-<a name="l00225"></a>00225 <span class="comment"> */</span>
-<a name="l00226"></a><a class="code" href="a00035.html#gad5d12368e1648a383d048e7fed56fa82">00226</a> <span class="preprocessor">#define HASH_DELETEALL_KEY(cur,hash,key,key_size) \</span>
-<a name="l00227"></a>00227 <span class="preprocessor">{  \</span>
-<a name="l00228"></a>00228 <span class="preprocessor">        HASH_Entry * HASH_DELETEALL_KEY##next = (HASH_Entry *) 0xFFFFFFFF; \</span>
-<a name="l00229"></a>00229 <span class="preprocessor">        for( (cur) = HASH_unlink( (hash), (key), (key_size ) ) ; \</span>
-<a name="l00230"></a>00230 <span class="preprocessor">                 (cur) &amp;&amp; (HASH_DELETEALL_KEY##next); \</span>
-<a name="l00231"></a>00231 <span class="preprocessor">                 (HASH_DELETEALL_KEY##next) =  HASH_find_next( (hash), (cur), (key), (key_size) ) ) { \</span>
-<a name="l00232"></a>00232 <span class="preprocessor">                 if ((HASH_DELETEALL_KEY##next) != (HASH_Entry *) 0xFFFFFFFF) { \</span>
-<a name="l00233"></a>00233 <span class="preprocessor">                         SRING_unlink_after( (SRING *) (cur) ); \</span>
-<a name="l00234"></a>00234 <span class="preprocessor">                         (hash)-&gt;elmcount--; \</span>
-<a name="l00235"></a>00235 <span class="preprocessor">                         (cur) = (HASH_DELETEALL_KEY##next); \</span>
-<a name="l00236"></a>00236 <span class="preprocessor">                 }</span>
-<a name="l00237"></a>00237 <span class="preprocessor"></span>
-<a name="l00238"></a><a class="code" href="a00035.html#ga6bdd6abcda051166ee1ce8586b80cd8a">00238</a> <span class="preprocessor">#define HASH_DELETEALL_KEY_END \</span>
-<a name="l00239"></a>00239 <span class="preprocessor">        } \</span>
-<a name="l00240"></a>00240 <span class="preprocessor">}       </span>
-<a name="l00241"></a>00241 <span class="preprocessor"></span>
-<a name="l00242"></a>00242 <span class="comment"></span>
-<a name="l00243"></a>00243 <span class="comment">/**</span>
-<a name="l00244"></a>00244 <span class="comment"> * @brief Macro: iterate over all elements in hash table</span>
-<a name="l00245"></a>00245 <span class="comment"> * @param cur (type HASH_Entry *)</span>
-<a name="l00246"></a>00246 <span class="comment"> * @param hash (type HASH *)</span>
-<a name="l00247"></a>00247 <span class="comment"> */</span>
-<a name="l00248"></a><a class="code" href="a00035.html#ga635ee4184a9ca1e86138aec673a0a9b1">00248</a> <span class="preprocessor">#define HASH_FOREACH(cur,hash) \</span>
-<a name="l00249"></a>00249 <span class="preprocessor">{ \</span>
-<a name="l00250"></a>00250 <span class="preprocessor">        size_t HASH_foreach_i##cur = 0; \</span>
-<a name="l00251"></a>00251 <span class="preprocessor">        for(HASH_foreach_i##cur = 0; HASH_foreach_i##cur &lt; (hash)-&gt;buckets_size; HASH_foreach_i##cur ++) \</span>
-<a name="l00252"></a>00252 <span class="preprocessor">                HASH_BUCKET_FOREACH( cur, &amp;(hash)-&gt;buckets[ HASH_foreach_i##cur ] ) {</span>
-<a name="l00253"></a>00253 <span class="preprocessor"></span>                
-<a name="l00254"></a>00254 
-<a name="l00255"></a>00255 <span class="comment"></span>
-<a name="l00256"></a>00256 <span class="comment">/** @brief Macro: close block opened by HASH_FOREACH</span>
-<a name="l00257"></a>00257 <span class="comment"> */</span>
-<a name="l00258"></a><a class="code" href="a00035.html#ga1dd13a6578ab349c2cbac48304a0f5e1">00258</a> <span class="preprocessor">#define HASH_FOREACH_END \</span>
-<a name="l00259"></a>00259 <span class="preprocessor">        }\</span>
-<a name="l00260"></a>00260 <span class="preprocessor">}</span>
-<a name="l00261"></a>00261 <span class="preprocessor"></span><span class="comment"></span>
-<a name="l00262"></a>00262 <span class="comment">/**</span>
-<a name="l00263"></a>00263 <span class="comment"> * @brief Macro: iterate over all elements in hash table and delete them from the table; allow the user to free the memory of each element.</span>
-<a name="l00264"></a>00264 <span class="comment"> * @param cur (type HASH_Entry *)</span>
-<a name="l00265"></a>00265 <span class="comment"> * @param hash (type HASH *)</span>
-<a name="l00266"></a>00266 <span class="comment"> */</span>
-<a name="l00267"></a><a class="code" href="a00035.html#ga1193ff43ed7c2f743c974d75c39efc93">00267</a> <span class="preprocessor">#define HASH_DELETEALL(cur,hash) \</span>
-<a name="l00268"></a>00268 <span class="preprocessor">{ \</span>
-<a name="l00269"></a>00269 <span class="preprocessor">        size_t HASH_delallforeach_i##cur = 0; \</span>
-<a name="l00270"></a>00270 <span class="preprocessor">        for(HASH_delallforeach_i##cur = 0; HASH_delallforeach_i##cur &lt; (hash)-&gt;buckets_size; HASH_delallforeach_i##cur ++) \</span>
-<a name="l00271"></a>00271 <span class="preprocessor">        while( !SRING_isempty( &amp;(hash)-&gt;buckets[ HASH_delallforeach_i##cur ]) ) { \</span>
-<a name="l00272"></a>00272 <span class="preprocessor">                (cur) = (HASH_Entry *) SRING_unlink_after( &amp;(hash)-&gt;buckets[ HASH_delallforeach_i##cur ] );\</span>
-<a name="l00273"></a>00273 <span class="preprocessor">                (hash)-&gt;elmcount--;</span>
-<a name="l00274"></a>00274 <span class="preprocessor"></span><span class="comment"></span>
-<a name="l00275"></a>00275 <span class="comment">/** </span>
-<a name="l00276"></a>00276 <span class="comment"> * @brief Macro: close block opened by HASH_DELETEALL</span>
-<a name="l00277"></a>00277 <span class="comment"> */</span>                     
-<a name="l00278"></a><a class="code" href="a00035.html#gaee7185cd320df1c4a801762c8f5201b6">00278</a> <span class="preprocessor">#define HASH_DELETEALL_END \</span>
-<a name="l00279"></a>00279 <span class="preprocessor">        }\</span>
-<a name="l00280"></a>00280 <span class="preprocessor">}</span>
-<a name="l00281"></a>00281 <span class="preprocessor"></span>
-<a name="l00282"></a>00282 <span class="comment"></span>
-<a name="l00283"></a>00283 <span class="comment">/** </span>
-<a name="l00284"></a>00284 <span class="comment"> * @brief iterate over all entries of the hash table that match a given key and invoke callback with those elements.</span>
-<a name="l00285"></a>00285 <span class="comment"> *</span>
-<a name="l00286"></a>00286 <span class="comment"> * @param hash          (in) the object</span>
-<a name="l00287"></a>00287 <span class="comment"></span>
-<a name="l00288"></a>00288 <span class="comment"> * @param key           (in) key</span>
-<a name="l00289"></a>00289 <span class="comment"> * @param key_size      (in) size of key</span>
-<a name="l00290"></a>00290 <span class="comment"></span>
-<a name="l00291"></a>00291 <span class="comment"> * @param eval_func     (in) function invoked for every element in hash table.</span>
-<a name="l00292"></a>00292 <span class="comment"> * @param context       (in) data pointer passed to every invocation of eval_func</span>
-<a name="l00293"></a>00293 <span class="comment"> */</span>
-<a name="l00294"></a>00294 
-<a name="l00295"></a><a class="code" href="a00035.html#ga96c141f22c63392dfe758de963ffe8f5">00295</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> <a class="code" href="a00035.html#ga96c141f22c63392dfe758de963ffe8f5" title="iterate over all entries of the hash table that match a given key and invoke callback with those elem...">HASH_foreach_key</a>( <a class="code" href="a00003.html">HASH</a> *hash, <span class="keywordtype">void</span> *key, ssize_t key_size, <a class="code" href="a00034.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, <span class="keywordtype">void</span> *context )
-<a name="l00296"></a>00296 {
-<a name="l00297"></a>00297         HASH_Entry *cur;
-<a name="l00298"></a>00298 
-<a name="l00299"></a>00299         <span class="keywordflow">if</span> (!eval_func) {
-<a name="l00300"></a>00300                 <span class="keywordflow">return</span>;
-<a name="l00301"></a>00301         }
-<a name="l00302"></a>00302         <a class="code" href="a00035.html#ga7a866beabda7e0bd95e19ae7c708c8c0" title="Macro: iterate over all elements that match a given key (multimap)">HASH_FOREACH_KEY</a>(cur,hash,key,key_size) {
-<a name="l00303"></a>00303                 eval_func( cur, context);
-<a name="l00304"></a>00304         }
-<a name="l00305"></a>00305 }
-<a name="l00306"></a>00306 
-<a name="l00307"></a>00307 <span class="comment"></span>
-<a name="l00308"></a>00308 <span class="comment">/** </span>
-<a name="l00309"></a>00309 <span class="comment"> * @brief iterate over all entries of the hash table and invoke callback with each element.</span>
-<a name="l00310"></a>00310 <span class="comment"> * Equivalent of Lisp foldl,mapcar and friends.</span>
-<a name="l00311"></a>00311 <span class="comment"> * @param hash </span>
-<a name="l00312"></a>00312 <span class="comment"> * @param eval_func  function invoked for every element in hash table.</span>
-<a name="l00313"></a>00313 <span class="comment"> * @param context data pointer passed to every invocation of eval_func</span>
-<a name="l00314"></a>00314 <span class="comment"> */</span>
-<a name="l00315"></a><a class="code" href="a00035.html#ga251e1a1fd0e312bae674631001fd4b55">00315</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> <a class="code" href="a00035.html#ga251e1a1fd0e312bae674631001fd4b55" title="iterate over all entries of the hash table and invoke callback with each element. Equivalent of Lisp ...">HASH_foreach</a>( <a class="code" href="a00003.html">HASH</a> *hash, <a class="code" href="a00034.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, <span class="keywordtype">void</span> *context )
-<a name="l00316"></a>00316 {
-<a name="l00317"></a>00317         HASH_Entry *cur;
-<a name="l00318"></a>00318 
-<a name="l00319"></a>00319         <span class="keywordflow">if</span> (!eval_func) {
-<a name="l00320"></a>00320                 <span class="keywordflow">return</span>;
-<a name="l00321"></a>00321         }
-<a name="l00322"></a>00322 
-<a name="l00323"></a>00323         <a class="code" href="a00035.html#ga635ee4184a9ca1e86138aec673a0a9b1" title="Macro: iterate over all elements in hash table.">HASH_FOREACH</a>(cur,hash)
-<a name="l00324"></a>00324                 eval_func( cur, context);
-<a name="l00325"></a>00325         <a class="code" href="a00035.html#ga1dd13a6578ab349c2cbac48304a0f5e1" title="Macro: close block opened by HASH_FOREACH.">HASH_FOREACH_END</a>
-<a name="l00326"></a>00326 }
-<a name="l00327"></a>00327 
-<a name="l00328"></a>00328 <span class="comment"></span>
-<a name="l00329"></a>00329 <span class="comment">/**</span>
-<a name="l00330"></a>00330 <span class="comment"> * @brief find an element within the hash. callback is invoked for each element of the list, when the callback returns non zero value the iteration stops as we have found what we searched for. </span>
-<a name="l00331"></a>00331 <span class="comment"> * </span>
-<a name="l00332"></a>00332 <span class="comment"> * @param hash (in) the object.</span>
-<a name="l00333"></a>00333 <span class="comment"> * @param eval_func (in) callback that is called to visit each set (or cleared) bit.</span>
-<a name="l00334"></a>00334 <span class="comment"> * @param context (in) pointer that is passed as context on each invocation of callback.</span>
-<a name="l00335"></a>00335 <span class="comment"> * @param retval (out) optional - the first non zero value returned by eval callback, if NULL then ignored.</span>
-<a name="l00336"></a>00336 <span class="comment"> * @return the list element that has matched (i.e. element that has been found).</span>
-<a name="l00337"></a>00337 <span class="comment"> *</span>
-<a name="l00338"></a>00338 <span class="comment"> */</span>
-<a name="l00339"></a><a class="code" href="a00035.html#ga58acba9b6611fe07a44253eeb4307e09">00339</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> HASH_Entry * <a class="code" href="a00035.html#ga58acba9b6611fe07a44253eeb4307e09" title="find an element within the hash. callback is invoked for each element of the list, when the callback returns non zero value the iteration stops as we have found what we searched for.">HASH_findif</a>( <a class="code" href="a00003.html">HASH</a> *hash, <a class="code" href="a00034.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, <span class="keywordtype">void</span> *context, <span class="keywordtype">int</span> *retval)
-<a name="l00340"></a>00340 {
-<a name="l00341"></a>00341         <span class="keywordtype">size_t</span> i;
-<a name="l00342"></a>00342         <a class="code" href="a00010.html">SRING</a> *cur;
-<a name="l00343"></a>00343         <span class="keywordtype">int</span> ret;        
-<a name="l00344"></a>00344 
-<a name="l00345"></a>00345         <span class="keywordflow">if</span> (!eval_func) {
-<a name="l00346"></a>00346                 <span class="keywordflow">return</span> 0;
-<a name="l00347"></a>00347         }
-<a name="l00348"></a>00348 
-<a name="l00349"></a>00349         <span class="keywordflow">for</span>(i=0; i&lt;hash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>; i++) {
-<a name="l00350"></a>00350                         <a class="code" href="a00042.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>( cur, &amp;hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[i] ) {
-<a name="l00351"></a>00351                                         ret = eval_func( (HASH_Entry*) cur, context);
-<a name="l00352"></a>00352                                         <span class="keywordflow">if</span> (ret) {
-<a name="l00353"></a>00353                                                 <span class="keywordflow">if</span> (retval) {
-<a name="l00354"></a>00354                                                         *retval = ret;
-<a name="l00355"></a>00355                                                 }
-<a name="l00356"></a>00356                                                 <span class="keywordflow">return</span> (HASH_Entry *) cur;
-<a name="l00357"></a>00357                                         }               
-<a name="l00358"></a>00358                         }
-<a name="l00359"></a>00359         }       
-<a name="l00360"></a>00360 
-<a name="l00361"></a>00361         <span class="keywordflow">return</span> 0;
-<a name="l00362"></a>00362 }
-<a name="l00363"></a>00363 <span class="comment"></span>
-<a name="l00364"></a>00364 <span class="comment">/** </span>
-<a name="l00365"></a>00365 <span class="comment"> * @brief iterate over all entries of the hash table and delete them.</span>
-<a name="l00366"></a>00366 <span class="comment"> * @param hash                   (in) the object </span>
-<a name="l00367"></a>00367 <span class="comment"> * @param on_delete              (in) optional callback, call prior to freing object.</span>
-<a name="l00368"></a>00368 <span class="comment"> * @param offset_of_link (in) offset of HASH_Entry in embedded structure.</span>
-<a name="l00369"></a>00369 <span class="comment"> */</span>
-<a name="l00370"></a><a class="code" href="a00035.html#ga0ed6fe026b7e8aef4611325ab2ffdc47">00370</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> <a class="code" href="a00035.html#ga0ed6fe026b7e8aef4611325ab2ffdc47" title="iterate over all entries of the hash table and delete them.">HASH_deleteall</a>( <a class="code" href="a00003.html">HASH</a> *hash, <span class="keywordtype">int</span> offset_of_link, <a class="code" href="a00034.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> on_delete, <span class="keywordtype">void</span> *context )
-<a name="l00371"></a>00371 {
-<a name="l00372"></a>00372         HASH_Entry *cur;
-<a name="l00373"></a>00373 
-<a name="l00374"></a>00374         <a class="code" href="a00035.html#ga1193ff43ed7c2f743c974d75c39efc93" title="Macro: iterate over all elements in hash table and delete them from the table; allow the user to free...">HASH_DELETEALL</a>(cur,hash);
-<a name="l00375"></a>00375                 <span class="keywordflow">if</span> (on_delete) {
-<a name="l00376"></a>00376                         on_delete(cur,context);
-<a name="l00377"></a>00377                 } 
-<a name="l00378"></a>00378                 free( <a class="code" href="a00014.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(cur,offset_of_link) );
-<a name="l00379"></a>00379         <a class="code" href="a00035.html#gaee7185cd320df1c4a801762c8f5201b6" title="Macro: close block opened by HASH_DELETEALL.">HASH_DELETEALL_END</a>
-<a name="l00380"></a>00380 }
-<a name="l00381"></a>00381 
-<a name="l00382"></a>00382 <span class="comment"></span>
-<a name="l00383"></a>00383 <span class="comment">/**</span>
-<a name="l00384"></a>00384 <span class="comment"> * @brief check consistency of bucket hash structure.</span>
-<a name="l00385"></a>00385 <span class="comment"> */</span>
-<a name="l00386"></a><a class="code" href="a00035.html#ga3482872e1f844042afc76de5136bff3f">00386</a> <a class="code" href="a00014.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> <a class="code" href="a00035.html#ga3482872e1f844042afc76de5136bff3f" title="check consistency of bucket hash structure.">HASH_check</a>(<a class="code" href="a00003.html">HASH</a> *hash)
-<a name="l00387"></a>00387 {
-<a name="l00388"></a>00388         <span class="keywordtype">size_t</span>  i,nbuck = hash-&gt;<a class="code" href="a00034.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>;
-<a name="l00389"></a>00389         <span class="keywordtype">size_t</span>  count_of_elem = 0;
-<a name="l00390"></a>00390         HASH_Entry  *cur;
-<a name="l00391"></a>00391         
-<a name="l00392"></a>00392         <span class="keywordflow">for</span>(i=0; i &lt; nbuck; i++) {
-<a name="l00393"></a>00393                 <span class="keywordflow">if</span> (!<a class="code" href="a00042.html#ga7d49e006bf25f2d83d15b70caf9f3254">SRING_check</a>(hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> + i)) {
-<a name="l00394"></a>00394                    <span class="keywordflow">return</span> 0;
-<a name="l00395"></a>00395                 }
-<a name="l00396"></a>00396         }
-<a name="l00397"></a>00397 
-<a name="l00398"></a>00398         <a class="code" href="a00035.html#ga635ee4184a9ca1e86138aec673a0a9b1" title="Macro: iterate over all elements in hash table.">HASH_FOREACH</a>(cur,hash)
-<a name="l00399"></a>00399                 count_of_elem++;
-<a name="l00400"></a>00400         <a class="code" href="a00035.html#ga1dd13a6578ab349c2cbac48304a0f5e1" title="Macro: close block opened by HASH_FOREACH.">HASH_FOREACH_END</a>
-<a name="l00401"></a>00401         
-<a name="l00402"></a>00402         <span class="keywordflow">if</span> (count_of_elem != hash-&gt;<a class="code" href="a00034.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>) {
-<a name="l00403"></a>00403                 <span class="keywordflow">return</span> 0;
-<a name="l00404"></a>00404         }
-<a name="l00405"></a>00405 
-<a name="l00406"></a>00406         <span class="keywordflow">return</span> 1;
-<a name="l00407"></a>00407 }
-<a name="l00408"></a>00408 <span class="comment"></span>
-<a name="l00409"></a>00409 <span class="comment">/**</span>
-<a name="l00410"></a>00410 <span class="comment"> @}</span>
-<a name="l00411"></a>00411 <span class="comment">*/</span>
-<a name="l00412"></a>00412 
-<a name="l00413"></a>00413 <span class="preprocessor">#ifdef  __cplusplus</span>
-<a name="l00414"></a>00414 <span class="preprocessor"></span>}
-<a name="l00415"></a>00415 <span class="preprocessor">#endif</span>
-<a name="l00416"></a>00416 <span class="preprocessor"></span>
-<a name="l00417"></a>00417 <span class="preprocessor">#endif</span>
+<a name="l00149"></a><a class="code" href="a00038.html#gaf9ce37d092fe7b3ae217336ef623a7dc">00149</a> <span class="keywordtype">int</span> <a class="code" href="a00038.html#gaf9ce37d092fe7b3ae217336ef623a7dc" title="insert new entry in hash table">HASH_insert</a>( <a class="code" href="a00003.html">HASH</a> *phash, <a class="code" href="a00004.html">HASH_Entry</a> *entry, <span class="keywordtype">void</span> *key, ssize_t key_size  )
+<a name="l00150"></a>00150 {
+<a name="l00151"></a>00151         <a class="code" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
+<a name="l00152"></a>00152         <span class="keywordtype">int</span>             bucket;
+<a name="l00153"></a>00153         <a class="code" href="a00011.html">SRING</a>   *abucket,*fnd;
+<a name="l00154"></a>00154 
+<a name="l00155"></a>00155         <span class="keywordflow">if</span> ((phash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> + 1) &gt;= phash-&gt;<a class="code" href="a00037.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a>) {
+<a name="l00156"></a>00156 
+<a name="l00157"></a>00157            <span class="keywordflow">if</span> (<a class="code" href="a00038.html#gacef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(phash, 2 * phash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>)) {
+<a name="l00158"></a>00158              <span class="keywordflow">return</span> -1;
+<a name="l00159"></a>00159            }
+<a name="l00160"></a>00160         }
+<a name="l00161"></a>00161 
+<a name="l00162"></a>00162         hash = phash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );       
+<a name="l00163"></a>00163         entry-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> = hash;
+<a name="l00164"></a>00164 
+<a name="l00165"></a>00165         bucket =   <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
+<a name="l00166"></a>00166         abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
+<a name="l00167"></a>00167         
+<a name="l00168"></a>00168         
+<a name="l00169"></a>00169         fnd = (<a class="code" href="a00011.html">SRING</a> *) <a class="code" href="a00016.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
+<a name="l00170"></a>00170 
+<a name="l00171"></a>00171         <span class="comment">/* multimap allows only one entry with the given key */</span>
+<a name="l00172"></a>00172         <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00037.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a> &amp;&amp; fnd) {
+<a name="l00173"></a>00173                 <span class="keywordflow">return</span> -1;
+<a name="l00174"></a>00174         }
+<a name="l00175"></a>00175 
+<a name="l00176"></a>00176         <span class="keywordflow">if</span> (fnd) {
+<a name="l00177"></a>00177                 <a class="code" href="a00046.html#ga6a2a1950260f3fb3d385bde480e5c976" title="insert new entry after a given entry.">SRING_insert_after</a>( fnd, &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
+<a name="l00178"></a>00178         } <span class="keywordflow">else</span> {
+<a name="l00179"></a>00179                 <a class="code" href="a00046.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( abucket,  &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
+<a name="l00180"></a>00180         }
+<a name="l00181"></a>00181         phash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>++;
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183         <span class="keywordflow">return</span> 0;
+<a name="l00184"></a>00184 }
+<a name="l00185"></a>00185 
+<a name="l00186"></a><a class="code" href="a00038.html#ga9546382a27adc8b91d70cd6e4c4723c3">00186</a> <a class="code" href="a00004.html">HASH_Entry</a> * <a class="code" href="a00038.html#ga9546382a27adc8b91d70cd6e4c4723c3" title="find first hash table entry and unlink it from its bucket. The caller of this function has to free me...">HASH_unlink</a>( <a class="code" href="a00003.html">HASH</a> *phash, <span class="keywordtype">void</span> *key, ssize_t key_size )
+<a name="l00187"></a>00187 {
+<a name="l00188"></a>00188         <a class="code" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
+<a name="l00189"></a>00189         <span class="keywordtype">int</span>             bucket;
+<a name="l00190"></a>00190         <a class="code" href="a00011.html">SRING</a>   *abucket;
+<a name="l00191"></a>00191         <a class="code" href="a00011.html">SRING</a>   *pos,*prev;
+<a name="l00192"></a>00192         <a class="code" href="a00004.html">HASH_Entry</a> *ret = 0;
+<a name="l00193"></a>00193 
+<a name="l00194"></a>00194 
+<a name="l00195"></a>00195         hash =  phash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );      
+<a name="l00196"></a>00196         bucket =   <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
+<a name="l00197"></a>00197         abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
+<a name="l00198"></a>00198 
+<a name="l00199"></a>00199         prev = abucket;
+<a name="l00200"></a>00200         <a class="code" href="a00046.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
+<a name="l00201"></a>00201                 <a class="code" href="a00004.html">HASH_Entry</a> *entry = (<a class="code" href="a00004.html">HASH_Entry</a> *) pos;
+<a name="l00202"></a>00202 
+<a name="l00203"></a>00203                 <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) {
+<a name="l00204"></a>00204                   
+<a name="l00205"></a>00205                         <span class="keywordflow">if</span> (phash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>( entry, key, key_size ) == 0) {
+<a name="l00206"></a>00206                                 ret = (<a class="code" href="a00004.html">HASH_Entry</a> *) <a class="code" href="a00046.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>(prev);
+<a name="l00207"></a>00207                                 phash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>--;      
+<a name="l00208"></a>00208                                 <span class="keywordflow">return</span> ret;
+<a name="l00209"></a>00209                         }
+<a name="l00210"></a>00210                 }
+<a name="l00211"></a>00211                 prev = pos;
+<a name="l00212"></a>00212         }
+<a name="l00213"></a>00213 
+<a name="l00214"></a>00214         <span class="keywordflow">return</span> 0;
+<a name="l00215"></a>00215 }
+<a name="l00216"></a>00216 
+<a name="l00217"></a>00217 
+<a name="l00218"></a>00218 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

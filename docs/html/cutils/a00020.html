@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dring.h File Reference</title>
+<title>Simple data structures / objects in plain C: dlist.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,86 +36,17 @@
   </div>
 </div>
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Defines</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">dring.h File Reference</div>  </div>
+<div class="title">dlist.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00014_source.html">cutils/base.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00021_source.html">cutils/dlist.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00020_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html">tagDRING</a></td></tr>
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gac8118521928cd5a00b83ee9c0ba48308">DRING_FOREACH</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="a00038.html#gac8118521928cd5a00b83ee9c0ba48308"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga550a7b5adbe2d3325db38c49764bdc8c">DRING_FOREACH_REVERSE</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element.  <a href="a00038.html#ga550a7b5adbe2d3325db38c49764bdc8c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gaab96829db58e4eaa3cec725c9c99ff69">DRING_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="a00038.html#gaab96829db58e4eaa3cec725c9c99ff69"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gac5d159651c812e6785f81bc2dfc73b7d">DRING_FOREACH_REVERSE_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element.  <a href="a00038.html#gac5d159651c812e6785f81bc2dfc73b7d"></a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00008.html">tagDRING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga4630800b5e50c32e36110b0a6dfcadc0">DRING</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> )(<a class="el" href="a00008.html">DRING</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> )(<a class="el" href="a00008.html">DRING</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> )(<a class="el" href="a00008.html">DRING</a> *, <a class="el" href="a00008.html">DRING</a> *)</td></tr>
-<tr><td colspan="2"><h2><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gaea5e890f7d1dab572fe3ef6f067e5d26">DRING_init</a> (<a class="el" href="a00008.html">DRING</a> *head)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="a00038.html#gaea5e890f7d1dab572fe3ef6f067e5d26"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3">DRING_isempty</a> (<a class="el" href="a00008.html">DRING</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="a00038.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga93f762e668a7283b18025310886635ea">DRING_insert_before</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00008.html">DRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry before a given entry.  <a href="a00038.html#ga93f762e668a7283b18025310886635ea"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gab65d72bd525d11559228b5aa3aa641f0">DRING_insert_after</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00008.html">DRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="a00038.html#gab65d72bd525d11559228b5aa3aa641f0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gad8c4485c62148db72ca05f55dcc75709">DRING_insert_sorted</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00038.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="el" href="a00008.html">DRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="a00038.html#gad8c4485c62148db72ca05f55dcc75709"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga81d2db3ee3b83fe28393d45530bed230">DRING_unlink</a> (<a class="el" href="a00008.html">DRING</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a list.  <a href="a00038.html#ga81d2db3ee3b83fe28393d45530bed230"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gaed724487f6cd26c0b79b875ff3390c61">DRING_push_back</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00008.html">DRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain double ended queue)  <a href="a00038.html#gaed724487f6cd26c0b79b875ff3390c61"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga897228c60f1de15be0799dadea9d0337">DRING_push_front</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00008.html">DRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as first in list (used to maintain double ended queue)  <a href="a00038.html#ga897228c60f1de15be0799dadea9d0337"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga315bb0f49e0ccbadcc59a5e9258eff19">DRING_pop_front</a> (<a class="el" href="a00008.html">DRING</a> *elem)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove first element from list (used to maintain double ended queue)  <a href="a00038.html#ga315bb0f49e0ccbadcc59a5e9258eff19"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga50912d37cc30e961dd53ff291b8db05e">DRING_pop_back</a> (<a class="el" href="a00008.html">DRING</a> *elem)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove last element from list (used to maintain double ended queue)  <a href="a00038.html#ga50912d37cc30e961dd53ff291b8db05e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gaa392ee3a23da21ccf4e4ea62bd6c7de8">DRING_get_first</a> (<a class="el" href="a00008.html">DRING</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gac4fbe3b2aa6b11ce356755c89235b9d4">DRING_get_last</a> (<a class="el" href="a00008.html">DRING</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga44a51594b007ec843d30bf5c3b3ddc73">DRING_get_next</a> (<a class="el" href="a00008.html">DRING</a> *end, <a class="el" href="a00008.html">DRING</a> *cur)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gae8038a9a107a06bb0fae04cd8f8f7711">DRING_get_prev</a> (<a class="el" href="a00008.html">DRING</a> *end, <a class="el" href="a00008.html">DRING</a> *cur)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gafb5caaea75f7196bd6abe1ac8e81a7f3">DRING_size</a> (<a class="el" href="a00008.html">DRING</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga7f552929105d5cf0a6f621c6e8463f2d">DRING_get_nth</a> (<a class="el" href="a00008.html">DRING</a> *list, size_t nth)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga82d60185895dcf1deecd14d4a809741f">DRING_get_nth_reverse</a> (<a class="el" href="a00008.html">DRING</a> *list, size_t nth)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1">DRING_foreach</a> (<a class="el" href="a00008.html">DRING</a> *lst, <a class="el" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *context, int save_from_del)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list. list is traversed forward from first element to the last element.  <a href="a00038.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga98724ac564245aa77a1a4c55f83fadb9">DRING_foreach_reverse</a> (<a class="el" href="a00008.html">DRING</a> *lst, <a class="el" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *context, int save_from_delete)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.  <a href="a00038.html#ga98724ac564245aa77a1a4c55f83fadb9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga3efd1408b3d08b2253e1bf781306a425">DRING_findif</a> (<a class="el" href="a00008.html">DRING</a> *lst, <a class="el" href="a00038.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> eval, void *context, int32_t *retval, int save_from_del)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00038.html#ga3efd1408b3d08b2253e1bf781306a425"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00008.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga8d223c41dde7af2a4a154e09bf9c3a03">DRING_find_reverse</a> (<a class="el" href="a00008.html">DRING</a> *lst, <a class="el" href="a00038.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> eval, void *context, int32_t *retval, int save_from_delete)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in reverse direction from last element to first element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00038.html#ga8d223c41dde7af2a4a154e09bf9c3a03"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga44b92d9180c58865b9d4a1c6d5d9c37f">DRING_deleteif</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00038.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="a00038.html#ga44b92d9180c58865b9d4a1c6d5d9c37f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gab49cbee747109aad10c6e6a67c1149d9">DRING_deleteall</a> (<a class="el" href="a00008.html">DRING</a> *list, <a class="el" href="a00038.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="a00038.html#gab49cbee747109aad10c6e6a67c1149d9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga02284390005b102707b116d7de2b7ae6">DRING_reverse</a> (<a class="el" href="a00008.html">DRING</a> *lst)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="a00038.html#ga02284390005b102707b116d7de2b7ae6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gaead03ab9284bb52e1a5204010109b69d">DRING_check</a> (<a class="el" href="a00008.html">DRING</a> *header)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of list  <a href="a00038.html#gaead03ab9284bb52e1a5204010109b69d"></a><br/></td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:55 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
