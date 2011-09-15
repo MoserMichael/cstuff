@@ -37,11 +37,19 @@ char *  BF_get_line( BF * bf, int eof)
 char *  BF_get_line_ext( BF * bf, const char *eof_line, size_t eof_line_size)
 {
    char *pos,*next,*ret;
+   size_t nsearch;
    
+   nsearch = bf->put_pos - bf->get_pos;
+
+   if (nsearch  < eof_line_size) {
+     return 0;
+   }
+   
+   nsearch -= eof_line_size - 1; 
    pos = (char *) bf->get_pos;
 
    do { 
-     next = (char *) memchr( pos, (int) *eof_line, (char *) bf->put_pos - pos );
+     next = (char *) memchr( pos, (int) *eof_line, nsearch);
      if (!next) {
        return 0;
      }
