@@ -39,18 +39,21 @@ Usage:
     cppbeautifier -i <cpp_file> [-d <directory>] -o <report_file>
 
 Description
-    Takes an output file produced by the c processor and anotatets it, so tat it will be readable by humans.
+    Takes an output file produced by the c processor and anotatets it, so that it will be readable by humans.
  
     For each line of preprocessor output we find the corresponding file from the source file; if these
     are different then both source and preprocessor line are displayed, this way it it is easier for
     the programmer to determine the result of the macro expansion.
 
     Lines from the source file have prefix <filename>:<line number>:+ and lines from preprocessor
-    output have previx <filename>:<line number>:-
+    output have prefix <filename>:<line number>:-
 
     The preprocessor output format is described here:    
     http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html 
 
+    Please note that the preprocessor often includes reference to source files with their relative path,
+    so you should either use this program from the same current directory where you have run the preprocessor / compiler.
+    Alternatively set the -d option to this directory.
 EOF
 ;
   exit(1);
@@ -62,6 +65,10 @@ sub process_cpp_file
   $pfile = shift;
   $ofile = shift;
   $dname = shift;
+
+  if (defined $dname) {
+    chdir($dname);
+  }
 
   my ( @tok, $line, $src_file, $line_num, $add_file_info, $src_line );
 
