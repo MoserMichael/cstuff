@@ -10,7 +10,7 @@ If you ever have to type the same sequence of three commands again, then turn th
 
 If you have to run process or copy files to another machine, than you are probably working with "OpenSSH":http://www.openssh.com/ . One can establish a trust relationship between computer A / account A  and Computer B / account B, so that ssh will not ask for a password when logging on to Computer B /account B  while you are on computer A / account. 
 
-This effect is achieved by means of sharing a public / private key pair - hence the name trusted key; Computer A owns the private key, computer B owns the public key; When Computer A tries to log in to computer B, the computer A encrypts a message with the private key; computer B can use the public key in order to decrypt and verity the message. 
+This effect is achieved by means of sharing a public / private key pair - hence the name trusted key; Computer A owns the private key, computer B receives the public key; During the logon process, computer A encrypts a message with its private key (only computer A is supposed to have this private key); computer B can use it's public key in order to decrypt and verity the message, so that computer B knows that its computer A who is calling, and not some imposter.
 
 Unfortunately it takes quite a long sequence of commands to set this up correctly,  also most of the guides on the Internet that describe the process get it wrong. So it's time for some scripting magic, the script will automate set up of trusted key. First of all the script can be "seen here":https://github.com/MoserMichael/cstuff/blob/master/scripts/maketrust.sh  
 
