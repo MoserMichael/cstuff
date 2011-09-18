@@ -2,6 +2,7 @@
 
 LOG_FILE="/dev/null"
 
+new_ssh_version=0
 
 function redirect
 {
@@ -75,7 +76,7 @@ expect "assword:" {
 }
 EOF
 
-   if $?; then
+   if [ "x$?" != "x0" ]; then
     usage "Failed to copy file $(readlink -f $local_file) to $ssh_uh:$remote_file"
    fi
    return $? 
@@ -96,23 +97,22 @@ $EXPECT_LOG
 spawn ssh -o StrictHostKeyChecking=no ${ssh_uh} 
 
 expect "assword:" {
+      set prompt "(%|#|\\$|>) $"
       send -- "${RPASSWORD}\r"
 
-      expect -re  "(.*)\n" {
-         sleep 3
+      sleep 3
 
-         send -- "cd ${rdir};${cmd};RT=\\\$\?;echo '${EOF_PATTERN}';echo \"rt: \\\$RT\"\r"
+      send -- "cd ${rdir};${cmd};RT=\\\$\?;echo '${EOF_PATTERN}';echo \"rt: \\\$RT\"\r"
 
-         expect "${EOF_PATTERN}" {
+       expect "${EOF_PATTERN}" {
 
-            expect -indices -re "rt: (\[0-9\]+)" {
+          expect -indices -re "rt: (\[0-9\]+)" {
 
-	       set rval "\$expect_out(1,string)"
-               set nval [expr \$rval]
-	       exit \$nval
-            }
-	 }    
-      }
+            set rval "\$expect_out(1,string)"
+            set nval [expr \$rval]
+            exit \$nval
+          }
+       }
 }
 EOF
    if $?; then
@@ -158,11 +158,65 @@ function check_requirements
 
 }
 
+
+function openssh_check_version
+{
+   local major=$1
+   local minor=$2
+   local rev=$3
+   local ssh_version_string=`ssh -V 2>&1`
+
+   ssh_version_string="OpenSSH_3.0"
+
+   local cur_major=`echo "$ssh_version_string" | sed -e 's/OpenSSH_\([0-9]*\)\.\([0-9]*\)\(.*\)/\1/'`
+   local cur_minor=`echo "$ssh_version_string" | sed -e 's/OpenSSH_\([0-9]*\)\.\([0-9]*\)\(.*\)/\2/'`
+
+   if [ $cur_major -gt $major ]; then 
+     return 1
+   else
+     if [ $cur_major -lt $major  ]; then
+       return 0
+     else 
+       if [  $cur_minor -ge $minor  ]; then
+         return 1
+       else 
+         return 0
+       fi
+     fi
+   fi	
+   return 0
+}
+
+function check_openssh_version
+{
+  openssh_check_version "4" "4"
+  if [ "x$?" = "x0" ]; then
+    new_ssh_version=0
+  else 
+    new_ssh_version=1
+  fi
+
+  openssh_check_version "2" "5" 
+  if [ "x$?" = "x0" ]; then
+    echo "Sorry your openssh installation is too old, at least version 2.5.1.p1 is required"
+    exit 1
+  fi
+
+}
+
 function trust_me
 {
 
-  local local_install_dir=~/.ssh/ident/${USERNAME}@${HOSTNAME}/${RUSERNAME}@${RHOSTNAME}
-  local lfile=$local_install_dir/id_dsa
+  local local_install_dir
+  local lfile
+
+  if [ "x$new_ssh_version" = "x1" ]; then
+    local_install_dir=~/.ssh/ident/${USERNAME}@${HOSTNAME}/${RUSERNAME}@${RHOSTNAME}
+    lfile=$local_install_dir/id_dsa
+  else
+    local_install_dir=.
+    lfile=~/.ssh/id_dsa_from_${USERNAME}_${HOSTNAME}_to_${RUSERNAME}_${RHOSTNAME}
+  fi
 
   if [ -f $lfile ]; then
     usage "A trusted key already exists for access from ${USERNAME}@${HOSTNAME} to ${RUSERNAME}@${RHOSTNAME}"
@@ -211,25 +265,37 @@ EOF
   run_ssh_cmd ${RUSERNAME}@${RHOSTNAME} "~" "/bin/sh $TMP_FILE" "trustMe" || die "failed to run installation script"
  
 
-  mkdir -p $local_install_dir
-  cp -f id_dsa*  $local_install_dir
+  if [ "x$new_ssh_version" = "x1" ]; then
+    mkdir -p $local_install_dir
+    cp -f id_dsa*  $local_install_dir
  
-  chmod 0700 $local_install_dir
-  local_install_dir=`dirname  $local_install_dir`
-  chmod 0700 $local_install_dir
-  local_install_dir=`dirname  $local_install_dir`
-  chmod 0700 $local_install_dir
-  local_install_dir=`dirname  $local_install_dir`
-  chmod 0700 $local_install_dir
+    chmod 0700 $local_install_dir
+    local_install_dir=`dirname  $local_install_dir`
+    chmod 0700 $local_install_dir
+    local_install_dir=`dirname  $local_install_dir`
+    chmod 0700 $local_install_dir
+    local_install_dir=`dirname  $local_install_dir`
+    chmod 0700 $local_install_dir
+   
+    pushd ~/.ssh
+    add_line_to_config config  "IdentityFile ~/.ssh/ident/%u@%l/%r@%h/id_dsa"
+    add_line_to_config config  "IdentityFile ~/.ssh/id_rsa"
+    add_line_to_config config  "IdentityFile ~/.ssh/id_dsa"
+    chmod  0600 config
+    popd
 
+  else
+    mv id_dsa $lfile
+    mv id_dsa.pub $lfile.pub
 
-  pushd ~/.ssh
-  add_line_to_config config  "IdentityFile ~/.ssh/ident/%u@%l/%r@%h/id_dsa"
-  add_line_to_config config  "IdentityFile ~/.ssh/id_rsa"
-  add_line_to_config config  "IdentityFile ~/.ssh/id_dsa"
-  chmod  0600 config
-  popd
-
+    pushd ~/.ssh
+    add_line_to_config config  "IdentityFile $lfile"
+    chmod 0600 config
+    chmod 0600  $lfile*
+    chmod 0700  ~/.ssh
+    popd
+  fi
+  
   popd
   rm -rf $tmp_dir
 
@@ -269,6 +335,7 @@ fi
 redirect
 
 check_requirements
+check_openssh_version
 trust_me
 
 undo_redirect
