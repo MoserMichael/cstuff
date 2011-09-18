@@ -90,7 +90,7 @@ chmod 0600  ~/.ssh/authorized_keys
 chmod 0600  ~/.ssh/ authorized_keys2
 </pre>
 
-h3. script magic
+h3. Scripting magic
 
 Basically it's a shell script generates the keys and installs them on local computer, then it that writes an installation shell script that contains the public key, later it writes two expect script to copy & run the installation script on another machine. Sort of "I'd rather write programs to write programs than write programs":http://dictionary.die.net/toolsmith
 By making a script out the long wound process, I would see the error that is apparently hidden in others tutorials that cover this subject.
