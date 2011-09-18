@@ -166,7 +166,6 @@ function openssh_check_version
    local rev=$3
    local ssh_version_string=`ssh -V 2>&1`
 
-   ssh_version_string="OpenSSH_3.0"
 
    local cur_major=`echo "$ssh_version_string" | sed -e 's/OpenSSH_\([0-9]*\)\.\([0-9]*\)\(.*\)/\1/'`
    local cur_minor=`echo "$ssh_version_string" | sed -e 's/OpenSSH_\([0-9]*\)\.\([0-9]*\)\(.*\)/\2/'`
