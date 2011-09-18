@@ -14,7 +14,7 @@ h3. Why C
 These projects are mostly written in C with classes / Abstract data types. Here are my reasons to prefer C over C++ or Java.
 Higher order languages like C++ and Java have a much more expressive syntax.  Now with these capabilities comes an abundance of stylistic choices that divert attention from the real goal of writing a program.
 
-* With C++ one has to make a set of decisions; is it wise to use C++ exceptions / RTTI or not? Will one use the STL library? What about BOOST, or rather which subset of BOOST? What is your position on template metaprogramming (I strongly dislike this kind of abuse) ?  All these choices are normally codified into a style guide, for example the "Google C++ style guide":http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml is a very thorough document and I largely agree with what it says; however all these decision points taken together tend to restrict you with regards to third party libraries and tools that you can interact with; so they in fact restrict your freedom of choice.
+* With C++ one has to make a set of decisions; is it wise to use C++ exceptions / RTTI or not? Will one use the STL library? What about BOOST, or rather which subset of BOOST? What is your position on template metaprogramming (I strongly dislike this kind of abuse) ?  All these choices are normally codified into a style guide, for example the "Google C++ style guide":http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml is a very thorough document and I largely agree with what it says; however all these decision points taken together tend to restrict you with regards to third party libraries and tools that you can interact with; so they in fact restrict your freedom of choice. Now open source is mainly about freedom of choice, both for users and for developers, so there is some conflict here.
 
 * In Java you have much less choice in terms of styles and programming paradigms; one should generally stick with how the JDK does it. However with Java you have an abundance of framework for any occasion; Choice of adopted framework has a strong lock in affect (will you use SPRING or OSGI or whatever kind of Beans? Which subset of the "Jakarta":http://jakarta.apache.org/ alphabet soup is in use?  All these choices usually come with a lot of internal politics, programmers tend to invest and band around technological choices.
 
@@ -26,4 +26,6 @@ Higher order languages like C++ and Java have a much more expressive syntax.  No
 
 * An obligatory reference to the "C+ FQA":http://yosefk.com/c++fqa/  is hereby made.
 
-The point is that I still do C++ and Java for paid work, as best as I can; but all the fluff and politics around is well, really no fun. Also please note that most programs that matter are written in C, the Linux kernel, the gcc toolchain, most scripting languages - all in C.
+The point is that I still do C++ and Java for paid work, as best as I can; but all the fluff and politics around it is; well, really no fun. Also please note that most programs that matter are written in C, the Linux kernel, the gcc toolchain, most scripting languages - all in C; 
+
+While C++ may be best suited for companies that build large monolithic applications, it is not the best choice for your garage open source project.  
