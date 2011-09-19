@@ -53,6 +53,23 @@ Description
     Alternatively set the -d option to this directory. 
 </pre>
 
+Lets show off with some example output: here a generator macro is creating a function, and the script output shows us how the preprocessor output correlates to the source macro invocation. Lines with + are from the source file, lines with - are the expanded macro - preprocessor output.
+<pre>
+# 167 "bf.h"
+bf.h:167:+:BF_DECLARE_PUT_MACRO( uint8_t )
+bf.h:167:-:static inline int BF_put_uint8_t ( BF *bf, uint8_t val ) { if ((bf->end - bf->put_pos) < (ptrdiff_t) sizeof( uint8_t ) ) { return -1 ; } do { uint8_t nval = (val); *( ( uint8_t *) bf->put_pos) = nval; bf->put_pos += sizeof ( uint8_t ); } while(0); return 0; }
+bf.h:168:+:BF_DECLARE_PUT_MACRO( int8_t )
+bf.h:168:-:static inline int BF_put_int8_t ( BF *bf, int8_t val ) { if ((bf->end - bf->put_pos) < (ptrdiff_t) sizeof( int8_t ) ) { return -1 ; } do { int8_t nval = (val); *( ( int8_t *) bf->put_pos) = nval; bf->put_pos += sizeof ( int8_t ); } while(0); return 0; }
+bf.h:169:+:BF_DECLARE_PUT_MACRO( uint16_t )
+bf.h:169:-:static inline int BF_put_uint16_t ( BF *bf, uint16_t val ) { if ((bf->end - bf->put_pos) < (ptrdiff_t) sizeof( uint16_t ) ) { return -1 ; } do { uint16_t nval = htons( val ); *( ( uint16_t *) bf->put_pos) = nval; bf->put_pos += sizeof ( uint16_t ); } while(0); return 0; }
+bf.h:170:+:BF_DECLARE_PUT_MACRO( int16_t )
+bf.h:170:-:static inline int BF_put_int16_t ( BF *bf, int16_t val ) { if ((bf->end - bf->put_pos) < (ptrdiff_t) sizeof( int16_t ) ) { return -1 ; } do { int16_t nval = htons( val ); *( ( int16_t *) bf->put_pos) = nval; bf->put_pos += sizeof ( int16_t ); } while(0); return 0; }
+bf.h:171:+:BF_DECLARE_PUT_MACRO( uint32_t )
+bf.h:171:-:static inline int BF_put_uint32_t ( BF *bf, uint32_t val ) { if ((bf->end - bf->put_pos) < (ptrdiff_t) sizeof( uint32_t ) ) { return -1 ; } do { uint32_t nval = htonl( val ); *( ( uint32_t *) bf->put_pos) = nval; bf->put_pos += sizeof ( uint32_t ); } while(0); return 0; }
+bf.h:172:+:BF_DECLARE_PUT_MACRO( int32_t )
+bf.h:172:-:static inline int BF_put_int32_t ( BF *bf, int32_t val ) { if ((bf->end - bf->put_pos) < (ptrdiff_t) sizeof( int32_t ) ) { return -1 ; } do { int32_t nval = htonl( val ); *( ( int32_t *) bf->put_pos) = nval; bf->put_pos += sizeof ( int32_t ); } while(0); return 0; }
+</pre>
+
 h3. A short (and probably incomplete) history of macro facilities
 
 Macro facilities have a common problem - they just transform text / rewrite text from one form into another; so the macro facility does not know anything about the syntax of the text that it is being transformed. For simple usage - conditional compilation of certain blocks of text, this ok; for macros that rewrite the source into something else we will have to look separately at the macro text, and at the result of the macro expansion.
