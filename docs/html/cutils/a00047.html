@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: TREE</title>
+<title>Simple data structures / objects in plain C: DLISTUNR</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -34,90 +34,104 @@
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Defines</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">TREE</div>  </div>
+<div class="title">DLISTUNR</div>  </div>
 </div>
 <div class="contents">
 
-<p>a tree. tree. Each node has variable number of child nodes, the node is embeddable (like ring list). This tree is especially suited for parse trees.  
+<p>unrolled list where each list node contains an array of nodes. Unlike other lists here, each element in a list is of the same size.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html">tagTREENODE</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">DLISTUNR</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">DLISTUNR_position</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>(current, node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>(current, node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current, tree)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gab1367d2f48012bb9b750a0609d1305cf">TREE_FOREACH_PREORDER_END</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current, tree)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2199fa5ef5950c4321c960de07c1dd96">DLISTUNR_FOREACH</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#ga2199fa5ef5950c4321c960de07c1dd96"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga6f36f5cdff7dc616d78ac582375fa9ff">DLISTUNR_FOREACH_REVERSE</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element.  <a href="#ga6f36f5cdff7dc616d78ac582375fa9ff"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga92ff07b38bfb3654352b4ed371a657b2">DLISTUNR_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="#ga92ff07b38bfb3654352b4ed371a657b2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad317561e804f3d6e5eabb799690da1c9">DLISTUNR_FOREACH_REVERSE_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element.  <a href="#gad317561e804f3d6e5eabb799690da1c9"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00012.html">tagTREENODE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga105c1d47dd05c5293aff00cecacb8b82">TREENODE</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> )(<a class="el" href="a00012.html">TREENODE</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> )(<a class="el" href="a00012.html">TREENODE</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad3070030c101f9e06861f273769c333b">TREE_VISITOR_EXT_V</a> )(<a class="el" href="a00012.html">TREENODE</a> *entry, <a class="el" href="a00047.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> visit, void *context)</td></tr>
-<tr><td colspan="2"><h2><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> { <a class="el" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>, 
-<a class="el" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>
- }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> { <a class="el" href="a00047.html#gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f">TREE_PREORDER</a>, 
-<a class="el" href="a00047.html#gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e">TREE_POSTORDER</a>
- }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a> )(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaab1a298e92d3537d3d99fb3026fa8878">DLISTUNR_VISITOR</a> )(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a> (<a class="el" href="a00012.html">TREENODE</a> *tree)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga27a00a38d3c36cab6ff6adb7a831c4ce">TREE_parent</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1ae823cfa1464a0eca0cd376a107b6d9">TREE_leftmost_sibling</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a> (<a class="el" href="a00012.html">TREENODE</a> *current, <a class="el" href="a00012.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga530586b2042c37e278d8666c75978497">TREE_insert_left_sibling</a> (<a class="el" href="a00012.html">TREENODE</a> *current, <a class="el" href="a00012.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a> (<a class="el" href="a00012.html">TREENODE</a> *parent, <a class="el" href="a00012.html">TREENODE</a> *newnode, <a class="el" href="a00047.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, int node_is_leaf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gab2df5d5218e9b473a61b0cbfdb2ae8d0">TREE_merge_childs</a> (<a class="el" href="a00012.html">TREENODE</a> *parent, <a class="el" href="a00047.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, <a class="el" href="a00012.html">TREENODE</a> *newnode)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga7beb2cf4338f19f13977cc49b3f2cd43">TREE_unlink_node</a> (<a class="el" href="a00012.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga53ff6ce0b781ef3165b5239ba466a7a3">TREE_count_child_nodes</a> (<a class="el" href="a00012.html">TREENODE</a> *current)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a> (<a class="el" href="a00012.html">TREENODE</a> *current)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0843046582beafa1e2158cf0261fe8a1">TREE_foreach_child</a> (<a class="el" href="a00012.html">TREENODE</a> *lst, <a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list of child nodes, callback is invoked for either element of the list. list is traversed from first element to the last element.  <a href="#ga0843046582beafa1e2158cf0261fe8a1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gacb91cd0e28147dc399cba4cc4ddea1c1">TREE_foreach_child_reverse</a> (<a class="el" href="a00012.html">TREENODE</a> *lst, <a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2a122a49ba6652748765845608a019f3">TREE_findif_child</a> (<a class="el" href="a00012.html">TREENODE</a> *tree, <a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the list of child nodes. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga2a122a49ba6652748765845608a019f3"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga9332aebaeaae4fa46b2668766d07f40c">TREE_findif_child_reverse</a> (<a class="el" href="a00012.html">TREENODE</a> *tree, <a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a> (<a class="el" href="a00012.html">TREENODE</a> *current, <a class="el" href="a00012.html">TREENODE</a> *prev)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gae16d9f6e7f210f3596a00688b0598a05">TREE_foreach_preorder</a> (<a class="el" href="a00012.html">TREENODE</a> *node, <a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga5feac0050d51b2ee0886cabe2bcf201b">TREE_find_preorder</a> (<a class="el" href="a00012.html">TREENODE</a> *node, <a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga272a19d0e9bb16460b010d7c38f6038a">TREE_foreach_postorder</a> (<a class="el" href="a00012.html">TREENODE</a> *node, <a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga9b8add397903fd2bd602953efa922101">TREE_find_postorder</a> (<a class="el" href="a00012.html">TREENODE</a> *node, <a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga82d94f5f16e87e8dc6047797bda2e080">TREE_check_tree</a> (<a class="el" href="a00012.html">TREENODE</a> *root)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check tree for consistency errors  <a href="#ga82d94f5f16e87e8dc6047797bda2e080"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2030d9ff4e1c5e8b4cbd74590b93d8ce">DLISTUNR_init</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, size_t elmsize, size_t elmmaxcount)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises a new unrolled list. List entries are all of a fixed size.  <a href="#ga2030d9ff4e1c5e8b4cbd74590b93d8ce"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gafd9592650b47d236f472a4a9eb5b115b">DLISTUNR_check</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check validity of unrolled list instance  <a href="#gafd9592650b47d236f472a4a9eb5b115b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0290d4b52497dc3690054049f2817647">DLISTUNR_isempty</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="#ga0290d4b52497dc3690054049f2817647"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gadc37166b1334645228fc25a9e6771506">DLISTUNR_size</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga4db401e1c08b3d07a78985fea9961936">DLISTUNR_maxsize</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c">DLISTUNR_get_first</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position structure of first element in unrolled linked list.  <a href="#gad6e5c8c22793aefefeff560f1cb55f3c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289">DLISTUNR_get_last</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position structure of last element in unrolled linked list.  <a href="#ga49b8d112ee987796b6a90920dd82a289"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga686e489382b845f2887e4610929bd473">DLISTUNR_next</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position to the next element in unrolled linked list.  <a href="#ga686e489382b845f2887e4610929bd473"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5">DLISTUNR_prev</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position to the previous element in unrolled linked list.  <a href="#gaff214a850e77e1053a319ec96e70e6f5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2">DLISTUNR_check_position</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">verify a position structure.  <a href="#ga1dd2966c185e463aa8c40126122e96e2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gac38a1a149a73bda69de14aac70f116f6">DLISTUNR_copy_at</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy list entry identified by position structure (pos) into user supplied memory area  <a href="#gac38a1a149a73bda69de14aac70f116f6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga7845b66b9da685fbdd9671a2f8f8af97">DLISTUNR_at</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return pointer to list entry identified by position structure (pos).  <a href="#ga7845b66b9da685fbdd9671a2f8f8af97"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga82205532b2714164ed2a5a4d724f9094">DLISTUNR_insert_after</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry into this unrolled linked list  <a href="#ga82205532b2714164ed2a5a4d724f9094"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga226340b3f31b861f5180d637d2c795c6">DLISTUNR_insert_before</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry before a given entry into this unrolled linked list  <a href="#ga226340b3f31b861f5180d637d2c795c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3">DLISTUNR_unlink</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a unrolled list.  <a href="#gaaf4a80ee43a17e67d1d646f6520137e3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad94fe8e20708dc1b6c3e244dd8f4b7b9">DLISTUNR_push_back</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain queue)  <a href="#gad94fe8e20708dc1b6c3e244dd8f4b7b9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gacc9f0635aadc53905275d684bde629a7">DLISTUNR_push_front</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain queue)  <a href="#gacc9f0635aadc53905275d684bde629a7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga3286a39fe8434d31e4fba39b25a60dfe">DLISTUNR_pop_back</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data of last element into user supplied buffer and remove the last element from list (used to maintain double ended queue)  <a href="#ga3286a39fe8434d31e4fba39b25a60dfe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gac6338ee42fd69900475253be10c462e5">DLISTUNR_pop_front</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data of first element into user supplied buffer and remove the first element from list (used to maintain double ended queue)  <a href="#gac6338ee42fd69900475253be10c462e5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gabe7992a9cd77af1e758ce634779565df">DLISTUNR_free</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a> free_func, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">list free all entries of the list. The list will then be an empty list.  <a href="#gabe7992a9cd77af1e758ce634779565df"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">tagDLISTUNR_entry::elmcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">tagDLISTUNR_entry::buffer</a> []</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">DLISTUNR::elmmaxcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">DLISTUNR::elmcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">DLISTUNR::entrycount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">DLISTUNR_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">DLISTUNR::root</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">DLISTUNR_position::index</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>a tree. tree. Each node has variable number of child nodes, the node is embeddable (like ring list). This tree is especially suited for parse trees. </p>
+<p>unrolled list where each list node contains an array of nodes. Unlike other lists here, each element in a list is of the same size. </p>
+<p>an unrolled linked list is a variation on the linked list which stores multiple elements in each node. It can drastically increase cache performance, while decreasing the memory overhead associated with storing links to other list elements..</p>
+<p>Each node holds up to a certain maximum number of elements, typically just large enough so that the node fills a single cache line or a small multiple thereof. A position in the list is indicated by both a reference to the node and a position in the elements array. It's also possible to include a previous pointer for an unrolled doubly-linked linked list. Quoted from <a href="http://en.wikipedia.org/wiki/Unrolled_linked_list">http://en.wikipedia.org/wiki/Unrolled_linked_list</a> </p>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="gaae718f42f4d1d72b715248550610ebe0"></a><!-- doxytag: member="tree.h::TREE_FOREACH_CHILD" ref="gaae718f42f4d1d72b715248550610ebe0" args="(current, node)" -->
+<a class="anchor" id="ga2199fa5ef5950c4321c960de07c1dd96"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH" ref="ga2199fa5ef5950c4321c960de07c1dd96" args="(loopvarname, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_CHILD</td>
+          <td class="memname">#define DLISTUNR_FOREACH</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">node&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -127,29 +141,38 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((current) = <a class="code" href="a00047.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a>(node); \
-                (current); \
-                (current) = <a class="code" href="a00047.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a>(current))
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list );\
+      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
+      (loopvarname) = <a class="code" href="a00047.html#ga686e489382b845f2887e4610929bd473" title="Returns position to the next element in unrolled linked list.">DLISTUNR_next</a>( loopvarname ) )
 </pre></div>
-<p>Definition at line <a class="el" href="a00033_source.html#l00374">374</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) struct that identifies current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00406">406</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga6f0686cdd2280d83191f09c671e63ebd"></a><!-- doxytag: member="tree.h::TREE_FOREACH_CHILD_REVERSE" ref="ga6f0686cdd2280d83191f09c671e63ebd" args="(current, node)" -->
+<a class="anchor" id="ga6f36f5cdff7dc616d78ac582375fa9ff"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH_REVERSE" ref="ga6f36f5cdff7dc616d78ac582375fa9ff" args="(loopvarname, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_CHILD_REVERSE</td>
+          <td class="memname">#define DLISTUNR_FOREACH_REVERSE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">node&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -159,29 +182,44 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((current) = <a class="code" href="a00047.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a>(node); \
-                (current); \
-                (current) = <a class="code" href="a00047.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(current))
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>( list );\
+      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
+      (loopvarname) = <a class="code" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5" title="Returns position to the previous element in unrolled linked list.">DLISTUNR_prev</a>( loopvarname ) )
 </pre></div>
-<p>Definition at line <a class="el" href="a00033_source.html#l00379">379</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) pointer to the current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00416">416</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="gaaeea62e7b7e668075caa6ee635fba60a"></a><!-- doxytag: member="tree.h::TREE_FOREACH_POSTORDER" ref="gaaeea62e7b7e668075caa6ee635fba60a" args="(current, tree)" -->
+<a class="anchor" id="gad317561e804f3d6e5eabb799690da1c9"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH_REVERSE_SAVE" ref="gad317561e804f3d6e5eabb799690da1c9" args="(loopvarname, loopvarnext, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_POSTORDER</td>
+          <td class="memname">#define DLISTUNR_FOREACH_REVERSE_SAVE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">tree&#160;</td>
+          <td class="paramname">loopvarnext, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -191,53 +229,45 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{\
-        <a class="code" href="a00012.html">TREENODE</a> *TREE_nextnode##next,*TREE_nextnode##prev;\
-        TREE_nextnode##prev = 0; \
-        current = <a class="code" href="a00047.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>((tree),TREE_nextnode##prev);\
-        <span class="keywordflow">if</span> (current)\
-                <span class="keywordflow">for</span>( TREE_nextnode##next =  <a class="code" href="a00047.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>(current,TREE_nextnode##prev);\
-                            (current) &amp;&amp; current != (tree); \
-                                TREE_nextnode##prev = (current), \
-                                (current) = TREE_nextnode##next, \
-                                TREE_nextnode##next =  <a class="code" href="a00047.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>(current,TREE_nextnode##prev)) {
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>(list);\
+      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
+      (loopvarname) = (loopvarnext), (loopvarnext) = <a class="code" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5" title="Returns position to the previous element in unrolled linked list.">DLISTUNR_prev</a>(loopvarname) )
 </pre></div>
-<p>Definition at line <a class="el" href="a00033_source.html#l00604">604</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) pointer to the current element </td></tr>
+    <tr><td class="paramname">loopvarnamenext</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) do not modify! pointer to next element after current element (used for iteration). </td></tr>
+    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00438">438</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga01c708ec70f756c8045b16d7fca53f5b"></a><!-- doxytag: member="tree.h::TREE_FOREACH_POSTORDER_END" ref="ga01c708ec70f756c8045b16d7fca53f5b" args="" -->
+<a class="anchor" id="ga92ff07b38bfb3654352b4ed371a657b2"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH_SAVE" ref="ga92ff07b38bfb3654352b4ed371a657b2" args="(loopvarname, loopvarnext, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_POSTORDER_END</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">}\
-}\
-</pre></div>
-<p>Definition at line <a class="el" href="a00033_source.html#l00619">619</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga78104ec79d0b31f3e06c70b6796a54c8"></a><!-- doxytag: member="tree.h::TREE_FOREACH_PREORDER" ref="ga78104ec79d0b31f3e06c70b6796a54c8" args="(current, tree)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TREE_FOREACH_PREORDER</td>
+          <td class="memname">#define DLISTUNR_FOREACH_SAVE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">tree&#160;</td>
+          <td class="paramname">loopvarnext, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,309 +277,740 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{\
-        <a class="code" href="a00012.html">TREENODE</a> *TREE_nextnode##next;\
-        current = <a class="code" href="a00047.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>((tree));\
-        <span class="keywordflow">if</span> (current)\
-                <span class="keywordflow">for</span>( TREE_nextnode##next =  <a class="code" href="a00047.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>(current);\
-                            (current) &amp;&amp; current != (tree); \
-                                (current) = TREE_nextnode##next, TREE_nextnode##next =  <a class="code" href="a00047.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>(current)) {
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list ), (loopvarnext) = <a class="code" href="a00047.html#ga686e489382b845f2887e4610929bd473" title="Returns position to the next element in unrolled linked list.">DLISTUNR_next</a>( loopvarname );\
+      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
+      (loopvarname) = (loopvarnext), (loopvarnext) = <a class="code" href="a00047.html#ga686e489382b845f2887e4610929bd473" title="Returns position to the next element in unrolled linked list.">DLISTUNR_next</a>(loopvarname) )
 </pre></div>
-<p>Definition at line <a class="el" href="a00033_source.html#l00554">554</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) pointer to the current element </td></tr>
+    <tr><td class="paramname">loopvarnamenext</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) do not modify! pointer to next element after current element (used for iteration). </td></tr>
+    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
 
-</div>
-</div>
-<a class="anchor" id="gab1367d2f48012bb9b750a0609d1305cf"></a><!-- doxytag: member="tree.h::TREE_FOREACH_PREORDER_END" ref="gab1367d2f48012bb9b750a0609d1305cf" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TREE_FOREACH_PREORDER_END</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">}\
-}
-</pre></div>
-<p>Definition at line <a class="el" href="a00033_source.html#l00564">564</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00427">427</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="ga10480aa5215e24ed69b820687247e05a"></a><!-- doxytag: member="tree.h::TREE_VISITOR" ref="ga10480aa5215e24ed69b820687247e05a" args=")(TREENODE *entry, void *context)" -->
+<a class="anchor" id="gaab1a298e92d3537d3d99fb3026fa8878"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_VISITOR" ref="gaab1a298e92d3537d3d99fb3026fa8878" args=")(DLISTUNR *list, void *entry, void *context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>)(<a class="el" href="a00012.html">TREENODE</a> *entry, void *context)</td>
+          <td class="memname">typedef int(* <a class="el" href="a00047.html#gaab1a298e92d3537d3d99fb3026fa8878">DLISTUNR_VISITOR</a>)(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00362">362</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00054">54</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="gad3070030c101f9e06861f273769c333b"></a><!-- doxytag: member="tree.h::TREE_VISITOR_EXT_V" ref="gad3070030c101f9e06861f273769c333b" args=")(TREENODE *entry, TREE_VISIT_EVENT visit, void *context)" -->
+<a class="anchor" id="ga0f32e9881b86c7ddab83041de9f6888c"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_VISITOR_V" ref="ga0f32e9881b86c7ddab83041de9f6888c" args=")(DLISTUNR *list, void *entry, void *context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00047.html#gad3070030c101f9e06861f273769c333b">TREE_VISITOR_EXT_V</a>)(<a class="el" href="a00012.html">TREENODE</a> *entry, <a class="el" href="a00047.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> visit, void *context)</td>
+          <td class="memname">typedef void(* <a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a>)(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00371">371</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00053">53</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-</div>
-</div>
-<a class="anchor" id="ga69c7ccf722b0f3e72d2f040b62a7020b"></a><!-- doxytag: member="tree.h::TREE_VISITOR_V" ref="ga69c7ccf722b0f3e72d2f040b62a7020b" args=")(TREENODE *entry, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef void(* <a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>)(<a class="el" href="a00012.html">TREENODE</a> *entry, void *context)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00363">363</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga105c1d47dd05c5293aff00cecacb8b82"></a><!-- doxytag: member="tree.h::TREENODE" ref="ga105c1d47dd05c5293aff00cecacb8b82" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="a00012.html">tagTREENODE</a>  <a class="el" href="a00012.html">TREENODE</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<hr/><h2>Enumeration Type Documentation</h2>
-<a class="anchor" id="ga5700592b3cba85ef8eac8e784d408736"></a><!-- doxytag: member="tree.h::TREE_INSERT_MODE" ref="ga5700592b3cba85ef8eac8e784d408736" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00047.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c"></a><!-- doxytag: member="TREE_INSERT_FIRST" ref="gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c" args="" -->TREE_INSERT_FIRST</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0"></a><!-- doxytag: member="TREE_INSERT_LAST" ref="gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0" args="" -->TREE_INSERT_LAST</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00190">190</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">             {
-  <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>,
-  <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>,
-
-} <a class="code" href="a00047.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>;
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga11e6992d87f7732b07a127c57d5e22f2"></a><!-- doxytag: member="tree.h::TREE_VISIT_EVENT" ref="ga11e6992d87f7732b07a127c57d5e22f2" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00047.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f"></a><!-- doxytag: member="TREE_PREORDER" ref="gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f" args="" -->TREE_PREORDER</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e"></a><!-- doxytag: member="TREE_POSTORDER" ref="gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e" args="" -->TREE_POSTORDER</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00365">365</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">             {
-  <a class="code" href="a00047.html#gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f">TREE_PREORDER</a>,
-  <a class="code" href="a00047.html#gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e">TREE_POSTORDER</a>,
-
-} <a class="code" href="a00047.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a>;
-</pre></div>
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ga82d94f5f16e87e8dc6047797bda2e080"></a><!-- doxytag: member="tree.h::TREE_check_tree" ref="ga82d94f5f16e87e8dc6047797bda2e080" args="(TREENODE *root)" -->
+<a class="anchor" id="ga7845b66b9da685fbdd9671a2f8f8af97"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_at" ref="ga7845b66b9da685fbdd9671a2f8f8af97" args="(DLISTUNR *list, DLISTUNR_position pos)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE int TREE_check_tree </td>
+          <td class="memname">M_INLINE uint8_t* DLISTUNR_at </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>root</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>check tree for consistency errors </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>0 if the tree is inconsistent </dd></dl>
+<p>return pointer to list entry identified by position structure (pos). </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">pos</td><td>(in) position pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to data entry in linked list. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00715">715</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00278">278</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *firstch = root-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <a class="code" href="a00012.html">TREENODE</a> *lastch   = root-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span><span class="preprocessor">#ifndef TREE_NEXTLEVEL_LEFT     </span>
-<span class="preprocessor"></span>        <a class="code" href="a00012.html">TREENODE</a> *slow,*fast, *next;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-        <span class="keywordflow">if</span> (!firstch 
-#ifdef <a class="code" href="a00033.html#a95b940d1ebbfce437fb43d6cfb4b23e1">TREE_NEXTLEVEL_LAST</a>
-                        || !lastch
-#endif
-                ) {
-
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                <span class="keywordflow">if</span> (firstch || lastch) {
-                        <span class="keywordflow">return</span> 0;
-                }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                <span class="keywordflow">return</span> 1;               
-        }       
-        
-        <span class="keywordflow">if</span> (firstch-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> != root) {
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2" title="verify a position structure.">DLISTUNR_check_position</a>(pos)) {
                 <span class="keywordflow">return</span> 0;
         }
 
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT      </span>
-<span class="preprocessor"></span>        <span class="keywordflow">for</span>(;;firstch = firstch-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                <a class="code" href="a00012.html">TREENODE</a> *next;
-                
-                <span class="keywordflow">if</span> (!firstch) {
-                        <span class="keywordflow">return</span> 0;
-                }
-
-                <span class="keywordflow">if</span> (!<a class="code" href="a00047.html#ga82d94f5f16e87e8dc6047797bda2e080" title="check tree for consistency errors">TREE_check_tree</a>(firstch)) {
-                        <span class="keywordflow">return</span> 0;
-                }
-
-                next = firstch-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                <span class="keywordflow">if</span> (!next) {
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                        <span class="keywordflow">if</span> (lastch != firstch) {
-                                <span class="keywordflow">return</span> 0;
-                        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                        <span class="keywordflow">break</span>;
-                }
-
-                <span class="keywordflow">if</span> (next-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> != firstch) {
-                        <span class="keywordflow">return</span> 0;
-                }
-        }
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        slow=fast=firstch;
-        <span class="keywordflow">while</span>(1) {
-                <span class="keywordflow">if</span> (!<a class="code" href="a00047.html#ga82d94f5f16e87e8dc6047797bda2e080" title="check tree for consistency errors">TREE_check_tree</a>(slow)) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                next = fast-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                <span class="keywordflow">if</span> (!next) {
-                        <span class="keywordflow">break</span>;                  
-                }
-                fast = next;
-                <span class="keywordflow">if</span> (fast == slow) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                next = fast-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                <span class="keywordflow">if</span> (!next) {
-                        <span class="keywordflow">break</span>;                  
-                }
-                fast = next;
-                <span class="keywordflow">if</span> (fast == slow) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                slow = slow-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (lastch != fast) {
-                <span class="keywordflow">return</span> 0;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> 1;
+        <span class="keywordflow">return</span> pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> * list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga53ff6ce0b781ef3165b5239ba466a7a3"></a><!-- doxytag: member="tree.h::TREE_count_child_nodes" ref="ga53ff6ce0b781ef3165b5239ba466a7a3" args="(TREENODE *current)" -->
+<a class="anchor" id="gafd9592650b47d236f472a4a9eb5b115b"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_check" ref="gafd9592650b47d236f472a4a9eb5b115b" args="(DLISTUNR *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE size_t TREE_count_child_nodes </td>
+          <td class="memname">M_INLINE int DLISTUNR_check </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00385">385</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> ret = 0;
-        <a class="code" href="a00012.html">TREENODE</a> *c;
+<p>check validity of unrolled list instance </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>the object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>0 if list is invalid. </dd></dl>
 
-        <a class="code" href="a00047.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>(c,current) {
-                ret++;
+<p>Definition at line <a class="el" href="a00026_source.html#l00090">90</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> elmcount, size = 0;
+        <span class="keywordtype">size_t</span> cursize = 0;
+        <a class="code" href="a00012.html">DRING</a> *cur,*next;
+
+        <span class="keywordflow">if</span> (list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != (<span class="keywordtype">size_t</span>) -1) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        <a class="code" href="a00048.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>( cur, &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>)   {
+
+                next = cur-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                <span class="keywordflow">if</span> (!next || next-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> != cur) {               
+                        <span class="keywordflow">return</span> 0;
+                }
+                elmcount = ((<a class="code" href="a00011.html">DLISTUNR_entry</a> *) cur)-&gt;elmcount;
+                <span class="keywordflow">if</span> ( elmcount &gt; list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                <span class="keywordflow">if</span> (elmcount == 0) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                size++;
+                cursize += elmcount;
+        }
+
+        <span class="keywordflow">if</span> (size != list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a>) {
+                <span class="keywordflow">return</span> 0;
+        }
+        <span class="keywordflow">if</span> (cursize != list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a>) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="keywordflow">return</span> 1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga1dd2966c185e463aa8c40126122e96e2"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_check_position" ref="ga1dd2966c185e463aa8c40126122e96e2" args="(DLISTUNR_position pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int DLISTUNR_check_position </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>verify a position structure. </p>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00236">236</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (!pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>) {
+                <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">if</span> (pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &gt;= pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>) {
+                <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac38a1a149a73bda69de14aac70f116f6"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_copy_at" ref="gac38a1a149a73bda69de14aac70f116f6" args="(DLISTUNR *list, DLISTUNR_position pos, void *data, size_t size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int DLISTUNR_copy_at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>copy list entry identified by position structure (pos) into user supplied memory area </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">pos</td><td>(in) position pointer </td></tr>
+    <tr><td class="paramname">data</td><td>(in|out) user supplied buffer </td></tr>
+    <tr><td class="paramname">size</td><td>(in) size of user supplied buffer (must be equal to the size of one element). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>0 on success -1 on failure </dd></dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00255">255</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">void</span> *ptr;
+        <span class="keywordflow">if</span> (size != list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>) {
+                <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2" title="verify a position structure.">DLISTUNR_check_position</a>(pos)) {
+                <span class="keywordflow">return</span> -1;
+        }
+
+        ptr = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> * size;
+        memcpy(data, ptr, size);
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gabe7992a9cd77af1e758ce634779565df"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_free" ref="gabe7992a9cd77af1e758ce634779565df" args="(DLISTUNR *list, DLISTUNR_VISITOR_V free_func, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DLISTUNR_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>free_func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>list free all entries of the list. The list will then be an empty list. </p>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00447">447</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00012.html">DRING</a> *next,*cur;
+        <a class="code" href="a00011.html">DLISTUNR_entry</a> *curr;
+        <span class="keywordtype">size_t</span> pos,elmsize,i;
+        
+        elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
+
+        <a class="code" href="a00048.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>) {
+        
+                curr = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) cur;
+                <span class="keywordflow">if</span> (free_func) {
+                        <span class="keywordflow">for</span>(pos = 0,i=0;i&lt;curr-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>;i++) {
+                                free_func(list,  (<span class="keywordtype">void</span> *) (curr-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> +pos), context);
+                                pos += elmsize;
+                        }
+                }
+                <span class="comment">/*list-&gt;ctx-&gt;free( DRING_unlink(cur) );*/</span>
+                free( cur );
+                
+        }       
+        <a class="code" href="a00048.html#gaea5e890f7d1dab572fe3ef6f067e5d26" title="initialises an empty list head">DRING_init</a>( &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a> );
+        list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> = 0;
+        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> = 0;
+}       
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gad6e5c8c22793aefefeff560f1cb55f3c"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_get_first" ref="gad6e5c8c22793aefefeff560f1cb55f3c" args="(DLISTUNR *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_get_first </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns position structure of first element in unrolled linked list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of first element </dd></dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00155">155</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
+
+        ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+        ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = 0;
+
+        <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga49b8d112ee987796b6a90920dd82a289"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_get_last" ref="ga49b8d112ee987796b6a90920dd82a289" args="(DLISTUNR *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_get_last </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns position structure of last element in unrolled linked list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of first element </dd></dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00171">171</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
+
+        <span class="keywordflow">if</span> (list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a>) {
+                ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - 1;            
+        } <span class="keywordflow">else</span>  {
+                ret = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list);
+        }
+        
+        <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2030d9ff4e1c5e8b4cbd74590b93d8ce"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_init" ref="ga2030d9ff4e1c5e8b4cbd74590b93d8ce" args="(DLISTUNR *list, size_t elmsize, size_t elmmaxcount)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int DLISTUNR_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elmsize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elmmaxcount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>initialises a new unrolled list. List entries are all of a fixed size. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>(in) allocator interface. (if null we are using the default allocator) </td></tr>
+    <tr><td class="paramname">list</td><td>(in) object that is initialised </td></tr>
+    <tr><td class="paramname">elmsize</td><td>(in) size of one element in list. </td></tr>
+    <tr><td class="paramname">elmmaxcount</td><td>(in) number of element stored in one list entry </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00072">72</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{       
+        list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a> = elmmaxcount;
+        list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a> = elmsize;
+
+        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> = list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> = 0;
+
+        <a class="code" href="a00048.html#gaea5e890f7d1dab572fe3ef6f067e5d26" title="initialises an empty list head">DRING_init</a>( &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a> );
+        list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> = (size_t) -1;
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga82205532b2714164ed2a5a4d724f9094"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_insert_after" ref="ga82205532b2714164ed2a5a4d724f9094" args="(DLISTUNR *list, DLISTUNR_position pos, void *data, size_t size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DLISTUNR_insert_after </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new entry after a given entry into this unrolled linked list </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) pointer to list head </td></tr>
+    <tr><td class="paramname">pos</td><td>(in) current position (newentry inserted after this one). </td></tr>
+    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
+    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00025_source.html#l00057">57</a> of file <a class="el" href="a00025_source.html">dlistunr.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
+        <span class="keywordtype">size_t</span> elmmaxcount = list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>;
+        <a class="code" href="a00004.html">DLISTUNR_position</a> insert_pos = pos;
+        <a class="code" href="a00011.html">DLISTUNR_entry</a> *next;
+        <span class="keywordtype">void</span> *newnodepos;
+
+        <span class="keywordflow">if</span> (size != list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>) {
+                <span class="keywordflow">return</span> -1;
+        }
+
+        <span class="keywordflow">if</span> (!insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>) {
+                insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+        }
+
+        <span class="keywordflow">if</span> ((newnodepos = <a class="code" href="a00025.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a>(
+                                                                insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>, 
+                                                                insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>, 
+                                                                elmmaxcount, 
+                                                                elmsize)) == 0) {
+                
+                next = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                 
+                if ((newnodepos = <a class="code" href="a00025.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a>(next, (<span class="keywordtype">size_t</span>) -1, elmmaxcount, elmsize)) == 0){
+
+                        <span class="keywordflow">if</span> ((newnodepos = <a class="code" href="a00025.html#ad57c2c0178439688868899a41d9b7f44">DLISTUNR_insert_newnode</a>(list, insert_pos)) == 0) {
+                                <span class="keywordflow">return</span> -1;
+                        }
+                        list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> ++;
+                        next = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+
+                } 
+                        
+                <span class="keywordflow">if</span> (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != (<span class="keywordtype">size_t</span>) -1 &amp;&amp; 
+                        insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &lt; (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - 1) ) {
+
+                        <span class="comment">/* bad bad */</span>
+                        insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> ++;
+
+                        <span class="comment">/* move elements from prev node to new node */</span>
+                        memcpy(next-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a>, 
+                                   insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a> - 1) * elmsize,
+                                   elmsize);
+
+                        <span class="comment">/* move elements in current node */</span>             
+                        memmove(insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> + 1) * elmsize,
+                                        insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>  * elmsize,
+                                        (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> - 1) * elmsize);
+                
+                        <span class="comment">/* copy new node into insert_pos.index */</span>
+                        newnodepos = insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>  * elmsize;
+                }
+        } 
+        
+        memcpy(newnodepos, data, elmsize);
+        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> ++;
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga226340b3f31b861f5180d637d2c795c6"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_insert_before" ref="ga226340b3f31b861f5180d637d2c795c6" args="(DLISTUNR *list, DLISTUNR_position pos, void *data, size_t size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int DLISTUNR_insert_before </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new entry before a given entry into this unrolled linked list </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) pointer to list head </td></tr>
+    <tr><td class="paramname">pos</td><td>(in) current position (newentry inserted before this one). </td></tr>
+    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
+    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00303">303</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00004.html">DLISTUNR_position</a> insert_pos = <a class="code" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5" title="Returns position to the previous element in unrolled linked list.">DLISTUNR_prev</a>(pos);
+        
+        <span class="keywordflow">return</span> <a class="code" href="a00047.html#ga82205532b2714164ed2a5a4d724f9094" title="insert new entry after a given entry into this unrolled linked list">DLISTUNR_insert_after</a>( list, insert_pos, data, size);
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0290d4b52497dc3690054049f2817647"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_isempty" ref="ga0290d4b52497dc3690054049f2817647" args="(DLISTUNR *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int DLISTUNR_isempty </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>checks if argument list is empty </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>pointer to list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>not zero for non empty list. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00133">133</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> == 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga4db401e1c08b3d07a78985fea9961936"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_maxsize" ref="ga4db401e1c08b3d07a78985fea9961936" args="(DLISTUNR *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t DLISTUNR_maxsize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00145">145</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga686e489382b845f2887e4610929bd473"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_next" ref="ga686e489382b845f2887e4610929bd473" args="(DLISTUNR_position pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_next </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns position to the next element in unrolled linked list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">pos</td><td>(in) iteration position in list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of the element that follows the element identified by pos structure. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00191">191</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
+        <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
+
+        ret = pos;
+        entry = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>;
+
+        ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>++;
+        <span class="keywordflow">if</span> (ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &gt;= entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>) {
+                ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) entry-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = 0;
         }
         <span class="keywordflow">return</span> ret;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga9b8add397903fd2bd602953efa922101"></a><!-- doxytag: member="tree.h::TREE_find_postorder" ref="ga9b8add397903fd2bd602953efa922101" args="(TREENODE *node, TREE_VISITOR visit, void *context)" -->
+<a class="anchor" id="ga3286a39fe8434d31e4fba39b25a60dfe"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_pop_back" ref="ga3286a39fe8434d31e4fba39b25a60dfe" args="(DLISTUNR *list, void *data, size_t size)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_find_postorder </td>
+          <td class="memname">M_INLINE int DLISTUNR_pop_back </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -560,170 +1021,61 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00695">695</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *current;
-
-        <a class="code" href="a00047.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current,node)
-                if (visit(node,context)) {
-                        <span class="keywordflow">return</span> current;
-                }
-        <a class="code" href="a00047.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga5feac0050d51b2ee0886cabe2bcf201b"></a><!-- doxytag: member="tree.h::TREE_find_preorder" ref="ga5feac0050d51b2ee0886cabe2bcf201b" args="(TREENODE *node, TREE_VISITOR visit, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_find_preorder </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00643">643</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *current;
-
-        <a class="code" href="a00047.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current,node)
-                if (visit(node,context)) {
-                        <span class="keywordflow">return</span> current;
-                }
-        <a class="code" href="a00047.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga2a122a49ba6652748765845608a019f3"></a><!-- doxytag: member="tree.h::TREE_findif_child" ref="ga2a122a49ba6652748765845608a019f3" args="(TREENODE *tree, TREE_VISITOR eval, void *context, int32_t *retval)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_findif_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>tree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int32_t *&#160;</td>
-          <td class="paramname"><em>retval</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>find an element within the list of child nodes. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
+<p>copy data of last element into user supplied buffer and remove the last element from list (used to maintain double ended queue) </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">tree</td><td>(in) node in a tree (parent of enumerated childs). </td></tr>
-    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
-    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
-    <tr><td class="paramname">retval</td><td>(out) optional - the first non zero value returned by eval callback, if NULL then ignored. </td></tr>
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">data</td><td>(in) pointer to element that is to receive data of list entry </td></tr>
+    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>return 0 on success. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00499">499</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00353">353</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">int</span> ret;
-    <a class="code" href="a00012.html">TREENODE</a> *cur;
+        <a class="code" href="a00004.html">DLISTUNR_position</a> pos;
 
-        <span class="keywordflow">if</span> (retval) {
-                *retval = 0;
-        }
-
-        <span class="keywordflow">if</span> (!eval) {
-                <span class="keywordflow">return</span> 0;
+        
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga0290d4b52497dc3690054049f2817647" title="checks if argument list is empty">DLISTUNR_isempty</a>(list)) {
+                <span class="keywordflow">return</span> -1;
         }
         
-
-        <a class="code" href="a00047.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>( cur, tree) {
-                ret = eval( cur, context );
-                <span class="keywordflow">if</span> (ret) {
-                        <span class="keywordflow">if</span> (retval) {
-                                *retval = ret;
-                        }
-                        <span class="keywordflow">return</span> cur;
-                }
+        pos = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>( list );
+        
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gac38a1a149a73bda69de14aac70f116f6" title="copy list entry identified by position structure (pos) into user supplied memory area">DLISTUNR_copy_at</a>(list, pos, data, size)) {
+                <span class="keywordflow">return</span> -1;
         }
 
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3" title="delete an element from a unrolled list.">DLISTUNR_unlink</a>(list,pos)) {
+                <span class="keywordflow">return</span> -1;
+        }
         <span class="keywordflow">return</span> 0;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga9332aebaeaae4fa46b2668766d07f40c"></a><!-- doxytag: member="tree.h::TREE_findif_child_reverse" ref="ga9332aebaeaae4fa46b2668766d07f40c" args="(TREENODE *tree, TREE_VISITOR eval, void *context, int32_t *retval)" -->
+<a class="anchor" id="gac6338ee42fd69900475253be10c462e5"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_pop_front" ref="gac6338ee42fd69900475253be10c462e5" args="(DLISTUNR *list, void *data, size_t size)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_findif_child_reverse </td>
+          <td class="memname">M_INLINE int DLISTUNR_pop_front </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>tree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval</em>, </td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
+          <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t *&#160;</td>
-          <td class="paramname"><em>retval</em>&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -734,136 +1086,156 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00526">526</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">int</span> ret;
-    <a class="code" href="a00012.html">TREENODE</a> *cur;
-
-        <span class="keywordflow">if</span> (retval) {
-                *retval = 0;
-        }
-
-        <span class="keywordflow">if</span> (!eval) {
-                <span class="keywordflow">return</span> 0;
-        }
-        
-
-        <a class="code" href="a00047.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>( cur, tree) {
-                ret = eval( cur, context );
-                <span class="keywordflow">if</span> (ret) {
-                        <span class="keywordflow">if</span> (retval) {
-                                *retval = ret;
-                        }
-                        <span class="keywordflow">return</span> cur;
-                }
-        }
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga2695e9ae02cd3359771cacdf776918e4"></a><!-- doxytag: member="tree.h::TREE_first_child" ref="ga2695e9ae02cd3359771cacdf776918e4" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_first_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00105">105</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga0843046582beafa1e2158cf0261fe8a1"></a><!-- doxytag: member="tree.h::TREE_foreach_child" ref="ga0843046582beafa1e2158cf0261fe8a1" args="(TREENODE *lst, TREE_VISITOR_V eval, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_foreach_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>lst</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
-          <td class="paramname"><em>eval</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>iterate over all elements of a list of child nodes, callback is invoked for either element of the list. list is traversed from first element to the last element. </p>
+<p>copy data of first element into user supplied buffer and remove the first element from list (used to maintain double ended queue) </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lst</td><td>(in) node in a tree (parent of enumerated childs). </td></tr>
-    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
-    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
-    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">data</td><td>(in) pointer to element that is to receive data of list entry </td></tr>
+    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>return 0 on success. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00381">381</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00004.html">DLISTUNR_position</a> pos;
+
+        
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga0290d4b52497dc3690054049f2817647" title="checks if argument list is empty">DLISTUNR_isempty</a>(list)) {
+                <span class="keywordflow">return</span> -1;
+        }
+        
+        pos = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list );
+
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gac38a1a149a73bda69de14aac70f116f6" title="copy list entry identified by position structure (pos) into user supplied memory area">DLISTUNR_copy_at</a>(list, pos, data, size)) {
+                <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3" title="delete an element from a unrolled list.">DLISTUNR_unlink</a>(list,pos)) {
+                <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaff214a850e77e1053a319ec96e70e6f5"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_prev" ref="gaff214a850e77e1053a319ec96e70e6f5" args="(DLISTUNR_position pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_prev </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns position to the previous element in unrolled linked list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">pos</td><td>(in) iteration position in list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of the element that precedes the element identified by pos structure. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00213">213</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
+        <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
+
+        ret = pos;
+        entry = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>;
+        <span class="keywordflow">if</span> (ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>) {
+                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>--;
+        } <span class="keywordflow">else</span> {
+                ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) entry-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = 0;
+                if (ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> &amp;&amp; ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != (<span class="keywordtype">size_t</span>) -1) {
+                        ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - 1;
+                } 
+        }
+        <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gad94fe8e20708dc1b6c3e244dd8f4b7b9"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_push_back" ref="gad94fe8e20708dc1b6c3e244dd8f4b7b9" args="(DLISTUNR *list, void *data, size_t size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int DLISTUNR_push_back </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert element as last in list (used to maintain queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
+    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00458">458</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00326">326</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-    <a class="code" href="a00012.html">TREENODE</a> *cur;
-
-        <span class="keywordflow">if</span> (!eval) {
-          <span class="keywordflow">return</span>;
-        }
-
-        <a class="code" href="a00047.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>( cur, lst) {
-                eval( cur, context );
-        }
-        
+        <a class="code" href="a00004.html">DLISTUNR_position</a> last = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>( list );
+        <span class="keywordflow">return</span> <a class="code" href="a00047.html#ga82205532b2714164ed2a5a4d724f9094" title="insert new entry after a given entry into this unrolled linked list">DLISTUNR_insert_after</a>(list, last, data, size);
+                
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gacb91cd0e28147dc399cba4cc4ddea1c1"></a><!-- doxytag: member="tree.h::TREE_foreach_child_reverse" ref="gacb91cd0e28147dc399cba4cc4ddea1c1" args="(TREENODE *lst, TREE_VISITOR_V eval, void *context)" -->
+<a class="anchor" id="gacc9f0635aadc53905275d684bde629a7"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_push_front" ref="gacc9f0635aadc53905275d684bde629a7" args="(DLISTUNR *list, void *data, size_t size)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void TREE_foreach_child_reverse </td>
+          <td class="memname">M_INLINE int DLISTUNR_push_front </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>lst</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
-          <td class="paramname"><em>eval</em>, </td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -874,777 +1246,221 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00474">474</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-    <a class="code" href="a00012.html">TREENODE</a> *cur;
+<p>insert element as last in list (used to maintain queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
+    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-        <span class="keywordflow">if</span> (!eval) {
-          <span class="keywordflow">return</span>;
+<p>Definition at line <a class="el" href="a00026_source.html#l00339">339</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00004.html">DLISTUNR_position</a> last = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list );
+        <span class="keywordflow">return</span> <a class="code" href="a00047.html#ga226340b3f31b861f5180d637d2c795c6" title="insert new entry before a given entry into this unrolled linked list">DLISTUNR_insert_before</a>(list, last, data, size);
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gadc37166b1334645228fc25a9e6771506"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_size" ref="gadc37166b1334645228fc25a9e6771506" args="(DLISTUNR *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t DLISTUNR_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00139">139</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaaf4a80ee43a17e67d1d646f6520137e3"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_unlink" ref="gaaf4a80ee43a17e67d1d646f6520137e3" args="(DLISTUNR *list, DLISTUNR_position pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DLISTUNR_unlink </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>delete an element from a unrolled list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">pos</td><td>(in) deletes element identified by this position structure return -1 on failure 0 on success. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00025_source.html#l00118">118</a> of file <a class="el" href="a00025_source.html">dlistunr.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
+        <span class="keywordtype">size_t</span> elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
+
+        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2" title="verify a position structure.">DLISTUNR_check_position</a>(pos)) {
+                <span class="keywordflow">return</span> -1;
         }
+        entry = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>;
 
-
-        <a class="code" href="a00047.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>( cur,lst) {
-                eval( cur, context );
-        }
-        
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga272a19d0e9bb16460b010d7c38f6038a"></a><!-- doxytag: member="tree.h::TREE_foreach_postorder" ref="ga272a19d0e9bb16460b010d7c38f6038a" args="(TREENODE *node, TREE_VISITOR_V visit, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_foreach_postorder </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00668">668</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *current;
-
-        <a class="code" href="a00047.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current,node)
-                visit(node,context);
-        <a class="code" href="a00047.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gae16d9f6e7f210f3596a00688b0598a05"></a><!-- doxytag: member="tree.h::TREE_foreach_preorder" ref="gae16d9f6e7f210f3596a00688b0598a05" args="(TREENODE *node, TREE_VISITOR_V visit, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_foreach_preorder </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00634">634</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *current;
-
-        <a class="code" href="a00047.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current,node)
-                visit(node,context);
-        <a class="code" href="a00047.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga0ea2162b901f647f5dac3b15dfecdb12"></a><!-- doxytag: member="tree.h::TREE_init_root" ref="ga0ea2162b901f647f5dac3b15dfecdb12" args="(TREENODE *tree)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_init_root </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>tree</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00037">37</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        tree-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = tree-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tree-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = 0;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        tree-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = 0;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span><span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        tree-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = 0;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga604dc40c8dfea4f7beed9b0437dfb496"></a><!-- doxytag: member="tree.h::TREE_insert_child" ref="ga604dc40c8dfea4f7beed9b0437dfb496" args="(TREENODE *parent, TREENODE *newnode, TREE_INSERT_MODE mode, int node_is_leaf)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_insert_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00196">196</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{       
-        <span class="comment">/* init new node */</span>
-        <span class="keywordflow">if</span> (node_is_leaf) {
-                newnode-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = 0;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                newnode-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = 0;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        }
-        newnode-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        newnode-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = 0;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = 0;
-<span class="preprocessor">#endif  </span>
-<span class="preprocessor"></span>
-        
-        <span class="keywordflow">if</span> (!parent-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {         
-
-                <span class="comment">/* insert as first child */</span>
-                <span class="comment">//newnode-&gt;nextlevel_first = parent-&gt;nextlevel_first;</span>
-                parent-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = newnode;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                <span class="comment">//newnode-&gt;nextlevel_last = parent-&gt;nextlevel_last;</span>
-                parent-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = newnode;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                
-        } <span class="keywordflow">else</span> {
-
-                <span class="comment">/* insert as sibling */</span>
-                <span class="keywordflow">switch</span>(mode) {
-                        <span class="keywordflow">case</span> <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>: {
-                                        <a class="code" href="a00047.html#ga530586b2042c37e278d8666c75978497">TREE_insert_left_sibling</a>(parent-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>,newnode, 0);
-                                }
-                                <span class="keywordflow">break</span>;
-                        <span class="keywordflow">case</span> <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>:
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                                <a class="code" href="a00047.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a>( parent-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>,newnode, 0);
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>                                <a class="code" href="a00047.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a>( <a class="code" href="a00047.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(parent-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>), newnode, 0);
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-                                <span class="keywordflow">break</span>;
-                }
-        }
-
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga530586b2042c37e278d8666c75978497"></a><!-- doxytag: member="tree.h::TREE_insert_left_sibling" ref="ga530586b2042c37e278d8666c75978497" args="(TREENODE *current, TREENODE *newnode, int node_is_leaf)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int TREE_insert_left_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00157">157</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = current-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (!parent) {
+        <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> == (<span class="keywordtype">size_t</span>) -1) {
                 <span class="keywordflow">return</span> -1;
         }
 
-        <span class="keywordflow">if</span> (node_is_leaf) {
-                <a class="code" href="a00047.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a>(newnode);
-        }
-
-        <span class="keywordflow">if</span> (parent-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> == current) {
-                parent-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = newnode;
-        }
-
-        newnode-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a>) {
-                current-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a>-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = newnode;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = current;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT      </span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = current-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-        current-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = newnode;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gaa242aa64487dd0db1ee4659a28d9aca9"></a><!-- doxytag: member="tree.h::TREE_insert_right_sibling" ref="gaa242aa64487dd0db1ee4659a28d9aca9" args="(TREENODE *current, TREENODE *newnode, int node_is_leaf)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int TREE_insert_right_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00123">123</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = current-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-
-        <span class="keywordflow">if</span> (!parent) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">if</span> (node_is_leaf) {
-                <a class="code" href="a00047.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a>(newnode);
-        }
-
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (parent-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> == current) {
-                parent-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = newnode;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-        newnode-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a>  = current;
-        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = newnode;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = newnode;
-
-
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga8f8605be102eedc9bb9e49cf343f2a13"></a><!-- doxytag: member="tree.h::TREE_last_child" ref="ga8f8605be102eedc9bb9e49cf343f2a13" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_last_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00110">110</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> <a class="code" href="a00047.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(node-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>);
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga06ef1bfc9046f778cf6c8cc287bec132"></a><!-- doxytag: member="tree.h::TREE_left_sibling" ref="ga06ef1bfc9046f778cf6c8cc287bec132" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_left_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00054">54</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        <a class="code" href="a00012.html">TREENODE</a> *tmp;
-
-        <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
-        tmp = node-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-        <span class="keywordflow">if</span> (tmp == node) {
-                <span class="keywordflow">return</span> 0;
-        }
-        <span class="keywordflow">while</span>(tmp &amp;&amp; tmp-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> != node) {
-                tmp = tmp-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-        <span class="keywordflow">return</span> tmp;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga1ae823cfa1464a0eca0cd376a107b6d9"></a><!-- doxytag: member="tree.h::TREE_leftmost_sibling" ref="ga1ae823cfa1464a0eca0cd376a107b6d9" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_leftmost_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00080">80</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = node-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (parent) {
-                <span class="keywordflow">return</span> parent-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-        }
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gab2df5d5218e9b473a61b0cbfdb2ae8d0"></a><!-- doxytag: member="tree.h::TREE_merge_childs" ref="gab2df5d5218e9b473a61b0cbfdb2ae8d0" args="(TREENODE *parent, TREE_INSERT_MODE mode, TREENODE *newnode)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_merge_childs </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00244">244</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{       
-        <a class="code" href="a00012.html">TREENODE</a> *ch;
-
-        <span class="keywordflow">switch</span>(mode) {
-
-        <span class="keywordflow">case</span> <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>:  
-                ch = <a class="code" href="a00047.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a>(newnode);
-                <span class="keywordflow">if</span> (!ch) {
-                        <span class="keywordflow">return</span>;
+        <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != 1) {
+                <span class="keywordflow">if</span> (pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &lt; (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>-1)) {
+                        memmove(entry-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> * elmsize,
+                                        entry-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> + 1) * elmsize, 
+                                        (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> - 1) * elmsize );
                 }
-
-                <span class="keywordflow">while</span>(ch) {
-                        <a class="code" href="a00047.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a>(parent, ch, <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>, 0 );
-                        ch = <a class="code" href="a00047.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a>(ch);
-                }
-                <span class="keywordflow">break</span>;
-
-        <span class="keywordflow">case</span> <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>: 
-                ch = <a class="code" href="a00047.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a>(newnode);
-                <span class="keywordflow">if</span> (!ch) {
-                        <span class="keywordflow">return</span>;
-                }
-
-                <span class="keywordflow">while</span>(ch) {
-                        <a class="code" href="a00047.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a>(parent, ch, <a class="code" href="a00047.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>, 0 );
-                        ch = <a class="code" href="a00047.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(ch);
-                }
-                <span class="keywordflow">break</span>;
-        }
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga27a00a38d3c36cab6ff6adb7a831c4ce"></a><!-- doxytag: member="tree.h::TREE_parent" ref="ga27a00a38d3c36cab6ff6adb7a831c4ce" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_parent </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00048">48</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga064ab627a56dc9871c3869bf62b56d0e"></a><!-- doxytag: member="tree.h::TREE_postorder_next" ref="ga064ab627a56dc9871c3869bf62b56d0e" args="(TREENODE *current, TREENODE *prev)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_postorder_next </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>prev</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00578">578</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-
-        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> &amp;&amp; (!prev || current-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> == prev)) {
-next_level:
-                <span class="keywordflow">do</span> {            
-                        current = current-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-                }
-                <span class="keywordflow">while</span>(current-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>);
+                entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> --;
         } <span class="keywordflow">else</span> {
-                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                        current = current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
-                          <span class="keywordflow">goto</span> next_level;
-                        }
-                } <span class="keywordflow">else</span> {
-                        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                                current = current-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-                        }
-                }
-        }
-        <span class="keywordflow">return</span> current;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga52b32e7eea57b597b406c36265a1639a"></a><!-- doxytag: member="tree.h::TREE_preorder_next" ref="ga52b32e7eea57b597b406c36265a1639a" args="(TREENODE *current)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_preorder_next </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00403">403</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
-                current = current-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-        } <span class="keywordflow">else</span> {
-                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                        current = current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                } <span class="keywordflow">else</span> {
-                        <span class="keywordflow">while</span>(current-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                                current = current-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-                                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                                        current = current-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                                        <span class="keywordflow">break</span>;
-                                }
-                        }
-                }
+                <a class="code" href="a00048.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>((<a class="code" href="a00012.html">DRING</a> *)pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>);
+                free( pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>);
+                list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> --;
         }
 
-        <span class="keywordflow">return</span> current;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gaa2b3ebe7d515ad3e30c9ad0996109978"></a><!-- doxytag: member="tree.h::TREE_right_sibling" ref="gaa2b3ebe7d515ad3e30c9ad0996109978" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_right_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00075">75</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gaff7bf0e8b830dec211d8760b01427d5a"></a><!-- doxytag: member="tree.h::TREE_rightmost_sibling" ref="gaff7bf0e8b830dec211d8760b01427d5a" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_rightmost_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00033_source.html#l00089">89</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <a class="code" href="a00012.html">TREENODE</a> *<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = node-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (parent) {
-                <span class="keywordflow">return</span> parent-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-        }
+        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> --;
         <span class="keywordflow">return</span> 0;
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        <span class="keywordflow">while</span>(node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                node = node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> node;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga7beb2cf4338f19f13977cc49b3f2cd43"></a><!-- doxytag: member="tree.h::TREE_unlink_node" ref="ga7beb2cf4338f19f13977cc49b3f2cd43" args="(TREENODE *node)" -->
+<hr/><h2>Variable Documentation</h2>
+<a class="anchor" id="ga0d7c4fdd75e4ee98f34e8e428291d1fc"></a><!-- doxytag: member="tagDLISTUNR_entry::buffer" ref="ga0d7c4fdd75e4ee98f34e8e428291d1fc" args="[]" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00012.html">TREENODE</a>* TREE_unlink_node </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00012.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
+          <td class="memname">uint8_t <a class="el" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">tagDLISTUNR_entry::buffer</a>[]</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00033_source.html#l00277">277</a> of file <a class="el" href="a00033_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">TREENODE</a> *tmp,*tmp_next, *tmp_last;
+<p>Definition at line <a class="el" href="a00026_source.html#l00017">17</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-        <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
+</div>
+</div>
+<a class="anchor" id="ga746831dd1567f68b1ebbe4b2da5d21d7"></a><!-- doxytag: member="tagDLISTUNR_entry::elmcount" ref="ga746831dd1567f68b1ebbe4b2da5d21d7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">tagDLISTUNR_entry::elmcount</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-        <span class="comment">/* wrong */</span>
-        tmp = node-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (tmp &amp;&amp; tmp-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> == node) {
+<p>Definition at line <a class="el" href="a00026_source.html#l00016">16</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-                <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
-                        tmp-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                        <span class="keywordflow">goto</span> sdel;
-                }
+</div>
+</div>
+<a class="anchor" id="ga0e262304c4fb6cd12e2911cec49f4346"></a><!-- doxytag: member="DLISTUNR::elmcount" ref="ga0e262304c4fb6cd12e2911cec49f4346" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">DLISTUNR::elmcount</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-                tmp-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = node-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;                           
-                tmp_next = tmp-&gt;<a class="code" href="a00012.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-                tmp_last = <a class="code" href="a00047.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(tmp_next);
+<p>Definition at line <a class="el" href="a00026_source.html#l00045">45</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-                tmp_last-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>                <span class="keywordflow">if</span> (node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                        node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = tmp_last;
-                }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                <span class="keywordflow">do</span> {
-                        tmp_next-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tmp;
-                        <span class="keywordflow">if</span> (tmp_next == tmp_last) {
-                                <span class="keywordflow">break</span>;
-                        }
-                        tmp_next = tmp_next-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                } <span class="keywordflow">while</span>(tmp_next);
+</div>
+</div>
+<a class="anchor" id="gada6452d1a52bb049d90bfaba44a88b3c"></a><!-- doxytag: member="DLISTUNR::elmmaxcount" ref="gada6452d1a52bb049d90bfaba44a88b3c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">DLISTUNR::elmmaxcount</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-                <span class="keywordflow">return</span> node;
-        }
+<p>Definition at line <a class="el" href="a00026_source.html#l00043">43</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (tmp &amp;&amp; tmp-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> == node) {
+</div>
+</div>
+<a class="anchor" id="ga384be6ddd260b20b9b6060579e53e78b"></a><!-- doxytag: member="DLISTUNR::entrycount" ref="ga384be6ddd260b20b9b6060579e53e78b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">DLISTUNR::entrycount</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-                <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>) {
-                        tmp-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = <a class="code" href="a00047.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node);
-                        <span class="keywordflow">goto</span> sdel;
-                }
+<p>Definition at line <a class="el" href="a00026_source.html#l00046">46</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-                tmp-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = node-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;     
-                tmp_next = tmp-&gt;<a class="code" href="a00012.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-                tmp_last = <a class="code" href="a00047.html#ga1ae823cfa1464a0eca0cd376a107b6d9">TREE_leftmost_sibling</a>(tmp_next);
+</div>
+</div>
+<a class="anchor" id="ga1e227c665237c422e471818cbc8008c6"></a><!-- doxytag: member="DLISTUNR_position::index" ref="ga1e227c665237c422e471818cbc8008c6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">DLISTUNR_position::index</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>                tmp_last-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = node-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                <a class="code" href="a00047.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node)-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = tmp_last;
+<p>Definition at line <a class="el" href="a00026_source.html#l00061">61</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-                <span class="keywordflow">do</span> {
-                        tmp_last-&gt;<a class="code" href="a00012.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tmp;
-                        <span class="keywordflow">if</span> (tmp_next == tmp_last) {
-                                <span class="keywordflow">break</span>;
-                        }
-                        tmp_last = tmp_last-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                } <span class="keywordflow">while</span>(tmp_last);                                      
+</div>
+</div>
+<a class="anchor" id="ga54f568b298b25c9e2c8d1b50dfc43a97"></a><!-- doxytag: member="DLISTUNR::root" ref="ga54f568b298b25c9e2c8d1b50dfc43a97" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00011.html">DLISTUNR_entry</a> <a class="el" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">DLISTUNR::root</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-                <span class="keywordflow">return</span> node;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-sdel:
+<p>Definition at line <a class="el" href="a00026_source.html#l00048">48</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        tmp = node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        <span class="keywordflow">if</span> (tmp) {
-                tmp-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a> = node-&gt;<a class="code" href="a00012.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-        tmp = <a class="code" href="a00047.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node);
-        <span class="keywordflow">if</span> (tmp) {
-                tmp-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = node-&gt;<a class="code" href="a00012.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-
-        <span class="keywordflow">return</span> node;
-}
-</pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:07 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: tagDBUF Struct Reference</title>
+<title>Simple data structures / objects in plain C: HEAP Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,74 +40,106 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">tagDBUF Struct Reference<div class="ingroups"><a class="el" href="a00039.html">DBUF</a></div></div>  </div>
+<div class="title">HEAP Struct Reference<div class="ingroups"><a class="el" href="a00049.html">HEAP</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="tagDBUF" -->
-<p><code>#include &lt;<a class="el" href="a00019_source.html">dbuf.h</a>&gt;</code></p>
+<!-- doxytag: class="HEAP" -->
+<p><code>#include &lt;<a class="el" href="a00032_source.html">heap.h</a>&gt;</code></p>
 
-<p><a href="a00059.html">List of all members.</a></p>
+<p><a href="a00066.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aa9240201492927bdd3029cd8582fc586">buf_used</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00032.html#aa0102894a26d562e126b76e7df87a143">HEAP_compare</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a58d5a3131976055b67894a0ba8467210">compare_func</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00019_source.html#l00018">18</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00032_source.html#l00023">23</a> of file <a class="el" href="a00032_source.html">heap.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a3ff05d9dd5224192d29ab9ba86f942e0"></a><!-- doxytag: member="tagDBUF::buf" ref="a3ff05d9dd5224192d29ab9ba86f942e0" args="" -->
+<a class="anchor" id="ae4ae987dedca7bef9a8eb5628a8af092"></a><!-- doxytag: member="HEAP::buffer" ref="ae4ae987dedca7bef9a8eb5628a8af092" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t* <a class="el" href="a00007.html#a3ff05d9dd5224192d29ab9ba86f942e0">tagDBUF::buf</a></td>
+          <td class="memname">unsigned char* <a class="el" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">HEAP::buffer</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00019_source.html#l00020">20</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00032_source.html#l00029">29</a> of file <a class="el" href="a00032_source.html">heap.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9bf75cec63f6286589641d7a7fffa9e9"></a><!-- doxytag: member="tagDBUF::buf_size" ref="a9bf75cec63f6286589641d7a7fffa9e9" args="" -->
+<a class="anchor" id="a58d5a3131976055b67894a0ba8467210"></a><!-- doxytag: member="HEAP::compare_func" ref="a58d5a3131976055b67894a0ba8467210" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="a00007.html#a9bf75cec63f6286589641d7a7fffa9e9">tagDBUF::buf_size</a></td>
+          <td class="memname"><a class="el" href="a00032.html#aa0102894a26d562e126b76e7df87a143">HEAP_compare</a> <a class="el" href="a00007.html#a58d5a3131976055b67894a0ba8467210">HEAP::compare_func</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00019_source.html#l00022">22</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00032_source.html#l00031">31</a> of file <a class="el" href="a00032_source.html">heap.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aa9240201492927bdd3029cd8582fc586"></a><!-- doxytag: member="tagDBUF::buf_used" ref="aa9240201492927bdd3029cd8582fc586" args="" -->
+<a class="anchor" id="a0dd2675a99a68e7109d4d890fb4ce8f6"></a><!-- doxytag: member="HEAP::elmcount" ref="a0dd2675a99a68e7109d4d890fb4ce8f6" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="a00007.html#aa9240201492927bdd3029cd8582fc586">tagDBUF::buf_used</a></td>
+          <td class="memname">size_t <a class="el" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">HEAP::elmcount</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00019_source.html#l00021">21</a> of file <a class="el" href="a00019_source.html">dbuf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00032_source.html#l00025">25</a> of file <a class="el" href="a00032_source.html">heap.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a11522bc8e4a0ea00b3ce3b6893eba413"></a><!-- doxytag: member="HEAP::elmmaxcount" ref="a11522bc8e4a0ea00b3ce3b6893eba413" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">HEAP::elmmaxcount</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00032_source.html#l00026">26</a> of file <a class="el" href="a00032_source.html">heap.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aae914a0aafd256e96e7742eaed23633a"></a><!-- doxytag: member="HEAP::elmsize" ref="aae914a0aafd256e96e7742eaed23633a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">HEAP::elmsize</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00032_source.html#l00027">27</a> of file <a class="el" href="a00032_source.html">heap.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00019_source.html">dbuf.h</a></li>
+<li><a class="el" href="a00032_source.html">heap.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:07 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

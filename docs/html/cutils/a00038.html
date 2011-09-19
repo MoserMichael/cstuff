@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: HASH</title>
+<title>Simple data structures / objects in plain C: tree.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,13 @@
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -33,1189 +39,108 @@
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">HASH</div>  </div>
-<div class="ingroups"><a class="el" href="a00037.html">HASH_entry</a></div></div>
-<div class="contents">
-
-<p>Hash table that is implemented as bucket hash table.  
-<a href="#details">More...</a></p>
-<div class="dynheader">
-Collaboration diagram for HASH:</div>
-<div class="dyncontent">
-<center><table><tr><td><img src="a00038.png" border="0" alt="" usemap="#a00038"/>
-<map name="a00038" id="a00038">
-<area shape="rect" id="node2" href="a00037.html" title="Entry in bucket hash table, add to structure as member in order to make structure storable in hash ta..." alt="" coords="5,5,101,35"/></map>
-</td></tr></table></center>
+<div class="title">tree.h File Reference</div>  </div>
 </div>
+<div class="contents">
+<div class="textblock"><code>#include &lt;<a class="el" href="a00018_source.html">cutils/base.h</a>&gt;</code><br/>
+</div>
+<p><a href="a00038_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">HASH</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html">tagTREENODE</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gad6e4f490068b19fa3fea075d3b0180f7">HASH_BUCKET_FOREACH</a>(cur, bucket)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga7a866beabda7e0bd95e19ae7c708c8c0">HASH_FOREACH_KEY</a>(cur, hash, key, key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: iterate over all elements that match a given key (multimap)  <a href="#ga7a866beabda7e0bd95e19ae7c708c8c0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gad5d12368e1648a383d048e7fed56fa82">HASH_DELETEALL_KEY</a>(cur, hash, key, key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in loop code.  <a href="#gad5d12368e1648a383d048e7fed56fa82"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga6bdd6abcda051166ee1ce8586b80cd8a">HASH_DELETEALL_KEY_END</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga635ee4184a9ca1e86138aec673a0a9b1">HASH_FOREACH</a>(cur, hash)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: iterate over all elements in hash table.  <a href="#ga635ee4184a9ca1e86138aec673a0a9b1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga1dd13a6578ab349c2cbac48304a0f5e1">HASH_FOREACH_END</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: close block opened by HASH_FOREACH.  <a href="#ga1dd13a6578ab349c2cbac48304a0f5e1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga1193ff43ed7c2f743c974d75c39efc93">HASH_DELETEALL</a>(cur, hash)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: iterate over all elements in hash table and delete them from the table; allow the user to free the memory of each element.  <a href="#ga1193ff43ed7c2f743c974d75c39efc93"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gaee7185cd320df1c4a801762c8f5201b6">HASH_DELETEALL_END</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: close block opened by HASH_DELETEALL.  <a href="#gaee7185cd320df1c4a801762c8f5201b6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#a95b940d1ebbfce437fb43d6cfb4b23e1">TREE_NEXTLEVEL_LAST</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#a719ee37d46bdbf50728e0b6658f21214">TREE_NEXTLEVEL_LEFT</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>(current, node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>(current, node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current, tree)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gab1367d2f48012bb9b750a0609d1305cf">TREE_FOREACH_PREORDER_END</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current, tree)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00015.html">tagTREENODE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga105c1d47dd05c5293aff00cecacb8b82">TREENODE</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> )(<a class="el" href="a00015.html">TREENODE</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> )(<a class="el" href="a00015.html">TREENODE</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gad3070030c101f9e06861f273769c333b">TREE_VISITOR_EXT_V</a> )(<a class="el" href="a00015.html">TREENODE</a> *entry, <a class="el" href="a00053.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> visit, void *context)</td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> { <a class="el" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>, 
+<a class="el" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>
+ }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> { <a class="el" href="a00053.html#gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f">TREE_PREORDER</a>, 
+<a class="el" href="a00053.html#gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e">TREE_POSTORDER</a>
+ }</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga73ce0ca18399c5db0bac0491aeadba8d">HASH_init</a> (<a class="el" href="a00003.html">HASH</a> *hash, size_t buckets, int ismultimap, <a class="el" href="a00037.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key, <a class="el" href="a00037.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> hash_func)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Object constructor; initialise the hash that allows one entry for a given key.  <a href="#ga73ce0ca18399c5db0bac0491aeadba8d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gacef4d862b25db1563ce621265299fb2e">HASH_resize</a> (<a class="el" href="a00003.html">HASH</a> *hash, size_t buckets)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">resize the hash table  <a href="#gacef4d862b25db1563ce621265299fb2e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga889a4afc9437f453ed7db27d7bd39d3d">HASH_free</a> (<a class="el" href="a00003.html">HASH</a> *hash)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Object destructor; frees a hash table.  <a href="#ga889a4afc9437f453ed7db27d7bd39d3d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga8924e383f82b78dcb693ffcab49188b0">HASH_size</a> (<a class="el" href="a00003.html">HASH</a> *hash)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of elements in hash table  <a href="#ga8924e383f82b78dcb693ffcab49188b0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga072fef06fb9a516f47771ddd3946bf20">HASH_find</a> (<a class="el" href="a00003.html">HASH</a> *phash, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find entry with given key in hash table; for multimaps this will return the first occurence of the key.  <a href="#ga072fef06fb9a516f47771ddd3946bf20"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga2f20017ef2a49dc235a8bea78b254dd6">HASH_find_next</a> (<a class="el" href="a00003.html">HASH</a> *phash, <a class="el" href="a00004.html">HASH_Entry</a> *prev, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">for multimaps - find next occurence of key  <a href="#ga2f20017ef2a49dc235a8bea78b254dd6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#gaf9ce37d092fe7b3ae217336ef623a7dc">HASH_insert</a> (<a class="el" href="a00003.html">HASH</a> *phash, <a class="el" href="a00004.html">HASH_Entry</a> *entry, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry in hash table  <a href="#gaf9ce37d092fe7b3ae217336ef623a7dc"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga9546382a27adc8b91d70cd6e4c4723c3">HASH_unlink</a> (<a class="el" href="a00003.html">HASH</a> *hash, void *key, ssize_t key_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find first hash table entry and unlink it from its bucket. The caller of this function has to free memory held by hash table entry.  <a href="#ga9546382a27adc8b91d70cd6e4c4723c3"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga96c141f22c63392dfe758de963ffe8f5">HASH_foreach_key</a> (<a class="el" href="a00003.html">HASH</a> *hash, void *key, ssize_t key_size, <a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the hash table that match a given key and invoke callback with those elements.  <a href="#ga96c141f22c63392dfe758de963ffe8f5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga251e1a1fd0e312bae674631001fd4b55">HASH_foreach</a> (<a class="el" href="a00003.html">HASH</a> *hash, <a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the hash table and invoke callback with each element. Equivalent of Lisp foldl,mapcar and friends.  <a href="#ga251e1a1fd0e312bae674631001fd4b55"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga58acba9b6611fe07a44253eeb4307e09">HASH_findif</a> (<a class="el" href="a00003.html">HASH</a> *hash, <a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, void *context, int *retval)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the hash. callback is invoked for each element of the list, when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga58acba9b6611fe07a44253eeb4307e09"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga0ed6fe026b7e8aef4611325ab2ffdc47">HASH_deleteall</a> (<a class="el" href="a00003.html">HASH</a> *hash, int offset_of_link, <a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> on_delete, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the hash table and delete them.  <a href="#ga0ed6fe026b7e8aef4611325ab2ffdc47"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ga3482872e1f844042afc76de5136bff3f">HASH_check</a> (<a class="el" href="a00003.html">HASH</a> *hash)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of bucket hash structure.  <a href="#ga3482872e1f844042afc76de5136bff3f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a> (<a class="el" href="a00015.html">TREENODE</a> *tree)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga27a00a38d3c36cab6ff6adb7a831c4ce">TREE_parent</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga1ae823cfa1464a0eca0cd376a107b6d9">TREE_leftmost_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *current, <a class="el" href="a00015.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga530586b2042c37e278d8666c75978497">TREE_insert_left_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *current, <a class="el" href="a00015.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a> (<a class="el" href="a00015.html">TREENODE</a> *parent, <a class="el" href="a00015.html">TREENODE</a> *newnode, <a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, int node_is_leaf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gab2df5d5218e9b473a61b0cbfdb2ae8d0">TREE_merge_childs</a> (<a class="el" href="a00015.html">TREENODE</a> *parent, <a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, <a class="el" href="a00015.html">TREENODE</a> *newnode)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga7beb2cf4338f19f13977cc49b3f2cd43">TREE_unlink_node</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga53ff6ce0b781ef3165b5239ba466a7a3">TREE_count_child_nodes</a> (<a class="el" href="a00015.html">TREENODE</a> *current)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a> (<a class="el" href="a00015.html">TREENODE</a> *current)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga0843046582beafa1e2158cf0261fe8a1">TREE_foreach_child</a> (<a class="el" href="a00015.html">TREENODE</a> *lst, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list of child nodes, callback is invoked for either element of the list. list is traversed from first element to the last element.  <a href="a00053.html#ga0843046582beafa1e2158cf0261fe8a1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gacb91cd0e28147dc399cba4cc4ddea1c1">TREE_foreach_child_reverse</a> (<a class="el" href="a00015.html">TREENODE</a> *lst, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga2a122a49ba6652748765845608a019f3">TREE_findif_child</a> (<a class="el" href="a00015.html">TREENODE</a> *tree, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the list of child nodes. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00053.html#ga2a122a49ba6652748765845608a019f3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga9332aebaeaae4fa46b2668766d07f40c">TREE_findif_child_reverse</a> (<a class="el" href="a00015.html">TREENODE</a> *tree, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a> (<a class="el" href="a00015.html">TREENODE</a> *current, <a class="el" href="a00015.html">TREENODE</a> *prev)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gae16d9f6e7f210f3596a00688b0598a05">TREE_foreach_preorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga5feac0050d51b2ee0886cabe2bcf201b">TREE_find_preorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga272a19d0e9bb16460b010d7c38f6038a">TREE_foreach_postorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga9b8add397903fd2bd602953efa922101">TREE_find_postorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga82d94f5f16e87e8dc6047797bda2e080">TREE_check_tree</a> (<a class="el" href="a00015.html">TREENODE</a> *root)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check tree for consistency errors  <a href="a00053.html#ga82d94f5f16e87e8dc6047797bda2e080"></a><br/></td></tr>
 </table>
-<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>Hash table that is implemented as bucket hash table. </p>
-<p>Element of has is an user defined entry which embeds <a class="el" href="a00004.html">HASH_Entry</a> structure. </p>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="gad6e4f490068b19fa3fea075d3b0180f7"></a><!-- doxytag: member="bhash.h::HASH_BUCKET_FOREACH" ref="gad6e4f490068b19fa3fea075d3b0180f7" args="(cur, bucket)" -->
+<a class="anchor" id="a95b940d1ebbfce437fb43d6cfb4b23e1"></a><!-- doxytag: member="tree.h::TREE_NEXTLEVEL_LAST" ref="a95b940d1ebbfce437fb43d6cfb4b23e1" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define HASH_BUCKET_FOREACH</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">cur, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bucket&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((cur) = (<a class="code" href="a00004.html">HASH_Entry</a> *) ((bucket)-&gt;next);\
-                (<a class="code" href="a00011.html">SRING</a> *) (cur) != (bucket);\
-                (cur) = (<a class="code" href="a00004.html">HASH_Entry</a> *) (cur)-&gt;entry.next )
-</pre></div>
-<p>Definition at line <a class="el" href="a00017_source.html#l00190">190</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga1193ff43ed7c2f743c974d75c39efc93"></a><!-- doxytag: member="bhash.h::HASH_DELETEALL" ref="ga1193ff43ed7c2f743c974d75c39efc93" args="(cur, hash)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define HASH_DELETEALL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">cur, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">hash&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{ \
-        <span class="keywordtype">size_t</span> HASH_delallforeach_i##cur = 0; \
-        <span class="keywordflow">for</span>(HASH_delallforeach_i##cur = 0; HASH_delallforeach_i##cur &lt; (hash)-&gt;buckets_size; HASH_delallforeach_i##cur ++) \
-        <span class="keywordflow">while</span>( !<a class="code" href="a00046.html#ga23aab5b8a7efeacf278b444bb785bc1d" title="checks if argument list is empty">SRING_isempty</a>( &amp;(hash)-&gt;buckets[ HASH_delallforeach_i##cur ]) ) { \
-                (cur) = (<a class="code" href="a00004.html">HASH_Entry</a> *) <a class="code" href="a00046.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>( &amp;(hash)-&gt;buckets[ HASH_delallforeach_i##cur ] );\
-                (hash)-&gt;elmcount--;
-</pre></div>
-<p>Macro: iterate over all elements in hash table and delete them from the table; allow the user to free the memory of each element. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cur</td><td>(type <a class="el" href="a00004.html">HASH_Entry</a> *) </td></tr>
-    <tr><td class="paramname">hash</td><td>(type <a class="el" href="a00003.html">HASH</a> *) </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00267">267</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="gaee7185cd320df1c4a801762c8f5201b6"></a><!-- doxytag: member="bhash.h::HASH_DELETEALL_END" ref="gaee7185cd320df1c4a801762c8f5201b6" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define HASH_DELETEALL_END</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">}\
-}
-</pre></div>
-<p>Macro: close block opened by HASH_DELETEALL. </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00278">278</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="gad5d12368e1648a383d048e7fed56fa82"></a><!-- doxytag: member="bhash.h::HASH_DELETEALL_KEY" ref="gad5d12368e1648a383d048e7fed56fa82" args="(cur, hash, key, key_size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define HASH_DELETEALL_KEY</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">cur, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">hash, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">key, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">key_size&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{  \
-        <a class="code" href="a00004.html">HASH_Entry</a> * <a class="code" href="a00038.html#gad5d12368e1648a383d048e7fed56fa82" title="Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in lo...">HASH_DELETEALL_KEY</a>##next = (<a class="code" href="a00004.html">HASH_Entry</a> *) 0xFFFFFFFF; \
-        <span class="keywordflow">for</span>( (cur) = <a class="code" href="a00038.html#ga9546382a27adc8b91d70cd6e4c4723c3" title="find first hash table entry and unlink it from its bucket. The caller of this function has to free me...">HASH_unlink</a>( (hash), (key), (key_size ) ) ; \
-                 (cur) &amp;&amp; (<a class="code" href="a00038.html#gad5d12368e1648a383d048e7fed56fa82" title="Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in lo...">HASH_DELETEALL_KEY</a>##next); \
-                 (<a class="code" href="a00038.html#gad5d12368e1648a383d048e7fed56fa82" title="Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in lo...">HASH_DELETEALL_KEY</a>##next) =  <a class="code" href="a00038.html#ga2f20017ef2a49dc235a8bea78b254dd6" title="for multimaps - find next occurence of key">HASH_find_next</a>( (hash), (cur), (key), (key_size) ) ) { \
-                 <span class="keywordflow">if</span> ((<a class="code" href="a00038.html#gad5d12368e1648a383d048e7fed56fa82" title="Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in lo...">HASH_DELETEALL_KEY</a>##next) != (<a class="code" href="a00004.html">HASH_Entry</a> *) 0xFFFFFFFF) { \
-                         <a class="code" href="a00046.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>( (<a class="code" href="a00011.html">SRING</a> *) (cur) ); \
-                         (hash)-&gt;elmcount--; \
-                         (cur) = (<a class="code" href="a00038.html#gad5d12368e1648a383d048e7fed56fa82" title="Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in lo...">HASH_DELETEALL_KEY</a>##next); \
-                 }
-</pre></div>
-<p>Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in loop code. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cur</td><td>(type <a class="el" href="a00004.html">HASH_Entry</a> *) current entry </td></tr>
-    <tr><td class="paramname">hash</td><td>(type <a class="el" href="a00003.html">HASH</a> *) the object </td></tr>
-    <tr><td class="paramname">key</td><td>(type void *) the key </td></tr>
-    <tr><td class="paramname">key_size</td><td>(type size_t) length of key </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00226">226</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga6bdd6abcda051166ee1ce8586b80cd8a"></a><!-- doxytag: member="bhash.h::HASH_DELETEALL_KEY_END" ref="ga6bdd6abcda051166ee1ce8586b80cd8a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define HASH_DELETEALL_KEY_END</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">} \
-}
-</pre></div>
-<p>Definition at line <a class="el" href="a00017_source.html#l00238">238</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga635ee4184a9ca1e86138aec673a0a9b1"></a><!-- doxytag: member="bhash.h::HASH_FOREACH" ref="ga635ee4184a9ca1e86138aec673a0a9b1" args="(cur, hash)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define HASH_FOREACH</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">cur, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">hash&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{ \
-        <span class="keywordtype">size_t</span> HASH_foreach_i##cur = 0; \
-        <span class="keywordflow">for</span>(HASH_foreach_i##cur = 0; HASH_foreach_i##cur &lt; (hash)-&gt;buckets_size; HASH_foreach_i##cur ++) \
-                <a class="code" href="a00038.html#gad6e4f490068b19fa3fea075d3b0180f7">HASH_BUCKET_FOREACH</a>( cur, &amp;(hash)-&gt;buckets[ HASH_foreach_i##cur ] ) {
-</pre></div>
-<p>Macro: iterate over all elements in hash table. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cur</td><td>(type <a class="el" href="a00004.html">HASH_Entry</a> *) </td></tr>
-    <tr><td class="paramname">hash</td><td>(type <a class="el" href="a00003.html">HASH</a> *) </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00248">248</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga1dd13a6578ab349c2cbac48304a0f5e1"></a><!-- doxytag: member="bhash.h::HASH_FOREACH_END" ref="ga1dd13a6578ab349c2cbac48304a0f5e1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define HASH_FOREACH_END</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">}\
-}
-</pre></div>
-<p>Macro: close block opened by HASH_FOREACH. </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00258">258</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga7a866beabda7e0bd95e19ae7c708c8c0"></a><!-- doxytag: member="bhash.h::HASH_FOREACH_KEY" ref="ga7a866beabda7e0bd95e19ae7c708c8c0" args="(cur, hash, key, key_size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define HASH_FOREACH_KEY</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">cur, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">hash, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">key, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">key_size&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>( (cur) = <a class="code" href="a00038.html#ga072fef06fb9a516f47771ddd3946bf20" title="find entry with given key in hash table; for multimaps this will return the first occurence of the ke...">HASH_find</a>( (hash), (key), (key_size ) ) ; \
-                  (cur); \
-                  (cur) =  <a class="code" href="a00038.html#ga2f20017ef2a49dc235a8bea78b254dd6" title="for multimaps - find next occurence of key">HASH_find_next</a>( (hash), (cur), (key), (key_size) ) )
-</pre></div>
-<p>Macro: iterate over all elements that match a given key (multimap) </p>
-<p>Usage: <a class="el" href="a00004.html">HASH_Entry</a> *cur;</p>
-<p><a class="el" href="a00038.html#ga7a866beabda7e0bd95e19ae7c708c8c0" title="Macro: iterate over all elements that match a given key (multimap)">HASH_FOREACH_KEY(cur,hash)</a> { =do something with cur - don't delete it= }</p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cur</td><td>(type <a class="el" href="a00004.html">HASH_Entry</a> *) current entry </td></tr>
-    <tr><td class="paramname">hash</td><td>(type <a class="el" href="a00003.html">HASH</a> *) the object </td></tr>
-    <tr><td class="paramname">key</td><td>(type void *) the key </td></tr>
-    <tr><td class="paramname">key_size</td><td>(type size_t) length of key </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00211">211</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ga3482872e1f844042afc76de5136bff3f"></a><!-- doxytag: member="bhash.h::HASH_check" ref="ga3482872e1f844042afc76de5136bff3f" args="(HASH *hash)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int HASH_check </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em></td><td>)</td>
-          <td></td>
+          <td class="memname">#define TREE_NEXTLEVEL_LAST</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>check consistency of bucket hash structure. </p>
+<p>Definition at line <a class="el" href="a00038_source.html#l00014">14</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00017_source.html#l00386">386</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span>  i,nbuck = hash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>;
-        <span class="keywordtype">size_t</span>  count_of_elem = 0;
-        <a class="code" href="a00004.html">HASH_Entry</a>  *cur;
-        
-        <span class="keywordflow">for</span>(i=0; i &lt; nbuck; i++) {
-                <span class="keywordflow">if</span> (!<a class="code" href="a00046.html#ga7d49e006bf25f2d83d15b70caf9f3254">SRING_check</a>(hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> + i)) {
-                   <span class="keywordflow">return</span> 0;
-                }
-        }
-
-        <a class="code" href="a00038.html#ga635ee4184a9ca1e86138aec673a0a9b1" title="Macro: iterate over all elements in hash table.">HASH_FOREACH</a>(cur,hash)
-                count_of_elem++;
-        <a class="code" href="a00038.html#ga1dd13a6578ab349c2cbac48304a0f5e1" title="Macro: close block opened by HASH_FOREACH.">HASH_FOREACH_END</a>
-        
-        if (count_of_elem != hash-&gt;elmcount) {
-                <span class="keywordflow">return</span> 0;
-        }
-
-        <span class="keywordflow">return</span> 1;
-}
-</pre></div>
 </div>
 </div>
-<a class="anchor" id="ga0ed6fe026b7e8aef4611325ab2ffdc47"></a><!-- doxytag: member="bhash.h::HASH_deleteall" ref="ga0ed6fe026b7e8aef4611325ab2ffdc47" args="(HASH *hash, int offset_of_link, HASH_VISITOR on_delete, void *context)" -->
+<a class="anchor" id="a719ee37d46bdbf50728e0b6658f21214"></a><!-- doxytag: member="tree.h::TREE_NEXTLEVEL_LEFT" ref="a719ee37d46bdbf50728e0b6658f21214" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void HASH_deleteall </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>offset_of_link</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>on_delete</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define TREE_NEXTLEVEL_LEFT</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>iterate over all entries of the hash table and delete them. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">on_delete</td><td>(in) optional callback, call prior to freing object. </td></tr>
-    <tr><td class="paramname">offset_of_link</td><td>(in) offset of <a class="el" href="a00004.html">HASH_Entry</a> in embedded structure. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Definition at line <a class="el" href="a00038_source.html#l00015">15</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00017_source.html#l00370">370</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">HASH_Entry</a> *cur;
-
-        <a class="code" href="a00038.html#ga1193ff43ed7c2f743c974d75c39efc93" title="Macro: iterate over all elements in hash table and delete them from the table; allow the user to free...">HASH_DELETEALL</a>(cur,hash);
-                <span class="keywordflow">if</span> (on_delete) {
-                        on_delete(cur,context);
-                } 
-                free( <a class="code" href="a00015.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(cur,offset_of_link) );
-        <a class="code" href="a00038.html#gaee7185cd320df1c4a801762c8f5201b6" title="Macro: close block opened by HASH_DELETEALL.">HASH_DELETEALL_END</a>
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga072fef06fb9a516f47771ddd3946bf20"></a><!-- doxytag: member="bhash.h::HASH_find" ref="ga072fef06fb9a516f47771ddd3946bf20" args="(HASH *phash, void *key, ssize_t key_size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">HASH_Entry</a>* HASH_find </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>phash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ssize_t&#160;</td>
-          <td class="paramname"><em>key_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>find entry with given key in hash table; for multimaps this will return the first occurence of the key. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">phash</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">key</td><td>(in) pointer to key </td></tr>
-    <tr><td class="paramname">key_size</td><td>(in) size of key</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to entry if found; NULL if not found </dd></dl>
-
-<p>Definition at line <a class="el" href="a00016_source.html#l00119">119</a> of file <a class="el" href="a00016_source.html">bhash.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash = phash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );
-        <span class="keywordtype">int</span>             bucket =   <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
-        <a class="code" href="a00011.html">SRING</a>   *abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
-        
-        <span class="keywordflow">return</span> <a class="code" href="a00016.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga2f20017ef2a49dc235a8bea78b254dd6"></a><!-- doxytag: member="bhash.h::HASH_find_next" ref="ga2f20017ef2a49dc235a8bea78b254dd6" args="(HASH *phash, HASH_Entry *prev, void *key, ssize_t key_size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">HASH_Entry</a>* HASH_find_next </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>phash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td>
-          <td class="paramname"><em>prev</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ssize_t&#160;</td>
-          <td class="paramname"><em>key_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>for multimaps - find next occurence of key </p>
-<p>Usage to retrive all occurences of a key</p>
-<p><a class="el" href="a00004.html">HASH_Entry</a> * entry; for( entry = HASH_find(hash, key, sizeof(key) ) ; entry; entry = HASH_find_next(hash, entry, key, sizeof(key) ) {</p>
-<p>}</p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">phash</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">prev</td><td>(in) value returned by first invocation of VBUCKETHASH_find or previous invocation of VBUCKETHASH_find_next </td></tr>
-    <tr><td class="paramname">key</td><td>(in) pointer to key </td></tr>
-    <tr><td class="paramname">key_size</td><td>(in) size of key. If key is a null terminated string then pass VHASH_STRING as value. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to entry if found; NULL if not found </dd></dl>
-
-<p>Definition at line <a class="el" href="a00016_source.html#l00128">128</a> of file <a class="el" href="a00016_source.html">bhash.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">HASH_Entry</a> *next;
-
-        <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00037.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
-
-        next = (<a class="code" href="a00004.html">HASH_Entry</a> *) prev-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a>.<a class="code" href="a00011.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
-        if (!next) {
-                <span class="keywordflow">return</span> 0;
-        }
-        <span class="keywordflow">if</span> (next-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> != prev-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
-        <span class="keywordflow">if</span> (phash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>( next, key, key_size ) != 0) {
-                <span class="keywordflow">return</span> 0;
-        }
-        <span class="keywordflow">return</span> next;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga58acba9b6611fe07a44253eeb4307e09"></a><!-- doxytag: member="bhash.h::HASH_findif" ref="ga58acba9b6611fe07a44253eeb4307e09" args="(HASH *hash, HASH_VISITOR eval_func, void *context, int *retval)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00004.html">HASH_Entry</a>* HASH_findif </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval_func</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>retval</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>find an element within the hash. callback is invoked for each element of the list, when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td>(in) the object. </td></tr>
-    <tr><td class="paramname">eval_func</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
-    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
-    <tr><td class="paramname">retval</td><td>(out) optional - the first non zero value returned by eval callback, if NULL then ignored. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00339">339</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> i;
-        <a class="code" href="a00011.html">SRING</a> *cur;
-        <span class="keywordtype">int</span> ret;        
-
-        <span class="keywordflow">if</span> (!eval_func) {
-                <span class="keywordflow">return</span> 0;
-        }
-
-        <span class="keywordflow">for</span>(i=0; i&lt;hash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>; i++) {
-                        <a class="code" href="a00046.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>( cur, &amp;hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[i] ) {
-                                        ret = eval_func( (<a class="code" href="a00004.html">HASH_Entry</a>*) cur, context);
-                                        <span class="keywordflow">if</span> (ret) {
-                                                <span class="keywordflow">if</span> (retval) {
-                                                        *retval = ret;
-                                                }
-                                                <span class="keywordflow">return</span> (<a class="code" href="a00004.html">HASH_Entry</a> *) cur;
-                                        }               
-                        }
-        }       
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga251e1a1fd0e312bae674631001fd4b55"></a><!-- doxytag: member="bhash.h::HASH_foreach" ref="ga251e1a1fd0e312bae674631001fd4b55" args="(HASH *hash, HASH_VISITOR eval_func, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void HASH_foreach </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval_func</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>iterate over all entries of the hash table and invoke callback with each element. Equivalent of Lisp foldl,mapcar and friends. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td></td></tr>
-    <tr><td class="paramname">eval_func</td><td>function invoked for every element in hash table. </td></tr>
-    <tr><td class="paramname">context</td><td>data pointer passed to every invocation of eval_func </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00315">315</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">HASH_Entry</a> *cur;
-
-        <span class="keywordflow">if</span> (!eval_func) {
-                <span class="keywordflow">return</span>;
-        }
-
-        <a class="code" href="a00038.html#ga635ee4184a9ca1e86138aec673a0a9b1" title="Macro: iterate over all elements in hash table.">HASH_FOREACH</a>(cur,hash)
-                eval_func( cur, context);
-        <a class="code" href="a00038.html#ga1dd13a6578ab349c2cbac48304a0f5e1" title="Macro: close block opened by HASH_FOREACH.">HASH_FOREACH_END</a>
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga96c141f22c63392dfe758de963ffe8f5"></a><!-- doxytag: member="bhash.h::HASH_foreach_key" ref="ga96c141f22c63392dfe758de963ffe8f5" args="(HASH *hash, void *key, ssize_t key_size, HASH_VISITOR eval_func, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void HASH_foreach_key </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ssize_t&#160;</td>
-          <td class="paramname"><em>key_size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00037.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval_func</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>iterate over all entries of the hash table that match a given key and invoke callback with those elements. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td>(in) the object</td></tr>
-    <tr><td class="paramname">key</td><td>(in) key </td></tr>
-    <tr><td class="paramname">key_size</td><td>(in) size of key</td></tr>
-    <tr><td class="paramname">eval_func</td><td>(in) function invoked for every element in hash table. </td></tr>
-    <tr><td class="paramname">context</td><td>(in) data pointer passed to every invocation of eval_func </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00295">295</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">HASH_Entry</a> *cur;
-
-        <span class="keywordflow">if</span> (!eval_func) {
-                <span class="keywordflow">return</span>;
-        }
-        <a class="code" href="a00038.html#ga7a866beabda7e0bd95e19ae7c708c8c0" title="Macro: iterate over all elements that match a given key (multimap)">HASH_FOREACH_KEY</a>(cur,hash,key,key_size) {
-                eval_func( cur, context);
-        }
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga889a4afc9437f453ed7db27d7bd39d3d"></a><!-- doxytag: member="bhash.h::HASH_free" ref="ga889a4afc9437f453ed7db27d7bd39d3d" args="(HASH *hash)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void HASH_free </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Object destructor; frees a hash table. </p>
-<p>All elements currently contained in hash table will remain in memory.</p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td>(in out) the object </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00119">119</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-   <span class="keywordflow">if</span> (hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>) {
-        free(hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>);
-                hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = 0;
-   }
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga73ce0ca18399c5db0bac0491aeadba8d"></a><!-- doxytag: member="bhash.h::HASH_init" ref="ga73ce0ca18399c5db0bac0491aeadba8d" args="(HASH *hash, size_t buckets, int ismultimap, HASH_COMPARE_KEY compare_key, HASH_FUNCTION hash_func)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int HASH_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>buckets</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>ismultimap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00037.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a>&#160;</td>
-          <td class="paramname"><em>compare_key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00037.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a>&#160;</td>
-          <td class="paramname"><em>hash_func</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Object constructor; initialise the hash that allows one entry for a given key. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td>(out) the object. </td></tr>
-    <tr><td class="paramname">buckets</td><td>(in) number of buckets - will be rounded to closes power of two (i.e. number of arrays of linked lists structures, each separate list holds elements with same hash number). </td></tr>
-    <tr><td class="paramname">hash_func</td><td>(in) pointer to hash function </td></tr>
-    <tr><td class="paramname">compare</td><td>(in) pointer to compare function; compares if two keys are equal, (called when hash value of two entries is equal)</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>0 if ok </dd></dl>
-
-<p>Definition at line <a class="el" href="a00016_source.html#l00013">13</a> of file <a class="el" href="a00016_source.html">bhash.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> i;
-
-        buckets = <a class="code" href="a00035.html#a191e663cb1cc920f6b50f17567ea8c5c">UTIL_round_to_power_of_n</a>( buckets );
-
-
-        hash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> = 0;
-
-        <span class="keywordflow">if</span> (!hash_func) {
-          hash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = <a class="code" href="a00024.html#a1498645507ca3a2df89dabf640fde50d" title="One at a time by Bob Jenkins.">HASHFUNCTION_Bob_Jenkins_one_at_a_time</a>;
-        } <span class="keywordflow">else</span> {
-          hash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a> = hash_func;
-        }
-        hash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a> = compare_key;
-
-        hash-&gt;<a class="code" href="a00037.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a> = ismultimap;
-
-        hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a> = (<a class="code" href="a00011.html">SRING</a> *) malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00011.html">SRING</a>) * buckets );
-        <span class="keywordflow">if</span> (!hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>) {
-                <span class="keywordflow">return</span> -1;
-        }
-        hash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a> = buckets;
-        
-        <span class="keywordflow">for</span>(i=0;i&lt;buckets;i++) {
-          <a class="code" href="a00046.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>(  &amp;hash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[i] );
-        }
-
-
-        hash-&gt;<a class="code" href="a00037.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a> = 2;
-        hash-&gt;<a class="code" href="a00037.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a> = 3;
-
-        hash-&gt;<a class="code" href="a00037.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a> = (buckets * hash-&gt;<a class="code" href="a00037.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a>) / hash-&gt;<a class="code" href="a00037.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a>;
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gaf9ce37d092fe7b3ae217336ef623a7dc"></a><!-- doxytag: member="bhash.h::HASH_insert" ref="gaf9ce37d092fe7b3ae217336ef623a7dc" args="(HASH *phash, HASH_Entry *entry, void *key, ssize_t key_size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int HASH_insert </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>phash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">HASH_Entry</a> *&#160;</td>
-          <td class="paramname"><em>entry</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ssize_t&#160;</td>
-          <td class="paramname"><em>key_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>insert new entry in hash table </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">key</td><td>(in) key </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of key. If key is a null terminated string then pass VHASH_STRING as value. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00016_source.html#l00149">149</a> of file <a class="el" href="a00016_source.html">bhash.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
-        <span class="keywordtype">int</span>             bucket;
-        <a class="code" href="a00011.html">SRING</a>   *abucket,*fnd;
-
-        <span class="keywordflow">if</span> ((phash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a> + 1) &gt;= phash-&gt;<a class="code" href="a00037.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a>) {
-
-           <span class="keywordflow">if</span> (<a class="code" href="a00038.html#gacef4d862b25db1563ce621265299fb2e" title="resize the hash table">HASH_resize</a>(phash, 2 * phash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>)) {
-             <span class="keywordflow">return</span> -1;
-           }
-        }
-
-        hash = phash-&gt;<a class="code" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a>( key, key_size );       
-        entry-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> = hash;
-
-        bucket =   <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;<a class="code" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a>);
-        abucket = &amp;phash-&gt;<a class="code" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a>[ bucket ];   
-        
-        
-        fnd = (<a class="code" href="a00011.html">SRING</a> *) <a class="code" href="a00016.html#aa0f01a8d9a72c6a69d0891fd81076bee">HASH_find_in_bucket</a>( abucket, hash, phash-&gt;<a class="code" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a>, key, key_size );
-
-        <span class="comment">/* multimap allows only one entry with the given key */</span>
-        <span class="keywordflow">if</span> (!phash-&gt;<a class="code" href="a00037.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a> &amp;&amp; fnd) {
-                <span class="keywordflow">return</span> -1;
-        }
-
-        <span class="keywordflow">if</span> (fnd) {
-                <a class="code" href="a00046.html#ga6a2a1950260f3fb3d385bde480e5c976" title="insert new entry after a given entry.">SRING_insert_after</a>( fnd, &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
-        } <span class="keywordflow">else</span> {
-                <a class="code" href="a00046.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( abucket,  &amp;entry-&gt;<a class="code" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a> );
-        }
-        phash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>++;
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gacef4d862b25db1563ce621265299fb2e"></a><!-- doxytag: member="bhash.h::HASH_resize" ref="gacef4d862b25db1563ce621265299fb2e" args="(HASH *hash, size_t buckets)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int HASH_resize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>buckets</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>resize the hash table </p>
-<p>Change number of buckets in hash table. The function pass over each element in the hash table and insert it into the resized table.</p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td>(in out) the object </td></tr>
-    <tr><td class="paramname">buckets</td><td>(in) new number of buckets </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00016_source.html#l00060">60</a> of file <a class="el" href="a00016_source.html">bhash.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00011.html">SRING</a> *pbuckets;
-        <span class="keywordtype">size_t</span> i;
-        <a class="code" href="a00004.html">HASH_Entry</a> *cur;
-        <span class="keywordtype">size_t</span> elmcount;
-
-        buckets = <a class="code" href="a00035.html#a191e663cb1cc920f6b50f17567ea8c5c">UTIL_round_to_power_of_n</a>( buckets );
-
-        pbuckets = malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00011.html">SRING</a>) * buckets);
-        <span class="keywordflow">if</span> (!pbuckets) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">for</span>(i=0;i&lt;buckets;i++) {
-                <a class="code" href="a00046.html#ga53ac9788c8cdc9e03a9e343fd7e8b15a" title="initialises an empty list head">SRING_init</a>( pbuckets + i );
-        }
-
-        elmcount = hash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>;
-
-        <a class="code" href="a00038.html#ga1193ff43ed7c2f743c974d75c39efc93" title="Macro: iterate over all elements in hash table and delete them from the table; allow the user to free...">HASH_DELETEALL</a>(cur,hash)
-                i = <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(  cur-&gt;hash, buckets);
-                <a class="code" href="a00046.html#ga608f3b7787a81834f15eddbc4135d04f">SRING_push_front</a>( pbuckets + i, (<a class="code" href="a00011.html">SRING</a> *) cur);
-        <a class="code" href="a00038.html#gaee7185cd320df1c4a801762c8f5201b6" title="Macro: close block opened by HASH_DELETEALL.">HASH_DELETEALL_END</a>
-
-        free( hash-&gt;buckets );
-
-        hash-&gt;buckets = pbuckets;
-        hash-&gt;buckets_size = buckets;
-        hash-&gt;elmcount = elmcount;
-
-
-        hash-&gt;resize_threshold = (buckets * hash-&gt;mult_load_factor) / hash-&gt;div_load_factor;
-
-        return 0;
-
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga8924e383f82b78dcb693ffcab49188b0"></a><!-- doxytag: member="bhash.h::HASH_size" ref="ga8924e383f82b78dcb693ffcab49188b0" args="(HASH *hash)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE size_t HASH_size </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>returns number of elements in hash table </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00132">132</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> hash-&gt;<a class="code" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga9546382a27adc8b91d70cd6e4c4723c3"></a><!-- doxytag: member="bhash.h::HASH_unlink" ref="ga9546382a27adc8b91d70cd6e4c4723c3" args="(HASH *hash, void *key, ssize_t key_size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">HASH_Entry</a>* HASH_unlink </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">HASH</a> *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ssize_t&#160;</td>
-          <td class="paramname"><em>key_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>find first hash table entry and unlink it from its bucket. The caller of this function has to free memory held by hash table entry. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hash</td><td></td></tr>
-    <tr><td class="paramname">key</td><td></td></tr>
-    <tr><td class="paramname">size</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>if entry with given keys exists - pointer to hash table entry. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00016_source.html#l00186">186</a> of file <a class="el" href="a00016_source.html">bhash.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
-        <span class="keywordtype">int</span>             bucket;
-        <a class="code" href="a00011.html">SRING</a>   *abucket;
-        <a class="code" href="a00011.html">SRING</a>   *pos,*prev;
-        <a class="code" href="a00004.html">HASH_Entry</a> *ret = 0;
-
-
-        hash =  phash-&gt;hash_func( key, key_size );      
-        bucket =   <a class="code" href="a00016.html#acb4c58835714882f70736b2c45188ff4">ADJUST_HASH</a>(hash, phash-&gt;buckets_size);
-        abucket = &amp;phash-&gt;buckets[ bucket ];   
-
-        prev = abucket;
-        <a class="code" href="a00046.html#ga39582582e3bfccf18e39710e75009ad1" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">SRING_FOREACH</a>(pos, abucket) {
-                <a class="code" href="a00004.html">HASH_Entry</a> *entry = (<a class="code" href="a00004.html">HASH_Entry</a> *) pos;
-
-                <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a> == hash) {
-                  
-                        <span class="keywordflow">if</span> (phash-&gt;compare_key( entry, key, key_size ) == 0) {
-                                ret = (<a class="code" href="a00004.html">HASH_Entry</a> *) <a class="code" href="a00046.html#gab573cc304039b055762f9251cc551d36">SRING_unlink_after</a>(prev);
-                                phash-&gt;elmcount--;      
-                                <span class="keywordflow">return</span> ret;
-                        }
-                }
-                prev = pos;
-        }
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:06 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

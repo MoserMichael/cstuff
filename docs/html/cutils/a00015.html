@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: base.h File Reference</title>
+<title>Simple data structures / objects in plain C: tagTREENODE Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,103 +24,129 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
   <div class="summary">
-<a href="#define-members">Defines</a>  </div>
+<a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">base.h File Reference</div>  </div>
+<div class="title">tagTREENODE Struct Reference<div class="ingroups"><a class="el" href="a00053.html">TREE</a></div></div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br/>
-<code>#include &lt;stddef.h&gt;</code><br/>
-<code>#include &lt;stdlib.h&gt;</code><br/>
-<code>#include &lt;sys/types.h&gt;</code><br/>
-</div>
-<p><a href="a00015_source.html">Go to the source code of this file.</a></p>
+<!-- doxytag: class="tagTREENODE" -->
+<p><code>#include &lt;<a class="el" href="a00038_source.html">tree.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for tagTREENODE:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00080.png" border="0" usemap="#tagTREENODE_coll__map" alt="Collaboration graph"/></div>
+<map name="tagTREENODE_coll__map" id="tagTREENODE_coll__map">
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p><a href="a00081.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(ptr, offset)&#160;&#160;&#160;(((uint8_t *) ptr) - offset)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a>&#160;&#160;&#160;static inline</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a8a28f4ccca88db778f9dad279d3ba818">M_UNUSED</a>(x)&#160;&#160;&#160;(void) (x)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00015.html">tagTREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00015.html">tagTREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00015.html">tagTREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00015.html">tagTREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00015.html">tagTREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a></td></tr>
 </table>
-<hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a7b468c9bd3d1f3de0bb47e2ea23ddb1c"></a><!-- doxytag: member="base.h::_MEMBEROF" ref="a7b468c9bd3d1f3de0bb47e2ea23ddb1c" args="(ptr, offset)" -->
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock">
+<p>Definition at line <a class="el" href="a00038_source.html#l00024">24</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+</div><hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a5606167dda105adf0db9728c2004f2f3"></a><!-- doxytag: member="tagTREENODE::left" ref="a5606167dda105adf0db9728c2004f2f3" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define _MEMBEROF</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">ptr, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">offset&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(((uint8_t *) ptr) - offset)</td>
+          <td class="memname">struct <a class="el" href="a00015.html">tagTREENODE</a>* <a class="el" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">tagTREENODE::left</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00015_source.html#l00012">12</a> of file <a class="el" href="a00015_source.html">base.h</a>.</p>
+<p>Definition at line <a class="el" href="a00038_source.html#l00033">33</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad8685d2efad5bbbf60ebe6bc79e05350"></a><!-- doxytag: member="base.h::M_INLINE" ref="ad8685d2efad5bbbf60ebe6bc79e05350" args="" -->
+<a class="anchor" id="af76e9208f6c55ff1069fde7b66c3f232"></a><!-- doxytag: member="tagTREENODE::nextlevel_first" ref="af76e9208f6c55ff1069fde7b66c3f232" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define M_INLINE&#160;&#160;&#160;static inline</td>
+          <td class="memname">struct <a class="el" href="a00015.html">tagTREENODE</a>* <a class="el" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">tagTREENODE::nextlevel_first</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00015_source.html#l00015">15</a> of file <a class="el" href="a00015_source.html">base.h</a>.</p>
+<p>Definition at line <a class="el" href="a00038_source.html#l00027">27</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8a28f4ccca88db778f9dad279d3ba818"></a><!-- doxytag: member="base.h::M_UNUSED" ref="a8a28f4ccca88db778f9dad279d3ba818" args="(x)" -->
+<a class="anchor" id="aa851db5a7e782b18f81d32fa31b58440"></a><!-- doxytag: member="tagTREENODE::nextlevel_last" ref="aa851db5a7e782b18f81d32fa31b58440" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define M_UNUSED</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">x</td><td>)</td>
-          <td>&#160;&#160;&#160;(void) (x)</td>
+          <td class="memname">struct <a class="el" href="a00015.html">tagTREENODE</a>* <a class="el" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">tagTREENODE::nextlevel_last</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00015_source.html#l00016">16</a> of file <a class="el" href="a00015_source.html">base.h</a>.</p>
+<p>Definition at line <a class="el" href="a00038_source.html#l00029">29</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
 
 </div>
 </div>
+<a class="anchor" id="a3be948eaba1ce4c959c4211c487e775e"></a><!-- doxytag: member="tagTREENODE::parent" ref="a3be948eaba1ce4c959c4211c487e775e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="a00015.html">tagTREENODE</a>* <a class="el" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">tagTREENODE::parent</a></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00025">25</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3e635860e1ac41723bfca6cb3417af95"></a><!-- doxytag: member="tagTREENODE::right" ref="a3e635860e1ac41723bfca6cb3417af95" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="a00015.html">tagTREENODE</a>* <a class="el" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">tagTREENODE::right</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00031">31</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00038_source.html">tree.h</a></li>
+</ul>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:07 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

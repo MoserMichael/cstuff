@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: HASH Struct Reference</title>
+<title>Simple data structures / objects in plain C: DLISTUNR Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,57 +40,53 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">HASH Struct Reference<div class="ingroups"><a class="el" href="a00038.html">HASH</a></div></div>  </div>
+<div class="title">DLISTUNR Struct Reference<div class="ingroups"><a class="el" href="a00047.html">DLISTUNR</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="HASH" -->
-<p><code>#include &lt;<a class="el" href="a00017_source.html">bhash.h</a>&gt;</code></p>
+<!-- doxytag: class="DLISTUNR" -->
+<p><code>#include &lt;<a class="el" href="a00026_source.html">dlistunr.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for HASH:</div>
+Collaboration diagram for DLISTUNR:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00052.png" border="0" usemap="#HASH_coll__map" alt="Collaboration graph"/></div>
-<map name="HASH_coll__map" id="HASH_coll__map">
-<area shape="rect" id="node2" href="a00011.html" title="tagSRING" alt="" coords="12,5,95,35"/><area shape="rect" id="node5" href="a00004.html" title="HASH_Entry" alt="" coords="84,101,183,131"/></map>
+<div class="center"><img src="a00058.png" border="0" usemap="#DLISTUNR_coll__map" alt="Collaboration graph"/></div>
+<map name="DLISTUNR_coll__map" id="DLISTUNR_coll__map">
+<area shape="rect" id="node2" href="a00011.html" title="tagDLISTUNR_entry" alt="" coords="5,107,149,136"/><area shape="rect" id="node4" href="a00012.html" title="tagDRING" alt="" coords="36,8,119,37"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
-<p><a href="a00053.html">List of all members.</a></p>
+<p><a href="a00059.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">SRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">buckets</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga1e56521c716b07928dc326eced3b50c0">ismultimap</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga13b4c75f393b997dc965cef4fc2508c1">buckets_size</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gadfd1d7fb9add98a87d2852e45c7cd018">elmcount</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga00bd0beb9248ca36fff916569eb71526">resize_threshold</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga8713031ba9a40fa717f1d3b8114691c0">mult_load_factor</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga6f4e674640c97d88dfd2e557d660f147">div_load_factor</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00037.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">hash_func</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00037.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">compare_key</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">DLISTUNR_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00017_source.html#l00057">57</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00040">40</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a7ec749b263c20879444d18b7ab4824e8"></a><!-- doxytag: member="HASH::buckets" ref="a7ec749b263c20879444d18b7ab4824e8" args="" -->
+<a class="anchor" id="a3fcc16c9e16c759cd63a2a5aa48364ec"></a><!-- doxytag: member="DLISTUNR::elmsize" ref="a3fcc16c9e16c759cd63a2a5aa48364ec" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00011.html">SRING</a>* <a class="el" href="a00003.html#a7ec749b263c20879444d18b7ab4824e8">HASH::buckets</a></td>
+          <td class="memname">size_t <a class="el" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">DLISTUNR::elmsize</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00017_source.html#l00059">59</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00042">42</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00017_source.html">bhash.h</a></li>
+<li><a class="el" href="a00026_source.html">dlistunr.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:07 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

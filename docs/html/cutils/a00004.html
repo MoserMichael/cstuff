@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: HASH_Entry Struct Reference</title>
+<title>Simple data structures / objects in plain C: DLISTUNR_position Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,50 +40,51 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">HASH_Entry Struct Reference<div class="ingroups"><a class="el" href="a00037.html">HASH_entry</a></div></div>  </div>
+<div class="title">DLISTUNR_position Struct Reference<div class="ingroups"><a class="el" href="a00047.html">DLISTUNR</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="HASH_Entry" -->
-<p><code>#include &lt;<a class="el" href="a00017_source.html">bhash.h</a>&gt;</code></p>
+<!-- doxytag: class="DLISTUNR_position" -->
+<p><code>#include &lt;<a class="el" href="a00026_source.html">dlistunr.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for HASH_Entry:</div>
+Collaboration diagram for DLISTUNR_position:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00054.png" border="0" usemap="#HASH__Entry_coll__map" alt="Collaboration graph"/></div>
-<map name="HASH__Entry_coll__map" id="HASH__Entry_coll__map">
-<area shape="rect" id="node2" href="a00011.html" title="tagSRING" alt="" coords="13,5,96,35"/></map>
+<div class="center"><img src="a00060.png" border="0" usemap="#DLISTUNR__position_coll__map" alt="Collaboration graph"/></div>
+<map name="DLISTUNR__position_coll__map" id="DLISTUNR__position_coll__map">
+<area shape="rect" id="node2" href="a00011.html" title="tagDLISTUNR_entry" alt="" coords="5,107,149,136"/><area shape="rect" id="node4" href="a00012.html" title="tagDRING" alt="" coords="36,8,119,37"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
-<p><a href="a00055.html">List of all members.</a></p>
+<p><a href="a00061.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">SRING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">entry</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00037.html#ga0a321e75db9083da90e2557e6cc24de8">hash</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">DLISTUNR_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="a00017_source.html#l00020">20</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
+<div class="textblock"><p>Current position of iteration through an unrolled linked list structure. </p>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00059">59</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a41027b39fbfa250c8b29c79a4634e7f5"></a><!-- doxytag: member="HASH_Entry::entry" ref="a41027b39fbfa250c8b29c79a4634e7f5" args="" -->
+<a class="anchor" id="aeb6ab9ce857eed02ddfd3a3906cde45b"></a><!-- doxytag: member="DLISTUNR_position::entry" ref="aeb6ab9ce857eed02ddfd3a3906cde45b" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00011.html">SRING</a> <a class="el" href="a00004.html#a41027b39fbfa250c8b29c79a4634e7f5">HASH_Entry::entry</a></td>
+          <td class="memname"><a class="el" href="a00011.html">DLISTUNR_entry</a>* <a class="el" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">DLISTUNR_position::entry</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00017_source.html#l00021">21</a> of file <a class="el" href="a00017_source.html">bhash.h</a>.</p>
+<p>Definition at line <a class="el" href="a00026_source.html#l00060">60</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00017_source.html">bhash.h</a></li>
+<li><a class="el" href="a00026_source.html">dlistunr.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:07 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

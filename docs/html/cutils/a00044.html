@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: SLIST_entry</title>
+<title>Simple data structures / objects in plain C: DBUF</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -32,32 +32,42 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">SLIST_entry</div>  </div>
+<div class="title">DBUF</div>  </div>
 </div>
 <div class="contents">
 
-<p>an entry in single linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00006.html">SLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry.  
+<p>buffer that is owner of stuff that grows dynamically as you add stuff to it; This object owns the memory that it is holding. it also has length/size fields, no assumption data includes zeros or not - any data (not just strings).  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html">tagSLIST_entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html">tagDBUF</a></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00010.html">tagSLIST_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#gaacb00d1a4daaa75eee59c1483cb57b80">SLIST_entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00009.html">tagDBUF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#ga1f96c475343a10aec6b9ce1707e6f382">DBUF</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#gad5b419319a7d42a5ef39bfb1c5194f63">DBUF_init</a> (<a class="el" href="a00009.html">DBUF</a> *buf, size_t init_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise a buffer  <a href="#gad5b419319a7d42a5ef39bfb1c5194f63"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#gac02203221d9b17f91fa0bd6319d28e05">DBUF_free</a> (<a class="el" href="a00009.html">DBUF</a> *buf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">free memory owned by a buffer  <a href="#gac02203221d9b17f91fa0bd6319d28e05"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#gaa94888e27a335faa77790018995cd6f9">DBUF_add</a> (<a class="el" href="a00009.html">DBUF</a> *buf, void *data, size_t data_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add stuff to a buffer  <a href="#gaa94888e27a335faa77790018995cd6f9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#ga44c86671ad8db929acee5d0d41f3e672">DBUF_buffer</a> (<a class="el" href="a00009.html">DBUF</a> *buf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#gadb0c848a8655598edea9d155c9236922">DBUF_size</a> (<a class="el" href="a00009.html">DBUF</a> *buf)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>an entry in single linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00006.html">SLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry. </p>
+<p>buffer that is owner of stuff that grows dynamically as you add stuff to it; This object owns the memory that it is holding. it also has length/size fields, no assumption data includes zeros or not - any data (not just strings). </p>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="gaacb00d1a4daaa75eee59c1483cb57b80"></a><!-- doxytag: member="slist.h::SLIST_entry" ref="gaacb00d1a4daaa75eee59c1483cb57b80" args="" -->
+<a class="anchor" id="ga1f96c475343a10aec6b9ce1707e6f382"></a><!-- doxytag: member="dbuf.h::DBUF" ref="ga1f96c475343a10aec6b9ce1707e6f382" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="a00010.html">tagSLIST_entry</a>  
-   <a class="el" href="a00010.html">SLIST_entry</a></td>
+          <td class="memname">typedef struct <a class="el" href="a00009.html">tagDBUF</a>  <a class="el" href="a00009.html">DBUF</a></td>
         </tr>
       </table>
 </div>
@@ -65,8 +75,182 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="gaa94888e27a335faa77790018995cd6f9"></a><!-- doxytag: member="dbuf.h::DBUF_add" ref="gaa94888e27a335faa77790018995cd6f9" args="(DBUF *buf, void *data, size_t data_size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DBUF_add </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DBUF</a> *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>data_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>add stuff to a buffer </p>
+
+<p>Definition at line <a class="el" href="a00021_source.html#l00004">4</a> of file <a class="el" href="a00021_source.html">dbuf.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">size_t</span> bs;
+  uint8_t *nb;
+  
+  bs = buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a>;
+  <span class="keywordflow">if</span> ( (buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> + data_size) &gt; bs) {
+    <span class="keywordflow">do</span> {
+      bs *= 2;
+    } <span class="keywordflow">while</span>( (buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> + data_size) &gt; bs );
+
+    nb = (uint8_t *) realloc( buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>, bs );
+    <span class="keywordflow">if</span> (!nb) {
+      <span class="keywordflow">return</span> -1;
+    }
+    buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a> = nb;
+    buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a> = bs;
+  }
+  
+  memcpy( buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a> + buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a>, data, data_size );
+  buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a> = bs;
+  buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> += data_size;
+
+  <span class="keywordflow">return</span> 0; 
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga44c86671ad8db929acee5d0d41f3e672"></a><!-- doxytag: member="dbuf.h::DBUF_buffer" ref="ga44c86671ad8db929acee5d0d41f3e672" args="(DBUF *buf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void* DBUF_buffer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DBUF</a> *&#160;</td>
+          <td class="paramname"><em>buf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00022_source.html#l00057">57</a> of file <a class="el" href="a00022_source.html">dbuf.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac02203221d9b17f91fa0bd6319d28e05"></a><!-- doxytag: member="dbuf.h::DBUF_free" ref="gac02203221d9b17f91fa0bd6319d28e05" args="(DBUF *buf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DBUF_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DBUF</a> *&#160;</td>
+          <td class="paramname"><em>buf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>free memory owned by a buffer </p>
+
+<p>Definition at line <a class="el" href="a00022_source.html#l00043">43</a> of file <a class="el" href="a00022_source.html">dbuf.h</a>.</p>
+<div class="fragment"><pre class="fragment">                                   {
+  <span class="keywordflow">if</span> (buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>) {
+    free(buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>); 
+    buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a> = 0;
+    buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> = buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a> = 0;
+  }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gad5b419319a7d42a5ef39bfb1c5194f63"></a><!-- doxytag: member="dbuf.h::DBUF_init" ref="gad5b419319a7d42a5ef39bfb1c5194f63" args="(DBUF *buf, size_t init_size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int DBUF_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DBUF</a> *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>init_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>initialise a buffer </p>
+
+<p>Definition at line <a class="el" href="a00022_source.html#l00029">29</a> of file <a class="el" href="a00022_source.html">dbuf.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a> = malloc( init_size );
+  <span class="keywordflow">if</span> (!buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>) {
+    <span class="keywordflow">return</span> -1;
+  }
+  buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> = 0;
+  buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a> = init_size;
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gadb0c848a8655598edea9d155c9236922"></a><!-- doxytag: member="dbuf.h::DBUF_size" ref="gadb0c848a8655598edea9d155c9236922" args="(DBUF *buf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t DBUF_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DBUF</a> *&#160;</td>
+          <td class="paramname"><em>buf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00022_source.html#l00062">62</a> of file <a class="el" href="a00022_source.html">dbuf.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a>;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:06 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

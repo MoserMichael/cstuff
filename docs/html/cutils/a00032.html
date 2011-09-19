@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: tree.c File Reference</title>
+<title>Simple data structures / objects in plain C: heap.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,17 +36,64 @@
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tree.c File Reference</div>  </div>
+<div class="title">heap.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00033_source.html">cutils/tree.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00018_source.html">cutils/base.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00032_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html">HEAP</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#aa0102894a26d562e126b76e7df87a143">HEAP_compare</a> )(void *lhs, void *rhs, size_t elmsize)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> )(int index, void *elm, size_t elmsize, void *context)</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#gac152cfd9171fdc1cee9f7d08ba85f6c4">HEAP_init</a> (<a class="el" href="a00007.html">HEAP</a> *heap, size_t elmcount, size_t elmsize, <a class="el" href="a00032.html#aa0102894a26d562e126b76e7df87a143">HEAP_compare</a> compare_func)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga74a671a1104e9a2d48a430427a2f729b">HEAP_free</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">free all memory used by the heap (object destructor).  heap (in) the object.  <a href="a00049.html#ga74a671a1104e9a2d48a430427a2f729b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga4c1edfd6bdc79001bb92fcd20efc0058">HEAP_size</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga4f0ddfd22ffd30752a88c25c27508ff1">HEAP_maxsize</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga2a7f7199e6201e88740ee037daef1027">HEAP_elmsize</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga3cdfaf0ef3e2728601b89c445b938b31">HEAP_top</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns pointer to the top element of the heap.  <a href="a00049.html#ga3cdfaf0ef3e2728601b89c445b938b31"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#gac1bbf31bcce42f7b63433f0ba732a1bf">HEAP_get_at</a> (<a class="el" href="a00007.html">HEAP</a> *heap, int index)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#gadb9cc342dba8eb29fe8be37e56a16370">HEAP_pop</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the top element from the heap  <a href="a00049.html#gadb9cc342dba8eb29fe8be37e56a16370"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f">HEAP_push</a> (<a class="el" href="a00007.html">HEAP</a> *heap, void *element, size_t elmsize)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert a new element into the heap  <a href="a00049.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga689c175c301ff3025290d37ca5800039">HEAP_check</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of heap object.  <a href="a00049.html#ga689c175c301ff3025290d37ca5800039"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga72dd058aadb08417c5fcb618e9be6833">HEAP_foreach_sorted</a> (<a class="el" href="a00007.html">HEAP</a> *heap, <a class="el" href="a00049.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#ga4bc6463fb11b07c4fa67125675342066">HEAP_foreach</a> (<a class="el" href="a00007.html">HEAP</a> *heap, <a class="el" href="a00049.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#gac2fb2dbcb7d6f5b2d394046334a696f4">HEAP_findif</a> (<a class="el" href="a00007.html">HEAP</a> *heap, <a class="el" href="a00049.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
 </table>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="aa0102894a26d562e126b76e7df87a143"></a><!-- doxytag: member="heap.h::HEAP_compare" ref="aa0102894a26d562e126b76e7df87a143" args=")(void *lhs, void *rhs, size_t elmsize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00032.html#aa0102894a26d562e126b76e7df87a143">HEAP_compare</a>)(void *lhs, void *rhs, size_t elmsize)</td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00032_source.html#l00013">13</a> of file <a class="el" href="a00032_source.html">heap.h</a>.</p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:06 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

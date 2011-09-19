@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: sring.c File Reference</title>
+<title>Simple data structures / objects in plain C: hashfunction.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,17 +36,699 @@
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">sring.c File Reference</div>  </div>
+<div class="title">hashfunction.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00031_source.html">cutils/sring.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00018_source.html">cutils/base.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00030_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a610bced429f9d429f9b54d69135e9253">HASH_STRING</a>&#160;&#160;&#160;0xFFFFFFFF</td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#acf656e3b07391cb24287f1c04b45c7fd">HASHFUNCTION_PJW</a> (void *keydata, ssize_t key_length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">P.J. Weinberger hash function.  <a href="#acf656e3b07391cb24287f1c04b45c7fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a434709d2c4c30391c1b56111cb6cca21">HASHFUNCTION_rotating</a> (void *keydata, ssize_t key_length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotating hash.  <a href="#a434709d2c4c30391c1b56111cb6cca21"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a96ac8abe8c87ddc684080fe775fe2144">HASHFUNCTION_shift_and_xor</a> (void *keydata, ssize_t key_length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shift and XOR.  <a href="#a96ac8abe8c87ddc684080fe775fe2144"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a2f9d42247ebd6fdadfb4b677f9d8c93e">HASHFUNCTION_Fowler_Noll_Vo</a> (void *keydata, ssize_t key_length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Fowler/Noll/Vo hash.  <a href="#a2f9d42247ebd6fdadfb4b677f9d8c93e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a1498645507ca3a2df89dabf640fde50d">HASHFUNCTION_Bob_Jenkins_one_at_a_time</a> (void *keydata, ssize_t key_length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">One at a time by Bob Jenkins.  <a href="#a1498645507ca3a2df89dabf640fde50d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a162cb7511f51645fa3cc7f9e06ac3b6e">HASHFUNCTION_ELF</a> (void *keydata, ssize_t key_length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">ELF hash.  <a href="#a162cb7511f51645fa3cc7f9e06ac3b6e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a95f3a27dbdf1499a650ba11211284869">HASHFUNCTION_Bob_Jenkins</a> (void *keydata, ssize_t length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bob Jenkins.  <a href="#a95f3a27dbdf1499a650ba11211284869"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a8b8ce0c98596d3de6f7d82f8298b93b4">HASHFUNCTION_sample_hash_func</a> (void *keydata, ssize_t key_length)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">good for most cases.  <a href="#a8b8ce0c98596d3de6f7d82f8298b93b4"></a><br/></td></tr>
 </table>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a610bced429f9d429f9b54d69135e9253"></a><!-- doxytag: member="hashfunction.h::HASH_STRING" ref="a610bced429f9d429f9b54d69135e9253" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define HASH_STRING&#160;&#160;&#160;0xFFFFFFFF</td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+<p>A collection of hash functions, gathered from various places. </p>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00020">20</a> of file <a class="el" href="a00030_source.html">hashfunction.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="a0add298fa768754c300d2489164b8677"></a><!-- doxytag: member="hashfunction.h::HASH_VALUE" ref="a0add298fa768754c300d2489164b8677" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef uint32_t <a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00013">13</a> of file <a class="el" href="a00030_source.html">hashfunction.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a95f3a27dbdf1499a650ba11211284869"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_Bob_Jenkins" ref="a95f3a27dbdf1499a650ba11211284869" args="(void *keydata, ssize_t length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_Bob_Jenkins </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Bob Jenkins. </p>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<p>Very good hash function. Really very good - passes all sorts of avalanche tests.</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00220">220</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *k = keydata;
+    <span class="keywordtype">unsigned</span> a, b;
+    <span class="keywordtype">unsigned</span> c = <a class="code" href="a00029.html#a99562323a2cf4494995a145c766d3241">BJ_INIT_VAL</a>;
+    <span class="keywordtype">unsigned</span> len = length;
+ 
+    a = b = 0x9e3779b9;
+
+        <span class="keywordflow">if</span> (length != -1) {
+ 
+                <span class="keywordflow">while</span> ( len &gt;= 12 ) {
+                   a += ( k[0] + ( (unsigned)k[1] &lt;&lt; 8 ) 
+                         + ( (unsigned)k[2] &lt;&lt; 16 )
+                         + ( (unsigned)k[3] &lt;&lt; 24 ) );
+                   b += ( k[4] + ( (unsigned)k[5] &lt;&lt; 8 ) 
+                         + ( (unsigned)k[6] &lt;&lt; 16 )
+                         + ( (unsigned)k[7] &lt;&lt; 24 ) );
+                   c += ( k[8] + ( (unsigned)k[9] &lt;&lt; 8 ) 
+                         + ( (unsigned)k[10] &lt;&lt; 16 )
+                         + ( (unsigned)k[11] &lt;&lt; 24 ) );
+ 
+                   <a class="code" href="a00029.html#afd9fa1747724ec6142812721997394c3">mix</a> ( a, b, c );
+ 
+                   k += 12;
+                   len -= 12;
+                }
+        } <span class="keywordflow">else</span> {
+                <span class="keywordtype">size_t</span> pos_k = 0;
+                <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *next_k;
+                        
+
+                length = 0;
+
+                <span class="keywordflow">while</span>(1) {
+
+                        <span class="keywordflow">for</span>(pos_k = 0, next_k = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) k;
+                                *next_k &amp;&amp; pos_k&lt;12 ;
+                                pos_k++, next_k++);
+
+                        length += pos_k;
+                                
+                        <span class="keywordflow">if</span> (pos_k &lt; 12) {
+                                len = pos_k;
+                                <span class="keywordflow">break</span>;
+                        }
+        
+                        a += ( k[0] + ( (unsigned)k[1] &lt;&lt; 8 ) 
+                          + ( (unsigned)k[2] &lt;&lt; 16 )
+                          + ( (unsigned)k[3] &lt;&lt; 24 ) );
+                        b += ( k[4] + ( (unsigned)k[5] &lt;&lt; 8 ) 
+                          + ( (unsigned)k[6] &lt;&lt; 16 )
+                          + ( (unsigned)k[7] &lt;&lt; 24 ) );
+                        c += ( k[8] + ( (unsigned)k[9] &lt;&lt; 8 ) 
+                          + ( (unsigned)k[10] &lt;&lt; 16 )
+                          + ( (unsigned)k[11] &lt;&lt; 24 ) );
+
+                        <a class="code" href="a00029.html#afd9fa1747724ec6142812721997394c3">mix</a> ( a, b, c );
+
+                        k += 12;
+
+                }
+        }
+ 
+    c += length;
+ 
+    <span class="keywordflow">switch</span> ( len ) {
+    <span class="keywordflow">case</span> 11: c += ( (unsigned)k[10] &lt;&lt; 24 );
+    <span class="keywordflow">case</span> 10: c += ( (unsigned)k[9] &lt;&lt; 16 );
+    <span class="keywordflow">case</span> 9 : c += ( (unsigned)k[8] &lt;&lt; 8 );
+    <span class="comment">/* First byte of c reserved for length */</span>
+    <span class="keywordflow">case</span> 8 : b += ( (unsigned)k[7] &lt;&lt; 24 );
+    <span class="keywordflow">case</span> 7 : b += ( (unsigned)k[6] &lt;&lt; 16 );
+    <span class="keywordflow">case</span> 6 : b += ( (unsigned)k[5] &lt;&lt; 8 );
+    <span class="keywordflow">case</span> 5 : b += k[4];
+    <span class="keywordflow">case</span> 4 : a += ( (unsigned)k[3] &lt;&lt; 24 );
+    <span class="keywordflow">case</span> 3 : a += ( (unsigned)k[2] &lt;&lt; 16 );
+    <span class="keywordflow">case</span> 2 : a += ( (unsigned)k[1] &lt;&lt; 8 );
+    <span class="keywordflow">case</span> 1 : a += k[0];
+    }
+ 
+    <a class="code" href="a00029.html#afd9fa1747724ec6142812721997394c3">mix</a> ( a, b, c );
+ 
+    <span class="keywordflow">return</span> c;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a1498645507ca3a2df89dabf640fde50d"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_Bob_Jenkins_one_at_a_time" ref="a1498645507ca3a2df89dabf640fde50d" args="(void *keydata, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_Bob_Jenkins_one_at_a_time </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>One at a time by Bob Jenkins. </p>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<p>"This algorithm quickly reaches avalanche (!!!) and performs very well this function is another that should be one of the first to be tested in any application, if not the very first"</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00126">126</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> h = 2166136261U;
+  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * key = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) keydata;
+  ssize_t i;
+
+
+  <span class="keywordflow">if</span> (key_length != -1) {
+        
+        <span class="keywordflow">for</span> ( i = 0; i &lt; key_length; i++ ) {
+                h += key[i];
+                h += ( h &lt;&lt; 10 );
+                h ^= ( h &gt;&gt; 6 );
+        }
+
+        h += ( h &lt;&lt; 3 );
+        h ^= ( h &gt;&gt; 11 );
+        h += ( h &lt;&lt; 15 );
+
+        <span class="keywordflow">return</span> h;
+
+  } <span class="keywordflow">else</span> {
+        
+
+        <span class="keywordflow">for</span> ( ; *key ; ++key ) {
+                h += *key;
+                h += ( h &lt;&lt; 10 );
+                h ^= ( h &gt;&gt; 6 );
+        }
+
+        h += ( h &lt;&lt; 3 );
+        h ^= ( h &gt;&gt; 11 );
+        h += ( h &lt;&lt; 15 );
+
+        <span class="keywordflow">return</span> h;
+  }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a162cb7511f51645fa3cc7f9e06ac3b6e"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_ELF" ref="a162cb7511f51645fa3cc7f9e06ac3b6e" args="(void *keydata, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_ELF </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>ELF hash. </p>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00164">164</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> h = 2166136261U,g;
+  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * key = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) keydata;
+  ssize_t i;
+
+  <span class="keywordflow">if</span> (key_length != -1) {
+        
+        <span class="keywordflow">for</span> ( i = 0; i &lt; key_length; i++ ) {
+                h = ( h &lt;&lt; 4 ) + key[i];
+                g = h &amp; 0xf0000000L;
+
+                <span class="keywordflow">if</span> ( g != 0 )
+                        h ^= g &gt;&gt; 24;
+                
+                h &amp;= ~g;
+        }
+        <span class="keywordflow">return</span> h;
+  
+  } <span class="keywordflow">else</span> {
+                
+
+        <span class="keywordflow">for</span> ( ; *key ;key++ ) {
+                h = ( h &lt;&lt; 4 ) + *key;
+                g = h &amp; 0xf0000000L;
+
+                <span class="keywordflow">if</span> ( g != 0 )
+                        h ^= g &gt;&gt; 24;
+                
+                h &amp;= ~g;
+
+                <span class="keywordflow">return</span> h;
+        }
+
+        <span class="keywordflow">return</span> h;
+  }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a2f9d42247ebd6fdadfb4b677f9d8c93e"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_Fowler_Noll_Vo" ref="a2f9d42247ebd6fdadfb4b677f9d8c93e" args="(void *keydata, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_Fowler_Noll_Vo </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Fowler/Noll/Vo hash. </p>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<p>"Follows the same lines as Bernstein's modified hash with carefully chosen constants"</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00105">105</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash = 2166136261U;
+  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * key = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) keydata;
+  ssize_t i;
+
+  <span class="keywordflow">if</span> (key_length != -1) {
+                <span class="keywordflow">for</span> (hash = 0, i=0; i&lt;key_length; ++i) {
+                        hash = ( hash * 16777619U ) ^ key[i];
+                }
+                <span class="keywordflow">return</span> hash;
+  } <span class="keywordflow">else</span> {
+                
+
+                <span class="keywordflow">for</span> (hash = 0; *key ; ++key) {
+                        hash = ( hash * 16777619U ) ^ (*key);
+                }
+                <span class="keywordflow">return</span> hash;
+  }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="acf656e3b07391cb24287f1c04b45c7fd"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_PJW" ref="acf656e3b07391cb24287f1c04b45c7fd" args="(void *keydata, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_PJW </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>P.J. Weinberger hash function. </p>
+<p>Source: Compilers Principles Techniques and Tools by Aho,Sethi,Ullman page 436 Good for string keys</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00030">30</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * key = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) keydata;
+        <a class="code" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> g = 0, hash_val = 0;
+
+        <span class="keywordflow">if</span> (key_length != -1) {
+                <span class="keywordflow">do</span> {
+                        hash_val = (hash_val&lt;&lt;4) + hash_val + *key++;   
+                        g = hash_val &amp; 0xF0000000;
+                        <span class="keywordflow">if</span> (g) {
+                                hash_val = hash_val ^ ( g &gt;&gt; 24);
+                                hash_val = hash_val ^ g;
+                        }
+                        key_length --;
+                } <span class="keywordflow">while</span> (key_length != 0);
+
+                <span class="keywordflow">return</span> hash_val;
+        } <span class="keywordflow">else</span> {
+                
+
+                <span class="keywordflow">while</span> (*key ) {
+                        hash_val = (hash_val&lt;&lt;4) + hash_val + *key++;   
+                        g = hash_val &amp; 0xF0000000;
+                        <span class="keywordflow">if</span> (g) {
+                                hash_val = hash_val ^ ( g &gt;&gt; 24);
+                                hash_val = hash_val ^ g;
+                        }
+                }
+                <span class="keywordflow">return</span> hash_val;
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a434709d2c4c30391c1b56111cb6cca21"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_rotating" ref="a434709d2c4c30391c1b56111cb6cca21" args="(void *keydata, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_rotating </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Rotating hash. </p>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<p>"Much of the time, the rotating hash is sufficient, and can be considered the minimal acceptable algorithm. Notice that with each improvement, the internal state is being mixed up more and more a key element in a good hash function"</p>
+<p>state is being mixed up more and more. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00062">62</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
+  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * key = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) keydata;
+  ssize_t i;
+
+  <span class="keywordflow">if</span> (key_length != -1) {
+                <span class="keywordflow">for</span> (hash = key_length, i=0; i&lt;key_length; ++i) {
+                        hash = (hash&lt;&lt;4)^(hash&gt;&gt;28) ^ key[i];
+                }
+                <span class="keywordflow">return</span> hash;
+  } <span class="keywordflow">else</span> {
+                
+
+                <span class="keywordflow">for</span> (hash = ((<span class="keywordtype">size_t</span>)*key) &lt;&lt; 16; *key  ; ++key) {
+                        hash = (hash&lt;&lt;4)^(hash&gt;&gt;28) ^ (*key);
+                }
+                <span class="keywordflow">return</span> hash;
+  }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a8b8ce0c98596d3de6f7d82f8298b93b4"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_sample_hash_func" ref="a8b8ce0c98596d3de6f7d82f8298b93b4" args="(void *keydata, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_sample_hash_func </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>good for most cases. </p>
+<p>Source:</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) the size of key data. If value is VHASH_STRING then keydata is treated as null terminated string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00007">7</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * key = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) keydata;
+        <a class="code" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash_val = 0;
+                
+        <span class="keywordflow">if</span> (key_length != -1 ) {
+                <span class="keywordflow">do</span> {
+                        hash_val = (hash_val&lt;&lt;5) + hash_val + *key++;   
+                        key_length --;
+                } <span class="keywordflow">while</span> (key_length != 0);
+                <span class="keywordflow">return</span> hash_val;
+        } <span class="keywordflow">else</span> {
+                
+
+                <span class="keywordflow">while</span> (*key  ) {
+                        hash_val = (hash_val&lt;&lt;5) + hash_val + *key++;
+
+                }
+                <span class="keywordflow">return</span> hash_val;
+        }
+
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a96ac8abe8c87ddc684080fe775fe2144"></a><!-- doxytag: member="hashfunction.h::HASHFUNCTION_shift_and_xor" ref="a96ac8abe8c87ddc684080fe775fe2144" args="(void *keydata, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> HASHFUNCTION_shift_and_xor </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keydata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Shift and XOR. </p>
+<p>Bernstein hash.</p>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<p>"Very similar to rotating hash. Like many effective hashes, it will fail tests for avalanche, but that does not seem to affect its performance in practice."</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value</dd></dl>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<p>"despite that the algorithm itself is not very sound when it comes to avalanche and permutation of the internal state. It has proven very good for small character keys, where it can outperform algorithms that result in a more random distribution: Bernstein's hash should be used with caution. It performs very well in practice, for no apparently known reasons (much like how the constant 33 does better than more logical constants for no apparent reason), but in theory it is not up to snuff. Always test this function with sample data for every application to ensure that it does not encounter a degenerate case and cause excessive collisions."</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value</dd></dl>
+<p>Shift and XOR.</p>
+<p>Source:</p>
+<p><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx</a></p>
+<p>"despite that the algorithm itself is not very sound when it comes to avalanche and permutation of the internal state. It has proven very good for small character keys, where it can outperform algorithms that result in a more random distribution: Bernstein's hash should be used with caution. It performs very well in practice, for no apparently known reasons (much like how the constant 33 does better than more logical constants for no apparent reason), but in theory it is not up to snuff. Always test this function with sample data for every application to ensure that it does not encounter a degenerate case and cause excessive collisions."</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keydata</td><td>(in) pointer to key data </td></tr>
+    <tr><td class="paramname">key_length</td><td>(in) size of key data.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>hash value </dd></dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00083">83</a> of file <a class="el" href="a00029_source.html">hashfunction.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> hash;
+  <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * key = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) keydata;
+  ssize_t i;
+
+  <span class="keywordflow">if</span> (key_length != -1) {
+                <span class="keywordflow">for</span> (hash = key_length, i=0; i&lt;key_length; ++i) {
+                        hash ^= (hash&lt;&lt;5) + (hash&gt;&gt;2)  + key[i];
+                }
+                <span class="keywordflow">return</span> hash;
+  } <span class="keywordflow">else</span> {
+                
+
+                <span class="keywordflow">for</span> (hash = ((<span class="keywordtype">size_t</span>)*key) &lt;&lt; 16; *key ; ++key) {
+                        hash ^= (hash&lt;&lt;5) + (hash&gt;&gt;2)  + (*key);
+                }
+                <span class="keywordflow">return</span> hash;
+  }
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:06 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

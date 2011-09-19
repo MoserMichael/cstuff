@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dlist.c File Reference</title>
+<title>Simple data structures / objects in plain C: bhash.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,17 +36,76 @@
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">dlist.c File Reference</div>  </div>
+<div class="title">bhash.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00021_source.html">cutils/dlist.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00036_source.html">cutils/sring.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="a00030_source.html">cutils/hashfunction.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00020_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html">HASH_Entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html">HASH</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gad6e4f490068b19fa3fea075d3b0180f7">HASH_BUCKET_FOREACH</a>(cur, bucket)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga7a866beabda7e0bd95e19ae7c708c8c0">HASH_FOREACH_KEY</a>(cur, hash, key, key_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: iterate over all elements that match a given key (multimap)  <a href="a00043.html#ga7a866beabda7e0bd95e19ae7c708c8c0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gad5d12368e1648a383d048e7fed56fa82">HASH_DELETEALL_KEY</a>(cur, hash, key, key_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: unlink al entries that match a given key (for multimap); the user has to free the memory in loop code.  <a href="a00043.html#gad5d12368e1648a383d048e7fed56fa82"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga6bdd6abcda051166ee1ce8586b80cd8a">HASH_DELETEALL_KEY_END</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga635ee4184a9ca1e86138aec673a0a9b1">HASH_FOREACH</a>(cur, hash)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: iterate over all elements in hash table.  <a href="a00043.html#ga635ee4184a9ca1e86138aec673a0a9b1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga1dd13a6578ab349c2cbac48304a0f5e1">HASH_FOREACH_END</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: close block opened by HASH_FOREACH.  <a href="a00043.html#ga1dd13a6578ab349c2cbac48304a0f5e1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga1193ff43ed7c2f743c974d75c39efc93">HASH_DELETEALL</a>(cur, hash)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: iterate over all elements in hash table and delete them from the table; allow the user to free the memory of each element.  <a href="a00043.html#ga1193ff43ed7c2f743c974d75c39efc93"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gaee7185cd320df1c4a801762c8f5201b6">HASH_DELETEALL_END</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro: close block opened by HASH_DELETEALL.  <a href="a00043.html#gaee7185cd320df1c4a801762c8f5201b6"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00030.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> )(void *data, ssize_t length)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> )(<a class="el" href="a00006.html">HASH_Entry</a> *, void *key, ssize_t key_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> )(<a class="el" href="a00006.html">HASH_Entry</a> *, void *context)</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga73ce0ca18399c5db0bac0491aeadba8d">HASH_init</a> (<a class="el" href="a00005.html">HASH</a> *hash, size_t buckets, int ismultimap, <a class="el" href="a00042.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> compare_key, <a class="el" href="a00042.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> hash_func)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Object constructor; initialise the hash that allows one entry for a given key.  <a href="a00043.html#ga73ce0ca18399c5db0bac0491aeadba8d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gacef4d862b25db1563ce621265299fb2e">HASH_resize</a> (<a class="el" href="a00005.html">HASH</a> *hash, size_t buckets)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">resize the hash table  <a href="a00043.html#gacef4d862b25db1563ce621265299fb2e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga889a4afc9437f453ed7db27d7bd39d3d">HASH_free</a> (<a class="el" href="a00005.html">HASH</a> *hash)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Object destructor; frees a hash table.  <a href="a00043.html#ga889a4afc9437f453ed7db27d7bd39d3d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga8924e383f82b78dcb693ffcab49188b0">HASH_size</a> (<a class="el" href="a00005.html">HASH</a> *hash)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of elements in hash table  <a href="a00043.html#ga8924e383f82b78dcb693ffcab49188b0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga072fef06fb9a516f47771ddd3946bf20">HASH_find</a> (<a class="el" href="a00005.html">HASH</a> *phash, void *key, ssize_t key_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find entry with given key in hash table; for multimaps this will return the first occurence of the key.  <a href="a00043.html#ga072fef06fb9a516f47771ddd3946bf20"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga2f20017ef2a49dc235a8bea78b254dd6">HASH_find_next</a> (<a class="el" href="a00005.html">HASH</a> *phash, <a class="el" href="a00006.html">HASH_Entry</a> *prev, void *key, ssize_t key_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">for multimaps - find next occurence of key  <a href="a00043.html#ga2f20017ef2a49dc235a8bea78b254dd6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gaf9ce37d092fe7b3ae217336ef623a7dc">HASH_insert</a> (<a class="el" href="a00005.html">HASH</a> *phash, <a class="el" href="a00006.html">HASH_Entry</a> *entry, void *key, ssize_t key_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry in hash table  <a href="a00043.html#gaf9ce37d092fe7b3ae217336ef623a7dc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga9546382a27adc8b91d70cd6e4c4723c3">HASH_unlink</a> (<a class="el" href="a00005.html">HASH</a> *hash, void *key, ssize_t key_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find first hash table entry and unlink it from its bucket. The caller of this function has to free memory held by hash table entry.  <a href="a00043.html#ga9546382a27adc8b91d70cd6e4c4723c3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga96c141f22c63392dfe758de963ffe8f5">HASH_foreach_key</a> (<a class="el" href="a00005.html">HASH</a> *hash, void *key, ssize_t key_size, <a class="el" href="a00042.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the hash table that match a given key and invoke callback with those elements.  <a href="a00043.html#ga96c141f22c63392dfe758de963ffe8f5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga251e1a1fd0e312bae674631001fd4b55">HASH_foreach</a> (<a class="el" href="a00005.html">HASH</a> *hash, <a class="el" href="a00042.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the hash table and invoke callback with each element. Equivalent of Lisp foldl,mapcar and friends.  <a href="a00043.html#ga251e1a1fd0e312bae674631001fd4b55"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00006.html">HASH_Entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga58acba9b6611fe07a44253eeb4307e09">HASH_findif</a> (<a class="el" href="a00005.html">HASH</a> *hash, <a class="el" href="a00042.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> eval_func, void *context, int *retval)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the hash. callback is invoked for each element of the list, when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="a00043.html#ga58acba9b6611fe07a44253eeb4307e09"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga0ed6fe026b7e8aef4611325ab2ffdc47">HASH_deleteall</a> (<a class="el" href="a00005.html">HASH</a> *hash, int offset_of_link, <a class="el" href="a00042.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> on_delete, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the hash table and delete them.  <a href="a00043.html#ga0ed6fe026b7e8aef4611325ab2ffdc47"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga3482872e1f844042afc76de5136bff3f">HASH_check</a> (<a class="el" href="a00005.html">HASH</a> *hash)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of bucket hash structure.  <a href="a00043.html#ga3482872e1f844042afc76de5136bff3f"></a><br/></td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:06 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

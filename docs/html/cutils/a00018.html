@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dbuf.c File Reference</title>
+<title>Simple data structures / objects in plain C: base.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,23 +37,90 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Defines</a>  </div>
   <div class="headertitle">
-<div class="title">dbuf.c File Reference</div>  </div>
+<div class="title">base.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="a00019_source.html">dbuf.h</a>&quot;</code><br/>
-<code>#include &lt;string.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br/>
+<code>#include &lt;stddef.h&gt;</code><br/>
+<code>#include &lt;stdlib.h&gt;</code><br/>
+<code>#include &lt;sys/types.h&gt;</code><br/>
 </div>
 <p><a href="a00018_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#gaa94888e27a335faa77790018995cd6f9">DBUF_add</a> (<a class="el" href="a00007.html">DBUF</a> *buf, void *data, size_t data_size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add stuff to a buffer  <a href="a00039.html#gaa94888e27a335faa77790018995cd6f9"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(ptr, offset)&#160;&#160;&#160;(((uint8_t *) ptr) - offset)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a>&#160;&#160;&#160;static inline</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a8a28f4ccca88db778f9dad279d3ba818">M_UNUSED</a>(x)&#160;&#160;&#160;(void) (x)</td></tr>
 </table>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a7b468c9bd3d1f3de0bb47e2ea23ddb1c"></a><!-- doxytag: member="base.h::_MEMBEROF" ref="a7b468c9bd3d1f3de0bb47e2ea23ddb1c" args="(ptr, offset)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _MEMBEROF</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ptr, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">offset&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(((uint8_t *) ptr) - offset)</td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:43 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00018_source.html#l00012">12</a> of file <a class="el" href="a00018_source.html">base.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad8685d2efad5bbbf60ebe6bc79e05350"></a><!-- doxytag: member="base.h::M_INLINE" ref="ad8685d2efad5bbbf60ebe6bc79e05350" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define M_INLINE&#160;&#160;&#160;static inline</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00018_source.html#l00015">15</a> of file <a class="el" href="a00018_source.html">base.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8a28f4ccca88db778f9dad279d3ba818"></a><!-- doxytag: member="base.h::M_UNUSED" ref="a8a28f4ccca88db778f9dad279d3ba818" args="(x)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define M_UNUSED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x</td><td>)</td>
+          <td>&#160;&#160;&#160;(void) (x)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00018_source.html#l00016">16</a> of file <a class="el" href="a00018_source.html">base.h</a>.</p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:06 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

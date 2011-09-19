@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: heap.c File Reference</title>
+<title>Simple data structures / objects in plain C: dlistunr.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,158 +37,98 @@
 </div>
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">heap.c File Reference</div>  </div>
+<div class="title">dlistunr.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00027_source.html">heap.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00018_source.html">cutils/base.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="a00028_source.html">cutils/dring.h</a>&gt;</code><br/>
 <code>#include &lt;stdlib.h&gt;</code><br/>
-<code>#include &lt;memory.h&gt;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
 </div>
 <p><a href="a00026_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html">tagDLISTUNR_entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">DLISTUNR</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">DLISTUNR_position</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2199fa5ef5950c4321c960de07c1dd96">DLISTUNR_FOREACH</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="a00047.html#ga2199fa5ef5950c4321c960de07c1dd96"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga6f36f5cdff7dc616d78ac582375fa9ff">DLISTUNR_FOREACH_REVERSE</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element.  <a href="a00047.html#ga6f36f5cdff7dc616d78ac582375fa9ff"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga92ff07b38bfb3654352b4ed371a657b2">DLISTUNR_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="a00047.html#ga92ff07b38bfb3654352b4ed371a657b2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad317561e804f3d6e5eabb799690da1c9">DLISTUNR_FOREACH_REVERSE_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element.  <a href="a00047.html#gad317561e804f3d6e5eabb799690da1c9"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00011.html">tagDLISTUNR_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a38f170641dce031e340421be84922a5d">DLISTUNR_entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a> )(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaab1a298e92d3537d3d99fb3026fa8878">DLISTUNR_VISITOR</a> )(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f">HEAP_push</a> (<a class="el" href="a00005.html">HEAP</a> *heap, void *element, size_t elmsize)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert a new element into the heap  <a href="a00043.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#gadb9cc342dba8eb29fe8be37e56a16370">HEAP_pop</a> (<a class="el" href="a00005.html">HEAP</a> *heap)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the top element from the heap  <a href="a00043.html#gadb9cc342dba8eb29fe8be37e56a16370"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a> (<a class="el" href="a00005.html">HEAP</a> *heap, size_t pos)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga689c175c301ff3025290d37ca5800039">HEAP_check</a> (<a class="el" href="a00005.html">HEAP</a> *heap)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of heap object.  <a href="a00043.html#ga689c175c301ff3025290d37ca5800039"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a0f51edc6a8cf741b8a292e63f59cbd10">visit_sorted</a> (<a class="el" href="a00005.html">HEAP</a> *heap, size_t pos, <a class="el" href="a00043.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00043.html#ga72dd058aadb08417c5fcb618e9be6833">HEAP_foreach_sorted</a> (<a class="el" href="a00005.html">HEAP</a> *heap, <a class="el" href="a00043.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2030d9ff4e1c5e8b4cbd74590b93d8ce">DLISTUNR_init</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, size_t elmsize, size_t elmmaxcount)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises a new unrolled list. List entries are all of a fixed size.  <a href="a00047.html#ga2030d9ff4e1c5e8b4cbd74590b93d8ce"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gafd9592650b47d236f472a4a9eb5b115b">DLISTUNR_check</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check validity of unrolled list instance  <a href="a00047.html#gafd9592650b47d236f472a4a9eb5b115b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0290d4b52497dc3690054049f2817647">DLISTUNR_isempty</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="a00047.html#ga0290d4b52497dc3690054049f2817647"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gadc37166b1334645228fc25a9e6771506">DLISTUNR_size</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga4db401e1c08b3d07a78985fea9961936">DLISTUNR_maxsize</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c">DLISTUNR_get_first</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position structure of first element in unrolled linked list.  <a href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289">DLISTUNR_get_last</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position structure of last element in unrolled linked list.  <a href="a00047.html#ga49b8d112ee987796b6a90920dd82a289"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga686e489382b845f2887e4610929bd473">DLISTUNR_next</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position to the next element in unrolled linked list.  <a href="a00047.html#ga686e489382b845f2887e4610929bd473"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5">DLISTUNR_prev</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position to the previous element in unrolled linked list.  <a href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2">DLISTUNR_check_position</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">verify a position structure.  <a href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gac38a1a149a73bda69de14aac70f116f6">DLISTUNR_copy_at</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy list entry identified by position structure (pos) into user supplied memory area  <a href="a00047.html#gac38a1a149a73bda69de14aac70f116f6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga7845b66b9da685fbdd9671a2f8f8af97">DLISTUNR_at</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return pointer to list entry identified by position structure (pos).  <a href="a00047.html#ga7845b66b9da685fbdd9671a2f8f8af97"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga82205532b2714164ed2a5a4d724f9094">DLISTUNR_insert_after</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry into this unrolled linked list  <a href="a00047.html#ga82205532b2714164ed2a5a4d724f9094"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga226340b3f31b861f5180d637d2c795c6">DLISTUNR_insert_before</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry before a given entry into this unrolled linked list  <a href="a00047.html#ga226340b3f31b861f5180d637d2c795c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3">DLISTUNR_unlink</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a unrolled list.  <a href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad94fe8e20708dc1b6c3e244dd8f4b7b9">DLISTUNR_push_back</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain queue)  <a href="a00047.html#gad94fe8e20708dc1b6c3e244dd8f4b7b9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gacc9f0635aadc53905275d684bde629a7">DLISTUNR_push_front</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain queue)  <a href="a00047.html#gacc9f0635aadc53905275d684bde629a7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga3286a39fe8434d31e4fba39b25a60dfe">DLISTUNR_pop_back</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data of last element into user supplied buffer and remove the last element from list (used to maintain double ended queue)  <a href="a00047.html#ga3286a39fe8434d31e4fba39b25a60dfe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gac6338ee42fd69900475253be10c462e5">DLISTUNR_pop_front</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data of first element into user supplied buffer and remove the first element from list (used to maintain double ended queue)  <a href="a00047.html#gac6338ee42fd69900475253be10c462e5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gabe7992a9cd77af1e758ce634779565df">DLISTUNR_free</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a> free_func, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">list free all entries of the list. The list will then be an empty list.  <a href="a00047.html#gabe7992a9cd77af1e758ce634779565df"></a><br/></td></tr>
 </table>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a68f48f61e4ae987ccd74d127d7cf7c76"></a><!-- doxytag: member="heap.c::check_recursive" ref="a68f48f61e4ae987ccd74d127d7cf7c76" args="(HEAP *heap, size_t pos)" -->
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="a38f170641dce031e340421be84922a5d"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_entry" ref="a38f170641dce031e340421be84922a5d" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static int check_recursive </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00005.html">HEAP</a> *&#160;</td>
-          <td class="paramname"><em>heap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>pos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
+          <td class="memname">typedef struct <a class="el" href="a00011.html">tagDLISTUNR_entry</a>  <a class="el" href="a00011.html">DLISTUNR_entry</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00129">129</a> of file <a class="el" href="a00026_source.html">heap.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> elmsize = heap-&gt;<a class="code" href="a00005.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
-        <span class="keywordtype">size_t</span> pos_left;
-        <span class="keywordtype">size_t</span> pos_right;
-
-        pos_left = (2 * pos);
-        <span class="keywordflow">if</span> (pos_left &lt;= heap-&gt;elmcount) {
-
-                <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00005.html#a58d5a3131976055b67894a0ba8467210">compare_func</a>( heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos - 1) * elmsize,  
-                                                            heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos_left - 1) * elmsize, 
-                                                                elmsize) &gt; 0) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                <span class="keywordflow">if</span> (!<a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_left)) {
-                        <span class="keywordflow">return</span> 0;
-                }
-        }
-
-
-        pos_right =   (2 * pos + 1) * elmsize;
-        <span class="keywordflow">if</span> (pos_right &lt;= heap-&gt;elmcount) {
-
-                <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00005.html#a58d5a3131976055b67894a0ba8467210">compare_func</a>( heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos - 1) * elmsize,  
-                                                            heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos_right - 1) * elmsize, 
-                                                            elmsize) &gt; 0) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                <span class="keywordflow">if</span> (!<a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_right)) {
-                        <span class="keywordflow">return</span> 0;
-                }
-        }
-        <span class="keywordflow">return</span> 1;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="a0f51edc6a8cf741b8a292e63f59cbd10"></a><!-- doxytag: member="heap.c::visit_sorted" ref="a0f51edc6a8cf741b8a292e63f59cbd10" args="(HEAP *heap, size_t pos, HEAP_VISITOR eval, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void visit_sorted </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00005.html">HEAP</a> *&#160;</td>
-          <td class="paramname"><em>heap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00043.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00178">178</a> of file <a class="el" href="a00026_source.html">heap.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> elmsize = heap-&gt;<a class="code" href="a00005.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
-        <span class="keywordtype">size_t</span> pos_left;
-        <span class="keywordtype">size_t</span> pos_right;
-
-        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00005.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> &gt; heap-&gt;<a class="code" href="a00005.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a>) {
-                <span class="keywordflow">return</span>;
-        }
-
-        pos_left = (2 * pos);
-        <span class="keywordflow">if</span> (pos_left &lt;= heap-&gt;elmcount) {
-
-                <a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_left );
-        }
-
-        pos_right =   (2 * pos + 1) * elmsize;
-        <span class="keywordflow">if</span> (pos_right &lt;= heap-&gt;elmcount) {
-
-                <a class="code" href="a00026.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>( heap, pos_right );
-        }
-
-        eval( pos, heap-&gt;<a class="code" href="a00005.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos - 1) * elmsize, elmsize, context );
-}
-</pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Sep 14 2011 20:05:44 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:06 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
