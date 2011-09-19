@@ -54,6 +54,8 @@ Description
 </pre>
 
 Lets show off with some example output: here a generator macro is creating a function, and the script output shows us how the preprocessor output correlates to the source macro invocation. Lines with + are from the source file, lines with - are the expanded macro - preprocessor output.
+
+<notextile>
 <pre>
 # 167 "bf.h"
 bf.h:167:+:BF_DECLARE_PUT_MACRO( uint8_t )
@@ -69,6 +71,7 @@ bf.h:171:-:static inline int BF_put_uint32_t ( BF *bf, uint32_t val ) { if ((bf-
 bf.h:172:+:BF_DECLARE_PUT_MACRO( int32_t )
 bf.h:172:-:static inline int BF_put_int32_t ( BF *bf, int32_t val ) { if ((bf->end - bf->put_pos) < (ptrdiff_t) sizeof( int32_t ) ) { return -1 ; } do { int32_t nval = htonl( val ); *( ( int32_t *) bf->put_pos) = nval; bf->put_pos += sizeof ( int32_t ); } while(0); return 0; }
 </pre>
+</notextile>
 
 h3. A short (and probably incomplete) history of macro facilities
 
