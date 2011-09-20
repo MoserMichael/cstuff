@@ -174,6 +174,10 @@ BF_DECLARE_PUT_MACRO( int32_t )
 BF_DECLARE_PUT_MACRO( uint64_t )
 BF_DECLARE_PUT_MACRO( int64_t )
 
+/**
+ * @brief add memory block to buffer
+ * @returns -1 not enough room left, 0 on success.
+ */
 M_INLINE int BF_putn ( BF *bf, void *data, size_t data_size ) 
 { 
    if ((bf->end - bf->put_pos) < (ptrdiff_t) data_size ) { 
