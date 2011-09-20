@@ -46,6 +46,7 @@
 </div>
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="a00006_source.html">nutils/endutil.h</a>&gt;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
 </div>
 <p><a href="a00005_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -93,9 +94,11 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">moves get_pos to start position; moves content between get_pos and put_pos if not empty.a Always succeeds returns 0 if bytes were moved, 1 if buffer was empty to begin with.  <a href="a00009.html#ga37819d2886490c212763c865c33364db"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a> (<a class="el" href="a00002.html">BF</a> *bf, int eof_line)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a> (<a class="el" href="a00002.html">BF</a> *bf, const char *eof_line, size_t eof_line_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga225b6fc0269c02bba59cf099b9e480b2">BF_putn</a> (<a class="el" href="a00002.html">BF</a> *bf, void *data, size_t data_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add memory block to buffer  <a href="a00009.html#ga225b6fc0269c02bba59cf099b9e480b2"></a><br/></td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:10 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

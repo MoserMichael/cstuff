@@ -43,239 +43,254 @@
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __BUFF_H_ </span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#include &lt;<a class="code" href="a00006.html">nutils/endutil.h</a>&gt;</span>
-<a name="l00005"></a>00005 <span class="comment"></span>
-<a name="l00006"></a>00006 <span class="comment">/**</span>
-<a name="l00007"></a>00007 <span class="comment"> @defgroup BF</span>
-<a name="l00008"></a>00008 <span class="comment"> @brief protocol buffer. idea similar to skb_buff, does not own it&#39;s data.</span>
-<a name="l00009"></a>00009 <span class="comment"> The following invariants hold</span>
-<a name="l00010"></a>00010 <span class="comment"></span>
-<a name="l00011"></a>00011 <span class="comment"> START_OF_BUFFER &lt;= start &lt;= get_pos &lt;= put_pos &lt;= end &lt;= END_OF_BUFFER.</span>
-<a name="l00012"></a>00012 <span class="comment"></span>
-<a name="l00013"></a>00013 <span class="comment"> The effective buffer ranges from start up to end pointers - the range [start end)</span>
-<a name="l00014"></a>00014 <span class="comment"> start may be larger than START_OF_BUFFER, as a way of reserving room for a header.</span>
-<a name="l00015"></a>00015 <span class="comment"> end may be less than END_OF_BUFFER, as a way of reserving root for a footer.</span>
-<a name="l00016"></a>00016 <span class="comment"> </span>
-<a name="l00017"></a>00017 <span class="comment"> the get_pos position will advance as data is returned from the buffer </span>
-<a name="l00018"></a>00018 <span class="comment"> the pus_pos position will advance, as data is placed int the buffer.</span>
-<a name="l00019"></a>00019 <span class="comment"></span>
-<a name="l00020"></a>00020 <span class="comment"> @{</span>
-<a name="l00021"></a>00021 <span class="comment"> */</span>
-<a name="l00022"></a><a class="code" href="a00002.html">00022</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00002.html">tagBF</a> {
-<a name="l00023"></a><a class="code" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">00023</a>   uint8_t *<a class="code" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">bf</a>;
-<a name="l00024"></a><a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">00024</a>   <span class="keywordtype">size_t</span>   <a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a>;
-<a name="l00025"></a>00025 
-<a name="l00026"></a><a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">00026</a>   uint8_t *<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>, *<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>, *<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>, *<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a>;
-<a name="l00027"></a>00027 
-<a name="l00028"></a>00028 } <a class="code" href="a00009.html#gac141d99aa0f78cafd2acf074517a38cf">BF</a>;
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030 <span class="comment"></span>
-<a name="l00031"></a>00031 <span class="comment">/**</span>
-<a name="l00032"></a>00032 <span class="comment"> * @brief initialise an empty protocol buffer object. </span>
-<a name="l00033"></a>00033 <span class="comment"> * start and end cover the whole memory range.</span>
-<a name="l00034"></a>00034 <span class="comment">     * nitiay get and put pointer are set to start of range.</span>
-<a name="l00035"></a>00035 <span class="comment"> */</span>
-<a name="l00036"></a><a class="code" href="a00009.html#gae0c0c2e9bd1e5315aead6fe6554b55b2">00036</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00009.html#gae0c0c2e9bd1e5315aead6fe6554b55b2" title="initialise an empty protocol buffer object. start and end cover the whole memory range. nitiay get and put pointer are set to start of range.">BF_init</a>( <a class="code" href="a00002.html">BF</a> *bf, <span class="keywordtype">void</span> *buffer, <span class="keywordtype">size_t</span> buffer_size )
-<a name="l00037"></a>00037 {
-<a name="l00038"></a>00038    bf-&gt;<a class="code" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">bf</a> =  (uint8_t *) buffer;
-<a name="l00039"></a>00039    bf-&gt;<a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a> = buffer_size;
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041    bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a> =   (uint8_t *) buffer;
-<a name="l00042"></a>00042    bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> = buffer + buffer_size;
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044    bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
-<a name="l00045"></a>00045 }
-<a name="l00046"></a>00046 <span class="comment"></span>
-<a name="l00047"></a>00047 <span class="comment">/**</span>
-<a name="l00048"></a>00048 <span class="comment"> * @brief validates a buffer - checks all invariants.</span>
-<a name="l00049"></a>00049 <span class="comment"> */</span>
-<a name="l00050"></a>00050 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga9a5012a3895ade56ca7b1a8bb7309c72" title="validates a buffer - checks all invariants.">BF_check</a>( <a class="code" href="a00002.html">BF</a> * bf );
-<a name="l00051"></a>00051 <span class="comment"></span>
-<a name="l00052"></a>00052 <span class="comment">/**</span>
-<a name="l00053"></a>00053 <span class="comment"> * @brief set pointers so that we can &#39;get&#39; the whole range from start to end.</span>
-<a name="l00054"></a>00054 <span class="comment"> */</span>
-<a name="l00055"></a><a class="code" href="a00009.html#ga4ef6aded05e4a4d6669d269775573d3f">00055</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00009.html#ga4ef6aded05e4a4d6669d269775573d3f" title="set pointers so that we can &#39;get&#39; the whole range from start to end.">BF_get_mode</a>( <a class="code" href="a00002.html">BF</a> *bf )
-<a name="l00056"></a>00056 {
-<a name="l00057"></a>00057     bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
-<a name="l00058"></a>00058     bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a>;
-<a name="l00059"></a>00059 }
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 <span class="comment"></span>
-<a name="l00062"></a>00062 <span class="comment">/**</span>
-<a name="l00063"></a>00063 <span class="comment"> * @brief set pointers so that we can &#39;put&#39; the whole range from start to end.</span>
-<a name="l00064"></a>00064 <span class="comment"> */</span>
-<a name="l00065"></a><a class="code" href="a00009.html#ga26e937b842b116933b58d6a1dd6e6b3a">00065</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00009.html#ga26e937b842b116933b58d6a1dd6e6b3a" title="set pointers so that we can &#39;put&#39; the whole range from start to end.">BF_put_mode</a>( <a class="code" href="a00002.html">BF</a> *bf )
-<a name="l00066"></a>00066 {
-<a name="l00067"></a>00067     bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
-<a name="l00068"></a>00068     bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
-<a name="l00069"></a>00069 }
-<a name="l00070"></a>00070 <span class="comment"></span>
-<a name="l00071"></a>00071 <span class="comment">/**</span>
-<a name="l00072"></a>00072 <span class="comment"> * @brief returns number of bytes that can be returned by _get_</span>
-<a name="l00073"></a>00073 <span class="comment"> */</span>
-<a name="l00074"></a><a class="code" href="a00009.html#gaed0d381d2cbad849c7949245ad986f40">00074</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#gaed0d381d2cbad849c7949245ad986f40" title="returns number of bytes that can be returned by _get_">BF_get_size</a>( <a class="code" href="a00002.html">BF</a> *bf )
-<a name="l00075"></a>00075 {
-<a name="l00076"></a>00076   <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> - bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>;
-<a name="l00077"></a>00077 }
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079 <span class="comment"></span>
-<a name="l00080"></a>00080 <span class="comment">/**</span>
-<a name="l00081"></a>00081 <span class="comment"> * @brief returns number of bytes that can be written by _put_</span>
-<a name="l00082"></a>00082 <span class="comment"> */</span>
-<a name="l00083"></a><a class="code" href="a00009.html#gadf903eda486452455390dade47cd9898">00083</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#gadf903eda486452455390dade47cd9898" title="returns number of bytes that can be written by _put_">BF_put_size</a>( <a class="code" href="a00002.html">BF</a> *bf )
-<a name="l00084"></a>00084 {
-<a name="l00085"></a>00085   <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
-<a name="l00086"></a>00086 }
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088 <span class="comment"></span>
-<a name="l00089"></a>00089 <span class="comment">/** </span>
-<a name="l00090"></a>00090 <span class="comment"> * @brief set start position, position is relative to start of memory range.</span>
-<a name="l00091"></a>00091 <span class="comment"> */</span>
-<a name="l00092"></a>00092 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga18fdd2d33720298f25059429d226d9b2" title="set start position, position is relative to start of memory range.">BF_set_start</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
-<a name="l00093"></a>00093 <span class="comment"></span>
-<a name="l00094"></a>00094 <span class="comment">/** </span>
-<a name="l00095"></a>00095 <span class="comment"> * @brief set end position, position is relative to start of memory range.</span>
-<a name="l00096"></a>00096 <span class="comment"> */</span>
-<a name="l00097"></a>00097 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga56338e4b6e732eea198fb266dfa55198" title="set end position, position is relative to start of memory range.">BF_set_end</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
-<a name="l00098"></a>00098 
-<a name="l00099"></a>00099 <span class="comment"></span>
-<a name="l00100"></a>00100 <span class="comment">/** </span>
-<a name="l00101"></a>00101 <span class="comment"> * @brief set get position, position is relative to &#39;start&#39; pointer.</span>
-<a name="l00102"></a>00102 <span class="comment"> */</span>
-<a name="l00103"></a>00103 <span class="keywordtype">int</span> <a class="code" href="a00009.html#gaacf9d4de524e47e30360e243d39c0f73" title="set get position, position is relative to &#39;start&#39; pointer.">BF_set_get</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
-<a name="l00104"></a>00104 <span class="comment"></span>
-<a name="l00105"></a>00105 <span class="comment">/** </span>
-<a name="l00106"></a>00106 <span class="comment"> * @brief set put position, position is relative to &#39;start&#39; pointer.</span>
-<a name="l00107"></a>00107 <span class="comment"> */</span>
-<a name="l00108"></a>00108 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga3d4956583a84d460393dd68dca32f6ac" title="set put position, position is relative to &#39;start&#39; pointer.">BF_set_put</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
-<a name="l00109"></a>00109 <span class="comment"></span>
-<a name="l00110"></a>00110 <span class="comment">/**</span>
-<a name="l00111"></a>00111 <span class="comment"> * @brief returns number of bytes that cam be read from this buffer (i.e. that BF_get_(type) return ) </span>
-<a name="l00112"></a>00112 <span class="comment"> */</span>
-<a name="l00113"></a><a class="code" href="a00009.html#ga95f015cf316f26ce7d0ae42feef8a45f">00113</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#ga95f015cf316f26ce7d0ae42feef8a45f" title="returns number of bytes that cam be read from this buffer (i.e. that BF_get_(type) return )...">BF_can_get</a>( <a class="code" href="a00002.html">BF</a> *bf )
-<a name="l00114"></a>00114 {
-<a name="l00115"></a>00115     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> - bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>;
-<a name="l00116"></a>00116 }
-<a name="l00117"></a>00117 <span class="comment"></span>
-<a name="l00118"></a>00118 <span class="comment">/**</span>
-<a name="l00119"></a>00119 <span class="comment"> * @brief returns number of bytes that cam be placed into this buffer (i.e. that BF_put_(type) places into this buffer ) </span>
-<a name="l00120"></a>00120 <span class="comment"> */</span>
-<a name="l00121"></a><a class="code" href="a00009.html#ga9e4f956930808566d42dd85d4b0ce24d">00121</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#ga9e4f956930808566d42dd85d4b0ce24d" title="returns number of bytes that cam be placed into this buffer (i.e. that BF_put_(type) places into this...">BF_can_put</a>( <a class="code" href="a00002.html">BF</a> *bf )
-<a name="l00122"></a>00122 {
-<a name="l00123"></a>00123     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
-<a name="l00124"></a>00124 }
-<a name="l00125"></a>00125 <span class="comment"></span>
-<a name="l00126"></a>00126 <span class="comment">/**</span>
-<a name="l00127"></a>00127 <span class="comment"> * @brief return 1 if the whole buffer is fulled with data (get_pos == start &amp;&amp; put_pos == end)</span>
-<a name="l00128"></a>00128 <span class="comment"> */</span>
-<a name="l00129"></a><a class="code" href="a00009.html#gafb9836bdbbbd3b80a05a72705b256dbd">00129</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00009.html#gafb9836bdbbbd3b80a05a72705b256dbd" title="return 1 if the whole buffer is fulled with data (get_pos == start &amp;&amp; put_pos == end)">BF_is_full</a>( <a class="code" href="a00002.html">BF</a> *bf )
-<a name="l00130"></a>00130 {
-<a name="l00131"></a>00131     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> == bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a> &amp;&amp; bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> == bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
-<a name="l00132"></a>00132 }
-<a name="l00133"></a>00133 <span class="comment"></span>
-<a name="l00134"></a>00134 <span class="comment">/**</span>
-<a name="l00135"></a>00135 <span class="comment"> * @brief moves get_pos to start position; moves content between get_pos and put_pos if not empty.a</span>
-<a name="l00136"></a>00136 <span class="comment"> * Always succeeds</span>
-<a name="l00137"></a>00137 <span class="comment"> * returns 0 if bytes were moved, 1 if buffer was empty to begin with.</span>
-<a name="l00138"></a>00138 <span class="comment"> */</span>
-<a name="l00139"></a>00139 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga37819d2886490c212763c865c33364db" title="moves get_pos to start position; moves content between get_pos and put_pos if not empty...">BF_compact</a>( <a class="code" href="a00002.html">BF</a> * bf );
-<a name="l00140"></a>00140 
-<a name="l00141"></a>00141 <span class="comment"></span>
-<a name="l00142"></a>00142 <span class="comment">/**</span>
-<a name="l00143"></a>00143 <span class="comment">  @ brief get the next line.</span>
-<a name="l00144"></a>00144 <span class="comment"> */</span>
-<a name="l00145"></a>00145 <span class="keywordtype">char</span> *  <a class="code" href="a00009.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">int</span> eof_line);
-<a name="l00146"></a>00146 <span class="comment"></span>
-<a name="l00147"></a>00147 <span class="comment">/**</span>
-<a name="l00148"></a>00148 <span class="comment">  @ brief get the next line.</span>
-<a name="l00149"></a>00149 <span class="comment"> */</span>
-<a name="l00150"></a>00150 <span class="keywordtype">char</span> *  <a class="code" href="a00009.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keyword">const</span> <span class="keywordtype">char</span> *eof_line, <span class="keywordtype">size_t</span> eof_line_size);
-<a name="l00151"></a>00151 
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;string.h&gt;</span>
+<a name="l00006"></a>00006 <span class="comment"></span>
+<a name="l00007"></a>00007 <span class="comment">/**</span>
+<a name="l00008"></a>00008 <span class="comment"> @defgroup BF</span>
+<a name="l00009"></a>00009 <span class="comment"> @brief protocol buffer. idea similar to skb_buff, does not own it&#39;s data.</span>
+<a name="l00010"></a>00010 <span class="comment"> The following invariants hold</span>
+<a name="l00011"></a>00011 <span class="comment"></span>
+<a name="l00012"></a>00012 <span class="comment"> START_OF_BUFFER &lt;= start &lt;= get_pos &lt;= put_pos &lt;= end &lt;= END_OF_BUFFER.</span>
+<a name="l00013"></a>00013 <span class="comment"></span>
+<a name="l00014"></a>00014 <span class="comment"> The effective buffer ranges from start up to end pointers - the range [start end)</span>
+<a name="l00015"></a>00015 <span class="comment"> start may be larger than START_OF_BUFFER, as a way of reserving room for a header.</span>
+<a name="l00016"></a>00016 <span class="comment"> end may be less than END_OF_BUFFER, as a way of reserving root for a footer.</span>
+<a name="l00017"></a>00017 <span class="comment"> </span>
+<a name="l00018"></a>00018 <span class="comment"> the get_pos position will advance as data is returned from the buffer </span>
+<a name="l00019"></a>00019 <span class="comment"> the pus_pos position will advance, as data is placed int the buffer.</span>
+<a name="l00020"></a>00020 <span class="comment"></span>
+<a name="l00021"></a>00021 <span class="comment"> @{</span>
+<a name="l00022"></a>00022 <span class="comment"> */</span>
+<a name="l00023"></a><a class="code" href="a00002.html">00023</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00002.html">tagBF</a> {
+<a name="l00024"></a><a class="code" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">00024</a>   uint8_t *<a class="code" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">bf</a>;
+<a name="l00025"></a><a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">00025</a>   <span class="keywordtype">size_t</span>   <a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a>;
+<a name="l00026"></a>00026 
+<a name="l00027"></a><a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">00027</a>   uint8_t *<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>, *<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>, *<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>, *<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a>;
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029 } <a class="code" href="a00009.html#gac141d99aa0f78cafd2acf074517a38cf">BF</a>;
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="comment"></span>
+<a name="l00032"></a>00032 <span class="comment">/**</span>
+<a name="l00033"></a>00033 <span class="comment"> * @brief initialise an empty protocol buffer object. </span>
+<a name="l00034"></a>00034 <span class="comment"> * start and end cover the whole memory range.</span>
+<a name="l00035"></a>00035 <span class="comment">     * nitiay get and put pointer are set to start of range.</span>
+<a name="l00036"></a>00036 <span class="comment"> */</span>
+<a name="l00037"></a><a class="code" href="a00009.html#gae0c0c2e9bd1e5315aead6fe6554b55b2">00037</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00009.html#gae0c0c2e9bd1e5315aead6fe6554b55b2" title="initialise an empty protocol buffer object. start and end cover the whole memory range. nitiay get and put pointer are set to start of range.">BF_init</a>( <a class="code" href="a00002.html">BF</a> *bf, <span class="keywordtype">void</span> *buffer, <span class="keywordtype">size_t</span> buffer_size )
+<a name="l00038"></a>00038 {
+<a name="l00039"></a>00039    bf-&gt;<a class="code" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">bf</a> =  (uint8_t *) buffer;
+<a name="l00040"></a>00040    bf-&gt;<a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a> = buffer_size;
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042    bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a> =   (uint8_t *) buffer;
+<a name="l00043"></a>00043    bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> = buffer + buffer_size;
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045    bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
+<a name="l00046"></a>00046 }
+<a name="l00047"></a>00047 <span class="comment"></span>
+<a name="l00048"></a>00048 <span class="comment">/**</span>
+<a name="l00049"></a>00049 <span class="comment"> * @brief validates a buffer - checks all invariants.</span>
+<a name="l00050"></a>00050 <span class="comment"> */</span>
+<a name="l00051"></a>00051 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga9a5012a3895ade56ca7b1a8bb7309c72" title="validates a buffer - checks all invariants.">BF_check</a>( <a class="code" href="a00002.html">BF</a> * bf );
+<a name="l00052"></a>00052 <span class="comment"></span>
+<a name="l00053"></a>00053 <span class="comment">/**</span>
+<a name="l00054"></a>00054 <span class="comment"> * @brief set pointers so that we can &#39;get&#39; the whole range from start to end.</span>
+<a name="l00055"></a>00055 <span class="comment"> */</span>
+<a name="l00056"></a><a class="code" href="a00009.html#ga4ef6aded05e4a4d6669d269775573d3f">00056</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00009.html#ga4ef6aded05e4a4d6669d269775573d3f" title="set pointers so that we can &#39;get&#39; the whole range from start to end.">BF_get_mode</a>( <a class="code" href="a00002.html">BF</a> *bf )
+<a name="l00057"></a>00057 {
+<a name="l00058"></a>00058     bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
+<a name="l00059"></a>00059     bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a>;
+<a name="l00060"></a>00060 }
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062 <span class="comment"></span>
+<a name="l00063"></a>00063 <span class="comment">/**</span>
+<a name="l00064"></a>00064 <span class="comment"> * @brief set pointers so that we can &#39;put&#39; the whole range from start to end.</span>
+<a name="l00065"></a>00065 <span class="comment"> */</span>
+<a name="l00066"></a><a class="code" href="a00009.html#ga26e937b842b116933b58d6a1dd6e6b3a">00066</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00009.html#ga26e937b842b116933b58d6a1dd6e6b3a" title="set pointers so that we can &#39;put&#39; the whole range from start to end.">BF_put_mode</a>( <a class="code" href="a00002.html">BF</a> *bf )
+<a name="l00067"></a>00067 {
+<a name="l00068"></a>00068     bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
+<a name="l00069"></a>00069     bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
+<a name="l00070"></a>00070 }
+<a name="l00071"></a>00071 <span class="comment"></span>
+<a name="l00072"></a>00072 <span class="comment">/**</span>
+<a name="l00073"></a>00073 <span class="comment"> * @brief returns number of bytes that can be returned by _get_</span>
+<a name="l00074"></a>00074 <span class="comment"> */</span>
+<a name="l00075"></a><a class="code" href="a00009.html#gaed0d381d2cbad849c7949245ad986f40">00075</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#gaed0d381d2cbad849c7949245ad986f40" title="returns number of bytes that can be returned by _get_">BF_get_size</a>( <a class="code" href="a00002.html">BF</a> *bf )
+<a name="l00076"></a>00076 {
+<a name="l00077"></a>00077   <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> - bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>;
+<a name="l00078"></a>00078 }
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080 <span class="comment"></span>
+<a name="l00081"></a>00081 <span class="comment">/**</span>
+<a name="l00082"></a>00082 <span class="comment"> * @brief returns number of bytes that can be written by _put_</span>
+<a name="l00083"></a>00083 <span class="comment"> */</span>
+<a name="l00084"></a><a class="code" href="a00009.html#gadf903eda486452455390dade47cd9898">00084</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#gadf903eda486452455390dade47cd9898" title="returns number of bytes that can be written by _put_">BF_put_size</a>( <a class="code" href="a00002.html">BF</a> *bf )
+<a name="l00085"></a>00085 {
+<a name="l00086"></a>00086   <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
+<a name="l00087"></a>00087 }
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 <span class="comment"></span>
+<a name="l00090"></a>00090 <span class="comment">/** </span>
+<a name="l00091"></a>00091 <span class="comment"> * @brief set start position, position is relative to start of memory range.</span>
+<a name="l00092"></a>00092 <span class="comment"> */</span>
+<a name="l00093"></a>00093 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga18fdd2d33720298f25059429d226d9b2" title="set start position, position is relative to start of memory range.">BF_set_start</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
+<a name="l00094"></a>00094 <span class="comment"></span>
+<a name="l00095"></a>00095 <span class="comment">/** </span>
+<a name="l00096"></a>00096 <span class="comment"> * @brief set end position, position is relative to start of memory range.</span>
+<a name="l00097"></a>00097 <span class="comment"> */</span>
+<a name="l00098"></a>00098 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga56338e4b6e732eea198fb266dfa55198" title="set end position, position is relative to start of memory range.">BF_set_end</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100 <span class="comment"></span>
+<a name="l00101"></a>00101 <span class="comment">/** </span>
+<a name="l00102"></a>00102 <span class="comment"> * @brief set get position, position is relative to &#39;start&#39; pointer.</span>
+<a name="l00103"></a>00103 <span class="comment"> */</span>
+<a name="l00104"></a>00104 <span class="keywordtype">int</span> <a class="code" href="a00009.html#gaacf9d4de524e47e30360e243d39c0f73" title="set get position, position is relative to &#39;start&#39; pointer.">BF_set_get</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
+<a name="l00105"></a>00105 <span class="comment"></span>
+<a name="l00106"></a>00106 <span class="comment">/** </span>
+<a name="l00107"></a>00107 <span class="comment"> * @brief set put position, position is relative to &#39;start&#39; pointer.</span>
+<a name="l00108"></a>00108 <span class="comment"> */</span>
+<a name="l00109"></a>00109 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga3d4956583a84d460393dd68dca32f6ac" title="set put position, position is relative to &#39;start&#39; pointer.">BF_set_put</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos );
+<a name="l00110"></a>00110 <span class="comment"></span>
+<a name="l00111"></a>00111 <span class="comment">/**</span>
+<a name="l00112"></a>00112 <span class="comment"> * @brief returns number of bytes that cam be read from this buffer (i.e. that BF_get_(type) return ) </span>
+<a name="l00113"></a>00113 <span class="comment"> */</span>
+<a name="l00114"></a><a class="code" href="a00009.html#ga95f015cf316f26ce7d0ae42feef8a45f">00114</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#ga95f015cf316f26ce7d0ae42feef8a45f" title="returns number of bytes that cam be read from this buffer (i.e. that BF_get_(type) return )...">BF_can_get</a>( <a class="code" href="a00002.html">BF</a> *bf )
+<a name="l00115"></a>00115 {
+<a name="l00116"></a>00116     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> - bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>;
+<a name="l00117"></a>00117 }
+<a name="l00118"></a>00118 <span class="comment"></span>
+<a name="l00119"></a>00119 <span class="comment">/**</span>
+<a name="l00120"></a>00120 <span class="comment"> * @brief returns number of bytes that cam be placed into this buffer (i.e. that BF_put_(type) places into this buffer ) </span>
+<a name="l00121"></a>00121 <span class="comment"> */</span>
+<a name="l00122"></a><a class="code" href="a00009.html#ga9e4f956930808566d42dd85d4b0ce24d">00122</a> M_INLINE <span class="keywordtype">size_t</span> <a class="code" href="a00009.html#ga9e4f956930808566d42dd85d4b0ce24d" title="returns number of bytes that cam be placed into this buffer (i.e. that BF_put_(type) places into this...">BF_can_put</a>( <a class="code" href="a00002.html">BF</a> *bf )
+<a name="l00123"></a>00123 {
+<a name="l00124"></a>00124     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
+<a name="l00125"></a>00125 }
+<a name="l00126"></a>00126 <span class="comment"></span>
+<a name="l00127"></a>00127 <span class="comment">/**</span>
+<a name="l00128"></a>00128 <span class="comment"> * @brief return 1 if the whole buffer is fulled with data (get_pos == start &amp;&amp; put_pos == end)</span>
+<a name="l00129"></a>00129 <span class="comment"> */</span>
+<a name="l00130"></a><a class="code" href="a00009.html#gafb9836bdbbbd3b80a05a72705b256dbd">00130</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00009.html#gafb9836bdbbbd3b80a05a72705b256dbd" title="return 1 if the whole buffer is fulled with data (get_pos == start &amp;&amp; put_pos == end)">BF_is_full</a>( <a class="code" href="a00002.html">BF</a> *bf )
+<a name="l00131"></a>00131 {
+<a name="l00132"></a>00132     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> == bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a> &amp;&amp; bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> == bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
+<a name="l00133"></a>00133 }
+<a name="l00134"></a>00134 <span class="comment"></span>
+<a name="l00135"></a>00135 <span class="comment">/**</span>
+<a name="l00136"></a>00136 <span class="comment"> * @brief moves get_pos to start position; moves content between get_pos and put_pos if not empty.a</span>
+<a name="l00137"></a>00137 <span class="comment"> * Always succeeds</span>
+<a name="l00138"></a>00138 <span class="comment"> * returns 0 if bytes were moved, 1 if buffer was empty to begin with.</span>
+<a name="l00139"></a>00139 <span class="comment"> */</span>
+<a name="l00140"></a>00140 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga37819d2886490c212763c865c33364db" title="moves get_pos to start position; moves content between get_pos and put_pos if not empty...">BF_compact</a>( <a class="code" href="a00002.html">BF</a> * bf );
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142 <span class="comment"></span>
+<a name="l00143"></a>00143 <span class="comment">/**</span>
+<a name="l00144"></a>00144 <span class="comment">  @ brief get the next line.</span>
+<a name="l00145"></a>00145 <span class="comment"> */</span>
+<a name="l00146"></a>00146 <span class="keywordtype">char</span> *  <a class="code" href="a00009.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">int</span> eof_line);
+<a name="l00147"></a>00147 <span class="comment"></span>
+<a name="l00148"></a>00148 <span class="comment">/**</span>
+<a name="l00149"></a>00149 <span class="comment">  @ brief get the next line.</span>
+<a name="l00150"></a>00150 <span class="comment"> */</span>
+<a name="l00151"></a>00151 <span class="keywordtype">char</span> *  <a class="code" href="a00009.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keyword">const</span> <span class="keywordtype">char</span> *eof_line, <span class="keywordtype">size_t</span> eof_line_size);
 <a name="l00152"></a>00152 
-<a name="l00153"></a><a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">00153</a> <span class="preprocessor">#define BF_DECLARE_PUT_MACRO( type ) \</span>
-<a name="l00154"></a>00154 <span class="preprocessor">M_INLINE int BF_put_##type ( BF *bf, type val ) \</span>
-<a name="l00155"></a>00155 <span class="preprocessor">{ \</span>
-<a name="l00156"></a>00156 <span class="preprocessor">   if ((bf-&gt;end - bf-&gt;put_pos) &lt; (ptrdiff_t) sizeof( type ) ) { \</span>
-<a name="l00157"></a>00157 <span class="preprocessor">     return -1 ; \</span>
-<a name="l00158"></a>00158 <span class="preprocessor">   } \</span>
-<a name="l00159"></a>00159 <span class="preprocessor">   do { \</span>
-<a name="l00160"></a>00160 <span class="preprocessor">     type nval = h2n_##type ( val ); \</span>
-<a name="l00161"></a>00161 <span class="preprocessor">     *( ( type *) bf-&gt;put_pos) = nval; \</span>
-<a name="l00162"></a>00162 <span class="preprocessor">     bf-&gt;put_pos += sizeof ( type ); \</span>
-<a name="l00163"></a>00163 <span class="preprocessor">   } while(0); \</span>
-<a name="l00164"></a>00164 <span class="preprocessor">   return 0; \</span>
-<a name="l00165"></a>00165 <span class="preprocessor">} </span>
-<a name="l00166"></a>00166 <span class="preprocessor"></span>
-<a name="l00167"></a>00167 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint8_t )
-<a name="l00168"></a>00168 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int8_t )
-<a name="l00169"></a>00169 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint16_t )
-<a name="l00170"></a>00170 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int16_t )
-<a name="l00171"></a>00171 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint32_t )
-<a name="l00172"></a>00172 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int32_t )
-<a name="l00173"></a>00173 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint64_t )
-<a name="l00174"></a>00174 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int64_t )
-<a name="l00175"></a>00175 
-<a name="l00176"></a>00176 
-<a name="l00177"></a><a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">00177</a> <span class="preprocessor">#define BF_DECLARE_GET_MACRO( type ) \</span>
-<a name="l00178"></a>00178 <span class="preprocessor">M_INLINE int BF_get_##type ( BF *bf, type *pval ) \</span>
-<a name="l00179"></a>00179 <span class="preprocessor">{ \</span>
-<a name="l00180"></a>00180 <span class="preprocessor">   if ((bf-&gt;put_pos - bf-&gt;get_pos) &lt; (ptrdiff_t) sizeof( type ) ) { \</span>
-<a name="l00181"></a>00181 <span class="preprocessor">     return -1 ; \</span>
-<a name="l00182"></a>00182 <span class="preprocessor">   } \</span>
-<a name="l00183"></a>00183 <span class="preprocessor">   *pval = n2h_##type( *( ( type *) bf-&gt;get_pos) ); \</span>
-<a name="l00184"></a>00184 <span class="preprocessor">   bf-&gt;get_pos += sizeof( type ); \</span>
-<a name="l00185"></a>00185 <span class="preprocessor">   return 0; \</span>
-<a name="l00186"></a>00186 <span class="preprocessor">}</span>
-<a name="l00187"></a>00187 <span class="preprocessor"></span>
-<a name="l00188"></a>00188 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint8_t )
-<a name="l00189"></a>00189 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int8_t )
-<a name="l00190"></a>00190 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint16_t )
-<a name="l00191"></a>00191 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int16_t )
-<a name="l00192"></a>00192 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint32_t )
-<a name="l00193"></a>00193 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int32_t )
-<a name="l00194"></a>00194 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint64_t )
-<a name="l00195"></a>00195 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int64_t )
-<a name="l00196"></a>00196 
-<a name="l00197"></a><a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">00197</a> <span class="preprocessor">#define BF_DECLARE_PUT_UNSAFE_MACRO( type ) \</span>
-<a name="l00198"></a>00198 <span class="preprocessor">M_INLINE void BF_put_unsafe_##type ( BF *bf, type val ) \</span>
-<a name="l00199"></a>00199 <span class="preprocessor">{ \</span>
-<a name="l00200"></a>00200 <span class="preprocessor">  type nval = h2n_##type ( val ); \</span>
-<a name="l00201"></a>00201 <span class="preprocessor">  *( ( type *) bf-&gt;put_pos) = nval; \</span>
-<a name="l00202"></a>00202 <span class="preprocessor">  bf-&gt;put_pos += sizeof ( type ); \</span>
-<a name="l00203"></a>00203 <span class="preprocessor">} </span>
-<a name="l00204"></a>00204 <span class="preprocessor"></span>
-<a name="l00205"></a>00205 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint8_t)
-<a name="l00206"></a>00206 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int8_t) 
-<a name="l00207"></a>00207 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint16_t)
-<a name="l00208"></a>00208 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int16_t) 
-<a name="l00209"></a>00209 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint32_t)
-<a name="l00210"></a>00210 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int32_t)
-<a name="l00211"></a>00211 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint64_t)
-<a name="l00212"></a>00212 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int64_t)
-<a name="l00213"></a>00213 
-<a name="l00214"></a><a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">00214</a> <span class="preprocessor">#define BF_DECLARE_GET_UNSAFE_MACRO( type ) \</span>
-<a name="l00215"></a>00215 <span class="preprocessor">M_INLINE type BF_get_unsafe_##type ( BF *bf ) { \</span>
-<a name="l00216"></a>00216 <span class="preprocessor">   type rval = n2h_##type( *( ( type *) bf-&gt;get_pos) ); \</span>
-<a name="l00217"></a>00217 <span class="preprocessor">   bf-&gt;get_pos += sizeof( type ); \</span>
-<a name="l00218"></a>00218 <span class="preprocessor">   return rval; \</span>
-<a name="l00219"></a>00219 <span class="preprocessor">}</span>
-<a name="l00220"></a>00220 <span class="preprocessor"></span>
-<a name="l00221"></a>00221 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint8_t)
-<a name="l00222"></a>00222 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int8_t)
-<a name="l00223"></a>00223 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint16_t)
-<a name="l00224"></a>00224 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int16_t)
-<a name="l00225"></a>00225 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint32_t)
-<a name="l00226"></a>00226 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int32_t)
-<a name="l00227"></a>00227 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint64_t)
-<a name="l00228"></a>00228 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int64_t)
-<a name="l00229"></a>00229 <span class="comment"></span>
-<a name="l00230"></a>00230 <span class="comment">/**</span>
-<a name="l00231"></a>00231 <span class="comment"> @}</span>
-<a name="l00232"></a>00232 <span class="comment">*/</span>
-<a name="l00233"></a>00233 
-<a name="l00234"></a>00234 <span class="preprocessor">#endif</span>
+<a name="l00153"></a>00153 
+<a name="l00154"></a><a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">00154</a> <span class="preprocessor">#define BF_DECLARE_PUT_MACRO( type ) \</span>
+<a name="l00155"></a>00155 <span class="preprocessor">M_INLINE int BF_put_##type ( BF *bf, type val ) \</span>
+<a name="l00156"></a>00156 <span class="preprocessor">{ \</span>
+<a name="l00157"></a>00157 <span class="preprocessor">   if ((bf-&gt;end - bf-&gt;put_pos) &lt; (ptrdiff_t) sizeof( type ) ) { \</span>
+<a name="l00158"></a>00158 <span class="preprocessor">     return -1 ; \</span>
+<a name="l00159"></a>00159 <span class="preprocessor">   } \</span>
+<a name="l00160"></a>00160 <span class="preprocessor">   do { \</span>
+<a name="l00161"></a>00161 <span class="preprocessor">     type nval = h2n_##type ( val ); \</span>
+<a name="l00162"></a>00162 <span class="preprocessor">     *( ( type *) bf-&gt;put_pos) = nval; \</span>
+<a name="l00163"></a>00163 <span class="preprocessor">     bf-&gt;put_pos += sizeof ( type ); \</span>
+<a name="l00164"></a>00164 <span class="preprocessor">   } while(0); \</span>
+<a name="l00165"></a>00165 <span class="preprocessor">   return 0; \</span>
+<a name="l00166"></a>00166 <span class="preprocessor">} </span>
+<a name="l00167"></a>00167 <span class="preprocessor"></span>
+<a name="l00168"></a>00168 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint8_t )
+<a name="l00169"></a>00169 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int8_t )
+<a name="l00170"></a>00170 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint16_t )
+<a name="l00171"></a>00171 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int16_t )
+<a name="l00172"></a>00172 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint32_t )
+<a name="l00173"></a>00173 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int32_t )
+<a name="l00174"></a>00174 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( uint64_t )
+<a name="l00175"></a>00175 <a class="code" href="a00009.html#ga1b2a5ce67eaea3e8012a2552924c4d7b">BF_DECLARE_PUT_MACRO</a>( int64_t )
+<a name="l00176"></a>00176 <span class="comment"></span>
+<a name="l00177"></a>00177 <span class="comment">/**</span>
+<a name="l00178"></a>00178 <span class="comment"> * @brief add memory block to buffer</span>
+<a name="l00179"></a>00179 <span class="comment"> * @returns -1 not enough room left, 0 on success.</span>
+<a name="l00180"></a>00180 <span class="comment"> */</span>
+<a name="l00181"></a><a class="code" href="a00009.html#ga225b6fc0269c02bba59cf099b9e480b2">00181</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga225b6fc0269c02bba59cf099b9e480b2" title="add memory block to buffer">BF_putn</a> ( <a class="code" href="a00002.html">BF</a> *bf, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size ) 
+<a name="l00182"></a>00182 { 
+<a name="l00183"></a>00183    <span class="keywordflow">if</span> ((bf-&gt;end - bf-&gt;put_pos) &lt; (ptrdiff_t) data_size ) { 
+<a name="l00184"></a>00184      <span class="keywordflow">return</span> -1 ; 
+<a name="l00185"></a>00185    } 
+<a name="l00186"></a>00186    memcpy( bf-&gt;put_pos, data, data_size );
+<a name="l00187"></a>00187    bf-&gt;put_pos += data_size;
+<a name="l00188"></a>00188    <span class="keywordflow">return</span> 0;
+<a name="l00189"></a>00189 } 
+<a name="l00190"></a>00190 
+<a name="l00191"></a>00191 
+<a name="l00192"></a><a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">00192</a> <span class="preprocessor">#define BF_DECLARE_GET_MACRO( type ) \</span>
+<a name="l00193"></a>00193 <span class="preprocessor">M_INLINE int BF_get_##type ( BF *bf, type *pval ) \</span>
+<a name="l00194"></a>00194 <span class="preprocessor">{ \</span>
+<a name="l00195"></a>00195 <span class="preprocessor">   if ((bf-&gt;put_pos - bf-&gt;get_pos) &lt; (ptrdiff_t) sizeof( type ) ) { \</span>
+<a name="l00196"></a>00196 <span class="preprocessor">     return -1 ; \</span>
+<a name="l00197"></a>00197 <span class="preprocessor">   } \</span>
+<a name="l00198"></a>00198 <span class="preprocessor">   *pval = n2h_##type( *( ( type *) bf-&gt;get_pos) ); \</span>
+<a name="l00199"></a>00199 <span class="preprocessor">   bf-&gt;get_pos += sizeof( type ); \</span>
+<a name="l00200"></a>00200 <span class="preprocessor">   return 0; \</span>
+<a name="l00201"></a>00201 <span class="preprocessor">}</span>
+<a name="l00202"></a>00202 <span class="preprocessor"></span>
+<a name="l00203"></a>00203 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint8_t )
+<a name="l00204"></a>00204 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int8_t )
+<a name="l00205"></a>00205 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint16_t )
+<a name="l00206"></a>00206 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int16_t )
+<a name="l00207"></a>00207 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint32_t )
+<a name="l00208"></a>00208 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int32_t )
+<a name="l00209"></a>00209 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( uint64_t )
+<a name="l00210"></a>00210 <a class="code" href="a00009.html#gaef54a2ad2476088707dd143fd0c36c6e">BF_DECLARE_GET_MACRO</a>( int64_t )
+<a name="l00211"></a>00211 
+<a name="l00212"></a><a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">00212</a> <span class="preprocessor">#define BF_DECLARE_PUT_UNSAFE_MACRO( type ) \</span>
+<a name="l00213"></a>00213 <span class="preprocessor">M_INLINE void BF_put_unsafe_##type ( BF *bf, type val ) \</span>
+<a name="l00214"></a>00214 <span class="preprocessor">{ \</span>
+<a name="l00215"></a>00215 <span class="preprocessor">  type nval = h2n_##type ( val ); \</span>
+<a name="l00216"></a>00216 <span class="preprocessor">  *( ( type *) bf-&gt;put_pos) = nval; \</span>
+<a name="l00217"></a>00217 <span class="preprocessor">  bf-&gt;put_pos += sizeof ( type ); \</span>
+<a name="l00218"></a>00218 <span class="preprocessor">} </span>
+<a name="l00219"></a>00219 <span class="preprocessor"></span>
+<a name="l00220"></a>00220 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint8_t)
+<a name="l00221"></a>00221 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int8_t) 
+<a name="l00222"></a>00222 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint16_t)
+<a name="l00223"></a>00223 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int16_t) 
+<a name="l00224"></a>00224 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint32_t)
+<a name="l00225"></a>00225 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int32_t)
+<a name="l00226"></a>00226 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(uint64_t)
+<a name="l00227"></a>00227 <a class="code" href="a00009.html#ga543fba03a17673a12a4b217faa808b05">BF_DECLARE_PUT_UNSAFE_MACRO</a>(int64_t)
+<a name="l00228"></a>00228 
+<a name="l00229"></a><a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">00229</a> <span class="preprocessor">#define BF_DECLARE_GET_UNSAFE_MACRO( type ) \</span>
+<a name="l00230"></a>00230 <span class="preprocessor">M_INLINE type BF_get_unsafe_##type ( BF *bf ) { \</span>
+<a name="l00231"></a>00231 <span class="preprocessor">   type rval = n2h_##type( *( ( type *) bf-&gt;get_pos) ); \</span>
+<a name="l00232"></a>00232 <span class="preprocessor">   bf-&gt;get_pos += sizeof( type ); \</span>
+<a name="l00233"></a>00233 <span class="preprocessor">   return rval; \</span>
+<a name="l00234"></a>00234 <span class="preprocessor">}</span>
+<a name="l00235"></a>00235 <span class="preprocessor"></span>
+<a name="l00236"></a>00236 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint8_t)
+<a name="l00237"></a>00237 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int8_t)
+<a name="l00238"></a>00238 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint16_t)
+<a name="l00239"></a>00239 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int16_t)
+<a name="l00240"></a>00240 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint32_t)
+<a name="l00241"></a>00241 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int32_t)
+<a name="l00242"></a>00242 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(uint64_t)
+<a name="l00243"></a>00243 <a class="code" href="a00009.html#ga94ea6669521af770786a977fb521707b">BF_DECLARE_GET_UNSAFE_MACRO</a>(int64_t)
+<a name="l00244"></a>00244 <span class="comment"></span>
+<a name="l00245"></a>00245 <span class="comment">/**</span>
+<a name="l00246"></a>00246 <span class="comment"> @}</span>
+<a name="l00247"></a>00247 <span class="comment">*/</span>
+<a name="l00248"></a>00248 
+<a name="l00249"></a>00249 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:10 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

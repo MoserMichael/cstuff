@@ -215,6 +215,13 @@
       <anchor>ga42852c881989c7925a70e7fa3a87ee6c</anchor>
       <arglist>(BF *bf, const char *eof_line, size_t eof_line_size)</arglist>
     </member>
+    <member kind="function">
+      <type>M_INLINE int</type>
+      <name>BF_putn</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga225b6fc0269c02bba59cf099b9e480b2</anchor>
+      <arglist>(BF *bf, void *data, size_t data_size)</arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>endutil.h</name>
@@ -637,6 +644,13 @@
       <anchorfile>a00009.html</anchorfile>
       <anchor>ga42852c881989c7925a70e7fa3a87ee6c</anchor>
       <arglist>(BF *bf, const char *eof_line, size_t eof_line_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE int</type>
+      <name>BF_putn</name>
+      <anchorfile>a00009.html</anchorfile>
+      <anchor>ga225b6fc0269c02bba59cf099b9e480b2</anchor>
+      <arglist>(BF *bf, void *data, size_t data_size)</arglist>
     </member>
   </compound>
   <compound kind="group">

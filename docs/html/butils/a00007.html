@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: strtk.c File Reference</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: misc.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -39,21 +39,61 @@
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">strtk.c File Reference</div>  </div>
+<div class="title">misc.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="a00008_source.html">strtk.h</a>&quot;</code><br/>
-<code>#include &lt;string.h&gt;</code><br/>
-</div>
+
 <p><a href="a00007_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">STRTK_init</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *stop_chars)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initalise a character class  <a href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a2024408084a1958cda98fb62170a479b">strdup_pair</a> (char **first, char **second, const char *in_first, const char *in_second)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copies two strings so that they appear one after the other.  <a href="#a2024408084a1958cda98fb62170a479b"></a><br/></td></tr>
 </table>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a2024408084a1958cda98fb62170a479b"></a><!-- doxytag: member="misc.h::strdup_pair" ref="a2024408084a1958cda98fb62170a479b" args="(char **first, char **second, const char *in_first, const char *in_second)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int strdup_pair </td>
+          <td>(</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>second</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>in_first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>in_second</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:11 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>copies two strings so that they appear one after the other. </p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

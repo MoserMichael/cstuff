@@ -87,6 +87,8 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">moves get_pos to start position; moves content between get_pos and put_pos if not empty.a Always succeeds returns 0 if bytes were moved, 1 if buffer was empty to begin with.  <a href="#ga37819d2886490c212763c865c33364db"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a> (<a class="el" href="a00002.html">BF</a> *bf, int eof_line)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a> (<a class="el" href="a00002.html">BF</a> *bf, const char *eof_line, size_t eof_line_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga225b6fc0269c02bba59cf099b9e480b2">BF_putn</a> (<a class="el" href="a00002.html">BF</a> *bf, void *data, size_t data_size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add memory block to buffer  <a href="#ga225b6fc0269c02bba59cf099b9e480b2"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <p>protocol buffer. idea similar to skb_buff, does not own it's data. The following invariants hold </p>
@@ -118,7 +120,7 @@ Functions</h2></td></tr>
    <span class="keywordflow">return</span> 0; \
 }
 </pre></div>
-<p>Definition at line <a class="el" href="a00005_source.html#l00177">177</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00192">192</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 
 </div>
 </div>
@@ -142,7 +144,7 @@ Functions</h2></td></tr>
    <span class="keywordflow">return</span> rval; \
 }
 </pre></div>
-<p>Definition at line <a class="el" href="a00005_source.html#l00214">214</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00229">229</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 
 </div>
 </div>
@@ -173,7 +175,7 @@ Functions</h2></td></tr>
    <span class="keywordflow">return</span> 0; \
 }
 </pre></div>
-<p>Definition at line <a class="el" href="a00005_source.html#l00153">153</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00154">154</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 
 </div>
 </div>
@@ -198,7 +200,7 @@ Functions</h2></td></tr>
   bf-&gt;put_pos += <span class="keyword">sizeof</span> ( type ); \
 }
 </pre></div>
-<p>Definition at line <a class="el" href="a00005_source.html#l00197">197</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00212">212</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 
 </div>
 </div>
@@ -234,7 +236,7 @@ Functions</h2></td></tr>
 
 <p>returns number of bytes that cam be read from this buffer (i.e. that BF_get_(type) return ) </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00113">113</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00114">114</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> - bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>;
 }
@@ -258,7 +260,7 @@ Functions</h2></td></tr>
 
 <p>returns number of bytes that cam be placed into this buffer (i.e. that BF_put_(type) places into this buffer ) </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00121">121</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00122">122</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
 }
@@ -468,7 +470,7 @@ Functions</h2></td></tr>
 
 <p>set pointers so that we can 'get' the whole range from start to end. </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00055">55</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00056">56</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
     bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
     bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a>;
@@ -493,7 +495,7 @@ Functions</h2></td></tr>
 
 <p>returns number of bytes that can be returned by _get_ </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00074">74</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00075">75</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> - bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a>;
 }
@@ -533,7 +535,7 @@ Functions</h2></td></tr>
 
 <p>initialise an empty protocol buffer object. start and end cover the whole memory range. nitiay get and put pointer are set to start of range. </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00036">36</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00037">37</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
    bf-&gt;<a class="code" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">bf</a> =  (uint8_t *) buffer;
    bf-&gt;<a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a> = buffer_size;
@@ -563,7 +565,7 @@ Functions</h2></td></tr>
 
 <p>return 1 if the whole buffer is fulled with data (get_pos == start &amp;&amp; put_pos == end) </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00129">129</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00130">130</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> == bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a> &amp;&amp; bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> == bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
 }
@@ -587,7 +589,7 @@ Functions</h2></td></tr>
 
 <p>set pointers so that we can 'put' the whole range from start to end. </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00065">65</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00066">66</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
     bf-&gt;<a class="code" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
     bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> = bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>;
@@ -612,10 +614,56 @@ Functions</h2></td></tr>
 
 <p>returns number of bytes that can be written by _put_ </p>
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00083">83</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00005_source.html#l00084">84</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>;
 }
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga225b6fc0269c02bba59cf099b9e480b2"></a><!-- doxytag: member="bf.h::BF_putn" ref="ga225b6fc0269c02bba59cf099b9e480b2" args="(BF *bf, void *data, size_t data_size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int BF_putn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html">BF</a> *&#160;</td>
+          <td class="paramname"><em>bf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>data_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>add memory block to buffer </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>-1 not enough room left, 0 on success. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00005_source.html#l00181">181</a> of file <a class="el" href="a00005_source.html">bf.h</a>.</p>
+<div class="fragment"><pre class="fragment">{ 
+   <span class="keywordflow">if</span> ((bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>) &lt; (ptrdiff_t) data_size ) { 
+     <span class="keywordflow">return</span> -1 ; 
+   } 
+   memcpy( bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a>, data, data_size );
+   bf-&gt;<a class="code" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a> += data_size;
+   <span class="keywordflow">return</span> 0;
+} 
 </pre></div>
 </div>
 </div>
@@ -800,7 +848,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:10 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

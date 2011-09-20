@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: strtk.c Source File</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: misc.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,26 +36,20 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">strtk.c</div>  </div>
+<div class="title">misc.h</div>  </div>
 </div>
 <div class="contents">
-<a href="a00007.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;<a class="code" href="a00008.html">strtk.h</a>&quot;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;string.h&gt;</span>
-<a name="l00003"></a>00003 
-<a name="l00004"></a><a class="code" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">00004</a> <span class="keywordtype">void</span> <a class="code" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd" title="initalise a character class">STRTK_init</a>( <a class="code" href="a00001.html">STRTK</a> *tok , <span class="keyword">const</span> <span class="keywordtype">char</span> *stop_chars )
-<a name="l00005"></a>00005 {
-<a name="l00006"></a>00006   uint8_t *pos;
-<a name="l00007"></a>00007   memset( tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>, 0, <a class="code" href="a00008.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a> );
-<a name="l00008"></a>00008 
-<a name="l00009"></a>00009   <span class="keywordflow">for</span>( pos = (uint8_t *) stop_chars; *pos != <span class="charliteral">&#39;\0&#39;</span>; ++pos ) {
-<a name="l00010"></a>00010     <a class="code" href="a00013.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a>( tok, *pos );  
-<a name="l00011"></a>00011   }
-<a name="l00012"></a>00012 }
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014 
+<a href="a00007.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef __MISC_H_Y_Z_</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __MISC_H_Y_Z_</span>
+<a name="l00003"></a>00003 <span class="preprocessor"></span>
+<a name="l00004"></a>00004 <span class="comment"></span>
+<a name="l00005"></a>00005 <span class="comment">/**</span>
+<a name="l00006"></a>00006 <span class="comment"> * @brief copies two strings so that they appear one after the other.</span>
+<a name="l00007"></a>00007 <span class="comment"> */</span>
+<a name="l00008"></a>00008 <span class="keywordtype">int</span> <a class="code" href="a00007.html#a2024408084a1958cda98fb62170a479b" title="copies two strings so that they appear one after the other.">strdup_pair</a>( <span class="keywordtype">char</span> **first, <span class="keywordtype">char</span> **second, <span class="keyword">const</span> <span class="keywordtype">char</span> *in_first, <span class="keyword">const</span> <span class="keywordtype">char</span> *in_second );
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Sep 18 2011 20:14:11 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
