@@ -157,9 +157,9 @@ M_INLINE SRING *SRING_get_next( SRING *end, SRING *cur )
  * @param list (type DRING *) pointer to the list that is traversed
  */
 #define SRING_FOREACH_SAVE( loopvarname, loopvarnext, list ) \
-  for((loopvarname) = (list)->next; (loopvarnext) = (loopvarname)->next;  \
+  for((loopvarname) = (list)->next, (loopvarnext) = (loopvarname)->next;  \
       (loopvarname) != (list);\
-      (loopvarname) = (loopvarnext) )
+      (loopvarname) = (loopvarnext), (loopvarnext) = (loopvarname)->next   )
 
 
 #define SRING_FOREACH_SAVE_END( loopvarname, loopvarnext, list )\

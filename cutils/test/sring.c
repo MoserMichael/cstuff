@@ -49,7 +49,7 @@ void SRING_test()
 {
 	SRING list;
 	INT_DLIST_ENTRY *tmp;
-	SRING *prev, *pos;
+	SRING *prev, *pos, *next;
 	int i, *arr;
 
 
@@ -117,13 +117,24 @@ void SRING_test()
 	VASSERT( i == 20);
 	
 	VASSERT( SRING_check( &list ) );
-
+#if 0
 	while(!SRING_isempty( &list)) {
 			free( SRING_unlink_after( &list));
 	}
-
 	VASSERT( SRING_check( &list ) );
 	VASSERT( SRING_isempty( &list ) );
+
+	
+#else
+	VASSERT( SRING_check( &list ) );
+
+	SRING_FOREACH_SAVE( pos, next, &list ) {
+	    free( pos );
+
+	}
+	SRING_init( &list );
+	
+#endif
 
 
 	arr = shuffle(100);
