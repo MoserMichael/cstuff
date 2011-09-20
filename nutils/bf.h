@@ -2,6 +2,7 @@
 #define __BUFF_H_ 
 
 #include <nutils/endutil.h>
+#include <string.h>
 
 /**
  @defgroup BF
@@ -172,6 +173,16 @@ BF_DECLARE_PUT_MACRO( uint32_t )
 BF_DECLARE_PUT_MACRO( int32_t )
 BF_DECLARE_PUT_MACRO( uint64_t )
 BF_DECLARE_PUT_MACRO( int64_t )
+
+M_INLINE int BF_putn ( BF *bf, void *data, size_t data_size ) 
+{ 
+   if ((bf->end - bf->put_pos) < (ptrdiff_t) data_size ) { 
+     return -1 ; 
+   } 
+   memcpy( bf->put_pos, data, data_size );
+   bf->put_pos += data_size;
+   return 0;
+} 
 
 
 #define BF_DECLARE_GET_MACRO( type ) \
