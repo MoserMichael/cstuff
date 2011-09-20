@@ -157,15 +157,13 @@ M_INLINE SRING *SRING_get_next( SRING *end, SRING *cur )
  * @param list (type DRING *) pointer to the list that is traversed
  */
 #define SRING_FOREACH_SAVE( loopvarname, loopvarnext, list ) \
-  (loopvarname) = (list); (loopvarnext) = (loopvarname)->next; \
-  do {
+  for((loopvarname) = (list)->next; (loopvarnext) = (loopvarname)->next;  \
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarnext) )
 
 
 #define SRING_FOREACH_SAVE_END( loopvarname, loopvarnext, list )\
-         (loopvarname) = (loopvarnext); \
-	 (loopvarnext) = (loopvarnext)->next; \
-   } while ((loopvarname) != (list)->next );
-
+   }
 
 /*
  * @brief: return number of elements in list
