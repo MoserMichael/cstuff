@@ -22,6 +22,7 @@ typedef struct tagURI {
 
   char *cdata_raw;
   char *cdata;
+  char *cdata_is_escaped; // each bytes says if corresponding byte has been escaped. could do this as a bit array, alas.
 
   char *scheme;
 
@@ -52,18 +53,22 @@ M_INLINE void URI_init( URI *url )
 }
 
 
+
 int URI_parse( URI *url, char *line);
 
 M_INLINE void URI_free( URI *url) {
   if (url->cdata_raw) {
     free( url->cdata_raw );
-    url->cdata_raw = 0;
   }
 
   if (url->cdata) {
     free(url->cdata);
-    url->cdata = 0;
   }
+
+  if ( url->cdata_is_escaped ) {
+    free( url->cdata_is_escaped );
+  }
+  URI_init( url );
 }
 
 M_INLINE const char *URI_scheme( URI *url )

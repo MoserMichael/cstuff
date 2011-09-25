@@ -1,12 +1,21 @@
 #include "query.h"
 #include <string.h>
-
-char *strdup_range(char *from, char *to);
+#include "sutils.h"
 
 
 static int QUERYSTRING_add(QUERYSTRING *query, char *name, char *value )
 {
-  HASHNAMEVALUE *entry;
+  HASHNAMEVALUE *entry; 
+
+  if (!name || !value) {
+    if (name) {
+      free(name);
+    }
+    if (value) {
+      free(value);
+    }
+    return -1;
+  }
 
   entry = (HASHNAMEVALUE *) malloc( sizeof( HASHNAMEVALUE ) );
   if (!entry) {

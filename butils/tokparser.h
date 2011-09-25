@@ -6,6 +6,9 @@
  * @defgroup TOKENDEF
  * @brief take a string and check if it any one in list of tokens.
  * The entry TOKENDEF defines pair of token string and its integer value that identifies the token.
+ * Parsing of string is done by comparing the input token in sequence against each entry in the table.
+ * Not very fast, but very convenient.
+ *
  * @{
  */
 typedef struct tagTOKENDEF {

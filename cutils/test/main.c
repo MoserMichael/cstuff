@@ -13,11 +13,15 @@ void HASH_test();
 void HEAP_test();
 void ARRAY_test();
 void TREE_test();
+void DLISTUNR_test_insert();
+void DLISTUNR_test();
 
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( DLIST_test )
+	VTEST_TESTN( DLISTUNR_test )
+	VTEST_TESTN( DLISTUNR_test_insert )
 	VTEST_TESTN( DRING_test )
 	VTEST_TESTN( SLIST_test )
 	VTEST_TESTN( SRING_test )

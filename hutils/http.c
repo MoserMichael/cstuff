@@ -1,6 +1,7 @@
-#include "parser.h"
+#include "http.h"
 #include <sutils.h> 
 #include <charclass.h>
+#include <stdio.h>
 
 int init_parsers_request_header( HTTP_PARSER *parser );
 int init_parsers_general_header( HTTP_PARSER *parser );
@@ -29,6 +30,8 @@ int init_parsers_general_header( HTTP_PARSER *parser );
 
 #define HTTP_EOF_LINE  "\r\n"
 #define HTTP_EOF_LINE_LEN 2
+
+
 
 //==========================================================================
 
@@ -66,6 +69,53 @@ M_INLINE int http_is_separator( char ch )
       || ch ==  '{' || ch ==  '}' || ch ==  ' ' || ch ==  '\t';
 }
 
+
+typedef struct tagSTRINGPAIR {
+  char *key;
+  char *value;
+} STRINGPAIR;
+
+static void free_stringpair( DLISTUNR *list, void *entry, void *context)
+{
+  STRINGPAIR *pair = (STRINGPAIR *) entry;
+ 
+  M_UNUSED(list);
+  M_UNUSED(context);
+ 
+  free( pair->key );
+  free( pair->value );
+}
+
+
+//==========================================================================
+int HTTP_MESSAGE_init( HTTP_MESSAGE *message )
+{  
+  message->flags = 0;
+  message->content_length = -1;
+
+  if (DLISTUNR_init( &message->header_values, sizeof(STRINGPAIR), 10) ) {
+    return -1;
+  }
+  return 0;
+}
+
+void HTTP_MESSAGE_free( HTTP_MESSAGE *message )
+{  
+  message->flags = 0;
+  message->content_length = -1;
+  DLISTUNR_free( &message->header_values,  free_stringpair, 0); 
+
+}
+
+int HTTP_MESSAGE_add_header( HTTP_MESSAGE *message, const char *name , const char *value )
+{
+  STRINGPAIR entry;
+
+  entry.key   = strdup(name);
+  entry.value = strdup(value);
+
+  return DLISTUNR_push_back( &message->header_values, &entry, sizeof(entry));
+}
 
 //==========================================================================
 
@@ -298,6 +348,11 @@ PARSER_STATUS HTTP_parse_header_line( HTTP_PARSER *parser, HTTP_MESSAGE *request
     return -1;
   }
   *pos = '\0';
+
+  if (HTTP_MESSAGE_add_header( request, line, pos+1 )) {
+     return -1;
+  }
+
 
   // got the header line. find header processor.
   action = (HEADER_HASH_ACTION *) HASH_find( &parser->header_action, line, pos - line );
@@ -596,7 +651,7 @@ PARSER_STATUS HTTP_REQUEST_PARSER_process( HTTP_REQUEST_PARSER *parser, HTTP_REQ
     case HTTP_STATE_PARSING_REQUEST_LINE:
       rt = parse_request_line( request, bf );
       if (rt != 0) {
-        return rt;
+       goto req_do_return;
       }
       parser->base.state = HTTP_STATE_PARSING_HEADERS; // 
    //break; - fall through
@@ -605,7 +660,7 @@ PARSER_STATUS HTTP_REQUEST_PARSER_process( HTTP_REQUEST_PARSER *parser, HTTP_REQ
     case HTTP_STATE_PARSING_HEADERS:
       rt = HTTP_parse_header_line( (HTTP_PARSER *) parser, (HTTP_MESSAGE *) request, bf, &eof_header );
       if (rt != 0) {
-        return rt;
+        goto req_do_return;
       }
 
       if (eof_header) {
@@ -645,7 +700,7 @@ next_request:
 		(HTTP_PROCESS_MSG_DATA) parser->ev_body, 
 		&request->base, parser->ctx);
       if (rt != 0) {
-        return rt;
+        goto req_do_return;
       }
       goto next_request;
 
@@ -656,12 +711,17 @@ next_request:
 		&request->base, parser->ctx);
 
       if (rt != 0) {
-        return rt;
+        goto req_do_return;
       }
       goto next_request;
     }
   }
 
+req_do_return:
+  if (rt ==  PARSER_STATUS_NEED_MORE_DATA) {
+    BF_compact( bf );
+  }
+  return rt;
 }
 
 
@@ -742,7 +802,7 @@ PARSER_STATUS HTTP_RESPONSE_PARSER_process( HTTP_RESPONSE_PARSER *parser, HTTP_R
     case HTTP_STATE_PARSING_REQUEST_LINE:
       rt = parse_response_line( response, bf );
       if (rt != 0) {
-        return rt;
+        goto resp_do_return; 
       }
       parser->base.state = HTTP_STATE_PARSING_HEADERS; // 
    //break; - fall through
@@ -751,7 +811,7 @@ PARSER_STATUS HTTP_RESPONSE_PARSER_process( HTTP_RESPONSE_PARSER *parser, HTTP_R
     case HTTP_STATE_PARSING_HEADERS:
       rt = HTTP_parse_header_line( (HTTP_PARSER *) parser, (HTTP_MESSAGE *) response, bf, &eof_header );
       if (rt != 0) {
-        return rt;
+       goto resp_do_return; 
       }
 
       if (eof_header) {
@@ -770,7 +830,7 @@ PARSER_STATUS HTTP_RESPONSE_PARSER_process( HTTP_RESPONSE_PARSER *parser, HTTP_R
 	  }
 
 next_response:
-	  HTTP_RESPONSE_init( response );
+	  HTTP_RESPONSE_free( response );
 	  parser->ev_finish( response, parser->ctx ); 
 	  parser->base.state = HTTP_STATE_PARSING_REQUEST_LINE; 
 	  BF_compact(bf);
@@ -784,7 +844,7 @@ next_response:
 		(HTTP_PROCESS_MSG_DATA) parser->ev_body, 
 		&response->base, parser->ctx);
       if (rt != 0) {
-        return rt;
+        goto resp_do_return; 
       }
       goto next_response;
 
@@ -795,10 +855,178 @@ next_response:
 		&response->base, parser->ctx);
 
       if (rt != 0) {
-        return rt;
+        goto resp_do_return; 
       }
       goto next_response;
     }
   }
+resp_do_return:
+  if (rt ==  PARSER_STATUS_NEED_MORE_DATA) {
+    BF_compact( bf );
+  }
+  return rt;
 }
+
+// =============================================================================
+
+static const char *http_version_to_str( Http_version_type ver )
+{
+  switch(ver) {
+    case HTTP_VERSION_1_0:
+      return "1.0";
+    case HTTP_VERSION_1_1:
+      return "1.1";
+  }
+  return "";
+}
+
+#define S_CONNECTION_CLOSE "Connection: close\r\n"
+#define S_CONNECTION_CLOSE_LEN 19
+
+#define S_TRANSFER_CHUNKED "Transfer-encoding: chunked\r\n"
+#define S_TRANSFER_CHUNKED_LEN 28
+
+
+#define RETURN_WRITER_MORE_DATA \
+  if (bf->start == bf->put_pos) { \
+    return PARSER_STATUS_ERROR;  /* the buffer can't hold a single value */ \
+  } \
+  return PARSER_STATUS_NEED_MORE_DATA; 
+
+static const char *get_reason_phrase( int code )
+{
+    switch( code ) {
+ 	  case 100:         return "Continue";
+          case 101:         return "Switching Protocols";
+          case 200:         return "OK";
+          case 201:         return "Created";
+          case 202:         return "Accepted";
+          case 203:         return "Non-Authoritative Information";
+          case 204:         return "No Content";
+          case 205:         return "Reset Content";
+          case 206:         return "Partial Content";
+          case 300:         return "Multiple Choices";
+          case 301:         return "Moved Permanently";
+          case 302:         return "Found";
+          case 303:         return "See Other";
+          case 304:         return "Not Modified";
+          case 305:         return "Use Proxy";
+          case 307:         return "Temporary Redirect";
+          case 400:         return "Bad Request";
+          case 401:         return "Unauthorized";
+          case 402:         return "Payment Required";
+          case 403:         return "Forbidden";
+          case 404:         return "Not Found";
+          case 405:         return "Method Not Allowed";
+          case 406:         return "Not Acceptable";
+          case 407:         return "Proxy Authentication Required";
+          case 408:         return "Request Time-out";
+          case 409:         return "Conflict";
+          case 410:         return "Gone";
+          case 411:         return "Length Required";
+          case 412:         return "Precondition Failed";
+          case 413:         return "Request Entity Too Large";
+          case 414:         return "Request-URI Too Large";
+          case 415:         return "Unsupported Media Type";
+          case 416:         return "Requested range not satisfiable";
+          case 417:         return "Expectation Failed";
+          case 500:         return "Internal Server Error";
+          case 501:         return "Not Implemented";
+          case 502:         return "Bad Gateway";
+          case 503:         return "Service Unavailable";
+          case 504:         return "Gateway Time-out";
+          case 505:         return "HTTP Version not supported";
+   }
+   return "";
+}
+
+PARSER_STATUS HTTP_RESPONSE_WRITER_write( HTTP_RESPONSE_WRITER *writer, BF *bf )
+{ 
+  HTTP_RESPONSE *resp = writer->response;
+  char line_buf[40];
+  int nlen;
+
+  while(1) {
+  switch( writer->state ) {
+    case HTTP_RESPONSE_WR_STATUS_LINE:
+      nlen = sprintf(line_buf,"HTTP/%s %d %s\r\n", http_version_to_str( resp->version ), resp->status_code, get_reason_phrase( resp->status_code ) );
+      if (BF_putn( bf, line_buf, nlen) ) {
+         RETURN_WRITER_MORE_DATA;
+      }
+      writer->state = HTTP_RESPONSE_WR_CONNECTION_CLOSE; 
+    //break;
+    case HTTP_RESPONSE_WR_CONNECTION_CLOSE:
+      if (resp->base.flags & HTTP_MESSAGE_FLAG_CONNECTION_CLOSE ) {
+        if (BF_putn( bf, S_CONNECTION_CLOSE, S_CONNECTION_CLOSE_LEN ) ) {
+          RETURN_WRITER_MORE_DATA;
+        } 
+      }
+      writer->state = HTTP_RESPONSE_WR_CHUNKED; 
+    //break;
+    case HTTP_RESPONSE_WR_CHUNKED:
+      if (resp->base.flags & HTTP_MESSAGE_FLAG_TRANSFER_CHUNKED ) {
+        if (BF_putn( bf, S_TRANSFER_CHUNKED, S_TRANSFER_CHUNKED_LEN ) ) {
+          RETURN_WRITER_MORE_DATA;
+	}
+      }
+      writer->state = HTTP_RESPONSE_WR_CONTENT_LENGTH; 
+     //break;
+    case HTTP_RESPONSE_WR_CONTENT_LENGTH:
+      if (resp->base.flags & HTTP_MESSAGE_FLAG_HAS_CONTENT_LENGTH ) {
+        nlen = sprintf(line_buf,"Content-Length: %d\r\n", resp->base.content_length );
+        if (BF_putn( bf, line_buf, nlen) ) {
+          RETURN_WRITER_MORE_DATA;
+        }
+      }
+      writer->state = HTTP_RESPONSE_WR_HEADERS; 
+      writer->header_position = DLISTUNR_get_first( &resp->base.header_values );
+      writer->state_header = 0;
+     //break;
+    case HTTP_RESPONSE_WR_HEADERS:
+      if ( ! DLISTUNR_is_eof( &resp->base.header_values, writer->header_position)) {
+        STRINGPAIR *header = (STRINGPAIR *) DLISTUNR_at(&resp->base.header_values, writer->header_position);
+        switch(writer->state_header) {
+	    case 0:
+		if (BF_putn( bf, header->key, strlen(header->key))) {
+	          RETURN_WRITER_MORE_DATA;
+		}
+		writer->state_header = 1;
+	      //break;
+ 		
+	    case 1:
+		if (BF_putn( bf, ": ", 2)) {
+	          RETURN_WRITER_MORE_DATA;
+		}
+		writer->state_header = 2;
+	      //break;
+
+	    case 2:
+		if (BF_putn( bf, header->value, strlen(header->value))) {
+	          RETURN_WRITER_MORE_DATA;
+		}
+		writer->state_header = 3;
+	      //break;
+
+	    case 3:
+		if (BF_putn( bf, "\r\n", 2)) {
+	          RETURN_WRITER_MORE_DATA;
+		}
+                writer->header_position = DLISTUNR_next(writer->header_position);
+		writer->state_header = 0;
+		break;
+	   }
+      } else {
+	 writer->state = HTTP_RESPONSE_WR_EOF;
+	 goto wr_eof;
+	
+      }
+      break;
+    case HTTP_RESPONSE_WR_EOF:
+wr_eof:    
+      return PARSER_STATUS_COMPLETED; 
+    }
+  }
+
+}
+
 

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <nutils/bf.h>
 #include <hutils/uri.h>
+#include <cutils/dlistunr.h>
 #include <cutils/bhash.h>
 
 
@@ -13,27 +14,42 @@
 #define HTTP_MESSAGE_FLAG_TRANSFER_CHUNKED   2
 #define HTTP_MESSAGE_FLAG_HAS_CONTENT_LENGTH 4
 
+
 /**
  * @brief Holds common data of both HTTP request and response objects.
+ *
+ * @{
  */
 typedef struct tagHTTP_MESSAGE {
   int flags;
   int content_length;
+  DLISTUNR header_values;
 } HTTP_MESSAGE;
 
-M_INLINE void HTTP_MESSAGE_init( HTTP_MESSAGE *message )
-{  
-  message->flags = 0;
-  message->content_length = -1;
+int  HTTP_MESSAGE_init( HTTP_MESSAGE *message );
+
+void HTTP_MESSAGE_free( HTTP_MESSAGE *message );
+
+int HTTP_MESSAGE_add_header( HTTP_MESSAGE *message, const char *name , const char *value );
+
+M_INLINE void HTTP_MESSAGE_set_content_length( HTTP_MESSAGE *message, int content_length )
+{
+  message->flags |= HTTP_MESSAGE_FLAG_HAS_CONTENT_LENGTH;
+  message->content_length = content_length;
 }
 
-// ===============================================================
+/**
+ * @}
+ */
+
+//===============================================================
 
 struct tagHTTP_PARSER;
 struct tagHTTP_REQUEST_PARSER; 
 
 /**
  * @brief callback that is invoked in order to parse contents of a specific http header 
+ *
  */
 typedef int (*HEADER_ACTION) ( struct tagHTTP_MESSAGE *request, struct tagHTTP_PARSER *parser ); 
 
@@ -58,6 +74,11 @@ typedef enum tagHttp_version_type {
 } Http_version_type;
 
 
+/**
+ * @brief HTTP_REQUEST - holds information of an http request.
+ *
+ * @{
+ */
 typedef struct tagHTTP_REQUEST {
   HTTP_MESSAGE base;
   
@@ -78,9 +99,11 @@ typedef struct tagHTTP_REQUEST {
 } HTTP_REQUEST;
 
 
-M_INLINE void HTTP_REQUEST_init( HTTP_REQUEST *message )
+M_INLINE int HTTP_REQUEST_init( HTTP_REQUEST *message )
 {
-  HTTP_MESSAGE_init( &message->base );
+  if (HTTP_MESSAGE_init( &message->base )) {
+    return -1;
+  }
 
   URI_init( & message->url );
 
@@ -88,26 +111,47 @@ M_INLINE void HTTP_REQUEST_init( HTTP_REQUEST *message )
   message->raw_url = message->host_header = 0;
   message->has_host_header = 0;
   message->host_header_port = -1;
+
+  return 0;
 }
 
 M_INLINE void HTTP_REQUEST_free( HTTP_REQUEST *message )
 {
   URI_free( &message->url );
+  
   if (message->host_header) {
     free( message->host_header);
   }
   if (message->raw_url) {
     free( message->raw_url );
   }
-  HTTP_REQUEST_init( message );  
+
+  message->expect_100_continue = message->has_host_header = 0;
+  message->raw_url = message->host_header = 0;
+  message->has_host_header = 0;
+  message->host_header_port = -1;
+
+  HTTP_MESSAGE_free( &message->base );
 }
  
+/**
+ * @}
+ */
+
+
 typedef int  (*HTTP_REQ_HEADER_PARSED)	   (HTTP_REQUEST *request, void *ctx);
 typedef int  (*HTTP_REQ_MESSAGE_BODY_DATA) (HTTP_REQUEST *request, void *data, size_t data_size, void *ctx);
 typedef int  (*HTTP_REQ_FINISHED)	   (HTTP_REQUEST *request, void *ctx);  
 
 
 // ===============================================================
+
+
+/**
+ * @brief HTTP_REQUEST - holds information of an http response.
+ *
+ * @{
+ */
 typedef struct tagHTTP_RESPONSE {
   HTTP_MESSAGE base;
  
@@ -117,15 +161,30 @@ typedef struct tagHTTP_RESPONSE {
 
 } HTTP_RESPONSE;
 
-M_INLINE void HTTP_RESPONSE_init( HTTP_RESPONSE *message )
+M_INLINE int HTTP_RESPONSE_init( HTTP_RESPONSE *message, Http_version_type version, int status_code )
 {
-  HTTP_MESSAGE_init( &message->base );
-  message->status_code = -1;
+  if (HTTP_MESSAGE_init( &message->base ) ) {
+    return -1;
+  }
+  message->status_code = status_code;
+  message->version = version;
+  return 0;
+}
+
+
+M_INLINE void HTTP_RESPONSE_free( HTTP_RESPONSE *message )
+{
+  HTTP_MESSAGE_free( &message->base );
 }
 
 typedef int (*HTTP_RESP_HEADER_PARSED)	   (HTTP_RESPONSE *request, void *ctx);
 typedef int (*HTTP_RESP_MESSAGE_BODY_DATA) (HTTP_RESPONSE *request, void *data, size_t data_size, void *ctx);
 typedef int (*HTTP_RESP_FINISHED)	   (HTTP_RESPONSE *request, void *ctx);  
+
+/**
+ * @}
+ */
+
 
 
 // ===============================================================
@@ -146,6 +205,8 @@ typedef enum tagHTTP_STATE_PARSING {
 
 /** 
  * @brief base class of both http request and http response parsers
+ *
+ * @{
  */
 typedef struct tagHTTP_PARSER {
   HTTP_STATE_PARSING  state;
@@ -221,11 +282,20 @@ int HTTP_PARSER_chunked_data_init( HTTP_PARSER *parser );
  */
 PARSER_STATUS HTTP_PARSER_chunked_data_process( HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx);
 
+/**
+ * @}
+ */
+
 
 // ===============================================================
 
 
 
+/** 
+ * @brief parser of  http requests
+ *
+ * @{
+ */
 
 typedef struct tagHTTP_REQUEST_PARSER {
 
@@ -256,9 +326,19 @@ int HTTP_REQUEST_PARSER_init( HTTP_REQUEST_PARSER *parser,
  */
 PARSER_STATUS HTTP_REQUEST_PARSER_process( HTTP_REQUEST_PARSER *parser, HTTP_REQUEST *request, BF *data);
 
+/**
+ * @}
+ */
+
+
 // ===============================================================
 
 
+/** 
+ * @brief parser of  http responses
+ *
+ * @{
+ */
 
 typedef struct tagHTTP_RESPONSE_PARSER {
 
@@ -290,6 +370,54 @@ int HTTP_RESPONSE_PARSER_init( HTTP_RESPONSE_PARSER *parser,
  * @return  0 - done parsing, 1 need more data, -1 error occured.
  */
 PARSER_STATUS HTTP_RESPONSE_PARSER_process( HTTP_RESPONSE_PARSER *parser, HTTP_RESPONSE *response, BF *data );
+
+/**
+ * @}
+ */
+
+
+// ===============================================================
+
+typedef enum {
+ HTTP_RESPONSE_WR_STATUS_LINE,
+ HTTP_RESPONSE_WR_CONNECTION_CLOSE,
+ HTTP_RESPONSE_WR_CHUNKED,
+ HTTP_RESPONSE_WR_CONTENT_LENGTH,
+ HTTP_RESPONSE_WR_HEADERS,
+ HTTP_RESPONSE_WR_EOF,
+
+} HTTP_RESPONSE_WR_STATE;
+
+/** 
+ * @brief writer of http responses
+ *
+ * @{
+ */
+
+
+typedef struct tagHTTP_RESPONSE_WRITER
+{
+   HTTP_RESPONSE *response;
+   HTTP_RESPONSE_WR_STATE state; 
+   DLISTUNR_position header_position;
+   int state_header;
+
+}  HTTP_RESPONSE_WRITER;
+
+
+M_INLINE void HTTP_RESPONSE_WRITER_init( HTTP_RESPONSE_WRITER *writer, HTTP_RESPONSE *response)
+{
+  writer->response = response;
+  writer->state = HTTP_RESPONSE_WR_STATUS_LINE;
+}
+
+
+PARSER_STATUS HTTP_RESPONSE_WRITER_write( HTTP_RESPONSE_WRITER *writer, BF *data );
+
+/**
+ * @}
+ */
+
 
 #endif
 

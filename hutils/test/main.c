@@ -10,11 +10,12 @@ void URI_test_fail();
 void HTTP_request_ok();
 void HTTP_request_fail();
 void QUERY_test();
-
+void HTTP_writer_ok();
 
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
+        VTEST_TESTN( HTTP_writer_ok )
 	VTEST_TESTN( QUERY_test )
 	VTEST_TESTN( URI_test_ok )
 	VTEST_TESTN( URI_test_fail )

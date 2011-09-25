@@ -1,5 +1,5 @@
 #include "vtest/vtest.h"
-#include <hutils/parser.h>
+#include <hutils/http.h>
 #include <cutils/dbuf.h>
 #include <stdio.h>
 #include <stdio.h>
@@ -142,13 +142,13 @@ void do_test(REQUEST_PARSER_TEST_DATA *rdata)
         break;
       case PARSER_STATUS_COMPLETED:
         ++n_ok;
-	//VASSERT( bf.get_pos == bf.start ); // check if always ready to receive much data.
         break;
       case PARSER_STATUS_NEED_MORE_DATA:
         if (BF_check( &bf )) {
 	  VASSERT(0);
 	}
-	//VASSERT( bf.get_pos == bf.start ); // check if always ready to receive much data.
+	VASSERT( bf.get_pos == bf.start ); // check if always ready to receive as much data as possible
+
         ch = getc(fp);
 
         if (ch == -1) {

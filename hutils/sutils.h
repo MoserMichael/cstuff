@@ -45,5 +45,19 @@ M_INLINE char *get_token(char *line , char **eof )
   return ret;
 }
 
+M_INLINE char *strdup_range(char *from, char *to) {
+  char *r;
+
+  r = malloc( to - from + 1 );
+  if (!r) {
+    return 0;
+  }
+
+  strncpy( r, from, to - from  );
+  r[ to - from ] = '\0';
+  
+  return r;
+}
+
 
 #endif

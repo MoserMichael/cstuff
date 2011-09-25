@@ -204,6 +204,12 @@ M_INLINE DLISTUNR_position DLISTUNR_next(DLISTUNR_position pos)
 	return ret;
 }
 
+M_INLINE int DLISTUNR_is_eof(DLISTUNR *list, DLISTUNR_position pos)
+{
+    return pos.entry == (DLISTUNR_entry *) &list->root; 
+}
+
+
 /**
  * @brief Returns position to the previous element in unrolled linked list.
  * @param list (in) the object

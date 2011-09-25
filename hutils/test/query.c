@@ -62,7 +62,7 @@ void QUERY_test()
     for( j = 0; pvalues[j].name != 0; j++) {
       sval = QUERYSTRING_find( &query, pvalues[j].name);
 
-      fprintf(stdout,"\t\t\t%s %s - %s\n", pvalues[j].name, pvalues[j].value, sval );
+    //fprintf(stdout,"\t\t\t%s %s - %s\n", pvalues[j].name, pvalues[j].value, sval );
       if (pvalues[j].value == 0) {
         VASSERT( sval == pvalues[j].value);
       } else {
