@@ -52,7 +52,7 @@ Defines</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#ga39582582e3bfccf18e39710e75009ad1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html#ga7f6178ad165e9b2f699efd88a3cbca8a">SRING_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="#ga7f6178ad165e9b2f699efd88a3cbca8a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html#ga0e4892ffac6b949a95b1d9b1895433b7">SRING_FOREACH_SAVE_END</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html#ga0e4892ffac6b949a95b1d9b1895433b7">SRING_FOREACH_SAVE_END</a>(loopvarname, loopvarnext, list)&#160;&#160;&#160;}</td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00014.html">tagSRING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html#ga478bf88a63498eec67b9720586d6bba9">SRING</a></td></tr>
@@ -168,8 +168,9 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">(loopvarname) = (list); (loopvarnext) = (loopvarname)-&gt;next; \
-  <span class="keywordflow">do</span> {
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;next, (loopvarnext) = (loopvarname)-&gt;next;  \
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarnext), (loopvarnext) = (loopvarname)-&gt;next   )
 </pre></div>
 <p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
@@ -210,16 +211,13 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td>&#160;&#160;&#160;}</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">(loopvarname) = (loopvarnext); \
-         (loopvarnext) = (loopvarnext)-&gt;next; \
-   } <span class="keywordflow">while</span> ((loopvarname) != (list)-&gt;next );
-</pre></div>
-<p>Definition at line <a class="el" href="a00036_source.html#l00164">164</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+
+<p>Definition at line <a class="el" href="a00036_source.html#l00165">165</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +299,7 @@ Functions</h2></td></tr>
 <p>verify list for consistency, i.e. that it does not have loops. Uses Floyds cycle finding algorithm. <a href="http://en.literateprograms.org/Floyd%27s_cycle-finding_algorithm_%28C%29">http://en.literateprograms.org/Floyd%27s_cycle-finding_algorithm_%28C%29</a> </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>0 if list is inconsistent. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00392">392</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00390">390</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <a class="code" href="a00014.html">SRING</a> *slow, *fast = head-&gt;<a class="code" href="a00014.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>;
 
@@ -386,7 +384,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>nunmber of elements deleted. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00315">315</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00313">313</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <a class="code" href="a00014.html">SRING</a> *cur,*prev,*del;
 
@@ -457,7 +455,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00276">276</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00274">274</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <a class="code" href="a00014.html">SRING</a> *cur,*prev,*del;
         <span class="keywordtype">size_t</span>  ret;
@@ -536,7 +534,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00242">242</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00240">240</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <span class="keywordtype">int</span> ret;
         <a class="code" href="a00014.html">SRING</a> *cur;
@@ -605,7 +603,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00219">219</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00217">217</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <a class="code" href="a00014.html">SRING</a> *cur;
 
@@ -738,7 +736,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00190">190</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00188">188</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
 
         <a class="code" href="a00014.html">SRING</a> *elm;
@@ -775,7 +773,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00206">206</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00204">204</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{       
         <span class="keywordflow">return</span> <a class="code" href="a00052.html#ga0bf1663e78699f16d176b4e5eab35760">SRING_get_nth</a>( list, <a class="code" href="a00052.html#gad00dfbc796c0f39381f8cb207d45a628">SRING_size</a>( list ) - nth );
 }
@@ -895,7 +893,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00343">343</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00341">341</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <a class="code" href="a00014.html">SRING</a> *cur,*prev;
         
@@ -1037,7 +1035,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00366">366</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00364">364</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <a class="code" href="a00014.html">SRING</a> *cur = lst-&gt;<a class="code" href="a00014.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a>, *next, *tmp;
 
@@ -1073,7 +1071,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00174">174</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00172">172</a> of file <a class="el" href="a00036_source.html">sring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
         <span class="keywordtype">size_t</span> sz;
         <a class="code" href="a00014.html">SRING</a> * cur;
@@ -1117,7 +1115,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:52 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:35 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

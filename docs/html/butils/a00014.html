@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: STRTK</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: TOKENDEF</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -32,85 +32,41 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Defines</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">STRTK</div>  </div>
+<div class="title">TOKENDEF</div>  </div>
 </div>
 <div class="contents">
 
-<p>defines a character class. holds a bitmap of characters, that is later used for tokenization.  
+<p>take a string and check if it any one in list of tokens. The entry TOKENDEF defines pair of token string and its integer value that identifies the token. Parsing of string is done by comparing the input token in sequence against each entry in the table. Not very fast, but very convenient.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">tagSTRTK</a></td></tr>
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga6af25e1d072d3e1ed7d7c0682831155c">STRTK_IS_CHAR</a>(tok, ch)&#160;&#160;&#160;( (tok)-&gt;pattern[ (ch) &gt;&gt; 3 ] &amp;&amp; (1 &lt;&lt; ((ch) &amp; 7))  )</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">macro checks if character is part of character class  <a href="#ga6af25e1d072d3e1ed7d7c0682831155c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html">tagTOKENDEF</a></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagSTRTK</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga76f725215889db6e091bec0b60be9d33">STRTK</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagTOKENDEF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga31b87f2e9234f4d8a6844ffa2a401efa">TOKENDEF</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">STRTK_init</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *stop_chars)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initalise a character class  <a href="#ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a> (<a class="el" href="a00001.html">STRTK</a> *tok, uint8_t ch)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gacbaa999a7ed8334ee4f9c074190522f5">STRTK_spn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class.  <a href="#gacbaa999a7ed8334ee4f9c074190522f5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gaa298a57dd2c32290c6f0d7932d73b031">STRTK_nspn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class, argument string is limited.  <a href="#gaa298a57dd2c32290c6f0d7932d73b031"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gaf5f9a2448a798742f4c632df8207bee6">STRTK_ntok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize, char **end_tok)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="#gaf5f9a2448a798742f4c632df8207bee6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga970da7da688e9d0412ef1e688b340f32">STRTK_tok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, char **end_tok)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="#ga970da7da688e9d0412ef1e688b340f32"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gadbb6d1869c2d60a2e4f07218472d0039">parse_token</a> (const char *token, <a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga2720d8525084394b4961286ba62371e5">token_string_for_int</a> (int value, <a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga32074c05714bf643b440ca28b556a998">token_possible_values</a> (<a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gab7bce27d71c22f9e38d80845e52f5142">tagTOKENDEF::type</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>defines a character class. holds a bitmap of characters, that is later used for tokenization. </p>
-<p>Functions like strtok and strpbrk build a bitmap of characters when they are called. They use this bitmap when these function later parse the argument character string, this bitmap is used to check if a character is part of the character set or not.</p>
-<p>The class STRTK holds the bitmap holding the character set, so that creation of this bitmap can be done in separate step from usage, therefore parsing function will not create character bitmap over and over again.</p>
-<p>I don't know if this is very usefull, a character class bitmap takes 32 bytes, which is two cache lines. So two cache lines have to be moved in order to use this stuff. </p>
-<hr/><h2>Define Documentation</h2>
-<a class="anchor" id="ga6af25e1d072d3e1ed7d7c0682831155c"></a><!-- doxytag: member="strtk.h::STRTK_IS_CHAR" ref="ga6af25e1d072d3e1ed7d7c0682831155c" args="(tok, ch)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define STRTK_IS_CHAR</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">tok, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">ch&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;( (tok)-&gt;pattern[ (ch) &gt;&gt; 3 ] &amp;&amp; (1 &lt;&lt; ((ch) &amp; 7))  )</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>macro checks if character is part of character class </p>
-
-<p>Definition at line <a class="el" href="a00009_source.html#l00048">48</a> of file <a class="el" href="a00009_source.html">strtk.h</a>.</p>
-
-</div>
-</div>
+<p>take a string and check if it any one in list of tokens. The entry TOKENDEF defines pair of token string and its integer value that identifies the token. Parsing of string is done by comparing the input token in sequence against each entry in the table. Not very fast, but very convenient. </p>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="ga76f725215889db6e091bec0b60be9d33"></a><!-- doxytag: member="strtk.h::STRTK" ref="ga76f725215889db6e091bec0b60be9d33" args="" -->
+<a class="anchor" id="ga31b87f2e9234f4d8a6844ffa2a401efa"></a><!-- doxytag: member="tokparser.h::TOKENDEF" ref="ga31b87f2e9234f4d8a6844ffa2a401efa" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="a00001.html">tagSTRTK</a>  <a class="el" href="a00001.html">STRTK</a></td>
+          <td class="memname">typedef struct <a class="el" href="a00002.html">tagTOKENDEF</a>  <a class="el" href="a00002.html">TOKENDEF</a></td>
         </tr>
       </table>
 </div>
@@ -119,53 +75,21 @@ Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="gae43120a54e8902f8bd356ee57a9fc7de"></a><!-- doxytag: member="strtk.h::STRTK_add_char" ref="gae43120a54e8902f8bd356ee57a9fc7de" args="(STRTK *tok, uint8_t ch)" -->
+<a class="anchor" id="gadbb6d1869c2d60a2e4f07218472d0039"></a><!-- doxytag: member="tokparser.h::parse_token" ref="gadbb6d1869c2d60a2e4f07218472d0039" args="(const char *token, TOKENDEF *tkdef)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void STRTK_add_char </td>
+          <td class="memname">int parse_token </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">STRTK</a> *&#160;</td>
-          <td class="paramname"><em>tok</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ch</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00009_source.html#l00040">40</a> of file <a class="el" href="a00009_source.html">strtk.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>[ ch &gt;&gt; 3 ] |= (1 &lt;&lt; (ch &amp; 7));
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><!-- doxytag: member="strtk.h::STRTK_init" ref="ga5e8e0f7718ea406cdc754e4d6d9f40fd" args="(STRTK *tok, const char *stop_chars)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void STRTK_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">STRTK</a> *&#160;</td>
-          <td class="paramname"><em>tok</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>stop_chars</em>&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
+          <td class="paramname"><em>tkdef</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -176,41 +100,76 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>initalise a character class </p>
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00004">4</a> of file <a class="el" href="a00008_source.html">strtk.c</a>.</p>
+<p>Definition at line <a class="el" href="a00009_source.html#l00005">5</a> of file <a class="el" href="a00009_source.html">tokparser.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  uint8_t *pos;
-  memset( tok-&gt;<a class="code" href="a00001.html#a76f43694b03a12f46a232342054e01ae">pattern</a>, 0, <a class="code" href="a00009.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a> );
-
-  <span class="keywordflow">for</span>( pos = (uint8_t *) stop_chars; *pos != <span class="charliteral">&#39;\0&#39;</span>; ++pos ) {
-    <a class="code" href="a00014.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a>( tok, *pos );  
+  <span class="keywordtype">int</span> i;
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    <span class="keywordflow">if</span> ( strcmp(token, tkdef[i].type) == 0 ) {
+      <span class="keywordflow">return</span> tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a>;
+    }
   }
-}
+  <span class="keywordflow">return</span> -1;
+} 
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gaa298a57dd2c32290c6f0d7932d73b031"></a><!-- doxytag: member="strtk.h::STRTK_nspn" ref="gaa298a57dd2c32290c6f0d7932d73b031" args="(STRTK *tok, const char *hay, size_t nsize)" -->
+<a class="anchor" id="ga32074c05714bf643b440ca28b556a998"></a><!-- doxytag: member="tokparser.h::token_possible_values" ref="ga32074c05714bf643b440ca28b556a998" args="(TOKENDEF *tkdef)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE char* STRTK_nspn </td>
+          <td class="memname">char* token_possible_values </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">STRTK</a> *&#160;</td>
-          <td class="paramname"><em>tok</em>, </td>
+          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
+          <td class="paramname"><em>tkdef</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00009_source.html#l00016">16</a> of file <a class="el" href="a00009_source.html">tokparser.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> i;
+  <span class="keywordtype">int</span> len = 0;
+  <span class="keywordtype">char</span> *ret;
+
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    len += strlen( tkdef[i].type ) + 1;
+  }
+
+  ret = (<span class="keywordtype">char</span> *) malloc( len + 1 );
+  <span class="keywordflow">if</span> (!ret) {
+    <span class="keywordflow">return</span> 0;
+  }
+
+  strcpy(ret, <span class="stringliteral">&quot;&quot;</span> );
+
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    strcat( ret, tkdef[i].type);
+    strcat( ret, <span class="stringliteral">&quot; &quot;</span> );
+  }
+
+  <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2720d8525084394b4961286ba62371e5"></a><!-- doxytag: member="tokparser.h::token_string_for_int" ref="ga2720d8525084394b4961286ba62371e5" args="(int value, TOKENDEF *tkdef)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* token_string_for_int </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>hay</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>nsize</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
+          <td class="paramname"><em>tkdef</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -221,185 +180,38 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Returns token where all characters belong to argument character class, argument string is limited. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>the pointer to the next character that is not part of the character class. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00009_source.html#l00071">71</a> of file <a class="el" href="a00009_source.html">strtk.h</a>.</p>
+<p>Definition at line <a class="el" href="a00009_source.html#l00041">41</a> of file <a class="el" href="a00009_source.html">tokparser.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-   uint8_t *cpos;
+  <span class="keywordtype">int</span> i;
 
-   <span class="keywordflow">for</span>( cpos = (uint8_t *) hay; *cpos != <span class="charliteral">&#39;\0&#39;</span> &amp;&amp; nsize &gt; 0 ; ++cpos, --nsize ) {
-      <span class="keywordflow">if</span> (!<a class="code" href="a00014.html#ga6af25e1d072d3e1ed7d7c0682831155c" title="macro checks if character is part of character class">STRTK_IS_CHAR</a>( tok, *cpos )) {
-         <span class="keywordflow">break</span>;
-      }
-   }
-   <span class="keywordflow">return</span> (<span class="keywordtype">char</span> *) cpos;
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    <span class="keywordflow">if</span> ( tkdef[i].token_type == value ) {
+      <span class="keywordflow">return</span> tkdef[i].<a class="code" href="a00014.html#gab7bce27d71c22f9e38d80845e52f5142">type</a>;  
+    }  
+  }
+  <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gaf5f9a2448a798742f4c632df8207bee6"></a><!-- doxytag: member="strtk.h::STRTK_ntok" ref="gaf5f9a2448a798742f4c632df8207bee6" args="(STRTK *tok, const char *hay, size_t nsize, char **end_tok)" -->
+<hr/><h2>Variable Documentation</h2>
+<a class="anchor" id="gab7bce27d71c22f9e38d80845e52f5142"></a><!-- doxytag: member="tagTOKENDEF::type" ref="gab7bce27d71c22f9e38d80845e52f5142" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE char* STRTK_ntok </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">STRTK</a> *&#160;</td>
-          <td class="paramname"><em>tok</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>hay</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>nsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>end_tok</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">const char* <a class="el" href="a00014.html#gab7bce27d71c22f9e38d80845e52f5142">tagTOKENDEF::type</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>tokenize a string . the character class is interpreted as set of white spaces. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the start of token, end_tok returns position right after the token. </dd></dl>
+<p>Definition at line <a class="el" href="a00010_source.html#l00016">16</a> of file <a class="el" href="a00010_source.html">tokparser.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00009_source.html#l00088">88</a> of file <a class="el" href="a00009_source.html">strtk.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-   uint8_t *cpos;
-   <span class="keywordtype">char</span> *start_tok;
-
-   <span class="comment">// skip leading whitespaces.</span>
-   <span class="keywordflow">for</span>( cpos = (uint8_t *) hay; *cpos != <span class="charliteral">&#39;\0&#39;</span> &amp;&amp; nsize &gt; 0 &amp;&amp; <a class="code" href="a00014.html#ga6af25e1d072d3e1ed7d7c0682831155c" title="macro checks if character is part of character class">STRTK_IS_CHAR</a>( tok, *cpos ) ; ++cpos, --nsize );
- 
-   start_tok = (<span class="keywordtype">char</span> *) cpos;
-
-   <span class="keywordflow">for</span>( ; *cpos != <span class="charliteral">&#39;\0&#39;</span> &amp;&amp; nsize &gt; 0 &amp;&amp; !<a class="code" href="a00014.html#ga6af25e1d072d3e1ed7d7c0682831155c" title="macro checks if character is part of character class">STRTK_IS_CHAR</a>( tok, *cpos ) ; ++cpos, --nsize );
-
-   *end_tok = (<span class="keywordtype">char</span> *) cpos;
-
-   <span class="keywordflow">if</span> (start_tok == (<span class="keywordtype">char</span> *) cpos) {
-     <span class="keywordflow">return</span> 0;
-   }
-   <span class="keywordflow">return</span> start_tok;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gacbaa999a7ed8334ee4f9c074190522f5"></a><!-- doxytag: member="strtk.h::STRTK_spn" ref="gacbaa999a7ed8334ee4f9c074190522f5" args="(STRTK *tok, const char *hay)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE char* STRTK_spn </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">STRTK</a> *&#160;</td>
-          <td class="paramname"><em>tok</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>hay</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns token where all characters belong to argument character class. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>the pointer to the next character that is not part of the character class. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00009_source.html#l00055">55</a> of file <a class="el" href="a00009_source.html">strtk.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-   uint8_t *cpos;
-
-   <span class="keywordflow">for</span>( cpos = (uint8_t *) hay; *cpos != <span class="charliteral">&#39;\0&#39;</span>; ++cpos ) {
-      <span class="keywordflow">if</span> (!<a class="code" href="a00014.html#ga6af25e1d072d3e1ed7d7c0682831155c" title="macro checks if character is part of character class">STRTK_IS_CHAR</a>( tok, *cpos )) {
-         <span class="keywordflow">break</span>;
-      }
-   }
-   <span class="keywordflow">return</span> (<span class="keywordtype">char</span> *) cpos;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga970da7da688e9d0412ef1e688b340f32"></a><!-- doxytag: member="strtk.h::STRTK_tok" ref="ga970da7da688e9d0412ef1e688b340f32" args="(STRTK *tok, const char *hay, char **end_tok)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE char* STRTK_tok </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">STRTK</a> *&#160;</td>
-          <td class="paramname"><em>tok</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>hay</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>end_tok</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>tokenize a string . the character class is interpreted as set of white spaces. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the start of token, end_tok returns position right after the token. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00009_source.html#l00112">112</a> of file <a class="el" href="a00009_source.html">strtk.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-   uint8_t *cpos;
-   <span class="keywordtype">char</span> *start_tok;
-
-   <span class="comment">// skip leading whitespaces.</span>
-   <span class="keywordflow">for</span>( cpos = (uint8_t *) hay; *cpos != <span class="charliteral">&#39;\0&#39;</span> &amp;&amp; <a class="code" href="a00014.html#ga6af25e1d072d3e1ed7d7c0682831155c" title="macro checks if character is part of character class">STRTK_IS_CHAR</a>( tok, *cpos ) ; ++cpos);
- 
-   start_tok = (<span class="keywordtype">char</span> *) cpos;
-
-   <span class="keywordflow">for</span>( ; *cpos != <span class="charliteral">&#39;\0&#39;</span> &amp;&amp; !<a class="code" href="a00014.html#ga6af25e1d072d3e1ed7d7c0682831155c" title="macro checks if character is part of character class">STRTK_IS_CHAR</a>( tok, *cpos )  ; ++cpos);
-
-   *end_tok = (<span class="keywordtype">char</span> *) cpos;
-
-   <span class="keywordflow">if</span> (start_tok == (<span class="keywordtype">char</span> *) cpos) {
-     <span class="keywordflow">return</span> 0;
-   }
-   <span class="keywordflow">return</span> start_tok;
-}
-</pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:37 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

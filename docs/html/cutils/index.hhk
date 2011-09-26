@@ -576,6 +576,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00026.html#ga2030d9ff4e1c5e8b4cbd74590b93d8ce"><param name="Name" value="DLISTUNR_init"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00026.html#ga82205532b2714164ed2a5a4d724f9094"><param name="Name" value="DLISTUNR_insert_after"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00026.html#ga226340b3f31b861f5180d637d2c795c6"><param name="Name" value="DLISTUNR_insert_before"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00026.html#ga185f2f68ab909782dbe196dc8756979e"><param name="Name" value="DLISTUNR_is_eof"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00026.html#ga0290d4b52497dc3690054049f2817647"><param name="Name" value="DLISTUNR_isempty"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00026.html#ga4db401e1c08b3d07a78985fea9961936"><param name="Name" value="DLISTUNR_maxsize"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00026.html#ga686e489382b845f2887e4610929bd473"><param name="Name" value="DLISTUNR_next"></OBJECT>
@@ -606,6 +607,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga2030d9ff4e1c5e8b4cbd74590b93d8ce"><param name="Name" value="DLISTUNR_init"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga82205532b2714164ed2a5a4d724f9094"><param name="Name" value="DLISTUNR_insert_after"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga226340b3f31b861f5180d637d2c795c6"><param name="Name" value="DLISTUNR_insert_before"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga185f2f68ab909782dbe196dc8756979e"><param name="Name" value="DLISTUNR_is_eof"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga0290d4b52497dc3690054049f2817647"><param name="Name" value="DLISTUNR_isempty"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga4db401e1c08b3d07a78985fea9961936"><param name="Name" value="DLISTUNR_maxsize"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga686e489382b845f2887e4610929bd473"><param name="Name" value="DLISTUNR_next"></OBJECT>
@@ -699,6 +701,11 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00025.html#a5b41bdb020e3d8cc4e21b684ba5f8033"><param name="Name" value="DLISTUNR_insert_entry"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00025.html#ad57c2c0178439688868899a41d9b7f44"><param name="Name" value="DLISTUNR_insert_newnode"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga185f2f68ab909782dbe196dc8756979e"><param name="Name" value="DLISTUNR_is_eof"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga185f2f68ab909782dbe196dc8756979e"><param name="Name" value="DLISTUNR"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga185f2f68ab909782dbe196dc8756979e"><param name="Name" value="dlistunr.h"></OBJECT>
+  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga0290d4b52497dc3690054049f2817647"><param name="Name" value="DLISTUNR_isempty"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00047.html#ga0290d4b52497dc3690054049f2817647"><param name="Name" value="DLISTUNR"></OBJECT>
@@ -876,9 +883,12 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#ga3efd1408b3d08b2253e1bf781306a425"><param name="Name" value="DRING"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#ga3efd1408b3d08b2253e1bf781306a425"><param name="Name" value="dring.h"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"><param name="Name" value="DRING_foreach"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#gac8118521928cd5a00b83ee9c0ba48308"><param name="Name" value="DRING_FOREACH"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"><param name="Name" value="DRING_foreach"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"><param name="Name" value="DRING"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"><param name="Name" value="dring.c"></OBJECT>
+  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#gac8118521928cd5a00b83ee9c0ba48308"><param name="Name" value="DRING_FOREACH"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"><param name="Name" value="DRING_foreach"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00048.html#ga98724ac564245aa77a1a4c55f83fadb9"><param name="Name" value="DRING_foreach_reverse"></OBJECT>
@@ -1550,13 +1560,13 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#gab7659684a1854619f6514007a4a2a7ac"><param name="Name" value="SLIST"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#gab7659684a1854619f6514007a4a2a7ac"><param name="Name" value="slist.h"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga13e3414add243765e1acc420f8a0f478"><param name="Name" value="SLIST_FOREACH"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga9a2bcb303e10ce22f43138d974cf6f61"><param name="Name" value="SLIST_foreach"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga9a2bcb303e10ce22f43138d974cf6f61"><param name="Name" value="SLIST"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga9a2bcb303e10ce22f43138d974cf6f61"><param name="Name" value="slist.h"></OBJECT>
-  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga13e3414add243765e1acc420f8a0f478"><param name="Name" value="SLIST_FOREACH"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga13e3414add243765e1acc420f8a0f478"><param name="Name" value="SLIST"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga13e3414add243765e1acc420f8a0f478"><param name="Name" value="slist.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga9a2bcb303e10ce22f43138d974cf6f61"><param name="Name" value="SLIST_foreach"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga1fd8f8e8cee04217d15bc9e40dc22874"><param name="Name" value="SLIST_FOREACH_SAVE"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00051.html#ga1fd8f8e8cee04217d15bc9e40dc22874"><param name="Name" value="SLIST"></OBJECT>
@@ -1656,8 +1666,8 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga96914d218afb3f3dac01bf98702e3ef7"><param name="Name" value="SRING_deleteall"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga182b8c409d5c05637085210b31950431"><param name="Name" value="SRING_deleteif"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga742710ac325213e24ddf5d02ef30bc9c"><param name="Name" value="SRING_findif"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga948f45c8af2b99aec05ca538b4a07e9e"><param name="Name" value="SRING_foreach"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga39582582e3bfccf18e39710e75009ad1"><param name="Name" value="SRING_FOREACH"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga948f45c8af2b99aec05ca538b4a07e9e"><param name="Name" value="SRING_foreach"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga7f6178ad165e9b2f699efd88a3cbca8a"><param name="Name" value="SRING_FOREACH_SAVE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#ga0e4892ffac6b949a95b1d9b1895433b7"><param name="Name" value="SRING_FOREACH_SAVE_END"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00036.html#gaa43e9213ae7d390a22ffd34164a9a8fb"><param name="Name" value="SRING_get_first"></OBJECT>
@@ -1876,10 +1886,10 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#ga2695e9ae02cd3359771cacdf776918e4"><param name="Name" value="TREE_first_child"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#ga0843046582beafa1e2158cf0261fe8a1"><param name="Name" value="TREE_foreach_child"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#gaae718f42f4d1d72b715248550610ebe0"><param name="Name" value="TREE_FOREACH_CHILD"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#gacb91cd0e28147dc399cba4cc4ddea1c1"><param name="Name" value="TREE_foreach_child_reverse"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#ga6f0686cdd2280d83191f09c671e63ebd"><param name="Name" value="TREE_FOREACH_CHILD_REVERSE"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#gaaeea62e7b7e668075caa6ee635fba60a"><param name="Name" value="TREE_FOREACH_POSTORDER"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#gacb91cd0e28147dc399cba4cc4ddea1c1"><param name="Name" value="TREE_foreach_child_reverse"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#ga272a19d0e9bb16460b010d7c38f6038a"><param name="Name" value="TREE_foreach_postorder"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#gaaeea62e7b7e668075caa6ee635fba60a"><param name="Name" value="TREE_FOREACH_POSTORDER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#ga01c708ec70f756c8045b16d7fca53f5b"><param name="Name" value="TREE_FOREACH_POSTORDER_END"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#ga78104ec79d0b31f3e06c70b6796a54c8"><param name="Name" value="TREE_FOREACH_PREORDER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00038.html#gae16d9f6e7f210f3596a00688b0598a05"><param name="Name" value="TREE_foreach_preorder"></OBJECT>
@@ -1921,8 +1931,8 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga272a19d0e9bb16460b010d7c38f6038a"><param name="Name" value="TREE_foreach_postorder"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gaaeea62e7b7e668075caa6ee635fba60a"><param name="Name" value="TREE_FOREACH_POSTORDER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b"><param name="Name" value="TREE_FOREACH_POSTORDER_END"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga78104ec79d0b31f3e06c70b6796a54c8"><param name="Name" value="TREE_FOREACH_PREORDER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gae16d9f6e7f210f3596a00688b0598a05"><param name="Name" value="TREE_foreach_preorder"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga78104ec79d0b31f3e06c70b6796a54c8"><param name="Name" value="TREE_FOREACH_PREORDER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gab1367d2f48012bb9b750a0609d1305cf"><param name="Name" value="TREE_FOREACH_PREORDER_END"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga0ea2162b901f647f5dac3b15dfecdb12"><param name="Name" value="TREE_init_root"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga604dc40c8dfea4f7beed9b0437dfb496"><param name="Name" value="TREE_insert_child"></OBJECT>
@@ -1984,21 +1994,15 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gaae718f42f4d1d72b715248550610ebe0"><param name="Name" value="TREE_FOREACH_CHILD"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga0843046582beafa1e2158cf0261fe8a1"><param name="Name" value="TREE_foreach_child"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga0843046582beafa1e2158cf0261fe8a1"><param name="Name" value="TREE"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga0843046582beafa1e2158cf0261fe8a1"><param name="Name" value="tree.h"></OBJECT>
-  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gaae718f42f4d1d72b715248550610ebe0"><param name="Name" value="TREE_FOREACH_CHILD"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga6f0686cdd2280d83191f09c671e63ebd"><param name="Name" value="TREE_FOREACH_CHILD_REVERSE"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga0843046582beafa1e2158cf0261fe8a1"><param name="Name" value="TREE_foreach_child"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gacb91cd0e28147dc399cba4cc4ddea1c1"><param name="Name" value="TREE_foreach_child_reverse"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga6f0686cdd2280d83191f09c671e63ebd"><param name="Name" value="TREE_FOREACH_CHILD_REVERSE"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gacb91cd0e28147dc399cba4cc4ddea1c1"><param name="Name" value="TREE_foreach_child_reverse"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga6f0686cdd2280d83191f09c671e63ebd"><param name="Name" value="TREE_FOREACH_CHILD_REVERSE"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga272a19d0e9bb16460b010d7c38f6038a"><param name="Name" value="TREE_foreach_postorder"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gaaeea62e7b7e668075caa6ee635fba60a"><param name="Name" value="TREE_FOREACH_POSTORDER"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga272a19d0e9bb16460b010d7c38f6038a"><param name="Name" value="TREE_foreach_postorder"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga272a19d0e9bb16460b010d7c38f6038a"><param name="Name" value="TREE"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga272a19d0e9bb16460b010d7c38f6038a"><param name="Name" value="tree.h"></OBJECT>
-  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#gaaeea62e7b7e668075caa6ee635fba60a"><param name="Name" value="TREE_FOREACH_POSTORDER"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b"><param name="Name" value="TREE_FOREACH_POSTORDER_END"></OBJECT>
   <UL>

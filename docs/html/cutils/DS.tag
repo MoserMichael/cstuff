@@ -939,6 +939,13 @@
       <arglist>(DLISTUNR_position pos)</arglist>
     </member>
     <member kind="function">
+      <type>M_INLINE int</type>
+      <name>DLISTUNR_is_eof</name>
+      <anchorfile>a00047.html</anchorfile>
+      <anchor>ga185f2f68ab909782dbe196dc8756979e</anchor>
+      <arglist>(DLISTUNR *list, DLISTUNR_position pos)</arglist>
+    </member>
+    <member kind="function">
       <type>M_INLINE DLISTUNR_position</type>
       <name>DLISTUNR_prev</name>
       <anchorfile>a00047.html</anchorfile>
@@ -3243,6 +3250,13 @@
       <anchorfile>a00047.html</anchorfile>
       <anchor>ga686e489382b845f2887e4610929bd473</anchor>
       <arglist>(DLISTUNR_position pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE int</type>
+      <name>DLISTUNR_is_eof</name>
+      <anchorfile>a00047.html</anchorfile>
+      <anchor>ga185f2f68ab909782dbe196dc8756979e</anchor>
+      <arglist>(DLISTUNR *list, DLISTUNR_position pos)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE DLISTUNR_position</type>

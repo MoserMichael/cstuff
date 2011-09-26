@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: strtk.c File Reference</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: strtk.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,23 +37,61 @@
 </div>
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">strtk.c File Reference</div>  </div>
+<div class="title">strtk.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="a00009_source.html">strtk.h</a>&quot;</code><br/>
-<code>#include &lt;string.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;cutils/base.h&gt;</code><br/>
 </div>
 <p><a href="a00008_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">tagSTRTK</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a>&#160;&#160;&#160;( 256 / 8 )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga6af25e1d072d3e1ed7d7c0682831155c">STRTK_IS_CHAR</a>(tok, ch)&#160;&#160;&#160;( (tok)-&gt;pattern[ (ch) &gt;&gt; 3 ] &amp;&amp; (1 &lt;&lt; ((ch) &amp; 7))  )</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">macro checks if character is part of character class  <a href="a00013.html#ga6af25e1d072d3e1ed7d7c0682831155c"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagSTRTK</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga76f725215889db6e091bec0b60be9d33">STRTK</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">STRTK_init</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *stop_chars)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initalise a character class  <a href="a00014.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">STRTK_init</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *stop_chars)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initalise a character class  <a href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a> (<a class="el" href="a00001.html">STRTK</a> *tok, uint8_t ch)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5">STRTK_spn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class.  <a href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031">STRTK_nspn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class, argument string is limited.  <a href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaf5f9a2448a798742f4c632df8207bee6">STRTK_ntok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize, char **end_tok)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="a00013.html#gaf5f9a2448a798742f4c632df8207bee6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga970da7da688e9d0412ef1e688b340f32">STRTK_tok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, char **end_tok)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="a00013.html#ga970da7da688e9d0412ef1e688b340f32"></a><br/></td></tr>
 </table>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a4718a59241012667de9862df37383a48"></a><!-- doxytag: member="strtk.h::STRTK_PATTERN_SIZE" ref="a4718a59241012667de9862df37383a48" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STRTK_PATTERN_SIZE&#160;&#160;&#160;( 256 / 8 )</td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00006">6</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:37 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

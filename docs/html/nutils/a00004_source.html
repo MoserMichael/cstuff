@@ -43,7 +43,7 @@
 <a name="l00002"></a>00002 <span class="preprocessor">#include &lt;string.h&gt;</span>
 <a name="l00003"></a>00003 
 <a name="l00004"></a>00004 
-<a name="l00005"></a><a class="code" href="a00009.html#ga37819d2886490c212763c865c33364db">00005</a> <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga37819d2886490c212763c865c33364db" title="moves get_pos to start position; moves content between get_pos and put_pos if not empty...">BF_compact</a>( <a class="code" href="a00002.html">BF</a> * bf )
+<a name="l00005"></a><a class="code" href="a00011.html#ga37819d2886490c212763c865c33364db">00005</a> <span class="keywordtype">int</span> <a class="code" href="a00011.html#ga37819d2886490c212763c865c33364db" title="moves get_pos to start position; moves content between get_pos and put_pos if not empty...">BF_compact</a>( <a class="code" href="a00002.html">BF</a> * bf )
 <a name="l00006"></a>00006 {
 <a name="l00007"></a>00007     <span class="keywordtype">size_t</span> bs;
 <a name="l00008"></a>00008 
@@ -61,7 +61,7 @@
 <a name="l00020"></a>00020     <span class="keywordflow">return</span> 1;
 <a name="l00021"></a>00021 }
 <a name="l00022"></a>00022 
-<a name="l00023"></a><a class="code" href="a00009.html#gae27decac1bfa136183b23cea293464a2">00023</a> <span class="keywordtype">char</span> *  <a class="code" href="a00009.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">int</span> eof)
+<a name="l00023"></a><a class="code" href="a00011.html#gae27decac1bfa136183b23cea293464a2">00023</a> <span class="keywordtype">char</span> *  <a class="code" href="a00011.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">int</span> eof)
 <a name="l00024"></a>00024 {  
 <a name="l00025"></a>00025    <span class="keywordtype">char</span> *eof_line, *ret;
 <a name="l00026"></a>00026 
@@ -75,7 +75,7 @@
 <a name="l00034"></a>00034    <span class="keywordflow">return</span> 0;
 <a name="l00035"></a>00035 }
 <a name="l00036"></a>00036 
-<a name="l00037"></a><a class="code" href="a00009.html#ga42852c881989c7925a70e7fa3a87ee6c">00037</a> <span class="keywordtype">char</span> *  <a class="code" href="a00009.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keyword">const</span> <span class="keywordtype">char</span> *eof_line, <span class="keywordtype">size_t</span> eof_line_size)
+<a name="l00037"></a><a class="code" href="a00011.html#ga42852c881989c7925a70e7fa3a87ee6c">00037</a> <span class="keywordtype">char</span> *  <a class="code" href="a00011.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keyword">const</span> <span class="keywordtype">char</span> *eof_line, <span class="keywordtype">size_t</span> eof_line_size)
 <a name="l00038"></a>00038 {
 <a name="l00039"></a>00039    <span class="keywordtype">char</span> *pos,*next,*ret;
 <a name="l00040"></a>00040    <span class="keywordtype">size_t</span> nsearch;
@@ -106,7 +106,7 @@
 <a name="l00065"></a>00065    <span class="keywordflow">return</span> 0;
 <a name="l00066"></a>00066 }
 <a name="l00067"></a>00067 
-<a name="l00068"></a><a class="code" href="a00009.html#ga9a5012a3895ade56ca7b1a8bb7309c72">00068</a>  <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga9a5012a3895ade56ca7b1a8bb7309c72" title="validates a buffer - checks all invariants.">BF_check</a>( <a class="code" href="a00002.html">BF</a> * bf )
+<a name="l00068"></a><a class="code" href="a00011.html#ga9a5012a3895ade56ca7b1a8bb7309c72">00068</a>  <span class="keywordtype">int</span> <a class="code" href="a00011.html#ga9a5012a3895ade56ca7b1a8bb7309c72" title="validates a buffer - checks all invariants.">BF_check</a>( <a class="code" href="a00002.html">BF</a> * bf )
 <a name="l00069"></a>00069 {
 <a name="l00070"></a>00070     uint8_t * eof;
 <a name="l00071"></a>00071     
@@ -130,7 +130,7 @@
 <a name="l00089"></a>00089 }
 <a name="l00090"></a>00090 
 <a name="l00091"></a>00091 
-<a name="l00092"></a><a class="code" href="a00009.html#ga18fdd2d33720298f25059429d226d9b2">00092</a> <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga18fdd2d33720298f25059429d226d9b2" title="set start position, position is relative to start of memory range.">BF_set_start</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
+<a name="l00092"></a><a class="code" href="a00011.html#ga18fdd2d33720298f25059429d226d9b2">00092</a> <span class="keywordtype">int</span> <a class="code" href="a00011.html#ga18fdd2d33720298f25059429d226d9b2" title="set start position, position is relative to start of memory range.">BF_set_start</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
 <a name="l00093"></a>00093 {
 <a name="l00094"></a>00094   <span class="keywordflow">if</span> (pos &gt; bf-&gt;<a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a>) {
 <a name="l00095"></a>00095     <span class="keywordflow">return</span> -1;
@@ -149,7 +149,7 @@
 <a name="l00108"></a>00108   <span class="keywordflow">return</span> 0;
 <a name="l00109"></a>00109 }
 <a name="l00110"></a>00110 
-<a name="l00111"></a><a class="code" href="a00009.html#ga56338e4b6e732eea198fb266dfa55198">00111</a> <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga56338e4b6e732eea198fb266dfa55198" title="set end position, position is relative to start of memory range.">BF_set_end</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
+<a name="l00111"></a><a class="code" href="a00011.html#ga56338e4b6e732eea198fb266dfa55198">00111</a> <span class="keywordtype">int</span> <a class="code" href="a00011.html#ga56338e4b6e732eea198fb266dfa55198" title="set end position, position is relative to start of memory range.">BF_set_end</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
 <a name="l00112"></a>00112 {
 <a name="l00113"></a>00113   <span class="keywordflow">if</span> (pos &gt; bf-&gt;<a class="code" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a>) {
 <a name="l00114"></a>00114     <span class="keywordflow">return</span> -1;
@@ -168,7 +168,7 @@
 <a name="l00127"></a>00127   <span class="keywordflow">return</span> 0;
 <a name="l00128"></a>00128 }
 <a name="l00129"></a>00129 
-<a name="l00130"></a><a class="code" href="a00009.html#gaacf9d4de524e47e30360e243d39c0f73">00130</a> <span class="keywordtype">int</span> <a class="code" href="a00009.html#gaacf9d4de524e47e30360e243d39c0f73" title="set get position, position is relative to &#39;start&#39; pointer.">BF_set_get</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
+<a name="l00130"></a><a class="code" href="a00011.html#gaacf9d4de524e47e30360e243d39c0f73">00130</a> <span class="keywordtype">int</span> <a class="code" href="a00011.html#gaacf9d4de524e47e30360e243d39c0f73" title="set get position, position is relative to &#39;start&#39; pointer.">BF_set_get</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
 <a name="l00131"></a>00131 {
 <a name="l00132"></a>00132   <span class="keywordtype">size_t</span> bfs = bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>; 
 <a name="l00133"></a>00133   <span class="keywordflow">if</span> (pos &gt; bfs) {
@@ -181,7 +181,7 @@
 <a name="l00140"></a>00140   <span class="keywordflow">return</span> 0;
 <a name="l00141"></a>00141 }
 <a name="l00142"></a>00142 
-<a name="l00143"></a><a class="code" href="a00009.html#ga3d4956583a84d460393dd68dca32f6ac">00143</a> <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga3d4956583a84d460393dd68dca32f6ac" title="set put position, position is relative to &#39;start&#39; pointer.">BF_set_put</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
+<a name="l00143"></a><a class="code" href="a00011.html#ga3d4956583a84d460393dd68dca32f6ac">00143</a> <span class="keywordtype">int</span> <a class="code" href="a00011.html#ga3d4956583a84d460393dd68dca32f6ac" title="set put position, position is relative to &#39;start&#39; pointer.">BF_set_put</a>( <a class="code" href="a00002.html">BF</a> * bf, <span class="keywordtype">size_t</span> pos )
 <a name="l00144"></a>00144 {
 <a name="l00145"></a>00145   <span class="keywordtype">size_t</span> bfs = bf-&gt;<a class="code" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a> - bf-&gt;<a class="code" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a>; 
 <a name="l00146"></a>00146   <span class="keywordflow">if</span> (pos &gt; bfs) {
@@ -197,7 +197,7 @@
 <a name="l00156"></a>00156 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:36 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
