@@ -25,9 +25,7 @@ int STACKS_init( STACKS *stack, int num_stacks, int pages_per_stack )
   STACK_DIR dir;
   STACK_ENTRY *entry;
   uint8_t *mapping, *stack_start;
-#if 0 
   uint8_t *guard_page;
-#endif
   int i;
   
   page_size = sysconf( _SC_PAGE_SIZE );
@@ -54,7 +52,7 @@ int STACKS_init( STACKS *stack, int num_stacks, int pages_per_stack )
 
   for( i = 0; i < num_stacks; i ++ ) {
     stack_start = mapping + ( i * one_stack_size);
-#if 0
+    
     if (dir == STACK_DIR_GROWING_DOWN) {
     //stack_start = mapping + ( (i + 1) * one_stack_size) - 1;
       guard_page =  mapping + (i * one_stack_size);
@@ -65,7 +63,7 @@ int STACKS_init( STACKS *stack, int num_stacks, int pages_per_stack )
     if (mprotect( guard_page , page_size, PROT_NONE )) {
       return -1;
     }
-#endif    
+    
     entry = (STACK_ENTRY *) malloc( sizeof( STACK_ENTRY ) );
     if (!entry) {
       return -1;
