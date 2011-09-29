@@ -1,4 +1,4 @@
-#include <corothread/evthread.h>
+#include <evthread.h>
 
 #include <errno.h>
 #include <unistd.h>

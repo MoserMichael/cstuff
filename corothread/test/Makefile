@@ -1,25 +1,25 @@
 TOPDIR=../..
 
 
-TESTS=iothreadtest iothreadtestsh  
+TESTS=corothreadtest  corothreadtestsh
 
 
-iothreadtest_TYPE=exe
+corothreadtest_TYPE=exe
 
-iothreadtest_SRC_EXTENSION=c
+corothreadtest_SRC_EXTENSION=c
 
-iothreadtest_LIBS=iothread cutils butils nutils vtest pthread
+corothreadtest_LIBS=corothread cutils butils nutils vtest pthread
 
 
-iothreadtestsh_TYPE=exe
+corothreadtestsh_TYPE=exe
 
-iothreadtestsh_SRC_EXTENSION=c
+corothreadtestsh_SRC_EXTENSION=c
 
-iothreadtestsh_LIBS=iothreadsh cutilssh butilssh nutilssh vtest pthread
+corothreadtestsh_LIBS=corothreadsh cutilssh butilssh nutilssh vtest pthread
 
-iothreadtestsh_CFLAGS=-I$(ROOT_DIR)/iothreads/libevent/install/include
+corothreadtestsh_CFLAGS=-I$(ROOT_DIR)/iothreads/libevent/install/include
 
-iothreadtestsh_LDFLAGS=-L$(ROOT_DIR)/iothreads/libevent/install/lib
+corothreadtestsh_LDFLAGS=-L$(ROOT_DIR)/iothreads/libevent/install/lib
 
 
 

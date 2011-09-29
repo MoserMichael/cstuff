@@ -2,24 +2,21 @@ TOPDIR=..
 
 POSTBUILD_SUBDIRS=test
 
-TARGETS:=iothread iothreadsh
+TARGETS:=corothread corothreadsh
 
 # --- 
 
-iothread_TYPE=lib
+corothread_TYPE=lib
 
-iothread_SRC_EXTENSION=c
-
-iothread_CFLAGS=-Ilibevent/install/include
+corothread_SRC_EXTENSION=c
 
 
 # --- 
 
-iothreadsh_TYPE=shlib
+corothreadsh_TYPE=shlib
 
-iothreadsh_SRC_EXTENSION=c
+corothreadsh_SRC_EXTENSION=c
 
-iothreadsh_CFLAGS=-Ilibevent/install/include
 
 
 include $(TOPDIR)/rules.make

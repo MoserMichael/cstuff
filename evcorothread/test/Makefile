@@ -1,29 +1,29 @@
 TOPDIR=../..
 
 
-TESTS=iothreadtest iothreadtestsh  
+TESTS=evcorothreadtest evcorothreadtestsh  
 
 
-iothreadtest_TYPE=exe
+evcorothreadtest_TYPE=exe
 
-iothreadtest_SRC_EXTENSION=c
+evcorothreadtest_SRC_EXTENSION=c
 
-iothreadtest_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
+evcorothreadtest_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 
-iothreadtest_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
+evcorothreadtest_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
 
-iothreadtest_LIBS=iothread cutils butils nutils vtest pthread event rt
+evcorothreadtest_LIBS=corothread evcorothread cutils butils nutils vtest pthread event rt
 
 
-iothreadtestsh_TYPE=exe
+evcorothreadtestsh_TYPE=exe
 
-iothreadtestsh_SRC_EXTENSION=c
+evcorothreadtestsh_SRC_EXTENSION=c
 
-iothreadtestsh_LIBS=iothreadsh cutilssh butilssh nutilssh vtest pthread event rt
+evcorothreadtestsh_LIBS=corothreadsh evcorothreadsh cutilssh butilssh nutilssh vtest pthread event rt
 
-iothreadtestsh_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
+evcorothreadtestsh_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 
-iothreadtestsh_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
+evcorothreadtestsh_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
 
 
 
