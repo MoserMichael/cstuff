@@ -88,3 +88,31 @@ int fd_get_reuse_address(int fd)
   return flag_on;
 }
 
+int fd_make_tcp_listener(SOCKADDR *saddr, int backlog)
+{
+  int fd;
+ 
+  fd = socket( SOCKADDR_family(saddr), SOCK_STREAM, IPPROTO_TCP );
+  if (fd == -1) {
+    return -1;
+  }
+
+  if (fd_set_reuse_address( fd, 1 )) {
+    goto err;
+  }
+
+  if (bind( fd, SOCKADDR_saddr( saddr ), SOCKADDR_length( saddr )) ) {
+    goto err;
+  }
+
+  if (listen( fd, backlog )) {
+    goto err;
+  }
+  return 0;
+
+err:
+  close(fd);
+  return -1;
+}
+
+

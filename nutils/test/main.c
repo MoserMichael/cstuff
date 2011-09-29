@@ -7,12 +7,13 @@
 
 void BF_test_signed();
 void BF_test_unsigned();
-
+void ADDRUTIL_test();
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( BF_test_signed )
 	VTEST_TESTN( BF_test_unsigned )
+	VTEST_TESTN( ADDRUTIL_test )
 VTEST_END_SUITE
 
 

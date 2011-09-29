@@ -1,7 +1,7 @@
 TOPDIR=../..
 
 
-TESTS=nutilstestsh nutilstest
+TESTS=nutilstest nutilstestsh  
 
 
 nutilstest_TYPE=exe

@@ -2,7 +2,6 @@
 #define __ADDRUTIL_H__
 
 #include <netinet/in.h>
-#include <stdint.h>
 #include <cutils/base.h>
 
 /** 
@@ -49,14 +48,38 @@ typedef union {
 } SOCKADDR;
 
 
+/** 
+ * @brief initialise ip address / port pair.
+ */
 int SOCKADDR_init( SOCKADDR *saddr, IPADDRESS *addr, uint16_t  port );
 
+/**
+ * @brief return addressing family of object (AF_INET or AF_INET6)
+ */
 int SOCKADDR_family( SOCKADDR *addr );
 
+/**
+ * @brief return address of ip address portion of address / port pair.
+ */
 void * SOCKADDR_ipaddr( SOCKADDR * addr );
 
+
+/*
+ * @brief friendly cast to struct sockaddr
+ */
+M_INLINE struct sockaddr *SOCKADDR_saddr( SOCKADDR *addr )
+{
+  return (struct sockaddr *) addr;
+}
+
+/**
+ * @brief return address of address / port pair (depends on addressing family)
+ */
 socklen_t SOCKADDR_length( SOCKADDR * addr );
 
+/**
+ * @brief formats objec as string
+ */
 char * SOCKADDR_to_string( SOCKADDR *saddr );
 
 /**

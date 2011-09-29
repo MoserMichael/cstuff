@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+# works nice with my vim stuff. This way the vim editor thinks it is running make, but it is running make test
+# the current directory must be in the path (first) for this trick to work.
+
+if [ "x$@" = "x" ]; then
+  exec /usr/bin/make test
+fi
+exec /usr/bin/make $@
