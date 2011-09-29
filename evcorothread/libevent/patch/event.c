@@ -518,6 +518,8 @@ event_base_loop(struct event_base *base, int flags)
 
 		tv_p = &tv;
 
+		//M.M. allow user to add his stuff into the event loop;
+		// Don't like another callback so this function is required at link time.
                 custom_timeout_handling( base, &tv_p );
 
 		if (!base->event_count_active && !(flags & EVLOOP_NONBLOCK)) {
@@ -552,8 +554,9 @@ event_base_loop(struct event_base *base, int flags)
 
 		if (base->event_count_active) {
 			event_process_active(base);
-			if (!base->event_count_active && (flags & EVLOOP_ONCE))
-				done = 1;
+			// M.M. exits event loops when no events are available, not very good for my purposes.
+			//if (!base->event_count_active && (flags & EVLOOP_ONCE))
+			//	done = 1;
 		} else if (flags & EVLOOP_NONBLOCK)
 			done = 1;
 	}

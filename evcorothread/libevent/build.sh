@@ -7,10 +7,11 @@ VERSIONDIR=1.4.14b-stable
 
 VERSION=libevent-${VERSIONDIR}
 
-if [ "x$0" = "xclean" ]; then
-  rm -rf $VERSION.tar.gz
+if [ "x$1" = "xclean" ]; then
+  rm -rf $VERSION
   rm -rf install
-  exit -0
+  rm -rf libevent
+  exit 0
 fi
 
 if [ ! -d $VERSION ]; then
