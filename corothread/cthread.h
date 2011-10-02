@@ -22,8 +22,18 @@ CRETURN_POINT *CRETURN_POINT_init();
 
 /** 
  * @defgroup CTHREAD
- * @brief simple co-routine package
- * 
+ * @brief a coroutine thread.
+ *
+ * A very limited user mode threading package that allows constructions of co-routines.
+ * Coroutine scheduling is done by mean of mkcontet/setcontext/getcontext functions (glibc)
+ *
+ * User mode threads are best when used in a very limited scenario, complex usage scenarios often
+ * lead to intricate situations that are hard to debug.
+ * Areas where user mode threading shines 
+ *   - coroutines / continuations
+ *   - generator funcions (like python/ruby/perl).
+ *
+ *
  * @{
  */
 typedef enum {
