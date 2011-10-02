@@ -42,7 +42,9 @@ void cthread_init( CTHREAD *arg )
 
   STACKS_release( arg->stack_entry );
 
+#if 0
   setcontext( &arg->context_caller );
+#endif
 }
 
 typedef void (*MK_CTX_FUNC) (void);
@@ -81,10 +83,8 @@ CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc, void *ctx )
 
   ret->context_coroutine.uc_stack.ss_sp = ret;
   ret->context_coroutine.uc_stack.ss_size = STACKS_get_stack_size( stacks );
-  ret->context_coroutine.uc_link = 0;
- 
-  makecontext( & ret->context_coroutine, (MK_CTX_FUNC) cthread_init , 1 ,  ret);
- 
+
+
   return ret;
 }
 
@@ -103,6 +103,14 @@ static int do_start( CTHREAD *thread )
   thread->prev_thread = tls_thread;
   tls_thread = thread;
 #endif
+
+#if 0
+  thread->context_coroutine.uc_link = 0;
+#else 
+  thread->context_coroutine.uc_link = &thread->context_caller;
+#endif
+  makecontext( & thread->context_coroutine, (MK_CTX_FUNC) cthread_init, 1, thread);
+  
   setcontext( &thread->context_coroutine );
   
   // should not get here.
@@ -135,6 +143,18 @@ int CTHREAD_start_ex( CTHREAD *thread, CRETURN_POINT *next )
   }
   thread->context_caller = next->context;
   return do_start( thread );
+}
+
+int CTHREAD_join( CTHREAD *thread )
+{  
+   if( thread->state == CTHREAD_STATE_INIT ||
+       thread->state == CTHREAD_STATE_RUNNING) {
+     return -1;
+   }
+   while(thread->state != CTHREAD_STATE_EXIT) {
+     CTHREAD_resume( thread );
+   }
+   return 0;
 }
 
 

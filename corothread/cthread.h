@@ -73,6 +73,12 @@ CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc, void *ctx );
 int CTHREAD_start( CTHREAD *thread );
 
 /**
+ * @brief waits till the thread has finished 
+ * Callss CTHREAD_resume repeatedly unntil the thread finishes.
+ */
+int CTHREAD_join( CTHREAD *thread );
+
+/**
  * deallocates a thread 
  *
  * Precondition: the thread must be in CTHREAD_STATE_EXIT state 
