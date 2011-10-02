@@ -2,7 +2,7 @@
 #define __EVTHREAD_H_
 
 #include <corothread/cthread.h>
-#include <event.h> // libevent
+#include <event.h> 
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <cutils/dlist.h>
@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------
 
 /**
+ * @defgroup EVLOOP
  * @brief event loop object.
  * The event loop  wraps a small user mode threading library where a user mode thread is created per connection.
  *
@@ -31,6 +32,7 @@
  * There is one thread per connection, that is supposed to do protocol handling and processing, all on condition that processing does not involve heavy CPU intensive tasks.
  * If your problem does have such task, then there is also support for the Half-sync/Half-async pattern.
  * 
+ * @{
  */
 typedef struct tagEVLOOP {
   struct event_base *ev_base;
@@ -42,6 +44,10 @@ EVLOOP * EVLOOP_init(STACKS *stacks );
 int EVLOOP_run( EVLOOP *loop );
 
 int EVLOOP_break( EVLOOP *loop );
+
+/**
+ * @}
+ */
  
 // ---------------------------------------------------------------------------
 struct tagEVSOCKET;
@@ -50,9 +56,12 @@ struct tagEVTHREAD;
 typedef void (*EVTHREAD_PROC) ( struct tagEVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx);
 
 /**
+ * @defgroup EVTHREAD
  * @brief user mode thread attached to an event loop
  * The thread owns one or more EVSOCKETS, it initially activated when the thread is created, and is futher activated when an IO event occurs on a EVSOCKET object 
  * owned by this thread.
+ *
+ * @{
  */
 typedef struct tagEVTHREAD {
   EVLOOP *loop;
@@ -70,6 +79,10 @@ EVTHREAD *EVTHREAD_init(EVLOOP *loop, EVTHREAD_PROC thread_proc,  void *user_ctx
 int EVTHREAD_start( EVTHREAD *thread, struct tagEVSOCKET *socket );
 
 int EVTHREAD_delay( EVTHREAD *thread, struct timeval delay );
+
+/**
+ * @}
+ */
 
 // ---------------------------------------------------------------------------
 
@@ -89,6 +102,12 @@ typedef struct tagEVTHREAD_OBJECT {
 
 // ---------------------------------------------------------------------------
 
+/**
+ * @defgroup EVTIMER
+ * @brief timer object atached to event loop, a user mode thread is created when the event loop dispatches a timer event.
+ *
+ * @{
+ */
 struct tagEVTIMER;
 
 typedef void (*EVTIMER_PROC) (struct tagEVTIMER *timer, void *user_data);
@@ -99,9 +118,6 @@ typedef  enum {
   EVTIMER_STATE_HANDLER_RUNNING,
 } EVTIMERSTATE;
 
-/**
- * @brief timer object atached to event loop, a user mode thread is created when the event loop dispatches a timer event.
- */
 typedef struct tagEVTIMER {
   EVTHREAD_OBJECT object_base;
   
@@ -131,8 +147,21 @@ int  EVTIMER_cancel( EVTIMER *timer );
 
 int  EVTIMER_free( EVTIMER *timer );
 
+/**
+ * @}
+ */
 
 // ---------------------------------------------------------------------------
+/**
+ * @defgroup EVSOCKET
+ * @brief a socket attached to user mode thread.
+ *
+ *  - a thread can either read from or write to a socket, not both at the same time.
+ *  - a thread can read or write from one socket at a time.
+ *
+ * @{
+ */
+
 typedef enum {
   EVSOCKET_STATE_INIT,
   EVSOCKET_STATE_CONNECTING,
@@ -143,12 +172,7 @@ typedef enum {
   EVSOCKET_STATE_ERROR,
 } EVSOCKET_STATE;
 
-/**
- * @brief a socket attached to user mode thread.
- *
- *  - a thread can either read from or write to a socket, not both at the same time.
- *  - a thread can read or write from one socket at a time.
- */
+
 typedef struct tagEVSOCKET {
   EVTHREAD_OBJECT object_base;
   
@@ -179,13 +203,22 @@ int EVSOCKET_recv_all( EVSOCKET *socket, void *buf, size_t buf_size, int flags, 
 
 int EVSOCKET_send( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout );
 
+/**
+ * @}
+ */
+
 // ---------------------------------------------------------------------------
+
+/**
+ * @defgroup TCPACCEPTOR
+ * @brief listener for tcp connections, a usermode thread is created for each new connection.
+ *
+ * @{
+ */
 
 typedef int (*EVTHREAD_FACTORY) (int fd, EVTHREAD_PROC *proc, void **ctx );
 
-/**
- * @brief tcp listener
- */
+
 typedef struct tagTCPACCEPTOR {
   EVLOOP *loop; 
   int fd;
@@ -195,6 +228,10 @@ typedef struct tagTCPACCEPTOR {
 } EVTCPACCEPTOR;
 
 EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory );
+
+/**
+ * @}
+ */
 
 #endif
 
