@@ -243,11 +243,11 @@ int SOCK_recv_all( SOCKCTX *ctx, char *msg, size_t length, int read_timeout )
   for(pos = 0; pos < length; ) {
       rt = SOCK_recv( ctx, msg, length, read_timeout );
       if (rt <= 0) {
-	return -1;
+	return rt;
       }
       pos += rt;
   }
-  return 0;
+  return pos;
 }
 
 
@@ -297,12 +297,10 @@ int SOCK_send( SOCKCTX *ctx, void *bmsg, size_t length, int write_timeout )
            }
        	   goto err;
         }
-
      }
-
      pos += rt;
    }
-   return 0;
+   return pos;
 
 err:
    return -1;

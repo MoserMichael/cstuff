@@ -90,13 +90,15 @@ int SOCK_connect( SOCKCTX *ctx, void *addr, int addr_size, int connect_timeout);
 /**
  @brief read some data from a socket with timeout (in seconds)
  @param ctx - pointer to socket object.
+ @return either one of: -1 on error, 0 if socket has been closed, number of bytes read.
  */
 int SOCK_recv( SOCKCTX *ctx, char *msg, size_t length, int read_timeout );
 
 /**
  @brief read whe whole buffer from a socket with timeout (in seconds)
  @param ctx - pointer to socket object.
- */
+ @return either one of: -1 on error, 0 if socket has been closed during receiving buffer, length on success.
+*/
 int SOCK_recv_all( SOCKCTX *ctx, char *msg, size_t length, int read_timeout );
 
 /**
