@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: bf.c File Reference</title>
+<title>Simple tools for networking / objects in plain C: tagBF Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,48 +24,138 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">bf.c File Reference</div>  </div>
+<div class="title">tagBF Struct Reference<div class="ingroups"><a class="el" href="a00017.html">BF</a></div></div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="a00005_source.html">bf.h</a>&quot;</code><br/>
-<code>#include &lt;string.h&gt;</code><br/>
-</div>
-<p><a href="a00004_source.html">Go to the source code of this file.</a></p>
+<!-- doxytag: class="tagBF" -->
+<p><code>#include &lt;<a class="el" href="a00009_source.html">bf.h</a>&gt;</code></p>
+
+<p><a href="a00027.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga37819d2886490c212763c865c33364db">BF_compact</a> (<a class="el" href="a00002.html">BF</a> *bf)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">moves get_pos to start position; moves content between get_pos and put_pos if not empty.a Always succeeds returns 0 if bytes were moved, 1 if buffer was empty to begin with.  <a href="a00011.html#ga37819d2886490c212763c865c33364db"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a> (<a class="el" href="a00002.html">BF</a> *bf, int eof)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a> (<a class="el" href="a00002.html">BF</a> *bf, const char *eof_line, size_t eof_line_size)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga9a5012a3895ade56ca7b1a8bb7309c72">BF_check</a> (<a class="el" href="a00002.html">BF</a> *bf)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">validates a buffer - checks all invariants.  <a href="a00011.html#ga9a5012a3895ade56ca7b1a8bb7309c72"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga18fdd2d33720298f25059429d226d9b2">BF_set_start</a> (<a class="el" href="a00002.html">BF</a> *bf, size_t pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set start position, position is relative to start of memory range.  <a href="a00011.html#ga18fdd2d33720298f25059429d226d9b2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga56338e4b6e732eea198fb266dfa55198">BF_set_end</a> (<a class="el" href="a00002.html">BF</a> *bf, size_t pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set end position, position is relative to start of memory range.  <a href="a00011.html#ga56338e4b6e732eea198fb266dfa55198"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gaacf9d4de524e47e30360e243d39c0f73">BF_set_get</a> (<a class="el" href="a00002.html">BF</a> *bf, size_t pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set get position, position is relative to 'start' pointer.  <a href="a00011.html#gaacf9d4de524e47e30360e243d39c0f73"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga3d4956583a84d460393dd68dca32f6ac">BF_set_put</a> (<a class="el" href="a00002.html">BF</a> *bf, size_t pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set put position, position is relative to 'start' pointer.  <a href="a00011.html#ga3d4956583a84d460393dd68dca32f6ac"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#a8c4f938c3bda8c2f8c7642c285cd5d07">bf</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#a709816af50943e6e155436fba2fc892c">bf_size</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#ad13dc2d65892a509ccd131031b401a91">start</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a></td></tr>
 </table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock">
+<p>Definition at line <a class="el" href="a00009_source.html#l00023">23</a> of file <a class="el" href="a00009_source.html">bf.h</a>.</p>
+</div><hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a8c4f938c3bda8c2f8c7642c285cd5d07"></a><!-- doxytag: member="tagBF::bf" ref="a8c4f938c3bda8c2f8c7642c285cd5d07" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* <a class="el" href="a00004.html#a8c4f938c3bda8c2f8c7642c285cd5d07">tagBF::bf</a></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:36 for Simple tools for networking / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00009_source.html#l00024">24</a> of file <a class="el" href="a00009_source.html">bf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a709816af50943e6e155436fba2fc892c"></a><!-- doxytag: member="tagBF::bf_size" ref="a709816af50943e6e155436fba2fc892c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00004.html#a709816af50943e6e155436fba2fc892c">tagBF::bf_size</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00009_source.html#l00025">25</a> of file <a class="el" href="a00009_source.html">bf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8bad05ec0bc08aa74b2cbf13a7c9aac5"></a><!-- doxytag: member="tagBF::end" ref="a8bad05ec0bc08aa74b2cbf13a7c9aac5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t * <a class="el" href="a00004.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">tagBF::end</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00009_source.html#l00027">27</a> of file <a class="el" href="a00009_source.html">bf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa86484010e3b771e8dd1fe54cc8a0318"></a><!-- doxytag: member="tagBF::get_pos" ref="aa86484010e3b771e8dd1fe54cc8a0318" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t * <a class="el" href="a00004.html#aa86484010e3b771e8dd1fe54cc8a0318">tagBF::get_pos</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00009_source.html#l00027">27</a> of file <a class="el" href="a00009_source.html">bf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac9b79e4f9d3b631ff510229a4e6bf778"></a><!-- doxytag: member="tagBF::put_pos" ref="ac9b79e4f9d3b631ff510229a4e6bf778" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t * <a class="el" href="a00004.html#ac9b79e4f9d3b631ff510229a4e6bf778">tagBF::put_pos</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00009_source.html#l00027">27</a> of file <a class="el" href="a00009_source.html">bf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad13dc2d65892a509ccd131031b401a91"></a><!-- doxytag: member="tagBF::start" ref="ad13dc2d65892a509ccd131031b401a91" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* <a class="el" href="a00004.html#ad13dc2d65892a509ccd131031b401a91">tagBF::start</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00009_source.html#l00027">27</a> of file <a class="el" href="a00009_source.html">bf.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00009_source.html">bf.h</a></li>
+</ul>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

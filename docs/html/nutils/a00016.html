@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: Member List</title>
+<title>Simple tools for networking / objects in plain C: SOCKADDR</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,30 +24,256 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">QUAD Member List</div>  </div>
+<div class="title">SOCKADDR</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00001.html">QUAD</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a></td><td><a class="el" href="a00001.html">QUAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a></td><td><a class="el" href="a00001.html">QUAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a></td><td><a class="el" href="a00001.html">QUAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a></td><td><a class="el" href="a00001.html">QUAD</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:37 for Simple tools for networking / objects in plain C by&#160;
+
+<p>class for transparent treatment of port / ip address pairs. enacapsulates either sockaddr_in or sockaddr_in6  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">SOCKADDR</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#gac2567e6afab6202d7730db868ea61edd">SOCKADDR_init</a> (<a class="el" href="a00003.html">SOCKADDR</a> *saddr, <a class="el" href="a00001.html">IPADDRESS</a> *addr, uint16_t port)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise ip address / port pair.  <a href="#gac2567e6afab6202d7730db868ea61edd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347">SOCKADDR_family</a> (<a class="el" href="a00003.html">SOCKADDR</a> *addr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return addressing family of object (AF_INET or AF_INET6)  <a href="#ga528e22bad3feab1129fe4751b0fe5347"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga5fbd817c5f4de91869ec7dbd2fcba71f">SOCKADDR_ipaddr</a> (<a class="el" href="a00003.html">SOCKADDR</a> *addr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return address of ip address portion of address / port pair.  <a href="#ga5fbd817c5f4de91869ec7dbd2fcba71f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE struct sockaddr *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#gacdc79ddce2ab4d38601e79b011da9f36">SOCKADDR_saddr</a> (<a class="el" href="a00003.html">SOCKADDR</a> *addr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">socklen_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga90e39c77eee09be79644a9b922f0133d">SOCKADDR_length</a> (<a class="el" href="a00003.html">SOCKADDR</a> *addr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return address of address / port pair (depends on addressing family)  <a href="#ga90e39c77eee09be79644a9b922f0133d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga584b051d6830e5c7dbef4238a7bddc17">SOCKADDR_to_string</a> (<a class="el" href="a00003.html">SOCKADDR</a> *saddr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">formats objec as string  <a href="#ga584b051d6830e5c7dbef4238a7bddc17"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>class for transparent treatment of port / ip address pairs. enacapsulates either sockaddr_in or sockaddr_in6 </p>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga528e22bad3feab1129fe4751b0fe5347"></a><!-- doxytag: member="addrutil.h::SOCKADDR_family" ref="ga528e22bad3feab1129fe4751b0fe5347" args="(SOCKADDR *addr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SOCKADDR_family </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">SOCKADDR</a> *&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>return addressing family of object (AF_INET or AF_INET6) </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00099">99</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> addr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_family;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac2567e6afab6202d7730db868ea61edd"></a><!-- doxytag: member="addrutil.h::SOCKADDR_init" ref="gac2567e6afab6202d7730db868ea61edd" args="(SOCKADDR *saddr, IPADDRESS *addr, uint16_t port)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SOCKADDR_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">SOCKADDR</a> *&#160;</td>
+          <td class="paramname"><em>saddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00001.html">IPADDRESS</a> *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>port</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>initialise ip address / port pair. </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00073">73</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  memset( saddr, 0, <span class="keyword">sizeof</span>( <a class="code" href="a00003.html">SOCKADDR</a> ) );
+  saddr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_port =  htons( port ); 
+  saddr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_family = addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a>; 
+
+  <span class="keywordflow">if</span> (addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> == AF_INET) {
+    saddr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_addr = addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">ipv4</a>;
+  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> == AF_INET6) {
+    saddr-&gt;<a class="code" href="a00003.html#af0685557dc0ec6dcd9897692a99586b4">addr_ipv6</a>.sin6_addr = addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a31051e0d020e713f6b5674e23f82692d">ipv6</a>;
+  } <span class="keywordflow">else</span> {
+    <span class="keywordflow">return</span> -1;
+  }
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga5fbd817c5f4de91869ec7dbd2fcba71f"></a><!-- doxytag: member="addrutil.h::SOCKADDR_ipaddr" ref="ga5fbd817c5f4de91869ec7dbd2fcba71f" args="(SOCKADDR *addr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* SOCKADDR_ipaddr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">SOCKADDR</a> *&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>return address of ip address portion of address / port pair. </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00104">104</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (addr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_family  == AF_INET) {
+    <span class="keywordflow">return</span> &amp;addr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_addr;
+  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (addr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_family == AF_INET6) {
+    <span class="keywordflow">return</span> &amp;addr-&gt;<a class="code" href="a00003.html#af0685557dc0ec6dcd9897692a99586b4">addr_ipv6</a>.sin6_addr;
+  }
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga90e39c77eee09be79644a9b922f0133d"></a><!-- doxytag: member="addrutil.h::SOCKADDR_length" ref="ga90e39c77eee09be79644a9b922f0133d" args="(SOCKADDR *addr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">socklen_t SOCKADDR_length </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">SOCKADDR</a> *&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>return address of address / port pair (depends on addressing family) </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00089">89</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (addr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_family  == AF_INET) {
+    <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_in);
+  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (addr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_family == AF_INET6) {
+    <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_in6);
+  }
+  <span class="keywordflow">return</span> -1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gacdc79ddce2ab4d38601e79b011da9f36"></a><!-- doxytag: member="addrutil.h::SOCKADDR_saddr" ref="gacdc79ddce2ab4d38601e79b011da9f36" args="(SOCKADDR *addr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE struct sockaddr* SOCKADDR_saddr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">SOCKADDR</a> *&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td><code> [read]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00070">70</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> (<span class="keyword">struct</span> sockaddr *) addr;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga584b051d6830e5c7dbef4238a7bddc17"></a><!-- doxytag: member="addrutil.h::SOCKADDR_to_string" ref="ga584b051d6830e5c7dbef4238a7bddc17" args="(SOCKADDR *saddr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* SOCKADDR_to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">SOCKADDR</a> *&#160;</td>
+          <td class="paramname"><em>saddr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>formats objec as string </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00114">114</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">char</span> sbuf[100];
+  <span class="keywordtype">int</span> nlen, remain;
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347" title="return addressing family of object (AF_INET or AF_INET6)">SOCKADDR_family</a>(saddr) == AF_INET6) {
+    sbuf[0] = <span class="charliteral">&#39;[&#39;</span>;
+
+    <span class="keywordflow">if</span> (! inet_ntop( <a class="code" href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347" title="return addressing family of object (AF_INET or AF_INET6)">SOCKADDR_family</a>( saddr ), (<span class="keyword">const</span> <span class="keywordtype">void</span> *) <a class="code" href="a00016.html#ga5fbd817c5f4de91869ec7dbd2fcba71f" title="return address of ip address portion of address / port pair.">SOCKADDR_ipaddr</a>( saddr ), sbuf + 1, <span class="keyword">sizeof</span>(sbuf) - 1 ) ) {
+      <span class="keywordflow">return</span> 0; 
+    }
+
+    nlen = strlen(sbuf);
+    remain = <span class="keyword">sizeof</span>(sbuf) - nlen; 
+
+    <span class="keywordflow">if</span> (remain &lt;= 0) {
+      <span class="keywordflow">return</span> 0;
+    }
+
+    snprintf(sbuf+strlen(sbuf),remain-1,<span class="stringliteral">&quot;]:%hu&quot;</span>, ntohs( saddr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_port ) ); 
+  } <span class="keywordflow">else</span> {
+    <span class="keywordflow">if</span> (! inet_ntop( <a class="code" href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347" title="return addressing family of object (AF_INET or AF_INET6)">SOCKADDR_family</a>( saddr ), (<span class="keyword">const</span> <span class="keywordtype">void</span> *) <a class="code" href="a00016.html#ga5fbd817c5f4de91869ec7dbd2fcba71f" title="return address of ip address portion of address / port pair.">SOCKADDR_ipaddr</a>( saddr ), sbuf , <span class="keyword">sizeof</span>(sbuf) ) ) {
+      <span class="keywordflow">return</span> 0; 
+    }
+
+    nlen = strlen(sbuf);
+    remain = <span class="keyword">sizeof</span>(sbuf) - nlen; 
+
+    <span class="keywordflow">if</span> (remain &lt;= 0) {
+      <span class="keywordflow">return</span> 0;
+    }
+
+    snprintf(sbuf+strlen(sbuf),remain-1,<span class="stringliteral">&quot;:%hu&quot;</span>, ntohs( saddr-&gt;<a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a>.sin_port ) ); 
+  }
+  <span class="keywordflow">return</span> strdup(sbuf);
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

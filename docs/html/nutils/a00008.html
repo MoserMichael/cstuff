@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: ioutils.h File Reference</title>
+<title>Simple tools for networking / objects in plain C: bf.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,40 +37,35 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">ioutils.h File Reference</div>  </div>
+<div class="title">bf.c File Reference</div>  </div>
 </div>
 <div class="contents">
-
+<div class="textblock"><code>#include &quot;<a class="el" href="a00009_source.html">bf.h</a>&quot;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
+</div>
 <p><a href="a00008_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00013.html#gaee27e07f008622fa5249794ed32b926f">_Buffsize_op</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a></td></tr>
-<tr><td colspan="2"><h2><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaee27e07f008622fa5249794ed32b926f">_Buffsize_op</a> { <a class="el" href="a00013.html#ggaee27e07f008622fa5249794ed32b926fa31333bbcaf5149721fd74541a44396b5">Receive_buffer</a>, 
-<a class="el" href="a00013.html#ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c">Send_buffer</a>
- }</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga6e6e3c7f96d02d8c98ef4ccc252915f0">fd_set_blocking</a> (int fd, int is_blocking)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga3ff21ed80456eaef7e8c8d4664ce4b52">fd_get_bytes_available</a> (int fd)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gac28f199e5ff2472676ce666c2b26bd1b">fd_get_error</a> (int fd)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga6c87321a99f019ef47f9b54e37011b56">fd_set_buf_size</a> (int fd, <a class="el" href="a00013.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a> op, int size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set receive or send buffer size  <a href="a00013.html#ga6c87321a99f019ef47f9b54e37011b56"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaed555d93fa05a5296893eea63e3f0f1d">fd_get_buf_size</a> (int fd, <a class="el" href="a00013.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a> op)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get receive or send buffer size  <a href="a00013.html#gaed555d93fa05a5296893eea63e3f0f1d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaf3fdd881c27e4e151b8416655a078d06">fd_set_reuse_address</a> (int fd, int reuse_on)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set reuse address option  <a href="a00013.html#gaf3fdd881c27e4e151b8416655a078d06"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga58ef368196b8397a2d24b225f325ab49">fd_get_reuse_address</a> (int fd)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get reuse address option  <a href="a00013.html#ga58ef368196b8397a2d24b225f325ab49"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga37819d2886490c212763c865c33364db">BF_compact</a> (<a class="el" href="a00004.html">BF</a> *bf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">moves get_pos to start position; moves content between get_pos and put_pos if not empty.a Always succeeds returns 0 if bytes were moved, 1 if buffer was empty to begin with.  <a href="a00017.html#ga37819d2886490c212763c865c33364db"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#gae27decac1bfa136183b23cea293464a2">BF_get_line</a> (<a class="el" href="a00004.html">BF</a> *bf, int eof)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga42852c881989c7925a70e7fa3a87ee6c">BF_get_line_ext</a> (<a class="el" href="a00004.html">BF</a> *bf, const char *eof_line, size_t eof_line_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga9a5012a3895ade56ca7b1a8bb7309c72">BF_check</a> (<a class="el" href="a00004.html">BF</a> *bf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">validates a buffer - checks all invariants.  <a href="a00017.html#ga9a5012a3895ade56ca7b1a8bb7309c72"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga18fdd2d33720298f25059429d226d9b2">BF_set_start</a> (<a class="el" href="a00004.html">BF</a> *bf, size_t pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set start position, position is relative to start of memory range.  <a href="a00017.html#ga18fdd2d33720298f25059429d226d9b2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga56338e4b6e732eea198fb266dfa55198">BF_set_end</a> (<a class="el" href="a00004.html">BF</a> *bf, size_t pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set end position, position is relative to start of memory range.  <a href="a00017.html#ga56338e4b6e732eea198fb266dfa55198"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#gaacf9d4de524e47e30360e243d39c0f73">BF_set_get</a> (<a class="el" href="a00004.html">BF</a> *bf, size_t pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set get position, position is relative to 'start' pointer.  <a href="a00017.html#gaacf9d4de524e47e30360e243d39c0f73"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga3d4956583a84d460393dd68dca32f6ac">BF_set_put</a> (<a class="el" href="a00004.html">BF</a> *bf, size_t pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set put position, position is relative to 'start' pointer.  <a href="a00017.html#ga3d4956583a84d460393dd68dca32f6ac"></a><br/></td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:36 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

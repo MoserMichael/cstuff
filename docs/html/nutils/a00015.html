@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: Member List</title>
+<title>Simple tools for networking / objects in plain C: IPADDRESS</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,32 +24,239 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tagBF Member List</div>  </div>
+<div class="title">IPADDRESS</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00002.html">tagBF</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a8c4f938c3bda8c2f8c7642c285cd5d07">bf</a></td><td><a class="el" href="a00002.html">tagBF</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a709816af50943e6e155436fba2fc892c">bf_size</a></td><td><a class="el" href="a00002.html">tagBF</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a8bad05ec0bc08aa74b2cbf13a7c9aac5">end</a></td><td><a class="el" href="a00002.html">tagBF</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#aa86484010e3b771e8dd1fe54cc8a0318">get_pos</a></td><td><a class="el" href="a00002.html">tagBF</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#ac9b79e4f9d3b631ff510229a4e6bf778">put_pos</a></td><td><a class="el" href="a00002.html">tagBF</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#ad13dc2d65892a509ccd131031b401a91">start</a></td><td><a class="el" href="a00002.html">tagBF</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple tools for networking / objects in plain C by&#160;
+
+<p>class for transparent treatment of ip addresses. encapsulates either ipv4 or ipv6 address.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">IPADDRESS</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga8bf8fe08abbc29ba2dc575b969aea8f8">IPADDRESS_any</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr, int family)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga166e784e109da4273bbe671ec99a0fbb">IPADDRESS_loopback</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr, int family)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gabcbd13c3fd7439ec933ed3ecb3a661cf">IPADDRESS_broadcast_ipv4</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga420fe3e499516aaa19b3001e10b0405e">IPADDRESS_parse_string</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr, const char *str)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga61d42e251f3be7d8eb7b542b2faf8b29">IPADDRESS_to_string</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gad3342d7efb48d719ca80058b70933d43">IPADDRESS_family</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr)</td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>class for transparent treatment of ip addresses. encapsulates either ipv4 or ipv6 address. </p>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga8bf8fe08abbc29ba2dc575b969aea8f8"></a><!-- doxytag: member="addrutil.h::IPADDRESS_any" ref="ga8bf8fe08abbc29ba2dc575b969aea8f8" args="(IPADDRESS *addr, int family)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int IPADDRESS_any </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">IPADDRESS</a> *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>family</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00007">7</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">switch</span>(family) {
+    <span class="keywordflow">case</span> AF_INET:
+      addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> = AF_INET;
+      addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">ipv4</a>.s_addr = INADDR_ANY;
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">case</span> AF_INET6:
+      addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> = AF_INET6;
+      addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a31051e0d020e713f6b5674e23f82692d">ipv6</a> = in6addr_any; 
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">default</span>:
+      <span class="keywordflow">return</span> -1;
+  }
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gabcbd13c3fd7439ec933ed3ecb3a661cf"></a><!-- doxytag: member="addrutil.h::IPADDRESS_broadcast_ipv4" ref="gabcbd13c3fd7439ec933ed3ecb3a661cf" args="(IPADDRESS *addr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IPADDRESS_broadcast_ipv4 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">IPADDRESS</a> *&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00024">24</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> = AF_INET;
+  addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">ipv4</a>.s_addr = htonl(INADDR_BROADCAST);
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gad3342d7efb48d719ca80058b70933d43"></a><!-- doxytag: member="addrutil.h::IPADDRESS_family" ref="gad3342d7efb48d719ca80058b70933d43" args="(IPADDRESS *addr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int IPADDRESS_family </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">IPADDRESS</a> *&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00031">31</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
+<div class="fragment"><pre class="fragment">                                                {
+  <span class="keywordflow">return</span> addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga166e784e109da4273bbe671ec99a0fbb"></a><!-- doxytag: member="addrutil.h::IPADDRESS_loopback" ref="ga166e784e109da4273bbe671ec99a0fbb" args="(IPADDRESS *addr, int family)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int IPADDRESS_loopback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">IPADDRESS</a> *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>family</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00031">31</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">switch</span>(family) {
+    <span class="keywordflow">case</span> AF_INET:
+      addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> = AF_INET;
+      addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">ipv4</a>.s_addr = htonl(INADDR_LOOPBACK);
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">case</span> AF_INET6:
+      addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> = AF_INET6;
+      addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a31051e0d020e713f6b5674e23f82692d">ipv6</a> = in6addr_loopback;
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">default</span>:
+      <span class="keywordflow">return</span> -1;
+  }
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga420fe3e499516aaa19b3001e10b0405e"></a><!-- doxytag: member="addrutil.h::IPADDRESS_parse_string" ref="ga420fe3e499516aaa19b3001e10b0405e" args="(IPADDRESS *addr, const char *str)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int IPADDRESS_parse_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">IPADDRESS</a> *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00050">50</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (inet_pton( AF_INET, str, &amp;addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">ipv4</a> )) {
+     addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> = AF_INET;
+     <span class="keywordflow">return</span> 0;
+  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (inet_pton( AF_INET6, str, &amp;addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>.<a class="code" href="a00001.html#a31051e0d020e713f6b5674e23f82692d">ipv6</a> )) { 
+     addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a> = AF_INET6;
+     <span class="keywordflow">return</span> 0;
+  } 
+  <span class="keywordflow">return</span> -1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga61d42e251f3be7d8eb7b542b2faf8b29"></a><!-- doxytag: member="addrutil.h::IPADDRESS_to_string" ref="ga61d42e251f3be7d8eb7b542b2faf8b29" args="(IPADDRESS *addr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* IPADDRESS_to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">IPADDRESS</a> *&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00062">62</a> of file <a class="el" href="a00006_source.html">addrutil.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">char</span> sbuf[100];
+
+  <span class="keywordflow">if</span> (! inet_ntop( addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a>, (<span class="keyword">const</span> <span class="keywordtype">void</span> *) &amp;addr-&gt;<a class="code" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a>, sbuf, <span class="keyword">sizeof</span>(sbuf) ) ) {
+    <span class="keywordflow">return</span> 0; 
+  }
+  <span class="keywordflow">return</span> strdup( sbuf );
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

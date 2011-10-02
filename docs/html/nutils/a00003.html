@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: tagSOCKCTX Struct Reference</title>
+<title>Simple tools for networking / objects in plain C: SOCKADDR Union Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,122 +40,58 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">tagSOCKCTX Struct Reference<div class="ingroups"><a class="el" href="a00014.html">SOCKET</a></div></div>  </div>
+<div class="title">SOCKADDR Union Reference<div class="ingroups"><a class="el" href="a00016.html">SOCKADDR</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="tagSOCKCTX" -->
-<p><code>#include &lt;<a class="el" href="a00010_source.html">sock.h</a>&gt;</code></p>
+<!-- doxytag: class="SOCKADDR" -->
+<p><code>#include &lt;<a class="el" href="a00007_source.html">addrutil.h</a>&gt;</code></p>
 
-<p><a href="a00019.html">List of all members.</a></p>
+<p><a href="a00026.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#aaa34bd395f2c627e0497599095582550">verbose</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#a5283ea4aa0d2447d230e37074a0589ef">connected</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#addcdd353858c7738ccde887e2fa48501">fd</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#a3d6d0b0910922102ef30609abf8e9abf">addr</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#a090065b6dfa838ecdf5ca535d6befa24">addr_size</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct sockaddr_in6&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#af0685557dc0ec6dcd9897692a99586b4">addr_ipv6</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">addr_ipv4</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00010_source.html#l00021">21</a> of file <a class="el" href="a00010_source.html">sock.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00045">45</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a3d6d0b0910922102ef30609abf8e9abf"></a><!-- doxytag: member="tagSOCKCTX::addr" ref="a3d6d0b0910922102ef30609abf8e9abf" args="" -->
+<a class="anchor" id="ae196aa6f30f3a9906d40dd33b073b723"></a><!-- doxytag: member="SOCKADDR::addr_ipv4" ref="ae196aa6f30f3a9906d40dd33b073b723" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void* <a class="el" href="a00003.html#a3d6d0b0910922102ef30609abf8e9abf">tagSOCKCTX::addr</a></td>
+          <td class="memname">struct sockaddr_in <a class="el" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">SOCKADDR::addr_ipv4</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00010_source.html#l00028">28</a> of file <a class="el" href="a00010_source.html">sock.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00047">47</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a090065b6dfa838ecdf5ca535d6befa24"></a><!-- doxytag: member="tagSOCKCTX::addr_size" ref="a090065b6dfa838ecdf5ca535d6befa24" args="" -->
+<a class="anchor" id="af0685557dc0ec6dcd9897692a99586b4"></a><!-- doxytag: member="SOCKADDR::addr_ipv6" ref="af0685557dc0ec6dcd9897692a99586b4" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="a00003.html#a090065b6dfa838ecdf5ca535d6befa24">tagSOCKCTX::addr_size</a></td>
+          <td class="memname">struct sockaddr_in6 <a class="el" href="a00003.html#af0685557dc0ec6dcd9897692a99586b4">SOCKADDR::addr_ipv6</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00010_source.html#l00029">29</a> of file <a class="el" href="a00010_source.html">sock.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00046">46</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a21ecb44f25561d43dd4b154348562d6a"></a><!-- doxytag: member="tagSOCKCTX::close_on_peer_close" ref="a21ecb44f25561d43dd4b154348562d6a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="a00003.html#a21ecb44f25561d43dd4b154348562d6a">tagSOCKCTX::close_on_peer_close</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00010_source.html#l00025">25</a> of file <a class="el" href="a00010_source.html">sock.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5283ea4aa0d2447d230e37074a0589ef"></a><!-- doxytag: member="tagSOCKCTX::connected" ref="a5283ea4aa0d2447d230e37074a0589ef" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="a00003.html#a5283ea4aa0d2447d230e37074a0589ef">tagSOCKCTX::connected</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00010_source.html#l00024">24</a> of file <a class="el" href="a00010_source.html">sock.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="addcdd353858c7738ccde887e2fa48501"></a><!-- doxytag: member="tagSOCKCTX::fd" ref="addcdd353858c7738ccde887e2fa48501" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="a00003.html#addcdd353858c7738ccde887e2fa48501">tagSOCKCTX::fd</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00010_source.html#l00026">26</a> of file <a class="el" href="a00010_source.html">sock.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaa34bd395f2c627e0497599095582550"></a><!-- doxytag: member="tagSOCKCTX::verbose" ref="aaa34bd395f2c627e0497599095582550" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="a00003.html#aaa34bd395f2c627e0497599095582550">tagSOCKCTX::verbose</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00010_source.html#l00023">23</a> of file <a class="el" href="a00010_source.html">sock.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00010_source.html">sock.h</a></li>
+<hr/>The documentation for this union was generated from the following file:<ul>
+<li><a class="el" href="a00007_source.html">addrutil.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:37 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

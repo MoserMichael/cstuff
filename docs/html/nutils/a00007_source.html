@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: ioutils.c Source File</title>
+<title>Simple tools for networking / objects in plain C: addrutil.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,102 +36,104 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">ioutils.c</div>  </div>
+<div class="title">addrutil.h</div>  </div>
 </div>
 <div class="contents">
-<a href="a00007.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;<a class="code" href="a00008.html">ioutils.h</a>&quot;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;sys/ioctl.h&gt;</span>
-<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;sys/types.h&gt;</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;sys/socket.h&gt;</span>
-<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;unistd.h&gt;</span>
-<a name="l00006"></a>00006 
-<a name="l00007"></a><a class="code" href="a00013.html#ga6e6e3c7f96d02d8c98ef4ccc252915f0">00007</a> <span class="keywordtype">int</span>  <a class="code" href="a00013.html#ga6e6e3c7f96d02d8c98ef4ccc252915f0">fd_set_blocking</a>(<span class="keywordtype">int</span> fd,  <span class="keywordtype">int</span> is_blocking)
-<a name="l00008"></a>00008 {
-<a name="l00009"></a>00009   <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> cmd = is_blocking ? 0 : 1;
-<a name="l00010"></a>00010   <span class="keywordtype">int</span> res;
-<a name="l00011"></a>00011 
-<a name="l00012"></a>00012 <span class="preprocessor">#ifdef _WIN32</span>
-<a name="l00013"></a>00013 <span class="preprocessor"></span>  res = ioctlsocket( fd, FIONBIO, &amp;cmd);
-<a name="l00014"></a>00014 <span class="preprocessor">#else    </span>
-<a name="l00015"></a>00015 <span class="preprocessor"></span>  res = ioctl( fd, FIONBIO, &amp;cmd);
-<a name="l00016"></a>00016 <span class="preprocessor">#endif</span>
-<a name="l00017"></a>00017 <span class="preprocessor"></span>  <span class="keywordflow">return</span> res;
+<a href="a00007.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef __ADDRUTIL_H__</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __ADDRUTIL_H__</span>
+<a name="l00003"></a>00003 <span class="preprocessor"></span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;netinet/in.h&gt;</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;cutils/base.h&gt;</span>
+<a name="l00006"></a>00006 <span class="comment"></span>
+<a name="l00007"></a>00007 <span class="comment">/** </span>
+<a name="l00008"></a>00008 <span class="comment"> * @defgroup IPADDRESS</span>
+<a name="l00009"></a>00009 <span class="comment"> * @brief  class for transparent treatment of ip addresses. encapsulates either ipv4 or ipv6 address.</span>
+<a name="l00010"></a>00010 <span class="comment"> * @{</span>
+<a name="l00011"></a>00011 <span class="comment"> */</span>
+<a name="l00012"></a><a class="code" href="a00001.html">00012</a> <span class="keyword">typedef</span> <span class="keyword">struct  </span>{
+<a name="l00013"></a><a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">00013</a>   <span class="keywordtype">int</span> <a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a>;
+<a name="l00014"></a>00014   <span class="keyword">union </span>{
+<a name="l00015"></a><a class="code" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">00015</a>     <span class="keyword">struct </span>in_addr  ipv4;
+<a name="l00016"></a><a class="code" href="a00001.html#a31051e0d020e713f6b5674e23f82692d">00016</a>     <span class="keyword">struct </span>in6_addr ipv6;
+<a name="l00017"></a>00017   } addr;
 <a name="l00018"></a>00018 }
-<a name="l00019"></a>00019 
-<a name="l00020"></a><a class="code" href="a00013.html#ga3ff21ed80456eaef7e8c8d4664ce4b52">00020</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#ga3ff21ed80456eaef7e8c8d4664ce4b52">fd_get_bytes_available</a>(<span class="keywordtype">int</span> fd) 
-<a name="l00021"></a>00021 {
-<a name="l00022"></a>00022   <span class="keywordtype">int</span> ret = 0;
-<a name="l00023"></a>00023 
-<a name="l00024"></a>00024   ioctl( fd, FIONREAD,  &amp;ret );
-<a name="l00025"></a>00025         
-<a name="l00026"></a>00026   <span class="keywordflow">return</span> ret;
-<a name="l00027"></a>00027 }
+<a name="l00019"></a>00019   <a class="code" href="a00001.html">IPADDRESS</a>;
+<a name="l00020"></a>00020 
+<a name="l00021"></a>00021 <span class="keywordtype">int</span>  <a class="code" href="a00015.html#ga8bf8fe08abbc29ba2dc575b969aea8f8">IPADDRESS_any</a>( <a class="code" href="a00001.html">IPADDRESS</a> *addr, <span class="keywordtype">int</span> family );
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023 <span class="keywordtype">int</span>  <a class="code" href="a00015.html#ga166e784e109da4273bbe671ec99a0fbb">IPADDRESS_loopback</a>( <a class="code" href="a00001.html">IPADDRESS</a> *addr, <span class="keywordtype">int</span> family );
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025 <span class="keywordtype">void</span> <a class="code" href="a00015.html#gabcbd13c3fd7439ec933ed3ecb3a661cf">IPADDRESS_broadcast_ipv4</a>( <a class="code" href="a00001.html">IPADDRESS</a> *addr );
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027 <span class="keywordtype">int</span>  <a class="code" href="a00015.html#ga420fe3e499516aaa19b3001e10b0405e">IPADDRESS_parse_string</a>( <a class="code" href="a00001.html">IPADDRESS</a> *addr, <span class="keyword">const</span> <span class="keywordtype">char</span> *str );
 <a name="l00028"></a>00028 
-<a name="l00029"></a><a class="code" href="a00013.html#gac28f199e5ff2472676ce666c2b26bd1b">00029</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#gac28f199e5ff2472676ce666c2b26bd1b">fd_get_error</a>(<span class="keywordtype">int</span> fd) 
-<a name="l00030"></a>00030 {
-<a name="l00031"></a>00031   <span class="keywordtype">int</span> err = 0;
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033   socklen_t sz = <span class="keyword">sizeof</span>(err);
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035   getsockopt( fd, SOL_SOCKET, SO_ERROR, (<span class="keywordtype">char</span> *) &amp;err, &amp;sz );
-<a name="l00036"></a>00036         
-<a name="l00037"></a>00037   <span class="keywordflow">return</span> err;
-<a name="l00038"></a>00038 }
-<a name="l00039"></a>00039 
-<a name="l00040"></a><a class="code" href="a00013.html#ga6c87321a99f019ef47f9b54e37011b56">00040</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#ga6c87321a99f019ef47f9b54e37011b56" title="set receive or send buffer size">fd_set_buf_size</a>( <span class="keywordtype">int</span> fd, <a class="code" href="a00013.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a> op, <span class="keywordtype">int</span> size)
-<a name="l00041"></a>00041 {
-<a name="l00042"></a>00042   <span class="keywordflow">if</span> (setsockopt( fd,
-<a name="l00043"></a>00043                     SOL_SOCKET,
-<a name="l00044"></a>00044                     op == <a class="code" href="a00013.html#ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c">Send_buffer</a> ? SO_SNDBUF : SO_RCVBUF,
-<a name="l00045"></a>00045                     (<span class="keyword">const</span> <span class="keywordtype">char</span> *) &amp;size,
-<a name="l00046"></a>00046                     <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)) &lt; 0) {
-<a name="l00047"></a>00047      <span class="keywordflow">return</span> -1;
-<a name="l00048"></a>00048   }
-<a name="l00049"></a>00049   <span class="keywordflow">return</span> 0;
-<a name="l00050"></a>00050         
-<a name="l00051"></a>00051 }
-<a name="l00052"></a>00052 
-<a name="l00053"></a><a class="code" href="a00013.html#gaed555d93fa05a5296893eea63e3f0f1d">00053</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#gaed555d93fa05a5296893eea63e3f0f1d" title="get receive or send buffer size">fd_get_buf_size</a>( <span class="keywordtype">int</span> fd, <a class="code" href="a00013.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a> op )
-<a name="l00054"></a>00054 {
-<a name="l00055"></a>00055   <span class="keywordtype">int</span> size;
-<a name="l00056"></a>00056   socklen_t ln = <span class="keyword">sizeof</span>(size);
-<a name="l00057"></a>00057         
-<a name="l00058"></a>00058   <span class="keywordflow">if</span> (getsockopt(fd,
-<a name="l00059"></a>00059                  SOL_SOCKET,
-<a name="l00060"></a>00060                  op == <a class="code" href="a00013.html#ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c">Send_buffer</a> ? SO_SNDBUF : SO_RCVBUF ,
-<a name="l00061"></a>00061                  (<span class="keywordtype">char</span> *) &amp;size,
-<a name="l00062"></a>00062                  &amp;ln) &lt; 0) {
-<a name="l00063"></a>00063     <span class="keywordflow">return</span> -1;
-<a name="l00064"></a>00064   }
-<a name="l00065"></a>00065   <span class="keywordflow">return</span> size;
-<a name="l00066"></a>00066         
-<a name="l00067"></a>00067 }
-<a name="l00068"></a>00068 
-<a name="l00069"></a><a class="code" href="a00013.html#gaf3fdd881c27e4e151b8416655a078d06">00069</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#gaf3fdd881c27e4e151b8416655a078d06" title="set reuse address option">fd_set_reuse_address</a>(<span class="keywordtype">int</span> fd, <span class="keywordtype">int</span> reuse_on)
-<a name="l00070"></a>00070 {
-<a name="l00071"></a>00071   <span class="keywordtype">int</span> flag_on = reuse_on ? 1 : 0;
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073   <span class="keywordflow">if</span> ((setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (<span class="keywordtype">char</span>*) &amp;flag_on, <span class="keyword">sizeof</span>(flag_on))) &lt; 0) {
-<a name="l00074"></a>00074     <span class="keywordflow">return</span> -1;
-<a name="l00075"></a>00075   }
-<a name="l00076"></a>00076   <span class="keywordflow">return</span> 1;  
-<a name="l00077"></a>00077 }
-<a name="l00078"></a>00078 
-<a name="l00079"></a><a class="code" href="a00013.html#ga58ef368196b8397a2d24b225f325ab49">00079</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#ga58ef368196b8397a2d24b225f325ab49" title="get reuse address option">fd_get_reuse_address</a>(<span class="keywordtype">int</span> fd) 
-<a name="l00080"></a>00080 {
-<a name="l00081"></a>00081   <span class="keywordtype">int</span> flag_on;
-<a name="l00082"></a>00082   socklen_t sz = <span class="keyword">sizeof</span>(flag_on);
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084   <span class="keywordflow">if</span> (getsockopt(fd, SOL_SOCKET, SO_REUSEADDR , (<span class="keywordtype">char</span> *) &amp;flag_on, &amp;sz) &lt; 0) {
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086     <span class="keywordflow">return</span> -1;
-<a name="l00087"></a>00087   }  
-<a name="l00088"></a>00088   <span class="keywordflow">return</span> flag_on;
-<a name="l00089"></a>00089 }
-<a name="l00090"></a>00090 
+<a name="l00029"></a>00029 <span class="keywordtype">char</span> * <a class="code" href="a00015.html#ga61d42e251f3be7d8eb7b542b2faf8b29">IPADDRESS_to_string</a>( <a class="code" href="a00001.html">IPADDRESS</a> *addr );
+<a name="l00030"></a>00030 
+<a name="l00031"></a><a class="code" href="a00015.html#gad3342d7efb48d719ca80058b70933d43">00031</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00015.html#gad3342d7efb48d719ca80058b70933d43">IPADDRESS_family</a>( <a class="code" href="a00001.html">IPADDRESS</a> *addr) {
+<a name="l00032"></a>00032   <span class="keywordflow">return</span> addr-&gt;<a class="code" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a>;
+<a name="l00033"></a>00033 }
+<a name="l00034"></a>00034 <span class="comment"></span>
+<a name="l00035"></a>00035 <span class="comment">/**</span>
+<a name="l00036"></a>00036 <span class="comment"> * @}</span>
+<a name="l00037"></a>00037 <span class="comment"> */</span>
+<a name="l00038"></a>00038 <span class="comment"></span>
+<a name="l00039"></a>00039 <span class="comment">/**</span>
+<a name="l00040"></a>00040 <span class="comment"> * @defgroup SOCKADDR</span>
+<a name="l00041"></a>00041 <span class="comment"> * @brief class for transparent treatment of port / ip address pairs. enacapsulates either sockaddr_in or sockaddr_in6</span>
+<a name="l00042"></a>00042 <span class="comment"> *</span>
+<a name="l00043"></a>00043 <span class="comment"> * @{ </span>
+<a name="l00044"></a>00044 <span class="comment"> */</span>
+<a name="l00045"></a><a class="code" href="a00003.html">00045</a> <span class="keyword">typedef</span> <span class="keyword">union </span>{
+<a name="l00046"></a><a class="code" href="a00003.html#af0685557dc0ec6dcd9897692a99586b4">00046</a>   <span class="keyword">struct </span>sockaddr_in6 addr_ipv6; 
+<a name="l00047"></a><a class="code" href="a00003.html#ae196aa6f30f3a9906d40dd33b073b723">00047</a>   <span class="keyword">struct </span>sockaddr_in  addr_ipv4; 
+<a name="l00048"></a>00048 } <a class="code" href="a00003.html">SOCKADDR</a>;
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="comment"></span>
+<a name="l00051"></a>00051 <span class="comment">/** </span>
+<a name="l00052"></a>00052 <span class="comment"> * @brief initialise ip address / port pair.</span>
+<a name="l00053"></a>00053 <span class="comment"> */</span>
+<a name="l00054"></a>00054 <span class="keywordtype">int</span> <a class="code" href="a00016.html#gac2567e6afab6202d7730db868ea61edd" title="initialise ip address / port pair.">SOCKADDR_init</a>( <a class="code" href="a00003.html">SOCKADDR</a> *saddr, <a class="code" href="a00001.html">IPADDRESS</a> *addr, uint16_t  port );
+<a name="l00055"></a>00055 <span class="comment"></span>
+<a name="l00056"></a>00056 <span class="comment">/**</span>
+<a name="l00057"></a>00057 <span class="comment"> * @brief return addressing family of object (AF_INET or AF_INET6)</span>
+<a name="l00058"></a>00058 <span class="comment"> */</span>
+<a name="l00059"></a>00059 <span class="keywordtype">int</span> <a class="code" href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347" title="return addressing family of object (AF_INET or AF_INET6)">SOCKADDR_family</a>( <a class="code" href="a00003.html">SOCKADDR</a> *addr );
+<a name="l00060"></a>00060 <span class="comment"></span>
+<a name="l00061"></a>00061 <span class="comment">/**</span>
+<a name="l00062"></a>00062 <span class="comment"> * @brief return address of ip address portion of address / port pair.</span>
+<a name="l00063"></a>00063 <span class="comment"> */</span>
+<a name="l00064"></a>00064 <span class="keywordtype">void</span> * <a class="code" href="a00016.html#ga5fbd817c5f4de91869ec7dbd2fcba71f" title="return address of ip address portion of address / port pair.">SOCKADDR_ipaddr</a>( <a class="code" href="a00003.html">SOCKADDR</a> * addr );
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 <span class="comment">/*</span>
+<a name="l00068"></a>00068 <span class="comment"> * @brief friendly cast to struct sockaddr</span>
+<a name="l00069"></a>00069 <span class="comment"> */</span>
+<a name="l00070"></a><a class="code" href="a00016.html#gacdc79ddce2ab4d38601e79b011da9f36">00070</a> M_INLINE <span class="keyword">struct </span>sockaddr *<a class="code" href="a00016.html#gacdc79ddce2ab4d38601e79b011da9f36">SOCKADDR_saddr</a>( <a class="code" href="a00003.html">SOCKADDR</a> *addr )
+<a name="l00071"></a>00071 {
+<a name="l00072"></a>00072   <span class="keywordflow">return</span> (<span class="keyword">struct</span> sockaddr *) addr;
+<a name="l00073"></a>00073 }
+<a name="l00074"></a>00074 <span class="comment"></span>
+<a name="l00075"></a>00075 <span class="comment">/**</span>
+<a name="l00076"></a>00076 <span class="comment"> * @brief return address of address / port pair (depends on addressing family)</span>
+<a name="l00077"></a>00077 <span class="comment"> */</span>
+<a name="l00078"></a>00078 socklen_t <a class="code" href="a00016.html#ga90e39c77eee09be79644a9b922f0133d" title="return address of address / port pair (depends on addressing family)">SOCKADDR_length</a>( <a class="code" href="a00003.html">SOCKADDR</a> * addr );
+<a name="l00079"></a>00079 <span class="comment"></span>
+<a name="l00080"></a>00080 <span class="comment">/**</span>
+<a name="l00081"></a>00081 <span class="comment"> * @brief formats objec as string</span>
+<a name="l00082"></a>00082 <span class="comment"> */</span>
+<a name="l00083"></a>00083 <span class="keywordtype">char</span> * <a class="code" href="a00016.html#ga584b051d6830e5c7dbef4238a7bddc17" title="formats objec as string">SOCKADDR_to_string</a>( <a class="code" href="a00003.html">SOCKADDR</a> *saddr );
+<a name="l00084"></a>00084 <span class="comment"></span>
+<a name="l00085"></a>00085 <span class="comment">/**</span>
+<a name="l00086"></a>00086 <span class="comment"> * @}</span>
+<a name="l00087"></a>00087 <span class="comment"> */</span>
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 <span class="preprocessor">#endif</span>
+<a name="l00090"></a>00090 <span class="preprocessor"></span>
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:36 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

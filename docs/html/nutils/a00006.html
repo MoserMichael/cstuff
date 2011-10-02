@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: endutil.h File Reference</title>
+<title>Simple tools for networking / objects in plain C: addrutil.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,44 +37,38 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Defines</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">endutil.h File Reference</div>  </div>
+<div class="title">addrutil.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;cutils/base.h&gt;</code><br/>
+<div class="textblock"><code>#include &quot;<a class="el" href="a00007_source.html">addrutil.h</a>&quot;</code><br/>
 <code>#include &lt;arpa/inet.h&gt;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
+<code>#include &lt;stdio.h&gt;</code><br/>
 </div>
 <p><a href="a00006_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">QUAD</a></td></tr>
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga726255f8ab5a5a70073ac3f3ab086839">n2h_uint8_t</a>(val)&#160;&#160;&#160;(val)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gaf368243836ff0d14473c1843df997767">n2h_int8_t</a>(val)&#160;&#160;&#160;(val)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae404a6642bd93fb60e1bead5bc98fcec">n2h_uint16_t</a>(val)&#160;&#160;&#160;ntohs( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gac9e2c714095efb500ded4e9f89a8b2fa">n2h_int16_t</a>(val)&#160;&#160;&#160;ntohs( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga6a21ec5233e121a1eae0098d77f35839">n2h_uint32_t</a>(val)&#160;&#160;&#160;ntohl( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga7e8a9e2d792b9d5e86bca73df54f5606">n2h_int32_t</a>(val)&#160;&#160;&#160;ntohl( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga62e912357bd5958e11b6e7b2e9bab027">n2h_int64_t</a>(val)&#160;&#160;&#160;n2h_uint64_t( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga2f1a37771facd2363384ce2271e57611">h2n_uint8_t</a>(val)&#160;&#160;&#160;(val)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae8bed63462030f0808c9285d93282227">h2n_int8_t</a>(val)&#160;&#160;&#160;(val)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga3cb4be5234746b5a549dce04434bb007">h2n_uint16_t</a>(val)&#160;&#160;&#160;htons( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga464eac4c5b9387c7ed39e41edc6f3cd9">h2n_int16_t</a>(val)&#160;&#160;&#160;htons( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga1f036bd2a229c2beed12f7d2dcf9673e">h2n_uint32_t</a>(val)&#160;&#160;&#160;htonl( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga5107680dae342ada3d353b2e6ee66cca">h2n_int32_t</a>(val)&#160;&#160;&#160;htonl( val )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gaedf98671d5859cac442b0056d94ed4d4">h2n_int64_t</a>(val)&#160;&#160;&#160;h2n_uint64_t( val )</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga47c8a374922a6c8a3e1e41d2bcf9023e">n2h_uint64_t</a> (uint64_t val)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae3c10aa4c4f3390f1c5dd323ba3be665">h2n_uint64_t</a> (uint64_t val)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga8bf8fe08abbc29ba2dc575b969aea8f8">IPADDRESS_any</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr, int family)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gabcbd13c3fd7439ec933ed3ecb3a661cf">IPADDRESS_broadcast_ipv4</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga166e784e109da4273bbe671ec99a0fbb">IPADDRESS_loopback</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr, int family)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga420fe3e499516aaa19b3001e10b0405e">IPADDRESS_parse_string</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr, const char *str)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga61d42e251f3be7d8eb7b542b2faf8b29">IPADDRESS_to_string</a> (<a class="el" href="a00001.html">IPADDRESS</a> *addr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#gac2567e6afab6202d7730db868ea61edd">SOCKADDR_init</a> (<a class="el" href="a00003.html">SOCKADDR</a> *saddr, <a class="el" href="a00001.html">IPADDRESS</a> *addr, uint16_t port)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise ip address / port pair.  <a href="a00016.html#gac2567e6afab6202d7730db868ea61edd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">socklen_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga90e39c77eee09be79644a9b922f0133d">SOCKADDR_length</a> (<a class="el" href="a00003.html">SOCKADDR</a> *addr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return address of address / port pair (depends on addressing family)  <a href="a00016.html#ga90e39c77eee09be79644a9b922f0133d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347">SOCKADDR_family</a> (<a class="el" href="a00003.html">SOCKADDR</a> *addr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return addressing family of object (AF_INET or AF_INET6)  <a href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga5fbd817c5f4de91869ec7dbd2fcba71f">SOCKADDR_ipaddr</a> (<a class="el" href="a00003.html">SOCKADDR</a> *addr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return address of ip address portion of address / port pair.  <a href="a00016.html#ga5fbd817c5f4de91869ec7dbd2fcba71f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ga584b051d6830e5c7dbef4238a7bddc17">SOCKADDR_to_string</a> (<a class="el" href="a00003.html">SOCKADDR</a> *saddr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">formats objec as string  <a href="a00016.html#ga584b051d6830e5c7dbef4238a7bddc17"></a><br/></td></tr>
 </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:36 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

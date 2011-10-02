@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: Member List</title>
+<title>Simple tools for networking / objects in plain C: IOUTILS</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,32 +24,570 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#enumval-members">Enumerator</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tagSOCKCTX Member List</div>  </div>
+<div class="title">IOUTILS</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00003.html">tagSOCKCTX</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a3d6d0b0910922102ef30609abf8e9abf">addr</a></td><td><a class="el" href="a00003.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a090065b6dfa838ecdf5ca535d6befa24">addr_size</a></td><td><a class="el" href="a00003.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a></td><td><a class="el" href="a00003.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a5283ea4aa0d2447d230e37074a0589ef">connected</a></td><td><a class="el" href="a00003.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#addcdd353858c7738ccde887e2fa48501">fd</a></td><td><a class="el" href="a00003.html">tagSOCKCTX</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#aaa34bd395f2c627e0497599095582550">verbose</a></td><td><a class="el" href="a00003.html">tagSOCKCTX</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:37 for Simple tools for networking / objects in plain C by&#160;
+
+<p>functions for setting of common socket options and doing stuff with sockets.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00019.html#gaee27e07f008622fa5249794ed32b926f">_Buffsize_op</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gaee27e07f008622fa5249794ed32b926f">_Buffsize_op</a> { <a class="el" href="a00019.html#ggaee27e07f008622fa5249794ed32b926fa31333bbcaf5149721fd74541a44396b5">Receive_buffer</a>, 
+<a class="el" href="a00019.html#ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c">Send_buffer</a>
+ }</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#ga87e2c01b17992795a3f9dc192ad79b87">disable_sigpipe</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">disable SIG_PIPE signal, checks for static flag so as not to call system call again and again.  <a href="#ga87e2c01b17992795a3f9dc192ad79b87"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#ga6e6e3c7f96d02d8c98ef4ccc252915f0">fd_set_blocking</a> (int fd, int is_blocking)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set mode to blocking / non blocking.  <a href="#ga6e6e3c7f96d02d8c98ef4ccc252915f0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#ga3ff21ed80456eaef7e8c8d4664ce4b52">fd_get_bytes_available</a> (int fd)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return bytes available for reading  <a href="#ga3ff21ed80456eaef7e8c8d4664ce4b52"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gac28f199e5ff2472676ce666c2b26bd1b">fd_get_error</a> (int fd)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return socket error.  <a href="#gac28f199e5ff2472676ce666c2b26bd1b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#ga6c87321a99f019ef47f9b54e37011b56">fd_set_buf_size</a> (int fd, <a class="el" href="a00019.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a> op, int size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set receive or send buffer size  <a href="#ga6c87321a99f019ef47f9b54e37011b56"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gaed555d93fa05a5296893eea63e3f0f1d">fd_get_buf_size</a> (int fd, <a class="el" href="a00019.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a> op)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return the receive or send buffer size  <a href="#gaed555d93fa05a5296893eea63e3f0f1d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gaf3fdd881c27e4e151b8416655a078d06">fd_set_reuse_address</a> (int fd, int reuse_on)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set reuse address option  <a href="#gaf3fdd881c27e4e151b8416655a078d06"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#ga58ef368196b8397a2d24b225f325ab49">fd_get_reuse_address</a> (int fd)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get reuse address option  <a href="#ga58ef368196b8397a2d24b225f325ab49"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#ga9d2212efa865252b2cc1f81f006f1af1">fd_set_nagling</a> (int fd, int on)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set naggle algorithm (tcp no delay option)  <a href="#ga9d2212efa865252b2cc1f81f006f1af1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gaa78ceabb6e37ea92f269eea695729e7f">fd_set_linger_option</a> (int fd, int on, int linger_value)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set linger option  <a href="#gaa78ceabb6e37ea92f269eea695729e7f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gaa222e4e337f8a8a1a9978291f496a7b6">fd_close_by_RST</a> (int fd)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">ungracefull connection termination - send RST to peer;  <a href="#gaa222e4e337f8a8a1a9978291f496a7b6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00019.html#gab59c99d141b6899eec4d6cf43a1b64c5">fd_make_tcp_listener</a> (<a class="el" href="a00003.html">SOCKADDR</a> *saddr, int backlog)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">make socket for accepting connections (listening endpoint), with SO_REUSE_ADDRESS and given backlog length.  <a href="#gab59c99d141b6899eec4d6cf43a1b64c5"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>functions for setting of common socket options and doing stuff with sockets. </p>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="gaba11ab2fe46802ab794df85e4c6dd502"></a><!-- doxytag: member="ioutils.h::Buffsize_op" ref="gaba11ab2fe46802ab794df85e4c6dd502" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="a00019.html#gaee27e07f008622fa5249794ed32b926f">_Buffsize_op</a>  <a class="el" href="a00019.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="gaee27e07f008622fa5249794ed32b926f"></a><!-- doxytag: member="ioutils.h::_Buffsize_op" ref="gaee27e07f008622fa5249794ed32b926f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00019.html#gaee27e07f008622fa5249794ed32b926f">_Buffsize_op</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="ggaee27e07f008622fa5249794ed32b926fa31333bbcaf5149721fd74541a44396b5"></a><!-- doxytag: member="Receive_buffer" ref="ggaee27e07f008622fa5249794ed32b926fa31333bbcaf5149721fd74541a44396b5" args="" -->Receive_buffer</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c"></a><!-- doxytag: member="Send_buffer" ref="ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c" args="" -->Send_buffer</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00012_source.html#l00035">35</a> of file <a class="el" href="a00012_source.html">ioutils.h</a>.</p>
+<div class="fragment"><pre class="fragment">                          {
+        <a class="code" href="a00019.html#ggaee27e07f008622fa5249794ed32b926fa31333bbcaf5149721fd74541a44396b5">Receive_buffer</a>,
+        <a class="code" href="a00019.html#ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c">Send_buffer</a>,
+} <a class="code" href="a00019.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a>;
+</pre></div>
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga87e2c01b17992795a3f9dc192ad79b87"></a><!-- doxytag: member="ioutils.h::disable_sigpipe" ref="ga87e2c01b17992795a3f9dc192ad79b87" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int disable_sigpipe </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>disable SIG_PIPE signal, checks for static flag so as not to call system call again and again. </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00012">12</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="comment">//if (!has_disabled_sigpipe) {</span>
+    <span class="keywordflow">if</span> (signal(SIGPIPE,SIG_IGN) == SIG_ERR) {
+      <span class="keywordflow">return</span> -1;
+    }
+  <span class="comment">//has_disabled_sigpipe = 1;</span>
+  <span class="comment">//}</span>
+
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaa222e4e337f8a8a1a9978291f496a7b6"></a><!-- doxytag: member="ioutils.h::fd_close_by_RST" ref="gaa222e4e337f8a8a1a9978291f496a7b6" args="(int fd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_close_by_RST </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>ungracefull connection termination - send RST to peer; </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00134">134</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00019.html#gaa78ceabb6e37ea92f269eea695729e7f" title="set linger option">fd_set_linger_option</a>( fd, 1, 0 );
+  <span class="keywordflow">return</span> close(fd);
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaed555d93fa05a5296893eea63e3f0f1d"></a><!-- doxytag: member="ioutils.h::fd_get_buf_size" ref="gaed555d93fa05a5296893eea63e3f0f1d" args="(int fd, Buffsize_op op)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_get_buf_size </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00019.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a>&#160;</td>
+          <td class="paramname"><em>op</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>return the receive or send buffer size </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00075">75</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> size;
+  socklen_t ln = <span class="keyword">sizeof</span>(size);
+        
+  <span class="keywordflow">if</span> (getsockopt(fd,
+                 SOL_SOCKET,
+                 op == <a class="code" href="a00019.html#ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c">Send_buffer</a> ? SO_SNDBUF : SO_RCVBUF ,
+                 (<span class="keywordtype">char</span> *) &amp;size,
+                 &amp;ln)  != 0) {
+    <span class="keywordflow">return</span> -1;
+  }
+  <span class="keywordflow">return</span> size;
+        
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga3ff21ed80456eaef7e8c8d4664ce4b52"></a><!-- doxytag: member="ioutils.h::fd_get_bytes_available" ref="ga3ff21ed80456eaef7e8c8d4664ce4b52" args="(int fd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_get_bytes_available </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>return bytes available for reading </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00037">37</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> ret = 0;
+
+  ioctl( fd, FIONREAD,  &amp;ret );
+        
+  <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac28f199e5ff2472676ce666c2b26bd1b"></a><!-- doxytag: member="ioutils.h::fd_get_error" ref="gac28f199e5ff2472676ce666c2b26bd1b" args="(int fd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_get_error </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>return socket error. </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00046">46</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> err = 0;
+
+  socklen_t sz = <span class="keyword">sizeof</span>(err);
+
+  <span class="keywordflow">if</span> (getsockopt( fd, SOL_SOCKET, SO_ERROR, (<span class="keywordtype">char</span> *) &amp;err, &amp;sz ) != 0) {
+    <span class="keywordflow">return</span> -1;
+  }
+        
+  <span class="keywordflow">return</span> err;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga58ef368196b8397a2d24b225f325ab49"></a><!-- doxytag: member="ioutils.h::fd_get_reuse_address" ref="ga58ef368196b8397a2d24b225f325ab49" args="(int fd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_get_reuse_address </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>get reuse address option </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00103">103</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> flag_on;
+  socklen_t sz = <span class="keyword">sizeof</span>(flag_on);
+
+  <span class="keywordflow">if</span> (getsockopt(fd, SOL_SOCKET, SO_REUSEADDR , (<span class="keywordtype">char</span> *) &amp;flag_on, &amp;sz)  != 0) {
+
+    <span class="keywordflow">return</span> -1;
+  }  
+  <span class="keywordflow">return</span> flag_on;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gab59c99d141b6899eec4d6cf43a1b64c5"></a><!-- doxytag: member="ioutils.h::fd_make_tcp_listener" ref="gab59c99d141b6899eec4d6cf43a1b64c5" args="(SOCKADDR *saddr, int backlog)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_make_tcp_listener </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">SOCKADDR</a> *&#160;</td>
+          <td class="paramname"><em>saddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>backlog</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>make socket for accepting connections (listening endpoint), with SO_REUSE_ADDRESS and given backlog length. </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00141">141</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> fd;
+ 
+  fd = socket( <a class="code" href="a00016.html#ga528e22bad3feab1129fe4751b0fe5347" title="return addressing family of object (AF_INET or AF_INET6)">SOCKADDR_family</a>(saddr), SOCK_STREAM, IPPROTO_TCP );
+  <span class="keywordflow">if</span> (fd == -1) {
+    <span class="keywordflow">return</span> -1;
+  }
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00019.html#gaf3fdd881c27e4e151b8416655a078d06" title="set reuse address option">fd_set_reuse_address</a>( fd, 1 )) {
+    <span class="keywordflow">goto</span> err;
+  }
+
+  <span class="keywordflow">if</span> (bind( fd, <a class="code" href="a00016.html#gacdc79ddce2ab4d38601e79b011da9f36">SOCKADDR_saddr</a>( saddr ), <a class="code" href="a00016.html#ga90e39c77eee09be79644a9b922f0133d" title="return address of address / port pair (depends on addressing family)">SOCKADDR_length</a>( saddr )) ) {
+    <span class="keywordflow">goto</span> err;
+  }
+
+  <span class="keywordflow">if</span> (listen( fd, backlog )) {
+    <span class="keywordflow">goto</span> err;
+  }
+  <span class="keywordflow">return</span> fd;
+
+err:
+  close(fd);
+  <span class="keywordflow">return</span> -1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga6e6e3c7f96d02d8c98ef4ccc252915f0"></a><!-- doxytag: member="ioutils.h::fd_set_blocking" ref="ga6e6e3c7f96d02d8c98ef4ccc252915f0" args="(int fd, int is_blocking)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_set_blocking </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>is_blocking</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>set mode to blocking / non blocking. </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00024">24</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> cmd = is_blocking ? 0 : 1;
+  <span class="keywordtype">int</span> res;
+
+<span class="preprocessor">#ifdef _WIN32</span>
+<span class="preprocessor"></span>  res = ioctlsocket( fd, FIONBIO, &amp;cmd);
+<span class="preprocessor">#else    </span>
+<span class="preprocessor"></span>  res = ioctl( fd, FIONBIO, &amp;cmd);
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>  <span class="keywordflow">return</span> res;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga6c87321a99f019ef47f9b54e37011b56"></a><!-- doxytag: member="ioutils.h::fd_set_buf_size" ref="ga6c87321a99f019ef47f9b54e37011b56" args="(int fd, Buffsize_op op, int size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_set_buf_size </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00019.html#gaba11ab2fe46802ab794df85e4c6dd502">Buffsize_op</a>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>set receive or send buffer size </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00059">59</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> rt;
+
+  rt = setsockopt( fd,
+                    SOL_SOCKET,
+                    op == <a class="code" href="a00019.html#ggaee27e07f008622fa5249794ed32b926fa94c598772118c50c0f21482fab49178c">Send_buffer</a> ? SO_SNDBUF : SO_RCVBUF,
+                    (<span class="keyword">const</span> <span class="keywordtype">char</span> *) &amp;size,
+                    <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));
+  <span class="keywordflow">if</span> (rt != 0) {
+     <span class="keywordflow">return</span> rt;
+  }
+  <span class="keywordflow">return</span> 0;
+        
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaa78ceabb6e37ea92f269eea695729e7f"></a><!-- doxytag: member="ioutils.h::fd_set_linger_option" ref="gaa78ceabb6e37ea92f269eea695729e7f" args="(int fd, int on, int linger_value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_set_linger_option </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>on</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>linger_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>set linger option </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00124">124</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keyword">struct </span>linger l;
+   
+  l.l_onoff = on ? 1 : 0; 
+  l.l_linger = linger_value;
+
+  <span class="keywordflow">return</span> setsockopt( fd, SOL_SOCKET, SO_LINGER, &amp;l, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> linger) );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga9d2212efa865252b2cc1f81f006f1af1"></a><!-- doxytag: member="ioutils.h::fd_set_nagling" ref="ga9d2212efa865252b2cc1f81f006f1af1" args="(int fd, int on)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_set_nagling </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>on</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>set naggle algorithm (tcp no delay option) </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00116">116</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (on) {
+    on = 1;
+  }
+  <span class="keywordflow">return</span> setsockopt( fd, IPPROTO_TCP, TCP_NODELAY, &amp;on, <span class="keyword">sizeof</span>(on) );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaf3fdd881c27e4e151b8416655a078d06"></a><!-- doxytag: member="ioutils.h::fd_set_reuse_address" ref="gaf3fdd881c27e4e151b8416655a078d06" args="(int fd, int reuse_on)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fd_set_reuse_address </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>reuse_on</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>set reuse address option </p>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00091">91</a> of file <a class="el" href="a00011_source.html">ioutils.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> flag_on = reuse_on ? 1 : 0;
+  <span class="keywordtype">int</span> rt;
+
+  rt = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (<span class="keywordtype">char</span>*) &amp;flag_on, <span class="keyword">sizeof</span>(flag_on)); 
+  <span class="keywordflow">if</span> (rt != 0) {
+    <span class="keywordflow">return</span> -1;
+  }
+  <span class="keywordflow">return</span> 0;  
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

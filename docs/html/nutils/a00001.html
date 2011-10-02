@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple tools for networking / objects in plain C: QUAD Union Reference</title>
+<title>Simple tools for networking / objects in plain C: IPADDRESS Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,32 +40,32 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">QUAD Union Reference<div class="ingroups"><a class="el" href="a00012.html">ENDIAN</a></div></div>  </div>
+<div class="title">IPADDRESS Struct Reference<div class="ingroups"><a class="el" href="a00015.html">IPADDRESS</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="QUAD" -->
-<p><code>#include &lt;<a class="el" href="a00006_source.html">endutil.h</a>&gt;</code></p>
+<!-- doxytag: class="IPADDRESS" -->
+<p><code>#include &lt;<a class="el" href="a00007_source.html">addrutil.h</a>&gt;</code></p>
 
-<p><a href="a00016.html">List of all members.</a></p>
+<p><a href="a00022.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" >struct {</td></tr>
-<tr><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">word_a</a></td></tr>
-<tr><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">word_b</a></td></tr>
-<tr><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">n32</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">n64</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">family</a></td></tr>
+<tr><td class="memItemLeft" >union {</td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;struct in_addr&#160;&#160;&#160;<a class="el" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">ipv4</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;struct in6_addr&#160;&#160;&#160;<a class="el" href="a00001.html#a31051e0d020e713f6b5674e23f82692d">ipv6</a></td></tr>
+<tr><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">addr</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00006_source.html#l00020">20</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00012">12</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a11e20bbb272ef66968e1a258be2e819a"></a><!-- doxytag: member="QUAD::n32" ref="a11e20bbb272ef66968e1a258be2e819a" args="" -->
+<a class="anchor" id="aef3b517834c8a356aa1b50a65540fd16"></a><!-- doxytag: member="IPADDRESS::addr" ref="aef3b517834c8a356aa1b50a65540fd16" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct { ... }   <a class="el" href="a00001.html#a11e20bbb272ef66968e1a258be2e819a">QUAD::n32</a></td>
+          <td class="memname">union { ... }   <a class="el" href="a00001.html#aef3b517834c8a356aa1b50a65540fd16">IPADDRESS::addr</a></td>
         </tr>
       </table>
 </div>
@@ -73,56 +73,56 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a70b5746bfc7e6c117f070976f6721e33"></a><!-- doxytag: member="QUAD::n64" ref="a70b5746bfc7e6c117f070976f6721e33" args="" -->
+<a class="anchor" id="a737ed7b18819a9ff2c7cddaaaab0d671"></a><!-- doxytag: member="IPADDRESS::family" ref="a737ed7b18819a9ff2c7cddaaaab0d671" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t <a class="el" href="a00001.html#a70b5746bfc7e6c117f070976f6721e33">QUAD::n64</a></td>
+          <td class="memname">int <a class="el" href="a00001.html#a737ed7b18819a9ff2c7cddaaaab0d671">IPADDRESS::family</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00025">25</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00013">13</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5c80742ee93ebb9d799ce40f4a313fee"></a><!-- doxytag: member="QUAD::word_a" ref="a5c80742ee93ebb9d799ce40f4a313fee" args="" -->
+<a class="anchor" id="a6e1a4950b24d1a13c5c48de7bbc1ea69"></a><!-- doxytag: member="IPADDRESS::ipv4" ref="a6e1a4950b24d1a13c5c48de7bbc1ea69" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t <a class="el" href="a00001.html#a5c80742ee93ebb9d799ce40f4a313fee">QUAD::word_a</a></td>
+          <td class="memname">struct in_addr <a class="el" href="a00001.html#a6e1a4950b24d1a13c5c48de7bbc1ea69">IPADDRESS::ipv4</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00022">22</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00015">15</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a63e0faf2a13796e5c56d63ded3c75154"></a><!-- doxytag: member="QUAD::word_b" ref="a63e0faf2a13796e5c56d63ded3c75154" args="" -->
+<a class="anchor" id="a31051e0d020e713f6b5674e23f82692d"></a><!-- doxytag: member="IPADDRESS::ipv6" ref="a31051e0d020e713f6b5674e23f82692d" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t <a class="el" href="a00001.html#a63e0faf2a13796e5c56d63ded3c75154">QUAD::word_b</a></td>
+          <td class="memname">struct in6_addr <a class="el" href="a00001.html#a31051e0d020e713f6b5674e23f82692d">IPADDRESS::ipv6</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00023">23</a> of file <a class="el" href="a00006_source.html">endutil.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00016">16</a> of file <a class="el" href="a00007_source.html">addrutil.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this union was generated from the following file:<ul>
-<li><a class="el" href="a00006_source.html">endutil.h</a></li>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00007_source.html">addrutil.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 04:14:37 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:40 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
