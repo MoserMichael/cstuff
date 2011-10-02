@@ -2,7 +2,24 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/tcp.h>
 #include <unistd.h>
+#include <signal.h>
+
+//static int has_disabled_sigpipe;
+
+int disable_sigpipe()
+{
+  //if (!has_disabled_sigpipe) {
+    if (signal(SIGPIPE,SIG_IGN) == SIG_ERR) {
+      return -1;
+    }
+  //has_disabled_sigpipe = 1;
+  //}
+
+  return 0;
+}
 
 int  fd_set_blocking(int fd,  int is_blocking)
 {
@@ -32,19 +49,24 @@ int fd_get_error(int fd)
 
   socklen_t sz = sizeof(err);
 
-  getsockopt( fd, SOL_SOCKET, SO_ERROR, (char *) &err, &sz );
+  if (getsockopt( fd, SOL_SOCKET, SO_ERROR, (char *) &err, &sz ) != 0) {
+    return -1;
+  }
 	
   return err;
 }
 
 int fd_set_buf_size( int fd, Buffsize_op op, int size)
 {
-  if (setsockopt( fd,
+  int rt;
+
+  rt = setsockopt( fd,
 		    SOL_SOCKET,
 		    op == Send_buffer ? SO_SNDBUF : SO_RCVBUF,
 		    (const char *) &size,
-		    sizeof(int)) < 0) {
-     return -1;
+		    sizeof(int));
+  if (rt != 0) {
+     return rt;
   }
   return 0;
 	
@@ -59,7 +81,7 @@ int fd_get_buf_size( int fd, Buffsize_op op )
 		 SOL_SOCKET,
 		 op == Send_buffer ? SO_SNDBUF : SO_RCVBUF ,
 		 (char *) &size,
-		 &ln) < 0) {
+		 &ln)  != 0) {
     return -1;
   }
   return size;
@@ -69,11 +91,13 @@ int fd_get_buf_size( int fd, Buffsize_op op )
 int fd_set_reuse_address(int fd, int reuse_on)
 {
   int flag_on = reuse_on ? 1 : 0;
+  int rt;
 
-  if ((setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char*) &flag_on, sizeof(flag_on))) < 0) {
+  rt = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char*) &flag_on, sizeof(flag_on)); 
+  if (rt != 0) {
     return -1;
   }
-  return 1;  
+  return 0;  
 }
 
 int fd_get_reuse_address(int fd) 
@@ -81,12 +105,38 @@ int fd_get_reuse_address(int fd)
   int flag_on;
   socklen_t sz = sizeof(flag_on);
 
-  if (getsockopt(fd, SOL_SOCKET, SO_REUSEADDR , (char *) &flag_on, &sz) < 0) {
+  if (getsockopt(fd, SOL_SOCKET, SO_REUSEADDR , (char *) &flag_on, &sz)  != 0) {
 
     return -1;
   }  
   return flag_on;
 }
+
+
+int fd_set_nagling(int fd, int on)
+{
+  if (on) {
+    on = 1;
+  }
+  return setsockopt( fd, IPPROTO_TCP, TCP_NODELAY, &on, sizeof(on) );
+}
+
+int fd_set_linger_option(int fd, int on, int linger_value)
+{
+  struct linger l;
+   
+  l.l_onoff = on ? 1 : 0; 
+  l.l_linger = linger_value;
+
+  return setsockopt( fd, SOL_SOCKET, SO_LINGER, &l, sizeof(struct linger) );
+}
+ 
+int fd_close_by_RST( int fd )
+{
+  fd_set_linger_option( fd, 1, 0 );
+  return close(fd);
+}
+
 
 int fd_make_tcp_listener(SOCKADDR *saddr, int backlog)
 {
@@ -108,7 +158,7 @@ int fd_make_tcp_listener(SOCKADDR *saddr, int backlog)
   if (listen( fd, backlog )) {
     goto err;
   }
-  return 0;
+  return fd;
 
 err:
   close(fd);

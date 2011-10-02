@@ -16,21 +16,20 @@
 #include <errno.h>
 
 #include "sock.h"
-
+#include "ioutils.h"
 
 
 
 int SOCK_init( SOCKCTX *ctx , int verbose, int flags)
 {
-  unsigned int arg;
-  struct linger l;
-
   ctx->verbose = verbose;
   ctx->connected = 0;
 
   ctx->addr = 0;
   ctx->addr_size = 0;
 
+  disable_sigpipe();
+ 
   ctx->fd = socket( PF_INET, SOCK_STREAM, 0 );
   if (ctx->fd == -1) {
      if (ctx->verbose) {
@@ -39,26 +38,23 @@ int SOCK_init( SOCKCTX *ctx , int verbose, int flags)
      return -1;
   }
 
-  arg = 0;
-  if (ioctl( ctx->fd, FIONBIO, &arg ) ) {
+  if ( fd_set_blocking( ctx->fd, 0 ) ) {
      if (ctx->verbose) {
        fprintf(stderr, "Failed to make socket non blocking errno %d\n", errno);
      }
   }
 
   if ((flags & SOCKCTX_FLAGS_NAGLE_ON) == 0) {  
-    arg = 1;
-    if (setsockopt( ctx->fd, IPPROTO_TCP, TCP_NODELAY, &arg, sizeof(arg) ) ) {
+    if ( fd_set_nagling( ctx->fd, 1 ) ) {
        if (ctx->verbose) {
-         fprintf(stderr,"Failed to set nodelay option (disable nagle algorithm failed). errno %d\n",errno);
+         fprintf(stderr,"Failed to set nodelay option (set nodelay option). errno %d\n",errno);
        }    
     }
   }
 
   ctx->close_on_peer_close = 1; 
   if (flags & SOCKTCX_FLAGS_DONT_CLOSE_ON_PEER_CLOSE) {
-    l.l_onoff = 1; l.l_linger = LINGER_OPTION_VALUE;
-    if (setsockopt( ctx->fd, SOL_SOCKET, SO_LINGER, &l, sizeof(struct linger) )) {
+    if ( fd_set_linger_option( ctx->fd, 1, LINGER_OPTION_VALUE) ) {
       if (ctx->verbose) {
        fprintf(stderr,"Failed to set linger option. %d\n", errno );
       }
@@ -72,19 +68,16 @@ int SOCK_init( SOCKCTX *ctx , int verbose, int flags)
 
 int SOCK_send_buffer_sizes( SOCKCTX *ctx, int read_buffer_size, int write_buffer_size)
 {
-  int val;
   if (read_buffer_size > 0) {
-    val = read_buffer_size;
-    if (setsockopt( ctx->fd, SOL_SOCKET, SO_RCVBUF, &val, sizeof(val) )) {
-      fprintf(stderr,"Failed to set receive buffer size to %d\n",val);
+    if (fd_set_buf_size( ctx->fd, Receive_buffer, read_buffer_size)) {
+      fprintf(stderr,"Failed to set receive buffer size to %d\n",read_buffer_size);
       return -1;
     }
   }
   
   if (write_buffer_size > 0) {
-    val = write_buffer_size;
-    if (setsockopt( ctx->fd, SOL_SOCKET, SO_SNDBUF, &val, sizeof(val) )) {
-      fprintf(stderr,"Failed to set send buffer size to %d\n",val);
+    if (fd_set_buf_size( ctx->fd, Send_buffer, write_buffer_size)) {
+      fprintf(stderr,"Failed to set send buffer size to %d\n",write_buffer_size);
       return -1;
     }
   }
@@ -181,22 +174,6 @@ err:
 }
 
 
-int SOCK_recv_all( SOCKCTX *ctx, char *msg, size_t length, int read_timeout )
-{
-  size_t pos;
-  int rt;
-
-
-  for(pos = 0; pos < length; ) {
-      rt = SOCK_recv( ctx, msg, length, read_timeout );
-      if (rt <= 0) {
-	return -1;
-      }
-      pos += rt;
-  }
-  return 0;
-}
-
 
 int SOCK_recv( SOCKCTX *ctx, char *msg, size_t length, int read_timeout )
 {
@@ -256,6 +233,22 @@ retry:
 err:
    return -1;
 }	 
+
+int SOCK_recv_all( SOCKCTX *ctx, char *msg, size_t length, int read_timeout )
+{
+  size_t pos;
+  int rt;
+
+
+  for(pos = 0; pos < length; ) {
+      rt = SOCK_recv( ctx, msg, length, read_timeout );
+      if (rt <= 0) {
+	return -1;
+      }
+      pos += rt;
+  }
+  return 0;
+}
 
 
 int SOCK_send( SOCKCTX *ctx, void *bmsg, size_t length, int write_timeout )
@@ -331,17 +324,16 @@ int SOCK_close( SOCKCTX *ctx )
 
 int SOCK_close_with_reset( SOCKCTX *ctx )
 {
-  struct linger l;
-  
-  l.l_onoff = 1; l.l_linger = 0;
-
-  if (setsockopt( ctx->fd, SOL_SOCKET, SO_LINGER, &l, sizeof(struct linger) )) {
+  if (ctx->fd != -1) {
+    if (fd_close_by_RST( ctx->fd )) {
       if (ctx->verbose) {
-       fprintf(stderr,"Failed to set linger option. %d\n", errno );
+        fprintf(stderr,"Failed to set linger option. %d\n", errno );
       }
+    }
   }
-
-  return SOCK_close( ctx );
+  ctx->fd = -1;
+  ctx->connected = 0;
+  return 0;
 }
-
+  
 

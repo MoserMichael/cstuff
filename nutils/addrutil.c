@@ -24,7 +24,7 @@ int IPADDRESS_any( IPADDRESS *addr, int family )
 void IPADDRESS_broadcast_ipv4( IPADDRESS *addr )
 {
   addr->family = AF_INET;
-  addr->addr.ipv4.s_addr = INADDR_BROADCAST;
+  addr->addr.ipv4.s_addr = htonl(INADDR_BROADCAST);
 }
 
 
@@ -33,7 +33,7 @@ int IPADDRESS_loopback( IPADDRESS *addr, int family )
   switch(family) {
     case AF_INET:
       addr->family = AF_INET;
-      addr->addr.ipv4.s_addr = INADDR_LOOPBACK;
+      addr->addr.ipv4.s_addr = htonl(INADDR_LOOPBACK);
       break;
     case AF_INET6:
       addr->family = AF_INET6;
