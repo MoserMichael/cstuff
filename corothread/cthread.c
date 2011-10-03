@@ -10,22 +10,6 @@ __thread CTHREAD *tls_thread;
 
 static uint32_t next_tid;
 
-CRETURN_POINT *CRETURN_POINT_init()
-{
-  CRETURN_POINT *ret;
-
-  ret = (CRETURN_POINT *) malloc( sizeof(CRETURN_POINT) );
-  if (!ret) {
-    return 0;
-  }
-
-  // get context returns in two cases 1 when called, when setcontext passes control back.
-  getcontext( &ret->context);
-  
-  return 0;
-}
-
-
 int CTHREAD_libinit()
 {
 #ifdef NO_TLS
@@ -66,7 +50,9 @@ CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc, void *ctx )
 
   ret->proc = proc;
   ret->ctx = ctx;
-  ret->rvalue = 0;
+  ret->thread_to_caller_value = 0;
+  ret->caller_to_thread_value = 0;
+
   ret->prev_thread = 0;
 
   ret->thread_id = -1;   
@@ -133,15 +119,6 @@ int CTHREAD_start( CTHREAD *thread )
     // got here from thread that has exited.
     return 0;
   }
-  return do_start( thread );
-}
-
-int CTHREAD_start_ex( CTHREAD *thread, CRETURN_POINT *next )
-{
-  if (thread->state != CTHREAD_STATE_INIT) {
-    return -1;
-  }
-  thread->context_caller = next->context;
   return do_start( thread );
 }
 
@@ -227,27 +204,6 @@ int CTHREAD_free( CTHREAD *thread )
   return 0;
 }
 
-int CTHREAD_set_return_value(void *rvalue)
-{
-  CTHREAD *thread;
-  
-#ifdef NO_TLS  
-  thread = (CTHREAD *) pthread_getspecific( tls_key );
-#else
-  thread = tls_thread;
-#endif
-
-
-  if (!thread) {
-    return -1;
-  }
-  if (thread->state != CTHREAD_STATE_RUNNING) {
-    return -1;
-  }
-  thread->rvalue = rvalue;
-  return 0;
-}
-
 uint32_t CTHREAD_get_tid()
 {
   CTHREAD *thread;
@@ -264,13 +220,62 @@ uint32_t CTHREAD_get_tid()
   return thread->thread_id;
 }
 
-int CTHREAD_get_return_value( CTHREAD *thread, void **rvalue) 
+int CTHREAD_set_caller2thread(CTHREAD *thread, void *rvalue)
 {
   if (thread->state == CTHREAD_STATE_SUSPENDED || thread->state == CTHREAD_STATE_EXIT) {
-    *rvalue = thread->rvalue;
+    thread->caller_to_thread_value = rvalue;
+    return 0;
+  }
+  return -1;
+}
+int CTHREAD_get_caller2thread(void **rvalue)
+{
+  CTHREAD *thread;
+  
+#ifdef NO_TLS  
+  thread = (CTHREAD *) pthread_getspecific( tls_key );
+#else
+  thread = tls_thread;
+#endif
+
+
+  if (!thread) {
+    return -1;
+  }
+  if (thread->state != CTHREAD_STATE_RUNNING) {
+    return -1;
+  }
+
+  *rvalue = thread->caller_to_thread_value;
+  return 0;
+}
+
+int CTHREAD_set_thread2caller(void *rvalue)
+{
+  CTHREAD *thread;
+  
+#ifdef NO_TLS  
+  thread = (CTHREAD *) pthread_getspecific( tls_key );
+#else
+  thread = tls_thread;
+#endif
+
+  if (thread->state == CTHREAD_STATE_RUNNING) {
+    thread->thread_to_caller_value = rvalue;
     return 0;
   }
   return -1;
 }
 
+int CTHREAD_get_thread2caller(CTHREAD *thread, void **rvalue)
+{ 
+  if (!thread) {
+    return -1;
+  }
+  if (thread->state == CTHREAD_STATE_SUSPENDED || thread->state == CTHREAD_STATE_EXIT) {
+    *rvalue = thread->thread_to_caller_value;
+    return 0;
+  }
+  return -1;
+}
 

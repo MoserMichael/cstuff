@@ -16,7 +16,7 @@ void  fibonaci_generator (void *arg)
     n = a+b;
 
     fprintf(stderr,"\tGenerate fibonaci %d\n",  n);
-    CTHREAD_set_return_value( (void *) n );
+    CTHREAD_set_thread2caller( (void *) n );
     CTHREAD_yield();
     
     a=b;
@@ -42,7 +42,7 @@ void CTHREAD_test()
   VASSERT( CTHREAD_start( th ) == 0 );
 
   for(count = 0 ;CTHREAD_state(th) != CTHREAD_STATE_EXIT; count++) {
-     VASSERT( CTHREAD_get_return_value( th, &val ) == 0 );
+     VASSERT( CTHREAD_get_thread2caller( th, &val ) == 0 );
      fprintf(stderr,"\t->received fibonaci %d\n", (int) val );
      CTHREAD_resume( th );
   }

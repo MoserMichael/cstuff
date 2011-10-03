@@ -7,19 +7,6 @@
 #include <corothread/stacks.h>
 
 
-typedef void  (*CTHREAD_PROC) (void *arg);
-
-/**
- * @brief denotes return point from co-routine call.
- */
-typedef struct tagCRETURN_POINT
-{
-  ucontext_t context;
-} CRETURN_POINT;
-
-
-CRETURN_POINT *CRETURN_POINT_init();
-
 /** 
  * @defgroup CTHREAD
  * @brief a coroutine thread.
@@ -36,6 +23,9 @@ CRETURN_POINT *CRETURN_POINT_init();
  *
  * @{
  */
+
+typedef void  (*CTHREAD_PROC) (void *arg);
+
 typedef enum {
   CTHREAD_STATE_INIT,
   CTHREAD_STATE_RUNNING,
@@ -51,7 +41,10 @@ typedef struct tagCTHREAD {
   CTHREAD_STATE state;
   uint32_t thread_id;
   void *ctx;
-  void *rvalue;
+ 
+  void *thread_to_caller_value; 
+  void *caller_to_thread_value; 
+
   CTHREAD_PROC proc;  
   struct tagCTHREAD *prev_thread;
   STACK_ENTRY *stack_entry;  
@@ -96,17 +89,6 @@ int CTHREAD_join( CTHREAD *thread );
 int CTHREAD_free( CTHREAD *thread );
 
 /**
- * @brief start a new thread - the thread procedure is invoked.
- *
- * Precondition: the thread is in either CTHREAD_STATE_INIT or CTHREAD_STATE_EXIT state.
- * Postcondition: the thread is in CTHREAD_STATE_RUNNING state.
- *
- * The function returns to the context defined in CRETURN_POINT *next argument. the function returns to this spot 
- * if the thread exited or entered suspended state.
- */
-int CTHREAD_start_ex( CTHREAD *thread, CRETURN_POINT *next );
-
-/**
  * @brief a running thread temporarily suspends execution
  *
  * Precondition: the thread is in CTHREAD_STATE_RUNNING state
@@ -123,18 +105,33 @@ int CTHREAD_yield();
 int CTHREAD_resume( CTHREAD *thread);
 
 /**
- * @brief running thread sets its return value.
+ * @brief set a value that is passed from thread to caller of the thread, this function is called before CTHREAD_yield or before thread exit.
  *
  * Precondition: the thread is in CTHREAD_STATE_RUNNING state
  */
-int CTHREAD_set_return_value(void *rvalue);
+int CTHREAD_set_thread2caller(void *rvalue);
 
 /**
- * @brief get return value of a thread
+ * @brief get a value that is passed from thread to caller of the thread, this function is called afer CTHREAD_resume or afer CTHREAD_start.
  *
  * Precondition: the thread is in CTHREAD_STATE_SUSPENDED or CTHREAD_STATE_EXIT state
  */
-int CTHREAD_get_return_value(CTHREAD *thread, void **rvalue);
+int CTHREAD_get_thread2caller(CTHREAD *thread, void **rvalue);
+
+/**
+ * @brief set a value that is passed from caller of the thread to the thread, this function is called before CTHREAD_start or before CTHREAD_resume
+ *
+ * Precondition: the thread is in CTHREAD_STATE_SUSPENDED or CTHREAD_STATE_EXIT state
+ */
+int CTHREAD_set_caller2thread(CTHREAD *thread, void *rvalue);
+
+/**
+ * @brief get a value that is passed from thread to caller of the thread, his function is called on beginning of the thread or after CTHREAD_yield
+ *
+ * Precondition: the thread is in CTHREAD_STATE_RUNNING state
+ */
+int CTHREAD_get_caller2thread(void **rvalue);
+
 
 /**
  * @brief get thread id
