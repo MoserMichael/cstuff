@@ -8,22 +8,19 @@
 
 
 // -----------------------------------------------------------------
-void  make_fibonacci_sequence(void *arg)
+void  make_fibonacci_sequence(VALUES *values)
 {
-  int i;
+  int i, max_num;
   void *val;
   uint64_t a,b,n;
 
-  M_UNUSED(arg);
-
-  CTHREAD_get_caller2thread( &val );
+  VALUES_scan( values, "%d", &max_num );
 
 
-  for(a = 0, b = 1, i = 0; i < 90; i++) {
+  for(a = 0, b = 1, i = 0; i < max_num; i++) {
     n = a+b;
-    printf("->%llu\n", n );
-    CTHREAD_set_thread2caller( &n );
-    CTHREAD_yield();
+    
+    CTHREAD_yield( 0, "%qu", n );
     
     a=b;
     b=n;
@@ -34,24 +31,23 @@ void  make_fibonacci_sequence(void *arg)
 double sum_of_roots( size_t max_num, STACKS *stacks ) 
 {
   CTHREAD *th;
-  void *val;
+  VALUES *values;
   uint64_t fib;
   int i;
   double sum_roots = 0;
 
-  th = CTHREAD_init( stacks, make_fibonacci_sequence, 0 );
+  th = CTHREAD_init( stacks, make_fibonacci_sequence );
   assert( th != 0 );
 
-  assert( CTHREAD_start( th ) == 0 );
+  assert( CTHREAD_start( th, &values, "%d", max_num ) == 0 );
 
   for( i = 0 ; i < max_num && CTHREAD_state(th) != CTHREAD_STATE_EXIT; i++) {
      
-     assert( CTHREAD_get_thread2caller( th, &val ) == 0 );
-     fib =  * ((uint64_t *) val);
-     printf("<-%llu\n",fib);
+     VALUES_scan( values, "%qu", &fib );
+
      sum_roots += sqrt( (double) fib );
   
-     CTHREAD_resume( th );
+     CTHREAD_resume( th, &values, 0 );
   }
 
   assert( ! CTHREAD_free( th ) );
