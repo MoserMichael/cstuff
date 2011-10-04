@@ -63,7 +63,7 @@ int EVTHREAD_free( EVTHREAD *thread )
    return 0;
 }
 
-static void evthread_proc( void *ctx );
+static void evthread_proc( VALUES *ctx );
 static void thread_timer_cb( int fd, short event, void *ctx);
 
 EVTHREAD *EVTHREAD_init(EVLOOP *loop, EVTHREAD_PROC thread_proc,  void *user_ctx)
@@ -78,7 +78,7 @@ EVTHREAD *EVTHREAD_init(EVLOOP *loop, EVTHREAD_PROC thread_proc,  void *user_ctx
   thread->thread_proc = thread_proc;
   thread->user_context = user_ctx;
 
-  thread->cthread = CTHREAD_init( loop->stacks, evthread_proc, thread );
+  thread->cthread = CTHREAD_init( loop->stacks, evthread_proc );
   if (!thread->cthread) {
     free(thread);
     return 0;
@@ -93,7 +93,7 @@ EVTHREAD *EVTHREAD_init(EVLOOP *loop, EVTHREAD_PROC thread_proc,  void *user_ctx
 int EVTHREAD_start( EVTHREAD *thread, struct tagEVSOCKET *socket )
 {
   thread->socket = socket;
-  CTHREAD_start( thread->cthread );
+  CTHREAD_start( thread->cthread, 0, "%p", thread );
   return 0;
 }
 
@@ -103,7 +103,7 @@ int EVTHREAD_delay( EVTHREAD *thread, struct timeval delay )
   event_base_set( thread->loop->ev_base, &thread->timer_event );
   event_add( &thread->timer_event, &delay );
    
-  CTHREAD_yield( thread );
+  CTHREAD_yield( 0, 0);
    
   event_del( &thread->timer_event );
 
@@ -111,9 +111,11 @@ int EVTHREAD_delay( EVTHREAD *thread, struct timeval delay )
   return 0;
 }
 
-static void evthread_proc( void *ctx )
+static void evthread_proc( VALUES *values )
 {
-  EVTHREAD *thread = (EVTHREAD *) ctx;
+  EVTHREAD *thread;
+
+  VALUES_scan( values, "%p", &thread );
   thread->thread_proc( thread, thread->socket, thread->user_context );
 
   // no way to get exit status of the EVTHREAD object. everything is hereby closed.
@@ -127,7 +129,7 @@ static void thread_timer_cb( int fd, short event, void *ctx)
   M_UNUSED(fd);
   M_UNUSED(event);
 
-  CTHREAD_resume( thread->cthread );
+  CTHREAD_resume( thread->cthread, 0, 0 );
 }
 
 
@@ -222,11 +224,11 @@ EVTIMER *ev_mktimer( EVTHREAD *thread, int timer_id, int is_recurrent, struct ti
   return ret;
 }
 
-static void  timer_thread_proc(void *arg)
+static void  timer_thread_proc(VALUES *values)
 {
   EVTIMER *timer;
 
-  timer = (EVTIMER *) arg;
+  VALUES_scan( values, "%p", &timer );
   timer->proc( timer, timer->user_data );
 }
 
@@ -245,9 +247,9 @@ static void timer_cb( int fd, short event, void *ctx)
  
    event_del( &timer->timer_event );
    
-   thread = CTHREAD_init( timer->loop->stacks , timer_thread_proc , timer );
+   thread = CTHREAD_init( timer->loop->stacks , timer_thread_proc );
    if (thread) {
-     CTHREAD_start( thread );
+     CTHREAD_start( thread, 0, "%p", timer );
      CTHREAD_free( thread );
    }
    
@@ -341,19 +343,19 @@ static void socket_cb( int fd, short event, void *ctx)
 
    if (event & EV_READ && event & EV_WRITE) {
      socket->state = EVSOCKET_STATE_ERROR;
-     CTHREAD_resume( socket->thread->cthread );
+     CTHREAD_resume( socket->thread->cthread, 0, 0 );
      return;
    }
 
    if (event & EV_READ) {
      if (socket->state == EVSOCKET_STATE_READING) {
-	CTHREAD_resume( socket->thread->cthread );
+	CTHREAD_resume( socket->thread->cthread, 0, 0 );
      }
    }
   
    if (event & EV_WRITE) {
      if (socket->state == EVSOCKET_STATE_CONNECTING || socket->state == EVSOCKET_STATE_WRITING) {
-	CTHREAD_resume( socket->thread->cthread );
+	CTHREAD_resume( socket->thread->cthread, 0, 0 );
      }
    }
     
@@ -399,7 +401,7 @@ int EVSOCKET_connect( EVSOCKET *socket, struct sockaddr *address, socklen_t sock
 
      event_add( &socket->write_event, 0 );
      
-     CTHREAD_yield();
+     CTHREAD_yield( 0, 0);
 
      if (socket->timer_io_timeout) {
        EVTIMER_free( socket->timer_io_timeout ); 
@@ -445,7 +447,7 @@ r_again:
          has_event = 1;
        }
 
-       CTHREAD_yield();
+       CTHREAD_yield( 0, 0 );
        
        if (socket->state != EVSOCKET_STATE_ERROR) {
           goto r_again;
@@ -495,7 +497,7 @@ w_again:
          has_event = 1;
        }
 
-       CTHREAD_yield();
+       CTHREAD_yield( 0, 0 );
        
        if (socket->state != EVSOCKET_STATE_ERROR) {
           goto w_again;

@@ -53,8 +53,6 @@ int EVLOOP_break( EVLOOP *loop );
 struct tagEVSOCKET;
 struct tagEVTHREAD;
 
-typedef void (*EVTHREAD_PROC) ( struct tagEVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx);
-
 /**
  * @defgroup EVTHREAD
  * @brief user mode thread attached to an event loop
@@ -63,6 +61,9 @@ typedef void (*EVTHREAD_PROC) ( struct tagEVTHREAD *thread, struct tagEVSOCKET *
  *
  * @{
  */
+
+typedef void (*EVTHREAD_PROC) ( struct tagEVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx);
+
 typedef struct tagEVTHREAD {
   EVLOOP *loop;
   EVTHREAD_PROC thread_proc;
@@ -79,6 +80,27 @@ EVTHREAD *EVTHREAD_init(EVLOOP *loop, EVTHREAD_PROC thread_proc,  void *user_ctx
 int EVTHREAD_start( EVTHREAD *thread, struct tagEVSOCKET *socket );
 
 int EVTHREAD_delay( EVTHREAD *thread, struct timeval delay );
+
+#if 0
+int EVTHREAD_dns_lookup ( EVTHREAD *thread, int  addr_family, const char *dns_name );
+
+int EVTHREAD_dns_lookup ( EVTHREAD *thread, int  addr_family, const char *dns_name )
+{
+  CTHREAD *thread;
+
+  switch( addr_family ) {
+    case AF_INET:
+      evdns_resolve_ipv6( dns_name, 0, evdns_callback_type callback, void *ptr);
+      break;
+    case AF_INET6:
+      evdns_resolve_ipv6( dns_name, 0, evdns_callback_type callback, void *ptr);
+      break;
+  }
+
+  CHREAD_yield();
+}
+#endif
+
 
 /**
  * @}
@@ -105,7 +127,6 @@ typedef struct tagEVTHREAD_OBJECT {
 /**
  * @defgroup EVTIMER
  * @brief timer object atached to event loop, a user mode thread is created when the event loop dispatches a timer event.
- *
  * @{
  */
 struct tagEVTIMER;

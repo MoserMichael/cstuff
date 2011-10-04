@@ -95,8 +95,8 @@ static void *test_thread(void * arg)
  
 err:
   SOCK_close( &ctx );
-  EVLOOP_break( loop );
   *status = -1; 
+  EVLOOP_break( loop );
   return 0;
 }
 
