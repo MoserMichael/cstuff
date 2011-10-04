@@ -24,4 +24,9 @@ void VAL_test()
   VASSERT( n64 == _n64 );
   VASSERT( sval == _sval );
   VASSERT( strcmp( sval, _sval ) == 0 );
+
+  // can't get more values than what there are in the bag.
+  VASSERT( VALUES_scan( &val, "%hhu%hd%d%qd%s%d", &_n8, &_n16, &_n32, &_n64, &_sval, &_n32 ) == -1 );
+
+
 }
