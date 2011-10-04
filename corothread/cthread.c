@@ -8,6 +8,16 @@ static pthread_key_t tls_key;
 __thread CTHREAD *tls_thread;
 #endif
 
+
+#ifdef NO_TLS
+#define GET_TLS()  (CTHREAD *) pthread_getspecific( tls_key );
+#define SET_TLS(val)  (CTHREAD *) pthread_setspecific( tls_key, val );
+#else 
+#define GET_TLS()  tls_thread
+#define SET_TLS(val) do { tls_thread = val; } while( 0 );
+#endif
+
+
 static uint32_t next_tid;
 
 int CTHREAD_libinit()
@@ -20,7 +30,7 @@ int CTHREAD_libinit()
 
 void cthread_init( CTHREAD *arg )
 {
-  arg->proc( arg->ctx );
+  arg->proc( &arg->caller_to_thread_value );
   
   arg->state = CTHREAD_STATE_EXIT; 
 
@@ -33,25 +43,35 @@ void cthread_init( CTHREAD *arg )
 
 typedef void (*MK_CTX_FUNC) (void);
 
-CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc, void *ctx )
+CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc )
 {
   void *stack;
   CTHREAD *ret;
+  int stage = 0;
 
   ret = (CTHREAD *) malloc( sizeof(CTHREAD) );
   if (!ret) {
     return 0;
   }
+  stage = 1;
+
+  if (VALUES_init(&ret->thread_to_caller_value)) {
+    goto err;
+  } 
+  stage = 2;
+
+  if (VALUES_init(&ret->caller_to_thread_value)) {
+    goto err;
+  } 
+  stage = 3;
 
   stack = STACKS_get( stacks, &ret->stack_entry );
   if (!stack) {
-    return 0;
+    goto err;
   }
+  stage = 4;
 
   ret->proc = proc;
-  ret->ctx = ctx;
-  ret->thread_to_caller_value = 0;
-  ret->caller_to_thread_value = 0;
 
   ret->prev_thread = 0;
 
@@ -61,9 +81,8 @@ CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc, void *ctx )
 
   if (getcontext( &ret->context_coroutine )) {
     if (ret->state == CTHREAD_STATE_INIT) {
-      STACKS_release(ret->stack_entry);
-      free(ret);
-    }  
+      goto err;
+    }
     return 0;
   }
 
@@ -72,23 +91,31 @@ CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc, void *ctx )
 
 
   return ret;
+
+err:
+  if (stage > 3) {
+    STACKS_release(ret->stack_entry);
+  }
+  if (stage > 2) {
+    VALUES_free(&ret->caller_to_thread_value);
+  }
+   if (stage > 1) {
+    VALUES_free(&ret->thread_to_caller_value);
+  }
+  if (stage > 0) {
+    free(ret);
+  }
+  return 0;
 }
-
-
 
 static int do_start( CTHREAD *thread )
 {
   thread->state = CTHREAD_STATE_RUNNING;
   
   thread->thread_id = ++next_tid;
-
-#ifdef NO_TLS
-  thread->prev_thread = pthread_getspecific( tls_key );
-  pthread_setspecific( tls_key, thread );
-#else
-  thread->prev_thread = tls_thread;
-  tls_thread = thread;
-#endif
+  
+  thread->prev_thread = GET_TLS();  
+  SET_TLS( thread );
 
 #if 0
   thread->context_coroutine.uc_link = 0;
@@ -98,13 +125,13 @@ static int do_start( CTHREAD *thread )
   makecontext( & thread->context_coroutine, (MK_CTX_FUNC) cthread_init, 1, thread);
   
   setcontext( &thread->context_coroutine );
-  
+
+ 
   // should not get here.
   return -1;
 }
 
-
-int CTHREAD_start( CTHREAD *thread )
+int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... )
 {
   if (thread->state != CTHREAD_STATE_INIT) {
     return -1;
@@ -113,29 +140,44 @@ int CTHREAD_start( CTHREAD *thread )
   if (thread->state == CTHREAD_STATE_RUNNING) {
     // got here when the running thread called yield for the first time, or exited without calling yield.
     thread->state = CTHREAD_STATE_SUSPENDED;
+    if (rvalue) {
+     *rvalue = &thread->thread_to_caller_value; 
+    }
     return 0;
   }
   if (thread->state == CTHREAD_STATE_EXIT) {
     // got here from thread that has exited.
-    return 0;
+    if (rvalue) {
+     *rvalue = &thread->thread_to_caller_value; 
+    }
+     return 0;
   }
+
+  if (format) {
+    va_list vlist;
+    
+    va_start( vlist, format );
+    
+    if (VALUES_printv( &thread->caller_to_thread_value, format, vlist ) ) {
+      return -1;
+    }
+  } 
   return do_start( thread );
 }
 
-int CTHREAD_join( CTHREAD *thread )
+int CTHREAD_join( CTHREAD *thread, VALUES **rvalue )
 {  
    if( thread->state == CTHREAD_STATE_INIT ||
        thread->state == CTHREAD_STATE_RUNNING) {
      return -1;
    }
    while(thread->state != CTHREAD_STATE_EXIT) {
-     CTHREAD_resume( thread );
+     CTHREAD_resume( thread, rvalue, 0 );
    }
    return 0;
 }
 
-
-int CTHREAD_resume( CTHREAD *thread)
+int CTHREAD_resume( CTHREAD *thread, VALUES **rvalue, const char *format, ... )
 {
   if (thread->state != CTHREAD_STATE_SUSPENDED) {
     return -1;
@@ -145,52 +187,71 @@ int CTHREAD_resume( CTHREAD *thread)
   if (thread->state == CTHREAD_STATE_RUNNING) {
     // got here when the running thread called yield for the first time, or exited without calling yield.
     thread->state = CTHREAD_STATE_SUSPENDED;
+    if (rvalue) {
+     *rvalue = &thread->thread_to_caller_value; 
+    }
     return 0;
   }
   if (thread->state == CTHREAD_STATE_EXIT) {
     // got here from thread that has exited.
+    if (rvalue) {
+     *rvalue = &thread->thread_to_caller_value; 
+    }
     return 0;
   }
-#ifdef NO_TLS
-  pthread_setspecific( tls_key, thread );
-#else
-  tls_thread = thread;
-#endif
+
+  if (format) {
+    va_list vlist;
+    
+    va_start( vlist, format );
+    
+    if (VALUES_printv( &thread->caller_to_thread_value, format, vlist ) ) {
+      return -1;
+    }
+  } 
+
+  SET_TLS( thread );
+  
   return setcontext( &thread->context_coroutine );
 }
 
 
-int CTHREAD_yield()
+int CTHREAD_yield(VALUES **rvalue, const char *format, ... )
 {
-
   CTHREAD *thread;
   
-#ifdef NO_TLS  
-  thread = pthread_getspecific( tls_key );
-#else
-  thread = tls_thread;
-#endif
+  thread = GET_TLS();
 
   if (!thread) {
     return -1;
   }
 
   if (thread->state != CTHREAD_STATE_RUNNING) {
-    return -1;
+      return -1;
   }
 
   getcontext( &thread->context_coroutine );
   if (thread->state != CTHREAD_STATE_RUNNING) {
     // got here when this thread was resumed.
     thread->state = CTHREAD_STATE_RUNNING;
+    if (rvalue) {
+     *rvalue = &thread->caller_to_thread_value; 
+    }
     return 0;
   }
-  
-#ifdef NO_TLS  
-  pthread_setspecific( tls_key, thread->prev_thread );
-#else
-  tls_thread = thread->prev_thread;
-#endif
+ 
+  if (format) {
+    va_list vlist;
+    
+    va_start( vlist, format );
+    
+    if (VALUES_printv( &thread->thread_to_caller_value, format, vlist ) ) {
+      return -1;
+    }
+  } 
+
+  SET_TLS( thread->prev_thread );
+ 
   return setcontext( &thread->context_caller );
 }
 
@@ -207,19 +268,31 @@ int CTHREAD_free( CTHREAD *thread )
 uint32_t CTHREAD_get_tid()
 {
   CTHREAD *thread;
-  
-#ifdef NO_TLS  
-  thread = (CTHREAD *) pthread_getspecific( tls_key );
-#else
-  thread = tls_thread;
-#endif
-
+ 
+  thread = GET_TLS();
   if (!thread) {
     return (uint32_t) -1;
   }
   return thread->thread_id;
 }
 
+int CTHREAD_set_return_value( const char *format, ... )
+{
+  CTHREAD *thread;
+  va_list vlist;
+  
+  thread = GET_TLS();
+  if (!thread) {
+   return (uint32_t) -1;
+  }
+
+  va_start( vlist, format );
+  return VALUES_printv( &thread->thread_to_caller_value, format, vlist );
+}
+
+
+
+#if 0
 int CTHREAD_set_caller2thread(CTHREAD *thread, void *rvalue)
 {
   if (thread->state == CTHREAD_STATE_SUSPENDED || thread->state == CTHREAD_STATE_EXIT) {
@@ -278,4 +351,4 @@ int CTHREAD_get_thread2caller(CTHREAD *thread, void **rvalue)
   }
   return -1;
 }
-
+#endif

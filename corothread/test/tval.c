@@ -6,7 +6,6 @@
 
 void VAL_test()
 {
-
   VALUES val;
   uint8_t n8 = 250, _n8;
   uint16_t n16 = 65000, _n16;

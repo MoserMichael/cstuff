@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -x
+
+OS_TYPE=`uname -o | sed -e 's#\/#-#g' -e 's#(#-#g' -e 's#)#-#g'` 
+OS_VERSION=`uname -r | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`
+ARCH=`uname -m`
+
+ROOT=../../${OS_TYPE}-${OS_VERSION}-${ARCH}
+
+gcc ex4.c -o ex4 -I../.. -L${ROOT}/lib -lcorothread -lnutils -lcutils -lm
+

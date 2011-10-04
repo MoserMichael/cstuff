@@ -6,7 +6,7 @@
 #define NUM_FIB 30
 
 // -----------------------------------------------------------------
-void  fibonaci_generator (void *arg)
+void  fibonaci_generator (VALUES *arg)
 {
   int a,b,n,i;
 
@@ -16,8 +16,7 @@ void  fibonaci_generator (void *arg)
     n = a+b;
 
     fprintf(stderr,"\tGenerate fibonaci %d\n",  n);
-    CTHREAD_set_thread2caller( (void *) n );
-    CTHREAD_yield();
+    CTHREAD_yield(0, "%d", n);
     
     a=b;
     b=n;
@@ -28,23 +27,23 @@ void  fibonaci_generator (void *arg)
 void CTHREAD_test()
 {
   CTHREAD *th;
-  void *val;
-  int count;
+  VALUES *vals;
+  int val,count;
   STACKS stacks;
   
   VASSERT( !  CTHREAD_libinit() );
   
   VASSERT( !  STACKS_init( &stacks, 1 , 5 ) );
 
-  th = CTHREAD_init( &stacks, fibonaci_generator, 0 );
+  th = CTHREAD_init( &stacks, fibonaci_generator );
   VASSERT( th != 0 );
 
-  VASSERT( CTHREAD_start( th ) == 0 );
+  VASSERT( CTHREAD_start( th, &vals, 0 ) == 0 );
 
   for(count = 0 ;CTHREAD_state(th) != CTHREAD_STATE_EXIT; count++) {
-     VASSERT( CTHREAD_get_thread2caller( th, &val ) == 0 );
-     fprintf(stderr,"\t->received fibonaci %d\n", (int) val );
-     CTHREAD_resume( th );
+     VASSERT( VALUES_scan( vals, "%d", &val ) == 0 );
+     fprintf(stderr,"\t->received fibonaci %d\n", val );
+     CTHREAD_resume( th, &vals, 0 );
   }
 
   fprintf(stderr," -- count %d\n", count);
@@ -63,9 +62,11 @@ typedef struct tagtparam {
 } tparam;
  
 
-void  second_level(void *arg)
+void  second_level( VALUES *arg)
 {
-  tparam *t = (tparam *) arg;
+  tparam *t;
+  
+  VALUES_scan( arg, "%p", &t );
 
   t->level++;
   t->has_second_level = 1;
@@ -73,17 +74,19 @@ void  second_level(void *arg)
 }
 
 
-void  first_level(void *arg)
+void  first_level(VALUES *arg)
 {
-  tparam *t = (tparam *) arg;
+  tparam *t;
   CTHREAD *th;
+
+  VALUES_scan( arg, "%p", &t );
 
   t->level++;
 
-  th = CTHREAD_init( t->stacks, second_level, arg );
+  th = CTHREAD_init( t->stacks, second_level );
   VASSERT( th != 0 );
 
-  VASSERT( CTHREAD_start( th ) == 0 );
+  VASSERT( CTHREAD_start( th, 0, "%p", t ) == 0 );
 
   VASSERT( ! CTHREAD_free( th ) );
   
@@ -104,10 +107,13 @@ void  first_level(void *arg)
   param.has_second_level = 0;
   param.stacks = &stacks;
 
-  th = CTHREAD_init( &stacks, first_level, &param );
+  th = CTHREAD_init( &stacks, first_level );
   VASSERT( th != 0 );
 
-  VASSERT( CTHREAD_start( th ) == 0 );
+  VASSERT( CTHREAD_start( th, 0, "%p", &param ) == 0 );
+  
+  VASSERT( param.level == 0 );
+  VASSERT( param.has_second_level );
 
   VASSERT( ! CTHREAD_free( th ) );
   VASSERT( ! STACKS_destroy( &stacks ) ); 
