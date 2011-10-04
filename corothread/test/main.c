@@ -8,8 +8,10 @@
 void STACKS_test();
 void CTHREAD_test();
 void CTHREAD_test_nested();
+void VAL_test();
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
+	VTEST_TESTN( VAL_test )
 	VTEST_TESTN( STACKS_test )
 	VTEST_TESTN( CTHREAD_test )
         VTEST_TESTN( CTHREAD_test_nested )
