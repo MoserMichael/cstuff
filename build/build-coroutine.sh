@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-TARGETS="make-system-test vtest cutils butils nutils tutils stack iptools corothread"
+TARGETS="vtest cutils nutils corothread"
 
 DIR=`dirname $0`
 
@@ -10,6 +9,5 @@ if [ "x$DIR" != "x" ]; then
 fi
 
 . common-build.sh
-
 
 

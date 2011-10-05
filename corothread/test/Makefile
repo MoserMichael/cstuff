@@ -8,14 +8,14 @@ corothreadtest_TYPE=exe
 
 corothreadtest_SRC_EXTENSION=c
 
-corothreadtest_LIBS=corothread cutils butils nutils vtest pthread
+corothreadtest_LIBS=corothread cutils nutils vtest pthread
 
 
 corothreadtestsh_TYPE=exe
 
 corothreadtestsh_SRC_EXTENSION=c
 
-corothreadtestsh_LIBS=corothreadsh cutilssh butilssh nutilssh vtest pthread
+corothreadtestsh_LIBS=corothreadsh cutilssh nutilssh vtest pthread
 
 corothreadtestsh_CFLAGS=-I$(ROOT_DIR)/iothreads/libevent/install/include
 
