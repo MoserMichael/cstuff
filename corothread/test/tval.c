@@ -27,5 +27,19 @@ void VAL_test()
   // can't get more values than what there are in the bag.
   VASSERT( VALUES_scan( &val, "%hhu%hd%d%qd%s%d", &_n8, &_n16, &_n32, &_n64, &_sval, &_n32 ) == -1 );
 
+  // can't get different type
+  VASSERT( VALUES_scan( &val, "%d", &_n32 ) == -1 );
+
+  // can't get different type
+  VASSERT( VALUES_scan( &val, "%hhd", &_n8 ) == -1 );
+
+  // can get less values of the same type
+  VASSERT( VALUES_scan( &val, "%hhu%hd%d", &_n8, &_n16, &_n32 ) == 0 );
+
+  VASSERT( n8 == _n8 );
+  VASSERT( n16 == _n16 );
+  VASSERT( n32 == _n32 );
+ 
+  VALUES_free( &val );
 
 }

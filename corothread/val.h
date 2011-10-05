@@ -4,6 +4,13 @@
 #include <cutils/array.h>
 #include <stdarg.h>
 
+/** 
+ * @defgroup VAL
+ * @brief one typed value
+ * A typed value, a tuple of typed values is conveniently passed around by the VALUES class
+ * @{
+ */
+ 
 typedef enum {
   VAL_TYPE_UINT8,
   VAL_TYPE_INT8,
@@ -36,25 +43,83 @@ typedef struct tagVAL {
 
 } VAL;
 
-typedef struct tagVALUES {
+/**
+ * @}
+ */
+ 
+/** 
+ * @defgroup VALUES
+ * @brief A class for conveniently passing of typed tuple of values 
+ *
+ * A typed tuple of values is stored into the VALUES object by a printf like function.
+ *
+ * VALUES_print( values, "%hhu%hd%d%qd%s", n8, n16, n32, n64, sval ); 
+ 
+ * Once inserted, the values can be retrieved back, also by a scanf like function
+
+ * VALUES_scan( &val, "%hhu%hd%d%qd%s", &_n8, &_n16, &_n32, &_n64, &_sval );
+
+ * Note that the type specifiers of values retrieved must be strictly the same as that of the values inserted previously.
+
+ * Type specifiers:
+
+ * %hhd - signed byte (int8_t)
+ * %hhu - unsigned byte (uint8_t)
+ * %hd  - signed short (int16_t)
+ * %hhu - unsigned short (uint16_t)
+ * %d   - signed integer (int32_t)
+ * %u   - unsigned integer (uint32_t)
+ * %qd  - signed long long (int64_t)
+ * %qu  - unsiend long long (uint64_t
+ * %s   - null terminated string pointer
+ * %p   - void pointer.
+ *
+ * @{
+ */
+
+ typedef struct tagVALUES {
   ARRAY values;
 } VALUES;
 
 
+/**
+ * @brief initialises a typed tuple of values object
+ */
 M_INLINE int VALUES_init( VALUES *val)
 {
   return ARRAY_init( &val->values, sizeof(VAL), 10);
 }
  
+/**
+ * @brief frees a typed tuple of values object
+ */
 M_INLINE void VALUES_free( VALUES *val)
 {
   ARRAY_free( &val->values );
 }
 
+/**
+ * @brief insert typed tuple of values
+ * @param val -  the VALUES object that is modified
+ * @param format - Format specifier (for details see documentation of VALUES class)
+ * @param ap -
+ */
 int VALUES_printv( VALUES *val, const char *format, va_list ap );
 
+/**
+ * @brief retrieve typed tuple of values; like scanf receives varying number of arguments
+ * @param val -   the VALUES object that is modified 
+ * @param format -  Format specifier (for details see documentation of VALUES class) 
+ * @param ap -  va_list - pointer to stack frame of variadic function. 
+ */
 int VALUES_scanv( VALUES *val, const char *format, va_list ap );
 
+/**
+ * @brief set typed tuple of values; like prinf receives varying number of arguments 
+ * @param val -  the VALUES object that is modified 
+ * @param format - Format specifier (for details see documentation of VALUES class) 
+ * @param ap - va_list - pointer to stack frame of variadic function.
+ */
 M_INLINE int VALUES_print( VALUES *val, const char *format, ... )
 {
   va_list vlist;
@@ -62,6 +127,11 @@ M_INLINE int VALUES_print( VALUES *val, const char *format, ... )
   return VALUES_printv( val,  format, vlist );
 }
 
+/**
+ * @brief retrieve typed tuple of values; like scanf receives varying number of arguments 
+ * @param val -  the VALUES object that is modified 
+ * @param format - Format specifier (for details see documentation of VALUES class) 
+ */
 M_INLINE int VALUES_scan(  VALUES *val, const char *format, ... )
 {
   va_list vlist;
@@ -79,6 +149,10 @@ M_INLINE size_t VALUES_size( VALUES *val)
 {
   return ARRAY_size( &val->values );
 }
+
+/**
+ * @}
+ */
 
 /*
   %format 

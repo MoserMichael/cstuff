@@ -2,6 +2,12 @@
 
 set -x
 
+gcc ex1.c -o ex1 -lm
+
+gcc ex2.c -o ex2 -lm
+
+gcc ex3.c -o ex3 -lm
+
 OS_TYPE=`uname -o | sed -e 's#\/#-#g' -e 's#(#-#g' -e 's#)#-#g'` 
 OS_VERSION=`uname -r | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`
 ARCH=`uname -m`
