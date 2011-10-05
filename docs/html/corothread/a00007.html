@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: stacks.c File Reference</title>
+<title>Simple coroutine library / objects in plain C: cthread.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,78 +37,59 @@
 </div>
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">stacks.c File Reference</div>  </div>
+<div class="title">cthread.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;sys/mman.h&gt;</code><br/>
-<code>#include &lt;unistd.h&gt;</code><br/>
-<code>#include &quot;<a class="el" href="a00008_source.html">stacks.h</a>&quot;</code><br/>
+<div class="textblock"><code>#include &lt;ucontext.h&gt;</code><br/>
+<code>#include &lt;stdint.h&gt;</code><br/>
+<code>#include &lt;<a class="el" href="a00009_source.html">corothread/stacks.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="a00011_source.html">corothread/val.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00007_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">tagCTHREAD</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a> )(<a class="el" href="a00005.html">VALUES</a> *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagCTHREAD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga531a264d907809a7c19e882c995989c9">CTHREAD</a></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> { <a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>, 
+<a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>, 
+<a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>, 
+<a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>
+ }</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a> (int *ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gacae5bd5f2d666108ed11d96c877999bd">STACKS_init</a> (<a class="el" href="a00004.html">STACKS</a> *stack, int num_stacks, int pages_per_stack)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga416929f1d8b2f705c238c9a22fbe64cc">STACKS_destroy</a> (<a class="el" href="a00004.html">STACKS</a> *stack)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga363c86e7f58727269a1b09271b521c95">STACKS_get</a> (<a class="el" href="a00004.html">STACKS</a> *stack, <a class="el" href="a00003.html">STACK_ENTRY</a> **rentry)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a> (<a class="el" href="a00003.html">STACK_ENTRY</a> *entry)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga0592112b80e974a450345f78c1aaf42b">CTHREAD_libinit</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">library initialisation  <a href="a00012.html#ga0592112b80e974a450345f78c1aaf42b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gadb6709e149679aa65ecc988489c45a00">CTHREAD_init</a> (<a class="el" href="a00003.html">STACKS</a> *stacks, <a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a> proc)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises a new co-routine thread.  <a href="a00012.html#gadb6709e149679aa65ecc988489c45a00"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae4767f31d1375f7edfa267ad62bf8ea3">CTHREAD_free</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga335f6adec427c36c257c4436586f9e41">CTHREAD_start</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start a new thread - the thread procedure is invoked.  <a href="a00012.html#ga335f6adec427c36c257c4436586f9e41"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gab8e125df749a73083ca34ad4ed608f26">CTHREAD_resume</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">resume a suspended thread  <a href="a00012.html#gab8e125df749a73083ca34ad4ed608f26"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711">CTHREAD_yield</a> (<a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">a running thread temporarily suspends execution  <a href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511">CTHREAD_join</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes.  <a href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955">CTHREAD_set_return_value</a> (const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">a running thread sets it return values  <a href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7">CTHREAD_get_tid</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get thread id  <a href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gac84f3f78f212fb85214833923d755764">CTHREAD_state</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get thread state  <a href="a00012.html#gac84f3f78f212fb85214833923d755764"></a><br/></td></tr>
 </table>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="aca3b0b9dea91da057a9d4f1e8c190a23"></a><!-- doxytag: member="stacks.c::stack_dir" ref="aca3b0b9dea91da057a9d4f1e8c190a23" args="(int *ptr)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> stack_dir </td>
-          <td>(</td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>ptr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
 </div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00007_source.html#l00005">5</a> of file <a class="el" href="a00007_source.html">stacks.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-   <span class="keywordtype">int</span> a = 0;
-   <span class="keywordflow">if</span> ((<span class="keywordtype">size_t</span>) &amp;a &lt; (<span class="keywordtype">size_t</span>) ptr ) {
-     <span class="keywordflow">return</span> <a class="code" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>; 
-   }
-   <span class="keywordflow">return</span> <a class="code" href="a00010.html#ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3">STACK_DIR_GROWING_UP</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="a4951230d1c901c4533d0a0a3bed8c95e"></a><!-- doxytag: member="stacks.c::stack_direction" ref="a4951230d1c901c4533d0a0a3bed8c95e" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int stack_direction </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00007_source.html#l00014">14</a> of file <a class="el" href="a00007_source.html">stacks.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordtype">int</span> a = 0;
-
-  <span class="keywordflow">return</span> <a class="code" href="a00007.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( &amp; a );
-}
-</pre></div>
-</div>
-</div>
-</div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

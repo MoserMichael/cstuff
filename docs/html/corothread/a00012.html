@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: Member List</title>
+<title>Simple coroutine library / objects in plain C: CTHREAD</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,27 +24,666 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tagCRETURN_POINT Member List</div>  </div>
+<div class="title">CTHREAD</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00001.html">tagCRETURN_POINT</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a3d8f335720dd0ec325fff4b5544b65b9">context</a></td><td><a class="el" href="a00001.html">tagCRETURN_POINT</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+
+<p>a coroutine thread.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">tagCTHREAD</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a> )(<a class="el" href="a00005.html">VALUES</a> *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagCTHREAD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga531a264d907809a7c19e882c995989c9">CTHREAD</a></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> { <a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>, 
+<a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>, 
+<a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>, 
+<a class="el" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>
+ }</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga0592112b80e974a450345f78c1aaf42b">CTHREAD_libinit</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">library initialisation  <a href="#ga0592112b80e974a450345f78c1aaf42b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gadb6709e149679aa65ecc988489c45a00">CTHREAD_init</a> (<a class="el" href="a00003.html">STACKS</a> *stacks, <a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a> proc)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises a new co-routine thread.  <a href="#gadb6709e149679aa65ecc988489c45a00"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae4767f31d1375f7edfa267ad62bf8ea3">CTHREAD_free</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga335f6adec427c36c257c4436586f9e41">CTHREAD_start</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start a new thread - the thread procedure is invoked.  <a href="#ga335f6adec427c36c257c4436586f9e41"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gab8e125df749a73083ca34ad4ed608f26">CTHREAD_resume</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">resume a suspended thread  <a href="#gab8e125df749a73083ca34ad4ed608f26"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711">CTHREAD_yield</a> (<a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">a running thread temporarily suspends execution  <a href="#gabdd07ed1543073aa8ab08cd047b8d711"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511">CTHREAD_join</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes.  <a href="#ga31f64d21aa28df2b4ff03a1553f7b511"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955">CTHREAD_set_return_value</a> (const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">a running thread sets it return values  <a href="#gaec45e79d5cff442401d3b075fb7ca955"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7">CTHREAD_get_tid</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get thread id  <a href="#ga5482f32cae1c40923e57c44dbcc870f7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gac84f3f78f212fb85214833923d755764">CTHREAD_state</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get thread state  <a href="#gac84f3f78f212fb85214833923d755764"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>a coroutine thread. </p>
+<p>A very limited user mode threading package that allows constructions of co-routines. Coroutine scheduling is done by mean of mkcontet/setcontext/getcontext functions (glibc)</p>
+<p>User mode threads are best when used in a very limited scenario, complex usage scenarios often lead to intricate situations that are hard to debug. Areas where user mode threading shines</p>
+<ul>
+<li>coroutines / continuations</li>
+<li>generator funcions (like python/ruby/perl). </li>
+</ul>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga531a264d907809a7c19e882c995989c9"></a><!-- doxytag: member="cthread.h::CTHREAD" ref="ga531a264d907809a7c19e882c995989c9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00001.html">tagCTHREAD</a>  <a class="el" href="a00001.html">CTHREAD</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="gadf72fbde4d6beb181e58d60050136c49"></a><!-- doxytag: member="cthread.h::CTHREAD_PROC" ref="gadf72fbde4d6beb181e58d60050136c49" args=")(VALUES *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* <a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a>)(<a class="el" href="a00005.html">VALUES</a> *)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00027">27</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="ga87a29e5321e1ae9ab5a3e043e850e160"></a><!-- doxytag: member="cthread.h::CTHREAD_STATE" ref="ga87a29e5321e1ae9ab5a3e043e850e160" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0"></a><!-- doxytag: member="CTHREAD_STATE_INIT" ref="gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0" args="" -->CTHREAD_STATE_INIT</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b"></a><!-- doxytag: member="CTHREAD_STATE_RUNNING" ref="gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b" args="" -->CTHREAD_STATE_RUNNING</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d"></a><!-- doxytag: member="CTHREAD_STATE_SUSPENDED" ref="gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d" args="" -->CTHREAD_STATE_SUSPENDED</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc"></a><!-- doxytag: member="CTHREAD_STATE_EXIT" ref="gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc" args="" -->CTHREAD_STATE_EXIT</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00029">29</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>,
+  <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>,
+  <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>,
+  <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>,
+} <a class="code" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a>;
+</pre></div>
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="gae4767f31d1375f7edfa267ad62bf8ea3"></a><!-- doxytag: member="cthread.h::CTHREAD_free" ref="gae4767f31d1375f7edfa267ad62bf8ea3" args="(CTHREAD *thread)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CTHREAD_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td>
+          <td class="paramname"><em>thread</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>deallocates a thread</p>
+<p>Precondition: the thread must be in CTHREAD_STATE_EXIT state </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00259">259</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
+    <span class="keywordflow">return</span> -1;
+  }
+  free(thread);
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga5482f32cae1c40923e57c44dbcc870f7"></a><!-- doxytag: member="cthread.h::CTHREAD_get_tid" ref="ga5482f32cae1c40923e57c44dbcc870f7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t CTHREAD_get_tid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>get thread id </p>
+<p>Precondition: the thread is in any state other than CTHREAD_STATE_INIT </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00268">268</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00001.html">CTHREAD</a> *thread;
+ 
+  thread = <a class="code" href="a00006.html#af44a938c4d7aa9c703f0ee86847fe00b">GET_TLS</a>();
+  <span class="keywordflow">if</span> (!thread) {
+    <span class="keywordflow">return</span> (uint32_t) -1;
+  }
+  <span class="keywordflow">return</span> thread-&gt;<a class="code" href="a00001.html#a3f7ef430812f309728071e027ec90532">thread_id</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gadb6709e149679aa65ecc988489c45a00"></a><!-- doxytag: member="cthread.h::CTHREAD_init" ref="gadb6709e149679aa65ecc988489c45a00" args="(STACKS *stacks, CTHREAD_PROC proc)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00001.html">CTHREAD</a>* CTHREAD_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">STACKS</a> *&#160;</td>
+          <td class="paramname"><em>stacks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a>&#160;</td>
+          <td class="paramname"><em>proc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>initialises a new co-routine thread. </p>
+<p>Postcondition: The new thread is initialised and enters CTHREAD_STATE_INIT state.</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stacks</td><td>the thread is obtained from the pool of stacks (argument stack). </td></tr>
+    <tr><td class="paramname">proc</td><td>The thread procecdure is argument proc. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00046">46</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">void</span> *stack;
+  <a class="code" href="a00001.html">CTHREAD</a> *ret;
+  <span class="keywordtype">int</span> stage = 0;
+
+  ret = (<a class="code" href="a00001.html">CTHREAD</a> *) malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00001.html">CTHREAD</a>) );
+  <span class="keywordflow">if</span> (!ret) {
+    <span class="keywordflow">return</span> 0;
+  }
+  stage = 1;
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00015.html#ga9b48cbc8019459edddc6e3460bbddec7" title="initialises a typed tuple of values object">VALUES_init</a>(&amp;ret-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>)) {
+    <span class="keywordflow">goto</span> err;
+  } 
+  stage = 2;
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00015.html#ga9b48cbc8019459edddc6e3460bbddec7" title="initialises a typed tuple of values object">VALUES_init</a>(&amp;ret-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>)) {
+    <span class="keywordflow">goto</span> err;
+  } 
+  stage = 3;
+
+  stack = <a class="code" href="a00013.html#ga363c86e7f58727269a1b09271b521c95">STACKS_get</a>( stacks, &amp;ret-&gt;<a class="code" href="a00001.html#ae435552c206d330befbad33b9fdfb3a0">stack_entry</a> );
+  <span class="keywordflow">if</span> (!stack) {
+    <span class="keywordflow">goto</span> err;
+  }
+  stage = 4;
+
+  ret-&gt;<a class="code" href="a00001.html#a5ff356da73817c9a3d239dbde9e80c85">proc</a> = proc;
+
+  ret-&gt;<a class="code" href="a00001.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a> = 0;
+
+  ret-&gt;<a class="code" href="a00001.html#a3f7ef430812f309728071e027ec90532">thread_id</a> = -1;   
+  ret-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>;
+
+
+  <span class="keywordflow">if</span> (getcontext( &amp;ret-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a> )) {
+    <span class="keywordflow">if</span> (ret-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>) {
+      <span class="keywordflow">goto</span> err;
+    }
+    <span class="keywordflow">return</span> 0;
+  }
+
+  ret-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>.uc_stack.ss_sp = ret;
+  ret-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>.uc_stack.ss_size = <a class="code" href="a00013.html#ga76bb6e2354e42c959cf28d7ad9be8387">STACKS_get_stack_size</a>( stacks );
+
+
+  <span class="keywordflow">return</span> ret;
+
+err:
+  <span class="keywordflow">if</span> (stage &gt; 3) {
+    <a class="code" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a>(ret-&gt;<a class="code" href="a00001.html#ae435552c206d330befbad33b9fdfb3a0">stack_entry</a>);
+  }
+  <span class="keywordflow">if</span> (stage &gt; 2) {
+    <a class="code" href="a00015.html#gadc81d8388676be48c37a79d13285d034" title="frees a typed tuple of values object">VALUES_free</a>(&amp;ret-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>);
+  }
+   <span class="keywordflow">if</span> (stage &gt; 1) {
+    <a class="code" href="a00015.html#gadc81d8388676be48c37a79d13285d034" title="frees a typed tuple of values object">VALUES_free</a>(&amp;ret-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>);
+  }
+  <span class="keywordflow">if</span> (stage &gt; 0) {
+    free(ret);
+  }
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga31f64d21aa28df2b4ff03a1553f7b511"></a><!-- doxytag: member="cthread.h::CTHREAD_join" ref="ga31f64d21aa28df2b4ff03a1553f7b511" args="(CTHREAD *thread, VALUES **rvalue)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CTHREAD_join </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td>
+          <td class="paramname"><em>thread</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00005.html">VALUES</a> **&#160;</td>
+          <td class="paramname"><em>rvalue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes. </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00168">168</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{  
+   <span class="keywordflow">if</span>( thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a> ||
+       thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>) {
+     <span class="keywordflow">return</span> -1;
+   }
+   <span class="keywordflow">while</span>(thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
+     <a class="code" href="a00012.html#gab8e125df749a73083ca34ad4ed608f26" title="resume a suspended thread">CTHREAD_resume</a>( thread, rvalue, 0 );
+   }
+   <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0592112b80e974a450345f78c1aaf42b"></a><!-- doxytag: member="cthread.h::CTHREAD_libinit" ref="ga0592112b80e974a450345f78c1aaf42b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CTHREAD_libinit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>library initialisation </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00023">23</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+<span class="preprocessor">#ifdef NO_TLS</span>
+<span class="preprocessor"></span>  pthread_key_create( &amp;tls_key, 0);
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gab8e125df749a73083ca34ad4ed608f26"></a><!-- doxytag: member="cthread.h::CTHREAD_resume" ref="gab8e125df749a73083ca34ad4ed608f26" args="(CTHREAD *thread, VALUES **rvalue, const char *format,...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CTHREAD_resume </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td>
+          <td class="paramname"><em>thread</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00005.html">VALUES</a> **&#160;</td>
+          <td class="paramname"><em>rvalue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>resume a suspended thread </p>
+<p>Resumes a suspended thread, the function will return when the resumed thread calls CTHREAD_yield or when it exits.</p>
+<p>Passing parameters to the thread; a variable length set of arguments can be sent to the thread, and the thread will be able to read them. Parameter format is the format specifier, subsequent variable length argument values are then sent to the thread.</p>
+<p>Retrieving parameters from the thread: We can access values returned by the thread, once CTHREAD_resume returns. The values passed by the thread are stored in rvalue parameter.</p>
+<p>Precondition: the thread is in CTHREAD_STATE_SUSPENDED state Postcondition: the thread is in CTHREAD_STATE_RUNNING state </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00180">180</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>) {
+    <span class="keywordflow">return</span> -1;
+  }
+
+  getcontext( &amp;thread-&gt;<a class="code" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a> );
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>) {
+    <span class="comment">// got here when the running thread called yield for the first time, or exited without calling yield.</span>
+    thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>;
+    <span class="keywordflow">if</span> (rvalue) {
+     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+    }
+    <span class="keywordflow">return</span> 0;
+  }
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
+    <span class="comment">// got here from thread that has exited.</span>
+    <span class="keywordflow">if</span> (rvalue) {
+     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+    }
+    <span class="keywordflow">return</span> 0;
+  }
+
+  <span class="keywordflow">if</span> (format) {
+    va_list vlist;
+    
+    va_start( vlist, format );
+    
+    <span class="keywordflow">if</span> (<a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>, format, vlist ) ) {
+      <span class="keywordflow">return</span> -1;
+    }
+  } 
+
+  <a class="code" href="a00006.html#a1e7894c85352e355590b323f53b5fc17">SET_TLS</a>( thread );
+  
+  <span class="keywordflow">return</span> setcontext( &amp;thread-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a> );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaec45e79d5cff442401d3b075fb7ca955"></a><!-- doxytag: member="cthread.h::CTHREAD_set_return_value" ref="gaec45e79d5cff442401d3b075fb7ca955" args="(const char *format,...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CTHREAD_set_return_value </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>a running thread sets it return values </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00279">279</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00001.html">CTHREAD</a> *thread;
+  va_list vlist;
+  
+  thread = <a class="code" href="a00006.html#af44a938c4d7aa9c703f0ee86847fe00b">GET_TLS</a>();
+  <span class="keywordflow">if</span> (!thread) {
+   <span class="keywordflow">return</span> (uint32_t) -1;
+  }
+
+  va_start( vlist, format );
+  <span class="keywordflow">return</span> <a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>, format, vlist );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga335f6adec427c36c257c4436586f9e41"></a><!-- doxytag: member="cthread.h::CTHREAD_start" ref="ga335f6adec427c36c257c4436586f9e41" args="(CTHREAD *thread, VALUES **rvalue, const char *format,...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CTHREAD_start </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td>
+          <td class="paramname"><em>thread</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00005.html">VALUES</a> **&#160;</td>
+          <td class="paramname"><em>rvalue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>start a new thread - the thread procedure is invoked. </p>
+<p>The initialised thread is started; The function returns if the running thread either exited or entered suspended state (i.e. the thread called CTHREAD_yield)</p>
+<p>Values passed from the thread to the caller are stored in rvalue parameter. If this parameter is 0 then the return values are ignored.</p>
+<p>Values passed from the caller to the thread -</p>
+<p>Precondition: the thread is in either CTHREAD_STATE_INIT or CTHREAD_STATE_EXIT state. Postcondition: the thread is in CTHREAD_STATE_RUNNING state. </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00134">134</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>) {
+    <span class="keywordflow">return</span> -1;
+  }
+  getcontext( &amp;thread-&gt;<a class="code" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a> );
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>) {
+    <span class="comment">// got here when the running thread called yield for the first time, or exited without calling yield.</span>
+    thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>;
+    <span class="keywordflow">if</span> (rvalue) {
+     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+    }
+    <span class="keywordflow">return</span> 0;
+  }
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
+    <span class="comment">// got here from thread that has exited.</span>
+    <span class="keywordflow">if</span> (rvalue) {
+     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+    }
+     <span class="keywordflow">return</span> 0;
+  }
+
+  <span class="keywordflow">if</span> (format) {
+    va_list vlist;
+    
+    va_start( vlist, format );
+    
+    <span class="keywordflow">if</span> (<a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>, format, vlist ) ) {
+      <span class="keywordflow">return</span> -1;
+    }
+  } 
+  <span class="keywordflow">return</span> <a class="code" href="a00006.html#a8dcb24ceb1c69153bb683b05eccd02f9">do_start</a>( thread );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac84f3f78f212fb85214833923d755764"></a><!-- doxytag: member="cthread.h::CTHREAD_state" ref="gac84f3f78f212fb85214833923d755764" args="(CTHREAD *thread)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> CTHREAD_state </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td>
+          <td class="paramname"><em>thread</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>get thread state </p>
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00141">141</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gabdd07ed1543073aa8ab08cd047b8d711"></a><!-- doxytag: member="cthread.h::CTHREAD_yield" ref="gabdd07ed1543073aa8ab08cd047b8d711" args="(VALUES **rvalue, const char *format,...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CTHREAD_yield </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00005.html">VALUES</a> **&#160;</td>
+          <td class="paramname"><em>rvalue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>a running thread temporarily suspends execution </p>
+<p>Precondition: the thread is in CTHREAD_STATE_RUNNING state Postcondition: the thread is in CTHREAD_STATE_SUSPENDED state </p>
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00219">219</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00001.html">CTHREAD</a> *thread;
+  
+  thread = <a class="code" href="a00006.html#af44a938c4d7aa9c703f0ee86847fe00b">GET_TLS</a>();
+
+  <span class="keywordflow">if</span> (!thread) {
+    <span class="keywordflow">return</span> -1;
+  }
+
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>) {
+      <span class="keywordflow">return</span> -1;
+  }
+
+  getcontext( &amp;thread-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a> );
+  <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>) {
+    <span class="comment">// got here when this thread was resumed.</span>
+    thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>;
+    <span class="keywordflow">if</span> (rvalue) {
+     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>; 
+    }
+    <span class="keywordflow">return</span> 0;
+  }
+ 
+  <span class="keywordflow">if</span> (format) {
+    va_list vlist;
+    
+    va_start( vlist, format );
+    
+    <span class="keywordflow">if</span> (<a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>, format, vlist ) ) {
+      <span class="keywordflow">return</span> -1;
+    }
+  } 
+
+  <a class="code" href="a00006.html#a1e7894c85352e355590b323f53b5fc17">SET_TLS</a>( thread-&gt;<a class="code" href="a00001.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a> );
+ 
+  <span class="keywordflow">return</span> setcontext( &amp;thread-&gt;<a class="code" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a> );
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

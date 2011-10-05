@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: tagCTHREAD Struct Reference</title>
+<title>Simple coroutine library / objects in plain C: tagSTACK_ENTRY Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,177 +40,51 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">tagCTHREAD Struct Reference<div class="ingroups"><a class="el" href="a00009.html">CTHREAD</a></div></div>  </div>
+<div class="title">tagSTACK_ENTRY Struct Reference<div class="ingroups"><a class="el" href="a00013.html">STACKS</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="tagCTHREAD" -->
-<p><code>#include &lt;<a class="el" href="a00006_source.html">cthread.h</a>&gt;</code></p>
+<!-- doxytag: class="tagSTACK_ENTRY" -->
+<p><code>#include &lt;<a class="el" href="a00009_source.html">stacks.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for tagCTHREAD:</div>
+Collaboration diagram for tagSTACK_ENTRY:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00013.png" border="0" usemap="#tagCTHREAD_coll__map" alt="Collaboration graph"/></div>
-<map name="tagCTHREAD_coll__map" id="tagCTHREAD_coll__map">
-<area shape="rect" id="node3" href="a00003.html" title="tagSTACK_ENTRY" alt="" coords="5,101,144,131"/><area shape="rect" id="node5" href="a00004.html" title="tagSTACKS" alt="" coords="28,5,121,35"/></map>
+<div class="center"><img src="a00019.png" border="0" usemap="#tagSTACK__ENTRY_coll__map" alt="Collaboration graph"/></div>
+<map name="tagSTACK__ENTRY_coll__map" id="tagSTACK__ENTRY_coll__map">
+<area shape="rect" id="node2" href="a00003.html" title="tagSTACKS" alt="" coords="28,5,121,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
-<p><a href="a00014.html">List of all members.</a></p>
+<p><a href="a00020.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">ucontext_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">ucontext_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00009.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a3f7ef430812f309728071e027ec90532">thread_id</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#abb4fa0f5cd863eb21ba15dd01b40881f">ctx</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a78287f59766e6a1e73868c22793d2ab8">rvalue</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html#af0ad185700a9a4e97dc60bf65b98cb6c">CTHREAD_PROC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a5ff356da73817c9a3d239dbde9e80c85">proc</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00002.html">tagCTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">STACK_ENTRY</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#ae435552c206d330befbad33b9fdfb3a0">stack_entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">DLIST_entry&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga9c067ef2a750355a9ce3360ac2ead65b">stack_start</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">STACKS</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga3bf0755824c9a30451e247848157685b">stacks</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00006_source.html#l00048">48</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00009_source.html#l00026">26</a> of file <a class="el" href="a00009_source.html">stacks.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="aee14cdad40d62281ab3ccfaf25e76cd3"></a><!-- doxytag: member="tagCTHREAD::context_caller" ref="aee14cdad40d62281ab3ccfaf25e76cd3" args="" -->
+<a class="anchor" id="a9c3527c5b313fb4fd382f47f1fc4f8b3"></a><!-- doxytag: member="tagSTACK_ENTRY::entry" ref="a9c3527c5b313fb4fd382f47f1fc4f8b3" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">ucontext_t <a class="el" href="a00002.html#aee14cdad40d62281ab3ccfaf25e76cd3">tagCTHREAD::context_caller</a></td>
+          <td class="memname">DLIST_entry <a class="el" href="a00002.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">tagSTACK_ENTRY::entry</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00050">50</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a74b86a0255cf15d3cfcb21389f590fde"></a><!-- doxytag: member="tagCTHREAD::context_coroutine" ref="a74b86a0255cf15d3cfcb21389f590fde" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ucontext_t <a class="el" href="a00002.html#a74b86a0255cf15d3cfcb21389f590fde">tagCTHREAD::context_coroutine</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00049">49</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abb4fa0f5cd863eb21ba15dd01b40881f"></a><!-- doxytag: member="tagCTHREAD::ctx" ref="abb4fa0f5cd863eb21ba15dd01b40881f" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void* <a class="el" href="a00002.html#abb4fa0f5cd863eb21ba15dd01b40881f">tagCTHREAD::ctx</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00053">53</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae6fb70fa6314738018642f89ca5c359c"></a><!-- doxytag: member="tagCTHREAD::prev_thread" ref="ae6fb70fa6314738018642f89ca5c359c" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="a00002.html">tagCTHREAD</a>* <a class="el" href="a00002.html#ae6fb70fa6314738018642f89ca5c359c">tagCTHREAD::prev_thread</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00056">56</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5ff356da73817c9a3d239dbde9e80c85"></a><!-- doxytag: member="tagCTHREAD::proc" ref="a5ff356da73817c9a3d239dbde9e80c85" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00006.html#af0ad185700a9a4e97dc60bf65b98cb6c">CTHREAD_PROC</a> <a class="el" href="a00002.html#a5ff356da73817c9a3d239dbde9e80c85">tagCTHREAD::proc</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00055">55</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a78287f59766e6a1e73868c22793d2ab8"></a><!-- doxytag: member="tagCTHREAD::rvalue" ref="a78287f59766e6a1e73868c22793d2ab8" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void* <a class="el" href="a00002.html#a78287f59766e6a1e73868c22793d2ab8">tagCTHREAD::rvalue</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00054">54</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae435552c206d330befbad33b9fdfb3a0"></a><!-- doxytag: member="tagCTHREAD::stack_entry" ref="ae435552c206d330befbad33b9fdfb3a0" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00003.html">STACK_ENTRY</a>* <a class="el" href="a00002.html#ae435552c206d330befbad33b9fdfb3a0">tagCTHREAD::stack_entry</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00057">57</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae5e75d1abd9dbf7dee8d91e9864f8456"></a><!-- doxytag: member="tagCTHREAD::state" ref="ae5e75d1abd9dbf7dee8d91e9864f8456" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00009.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> <a class="el" href="a00002.html#ae5e75d1abd9dbf7dee8d91e9864f8456">tagCTHREAD::state</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00051">51</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3f7ef430812f309728071e027ec90532"></a><!-- doxytag: member="tagCTHREAD::thread_id" ref="a3f7ef430812f309728071e027ec90532" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t <a class="el" href="a00002.html#a3f7ef430812f309728071e027ec90532">tagCTHREAD::thread_id</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00052">52</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00009_source.html#l00027">27</a> of file <a class="el" href="a00009_source.html">stacks.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00006_source.html">cthread.h</a></li>
+<li><a class="el" href="a00009_source.html">stacks.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

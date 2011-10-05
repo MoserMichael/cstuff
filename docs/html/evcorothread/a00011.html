@@ -91,7 +91,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00113">113</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00134">134</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
@@ -117,7 +117,7 @@ Functions</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00115">115</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00136">136</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 <div class="fragment"><pre class="fragment">              {
   <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>,
   <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5">EVTIMER_STATE_SCHEDULED</a>,
@@ -142,7 +142,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00184">184</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00186">186</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (timer-&gt;<a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">state</a> == <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>) {
     <span class="keywordflow">return</span> -1;
@@ -170,7 +170,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00195">195</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00197">197</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">EVTIMER_cancel</a>(timer);
   <a class="code" href="a00007.html#afac4b846bbebc9e8bb60ec8c4d527eac">EVTHREAD_OBJECT_free</a>( &amp;timer-&gt;<a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">object_base</a> );
@@ -222,7 +222,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00152">152</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00154">154</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> <a class="code" href="a00007.html#ae7d66724a3893b47b092d8ab33d1781d">ev_mktimer</a>( thread, timer_id, 0, tm, proc, user_data );
 }
@@ -272,7 +272,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00157">157</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00159">159</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> <a class="code" href="a00007.html#ae7d66724a3893b47b092d8ab33d1781d">ev_mktimer</a>( thread, timer_id, 1, tm, proc, user_data );
 }
@@ -294,7 +294,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00164">164</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00166">166</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keyword">struct </span>timeval now;
 
@@ -317,7 +317,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

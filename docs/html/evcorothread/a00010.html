@@ -47,10 +47,11 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">tagEVTHREAD</a></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> )(struct <a class="el" href="a00003.html">tagEVTHREAD</a> *thread, struct <a class="el" href="a00002.html">tagEVSOCKET</a> *socket, void *user_ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00003.html">tagEVTHREAD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gadbf6a6fe0e60307b58ee163176c1839a">EVTHREAD</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">EVTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gaa23e69897b0c289d7da8f8d10435a140">EVTHREAD_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, <a class="el" href="a00008.html#a234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc, void *user_ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">EVTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gaa23e69897b0c289d7da8f8d10435a140">EVTHREAD_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, <a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc, void *user_ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">EVTHREAD_start</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, struct <a class="el" href="a00002.html">tagEVSOCKET</a> *socket)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga51f061f7921e0bbce68d3a16e043a0ff">EVTHREAD_delay</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, struct timeval delay)</td></tr>
 </table>
@@ -67,6 +68,21 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ga234cc8fab2090c3bf2314d41f23f66d5"></a><!-- doxytag: member="evthread.h::EVTHREAD_PROC" ref="ga234cc8fab2090c3bf2314d41f23f66d5" args=")(struct tagEVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* <a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a>)(struct <a class="el" href="a00003.html">tagEVTHREAD</a> *thread, struct <a class="el" href="a00002.html">tagEVSOCKET</a> *socket, void *user_ctx)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00065">65</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
@@ -102,7 +118,7 @@ Functions</h2></td></tr>
   event_base_set( thread-&gt;<a class="code" href="a00003.html#abd1b6bd8c48500d617d9779fcac65cdc">loop</a>-&gt;<a class="code" href="a00001.html#a3ef46ca89266616a4ca06b62e60e8062">ev_base</a>, &amp;thread-&gt;<a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">timer_event</a> );
   event_add( &amp;thread-&gt;<a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">timer_event</a>, &amp;delay );
    
-  CTHREAD_yield( thread );
+  CTHREAD_yield( 0, 0);
    
   event_del( &amp;thread-&gt;<a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">timer_event</a> );
 
@@ -125,7 +141,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00008.html#a234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a>&#160;</td>
           <td class="paramname"><em>thread_proc</em>, </td>
         </tr>
         <tr>
@@ -155,7 +171,7 @@ Functions</h2></td></tr>
   thread-&gt;<a class="code" href="a00003.html#abb9ebfa4591c3e6538abe7aa8c7cc8ab">thread_proc</a> = thread_proc;
   thread-&gt;<a class="code" href="a00003.html#afc9604c7677fa92279f144561a816438">user_context</a> = user_ctx;
 
-  thread-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a> = CTHREAD_init( loop-&gt;<a class="code" href="a00001.html#abc5af16a5c530aebd2015bbec8756a52">stacks</a>, <a class="code" href="a00007.html#ad705fb6f9cf66a02d338f10a77f377e7">evthread_proc</a>, thread );
+  thread-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a> = CTHREAD_init( loop-&gt;<a class="code" href="a00001.html#abc5af16a5c530aebd2015bbec8756a52">stacks</a>, <a class="code" href="a00007.html#abc55701105da0863845a6bf2212ac294">evthread_proc</a> );
   <span class="keywordflow">if</span> (!thread-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>) {
     free(thread);
     <span class="keywordflow">return</span> 0;
@@ -197,14 +213,14 @@ Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="a00007_source.html#l00093">93</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   thread-&gt;<a class="code" href="a00003.html#acbc4c1ff508c758eb16d77dc9729fd3a">socket</a> = socket;
-  CTHREAD_start( thread-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a> );
+  CTHREAD_start( thread-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, <span class="stringliteral">&quot;%p&quot;</span>, thread );
   <span class="keywordflow">return</span> 0;
 }
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

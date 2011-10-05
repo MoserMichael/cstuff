@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: Member List</title>
+<title>Simple coroutine library / objects in plain C: VAL</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,35 +24,118 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
-<div class="title">tagCTHREAD Member List</div>  </div>
+<div class="title">VAL</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00002.html">tagCTHREAD</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00002.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#abb4fa0f5cd863eb21ba15dd01b40881f">ctx</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a5ff356da73817c9a3d239dbde9e80c85">proc</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a78287f59766e6a1e73868c22793d2ab8">rvalue</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#ae435552c206d330befbad33b9fdfb3a0">stack_entry</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a3f7ef430812f309728071e027ec90532">thread_id</a></td><td><a class="el" href="a00002.html">tagCTHREAD</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+
+<p>one typed value A typed value, a tuple of typed values is conveniently passed around by the VALUES class  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">tagVAL</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00004.html">tagVAL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ga56e032ebe1d2406289a5d3beeb30e701">VAL</a></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gad60b9d9384dafef239bf9aff56b6b8cf">VAL_TYPE</a> { <br/>
+&#160;&#160;<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa0394878f389741aea4dd627aa8b3faa8">VAL_TYPE_UINT8</a>, 
+<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfaf117dcf63c83f11c1cfe600a49cd4e73">VAL_TYPE_INT8</a>, 
+<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfaaa861170a753d8e5ddb1c41343d0fcff">VAL_TYPE_UINT16</a>, 
+<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfab5e169eb252afe4e048ef9969a5030ba">VAL_TYPE_INT16</a>, 
+<br/>
+&#160;&#160;<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfac873843d8b66555659b515e71e658772">VAL_TYPE_UINT32</a>, 
+<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfaa4edd5ed053121eb09c6643c53e9f768">VAL_TYPE_INT32</a>, 
+<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa7b80609b03c65b1fd48258c2425f19e9">VAL_TYPE_UINT64</a>, 
+<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa6ea0bec1fd493066251491cd7cce2421">VAL_TYPE_INT64</a>, 
+<br/>
+&#160;&#160;<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa468708e875bee305f8d5953fd2bfa0a1">VAL_TYPE_STRING</a>, 
+<a class="el" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa1d77ae25806cfe41125cdadb7e79312d">VAL_TYPE_PTR</a>
+<br/>
+ }</td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>one typed value A typed value, a tuple of typed values is conveniently passed around by the VALUES class </p>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga56e032ebe1d2406289a5d3beeb30e701"></a><!-- doxytag: member="val.h::VAL" ref="ga56e032ebe1d2406289a5d3beeb30e701" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00004.html">tagVAL</a>  <a class="el" href="a00004.html">VAL</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="gad60b9d9384dafef239bf9aff56b6b8cf"></a><!-- doxytag: member="val.h::VAL_TYPE" ref="gad60b9d9384dafef239bf9aff56b6b8cf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00014.html#gad60b9d9384dafef239bf9aff56b6b8cf">VAL_TYPE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfa0394878f389741aea4dd627aa8b3faa8"></a><!-- doxytag: member="VAL_TYPE_UINT8" ref="ggad60b9d9384dafef239bf9aff56b6b8cfa0394878f389741aea4dd627aa8b3faa8" args="" -->VAL_TYPE_UINT8</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfaf117dcf63c83f11c1cfe600a49cd4e73"></a><!-- doxytag: member="VAL_TYPE_INT8" ref="ggad60b9d9384dafef239bf9aff56b6b8cfaf117dcf63c83f11c1cfe600a49cd4e73" args="" -->VAL_TYPE_INT8</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfaaa861170a753d8e5ddb1c41343d0fcff"></a><!-- doxytag: member="VAL_TYPE_UINT16" ref="ggad60b9d9384dafef239bf9aff56b6b8cfaaa861170a753d8e5ddb1c41343d0fcff" args="" -->VAL_TYPE_UINT16</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfab5e169eb252afe4e048ef9969a5030ba"></a><!-- doxytag: member="VAL_TYPE_INT16" ref="ggad60b9d9384dafef239bf9aff56b6b8cfab5e169eb252afe4e048ef9969a5030ba" args="" -->VAL_TYPE_INT16</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfac873843d8b66555659b515e71e658772"></a><!-- doxytag: member="VAL_TYPE_UINT32" ref="ggad60b9d9384dafef239bf9aff56b6b8cfac873843d8b66555659b515e71e658772" args="" -->VAL_TYPE_UINT32</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfaa4edd5ed053121eb09c6643c53e9f768"></a><!-- doxytag: member="VAL_TYPE_INT32" ref="ggad60b9d9384dafef239bf9aff56b6b8cfaa4edd5ed053121eb09c6643c53e9f768" args="" -->VAL_TYPE_INT32</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfa7b80609b03c65b1fd48258c2425f19e9"></a><!-- doxytag: member="VAL_TYPE_UINT64" ref="ggad60b9d9384dafef239bf9aff56b6b8cfa7b80609b03c65b1fd48258c2425f19e9" args="" -->VAL_TYPE_UINT64</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfa6ea0bec1fd493066251491cd7cce2421"></a><!-- doxytag: member="VAL_TYPE_INT64" ref="ggad60b9d9384dafef239bf9aff56b6b8cfa6ea0bec1fd493066251491cd7cce2421" args="" -->VAL_TYPE_INT64</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfa468708e875bee305f8d5953fd2bfa0a1"></a><!-- doxytag: member="VAL_TYPE_STRING" ref="ggad60b9d9384dafef239bf9aff56b6b8cfa468708e875bee305f8d5953fd2bfa0a1" args="" -->VAL_TYPE_STRING</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggad60b9d9384dafef239bf9aff56b6b8cfa1d77ae25806cfe41125cdadb7e79312d"></a><!-- doxytag: member="VAL_TYPE_PTR" ref="ggad60b9d9384dafef239bf9aff56b6b8cfa1d77ae25806cfe41125cdadb7e79312d" args="" -->VAL_TYPE_PTR</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00014">14</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa0394878f389741aea4dd627aa8b3faa8">VAL_TYPE_UINT8</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfaf117dcf63c83f11c1cfe600a49cd4e73">VAL_TYPE_INT8</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfaaa861170a753d8e5ddb1c41343d0fcff">VAL_TYPE_UINT16</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfab5e169eb252afe4e048ef9969a5030ba">VAL_TYPE_INT16</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfac873843d8b66555659b515e71e658772">VAL_TYPE_UINT32</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfaa4edd5ed053121eb09c6643c53e9f768">VAL_TYPE_INT32</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa7b80609b03c65b1fd48258c2425f19e9">VAL_TYPE_UINT64</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa6ea0bec1fd493066251491cd7cce2421">VAL_TYPE_INT64</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa468708e875bee305f8d5953fd2bfa0a1">VAL_TYPE_STRING</a>,
+  <a class="code" href="a00014.html#ggad60b9d9384dafef239bf9aff56b6b8cfa1d77ae25806cfe41125cdadb7e79312d">VAL_TYPE_PTR</a>,
+} <a class="code" href="a00014.html#gad60b9d9384dafef239bf9aff56b6b8cf">VAL_TYPE</a>;
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

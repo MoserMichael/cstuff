@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: stacks.h File Reference</title>
+<title>Simple coroutine library / objects in plain C: stacks.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,70 +37,78 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">stacks.h File Reference</div>  </div>
+<div class="title">stacks.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br/>
-<code>#include &lt;cutils/dlist.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;sys/mman.h&gt;</code><br/>
+<code>#include &lt;unistd.h&gt;</code><br/>
+<code>#include &quot;<a class="el" href="a00009_source.html">stacks.h</a>&quot;</code><br/>
 </div>
 <p><a href="a00008_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">tagSTACKS</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">tagSTACK_ENTRY</a></td></tr>
-<tr><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00004.html">tagSTACKS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gab29c025e7084c6eb9b5e8e901df32a0f">STACKS</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00003.html">tagSTACK_ENTRY</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga4302023640d9ce2f8e4c70f1b55648f5">STACK_ENTRY</a></td></tr>
-<tr><td colspan="2"><h2><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> { <a class="el" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>, 
-<a class="el" href="a00010.html#ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3">STACK_DIR_GROWING_UP</a>
- }</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gacae5bd5f2d666108ed11d96c877999bd">STACKS_init</a> (<a class="el" href="a00004.html">STACKS</a> *stack, int num_stacks, int pages_per_stack)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga416929f1d8b2f705c238c9a22fbe64cc">STACKS_destroy</a> (<a class="el" href="a00004.html">STACKS</a> *stack)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga363c86e7f58727269a1b09271b521c95">STACKS_get</a> (<a class="el" href="a00004.html">STACKS</a> *stack, <a class="el" href="a00003.html">STACK_ENTRY</a> **rentry)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a> (<a class="el" href="a00003.html">STACK_ENTRY</a> *entry)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga76bb6e2354e42c959cf28d7ad9be8387">STACKS_get_stack_size</a> (<a class="el" href="a00004.html">STACKS</a> *stack)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a> (int *ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gacae5bd5f2d666108ed11d96c877999bd">STACKS_init</a> (<a class="el" href="a00003.html">STACKS</a> *stack, int num_stacks, int pages_per_stack)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga416929f1d8b2f705c238c9a22fbe64cc">STACKS_destroy</a> (<a class="el" href="a00003.html">STACKS</a> *stack)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga363c86e7f58727269a1b09271b521c95">STACKS_get</a> (<a class="el" href="a00003.html">STACKS</a> *stack, <a class="el" href="a00002.html">STACK_ENTRY</a> **rentry)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a> (<a class="el" href="a00002.html">STACK_ENTRY</a> *entry)</td></tr>
 </table>
-<hr/><h2>Enumeration Type Documentation</h2>
-<a class="anchor" id="a79aa0db3fbf651329d7613f5de3dac9f"></a><!-- doxytag: member="stacks.h::STACK_DIR" ref="a79aa0db3fbf651329d7613f5de3dac9f" args="" -->
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="aca3b0b9dea91da057a9d4f1e8c190a23"></a><!-- doxytag: member="stacks.c::stack_dir" ref="aca3b0b9dea91da057a9d4f1e8c190a23" args="(int *ptr)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a></td>
+          <td class="memname"><a class="el" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> stack_dir </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c"></a><!-- doxytag: member="STACK_DIR_GROWING_DOWN" ref="a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c" args="" -->STACK_DIR_GROWING_DOWN</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3"></a><!-- doxytag: member="STACK_DIR_GROWING_UP" ref="ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3" args="" -->STACK_DIR_GROWING_UP</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00007">7</a> of file <a class="el" href="a00008_source.html">stacks.h</a>.</p>
-<div class="fragment"><pre class="fragment">             {
-   <a class="code" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>,
-   <a class="code" href="a00010.html#ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3">STACK_DIR_GROWING_UP</a>,
-}  <a class="code" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a>;
+<p>Definition at line <a class="el" href="a00008_source.html#l00005">5</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <span class="keywordtype">int</span> a = 0;
+   <span class="keywordflow">if</span> ((<span class="keywordtype">size_t</span>) &amp;a &lt; (<span class="keywordtype">size_t</span>) ptr ) {
+     <span class="keywordflow">return</span> <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>; 
+   }
+   <span class="keywordflow">return</span> <a class="code" href="a00013.html#ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3">STACK_DIR_GROWING_UP</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a4951230d1c901c4533d0a0a3bed8c95e"></a><!-- doxytag: member="stacks.c::stack_direction" ref="a4951230d1c901c4533d0a0a3bed8c95e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int stack_direction </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00014">14</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> a = 0;
+
+  <span class="keywordflow">return</span> <a class="code" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( &amp; a );
+}
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

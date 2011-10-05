@@ -65,14 +65,14 @@ Classes</h2></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagEVLOOP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga962e10cc0631184c27e12a42a78e2f38">EVLOOP</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> )(struct <a class="el" href="a00003.html">tagEVTHREAD</a> *thread, struct <a class="el" href="a00002.html">tagEVSOCKET</a> *socket, void *user_ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> )(struct <a class="el" href="a00003.html">tagEVTHREAD</a> *thread, struct <a class="el" href="a00002.html">tagEVSOCKET</a> *socket, void *user_ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00003.html">tagEVTHREAD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gadbf6a6fe0e60307b58ee163176c1839a">EVTHREAD</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00004.html">tagEVTHREAD_OBJECT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#aec66d4972a98f0832cbb0426f7a2fb2f">EVTHREAD_OBJECT</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">base class of sockets and timers. API of this class is not not called directly by the user of this library.  <a href="#aec66d4972a98f0832cbb0426f7a2fb2f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> )(struct <a class="el" href="a00005.html">tagEVTIMER</a> *timer, void *user_data)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00005.html">tagEVTIMER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gac4efc7b102f8c909be276232fddd95e7">EVTIMER</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagEVSOCKET</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gaa657a3b712a0f84e9b7aeff7059d96a0">EVSOCKET</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> )(int fd, <a class="el" href="a00008.html#a234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, void **ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> )(int fd, <a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, void **ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00006.html">tagTCPACCEPTOR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga04e932952b59a41f70cbd49ce5680032">EVTCPACCEPTOR</a></td></tr>
 <tr><td colspan="2"><h2><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -99,7 +99,7 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00001.html">EVLOOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">EVLOOP_init</a> (STACKS *stacks)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gaa25fcfb07b6227a4749e2d148bb053b3">EVLOOP_run</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga6886f671cea83756af4d537b31c53436">EVLOOP_break</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">EVTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gaa23e69897b0c289d7da8f8d10435a140">EVTHREAD_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, <a class="el" href="a00008.html#a234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc, void *user_ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00003.html">EVTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gaa23e69897b0c289d7da8f8d10435a140">EVTHREAD_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, <a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc, void *user_ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">EVTHREAD_start</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, struct <a class="el" href="a00002.html">tagEVSOCKET</a> *socket)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga51f061f7921e0bbce68d3a16e043a0ff">EVTHREAD_delay</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, struct timeval delay)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00005.html">EVTIMER</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4">EVTIMER_init_one_shot</a> (<a class="el" href="a00003.html">EVTHREAD</a> *loop, int timer_id, struct timeval tm, <a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> proc, void *user_data)</td></tr>
@@ -132,21 +132,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a234cc8fab2090c3bf2314d41f23f66d5"></a><!-- doxytag: member="evthread.h::EVTHREAD_PROC" ref="a234cc8fab2090c3bf2314d41f23f66d5" args=")(struct tagEVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef void(* <a class="el" href="a00008.html#a234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a>)(struct <a class="el" href="a00003.html">tagEVTHREAD</a> *thread, struct <a class="el" href="a00002.html">tagEVSOCKET</a> *socket, void *user_ctx)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00056">56</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
-
-</div>
-</div>
 <hr/><h2>Enumeration Type Documentation</h2>
 <a class="anchor" id="a3cbb545676ecd40a740416851b4fff80"></a><!-- doxytag: member="evthread.h::EVTHREAD_OBJECT_TYPE" ref="a3cbb545676ecd40a740416851b4fff80" args="" -->
 <div class="memitem">
@@ -167,7 +152,7 @@ Functions</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00089">89</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00111">111</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 <div class="fragment"><pre class="fragment">             { 
   <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a2411a18bbeb8291e5d6db0f70e1d4cce">EVTHREAD_OBJECT_SOCKET</a>,
   <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a6da017e2006cb13522323794dae0e2a4">EVTHREAD_OBJECT_TIMER</a>,
@@ -176,7 +161,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

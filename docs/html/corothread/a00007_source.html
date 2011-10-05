@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: stacks.c Source File</title>
+<title>Simple coroutine library / objects in plain C: cthread.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,119 +36,164 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">stacks.c</div>  </div>
+<div class="title">cthread.h</div>  </div>
 </div>
 <div class="contents">
-<a href="a00007.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;sys/mman.h&gt;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;unistd.h&gt;</span>
-<a name="l00003"></a>00003 <span class="preprocessor">#include &quot;<a class="code" href="a00008.html">stacks.h</a>&quot;</span>
+<a href="a00007.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef __CTHREAD_H__</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __CTHREAD_H__</span>
+<a name="l00003"></a>00003 <span class="preprocessor"></span>
 <a name="l00004"></a>00004 
-<a name="l00005"></a><a class="code" href="a00007.html#aca3b0b9dea91da057a9d4f1e8c190a23">00005</a> <a class="code" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> <a class="code" href="a00007.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( <span class="keywordtype">int</span> *ptr )
-<a name="l00006"></a>00006 {
-<a name="l00007"></a>00007    <span class="keywordtype">int</span> a = 0;
-<a name="l00008"></a>00008    <span class="keywordflow">if</span> ((<span class="keywordtype">size_t</span>) &amp;a &lt; (<span class="keywordtype">size_t</span>) ptr ) {
-<a name="l00009"></a>00009      <span class="keywordflow">return</span> <a class="code" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>; 
-<a name="l00010"></a>00010    }
-<a name="l00011"></a>00011    <span class="keywordflow">return</span> <a class="code" href="a00010.html#ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3">STACK_DIR_GROWING_UP</a>;
-<a name="l00012"></a>00012 }
-<a name="l00013"></a>00013 
-<a name="l00014"></a><a class="code" href="a00007.html#a4951230d1c901c4533d0a0a3bed8c95e">00014</a> <span class="keywordtype">int</span> <a class="code" href="a00007.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a>()
-<a name="l00015"></a>00015 {
-<a name="l00016"></a>00016   <span class="keywordtype">int</span> a = 0;
-<a name="l00017"></a>00017 
-<a name="l00018"></a>00018   <span class="keywordflow">return</span> <a class="code" href="a00007.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( &amp; a );
-<a name="l00019"></a>00019 }
-<a name="l00020"></a>00020 
-<a name="l00021"></a><a class="code" href="a00010.html#gacae5bd5f2d666108ed11d96c877999bd">00021</a> <span class="keywordtype">int</span> <a class="code" href="a00010.html#gacae5bd5f2d666108ed11d96c877999bd">STACKS_init</a>( <a class="code" href="a00004.html">STACKS</a> *stack, <span class="keywordtype">int</span> num_stacks, <span class="keywordtype">int</span> pages_per_stack )
-<a name="l00022"></a>00022 {
-<a name="l00023"></a>00023   <span class="keywordtype">int</span> page_size;
-<a name="l00024"></a>00024   <span class="keywordtype">size_t</span> len, one_stack_size;
-<a name="l00025"></a>00025   <a class="code" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> dir;
-<a name="l00026"></a>00026   <a class="code" href="a00003.html">STACK_ENTRY</a> *entry;
-<a name="l00027"></a>00027   uint8_t *mapping, *stack_start;
-<a name="l00028"></a>00028   uint8_t *guard_page;
-<a name="l00029"></a>00029   <span class="keywordtype">int</span> i;
-<a name="l00030"></a>00030   
-<a name="l00031"></a>00031   page_size = sysconf( _SC_PAGE_SIZE );
-<a name="l00032"></a>00032   one_stack_size = page_size *  pages_per_stack; 
-<a name="l00033"></a>00033   len = num_stacks * one_stack_size;
-<a name="l00034"></a>00034   dir = <a class="code" href="a00007.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a>();
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;ucontext.h&gt;</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
+<a name="l00007"></a>00007 <span class="preprocessor">#include &lt;<a class="code" href="a00009.html">corothread/stacks.h</a>&gt;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &lt;<a class="code" href="a00011.html">corothread/val.h</a>&gt;</span>
+<a name="l00009"></a>00009 <span class="comment"></span>
+<a name="l00010"></a>00010 <span class="comment">/** </span>
+<a name="l00011"></a>00011 <span class="comment"> * @defgroup CTHREAD</span>
+<a name="l00012"></a>00012 <span class="comment"> * @brief a coroutine thread.</span>
+<a name="l00013"></a>00013 <span class="comment"> *</span>
+<a name="l00014"></a>00014 <span class="comment"> * A very limited user mode threading package that allows constructions of co-routines.</span>
+<a name="l00015"></a>00015 <span class="comment"> * Coroutine scheduling is done by mean of mkcontet/setcontext/getcontext functions (glibc)</span>
+<a name="l00016"></a>00016 <span class="comment"> *</span>
+<a name="l00017"></a>00017 <span class="comment"> * User mode threads are best when used in a very limited scenario, complex usage scenarios often</span>
+<a name="l00018"></a>00018 <span class="comment"> * lead to intricate situations that are hard to debug.</span>
+<a name="l00019"></a>00019 <span class="comment"> * Areas where user mode threading shines </span>
+<a name="l00020"></a>00020 <span class="comment"> *   - coroutines / continuations</span>
+<a name="l00021"></a>00021 <span class="comment"> *   - generator funcions (like python/ruby/perl).</span>
+<a name="l00022"></a>00022 <span class="comment"> *</span>
+<a name="l00023"></a>00023 <span class="comment"> *</span>
+<a name="l00024"></a>00024 <span class="comment"> * @{</span>
+<a name="l00025"></a>00025 <span class="comment"> */</span>
+<a name="l00026"></a>00026 
+<a name="l00027"></a><a class="code" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">00027</a> <span class="keyword">typedef</span> void  (*<a class="code" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a>) (<a class="code" href="a00005.html">VALUES</a> *);
+<a name="l00028"></a>00028 
+<a name="l00029"></a><a class="code" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">00029</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00030"></a><a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">00030</a>   <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>,
+<a name="l00031"></a><a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">00031</a>   <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>,
+<a name="l00032"></a><a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">00032</a>   <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>,
+<a name="l00033"></a><a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">00033</a>   <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>,
+<a name="l00034"></a>00034 } <a class="code" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a>;
 <a name="l00035"></a>00035 
-<a name="l00036"></a>00036   mapping = (uint8_t *) mmap( 0 , len, PROT_READ|PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS 
-<a name="l00037"></a>00037 #<span class="keywordflow">if</span> 0
-<a name="l00038"></a>00038 #ifdef MAP_STACK
-<a name="l00039"></a>00039                         | MAP_STACK
-<a name="l00040"></a>00040 #endif
-<a name="l00041"></a>00041 #endif
-<a name="l00042"></a>00042                       , -1, 0 );
-<a name="l00043"></a>00043   <span class="keywordflow">if</span> (!mapping) {
-<a name="l00044"></a>00044     <span class="keywordflow">return</span> -1;
-<a name="l00045"></a>00045   }
-<a name="l00046"></a>00046   stack-&gt;<a class="code" href="a00004.html#a3e089321a0d191b9291649c828fe9c48">mapping</a> = mapping;
-<a name="l00047"></a>00047   stack-&gt;<a class="code" href="a00010.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a> = len;
-<a name="l00048"></a>00048   stack-&gt;<a class="code" href="a00010.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> = num_stacks;
-<a name="l00049"></a>00049   stack-&gt;<a class="code" href="a00010.html#gab7c15d9df43b0f687f3c9c712fae0e82">one_stack_size</a> = one_stack_size;  
-<a name="l00050"></a>00050  
-<a name="l00051"></a>00051   DLIST_init( &amp;stack-&gt;<a class="code" href="a00010.html#ga08030f5ed264a29c070d11287938979d">root</a> );
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037 
+<a name="l00038"></a><a class="code" href="a00001.html">00038</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00001.html">tagCTHREAD</a> {
+<a name="l00039"></a><a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">00039</a>   ucontext_t <a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>;
+<a name="l00040"></a><a class="code" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">00040</a>   ucontext_t <a class="code" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a>;
+<a name="l00041"></a><a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">00041</a>   <a class="code" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> <a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a>;
+<a name="l00042"></a><a class="code" href="a00001.html#a3f7ef430812f309728071e027ec90532">00042</a>   uint32_t <a class="code" href="a00001.html#a3f7ef430812f309728071e027ec90532">thread_id</a>;
+<a name="l00043"></a>00043  
+<a name="l00044"></a><a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">00044</a>   <a class="code" href="a00005.html">VALUES</a> <a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+<a name="l00045"></a><a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">00045</a>   <a class="code" href="a00005.html">VALUES</a> <a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>;  
+<a name="l00046"></a>00046 
+<a name="l00047"></a><a class="code" href="a00001.html#a5ff356da73817c9a3d239dbde9e80c85">00047</a>   <a class="code" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a> <a class="code" href="a00001.html#a5ff356da73817c9a3d239dbde9e80c85">proc</a>;  
+<a name="l00048"></a><a class="code" href="a00001.html#ae6fb70fa6314738018642f89ca5c359c">00048</a>   <span class="keyword">struct </span><a class="code" href="a00001.html">tagCTHREAD</a> *<a class="code" href="a00001.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a>;
+<a name="l00049"></a><a class="code" href="a00001.html#ae435552c206d330befbad33b9fdfb3a0">00049</a>   <a class="code" href="a00002.html">STACK_ENTRY</a> *<a class="code" href="a00001.html#ae435552c206d330befbad33b9fdfb3a0">stack_entry</a>;  
+<a name="l00050"></a>00050 } <a class="code" href="a00012.html#ga531a264d907809a7c19e882c995989c9">CTHREAD</a>;
+<a name="l00051"></a>00051 
 <a name="l00052"></a>00052 
-<a name="l00053"></a>00053   <span class="keywordflow">for</span>( i = 0; i &lt; num_stacks; i ++ ) {
-<a name="l00054"></a>00054     stack_start = mapping + ( i * one_stack_size);
-<a name="l00055"></a>00055     
-<a name="l00056"></a>00056     <span class="keywordflow">if</span> (dir == <a class="code" href="a00008.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>) {
-<a name="l00057"></a>00057     <span class="comment">//stack_start = mapping + ( (i + 1) * one_stack_size) - 1;</span>
-<a name="l00058"></a>00058       guard_page =  mapping + (i * one_stack_size);
-<a name="l00059"></a>00059     } <span class="keywordflow">else</span> {
-<a name="l00060"></a>00060       guard_page = mapping + ( i + 1 ) * one_stack_size - page_size;
-<a name="l00061"></a>00061     }
-<a name="l00062"></a>00062   
-<a name="l00063"></a>00063     <span class="keywordflow">if</span> (mprotect( guard_page , page_size, PROT_NONE )) {
-<a name="l00064"></a>00064       <span class="keywordflow">return</span> -1;
-<a name="l00065"></a>00065     }
-<a name="l00066"></a>00066     
-<a name="l00067"></a>00067     entry = (<a class="code" href="a00003.html">STACK_ENTRY</a> *) malloc( <span class="keyword">sizeof</span>( <a class="code" href="a00003.html">STACK_ENTRY</a> ) );
-<a name="l00068"></a>00068     <span class="keywordflow">if</span> (!entry) {
-<a name="l00069"></a>00069       <span class="keywordflow">return</span> -1;
-<a name="l00070"></a>00070     }
-<a name="l00071"></a>00071     entry-&gt;<a class="code" href="a00010.html#ga9c067ef2a750355a9ce3360ac2ead65b">stack_start</a> = stack_start;
-<a name="l00072"></a>00072     entry-&gt;<a class="code" href="a00010.html#ga3bf0755824c9a30451e247848157685b">stacks</a> = stack;
-<a name="l00073"></a>00073     DLIST_push_back( &amp;stack-&gt;<a class="code" href="a00010.html#ga08030f5ed264a29c070d11287938979d">root</a>, &amp;entry-&gt;<a class="code" href="a00003.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a> );
-<a name="l00074"></a>00074   }
-<a name="l00075"></a>00075   <span class="keywordflow">return</span> 0;
-<a name="l00076"></a>00076 }
-<a name="l00077"></a>00077 
-<a name="l00078"></a><a class="code" href="a00010.html#ga416929f1d8b2f705c238c9a22fbe64cc">00078</a> <span class="keywordtype">int</span> <a class="code" href="a00010.html#ga416929f1d8b2f705c238c9a22fbe64cc">STACKS_destroy</a>( <a class="code" href="a00004.html">STACKS</a> *stack )
-<a name="l00079"></a>00079 {
-<a name="l00080"></a>00080   <span class="keywordflow">if</span> ( DLIST_size( &amp;stack-&gt;<a class="code" href="a00010.html#ga08030f5ed264a29c070d11287938979d">root</a>) != (<span class="keywordtype">size_t</span>) stack-&gt;<a class="code" href="a00010.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> ) {
-<a name="l00081"></a>00081     <span class="keywordflow">return</span> -1;
-<a name="l00082"></a>00082   }
-<a name="l00083"></a>00083   
-<a name="l00084"></a>00084   <span class="keywordflow">if</span> (munmap( stack-&gt;<a class="code" href="a00004.html#a3e089321a0d191b9291649c828fe9c48">mapping</a>, stack-&gt;<a class="code" href="a00010.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a>)) {
-<a name="l00085"></a>00085     <span class="keywordflow">return</span> -1;
-<a name="l00086"></a>00086   }
-<a name="l00087"></a>00087   <span class="keywordflow">return</span> 0;
-<a name="l00088"></a>00088 }
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090 
-<a name="l00091"></a><a class="code" href="a00010.html#ga363c86e7f58727269a1b09271b521c95">00091</a> <span class="keywordtype">void</span> *<a class="code" href="a00010.html#ga363c86e7f58727269a1b09271b521c95">STACKS_get</a>(<a class="code" href="a00004.html">STACKS</a> *stack, <a class="code" href="a00003.html">STACK_ENTRY</a> **rentry )
-<a name="l00092"></a>00092 {
-<a name="l00093"></a>00093   <a class="code" href="a00003.html">STACK_ENTRY</a> *entry;
-<a name="l00094"></a>00094   <span class="keywordflow">if</span> (DLIST_isempty( &amp;stack-&gt;<a class="code" href="a00010.html#ga08030f5ed264a29c070d11287938979d">root</a> ) ) {
-<a name="l00095"></a>00095     <span class="keywordflow">return</span> 0;
-<a name="l00096"></a>00096   }
-<a name="l00097"></a>00097   entry = (<a class="code" href="a00003.html">STACK_ENTRY</a> *) DLIST_pop_front( &amp;stack-&gt;<a class="code" href="a00010.html#ga08030f5ed264a29c070d11287938979d">root</a> );
-<a name="l00098"></a>00098   *rentry = entry;
-<a name="l00099"></a>00099   <span class="keywordflow">return</span> entry-&gt;<a class="code" href="a00010.html#ga9c067ef2a750355a9ce3360ac2ead65b">stack_start</a>;
-<a name="l00100"></a>00100 }
-<a name="l00101"></a>00101 
-<a name="l00102"></a><a class="code" href="a00010.html#ga6e3257e3fc51994cabf5bc418ed16648">00102</a> <span class="keywordtype">int</span> <a class="code" href="a00010.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a>(<a class="code" href="a00003.html">STACK_ENTRY</a> *entry)
-<a name="l00103"></a>00103 {
-<a name="l00104"></a>00104   <a class="code" href="a00004.html">STACKS</a> *stack = entry-&gt;<a class="code" href="a00010.html#ga3bf0755824c9a30451e247848157685b">stacks</a>;
-<a name="l00105"></a>00105   DLIST_push_front( &amp;stack-&gt;<a class="code" href="a00010.html#ga08030f5ed264a29c070d11287938979d">root</a>, &amp;entry-&gt;<a class="code" href="a00003.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a> );
-<a name="l00106"></a>00106   <span class="keywordflow">return</span> 0;
-<a name="l00107"></a>00107 }
+<a name="l00053"></a>00053 <span class="comment"></span>
+<a name="l00054"></a>00054 <span class="comment">/**</span>
+<a name="l00055"></a>00055 <span class="comment"> * @brief library initialisation</span>
+<a name="l00056"></a>00056 <span class="comment"> */</span>
+<a name="l00057"></a>00057 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga0592112b80e974a450345f78c1aaf42b" title="library initialisation">CTHREAD_libinit</a>();
+<a name="l00058"></a>00058 <span class="comment"></span>
+<a name="l00059"></a>00059 <span class="comment">/**</span>
+<a name="l00060"></a>00060 <span class="comment"> * @brief initialises a new co-routine thread. </span>
+<a name="l00061"></a>00061 <span class="comment"> </span>
+<a name="l00062"></a>00062 <span class="comment"> * Postcondition: The new thread is initialised and enters CTHREAD_STATE_INIT state.</span>
+<a name="l00063"></a>00063 <span class="comment"></span>
+<a name="l00064"></a>00064 <span class="comment"> * @param stacks the thread is obtained from the pool of stacks (argument stack).</span>
+<a name="l00065"></a>00065 <span class="comment"> * @param proc The thread procecdure is argument proc.</span>
+<a name="l00066"></a>00066 <span class="comment"> */</span>
+<a name="l00067"></a>00067 <a class="code" href="a00001.html">CTHREAD</a> * <a class="code" href="a00012.html#gadb6709e149679aa65ecc988489c45a00" title="initialises a new co-routine thread.">CTHREAD_init</a>( <a class="code" href="a00003.html">STACKS</a> *stacks, <a class="code" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a> <a class="code" href="a00001.html#a5ff356da73817c9a3d239dbde9e80c85">proc</a> );
+<a name="l00068"></a>00068 <span class="comment"></span>
+<a name="l00069"></a>00069 <span class="comment">/**</span>
+<a name="l00070"></a>00070 <span class="comment"> * deallocates a thread </span>
+<a name="l00071"></a>00071 <span class="comment"> *</span>
+<a name="l00072"></a>00072 <span class="comment"> * Precondition: the thread must be in CTHREAD_STATE_EXIT state </span>
+<a name="l00073"></a>00073 <span class="comment"> */</span> 
+<a name="l00074"></a>00074 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gae4767f31d1375f7edfa267ad62bf8ea3">CTHREAD_free</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread );
+<a name="l00075"></a>00075 <span class="comment"></span>
+<a name="l00076"></a>00076 <span class="comment">/**</span>
+<a name="l00077"></a>00077 <span class="comment"> * @brief start a new thread - the thread procedure is invoked.</span>
+<a name="l00078"></a>00078 <span class="comment"> *</span>
+<a name="l00079"></a>00079 <span class="comment"> * The initialised thread is started; The function returns if the running thread either exited or entered suspended state (i.e. the thread called CTHREAD_yield)</span>
+<a name="l00080"></a>00080 <span class="comment"> *</span>
+<a name="l00081"></a>00081 <span class="comment"> * Values passed from the thread to the caller are stored in rvalue parameter.</span>
+<a name="l00082"></a>00082 <span class="comment"> * If this parameter is 0 then the return values are ignored.</span>
+<a name="l00083"></a>00083 <span class="comment"> * </span>
+<a name="l00084"></a>00084 <span class="comment"> * Values passed from the caller to the thread -</span>
+<a name="l00085"></a>00085 <span class="comment"> *   </span>
+<a name="l00086"></a>00086 <span class="comment"> * Precondition: the thread is in either CTHREAD_STATE_INIT or CTHREAD_STATE_EXIT state.</span>
+<a name="l00087"></a>00087 <span class="comment"> * Postcondition: the thread is in CTHREAD_STATE_RUNNING state.</span>
+<a name="l00088"></a>00088 <span class="comment"> *</span>
+<a name="l00089"></a>00089 <span class="comment"> */</span>
+<a name="l00090"></a>00090 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga335f6adec427c36c257c4436586f9e41" title="start a new thread - the thread procedure is invoked.">CTHREAD_start</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format , ... );
+<a name="l00091"></a>00091 <span class="comment"></span>
+<a name="l00092"></a>00092 <span class="comment">/**</span>
+<a name="l00093"></a>00093 <span class="comment"> * @brief resume a suspended thread</span>
+<a name="l00094"></a>00094 <span class="comment"> *</span>
+<a name="l00095"></a>00095 <span class="comment"> * Resumes a suspended thread, the function will return when the resumed thread calls CTHREAD_yield or when it exits.</span>
+<a name="l00096"></a>00096 <span class="comment"> *</span>
+<a name="l00097"></a>00097 <span class="comment"> * Passing parameters to the thread; a variable length set of arguments can be sent to the thread, and the thread will be able to read them.</span>
+<a name="l00098"></a>00098 <span class="comment"> * Parameter format is the format specifier, subsequent variable length argument values are then sent to the thread.</span>
+<a name="l00099"></a>00099 <span class="comment"> *  </span>
+<a name="l00100"></a>00100 <span class="comment"> * Retrieving parameters from the thread:</span>
+<a name="l00101"></a>00101 <span class="comment"> * We can access values returned by the thread, once CTHREAD_resume returns. The values passed by the thread are stored in rvalue parameter.</span>
+<a name="l00102"></a>00102 <span class="comment"> *</span>
+<a name="l00103"></a>00103 <span class="comment"> * Precondition: the thread is in CTHREAD_STATE_SUSPENDED state</span>
+<a name="l00104"></a>00104 <span class="comment"> * Postcondition: the thread is in CTHREAD_STATE_RUNNING state</span>
+<a name="l00105"></a>00105 <span class="comment">  */</span>
+<a name="l00106"></a>00106 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gab8e125df749a73083ca34ad4ed608f26" title="resume a suspended thread">CTHREAD_resume</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
+<a name="l00107"></a>00107 <span class="comment"></span>
+<a name="l00108"></a>00108 <span class="comment">/**</span>
+<a name="l00109"></a>00109 <span class="comment"> * @brief a running thread temporarily suspends execution</span>
+<a name="l00110"></a>00110 <span class="comment"> *</span>
+<a name="l00111"></a>00111 <span class="comment"> * Precondition: the thread is in CTHREAD_STATE_RUNNING state</span>
+<a name="l00112"></a>00112 <span class="comment"> * Postcondition: the thread is in CTHREAD_STATE_SUSPENDED state</span>
+<a name="l00113"></a>00113 <span class="comment"> </span>
+<a name="l00114"></a>00114 <span class="comment"> </span>
+<a name="l00115"></a>00115 <span class="comment"> */</span>
+<a name="l00116"></a>00116 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711" title="a running thread temporarily suspends execution">CTHREAD_yield</a>(<a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
+<a name="l00117"></a>00117 <span class="comment"></span>
+<a name="l00118"></a>00118 <span class="comment">/**</span>
+<a name="l00119"></a>00119 <span class="comment"> * @brief waits till the thread has finished </span>
+<a name="l00120"></a>00120 <span class="comment"> * Calls CTHREAD_resume repeatedly unntil the thread finishes.</span>
+<a name="l00121"></a>00121 <span class="comment"> */</span>
+<a name="l00122"></a>00122 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511" title="waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes...">CTHREAD_join</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue );
+<a name="l00123"></a>00123 
+<a name="l00124"></a>00124 <span class="comment"></span>
+<a name="l00125"></a>00125 <span class="comment">/**</span>
+<a name="l00126"></a>00126 <span class="comment"> * @brief a running thread sets it return values</span>
+<a name="l00127"></a>00127 <span class="comment"> *</span>
+<a name="l00128"></a>00128 <span class="comment"> */</span>
+<a name="l00129"></a>00129 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955" title="a running thread sets it return values">CTHREAD_set_return_value</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
+<a name="l00130"></a>00130 <span class="comment"></span>
+<a name="l00131"></a>00131 <span class="comment">/**</span>
+<a name="l00132"></a>00132 <span class="comment"> * @brief get thread id</span>
+<a name="l00133"></a>00133 <span class="comment"> *</span>
+<a name="l00134"></a>00134 <span class="comment"> * Precondition: the thread is in any state other than CTHREAD_STATE_INIT</span>
+<a name="l00135"></a>00135 <span class="comment"> */</span>
+<a name="l00136"></a>00136 uint32_t <a class="code" href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7" title="get thread id">CTHREAD_get_tid</a>();
+<a name="l00137"></a>00137 <span class="comment"></span>
+<a name="l00138"></a>00138 <span class="comment">/**</span>
+<a name="l00139"></a>00139 <span class="comment"> * @brief get thread state</span>
+<a name="l00140"></a>00140 <span class="comment"> */</span>
+<a name="l00141"></a><a class="code" href="a00012.html#gac84f3f78f212fb85214833923d755764">00141</a> M_INLINE <a class="code" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> <a class="code" href="a00012.html#gac84f3f78f212fb85214833923d755764" title="get thread state">CTHREAD_state</a>(<a class="code" href="a00001.html">CTHREAD</a> *thread) 
+<a name="l00142"></a>00142 {
+<a name="l00143"></a>00143   <span class="keywordflow">return</span> thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a>;
+<a name="l00144"></a>00144 }
+<a name="l00145"></a>00145 <span class="comment"></span>
+<a name="l00146"></a>00146 <span class="comment">/**</span>
+<a name="l00147"></a>00147 <span class="comment"> * @}</span>
+<a name="l00148"></a>00148 <span class="comment"> */</span>
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150 <span class="preprocessor">#endif</span>
+<a name="l00151"></a>00151 <span class="preprocessor"></span>
+<a name="l00152"></a>00152 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

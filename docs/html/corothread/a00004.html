@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: tagSTACKS Struct Reference</title>
+<title>Simple coroutine library / objects in plain C: tagVAL Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,46 +40,217 @@
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">tagSTACKS Struct Reference<div class="ingroups"><a class="el" href="a00010.html">STACKS</a></div></div>  </div>
+<div class="title">tagVAL Struct Reference<div class="ingroups"><a class="el" href="a00014.html">VAL</a></div></div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="tagSTACKS" -->
-<p><code>#include &lt;<a class="el" href="a00008_source.html">stacks.h</a>&gt;</code></p>
+<!-- doxytag: class="tagVAL" -->
+<p><code>#include &lt;<a class="el" href="a00011_source.html">val.h</a>&gt;</code></p>
 
-<p><a href="a00017.html">List of all members.</a></p>
+<p><a href="a00022.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#a3e089321a0d191b9291649c828fe9c48">mapping</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#gab7c15d9df43b0f687f3c9c712fae0e82">one_stack_size</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">DLIST&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga08030f5ed264a29c070d11287938979d">root</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00014.html#gad60b9d9384dafef239bf9aff56b6b8cf">VAL_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#a900c6f814256f1ba3de6ab942807dc05">type</a></td></tr>
+<tr><td class="memItemLeft" >union {</td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="a00004.html#aa54ef308a3753d33deb971f8061433c7">u8</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;int8_t&#160;&#160;&#160;<a class="el" href="a00004.html#a18e29adbc81e4990e15f2d8f7791bd88">n8</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;uint16_t&#160;&#160;&#160;<a class="el" href="a00004.html#a816dfd495b2517dc5d037c4d370de457">u16</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;int16_t&#160;&#160;&#160;<a class="el" href="a00004.html#ac74553150e8554674e3f5322b0be7ae8">n16</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<a class="el" href="a00004.html#a280d9f195ebe18535613ab9b2b2dc42f">u32</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;int32_t&#160;&#160;&#160;<a class="el" href="a00004.html#a87de29ba193bc4e23d48585c94a59cff">n32</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;uint64_t&#160;&#160;&#160;<a class="el" href="a00004.html#a2a096a58138d1a614d09fa1ca83c7a0c">u64</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;int64_t&#160;&#160;&#160;<a class="el" href="a00004.html#a293e232cb95fb63855aac36d83e6fc89">n64</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="a00004.html#a4d77a5b848264725ecaaa1e7ff49153c">sval</a></td></tr>
+<tr><td class="memItemLeft" >&#160;&#160;&#160;void *&#160;&#160;&#160;<a class="el" href="a00004.html#aa21f46693fb94f3db15b77e6c3ffc4e4">pval</a></td></tr>
+<tr><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html#a454ea739dc282feb406302263e3da22a">u</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00008_source.html#l00018">18</a> of file <a class="el" href="a00008_source.html">stacks.h</a>.</p>
+<p>Definition at line <a class="el" href="a00011_source.html#l00027">27</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a3e089321a0d191b9291649c828fe9c48"></a><!-- doxytag: member="tagSTACKS::mapping" ref="a3e089321a0d191b9291649c828fe9c48" args="" -->
+<a class="anchor" id="ac74553150e8554674e3f5322b0be7ae8"></a><!-- doxytag: member="tagVAL::n16" ref="ac74553150e8554674e3f5322b0be7ae8" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t* <a class="el" href="a00004.html#a3e089321a0d191b9291649c828fe9c48">tagSTACKS::mapping</a></td>
+          <td class="memname">int16_t <a class="el" href="a00004.html#ac74553150e8554674e3f5322b0be7ae8">tagVAL::n16</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00019">19</a> of file <a class="el" href="a00008_source.html">stacks.h</a>.</p>
+<p>Definition at line <a class="el" href="a00011_source.html#l00033">33</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a87de29ba193bc4e23d48585c94a59cff"></a><!-- doxytag: member="tagVAL::n32" ref="a87de29ba193bc4e23d48585c94a59cff" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t <a class="el" href="a00004.html#a87de29ba193bc4e23d48585c94a59cff">tagVAL::n32</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00035">35</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a293e232cb95fb63855aac36d83e6fc89"></a><!-- doxytag: member="tagVAL::n64" ref="a293e232cb95fb63855aac36d83e6fc89" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t <a class="el" href="a00004.html#a293e232cb95fb63855aac36d83e6fc89">tagVAL::n64</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00037">37</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a18e29adbc81e4990e15f2d8f7791bd88"></a><!-- doxytag: member="tagVAL::n8" ref="a18e29adbc81e4990e15f2d8f7791bd88" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int8_t <a class="el" href="a00004.html#a18e29adbc81e4990e15f2d8f7791bd88">tagVAL::n8</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00031">31</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa21f46693fb94f3db15b77e6c3ffc4e4"></a><!-- doxytag: member="tagVAL::pval" ref="aa21f46693fb94f3db15b77e6c3ffc4e4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* <a class="el" href="a00004.html#aa21f46693fb94f3db15b77e6c3ffc4e4">tagVAL::pval</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00040">40</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4d77a5b848264725ecaaa1e7ff49153c"></a><!-- doxytag: member="tagVAL::sval" ref="a4d77a5b848264725ecaaa1e7ff49153c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* <a class="el" href="a00004.html#a4d77a5b848264725ecaaa1e7ff49153c">tagVAL::sval</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00039">39</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a900c6f814256f1ba3de6ab942807dc05"></a><!-- doxytag: member="tagVAL::type" ref="a900c6f814256f1ba3de6ab942807dc05" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00014.html#gad60b9d9384dafef239bf9aff56b6b8cf">VAL_TYPE</a> <a class="el" href="a00004.html#a900c6f814256f1ba3de6ab942807dc05">tagVAL::type</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00028">28</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a454ea739dc282feb406302263e3da22a"></a><!-- doxytag: member="tagVAL::u" ref="a454ea739dc282feb406302263e3da22a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">union { ... }   <a class="el" href="a00004.html#a454ea739dc282feb406302263e3da22a">tagVAL::u</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a816dfd495b2517dc5d037c4d370de457"></a><!-- doxytag: member="tagVAL::u16" ref="a816dfd495b2517dc5d037c4d370de457" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t <a class="el" href="a00004.html#a816dfd495b2517dc5d037c4d370de457">tagVAL::u16</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00032">32</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a280d9f195ebe18535613ab9b2b2dc42f"></a><!-- doxytag: member="tagVAL::u32" ref="a280d9f195ebe18535613ab9b2b2dc42f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t <a class="el" href="a00004.html#a280d9f195ebe18535613ab9b2b2dc42f">tagVAL::u32</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00034">34</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2a096a58138d1a614d09fa1ca83c7a0c"></a><!-- doxytag: member="tagVAL::u64" ref="a2a096a58138d1a614d09fa1ca83c7a0c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t <a class="el" href="a00004.html#a2a096a58138d1a614d09fa1ca83c7a0c">tagVAL::u64</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00036">36</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa54ef308a3753d33deb971f8061433c7"></a><!-- doxytag: member="tagVAL::u8" ref="aa54ef308a3753d33deb971f8061433c7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="a00004.html#aa54ef308a3753d33deb971f8061433c7">tagVAL::u8</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00030">30</a> of file <a class="el" href="a00011_source.html">val.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00008_source.html">stacks.h</a></li>
+<li><a class="el" href="a00011_source.html">val.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

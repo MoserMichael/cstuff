@@ -37,8 +37,8 @@
       <type>static void</type>
       <name>evthread_proc</name>
       <anchorfile>a00007.html</anchorfile>
-      <anchor>ad705fb6f9cf66a02d338f10a77f377e7</anchor>
-      <arglist>(void *ctx)</arglist>
+      <anchor>abc55701105da0863845a6bf2212ac294</anchor>
+      <arglist>(VALUES *ctx)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static void</type>
@@ -135,8 +135,8 @@
       <type>static void</type>
       <name>timer_thread_proc</name>
       <anchorfile>a00007.html</anchorfile>
-      <anchor>ac7a8d32bdcb9305cc6a7b3fec9028bb7</anchor>
-      <arglist>(void *arg)</arglist>
+      <anchor>a2d43182e610f4db506b2d60b0ce296d5</anchor>
+      <arglist>(VALUES *values)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static void</type>
@@ -250,8 +250,8 @@
     <member kind="typedef">
       <type>void(*</type>
       <name>EVTHREAD_PROC</name>
-      <anchorfile>a00008.html</anchorfile>
-      <anchor>a234cc8fab2090c3bf2314d41f23f66d5</anchor>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga234cc8fab2090c3bf2314d41f23f66d5</anchor>
       <arglist>)(struct tagEVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx)</arglist>
     </member>
     <member kind="typedef">
@@ -566,6 +566,13 @@
     <title>EVTHREAD</title>
     <filename>a00010.html</filename>
     <class kind="struct">tagEVTHREAD</class>
+    <member kind="typedef">
+      <type>void(*</type>
+      <name>EVTHREAD_PROC</name>
+      <anchorfile>a00010.html</anchorfile>
+      <anchor>ga234cc8fab2090c3bf2314d41f23f66d5</anchor>
+      <arglist>)(struct tagEVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx)</arglist>
+    </member>
     <member kind="typedef">
       <type>struct tagEVTHREAD</type>
       <name>EVTHREAD</name>

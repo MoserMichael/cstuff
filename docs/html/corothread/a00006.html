@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple coroutine library / objects in plain C: cthread.h File Reference</title>
+<title>Simple coroutine library / objects in plain C: cthread.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,129 +37,211 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">cthread.h File Reference</div>  </div>
+<div class="title">cthread.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;ucontext.h&gt;</code><br/>
-<code>#include &lt;stdint.h&gt;</code><br/>
-<code>#include &lt;<a class="el" href="a00008_source.html">corothread/stacks.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &quot;<a class="el" href="a00007_source.html">cthread.h</a>&quot;</code><br/>
+<code>#include &lt;pthread.h&gt;</code><br/>
+<code>#include &lt;stdio.h&gt;</code><br/>
 </div>
 <p><a href="a00006_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">tagCRETURN_POINT</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">denotes return point from co-routine call.  <a href="a00001.html#details">More...</a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html">tagCTHREAD</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#af44a938c4d7aa9c703f0ee86847fe00b">GET_TLS</a>()&#160;&#160;&#160;<a class="el" href="a00006.html#abf34770f7ebd8e4f3560cb5348994fe4">tls_thread</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a1e7894c85352e355590b323f53b5fc17">SET_TLS</a>(val)&#160;&#160;&#160;do { <a class="el" href="a00006.html#abf34770f7ebd8e4f3560cb5348994fe4">tls_thread</a> = val; } while( 0 );</td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#af0ad185700a9a4e97dc60bf65b98cb6c">CTHREAD_PROC</a> )(void *arg)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagCRETURN_POINT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#acb77203a46ebd97c8ba1febf07fcdca0">CRETURN_POINT</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">denotes return point from co-routine call.  <a href="#acb77203a46ebd97c8ba1febf07fcdca0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagCTHREAD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga531a264d907809a7c19e882c995989c9">CTHREAD</a></td></tr>
-<tr><td colspan="2"><h2><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> { <a class="el" href="a00009.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>, 
-<a class="el" href="a00009.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>, 
-<a class="el" href="a00009.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>, 
-<a class="el" href="a00009.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>
- }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a26b2b60856b3116d3fa35ecb96564380">MK_CTX_FUNC</a> )(void)</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00001.html">CRETURN_POINT</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a25102758c4164a5b978062107b2f1c01">CRETURN_POINT_init</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga0592112b80e974a450345f78c1aaf42b">CTHREAD_libinit</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00002.html">CTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga92dd60a37f2db43fd9a55eef3da21bc7">CTHREAD_init</a> (<a class="el" href="a00004.html">STACKS</a> *stacks, <a class="el" href="a00006.html#af0ad185700a9a4e97dc60bf65b98cb6c">CTHREAD_PROC</a> proc, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises a new co-routine thread.  <a href="a00009.html#ga92dd60a37f2db43fd9a55eef3da21bc7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga1423b211106739007fc916f1bac9a3a6">CTHREAD_start</a> (<a class="el" href="a00002.html">CTHREAD</a> *thread)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start a new thread - the thread procedure is invoked.  <a href="a00009.html#ga1423b211106739007fc916f1bac9a3a6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gafb48d6856e2d6ca97593523fb7894382">CTHREAD_join</a> (<a class="el" href="a00002.html">CTHREAD</a> *thread)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">waits till the thread has finished Callss CTHREAD_resume repeatedly unntil the thread finishes.  <a href="a00009.html#gafb48d6856e2d6ca97593523fb7894382"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gae4767f31d1375f7edfa267ad62bf8ea3">CTHREAD_free</a> (<a class="el" href="a00002.html">CTHREAD</a> *thread)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gabad990037ec5121d988baabefba4729e">CTHREAD_start_ex</a> (<a class="el" href="a00002.html">CTHREAD</a> *thread, <a class="el" href="a00001.html">CRETURN_POINT</a> *next)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start a new thread - the thread procedure is invoked.  <a href="a00009.html#gabad990037ec5121d988baabefba4729e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gafa9ace97052a6ddb5764826b4e0a4b59">CTHREAD_yield</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">a running thread temporarily suspends execution  <a href="a00009.html#gafa9ace97052a6ddb5764826b4e0a4b59"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga0d7806af6c4043f1c5aaa96c8975ba06">CTHREAD_resume</a> (<a class="el" href="a00002.html">CTHREAD</a> *thread)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">resume a suspended thread  <a href="a00009.html#ga0d7806af6c4043f1c5aaa96c8975ba06"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga6c262644b9961eca998ad344df55ceb2">CTHREAD_set_return_value</a> (void *rvalue)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">running thread sets its return value.  <a href="a00009.html#ga6c262644b9961eca998ad344df55ceb2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gab80527a1cfae365de3473415f80c9510">CTHREAD_get_return_value</a> (<a class="el" href="a00002.html">CTHREAD</a> *thread, void **rvalue)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get return value of a thread  <a href="a00009.html#gab80527a1cfae365de3473415f80c9510"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#ga5482f32cae1c40923e57c44dbcc870f7">CTHREAD_get_tid</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get thread id  <a href="a00009.html#ga5482f32cae1c40923e57c44dbcc870f7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00009.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gac84f3f78f212fb85214833923d755764">CTHREAD_state</a> (<a class="el" href="a00002.html">CTHREAD</a> *thread)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get thread state  <a href="a00009.html#gac84f3f78f212fb85214833923d755764"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga0592112b80e974a450345f78c1aaf42b">CTHREAD_libinit</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">library initialisation  <a href="a00012.html#ga0592112b80e974a450345f78c1aaf42b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a942a3ddb28807653f25219ce07d1a0f0">cthread_init</a> (<a class="el" href="a00001.html">CTHREAD</a> *arg)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gadb6709e149679aa65ecc988489c45a00">CTHREAD_init</a> (<a class="el" href="a00003.html">STACKS</a> *stacks, <a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a> proc)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises a new co-routine thread.  <a href="a00012.html#gadb6709e149679aa65ecc988489c45a00"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a8dcb24ceb1c69153bb683b05eccd02f9">do_start</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga335f6adec427c36c257c4436586f9e41">CTHREAD_start</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start a new thread - the thread procedure is invoked.  <a href="a00012.html#ga335f6adec427c36c257c4436586f9e41"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511">CTHREAD_join</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes.  <a href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gab8e125df749a73083ca34ad4ed608f26">CTHREAD_resume</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread, <a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">resume a suspended thread  <a href="a00012.html#gab8e125df749a73083ca34ad4ed608f26"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711">CTHREAD_yield</a> (<a class="el" href="a00005.html">VALUES</a> **rvalue, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">a running thread temporarily suspends execution  <a href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae4767f31d1375f7edfa267ad62bf8ea3">CTHREAD_free</a> (<a class="el" href="a00001.html">CTHREAD</a> *thread)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7">CTHREAD_get_tid</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get thread id  <a href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955">CTHREAD_set_return_value</a> (const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">a running thread sets it return values  <a href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">__thread <a class="el" href="a00001.html">CTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#abf34770f7ebd8e4f3560cb5348994fe4">tls_thread</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html#a95bd239696fc78371e5a21b6cf39e931">next_tid</a></td></tr>
 </table>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="af44a938c4d7aa9c703f0ee86847fe00b"></a><!-- doxytag: member="cthread.c::GET_TLS" ref="af44a938c4d7aa9c703f0ee86847fe00b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GET_TLS</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="a00006.html#abf34770f7ebd8e4f3560cb5348994fe4">tls_thread</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00016">16</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1e7894c85352e355590b323f53b5fc17"></a><!-- doxytag: member="cthread.c::SET_TLS" ref="a1e7894c85352e355590b323f53b5fc17" args="(val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SET_TLS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">val</td><td>)</td>
+          <td>&#160;&#160;&#160;do { <a class="el" href="a00006.html#abf34770f7ebd8e4f3560cb5348994fe4">tls_thread</a> = val; } while( 0 );</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00017">17</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+
+</div>
+</div>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="acb77203a46ebd97c8ba1febf07fcdca0"></a><!-- doxytag: member="cthread.h::CRETURN_POINT" ref="acb77203a46ebd97c8ba1febf07fcdca0" args="" -->
+<a class="anchor" id="a26b2b60856b3116d3fa35ecb96564380"></a><!-- doxytag: member="cthread.c::MK_CTX_FUNC" ref="a26b2b60856b3116d3fa35ecb96564380" args=")(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="a00001.html">tagCRETURN_POINT</a>  <a class="el" href="a00001.html">CRETURN_POINT</a></td>
+          <td class="memname">typedef void(* <a class="el" href="a00006.html#a26b2b60856b3116d3fa35ecb96564380">MK_CTX_FUNC</a>)(void)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>denotes return point from co-routine call. </p>
-
-</div>
-</div>
-<a class="anchor" id="af0ad185700a9a4e97dc60bf65b98cb6c"></a><!-- doxytag: member="cthread.h::CTHREAD_PROC" ref="af0ad185700a9a4e97dc60bf65b98cb6c" args=")(void *arg)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef void(* <a class="el" href="a00006.html#af0ad185700a9a4e97dc60bf65b98cb6c">CTHREAD_PROC</a>)(void *arg)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00006_source.html#l00010">10</a> of file <a class="el" href="a00006_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00044">44</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a25102758c4164a5b978062107b2f1c01"></a><!-- doxytag: member="cthread.h::CRETURN_POINT_init" ref="a25102758c4164a5b978062107b2f1c01" args="()" -->
+<a class="anchor" id="a942a3ddb28807653f25219ce07d1a0f0"></a><!-- doxytag: member="cthread.c::cthread_init" ref="a942a3ddb28807653f25219ce07d1a0f0" args="(CTHREAD *arg)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00001.html">CRETURN_POINT</a>* CRETURN_POINT_init </td>
+          <td class="memname">void cthread_init </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00005_source.html#l00013">13</a> of file <a class="el" href="a00005_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00031">31</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00001.html" title="denotes return point from co-routine call.">CRETURN_POINT</a> *ret;
-
-  ret = (<a class="code" href="a00001.html" title="denotes return point from co-routine call.">CRETURN_POINT</a> *) malloc( <span class="keyword">sizeof</span>(<a class="code" href="a00001.html" title="denotes return point from co-routine call.">CRETURN_POINT</a>) );
-  <span class="keywordflow">if</span> (!ret) {
-    <span class="keywordflow">return</span> 0;
-  }
-
-  <span class="comment">// get context returns in two cases 1 when called, when setcontext passes control back.</span>
-  getcontext( &amp;ret-&gt;<a class="code" href="a00001.html#a3d8f335720dd0ec325fff4b5544b65b9">context</a>);
+  arg-&gt;<a class="code" href="a00001.html#a5ff356da73817c9a3d239dbde9e80c85">proc</a>( &amp;arg-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a> );
   
-  <span class="keywordflow">return</span> 0;
+  arg-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>; 
+
+  <a class="code" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a>( arg-&gt;<a class="code" href="a00001.html#ae435552c206d330befbad33b9fdfb3a0">stack_entry</a> );
+
+<span class="preprocessor">#if 0</span>
+<span class="preprocessor"></span>  setcontext( &amp;arg-&gt;<a class="code" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a> );
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a8dcb24ceb1c69153bb683b05eccd02f9"></a><!-- doxytag: member="cthread.c::do_start" ref="a8dcb24ceb1c69153bb683b05eccd02f9" args="(CTHREAD *thread)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int do_start </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">CTHREAD</a> *&#160;</td>
+          <td class="paramname"><em>thread</em></td><td>)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00111">111</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>;
+  
+  thread-&gt;<a class="code" href="a00001.html#a3f7ef430812f309728071e027ec90532">thread_id</a> = ++<a class="code" href="a00006.html#a95bd239696fc78371e5a21b6cf39e931">next_tid</a>;
+  
+  thread-&gt;<a class="code" href="a00001.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a> = <a class="code" href="a00006.html#af44a938c4d7aa9c703f0ee86847fe00b">GET_TLS</a>();  
+  <a class="code" href="a00006.html#a1e7894c85352e355590b323f53b5fc17">SET_TLS</a>( thread );
+
+<span class="preprocessor">#if 0</span>
+<span class="preprocessor"></span>  thread-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>.uc_link = 0;
+<span class="preprocessor">#else </span>
+<span class="preprocessor"></span>  thread-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>.uc_link = &amp;thread-&gt;<a class="code" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a>;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>  makecontext( &amp; thread-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>, (<a class="code" href="a00006.html#a26b2b60856b3116d3fa35ecb96564380">MK_CTX_FUNC</a>) <a class="code" href="a00006.html#a942a3ddb28807653f25219ce07d1a0f0">cthread_init</a>, 1, thread);
+  
+  setcontext( &amp;thread-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a> );
+
+ 
+  <span class="comment">// should not get here.</span>
+  <span class="keywordflow">return</span> -1;
 }
 </pre></div>
 </div>
 </div>
+<hr/><h2>Variable Documentation</h2>
+<a class="anchor" id="a95bd239696fc78371e5a21b6cf39e931"></a><!-- doxytag: member="cthread.c::next_tid" ref="a95bd239696fc78371e5a21b6cf39e931" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t <a class="el" href="a00006.html#a95bd239696fc78371e5a21b6cf39e931">next_tid</a><code> [static]</code></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Oct 1 2011 20:17:41 for Simple coroutine library / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00021">21</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abf34770f7ebd8e4f3560cb5348994fe4"></a><!-- doxytag: member="cthread.c::tls_thread" ref="abf34770f7ebd8e4f3560cb5348994fe4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__thread <a class="el" href="a00001.html">CTHREAD</a>* <a class="el" href="a00006.html#abf34770f7ebd8e4f3560cb5348994fe4">tls_thread</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00006_source.html#l00008">8</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
