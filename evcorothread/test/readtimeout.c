@@ -67,6 +67,8 @@ static void *test_thread(void * arg)
   IPADDRESS_loopback( &addr, AF_INET );
   SOCKADDR_init( &saddr, &addr, TEST_PORT );
 
+  sleep(1);
+
   if ( SOCK_init( &ctx, 0, 0 ) ) {
     goto err;
   }

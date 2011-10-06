@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "vtest/vtest.h"
 
@@ -67,6 +68,8 @@ static void *test_thread(void * arg)
   IPADDRESS addr;
   SOCKADDR saddr;
   
+  sleep(1);
+
   for(i = 0; i< MSG_SIZE;i++)  {
     msg[i] = 'a' + i % 24; 
   }
