@@ -150,7 +150,7 @@ int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... )
     if (rvalue) {
      *rvalue = &thread->thread_to_caller_value; 
     }
-     return 0;
+    return 0;
   }
 
   if (format) {
@@ -164,6 +164,9 @@ int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... )
   } 
   return do_start( thread );
 }
+
+
+
 
 int CTHREAD_join( CTHREAD *thread, VALUES **rvalue )
 {  
@@ -292,63 +295,4 @@ int CTHREAD_set_return_value( const char *format, ... )
 
 
 
-#if 0
-int CTHREAD_set_caller2thread(CTHREAD *thread, void *rvalue)
-{
-  if (thread->state == CTHREAD_STATE_SUSPENDED || thread->state == CTHREAD_STATE_EXIT) {
-    thread->caller_to_thread_value = rvalue;
-    return 0;
-  }
-  return -1;
-}
-int CTHREAD_get_caller2thread(void **rvalue)
-{
-  CTHREAD *thread;
-  
-#ifdef NO_TLS  
-  thread = (CTHREAD *) pthread_getspecific( tls_key );
-#else
-  thread = tls_thread;
-#endif
 
-
-  if (!thread) {
-    return -1;
-  }
-  if (thread->state != CTHREAD_STATE_RUNNING) {
-    return -1;
-  }
-
-  *rvalue = thread->caller_to_thread_value;
-  return 0;
-}
-
-int CTHREAD_set_thread2caller(void *rvalue)
-{
-  CTHREAD *thread;
-  
-#ifdef NO_TLS  
-  thread = (CTHREAD *) pthread_getspecific( tls_key );
-#else
-  thread = tls_thread;
-#endif
-
-  if (thread->state == CTHREAD_STATE_RUNNING) {
-    thread->thread_to_caller_value = rvalue;
-    return 0;
-  }
-  return -1;
-}
-
-int CTHREAD_get_thread2caller(CTHREAD *thread, void **rvalue)
-{ 
-  if (!thread) {
-    return -1;
-  }
-  if (thread->state == CTHREAD_STATE_SUSPENDED || thread->state == CTHREAD_STATE_EXIT) {
-    *rvalue = thread->thread_to_caller_value;
-    return 0;
-  }
-  return -1;
-}
-#endif

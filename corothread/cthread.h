@@ -89,6 +89,7 @@ int CTHREAD_free( CTHREAD *thread );
  */
 int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... );
 
+
 /**
  * @brief resume a suspended thread
  *
@@ -104,6 +105,9 @@ int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... );
  * Postcondition: the thread is in CTHREAD_STATE_RUNNING state
   */
 int CTHREAD_resume( CTHREAD *thread, VALUES **rvalue, const char *format, ... );
+
+
+
 
 /**
  * @brief a running thread temporarily suspends execution
