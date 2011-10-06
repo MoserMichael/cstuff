@@ -8,7 +8,6 @@
 #include <nutils/sock.h>
 #include <pthread.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "vtest/vtest.h"
 
@@ -19,13 +18,16 @@
 #define TEST_NUM 30
 #define TEST_PORT 8101
 
-static struct timeval TIME_OUT = { 3 , 0 };
+static struct timeval TIME_OUT = { 1 , 0 };
+
+static int status;
+static  EVLOOP *loop;  
+ 
 
 // ------------------------------------------------------------------------------------
 static void echo_thread( EVTHREAD *thread, struct tagEVSOCKET *socket, void *user_ctx)
 {
   char *buffer;
-  int rt;
 
   M_UNUSED(thread);
   M_UNUSED(user_ctx);
@@ -36,12 +38,10 @@ static void echo_thread( EVTHREAD *thread, struct tagEVSOCKET *socket, void *use
     return;
   }
 
-  while ( (rt = EVSOCKET_recv( socket, buffer, BF_SIZE, 0, TIME_OUT)) > 0) {
-    if ( EVSOCKET_send( socket, buffer, rt, 0, TIME_OUT ) != rt ) {
-      break;
-    }
-  }
-
+  status = EVSOCKET_recv( socket, buffer, BF_SIZE, 0, TIME_OUT );
+  EVLOOP_break( loop );
+  
+  
   free(buffer);
 }
 
@@ -55,56 +55,35 @@ static int echo_thread_factory (int fd, EVTHREAD_PROC *proc, void **ctx )
   return 0;
 }
 
-static  EVLOOP *loop;  
- 
 // ------------------------------------------------------------------------------------
 static void *test_thread(void * arg)
 {
-  int *status = (int *) arg;
   SOCKCTX ctx;
-  char msg[ MSG_SIZE ],msg_in[ MSG_SIZE ];
-  int i;
   IPADDRESS addr;
   SOCKADDR saddr;
-  
-  for(i = 0; i< MSG_SIZE;i++)  {
-    msg[i] = 'a' + i % 24; 
-  }
-  IPADDRESS_loopback( &addr, AF_INET );
 
+  M_UNUSED( arg );
+  
+  IPADDRESS_loopback( &addr, AF_INET );
   SOCKADDR_init( &saddr, &addr, TEST_PORT );
 
-  for(i =0; i<TEST_NUM;i++) {
-    printf(" %d ", i );
-    if ( SOCK_init( &ctx, 0, 0 ) ) {
-      goto err;
-    }
-    if (SOCK_connect( &ctx, SOCKADDR_saddr( &saddr ), SOCKADDR_length( &saddr ) , 3 )) {
-      goto err;
-    }
-    if (SOCK_send( &ctx, msg, sizeof(msg ), 3 ) != sizeof( msg ) ) {
-      goto err;
-    }
-    if (SOCK_recv_all( &ctx, msg_in, sizeof(msg), 3 ) != sizeof( msg ) ) {
-      goto err;
-    }
-    if (memcmp( msg, msg_in, sizeof(msg) ) != 0) {
-      goto err;
-    }
-    SOCK_close( &ctx );
-  } 
-  EVLOOP_break( loop );
-  *status = 0;
+  if ( SOCK_init( &ctx, 0, 0 ) ) {
+    goto err;
+  }
+  if (SOCK_connect( &ctx, SOCKADDR_saddr( &saddr ), SOCKADDR_length( &saddr ) , 3 )) {
+    goto err;
+  }
+  sleep(10000);
+  SOCK_close( &ctx );
+   
   return 0;
  
 err:
   SOCK_close( &ctx );
-  *status = -1; 
-  EVLOOP_break( loop );
   return 0;
 }
 
-static int start_test_client(int *status)
+static void start_test_client()
 {
   pthread_t pth;
   pthread_attr_t attr;
@@ -112,19 +91,18 @@ static int start_test_client(int *status)
   pthread_attr_init( &attr );
   pthread_attr_setdetachstate( &attr, PTHREAD_CREATE_DETACHED );
   
-  return pthread_create(&pth, &attr, test_thread, status);
+  pthread_create(&pth, &attr, test_thread, 0);
 }
 
 // ------------------------------------------------------------------------------------
-void EVTHREAD_echo_server_test()
-    {
+void EVTHREAD_read_timeout_test()
+{
   STACKS stacks;
   EVTCPACCEPTOR *acceptor;
   IPADDRESS addr;
   SOCKADDR saddr;
   int listener;
-  int status;
-
+ 
   // ** init thread library and init the loop
   VASSERT( ! CTHREAD_libinit() );
   
@@ -141,15 +119,15 @@ void EVTHREAD_echo_server_test()
 
   acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory );
 
-  VASSERT( start_test_client(&status) == 0 );
+  start_test_client();
 
   // ** run event loop
   EVLOOP_run( loop );
 
   close( listener );
-  
+
   // ** cleanup stacks.
   VASSERT( ! STACKS_destroy( &stacks ) ); 
 
-  VASSERT( status == 0 );
+  VASSERT( status == -1 );
 }

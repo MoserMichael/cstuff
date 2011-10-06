@@ -6,6 +6,13 @@
 
 // ---------------------------------------------------------------------------
 
+#define EVENT_ID_HAS_IO_EVENT  0 
+#define EVENT_ID_HAS_IO_ERROR  1
+#define TIMER_ID_COMM_TIMEOUT  2
+#define TIMER_ID_IDLE_TIMEOUT  3
+
+// ---------------------------------------------------------------------------
+
 EVLOOP * EVLOOP_init(STACKS *stacks )
 {
   EVLOOP *loop;
@@ -148,48 +155,51 @@ void EVTHREAD_OBJECT_free(EVTHREAD_OBJECT *obj)
 }
 
 // ---------------------------------------------------------------------------
-EVTIMER *ev_mktimer( EVTHREAD *thread, int timer_id, int is_recurrent, struct timeval tm, EVTIMER_PROC proc, void *user_data);
-
-
-EVTIMER *EVTIMER_init_one_shot(EVTHREAD *thread, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)
-{
-  return ev_mktimer( thread, timer_id, 0, tm, proc, user_data );
-}
-
-EVTIMER *EVTIMER_init_recurrent(EVTHREAD *thread, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)
-{
-  return ev_mktimer( thread, timer_id, 1, tm, proc, user_data );
-}
 
 static void timer_cb( int fd, short event, void *ctx);
 
+
+EVTIMER *EVTIMER_init(EVTHREAD *thread, int timer_id, struct timeval tm )
+{
+  EVTIMER *ret;
+ 
+  ret = (EVTIMER *) malloc( sizeof( EVTIMER ) );
+  if (!ret) {
+    return 0;
+  }
+
+  ret->loop = thread->loop;
+  ret->timer_id = timer_id;
+  ret->tm = tm;
+  ret->state = EVTIMER_STATE_INIT;
+ 
+  EVTHREAD_OBJECT_init( &ret->object_base, EVTHREAD_OBJECT_TIMER , thread );
+ 
+  return ret;
+}
+
+
 int EVTIMER_start( EVTIMER *ret)
 {
-  struct timeval now;
-
   if (ret->state != EVTIMER_STATE_INIT) {
     return -1;
   }
 
   ret->state = EVTIMER_STATE_SCHEDULED;
+  
   event_set( &ret->timer_event, -1, 0, timer_cb, (void *) ret );
   event_base_set( ret->loop->ev_base, &ret->timer_event );
   event_add( &ret->timer_event, &ret->tm );
 
-  if (ret->is_recurrent) {
-    gettimeofday( &now, 0 );
-    timeradd( &now, &ret->tm, &ret->next_due_date );
-  }
   return 0;
 }
 
 int  EVTIMER_cancel( EVTIMER *timer )
 {
-  if (timer->state == EVTIMER_STATE_INIT) {
+  if (timer->state != EVTIMER_STATE_SCHEDULED) {
     return -1;
   }
   event_del( &timer->timer_event );
-   
   timer->state = EVTIMER_STATE_INIT;
   return 0;
 }
@@ -201,75 +211,21 @@ int  EVTIMER_free( EVTIMER *timer )
   return 0;
 }
 
-EVTIMER *ev_mktimer( EVTHREAD *thread, int timer_id, int is_recurrent, struct timeval tm, EVTIMER_PROC proc, void *user_data)
-{
-  EVTIMER *ret;
- 
-  ret = (EVTIMER *) malloc( sizeof( EVTIMER ) );
-  if (!ret) {
-    return 0;
-  }
-
-  ret->loop = thread->loop;
-  ret->is_recurrent = is_recurrent;
-  ret->proc = proc;
-  ret->user_data = user_data;
-  ret->timer_id = timer_id;
-  ret->tm = tm;
-  ret->state = EVTIMER_STATE_INIT;
- 
-  EVTHREAD_OBJECT_init( &ret->object_base, EVTHREAD_OBJECT_TIMER , thread );
- 
-//EVTIMER_start( ret ); 
-  return ret;
-}
-
-static void  timer_thread_proc(VALUES *values)
-{
-  EVTIMER *timer;
-
-  VALUES_scan( values, "%p", &timer );
-  timer->proc( timer, timer->user_data );
-}
 
 
 static void timer_cb( int fd, short event, void *ctx)
 {
-   struct timeval now;
    EVTIMER *timer;
-   CTHREAD *thread;
 
    M_UNUSED(fd);
    M_UNUSED(event);
 
    timer = (EVTIMER *) ctx;
 
- 
    event_del( &timer->timer_event );
+   timer->state = EVTIMER_STATE_INIT;
    
-   thread = CTHREAD_init( timer->loop->stacks , timer_thread_proc );
-   if (thread) {
-     CTHREAD_start( thread, 0, "%p", timer );
-     CTHREAD_free( thread );
-   }
-   
-   if (timer->state == EVTIMER_STATE_INIT) {
-     return;
-   }
-
-   if (timer->is_recurrent) {
-     
-     gettimeofday( &now, 0 );
-     while( timercmp( &now, &timer->next_due_date, >  ) ) {
-       timeradd( &timer->next_due_date, &timer->tm, &timer->next_due_date );
-     }
-     timersub( &timer->next_due_date, &now, &timer->tm ); 
-     event_add( &timer->timer_event, &timer->tm );
-
-     timer->state = EVTIMER_STATE_SCHEDULED;
-   } else {
-     timer->state = EVTIMER_STATE_INIT;
-   }
+   CTHREAD_resume( timer->object_base.owner->cthread , 0, "%d", timer->timer_id );
 }
 
 // ---------------------------------------------------------------------------
@@ -358,28 +314,26 @@ static void socket_cb( int fd, short event, void *ctx)
 	CTHREAD_resume( socket->thread->cthread, 0, 0 );
      }
    }
-    
 }
 
-// called when either connect/read/write has timed out.
-
-void io_timeout_proc(EVTIMER *timer, void *user_data)
-{
-  EVSOCKET *socket;
- 
-  M_UNUSED(timer);
-
-  socket = (EVSOCKET *) user_data;
-
-  socket->state = EVSOCKET_STATE_ERROR;
-  
-  close( socket->fd );
-  socket->fd = -1;
+void EVSOCKET_set_idle_timeout(EVSOCKET *socket, struct timeval timeout )
+{ 
+  M_UNUSED( socket );
+  M_UNUSED( timeout );
+#if 0
+  if (socket->timer_io_timeout != 0) {  
+    EVTIMER_free( socket->timer_io_timeout ); 
+  }
+  socket->timer_io_timeout = EVTIMER_init_one_shot( socket->thread, 1, timeout, io_timeout_proc, socket);
+#endif
 }
+
 
 int EVSOCKET_connect( EVSOCKET *socket, struct sockaddr *address, socklen_t socklen, struct timeval timeout)
 {
   int rt;
+  VALUES *rvalues;
+  int event_id;
 
   if (socket->state != EVSOCKET_STATE_INIT) {
     return -1;
@@ -397,35 +351,45 @@ int EVSOCKET_connect( EVSOCKET *socket, struct sockaddr *address, socklen_t sock
  
      socket->state = EVSOCKET_STATE_CONNECTING;
 
-     socket->timer_io_timeout = EVTIMER_init_one_shot( socket->thread, 1, timeout, io_timeout_proc, socket);
+     socket->timer_io_timeout = EVTIMER_init( socket->thread, TIMER_ID_COMM_TIMEOUT, timeout );
+     if (socket->timer_io_timeout) { 
+       EVTIMER_start(socket->timer_io_timeout); 	
+     }
 
      event_add( &socket->write_event, 0 );
      
-     CTHREAD_yield( 0, 0);
+     CTHREAD_yield( &rvalues, 0 );
+     VALUES_scan( rvalues, "%d", &event_id );
 
+     event_del( &socket->write_event );
+     
      if (socket->timer_io_timeout) {
        EVTIMER_free( socket->timer_io_timeout ); 
        socket->timer_io_timeout = 0; 
      }
 
-     if (socket->state == EVSOCKET_STATE_CONNECTED) {
-       return 0;
-     }
+     switch(event_id) {
+       case EVENT_ID_HAS_IO_EVENT:
+	 socket->state = EVSOCKET_STATE_CONNECTED;
+	 rt = 0;
+	 break;
+       default: 
+         socket->state = EVSOCKET_STATE_ERROR;
+	 close( socket->fd );
+	 socket->fd = -1;
+	 rt = -1;
+	 break;
+      }
   } 
-  return -1;
-}
-void EVSOCKET_set_idle_timeout(EVSOCKET *socket, struct timeval timeout )
-{ 
-  if (socket->timer_io_timeout != 0) {  
-    EVTIMER_free( socket->timer_io_timeout ); 
-  }
-  socket->timer_io_timeout = EVTIMER_init_one_shot( socket->thread, 1, timeout, io_timeout_proc, socket);
+  return rt;
 }
 
 int EVSOCKET_recv( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
 {
    int rt;
    int has_event = 0;
+   VALUES *rvalues;
+   int event_id;
 
    if ( socket->state != EVSOCKET_STATE_CONNECTED) {
      return -1;
@@ -440,17 +404,34 @@ r_again:
      if (errno == EAGAIN) {
 
        socket->state = EVSOCKET_STATE_READING;
-       socket->timer_io_timeout = EVTIMER_init_one_shot( socket->thread, 1, timeout, io_timeout_proc, socket);
+       
+       socket->timer_io_timeout = EVTIMER_init( socket->thread, TIMER_ID_COMM_TIMEOUT, timeout );
+       if (socket->timer_io_timeout) {  
+         EVTIMER_start(socket->timer_io_timeout); 	
+       }
 
        if (!has_event) {
          event_add( &socket->read_event, 0 );
          has_event = 1;
        }
 
-       CTHREAD_yield( 0, 0 );
-       
-       if (socket->state != EVSOCKET_STATE_ERROR) {
-          goto r_again;
+       CTHREAD_yield( &rvalues, 0 );
+       VALUES_scan( rvalues, "%d", &event_id );
+ 
+       if (socket->timer_io_timeout) {  
+         EVTIMER_free(socket->timer_io_timeout); 	
+	 socket->timer_io_timeout = 0; 
+       }
+      
+       switch(event_id) {
+         case EVENT_ID_HAS_IO_EVENT:
+	   goto r_again;
+         default: 
+	   socket->state = EVSOCKET_STATE_ERROR;
+	   close( socket->fd );
+	   socket->fd = -1;
+	   rt = -1;
+	   break;
        }
      }
    }
@@ -461,14 +442,8 @@ r_again:
    
    if (rt != -1) {
      socket->state = EVSOCKET_STATE_CONNECTED;
-   } else {
-     socket->state = EVSOCKET_STATE_ERROR;
-   }
+   } 
 
-   if (socket->timer_io_timeout) {
-     EVTIMER_free( socket->timer_io_timeout ); 
-     socket->timer_io_timeout = 0; 
-   }
    return rt;
 } 
 
@@ -476,6 +451,9 @@ int EVSOCKET_send_internal( EVSOCKET *socket, void *buf, size_t buf_size, int fl
 {
    int rt;
    int has_event = 0;
+   VALUES *rvalues;
+   int event_id;
+
 
    if ( socket->state != EVSOCKET_STATE_CONNECTED) {
      return -1;
@@ -490,17 +468,34 @@ w_again:
      if (errno == EAGAIN) {
 
        socket->state = EVSOCKET_STATE_WRITING;
-       socket->timer_io_timeout = EVTIMER_init_one_shot( socket->thread, 1, timeout, io_timeout_proc, socket);
+       
+       socket->timer_io_timeout = EVTIMER_init( socket->thread, TIMER_ID_COMM_TIMEOUT, timeout );
+       if (socket->timer_io_timeout) {
+         EVTIMER_start(socket->timer_io_timeout); 	
+       }
 
        if (!has_event) {
          event_add( &socket->write_event, 0 );
          has_event = 1;
        }
 
-       CTHREAD_yield( 0, 0 );
-       
-       if (socket->state != EVSOCKET_STATE_ERROR) {
-          goto w_again;
+       CTHREAD_yield( &rvalues, 0 );
+       VALUES_scan( rvalues, "%d", &event_id );
+ 
+       if (socket->timer_io_timeout) {  
+         EVTIMER_free(socket->timer_io_timeout); 	
+	 socket->timer_io_timeout = 0; 
+       }
+      
+       switch(event_id) {
+         case EVENT_ID_HAS_IO_EVENT:
+	   goto w_again;
+         default: 
+	   socket->state = EVSOCKET_STATE_ERROR;
+	   close( socket->fd );
+	   socket->fd = -1;
+	   rt = -1;
+	   break;
        }
      }
    }
@@ -511,14 +506,8 @@ w_again:
 
    if (rt != -1) {
      socket->state = EVSOCKET_STATE_CONNECTED;
-   } else {
-     socket->state = EVSOCKET_STATE_ERROR;
-   }
+   } 
 
-   if (socket->timer_io_timeout) {
-     EVTIMER_free( socket->timer_io_timeout ); 
-     socket->timer_io_timeout = 0; 
-   }
 
    return rt;
 } 

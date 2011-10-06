@@ -7,10 +7,12 @@
 
 void EVTHREAD_timer_test();
 void EVTHREAD_echo_server_test();
+void EVTHREAD_read_timeout_test();
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( EVTHREAD_echo_server_test )
+	VTEST_TESTN( EVTHREAD_read_timeout_test )
 	VTEST_TESTN( EVTHREAD_timer_test )
 VTEST_END_SUITE
 

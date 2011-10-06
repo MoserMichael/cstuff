@@ -126,43 +126,31 @@ typedef struct tagEVTHREAD_OBJECT {
 
 /**
  * @defgroup EVTIMER
- * @brief timer object atached to event loop, a user mode thread is created when the event loop dispatches a timer event.
+ * @brief timer object atached to event loop, when the timer fires, the timer id is sent to the thread that has set the timer
  * @{
  */
 struct tagEVTIMER;
 
-typedef void (*EVTIMER_PROC) (struct tagEVTIMER *timer, void *user_data);
-
 typedef  enum {
   EVTIMER_STATE_INIT,
   EVTIMER_STATE_SCHEDULED,
-  EVTIMER_STATE_HANDLER_RUNNING,
 } EVTIMERSTATE;
 
 typedef struct tagEVTIMER {
   EVTHREAD_OBJECT object_base;
   
   EVLOOP *loop;
- 
-  EVTIMER_PROC proc;
-  void  *user_data;
   int    timer_id;
-
-  struct event timer_event;
-  struct timeval timer_period;
-  int    is_recurrent;
- 
   struct timeval tm;
-  struct timeval next_due_date; 
-
+  struct event timer_event;
+  
   EVTIMERSTATE state;
 } EVTIMER;
 
-EVTIMER *EVTIMER_init_one_shot(EVTHREAD *loop, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data);
 
-EVTIMER *EVTIMER_init_recurrent(EVTHREAD *loop, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data);
+EVTIMER *EVTIMER_init(EVTHREAD *thread, int timer_id, struct timeval tm );
 
-int EVTIMER_start( EVTIMER *ret);
+int  EVTIMER_start( EVTIMER *ret);
 
 int  EVTIMER_cancel( EVTIMER *timer );
 
