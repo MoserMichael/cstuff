@@ -25,14 +25,19 @@ static int FD_OUT  = 2;
 static int FD_ASSIGNED = 0;
 
 #ifdef __linux__
-static void dump_modules();
+static void dump_modules(char *buff, size_t buff_size);
 #endif
+
+int errorp_is_file_open()
+{  
+  return FD_ASSIGNED;
+}
 
 int errorp_open_file(const char *file)
 {
   int fd;
 
-  fd = open( file , O_CREAT | O_RDWR, S_IWUSR  | S_IRUSR );
+  fd = open( file , O_CREAT | O_APPEND | O_RDWR, S_IWUSR  | S_IRUSR );
   if (fd != -1) {
     FD_OUT = fd;
     FD_ASSIGNED = 1;
@@ -51,22 +56,21 @@ void errorp_close_file()
 
 void errorp(int rval, const char *fmt, ... ) 
 {
-  char buff[ 1024 ];
+  char buff[ 512 ];
   char *p, *eof;
   va_list ap;
   int len, n;
- 
 #if __linux__
   void *sframes[ STACK_FRAMES + 1 ];
   int nframes, i;
 #endif
 
+ 
   p = buff;
   eof = p + sizeof( buff );
 
   strcpy( p, ERROR_TOKEN );
   p += strlen( ERROR_TOKEN );
-
 
   va_start( ap, fmt );
   len =  vsnprintf( p, eof - p - 1, fmt, ap );
@@ -75,8 +79,6 @@ void errorp(int rval, const char *fmt, ... )
 
   n = snprintf(p, eof - p - 1, ". returns %d errno %d\n", rval, errno );
   p += n;
-   
-  write( FD_OUT , buff , p - buff );
 
 #if __linux__
   nframes = backtrace( sframes, STACK_FRAMES + 1); \
@@ -88,7 +90,32 @@ void errorp(int rval, const char *fmt, ... )
     write( FD_OUT , buff, strlen( buff ) );
   }
 
-  dump_modules();
+  dump_modules( buff, sizeof(buff) );
+  write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
+#endif
+}
+
+void error_dump_string( const char *msg, char *buff, size_t buff_size)
+{
+ #if __linux__
+  void *sframes[ STACK_FRAMES + 1 ];
+  int nframes, i;
+#endif
+
+
+  write( FD_OUT , msg , strlen( msg ) );
+
+#if __linux__
+  nframes = backtrace( sframes, STACK_FRAMES + 1); \
+  write( FD_OUT, STACK_START, strlen( STACK_START ) );
+  
+  nframes =  backtrace( sframes, STACK_FRAMES );
+  for (i=0; i<nframes; i++) {
+    snprintf( buff, buff_size,  "frame %d ip: %p\n", i, sframes[ i ]);
+    write( FD_OUT , buff, strlen( buff ) );
+  }
+
+  dump_modules( buff, buff_size );
   write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
 #endif
 }
@@ -100,10 +127,10 @@ void errorp(int rval, const char *fmt, ... )
 #define TOKENS_PATH	    5
 
 #ifdef __linux__
-void dump_modules()
+static void dump_modules(char *buf, size_t buff_size)
 {
   int fd, n, i, buf_start;
-  char buf[ 1024 ], line[30];
+  char line[30];
   char *pos, *eof_line, *tokens[ TOKENS_COUNT ];
 
   sprintf(buf,"/proc/%d/maps", getpid() );
@@ -116,7 +143,7 @@ void dump_modules()
   
   buf_start = 0;
   while(1) {
-    n = read(fd, buf + buf_start, sizeof(buf) - buf_start );
+    n = read(fd, buf + buf_start, buff_size - buf_start );
     if (n <= 0) {
       break;
     }
@@ -124,7 +151,7 @@ void dump_modules()
     pos = buf;
     while(1) {
 
-       eof_line = memchr( pos, '\n', buf + sizeof(buf) - pos );
+       eof_line = memchr( pos, '\n', buf + buff_size - pos );
        if (eof_line == 0) {
          break;
        }
@@ -152,8 +179,8 @@ void dump_modules()
     }
 
     buf_start = 0;
-    if (pos < (buf + sizeof(buf) - 1)) {
-      buf_start = buf + sizeof(buf) - pos;
+    if (pos < (buf + buff_size - 1)) {
+      buf_start = buf + buff_size - pos;
       memmove( buf, pos, buf_start ); 
     }
   }

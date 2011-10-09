@@ -7,12 +7,13 @@
 
 void STRTK_span_test();
 void STRTK_tok_test();
-
+void LOGG_test();
 
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( STRTK_span_test )
 	VTEST_TESTN( STRTK_tok_test )
+	VTEST_TESTN( LOGG_test )
 VTEST_END_SUITE
 
 

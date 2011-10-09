@@ -12,9 +12,12 @@
 
 int  errorp_open_file(const char *file);
 
+int  errorp_is_file_open();
+
 void errorp_close_file();
 
 void errorp(int rval, const char *fmt, ... );
+
 
 /**
  * @}
