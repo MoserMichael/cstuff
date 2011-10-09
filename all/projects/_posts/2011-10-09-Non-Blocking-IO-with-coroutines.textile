@@ -15,7 +15,7 @@ There is the long standing debate on how to write a server, the basic choices ar
 
 Now implementing non blocking servers is tricky; usually there is a 'event loop' or 'Reactor' component that handles the details of watching network connections for events; now when a new event must be handled a callback functions is called by the 'event loop'/'Reactor'.
 
-As stated earlier in the co-routine article, chopping up the server logic into a state machine that fits the callback functions can turn into many bugs, sweat and tears. So this project integrates the co-routine package with the "libevent":http://libevent.org/ event loop.
+As stated earlier in the co-routine article, chopping up the server logic into a state machine that fits the callback functions can turn into many bugs, sweat and tears. So this project integrates the "co-routine package":http://mosermichael.github.com/cstuff/all/projects/2011/10/05/Co-Routines.html  with the "libevent":http://libevent.org/ event loop.
 
 Here are the abstractions that make up the EVCOROTHREAD library
 
