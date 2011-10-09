@@ -2,10 +2,14 @@
 #define __EVTHREAD_H_
 
 #include <corothread/cthread.h>
-#include <event.h> 
+#include <corothread/stacks.h>
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <cutils/dlist.h>
+#include <nutils/addrutil.h>
+
+#include <event.h> 
 
 // ---------------------------------------------------------------------------
 
@@ -238,7 +242,12 @@ typedef struct tagTCPACCEPTOR {
 
 } EVTCPACCEPTOR;
 
-EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size );
+EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop,  SOCKADDR *addr, int listener_backlog,  EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size );
+
+EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size );
+
+void EVTCPACCEPTOR_close(EVTCPACCEPTOR *);
+
 
 /**
  * @}

@@ -125,7 +125,6 @@ void EVTHREAD_echo_server_test()
   EVTCPACCEPTOR *acceptor;
   IPADDRESS addr;
   SOCKADDR saddr;
-  int listener;
   int status;
 
   // ** init thread library and init the loop
@@ -140,16 +139,14 @@ void EVTHREAD_echo_server_test()
 
   VASSERT( ! SOCKADDR_init( &saddr, &addr, TEST_PORT  ) );
 
-  VASSERT( (listener = fd_make_tcp_listener( &saddr, 30) ) != -1 );
-
-  acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory, -1, -1 );
+  VASSERT( acceptor = EVTCPACCEPTOR_init_ex( loop, &saddr, 30, echo_thread_factory, -1, -1 ) );
 
   VASSERT( start_test_client(&status) == 0 );
 
   // ** run event loop
   EVLOOP_run( loop );
 
-  close( listener );
+  EVTCPACCEPTOR_close( acceptor );
   
   // ** cleanup stacks.
   VASSERT( ! STACKS_destroy( &stacks ) ); 

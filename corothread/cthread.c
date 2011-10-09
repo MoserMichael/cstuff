@@ -8,7 +8,6 @@ static pthread_key_t tls_key;
 __thread CTHREAD *tls_thread;
 #endif
 
-
 #ifdef NO_TLS
 #define GET_TLS()  (CTHREAD *) pthread_getspecific( tls_key );
 #define SET_TLS(val)  (CTHREAD *) pthread_setspecific( tls_key, val );

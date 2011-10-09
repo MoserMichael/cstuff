@@ -579,6 +579,20 @@ int EVSOCKET_send( EVSOCKET *socket, void *buf, size_t buf_size, int flags, stru
 
 static void socket_listener_cb( int fd, short event, void *ctx);
 
+EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop, SOCKADDR *addr, int listener_backlog,  EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size )
+{
+  int listener_fd;
+
+  listener_fd = fd_make_tcp_listener( addr, listener_backlog );
+  if (listener_fd == -1) {
+    return 0; 
+  }
+
+  return EVTCPACCEPTOR_init( loop, listener_fd, factory, read_buffer_size, send_buffer_size );
+ 
+
+}
+
 EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size )
 {
   EVTCPACCEPTOR *acceptor;
@@ -606,6 +620,17 @@ EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY facto
 
   return acceptor;
 }
+
+void EVTCPACCEPTOR_close(EVTCPACCEPTOR *acceptor)
+{
+  event_del(&acceptor->read_event);
+  if (acceptor->fd != -1) {
+    close(acceptor->fd);
+  }
+  free(acceptor);
+}
+
+
 
 static void socket_listener_cb( int fd, short event, void *ctx)
 {
