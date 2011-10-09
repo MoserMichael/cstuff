@@ -236,7 +236,8 @@ cd build
 ./build-coroutine.sh
 (For platform specific stuf ./build-coroutine.sh ARCH=x86_64)
 For tutorial see <root direcotory>/corothread/tutorial
-Add the following libraries -l
+Add the following libraries -lcorothread -lcutils -lnutils -lpthread
+If you want to use shared libraries then use -lcorothreadsh -lcutilssh -lnutilssh -lpthread
 
 h3. What comes next
 

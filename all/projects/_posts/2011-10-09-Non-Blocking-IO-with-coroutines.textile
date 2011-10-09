@@ -158,3 +158,13 @@ Add the following libraries
 If one wants to use shared libraries add 
 -lcutilssh -lbutilssh -lnutilssh -lcorothreadsh -levcorothreadsh -pthread
 
+h3. what comes next
+
+In the next part of this series we will  build a small HTTP server, and do so with three paradigms
+
+* Operating system thread per connection
+* Co-routine thread per connections
+* regular libevent - multiple connections per thread with event callbacks / Reactor pattern.
+
+The HTTP server will be embeddable - an application program will be able to run the WEB server as a library. It will then be interesting to study performance of these three models.
+Apart from that it will be a good tool in order to test and debug the library.
