@@ -142,7 +142,7 @@ void EVTHREAD_echo_server_test()
 
   VASSERT( (listener = fd_make_tcp_listener( &saddr, 30) ) != -1 );
 
-  acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory );
+  acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory, -1, -1 );
 
   VASSERT( start_test_client(&status) == 0 );
 

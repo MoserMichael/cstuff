@@ -248,6 +248,8 @@ EVSOCKET *EVSOCKET_init(EVTHREAD *thread, int fd, int is_connected)
   
   socket->thread = thread;
   socket->loop = thread->loop;
+  memset( &socket->idle_timeout, 0 , sizeof(struct timeval));
+
   
   if (fd_set_blocking( fd, 0 )) {
     free(socket);
@@ -320,14 +322,15 @@ void EVSOCKET_set_idle_timeout(EVSOCKET *socket, struct timeval timeout )
 { 
   M_UNUSED( socket );
   M_UNUSED( timeout );
-#if 0
-  if (socket->timer_io_timeout != 0) {  
-    EVTIMER_free( socket->timer_io_timeout ); 
-  }
-  socket->timer_io_timeout = EVTIMER_init_one_shot( socket->thread, 1, timeout, io_timeout_proc, socket);
-#endif
-}
 
+  socket->idle_timeout = timeout;
+  if (socket->state == EVSOCKET_STATE_CONNECTED) {
+     socket->timer_idle_timeout = EVTIMER_init( socket->thread, TIMER_ID_IDLE_TIMEOUT, timeout );
+     if (socket->timer_idle_timeout) { 
+       EVTIMER_start(socket->timer_idle_timeout); 	
+     }
+  }
+}
 
 int EVSOCKET_connect( EVSOCKET *socket, struct sockaddr *address, socklen_t socklen, struct timeval timeout)
 {
@@ -384,7 +387,7 @@ int EVSOCKET_connect( EVSOCKET *socket, struct sockaddr *address, socklen_t sock
   return rt;
 }
 
-int EVSOCKET_recv( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
+static int EVSOCKET_recv_internal( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
 {
    int rt;
    int has_event = 0;
@@ -443,11 +446,18 @@ r_again:
    if (rt != -1) {
      socket->state = EVSOCKET_STATE_CONNECTED;
    } 
+   
+   if (rt >= 0) {
+     if (socket->timer_idle_timeout) { 
+       EVTIMER_cancel(socket->timer_idle_timeout);
+     }
+   }
+
 
    return rt;
 } 
 
-int EVSOCKET_send_internal( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
+static int EVSOCKET_send_internal( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
 {
    int rt;
    int has_event = 0;
@@ -512,19 +522,39 @@ w_again:
    return rt;
 } 
 
+int EVSOCKET_recv( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
+{
+  int rt;
+
+  rt = EVSOCKET_recv_internal( socket, buf, buf_size, flags, timeout );
+  if (rt >= 0) {
+     if (socket->timer_idle_timeout) { 
+       EVTIMER_start(socket->timer_idle_timeout);
+     }
+  }
+  return rt;
+}
+
 int EVSOCKET_recv_all( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
 {
   uint8_t *cur = (uint8_t *) buf;
   int pos, rt;
 
   for(pos = 0 ; buf_size != 0 ; pos += rt ) {
-    rt = EVSOCKET_recv( socket, cur, buf_size, flags, timeout );
+    rt = EVSOCKET_recv_internal( socket, cur, buf_size, flags, timeout );
     if (rt <= 0) {
       return rt;
     }
     cur += rt;
     buf_size -= rt;
-  } 
+  }
+
+  if (rt >= 0) {
+     if (socket->timer_idle_timeout) { 
+       EVTIMER_start(socket->timer_idle_timeout);
+     }
+  }
+  
   return pos;
 }
 
@@ -549,7 +579,7 @@ int EVSOCKET_send( EVSOCKET *socket, void *buf, size_t buf_size, int flags, stru
 
 static void socket_listener_cb( int fd, short event, void *ctx);
 
-EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory )
+EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size )
 {
   EVTCPACCEPTOR *acceptor;
 
@@ -566,6 +596,9 @@ EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY facto
   acceptor->loop = loop;
   acceptor->factory = factory;
   acceptor->fd = fd;
+
+  acceptor->read_buffer_size = read_buffer_size;
+  acceptor->send_buffer_size = send_buffer_size;
 
   event_set( &acceptor->read_event, fd, EV_READ | EV_PERSIST, socket_listener_cb, (void *) acceptor );
   event_base_set( loop->ev_base, &acceptor->read_event );
@@ -598,9 +631,16 @@ static void socket_listener_cb( int fd, short event, void *ctx)
    if (sock == -1) {
      return;
    }
+   
+   if (acceptor->read_buffer_size != -1) {
+     fd_set_buf_size( sock, Receive_buffer, acceptor->read_buffer_size );
+   }
+
+   if (acceptor->send_buffer_size != -1) {
+     fd_set_buf_size( sock, Send_buffer, acceptor->send_buffer_size);
+   }
   
    // get thread procedure and thread argument data.
-   acceptor = (EVTCPACCEPTOR *) ctx;
    if ( acceptor->factory( sock, &thread_proc, &thread_ctx ) ) {
      close(sock);
      return;

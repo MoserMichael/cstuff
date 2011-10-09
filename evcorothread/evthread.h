@@ -192,7 +192,8 @@ typedef struct tagEVSOCKET {
   EVSOCKET_STATE state;
   EVTIMER  *timer_idle_timeout; // idle timeout.
   EVTIMER  *timer_io_timeout; // timeout of current operation (read or write).
-  
+  struct timeval idle_timeout;
+   
   EVLOOP *loop;
   EVTHREAD *thread;
 } 
@@ -232,11 +233,12 @@ typedef struct tagTCPACCEPTOR {
   EVLOOP *loop; 
   int fd;
   struct event read_event;
+  int read_buffer_size,send_buffer_size;
   EVTHREAD_FACTORY factory;
 
 } EVTCPACCEPTOR;
 
-EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory );
+EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size );
 
 /**
  * @}

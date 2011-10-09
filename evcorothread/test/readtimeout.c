@@ -119,7 +119,7 @@ void EVTHREAD_read_timeout_test()
 
   VASSERT( (listener = fd_make_tcp_listener( &saddr, 30) ) != -1 );
 
-  acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory );
+  acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory, -1, -1 );
 
   start_test_client();
 
