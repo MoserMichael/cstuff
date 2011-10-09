@@ -8,15 +8,15 @@ h2. {{ page.title }}
 
 This project presents a simple user mode threading library, it turns out that this concept has many names 
 
-"coroutine package":http://en.wikipedia.org/wiki/Coroutine 
-"continuations":http://en.wikipedia.org/wiki/Continuation .
-In the Windows world this concept is also called a "Fiber":http://en.wikipedia.org/wiki/Fiber_(computer_science) 
-Also known as user mode multi threading
-"coopereative multitasking":http://en.wikipedia.org/wiki/Computer_multitasking#Cooperative_multitasking.2Ftime-sharing 
+* "co-routine package":http://en.wikipedia.org/wiki/Coroutine
+* "continuations":http://en.wikipedia.org/wiki/Continuation .
+* In the Windows world this concept is also called a "Fiber":http://en.wikipedia.org/wiki/Fiber_(computer_science) 
+* Also known as user mode threading
+* "cooperative multitasking":http://en.wikipedia.org/wiki/Computer_multitasking#Cooperative_multitasking.2Ftime-sharing 
 
 It is a small wonder how so many computer science terms all denote the the very same concept. Usually a confused language is either a sign that the same concept has been reinvented several times, or that something is not very well understood, this fact is known since the times of Babylon. Lets see.
 
-Software engineers try to create complex systems out of simple parts; each simple part implements some sequence of commands - a process of sorts. Let's look at a simple example; process (A) creates a sequence of fibonacci numbers, and process (B) receives each fibonacci number and computes the sum of the square roots of each fibonaci numbers.
+Software engineers try to create complex systems out of simple parts; each simple part implements some sequence of commands - a process of sorts. Let's look at a simple example; process (A) creates a sequence of Fibonacci numbers, and process (B) receives each Fibonacci number and computes the sum of the square roots of each Fibonacci numbers.
 
 Now one has two choices, either process (A) and process (B) share the same stack, or they do not share the same stack. 
 
@@ -51,10 +51,10 @@ int main()
 }
 </pre>
 
-In this example both steps share the same stack, first fibonacci numbers are computed and stored in an array by the first procedure, and then the result is passed to the second procedure that computes the sum of the square roots.
+In this example both steps share the same stack, first Fibonacci numbers are computed and stored in an array by the first procedure, and then the result is passed to the second procedure that computes the sum of the square roots.
 
-Now what if the array of results is very large and we are short on computer memory ? What if one has to know the current sum of square roots imedeately upon receiving a new fibonacci number / react to the event of a new fibonacci number?
-In this situation both processes have to share the same stack, so that each new fibonacci number is passed to a callback function "callback function":http://en.wikipedia.org/wiki/Callback_(computer_programming) 
+Now what if the array of results is very large and we are short on computer memory ? What if one has to know the current sum of square roots immediately upon receiving a new Fibonacci number / react to the event of a new Fibonacci number?
+In this situation both processes have to share the same stack, so that each new Fibonacci number is passed to a callback function "callback function":http://en.wikipedia.org/wiki/Callback_(computer_programming) 
 
 <pre>
 typedef void (*FIBONACCI_CB) (uint64_t num, void *ctx);
@@ -86,25 +86,25 @@ int main()
 }
 </pre>
 .
-This mode of doing things has a marked disadvantage: The procedure of computing the sum of roots is now chopped up into multiple calls of the callback function fibonacci_cb ;  on each call this function has to retrieve the current state of the computation from the argument 'context parameter' , perform a processing step and then update the result back into the 'context parameter'. A more complex process also must be partinioned into a state machine, the state is maintained extra in the 'context parameter'. No fun.
+This mode of doing things has a marked disadvantage: The procedure of computing the sum of roots is now chopped up into multiple calls of the callback function fibonacci_cb ;  on each call this function has to retrieve the current state of the computation from the argument 'context parameter' , perform a processing step and then update the result back into the 'context parameter'. A more complex process also must be partitioned into a state machine, the state is maintained extra in the 'context parameter'. No fun.
 
 So we need to have both processes running at the same time, and passing a message between them.
 So each procedure needs its own stack. Now the same basic problem is being solved in a multitude of ways; each solution solves the problem for some specific context, 
 
 
-multi processing: Two processes are connected via a pipe; the fibonacci number generator writes its result to the pipe; the square root additioner reads each numbrer off the pipe.
-Multi-threading: 
-actor model - several threads communicate via known queues; 
-Python / Perl generator functions.
+* multi processing: Two processes are connected via a pipe; the Fibonacci number generator writes its result to the pipe; the square root adder  reads each number off the pipe.
+* Multi-threading: 
+* actor model - several threads communicate via known queues; 
+* Python / Perl generator functions.
 
 
-Now coroutine will simply maintain a stack per process, the fibonacci number generator has its own stack, the consumer of fibonacci numbers has its own stack. When a new number is computed, fibonaci number generator switches the stack to the consumer of numbers, when the consumer is ready and wants to get a new number then it switches the stack to the generator function.
+Now co-routine will simply maintain a stack per process, the Fibonacci number generator has its own stack, the consumer of Fibonacci numbers has its own stack. When a new number is computed, Fibonacci number generator switches the stack to the consumer of numbers, when the consumer is ready and wants to get a new number then it switches the stack to the generator function.
 
-There is a significant difference - with multiple threads or multiple processes it is the operating system that decides which task will run next; with coroutine the application decides when to switch between stacks.
+There is a significant difference - with multiple threads or multiple processes it is the operating system that decides which task will run next; with co-routine the application decides when to switch between stacks.
 
-h3. How to pass a typed typle of values around.
+h3. How to pass a typed set of values around.
 
-This library will be passing parameters from and to the coroutine thread, so here is a utility class in C for packaging of a typed set of values.
+This library will be passing parameters from and to the co-routine thread, so here is a utility class in C for packaging of a typed set of values.
 
 <pre>
 #include <corothread/val.h>
@@ -127,18 +127,18 @@ VALUES_scan( &val, "%hhu%hd%d%qd%s", &_n8, &_n16, &_n32, &_n64, &_sval );
 
 h3. More on stacks
 
-A coroutine stack consists of a continuous number of memory pages; now at the top of the stack there is a memory page that is not accessible, any attempt to read or write to this memory page will result in a SIGSEGV - acess violation signal. This turns out to be a very nice trick, when the coroutine stack grows out of proportion / overflows, then one will imedeately get to know that something got wrong.
+A co-routine stack consists of a continuous number of memory pages; now at the top of the stack there is a memory page that is not accessible, any attempt to read or write to this memory page will result in a SIGSEGV - access violation signal. This turns out to be a very nice trick, when the co-routine stack grows out of proportion / overflows, then one will immediately get to know that something got wrong.
 
-There are times when an application will want a very large number of coroutines - in the order of tens of thousands; Now on 32 bit machine architectures one will choose a very small stack, otherwise one will run out of virtual memory to address;
+There are times when an application will want a very large number of co-routines - in the order of tens of thousands; Now on 32 bit machine architectures one will choose a very small stack, otherwise one will run out of virtual memory to address;
 
-Please note that with small coroutine stacks one should not allocate big arrays on the coroutine stack.
+Please note that with small co-routine stacks one should not allocate big arrays on the co-routine stack.
 
-The CTHREADS package implements a pool of stacks, so that creation of coroutine will be very fast and will usually not even require even a single system call. With this purpose there is a STACKS reserves one very big continuous are of virtal memory addresses and carves the application stacks out of this memory are. The STACKS object has to be passed to coroutine thread creation function.
+The CTHREADS package implements a pool of stacks, so that creation of co-routine will be very fast and will usually not even require even a single system call. With this purpose there is a STACKS reserves one very big continuous are of virtual memory addresses and carves the application stacks out of this memory are. The STACKS object has to be passed to co-routine thread creation function.
 
 
-h3. Fibonacci example with coroutines
+h3. Fibonacci example with co-routines
 
-The same example that computes a sequence of fibonacci numbers now by using the CTHREAD coroutine package. The couroutine make_fibonacci_sequence now generates a number and calls CTHREAD_yield to switch the stack back to the caller of the couroutine, and to pass the computed value to the caller.
+The same example that computes a sequence of Fibonacci numbers now by using the CTHREAD co routine package. The co-routine make_fibonacci_sequence now generates a number and calls CTHREAD_yield to switch the stack back to the caller of the co-routine, and to pass the computed value to the caller.
 
 <pre>
 #include <corothread/cthread.h>
@@ -157,15 +157,15 @@ void  make_fibonacci_sequence(VALUES *values)
   void *val;
   uint64_t a,b,n;
 
-  // retrieve argument passed to coroutine - how many iterations to run.
+  // retrieve argument passed to co-routine - how many iterations to run.
   VALUES_scan( values, "%d", &max_num );
 
 
   for(a = 0, b = 1, i = 0; i < max_num; i++) {
     n = a+b;
   
-    // now that a new fibonacci value has been computed, it can be passed to the caller;
-    // the next function switches stacks from coroutine back to the caller.  
+    // now that a new Fibonacci value has been computed, it can be passed to the caller;
+    // the next function switches stacks from co-routine back to the caller.  
     CTHREAD_yield( 0, "%qu", n );
     
     a=b;
@@ -182,7 +182,7 @@ double sum_of_roots( size_t max_num, STACKS *stacks )
   int i;
   double sum_roots = 0;
 
-  // initialise the coroutine thread
+  // initialize the co-routine thread
   th = CTHREAD_init( stacks, make_fibonacci_sequence );
   assert( th != 0 );
 
@@ -197,14 +197,14 @@ double sum_of_roots( size_t max_num, STACKS *stacks )
 
      sum_roots += sqrt( (double) fib );
 
-     // resume the coroutine thread, switch stack to coroutine thread.  
+     // resume the co-routine thread, switch stack to co-routine thread.  
      CTHREAD_resume( th, &values, 0 );
 
-     // on return from CTHREAD_resume, the return value from the coroutine is now stored in the values object.
+     // on return from CTHREAD_resume, the return value from the co-routine is now stored in the values object.
 
   }
 
-  // free coroutine object.
+  // free co-routine object.
   assert( ! CTHREAD_free( th ) );
   return sum_roots;
 }
@@ -217,17 +217,17 @@ int main()
 // library first time initialisation
   assert( !  CTHREAD_libinit() );
   
-  // initialise the pool of stacks - here one stack that takes five memory pages is allocated.
+  // initialize the pool of stacks - here one stack that takes five memory pages is allocated.
   assert( !  STACKS_init( &stacks, 1 , 5 ) );
 
-  printf("Sum of roots of fibonaci numbers: %f\n", sum_of_roots( MAX_NUM, &stacks ) );
+  printf("Sum of roots of Fibonacci numbers: %f\n", sum_of_roots( MAX_NUM, &stacks ) );
 
   // release pool of stacks
   assert( ! STACKS_destroy( &stacks ) ); 
 
   return 0;
 }
-</pre>.
+</pre>
 
 h3. Download instructions
 
@@ -236,8 +236,9 @@ cd build
 ./build-coroutine.sh
 (For platform specific stuf ./build-coroutine.sh ARCH=x86_64)
 For tutorial see <root direcotory>/corothread/tutorial
+Add the following libraries -l
 
 h3. What comes next
 
-The next article in this series will show how to handle IO events / non blocking sockets with coroutines; For this purpose a library will be presented that invokes a coroutine thread per new incoming connection; the couroutine will use blocking primitives in order to receive data from and write to the conection; when a connection blocks ; the library will switch the stack and handle an IO event with another coroutine.
+The next article in this series will show how to handle IO events / non blocking sockets with co-routines; For this purpose a library will be presented that invokes a co-routine thread per new incoming connection; the co-routine will use blocking primitives in order to receive data from and write to the connection; when a connection blocks ; the library will switch the stack and handle an IO event with another co-routine.
  
