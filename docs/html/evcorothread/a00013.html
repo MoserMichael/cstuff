@@ -51,7 +51,9 @@ Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00006.html">tagTCPACCEPTOR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga04e932952b59a41f70cbd49ce5680032">EVTCPACCEPTOR</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int fd, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">EVTCPACCEPTOR_init_ex</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, SOCKADDR *addr, int listener_backlog, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int write_buffer_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int listener_fd, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int write_buffer_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">EVTCPACCEPTOR_close</a> (<a class="el" href="a00006.html">EVTCPACCEPTOR</a> *)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <p>listener for tcp connections, a usermode thread is created for each new connection. </p>
@@ -80,12 +82,38 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00240">240</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00233">233</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ga529f6caf19c2f1a310eedffd93cfc9c4"></a><!-- doxytag: member="evthread.h::EVTCPACCEPTOR_init" ref="ga529f6caf19c2f1a310eedffd93cfc9c4" args="(EVLOOP *loop, int fd, EVTHREAD_FACTORY factory)" -->
+<a class="anchor" id="ga41290a3a6ed59142a584f16f9fd0f79e"></a><!-- doxytag: member="evthread.h::EVTCPACCEPTOR_close" ref="ga41290a3a6ed59142a584f16f9fd0f79e" args="(EVTCPACCEPTOR *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EVTCPACCEPTOR_close </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00624">624</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  event_del(&amp;acceptor-&gt;read_event);
+  <span class="keywordflow">if</span> (acceptor-&gt;fd != -1) {
+    close(acceptor-&gt;fd);
+  }
+  free(acceptor);
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga53a501bf2cbac06aa2f984fda46dd035"></a><!-- doxytag: member="evthread.h::EVTCPACCEPTOR_init" ref="ga53a501bf2cbac06aa2f984fda46dd035" args="(EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -99,13 +127,25 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>fd</em>, </td>
+          <td class="paramname"><em>listener_fd</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a>&#160;</td>
-          <td class="paramname"><em>factory</em>&#160;</td>
+          <td class="paramname"><em>factory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>read_buffer_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>write_buffer_size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -116,7 +156,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00563">563</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00596">596</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00006.html">EVTCPACCEPTOR</a> *acceptor;
 
@@ -134,6 +174,9 @@ Functions</h2></td></tr>
   acceptor-&gt;<a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a> = factory;
   acceptor-&gt;<a class="code" href="a00006.html#a4606db4461a29987675ef98ff69f96d9">fd</a> = fd;
 
+  acceptor-&gt;<a class="code" href="a00006.html#a1a5a368dfb77cf7480f8ea493107d823">read_buffer_size</a> = read_buffer_size;
+  acceptor-&gt;<a class="code" href="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45">send_buffer_size</a> = send_buffer_size;
+
   event_set( &amp;acceptor-&gt;<a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">read_event</a>, fd, EV_READ | EV_PERSIST, <a class="code" href="a00007.html#aaf2800e17c660488fc490769a930c43c">socket_listener_cb</a>, (<span class="keywordtype">void</span> *) acceptor );
   event_base_set( loop-&gt;<a class="code" href="a00001.html#a3ef46ca89266616a4ca06b62e60e8062">ev_base</a>, &amp;acceptor-&gt;<a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">read_event</a> );
   event_add( &amp;acceptor-&gt;<a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">read_event</a>, 0 );
@@ -143,8 +186,73 @@ Functions</h2></td></tr>
 </pre></div>
 </div>
 </div>
+<a class="anchor" id="ga537b80ed744dbda49efb413b669bdebc"></a><!-- doxytag: member="evthread.h::EVTCPACCEPTOR_init_ex" ref="ga537b80ed744dbda49efb413b669bdebc" args="(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00006.html">EVTCPACCEPTOR</a>* EVTCPACCEPTOR_init_ex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00001.html">EVLOOP</a> *&#160;</td>
+          <td class="paramname"><em>loop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SOCKADDR *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>listener_backlog</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a>&#160;</td>
+          <td class="paramname"><em>factory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>read_buffer_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>write_buffer_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00582">582</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> listener_fd;
+
+  listener_fd = fd_make_tcp_listener( addr, listener_backlog );
+  <span class="keywordflow">if</span> (listener_fd == -1) {
+    <span class="keywordflow">return</span> 0; 
+  }
+
+  <span class="keywordflow">return</span> <a class="code" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">EVTCPACCEPTOR_init</a>( loop, listener_fd, factory, read_buffer_size, send_buffer_size );
+ 
+
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:34 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -5,6 +5,34 @@
     <path>/home/mmoser/archive/cstuff_bak/evcorothread/</path>
     <filename>a00007</filename>
     <includes id="a00008" name="evthread.h" local="no" imported="no">evthread.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>EVENT_ID_HAS_IO_EVENT</name>
+      <anchorfile>a00007.html</anchorfile>
+      <anchor>a0e9d7e454d783a729f7138c013b63fa1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>EVENT_ID_HAS_IO_ERROR</name>
+      <anchorfile>a00007.html</anchorfile>
+      <anchor>a51be86b706137641b29d5c0796b0c2d1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>TIMER_ID_COMM_TIMEOUT</name>
+      <anchorfile>a00007.html</anchorfile>
+      <anchor>a796e3303f722ae381725e79a330be583</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>TIMER_ID_IDLE_TIMEOUT</name>
+      <anchorfile>a00007.html</anchorfile>
+      <anchor>adf6bc4dc55535710fb815c513e424649</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>EVLOOP *</type>
       <name>EVLOOP_init</name>
@@ -82,33 +110,19 @@
       <anchor>afac4b846bbebc9e8bb60ec8c4d527eac</anchor>
       <arglist>(EVTHREAD_OBJECT *obj)</arglist>
     </member>
-    <member kind="function">
-      <type>EVTIMER *</type>
-      <name>ev_mktimer</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>ae7d66724a3893b47b092d8ab33d1781d</anchor>
-      <arglist>(EVTHREAD *thread, int timer_id, int is_recurrent, struct timeval tm, EVTIMER_PROC proc, void *user_data)</arglist>
-    </member>
-    <member kind="function">
-      <type>EVTIMER *</type>
-      <name>EVTIMER_init_one_shot</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gaa7702b36f1620f2526f4e57e7f4f90f4</anchor>
-      <arglist>(EVTHREAD *thread, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)</arglist>
-    </member>
-    <member kind="function">
-      <type>EVTIMER *</type>
-      <name>EVTIMER_init_recurrent</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gaf4c9953fa5cdd6b815c2f5e06aea2af6</anchor>
-      <arglist>(EVTHREAD *thread, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)</arglist>
-    </member>
     <member kind="function" static="yes">
       <type>static void</type>
       <name>timer_cb</name>
       <anchorfile>a00007.html</anchorfile>
       <anchor>a9152704ad0af03f1ed087d0c20802fcf</anchor>
       <arglist>(int fd, short event, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>EVTIMER *</type>
+      <name>EVTIMER_init</name>
+      <anchorfile>a00011.html</anchorfile>
+      <anchor>ga107d2c4b4ba03deee5490f40d0d4752b</anchor>
+      <arglist>(EVTHREAD *thread, int timer_id, struct timeval tm)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -133,13 +147,6 @@
     </member>
     <member kind="function" static="yes">
       <type>static void</type>
-      <name>timer_thread_proc</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>a2d43182e610f4db506b2d60b0ce296d5</anchor>
-      <arglist>(VALUES *values)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static void</type>
       <name>socket_cb</name>
       <anchorfile>a00007.html</anchorfile>
       <anchor>a291d3071c09facfdc2359fe2ca0fa1a5</anchor>
@@ -161,10 +168,10 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>io_timeout_proc</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>a263766876e9dd593e9f37a825aa6bd3f</anchor>
-      <arglist>(EVTIMER *timer, void *user_data)</arglist>
+      <name>EVSOCKET_set_idle_timeout</name>
+      <anchorfile>a00012.html</anchorfile>
+      <anchor>ga9f1eadc43b53273402e301cbecd5af2f</anchor>
+      <arglist>(EVSOCKET *socket, struct timeval timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -173,25 +180,25 @@
       <anchor>ga9611ce37f2fb0b914d624fcfeaf14045</anchor>
       <arglist>(EVSOCKET *socket, struct sockaddr *address, socklen_t socklen, struct timeval timeout)</arglist>
     </member>
-    <member kind="function">
-      <type>void</type>
-      <name>EVSOCKET_set_idle_timeout</name>
-      <anchorfile>a00012.html</anchorfile>
-      <anchor>ga9f1eadc43b53273402e301cbecd5af2f</anchor>
-      <arglist>(EVSOCKET *socket, struct timeval timeout)</arglist>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>EVSOCKET_recv_internal</name>
+      <anchorfile>a00007.html</anchorfile>
+      <anchor>a02f0b25f89a7fa204fa3fa57d7b2ac48</anchor>
+      <arglist>(EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>EVSOCKET_send_internal</name>
+      <anchorfile>a00007.html</anchorfile>
+      <anchor>abaac6bb1c818d584e898025fe8904f27</anchor>
+      <arglist>(EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>EVSOCKET_recv</name>
       <anchorfile>a00012.html</anchorfile>
       <anchor>ga2400bf324d24d3d0b011f32c7eceecda</anchor>
-      <arglist>(EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>EVSOCKET_send_internal</name>
-      <anchorfile>a00007.html</anchorfile>
-      <anchor>abcb6b7f63c1fe247e757aab22311098a</anchor>
       <arglist>(EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</arglist>
     </member>
     <member kind="function">
@@ -217,10 +224,24 @@
     </member>
     <member kind="function">
       <type>EVTCPACCEPTOR *</type>
+      <name>EVTCPACCEPTOR_init_ex</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga537b80ed744dbda49efb413b669bdebc</anchor>
+      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga529f6caf19c2f1a310eedffd93cfc9c4</anchor>
-      <arglist>(EVLOOP *loop, int fd, EVTHREAD_FACTORY factory)</arglist>
+      <anchor>ga53a501bf2cbac06aa2f984fda46dd035</anchor>
+      <arglist>(EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EVTCPACCEPTOR_close</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga41290a3a6ed59142a584f16f9fd0f79e</anchor>
+      <arglist>(EVTCPACCEPTOR *acceptor)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -267,13 +288,6 @@
       <anchorfile>a00008.html</anchorfile>
       <anchor>aec66d4972a98f0832cbb0426f7a2fb2f</anchor>
       <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>void(*</type>
-      <name>EVTIMER_PROC</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gade7ae470b6904a89f3467e8535eb197f</anchor>
-      <arglist>)(struct tagEVTIMER *timer, void *user_data)</arglist>
     </member>
     <member kind="typedef">
       <type>struct tagEVTIMER</type>
@@ -337,12 +351,6 @@
       <name>EVTIMER_STATE_SCHEDULED</name>
       <anchorfile>a00011.html</anchorfile>
       <anchor>gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>EVTIMER_STATE_HANDLER_RUNNING</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gga2e6068a47dd625c7ac59d77a4615a181ae0c37a0c0a051faa089c7eab772da813</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -437,17 +445,10 @@
     </member>
     <member kind="function">
       <type>EVTIMER *</type>
-      <name>EVTIMER_init_one_shot</name>
+      <name>EVTIMER_init</name>
       <anchorfile>a00011.html</anchorfile>
-      <anchor>gaa7702b36f1620f2526f4e57e7f4f90f4</anchor>
-      <arglist>(EVTHREAD *loop, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)</arglist>
-    </member>
-    <member kind="function">
-      <type>EVTIMER *</type>
-      <name>EVTIMER_init_recurrent</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gaf4c9953fa5cdd6b815c2f5e06aea2af6</anchor>
-      <arglist>(EVTHREAD *loop, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)</arglist>
+      <anchor>ga107d2c4b4ba03deee5490f40d0d4752b</anchor>
+      <arglist>(EVTHREAD *thread, int timer_id, struct timeval tm)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -521,10 +522,24 @@
     </member>
     <member kind="function">
       <type>EVTCPACCEPTOR *</type>
+      <name>EVTCPACCEPTOR_init_ex</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga537b80ed744dbda49efb413b669bdebc</anchor>
+      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga529f6caf19c2f1a310eedffd93cfc9c4</anchor>
-      <arglist>(EVLOOP *loop, int fd, EVTHREAD_FACTORY factory)</arglist>
+      <anchor>ga53a501bf2cbac06aa2f984fda46dd035</anchor>
+      <arglist>(EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EVTCPACCEPTOR_close</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga41290a3a6ed59142a584f16f9fd0f79e</anchor>
+      <arglist>(EVTCPACCEPTOR *)</arglist>
     </member>
   </compound>
   <compound kind="group">
@@ -608,13 +623,6 @@
     <filename>a00011.html</filename>
     <class kind="struct">tagEVTIMER</class>
     <member kind="typedef">
-      <type>void(*</type>
-      <name>EVTIMER_PROC</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gade7ae470b6904a89f3467e8535eb197f</anchor>
-      <arglist>)(struct tagEVTIMER *timer, void *user_data)</arglist>
-    </member>
-    <member kind="typedef">
       <type>struct tagEVTIMER</type>
       <name>EVTIMER</name>
       <anchorfile>a00011.html</anchorfile>
@@ -639,25 +647,12 @@
       <anchor>gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>EVTIMER_STATE_HANDLER_RUNNING</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gga2e6068a47dd625c7ac59d77a4615a181ae0c37a0c0a051faa089c7eab772da813</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type>EVTIMER *</type>
-      <name>EVTIMER_init_one_shot</name>
+      <name>EVTIMER_init</name>
       <anchorfile>a00011.html</anchorfile>
-      <anchor>gaa7702b36f1620f2526f4e57e7f4f90f4</anchor>
-      <arglist>(EVTHREAD *loop, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)</arglist>
-    </member>
-    <member kind="function">
-      <type>EVTIMER *</type>
-      <name>EVTIMER_init_recurrent</name>
-      <anchorfile>a00011.html</anchorfile>
-      <anchor>gaf4c9953fa5cdd6b815c2f5e06aea2af6</anchor>
-      <arglist>(EVTHREAD *loop, int timer_id, struct timeval tm, EVTIMER_PROC proc, void *user_data)</arglist>
+      <anchor>ga107d2c4b4ba03deee5490f40d0d4752b</anchor>
+      <arglist>(EVTHREAD *thread, int timer_id, struct timeval tm)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -812,10 +807,24 @@
     </member>
     <member kind="function">
       <type>EVTCPACCEPTOR *</type>
+      <name>EVTCPACCEPTOR_init_ex</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga537b80ed744dbda49efb413b669bdebc</anchor>
+      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga529f6caf19c2f1a310eedffd93cfc9c4</anchor>
-      <arglist>(EVLOOP *loop, int fd, EVTHREAD_FACTORY factory)</arglist>
+      <anchor>ga53a501bf2cbac06aa2f984fda46dd035</anchor>
+      <arglist>(EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EVTCPACCEPTOR_close</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga41290a3a6ed59142a584f16f9fd0f79e</anchor>
+      <arglist>(EVTCPACCEPTOR *)</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -886,6 +895,13 @@
       <name>timer_io_timeout</name>
       <anchorfile>a00002.html</anchorfile>
       <anchor>ad73f5d6d015fd3f464b9e6c1894e9836</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>struct timeval</type>
+      <name>idle_timeout</name>
+      <anchorfile>a00002.html</anchorfile>
+      <anchor>abf2731a67912b2d4881ba9c5651e5562</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -999,45 +1015,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>EVTIMER_PROC</type>
-      <name>proc</name>
-      <anchorfile>a00005.html</anchorfile>
-      <anchor>a4336a1004a67d947772edcf5151f84a6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>void *</type>
-      <name>user_data</name>
-      <anchorfile>a00005.html</anchorfile>
-      <anchor>a060c8465c9ad91aa4690d86ef2029623</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
       <type>int</type>
       <name>timer_id</name>
       <anchorfile>a00005.html</anchorfile>
       <anchor>ab0896ef55a4486c2555d8e8e851e8232</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>struct event</type>
-      <name>timer_event</name>
-      <anchorfile>a00005.html</anchorfile>
-      <anchor>a11f2b0cfebce383190acf1ca2e435240</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>struct timeval</type>
-      <name>timer_period</name>
-      <anchorfile>a00005.html</anchorfile>
-      <anchor>a539b7675429899de8dd3a18b237fc872</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>int</type>
-      <name>is_recurrent</name>
-      <anchorfile>a00005.html</anchorfile>
-      <anchor>a76a08cfecc3cb0d919473a0d10aa3d22</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1048,10 +1029,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>struct timeval</type>
-      <name>next_due_date</name>
+      <type>struct event</type>
+      <name>timer_event</name>
       <anchorfile>a00005.html</anchorfile>
-      <anchor>a60f4469b2b053810d66cea5b76196f6f</anchor>
+      <anchor>a11f2b0cfebce383190acf1ca2e435240</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1084,6 +1065,20 @@
       <name>read_event</name>
       <anchorfile>a00006.html</anchorfile>
       <anchor>a85a6ecdfac5b71883114be1a3b554cd7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>read_buffer_size</name>
+      <anchorfile>a00006.html</anchorfile>
+      <anchor>a1a5a368dfb77cf7480f8ea493107d823</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>send_buffer_size</name>
+      <anchorfile>a00006.html</anchorfile>
+      <anchor>ae506894f3e6b20c320a9bcd4089d4a45</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">

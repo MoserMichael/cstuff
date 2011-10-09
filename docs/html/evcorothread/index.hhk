@@ -8,7 +8,8 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a42e820bb41711d718897b1989348fd0c"><param name="Name" value="custom_timeout_handling"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00004.html#a55a3a585eee64b4f19b168df6388523d"><param name="Name" value="entry"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00001.html#a3ef46ca89266616a4ca06b62e60e8062"><param name="Name" value="ev_base"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ae7d66724a3893b47b092d8ab33d1781d"><param name="Name" value="ev_mktimer"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a51be86b706137641b29d5c0796b0c2d1"><param name="Name" value="EVENT_ID_HAS_IO_ERROR"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a0e9d7e454d783a729f7138c013b63fa1"><param name="Name" value="EVENT_ID_HAS_IO_EVENT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00009.html"><param name="Name" value="EVLOOP"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00009.html#ga962e10cc0631184c27e12a42a78e2f38"><param name="Name" value="EVLOOP"></OBJECT>
@@ -84,13 +85,14 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#gae70737035f6cd136a85b6b24e31fe8be"><param name="Name" value="evthread.c"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#gae70737035f6cd136a85b6b24e31fe8be"><param name="Name" value="evthread.h"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a02f0b25f89a7fa204fa3fa57d7b2ac48"><param name="Name" value="EVSOCKET_recv_internal"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d"><param name="Name" value="EVSOCKET_send"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d"><param name="Name" value="EVSOCKET"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d"><param name="Name" value="evthread.c"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d"><param name="Name" value="evthread.h"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#abcb6b7f63c1fe247e757aab22311098a"><param name="Name" value="EVSOCKET_send_internal"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#abaac6bb1c818d584e898025fe8904f27"><param name="Name" value="EVSOCKET_send_internal"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#ga9f1eadc43b53273402e301cbecd5af2f"><param name="Name" value="EVSOCKET_set_idle_timeout"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00012.html#ga9f1eadc43b53273402e301cbecd5af2f"><param name="Name" value="EVSOCKET"></OBJECT>
@@ -109,17 +111,30 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga04e932952b59a41f70cbd49ce5680032"><param name="Name" value="evthread.h"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga04e932952b59a41f70cbd49ce5680032"><param name="Name" value="TCPACCEPTOR"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e"><param name="Name" value="EVTCPACCEPTOR_close"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4"><param name="Name" value="evthread.c"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4"><param name="Name" value="evthread.h"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4"><param name="Name" value="TCPACCEPTOR"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e"><param name="Name" value="evthread.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e"><param name="Name" value="evthread.h"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e"><param name="Name" value="TCPACCEPTOR"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035"><param name="Name" value="evthread.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035"><param name="Name" value="evthread.h"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035"><param name="Name" value="TCPACCEPTOR"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga537b80ed744dbda49efb413b669bdebc"><param name="Name" value="EVTCPACCEPTOR_init_ex"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga537b80ed744dbda49efb413b669bdebc"><param name="Name" value="evthread.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga537b80ed744dbda49efb413b669bdebc"><param name="Name" value="evthread.h"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga537b80ed744dbda49efb413b669bdebc"><param name="Name" value="TCPACCEPTOR"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00010.html"><param name="Name" value="EVTHREAD"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html"><param name="Name" value="evthread.c"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a42e820bb41711d718897b1989348fd0c"><param name="Name" value="custom_timeout_handling"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ae7d66724a3893b47b092d8ab33d1781d"><param name="Name" value="ev_mktimer"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a51be86b706137641b29d5c0796b0c2d1"><param name="Name" value="EVENT_ID_HAS_IO_ERROR"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a0e9d7e454d783a729f7138c013b63fa1"><param name="Name" value="EVENT_ID_HAS_IO_EVENT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga6886f671cea83756af4d537b31c53436"><param name="Name" value="EVLOOP_break"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#gac2c9758c338da8cf0bd5692db7547564"><param name="Name" value="EVLOOP_init"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#gaa25fcfb07b6227a4749e2d148bb053b3"><param name="Name" value="EVLOOP_run"></OBJECT>
@@ -128,10 +143,13 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga2fd5da1f97d6ab55cc7c977d5759558e"><param name="Name" value="EVSOCKET_init"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga2400bf324d24d3d0b011f32c7eceecda"><param name="Name" value="EVSOCKET_recv"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#gae70737035f6cd136a85b6b24e31fe8be"><param name="Name" value="EVSOCKET_recv_all"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a02f0b25f89a7fa204fa3fa57d7b2ac48"><param name="Name" value="EVSOCKET_recv_internal"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga6c9dc88bb3fbe603473bc694664cdc7d"><param name="Name" value="EVSOCKET_send"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#abcb6b7f63c1fe247e757aab22311098a"><param name="Name" value="EVSOCKET_send_internal"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#abaac6bb1c818d584e898025fe8904f27"><param name="Name" value="EVSOCKET_send_internal"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga9f1eadc43b53273402e301cbecd5af2f"><param name="Name" value="EVSOCKET_set_idle_timeout"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga529f6caf19c2f1a310eedffd93cfc9c4"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga41290a3a6ed59142a584f16f9fd0f79e"><param name="Name" value="EVTCPACCEPTOR_close"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga53a501bf2cbac06aa2f984fda46dd035"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga537b80ed744dbda49efb413b669bdebc"><param name="Name" value="EVTCPACCEPTOR_init_ex"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga51f061f7921e0bbce68d3a16e043a0ff"><param name="Name" value="EVTHREAD_delay"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#af6327bf0e0278d10f1ff67a1886359af"><param name="Name" value="EVTHREAD_free"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#gaa23e69897b0c289d7da8f8d10435a140"><param name="Name" value="EVTHREAD_init"></OBJECT>
@@ -141,15 +159,14 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#gad53dee62668086eb89016bb5b7e14fa5"><param name="Name" value="EVTHREAD_start"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga9108a7e52c0f3094b41fd0d681b3ef07"><param name="Name" value="EVTIMER_cancel"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga69cdac6c1ab58a63245fb14dfb43cc70"><param name="Name" value="EVTIMER_free"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#gaa7702b36f1620f2526f4e57e7f4f90f4"><param name="Name" value="EVTIMER_init_one_shot"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6"><param name="Name" value="EVTIMER_init_recurrent"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga107d2c4b4ba03deee5490f40d0d4752b"><param name="Name" value="EVTIMER_init"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#ga9f5c178bcc529edd33a09632930bc7f7"><param name="Name" value="EVTIMER_start"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a263766876e9dd593e9f37a825aa6bd3f"><param name="Name" value="io_timeout_proc"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a291d3071c09facfdc2359fe2ca0fa1a5"><param name="Name" value="socket_cb"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#aaf2800e17c660488fc490769a930c43c"><param name="Name" value="socket_listener_cb"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a205141cb4354a9ea6d692c30c0a62bd4"><param name="Name" value="thread_timer_cb"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a9152704ad0af03f1ed087d0c20802fcf"><param name="Name" value="timer_cb"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a2d43182e610f4db506b2d60b0ce296d5"><param name="Name" value="timer_thread_proc"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a796e3303f722ae381725e79a330be583"><param name="Name" value="TIMER_ID_COMM_TIMEOUT"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#adf6bc4dc55535710fb815c513e424649"><param name="Name" value="TIMER_ID_IDLE_TIMEOUT"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html"><param name="Name" value="evthread.h"></OBJECT>
   <UL>
@@ -166,7 +183,9 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga6c9dc88bb3fbe603473bc694664cdc7d"><param name="Name" value="EVSOCKET_send"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga9f1eadc43b53273402e301cbecd5af2f"><param name="Name" value="EVSOCKET_set_idle_timeout"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga04e932952b59a41f70cbd49ce5680032"><param name="Name" value="EVTCPACCEPTOR"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga529f6caf19c2f1a310eedffd93cfc9c4"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga41290a3a6ed59142a584f16f9fd0f79e"><param name="Name" value="EVTCPACCEPTOR_close"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga53a501bf2cbac06aa2f984fda46dd035"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga537b80ed744dbda49efb413b669bdebc"><param name="Name" value="EVTCPACCEPTOR_init_ex"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#gadbf6a6fe0e60307b58ee163176c1839a"><param name="Name" value="EVTHREAD"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga51f061f7921e0bbce68d3a16e043a0ff"><param name="Name" value="EVTHREAD_delay"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga51673c2cea9c3ed041a2511977c04148"><param name="Name" value="EVTHREAD_FACTORY"></OBJECT>
@@ -179,9 +198,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#gac4efc7b102f8c909be276232fddd95e7"><param name="Name" value="EVTIMER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga9108a7e52c0f3094b41fd0d681b3ef07"><param name="Name" value="EVTIMER_cancel"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga69cdac6c1ab58a63245fb14dfb43cc70"><param name="Name" value="EVTIMER_free"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#gaa7702b36f1620f2526f4e57e7f4f90f4"><param name="Name" value="EVTIMER_init_one_shot"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6"><param name="Name" value="EVTIMER_init_recurrent"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#gade7ae470b6904a89f3467e8535eb197f"><param name="Name" value="EVTIMER_PROC"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga107d2c4b4ba03deee5490f40d0d4752b"><param name="Name" value="EVTIMER_init"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00008.html#ga9f5c178bcc529edd33a09632930bc7f7"><param name="Name" value="EVTIMER_start"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00010.html"><param name="Name" value="EVTHREAD"></OBJECT>
@@ -231,11 +248,8 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gac4efc7b102f8c909be276232fddd95e7"><param name="Name" value="EVTIMER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07"><param name="Name" value="EVTIMER_cancel"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70"><param name="Name" value="EVTIMER_free"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4"><param name="Name" value="EVTIMER_init_one_shot"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6"><param name="Name" value="EVTIMER_init_recurrent"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gade7ae470b6904a89f3467e8535eb197f"><param name="Name" value="EVTIMER_PROC"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b"><param name="Name" value="EVTIMER_init"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7"><param name="Name" value="EVTIMER_start"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ae0c37a0c0a051faa089c7eab772da813"><param name="Name" value="EVTIMER_STATE_HANDLER_RUNNING"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8"><param name="Name" value="EVTIMER_STATE_INIT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5"><param name="Name" value="EVTIMER_STATE_SCHEDULED"></OBJECT>
   </UL>
@@ -251,22 +265,11 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70"><param name="Name" value="evthread.h"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70"><param name="Name" value="EVTIMER"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4"><param name="Name" value="EVTIMER_init_one_shot"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b"><param name="Name" value="EVTIMER_init"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4"><param name="Name" value="evthread.c"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4"><param name="Name" value="evthread.h"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4"><param name="Name" value="EVTIMER"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6"><param name="Name" value="EVTIMER_init_recurrent"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6"><param name="Name" value="evthread.c"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6"><param name="Name" value="evthread.h"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6"><param name="Name" value="EVTIMER"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gade7ae470b6904a89f3467e8535eb197f"><param name="Name" value="EVTIMER_PROC"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gade7ae470b6904a89f3467e8535eb197f"><param name="Name" value="evthread.h"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gade7ae470b6904a89f3467e8535eb197f"><param name="Name" value="EVTIMER"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b"><param name="Name" value="evthread.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b"><param name="Name" value="evthread.h"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b"><param name="Name" value="EVTIMER"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7"><param name="Name" value="EVTIMER_start"></OBJECT>
   <UL>
@@ -274,7 +277,6 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7"><param name="Name" value="evthread.h"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7"><param name="Name" value="EVTIMER"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ae0c37a0c0a051faa089c7eab772da813"><param name="Name" value="EVTIMER_STATE_HANDLER_RUNNING"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8"><param name="Name" value="EVTIMER_STATE_INIT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5"><param name="Name" value="EVTIMER_STATE_SCHEDULED"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#af8f56cf09d1124217ec73e367348662f"><param name="Name" value="factory"></OBJECT>
@@ -283,8 +285,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f"><param name="Name" value="tagEVSOCKET"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#a4606db4461a29987675ef98ff69f96d9"><param name="Name" value="tagTCPACCEPTOR"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a263766876e9dd593e9f37a825aa6bd3f"><param name="Name" value="io_timeout_proc"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a76a08cfecc3cb0d919473a0d10aa3d22"><param name="Name" value="is_recurrent"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#abf2731a67912b2d4881ba9c5651e5562"><param name="Name" value="idle_timeout"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#ab7a9905daf7aa5dc109ac87e5dbb33d4"><param name="Name" value="loop"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#ab7a9905daf7aa5dc109ac87e5dbb33d4"><param name="Name" value="tagEVSOCKET"></OBJECT>
@@ -292,7 +293,6 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a742e8b7259a65ba5a186a7298e4b191c"><param name="Name" value="tagEVTIMER"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#aa4067896ed166c8c989986d53c22d278"><param name="Name" value="tagTCPACCEPTOR"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a60f4469b2b053810d66cea5b76196f6f"><param name="Name" value="next_due_date"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#aa2f8699d28dc94e1acadc99a1d0aab2a"><param name="Name" value="object_base"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#aa2f8699d28dc94e1acadc99a1d0aab2a"><param name="Name" value="tagEVSOCKET"></OBJECT>
@@ -301,12 +301,13 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00003.html#ab6d295983287160d97863ce19955cb34"><param name="Name" value="object_list"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00004.html#a3e9332299f5b805b4c57003aef3d44a4"><param name="Name" value="object_type"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f"><param name="Name" value="owner"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a4336a1004a67d947772edcf5151f84a6"><param name="Name" value="proc"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#a1a5a368dfb77cf7480f8ea493107d823"><param name="Name" value="read_buffer_size"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#a424a834569ee2593b2d04b6e6ae9799b"><param name="Name" value="read_event"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#a424a834569ee2593b2d04b6e6ae9799b"><param name="Name" value="tagEVSOCKET"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7"><param name="Name" value="tagTCPACCEPTOR"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45"><param name="Name" value="send_buffer_size"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00003.html#acbc4c1ff508c758eb16d77dc9729fd3a"><param name="Name" value="socket"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a291d3071c09facfdc2359fe2ca0fa1a5"><param name="Name" value="socket_cb"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#aaf2800e17c660488fc490769a930c43c"><param name="Name" value="socket_listener_cb"></OBJECT>
@@ -324,6 +325,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html"><param name="Name" value="tagEVSOCKET"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f"><param name="Name" value="fd"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#abf2731a67912b2d4881ba9c5651e5562"><param name="Name" value="idle_timeout"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#ab7a9905daf7aa5dc109ac87e5dbb33d4"><param name="Name" value="loop"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#aa2f8699d28dc94e1acadc99a1d0aab2a"><param name="Name" value="object_base"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#a424a834569ee2593b2d04b6e6ae9799b"><param name="Name" value="read_event"></OBJECT>
@@ -351,29 +353,28 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html"><param name="Name" value="tagEVTIMER"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a76a08cfecc3cb0d919473a0d10aa3d22"><param name="Name" value="is_recurrent"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a742e8b7259a65ba5a186a7298e4b191c"><param name="Name" value="loop"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a60f4469b2b053810d66cea5b76196f6f"><param name="Name" value="next_due_date"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270"><param name="Name" value="object_base"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a4336a1004a67d947772edcf5151f84a6"><param name="Name" value="proc"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592"><param name="Name" value="state"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a11f2b0cfebce383190acf1ca2e435240"><param name="Name" value="timer_event"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#ab0896ef55a4486c2555d8e8e851e8232"><param name="Name" value="timer_id"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a539b7675429899de8dd3a18b237fc872"><param name="Name" value="timer_period"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a43ce976f10a5015e918295d8f6950046"><param name="Name" value="tm"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a060c8465c9ad91aa4690d86ef2029623"><param name="Name" value="user_data"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html"><param name="Name" value="tagTCPACCEPTOR"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#af8f56cf09d1124217ec73e367348662f"><param name="Name" value="factory"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#a4606db4461a29987675ef98ff69f96d9"><param name="Name" value="fd"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#aa4067896ed166c8c989986d53c22d278"><param name="Name" value="loop"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#a1a5a368dfb77cf7480f8ea493107d823"><param name="Name" value="read_buffer_size"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7"><param name="Name" value="read_event"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45"><param name="Name" value="send_buffer_size"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html"><param name="Name" value="TCPACCEPTOR"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga04e932952b59a41f70cbd49ce5680032"><param name="Name" value="EVTCPACCEPTOR"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e"><param name="Name" value="EVTCPACCEPTOR_close"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035"><param name="Name" value="EVTCPACCEPTOR_init"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga537b80ed744dbda49efb413b669bdebc"><param name="Name" value="EVTCPACCEPTOR_init_ex"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00013.html#ga51673c2cea9c3ed041a2511977c04148"><param name="Name" value="EVTHREAD_FACTORY"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#ac7bd1c84d925b7c459220750b47d3d09"><param name="Name" value="thread"></OBJECT>
@@ -386,13 +387,12 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a11f2b0cfebce383190acf1ca2e435240"><param name="Name" value="tagEVTIMER"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#ab0896ef55a4486c2555d8e8e851e8232"><param name="Name" value="timer_id"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a796e3303f722ae381725e79a330be583"><param name="Name" value="TIMER_ID_COMM_TIMEOUT"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#adf6bc4dc55535710fb815c513e424649"><param name="Name" value="TIMER_ID_IDLE_TIMEOUT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#a25d6aeb264edc059926e412bbf0d8900"><param name="Name" value="timer_idle_timeout"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836"><param name="Name" value="timer_io_timeout"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a539b7675429899de8dd3a18b237fc872"><param name="Name" value="timer_period"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00007.html#a2d43182e610f4db506b2d60b0ce296d5"><param name="Name" value="timer_thread_proc"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a43ce976f10a5015e918295d8f6950046"><param name="Name" value="tm"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00003.html#afc9604c7677fa92279f144561a816438"><param name="Name" value="user_context"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="a00005.html#a060c8465c9ad91aa4690d86ef2029623"><param name="Name" value="user_data"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="a00002.html#a25b5c3a94163a89a7bc0dff0dbdeb277"><param name="Name" value="write_event"></OBJECT>
 </UL>
 </BODY>

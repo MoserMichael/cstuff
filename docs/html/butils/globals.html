@@ -40,14 +40,18 @@
       <li><a href="globals_func.html"><span>Functions</span></a></li>
       <li><a href="globals_vars.html"><span>Variables</span></a></li>
       <li><a href="globals_type.html"><span>Typedefs</span></a></li>
+      <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="globals_eval.html"><span>Enumerator</span></a></li>
       <li><a href="globals_defs.html"><span>Defines</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
+      <li><a href="#index_a"><span>a</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_h"><span>h</span></a></li>
+      <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
@@ -58,21 +62,39 @@
 <div class="contents">
 <div class="textblock">Here is a list of all file members with links to the files they belong to:</div>
 
+<h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
+<li>alloc_size
+: <a class="el" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">logg.c</a>
+</li>
+<li>alloc_strategy
+: <a class="el" href="a00007.html#a8d3637cbadc4f3b006664083b0a9203a">logg.c</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>error_dump_string()
+: <a class="el" href="a00003.html#ac8abec5b575fdad732d9b5fa3b95d608">errorp.c</a>
+, <a class="el" href="a00007.html#ac8abec5b575fdad732d9b5fa3b95d608">logg.c</a>
+</li>
 <li>ERROR_TOKEN
 : <a class="el" href="a00003.html#a2983b695e827265a5b46ab9405446e36">errorp.c</a>
 </li>
 <li>errorp()
-: <a class="el" href="a00011.html#gaeb8c47ac00ab256e031f9897e3cc4be4">errorp.c</a>
-, <a class="el" href="a00011.html#gaeb8c47ac00ab256e031f9897e3cc4be4">errorp.h</a>
+: <a class="el" href="a00013.html#gaeb8c47ac00ab256e031f9897e3cc4be4">errorp.c</a>
+, <a class="el" href="a00013.html#gaeb8c47ac00ab256e031f9897e3cc4be4">errorp.h</a>
 </li>
 <li>errorp_close_file()
-: <a class="el" href="a00011.html#ga6911b37ee103e7778baa57f3ef4e1f58">errorp.h</a>
-, <a class="el" href="a00011.html#ga6911b37ee103e7778baa57f3ef4e1f58">errorp.c</a>
+: <a class="el" href="a00013.html#ga6911b37ee103e7778baa57f3ef4e1f58">errorp.h</a>
+, <a class="el" href="a00013.html#ga6911b37ee103e7778baa57f3ef4e1f58">errorp.c</a>
+</li>
+<li>errorp_is_file_open()
+: <a class="el" href="a00013.html#ga581e39706983163a300cd50728794634">errorp.h</a>
+, <a class="el" href="a00013.html#ga581e39706983163a300cd50728794634">errorp.c</a>
 </li>
 <li>errorp_open_file()
-: <a class="el" href="a00011.html#ga766648cd1050284e3170e1122e776b4f">errorp.c</a>
-, <a class="el" href="a00011.html#ga766648cd1050284e3170e1122e776b4f">errorp.h</a>
+: <a class="el" href="a00013.html#ga766648cd1050284e3170e1122e776b4f">errorp.c</a>
+, <a class="el" href="a00013.html#ga766648cd1050284e3170e1122e776b4f">errorp.h</a>
 </li>
 </ul>
 
@@ -94,27 +116,144 @@
 </ul>
 
 
+<h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
+<li>log_action
+: <a class="el" href="a00007.html#ada0962f3c9bfc9ac2ed216c787d5a58d">logg.c</a>
+</li>
+<li>log_fd
+: <a class="el" href="a00007.html#ad9f84b0791cb1cac996456b223aeffec">logg.c</a>
+</li>
+<li>log_level_names
+: <a class="el" href="a00007.html#a3d1bf03f51fd0feb01a65fffd5ff4f7c">logg.c</a>
+</li>
+<li>log_prefix_level
+: <a class="el" href="a00007.html#a6fb674fec51d550595311a8061028185">logg.c</a>
+</li>
+<li>log_tls_entry
+: <a class="el" href="a00007.html#ad9b52b6f17eeecc8f9c65ac2bf83ce51">logg.c</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>m_current_log_level
+: <a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">logg.c</a>
+, <a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">logg.h</a>
+</li>
 <li>make_hex_dump()
-: <a class="el" href="a00012.html#gaebdad1efeb939693a66ba96041b0a7cb">hex.c</a>
-, <a class="el" href="a00012.html#gaebdad1efeb939693a66ba96041b0a7cb">hex.h</a>
+: <a class="el" href="a00014.html#gaebdad1efeb939693a66ba96041b0a7cb">hex.h</a>
+, <a class="el" href="a00014.html#gaebdad1efeb939693a66ba96041b0a7cb">hex.c</a>
+</li>
+<li>MLOG_ACTION
+: <a class="el" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">logg.h</a>
+</li>
+<li>MLOG_ACTION_CONSOLE
+: <a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a28b468eda2e029c2e9ae441911b6aea6">logg.h</a>
+</li>
+<li>MLOG_ACTION_SYSLOG_TRACE
+: <a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a9420de7fcaf1bcf0ef84b2f90e94f397">logg.h</a>
+</li>
+<li>MLOG_ACTION_TO_FILE
+: <a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49">logg.h</a>
+</li>
+<li>MLOG_ALLOC
+: <a class="el" href="a00015.html#ga64789137cb6d20255c4ae2f694860956">logg.h</a>
+</li>
+<li>MLOG_ALLOC_HEAP
+: <a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28">logg.h</a>
+</li>
+<li>MLOG_alloc_option()
+: <a class="el" href="a00015.html#gafda3d5be4bd7fe8938c87e71e835f52a">logg.c</a>
+, <a class="el" href="a00015.html#gafda3d5be4bd7fe8938c87e71e835f52a">logg.h</a>
+</li>
+<li>MLOG_ALLOC_STACK
+: <a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3">logg.h</a>
+</li>
+<li>MLOG_ALLOC_TLS_HEAP
+: <a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4">logg.h</a>
+</li>
+<li>MLOG_DEBUG
+: <a class="el" href="a00015.html#gad9b5ce484e6e5aeea0a1f231bc9cb05a">logg.h</a>
+</li>
+<li>MLOG_dump_stack_level()
+: <a class="el" href="a00015.html#gaec863161f6870f16f8d9934d83e61e6d">logg.c</a>
+, <a class="el" href="a00015.html#gaec863161f6870f16f8d9934d83e61e6d">logg.h</a>
+</li>
+<li>MLOG_ERROR
+: <a class="el" href="a00015.html#gaccfe4b146657dc08bac399764fe488a9">logg.h</a>
+</li>
+<li>MLOG_INFO
+: <a class="el" href="a00015.html#ga25c1dbc5e47207e6b29673c15d817feb">logg.h</a>
+</li>
+<li>MLOG_init()
+: <a class="el" href="a00015.html#ga33c82ea4ab2a41cdea9054948c9b3ec5">logg.c</a>
+, <a class="el" href="a00015.html#ga33c82ea4ab2a41cdea9054948c9b3ec5">logg.h</a>
+</li>
+<li>MLOG_LEVEL
+: <a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">logg.h</a>
+</li>
+<li>MLOG_LEVEL_DEBUG
+: <a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43afab730f69616ab81b856a263f771f572">logg.h</a>
+</li>
+<li>MLOG_LEVEL_ERROR
+: <a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a987dfdab40fb4cff7066880de918ac46">logg.h</a>
+</li>
+<li>MLOG_LEVEL_INFO
+: <a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a8ffc43a57f8b07b226fcb7e8ddf0cf84">logg.h</a>
+</li>
+<li>MLOG_LEVEL_TRACE
+: <a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ad2199d8488ecbea5ae4912eccb28ff7c">logg.h</a>
+</li>
+<li>MLOG_LEVEL_TURN_OFF_LOGGING
+: <a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43aacb3fe0cbf1a107f7cf442a4390dfc51">logg.h</a>
+</li>
+<li>MLOG_LEVEL_WARN
+: <a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ab654f698fdb86e39d3a055ca607b0392">logg.h</a>
+</li>
+<li>MLOG_PREFIX
+: <a class="el" href="a00015.html#ga2d7c021b73763bff61683052e2e1e695">logg.h</a>
+</li>
+<li>MLOG_PREFIX_LOG_LEVEL
+: <a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695afec2d2208fccc9c49688e81d39c15969">logg.h</a>
+</li>
+<li>MLOG_PREFIX_SOURCE_FILE
+: <a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695aa01d063ac6bbda5767f8ea78ae53d98f">logg.h</a>
+</li>
+<li>MLOG_PREFIX_TIME
+: <a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695a14cbf3164f8c23ee45f099bb7cc3f6ef">logg.h</a>
+</li>
+<li>MLOG_printf()
+: <a class="el" href="a00015.html#ga0150a13359adcc1be1d1aa0f6c136d80">logg.c</a>
+, <a class="el" href="a00015.html#ga0150a13359adcc1be1d1aa0f6c136d80">logg.h</a>
+</li>
+<li>MLOG_set_prefix_features()
+: <a class="el" href="a00015.html#gaf54b9c4ac40e86f37fde4a347eda9413">logg.h</a>
+</li>
+<li>MLOG_TRACE
+: <a class="el" href="a00015.html#ga2c0b6b38329f95e906198b7b23ef44dd">logg.h</a>
+</li>
+<li>MLOG_WARN
+: <a class="el" href="a00015.html#ga1e3c71175e1cfb16a658bf70afb840f0">logg.h</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
 <li>parse_hexa_string()
-: <a class="el" href="a00012.html#ga171452af1102322f5c77dfcf1aa5e8d2">hex.c</a>
-, <a class="el" href="a00012.html#ga171452af1102322f5c77dfcf1aa5e8d2">hex.h</a>
+: <a class="el" href="a00014.html#ga171452af1102322f5c77dfcf1aa5e8d2">hex.c</a>
+, <a class="el" href="a00014.html#ga171452af1102322f5c77dfcf1aa5e8d2">hex.h</a>
 </li>
 <li>parse_token()
-: <a class="el" href="a00014.html#gadbb6d1869c2d60a2e4f07218472d0039">tokparser.c</a>
-, <a class="el" href="a00014.html#gadbb6d1869c2d60a2e4f07218472d0039">tokparser.h</a>
+: <a class="el" href="a00017.html#gadbb6d1869c2d60a2e4f07218472d0039">tokparser.c</a>
+, <a class="el" href="a00017.html#gadbb6d1869c2d60a2e4f07218472d0039">tokparser.h</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>stack_dump_level
+: <a class="el" href="a00007.html#a4f00fac0b595ea84604ab3105a323930">logg.c</a>
+</li>
 <li>STACK_EOF
 : <a class="el" href="a00003.html#ae6fd4cb094a69a8f1f658790e4b4d382">errorp.c</a>
 </li>
@@ -125,47 +264,50 @@
 : <a class="el" href="a00003.html#a1763c9556bd80b7806528729edc98a05">errorp.c</a>
 </li>
 <li>STRTK
-: <a class="el" href="a00013.html#ga76f725215889db6e091bec0b60be9d33">strtk.h</a>
+: <a class="el" href="a00016.html#ga76f725215889db6e091bec0b60be9d33">strtk.h</a>
 </li>
 <li>STRTK_add_char()
-: <a class="el" href="a00013.html#gae43120a54e8902f8bd356ee57a9fc7de">strtk.h</a>
+: <a class="el" href="a00016.html#gae43120a54e8902f8bd356ee57a9fc7de">strtk.h</a>
 </li>
 <li>STRTK_init()
-: <a class="el" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">strtk.c</a>
-, <a class="el" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">strtk.h</a>
+: <a class="el" href="a00016.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">strtk.h</a>
+, <a class="el" href="a00016.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">strtk.c</a>
 </li>
 <li>STRTK_IS_CHAR
-: <a class="el" href="a00013.html#ga6af25e1d072d3e1ed7d7c0682831155c">strtk.h</a>
+: <a class="el" href="a00016.html#ga6af25e1d072d3e1ed7d7c0682831155c">strtk.h</a>
 </li>
 <li>STRTK_nspn()
-: <a class="el" href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031">strtk.h</a>
+: <a class="el" href="a00016.html#gaa298a57dd2c32290c6f0d7932d73b031">strtk.h</a>
 </li>
 <li>STRTK_ntok()
-: <a class="el" href="a00013.html#gaf5f9a2448a798742f4c632df8207bee6">strtk.h</a>
+: <a class="el" href="a00016.html#gaf5f9a2448a798742f4c632df8207bee6">strtk.h</a>
 </li>
 <li>STRTK_PATTERN_SIZE
-: <a class="el" href="a00008.html#a4718a59241012667de9862df37383a48">strtk.h</a>
+: <a class="el" href="a00010.html#a4718a59241012667de9862df37383a48">strtk.h</a>
 </li>
 <li>STRTK_spn()
-: <a class="el" href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5">strtk.h</a>
+: <a class="el" href="a00016.html#gacbaa999a7ed8334ee4f9c074190522f5">strtk.h</a>
 </li>
 <li>STRTK_tok()
-: <a class="el" href="a00013.html#ga970da7da688e9d0412ef1e688b340f32">strtk.h</a>
+: <a class="el" href="a00016.html#ga970da7da688e9d0412ef1e688b340f32">strtk.h</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>tls_free()
+: <a class="el" href="a00007.html#a0a8a663cc73982f823669e035fe73df6">logg.c</a>
+</li>
 <li>token_possible_values()
-: <a class="el" href="a00014.html#ga32074c05714bf643b440ca28b556a998">tokparser.c</a>
-, <a class="el" href="a00014.html#ga32074c05714bf643b440ca28b556a998">tokparser.h</a>
+: <a class="el" href="a00017.html#ga32074c05714bf643b440ca28b556a998">tokparser.c</a>
+, <a class="el" href="a00017.html#ga32074c05714bf643b440ca28b556a998">tokparser.h</a>
 </li>
 <li>token_string_for_int()
-: <a class="el" href="a00014.html#ga2720d8525084394b4961286ba62371e5">tokparser.h</a>
-, <a class="el" href="a00014.html#ga2720d8525084394b4961286ba62371e5">tokparser.c</a>
+: <a class="el" href="a00017.html#ga2720d8525084394b4961286ba62371e5">tokparser.c</a>
+, <a class="el" href="a00017.html#ga2720d8525084394b4961286ba62371e5">tokparser.h</a>
 </li>
 <li>TOKENDEF
-: <a class="el" href="a00014.html#ga31b87f2e9234f4d8a6844ffa2a401efa">tokparser.h</a>
+: <a class="el" href="a00017.html#ga31b87f2e9234f4d8a6844ffa2a401efa">tokparser.h</a>
 </li>
 <li>TOKENS_ADDRESS
 : <a class="el" href="a00003.html#a0b70f2e92ed8af3ef8c75034dd136442">errorp.c</a>
@@ -184,7 +326,7 @@
 </li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:08 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:33 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

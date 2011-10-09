@@ -37,6 +37,7 @@
 </div>
 <div class="header">
   <div class="summary">
+<a href="#define-members">Defines</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">evthread.c File Reference</div>  </div>
@@ -50,6 +51,12 @@
 </div>
 <p><a href="a00007_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a0e9d7e454d783a729f7138c013b63fa1">EVENT_ID_HAS_IO_EVENT</a>&#160;&#160;&#160;0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a51be86b706137641b29d5c0796b0c2d1">EVENT_ID_HAS_IO_ERROR</a>&#160;&#160;&#160;1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a796e3303f722ae381725e79a330be583">TIMER_ID_COMM_TIMEOUT</a>&#160;&#160;&#160;2</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#adf6bc4dc55535710fb815c513e424649">TIMER_ID_IDLE_TIMEOUT</a>&#160;&#160;&#160;3</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00001.html">EVLOOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">EVLOOP_init</a> (STACKS *stacks)</td></tr>
@@ -63,28 +70,88 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html#ga51f061f7921e0bbce68d3a16e043a0ff">EVTHREAD_delay</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, struct timeval delay)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aeb35db9a7b14e4fbc3f17f4879742b5b">EVTHREAD_OBJECT_init</a> (<a class="el" href="a00004.html">EVTHREAD_OBJECT</a> *obj, int type, <a class="el" href="a00003.html">EVTHREAD</a> *owner)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#afac4b846bbebc9e8bb60ec8c4d527eac">EVTHREAD_OBJECT_free</a> (<a class="el" href="a00004.html">EVTHREAD_OBJECT</a> *obj)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00005.html">EVTIMER</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#ae7d66724a3893b47b092d8ab33d1781d">ev_mktimer</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, int timer_id, int is_recurrent, struct timeval tm, <a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> proc, void *user_data)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00005.html">EVTIMER</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4">EVTIMER_init_one_shot</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, int timer_id, struct timeval tm, <a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> proc, void *user_data)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00005.html">EVTIMER</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6">EVTIMER_init_recurrent</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, int timer_id, struct timeval tm, <a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> proc, void *user_data)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a9152704ad0af03f1ed087d0c20802fcf">timer_cb</a> (int fd, short event, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00005.html">EVTIMER</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b">EVTIMER_init</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, int timer_id, struct timeval tm)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7">EVTIMER_start</a> (<a class="el" href="a00005.html">EVTIMER</a> *ret)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">EVTIMER_cancel</a> (<a class="el" href="a00005.html">EVTIMER</a> *timer)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">EVTIMER_free</a> (<a class="el" href="a00005.html">EVTIMER</a> *timer)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a2d43182e610f4db506b2d60b0ce296d5">timer_thread_proc</a> (VALUES *values)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a291d3071c09facfdc2359fe2ca0fa1a5">socket_cb</a> (int fd, short event, void *ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00002.html">EVSOCKET</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga2fd5da1f97d6ab55cc7c977d5759558e">EVSOCKET_init</a> (<a class="el" href="a00003.html">EVTHREAD</a> *thread, int fd, int is_connected)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga152040d20eb847259e1a5b129d08280d">EVSOCKET_close</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a263766876e9dd593e9f37a825aa6bd3f">io_timeout_proc</a> (<a class="el" href="a00005.html">EVTIMER</a> *timer, void *user_data)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga9611ce37f2fb0b914d624fcfeaf14045">EVSOCKET_connect</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, struct sockaddr *address, socklen_t socklen, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga9f1eadc43b53273402e301cbecd5af2f">EVSOCKET_set_idle_timeout</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, struct timeval timeout)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga9611ce37f2fb0b914d624fcfeaf14045">EVSOCKET_connect</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, struct sockaddr *address, socklen_t socklen, struct timeval timeout)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a02f0b25f89a7fa204fa3fa57d7b2ac48">EVSOCKET_recv_internal</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#abaac6bb1c818d584e898025fe8904f27">EVSOCKET_send_internal</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga2400bf324d24d3d0b011f32c7eceecda">EVSOCKET_recv</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#abcb6b7f63c1fe247e757aab22311098a">EVSOCKET_send_internal</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">EVSOCKET_recv_all</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d">EVSOCKET_send</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aaf2800e17c660488fc490769a930c43c">socket_listener_cb</a> (int fd, short event, void *ctx)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int fd, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">EVTCPACCEPTOR_init_ex</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, SOCKADDR *addr, int listener_backlog, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int send_buffer_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int fd, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int send_buffer_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">EVTCPACCEPTOR_close</a> (<a class="el" href="a00006.html">EVTCPACCEPTOR</a> *acceptor)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a42e820bb41711d718897b1989348fd0c">custom_timeout_handling</a> (struct event_base *base, struct timeval *tv)</td></tr>
 </table>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a51be86b706137641b29d5c0796b0c2d1"></a><!-- doxytag: member="evthread.c::EVENT_ID_HAS_IO_ERROR" ref="a51be86b706137641b29d5c0796b0c2d1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EVENT_ID_HAS_IO_ERROR&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00010">10</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0e9d7e454d783a729f7138c013b63fa1"></a><!-- doxytag: member="evthread.c::EVENT_ID_HAS_IO_EVENT" ref="a0e9d7e454d783a729f7138c013b63fa1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EVENT_ID_HAS_IO_EVENT&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00009">9</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a796e3303f722ae381725e79a330be583"></a><!-- doxytag: member="evthread.c::TIMER_ID_COMM_TIMEOUT" ref="a796e3303f722ae381725e79a330be583" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TIMER_ID_COMM_TIMEOUT&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00011">11</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adf6bc4dc55535710fb815c513e424649"></a><!-- doxytag: member="evthread.c::TIMER_ID_IDLE_TIMEOUT" ref="adf6bc4dc55535710fb815c513e424649" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TIMER_ID_IDLE_TIMEOUT&#160;&#160;&#160;3</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00012">12</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+
+</div>
+</div>
 <hr/><h2>Function Documentation</h2>
 <a class="anchor" id="a42e820bb41711d718897b1989348fd0c"></a><!-- doxytag: member="evthread.c::custom_timeout_handling" ref="a42e820bb41711d718897b1989348fd0c" args="(struct event_base *base, struct timeval *tv)" -->
 <div class="memitem">
@@ -111,7 +178,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00639">639</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00693">693</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    M_UNUSED(base);
    M_UNUSED(tv);
@@ -119,86 +186,12 @@ Functions</h2></td></tr>
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ae7d66724a3893b47b092d8ab33d1781d"></a><!-- doxytag: member="evthread.c::ev_mktimer" ref="ae7d66724a3893b47b092d8ab33d1781d" args="(EVTHREAD *thread, int timer_id, int is_recurrent, struct timeval tm, EVTIMER_PROC proc, void *user_data)" -->
+<a class="anchor" id="a02f0b25f89a7fa204fa3fa57d7b2ac48"></a><!-- doxytag: member="evthread.c::EVSOCKET_recv_internal" ref="a02f0b25f89a7fa204fa3fa57d7b2ac48" args="(EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00005.html">EVTIMER</a> * ev_mktimer </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">EVTHREAD</a> *&#160;</td>
-          <td class="paramname"><em>thread</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>timer_id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>is_recurrent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct timeval&#160;</td>
-          <td class="paramname"><em>tm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a>&#160;</td>
-          <td class="paramname"><em>proc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>user_data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00007_source.html#l00204">204</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00005.html">EVTIMER</a> *ret;
- 
-  ret = (<a class="code" href="a00005.html">EVTIMER</a> *) malloc( <span class="keyword">sizeof</span>( <a class="code" href="a00005.html">EVTIMER</a> ) );
-  <span class="keywordflow">if</span> (!ret) {
-    <span class="keywordflow">return</span> 0;
-  }
-
-  ret-&gt;<a class="code" href="a00005.html#a742e8b7259a65ba5a186a7298e4b191c">loop</a> = thread-&gt;<a class="code" href="a00003.html#abd1b6bd8c48500d617d9779fcac65cdc">loop</a>;
-  ret-&gt;<a class="code" href="a00005.html#a76a08cfecc3cb0d919473a0d10aa3d22">is_recurrent</a> = is_recurrent;
-  ret-&gt;<a class="code" href="a00005.html#a4336a1004a67d947772edcf5151f84a6">proc</a> = proc;
-  ret-&gt;<a class="code" href="a00005.html#a060c8465c9ad91aa4690d86ef2029623">user_data</a> = user_data;
-  ret-&gt;<a class="code" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">timer_id</a> = timer_id;
-  ret-&gt;<a class="code" href="a00005.html#a43ce976f10a5015e918295d8f6950046">tm</a> = tm;
-  ret-&gt;<a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">state</a> = <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>;
- 
-  <a class="code" href="a00007.html#aeb35db9a7b14e4fbc3f17f4879742b5b">EVTHREAD_OBJECT_init</a>( &amp;ret-&gt;<a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">object_base</a>, <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a6da017e2006cb13522323794dae0e2a4">EVTHREAD_OBJECT_TIMER</a> , thread );
- 
-<span class="comment">//EVTIMER_start( ret ); </span>
-  <span class="keywordflow">return</span> ret;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="abcb6b7f63c1fe247e757aab22311098a"></a><!-- doxytag: member="evthread.c::EVSOCKET_send_internal" ref="abcb6b7f63c1fe247e757aab22311098a" args="(EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int EVSOCKET_send_internal </td>
+          <td class="memname">static int EVSOCKET_recv_internal </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="a00002.html">EVSOCKET</a> *&#160;</td>
           <td class="paramname"><em>socket</em>, </td>
@@ -230,16 +223,134 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td><code> [static]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00475">475</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00390">390</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <span class="keywordtype">int</span> rt;
    <span class="keywordtype">int</span> has_event = 0;
+   VALUES *rvalues;
+   <span class="keywordtype">int</span> event_id;
+
+   <span class="keywordflow">if</span> ( socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> != <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">EVSOCKET_STATE_CONNECTED</a>) {
+     <span class="keywordflow">return</span> -1;
+   }
+   
+r_again:   
+   <span class="keywordflow">do</span> {
+     rt = recv( socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a>, buf, buf_size, flags);
+   } <span class="keywordflow">while</span>(rt == -1 &amp;&amp; errno == EINTR);
+
+   <span class="keywordflow">if</span> (rt == -1) {
+     <span class="keywordflow">if</span> (errno == EAGAIN) {
+
+       socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca11d241b716a59cdbc6c07458fbefede5">EVSOCKET_STATE_READING</a>;
+       
+       socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> = <a class="code" href="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b">EVTIMER_init</a>( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>, <a class="code" href="a00007.html#a796e3303f722ae381725e79a330be583">TIMER_ID_COMM_TIMEOUT</a>, timeout );
+       <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>) {  
+         <a class="code" href="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7">EVTIMER_start</a>(socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>);       
+       }
+
+       <span class="keywordflow">if</span> (!has_event) {
+         event_add( &amp;socket-&gt;<a class="code" href="a00002.html#a424a834569ee2593b2d04b6e6ae9799b">read_event</a>, 0 );
+         has_event = 1;
+       }
+
+       CTHREAD_yield( &amp;rvalues, 0 );
+       VALUES_scan( rvalues, <span class="stringliteral">&quot;%d&quot;</span>, &amp;event_id );
+ 
+       <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>) {  
+         <a class="code" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">EVTIMER_free</a>(socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>);        
+         socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> = 0; 
+       }
+      
+       <span class="keywordflow">switch</span>(event_id) {
+         <span class="keywordflow">case</span> <a class="code" href="a00007.html#a0e9d7e454d783a729f7138c013b63fa1">EVENT_ID_HAS_IO_EVENT</a>:
+           <span class="keywordflow">goto</span> r_again;
+         <span class="keywordflow">default</span>: 
+           socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>;
+           close( socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> );
+           socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> = -1;
+           rt = -1;
+           <span class="keywordflow">break</span>;
+       }
+     }
+   }
+
+   <span class="keywordflow">if</span> (has_event) {
+     event_del( &amp;socket-&gt;<a class="code" href="a00002.html#a424a834569ee2593b2d04b6e6ae9799b">read_event</a> );
+   }
+   
+   <span class="keywordflow">if</span> (rt != -1) {
+     socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">EVSOCKET_STATE_CONNECTED</a>;
+   } 
+   
+   <span class="keywordflow">if</span> (rt &gt;= 0) {
+     <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#a25d6aeb264edc059926e412bbf0d8900">timer_idle_timeout</a>) { 
+       <a class="code" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">EVTIMER_cancel</a>(socket-&gt;<a class="code" href="a00002.html#a25d6aeb264edc059926e412bbf0d8900">timer_idle_timeout</a>);
+     }
+   }
+
+
+   <span class="keywordflow">return</span> rt;
+} 
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="abaac6bb1c818d584e898025fe8904f27"></a><!-- doxytag: member="evthread.c::EVSOCKET_send_internal" ref="abaac6bb1c818d584e898025fe8904f27" args="(EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int EVSOCKET_send_internal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html">EVSOCKET</a> *&#160;</td>
+          <td class="paramname"><em>socket</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>buf_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct timeval&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00460">460</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <span class="keywordtype">int</span> rt;
+   <span class="keywordtype">int</span> has_event = 0;
+   VALUES *rvalues;
+   <span class="keywordtype">int</span> event_id;
+
 
    <span class="keywordflow">if</span> ( socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> != <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">EVSOCKET_STATE_CONNECTED</a>) {
      <span class="keywordflow">return</span> -1;
@@ -254,17 +365,34 @@ w_again:
      <span class="keywordflow">if</span> (errno == EAGAIN) {
 
        socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca488819d6df0a5d336bec468b8e0ab8cf">EVSOCKET_STATE_WRITING</a>;
-       socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> = <a class="code" href="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4">EVTIMER_init_one_shot</a>( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>, 1, timeout, <a class="code" href="a00007.html#a263766876e9dd593e9f37a825aa6bd3f">io_timeout_proc</a>, socket);
+       
+       socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> = <a class="code" href="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b">EVTIMER_init</a>( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>, <a class="code" href="a00007.html#a796e3303f722ae381725e79a330be583">TIMER_ID_COMM_TIMEOUT</a>, timeout );
+       <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>) {
+         <a class="code" href="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7">EVTIMER_start</a>(socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>);       
+       }
 
        <span class="keywordflow">if</span> (!has_event) {
          event_add( &amp;socket-&gt;<a class="code" href="a00002.html#a25b5c3a94163a89a7bc0dff0dbdeb277">write_event</a>, 0 );
          has_event = 1;
        }
 
-       CTHREAD_yield( 0, 0 );
-       
-       <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> != <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>) {
-          <span class="keywordflow">goto</span> w_again;
+       CTHREAD_yield( &amp;rvalues, 0 );
+       VALUES_scan( rvalues, <span class="stringliteral">&quot;%d&quot;</span>, &amp;event_id );
+ 
+       <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>) {  
+         <a class="code" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">EVTIMER_free</a>(socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>);        
+         socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> = 0; 
+       }
+      
+       <span class="keywordflow">switch</span>(event_id) {
+         <span class="keywordflow">case</span> <a class="code" href="a00007.html#a0e9d7e454d783a729f7138c013b63fa1">EVENT_ID_HAS_IO_EVENT</a>:
+           <span class="keywordflow">goto</span> w_again;
+         <span class="keywordflow">default</span>: 
+           socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>;
+           close( socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> );
+           socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> = -1;
+           rt = -1;
+           <span class="keywordflow">break</span>;
        }
      }
    }
@@ -275,14 +403,8 @@ w_again:
 
    <span class="keywordflow">if</span> (rt != -1) {
      socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">EVSOCKET_STATE_CONNECTED</a>;
-   } <span class="keywordflow">else</span> {
-     socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>;
-   }
+   } 
 
-   <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>) {
-     <a class="code" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">EVTIMER_free</a>( socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> ); 
-     socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> = 0; 
-   }
 
    <span class="keywordflow">return</span> rt;
 } 
@@ -304,7 +426,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00044">44</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00051">51</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    DLIST_entry *entry, *next;
    <a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a> *obj;
@@ -343,7 +465,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00144">144</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00151">151</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   DLIST_unlink( &amp;obj-&gt;<a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">owner</a>-&gt;<a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">object_list</a>, &amp;obj-&gt;<a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">entry</a> );
   free(obj);
@@ -382,7 +504,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00137">137</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00144">144</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   DLIST_push_back( &amp;owner-&gt;<a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">object_list</a>, &amp;obj-&gt;<a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">entry</a> );
   obj-&gt;<a class="code" href="a00004.html#a3e9332299f5b805b4c57003aef3d44a4">object_type</a> = type;
@@ -406,7 +528,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00114">114</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00121">121</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00003.html">EVTHREAD</a> *thread;
 
@@ -415,47 +537,6 @@ w_again:
 
   <span class="comment">// no way to get exit status of the EVTHREAD object. everything is hereby closed.</span>
   <a class="code" href="a00007.html#af6327bf0e0278d10f1ff67a1886359af">EVTHREAD_free</a>(thread);
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="a263766876e9dd593e9f37a825aa6bd3f"></a><!-- doxytag: member="evthread.c::io_timeout_proc" ref="a263766876e9dd593e9f37a825aa6bd3f" args="(EVTIMER *timer, void *user_data)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void io_timeout_proc </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00005.html">EVTIMER</a> *&#160;</td>
-          <td class="paramname"><em>timer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>user_data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00007_source.html#l00366">366</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00002.html">EVSOCKET</a> *socket;
- 
-  M_UNUSED(timer);
-
-  socket = (<a class="code" href="a00002.html">EVSOCKET</a> *) user_data;
-
-  socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>;
-  
-  close( socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> );
-  socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> = -1;
 }
 </pre></div>
 </div>
@@ -491,7 +572,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00336">336</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00294">294</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <a class="code" href="a00002.html">EVSOCKET</a> *socket; 
 
@@ -516,7 +597,6 @@ w_again:
         CTHREAD_resume( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, 0 );
      }
    }
-    
 }
 </pre></div>
 </div>
@@ -552,7 +632,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00588">588</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00635">635</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <a class="code" href="a00006.html">EVTCPACCEPTOR</a> *acceptor;
    <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc;
@@ -576,9 +656,16 @@ w_again:
    <span class="keywordflow">if</span> (sock == -1) {
      <span class="keywordflow">return</span>;
    }
+   
+   <span class="keywordflow">if</span> (acceptor-&gt;<a class="code" href="a00006.html#a1a5a368dfb77cf7480f8ea493107d823">read_buffer_size</a> != -1) {
+     fd_set_buf_size( sock, Receive_buffer, acceptor-&gt;<a class="code" href="a00006.html#a1a5a368dfb77cf7480f8ea493107d823">read_buffer_size</a> );
+   }
+
+   <span class="keywordflow">if</span> (acceptor-&gt;<a class="code" href="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45">send_buffer_size</a> != -1) {
+     fd_set_buf_size( sock, Send_buffer, acceptor-&gt;<a class="code" href="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45">send_buffer_size</a>);
+   }
   
    <span class="comment">// get thread procedure and thread argument data.</span>
-   acceptor = (<a class="code" href="a00006.html">EVTCPACCEPTOR</a> *) ctx;
    <span class="keywordflow">if</span> ( acceptor-&gt;<a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a>( sock, &amp;thread_proc, &amp;thread_ctx ) ) {
      close(sock);
      <span class="keywordflow">return</span>;
@@ -636,7 +723,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00125">125</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00132">132</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00003.html">EVTHREAD</a> *thread = (<a class="code" href="a00003.html">EVTHREAD</a> *) ctx;
  
@@ -679,74 +766,25 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00236">236</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00216">216</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-   <span class="keyword">struct </span>timeval now;
    <a class="code" href="a00005.html">EVTIMER</a> *timer;
-   CTHREAD *thread;
 
    M_UNUSED(fd);
    M_UNUSED(event);
 
    timer = (<a class="code" href="a00005.html">EVTIMER</a> *) ctx;
 
- 
-   event_del( &amp;timer-&gt;timer_event );
+   event_del( &amp;timer-&gt;<a class="code" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">timer_event</a> );
+   timer-&gt;<a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">state</a> = <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>;
    
-   thread = CTHREAD_init( timer-&gt;loop-&gt;stacks , <a class="code" href="a00007.html#a2d43182e610f4db506b2d60b0ce296d5">timer_thread_proc</a> );
-   <span class="keywordflow">if</span> (thread) {
-     CTHREAD_start( thread, 0, <span class="stringliteral">&quot;%p&quot;</span>, timer );
-     CTHREAD_free( thread );
-   }
-   
-   <span class="keywordflow">if</span> (timer-&gt;state == <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>) {
-     <span class="keywordflow">return</span>;
-   }
-
-   <span class="keywordflow">if</span> (timer-&gt;is_recurrent) {
-     
-     gettimeofday( &amp;now, 0 );
-     <span class="keywordflow">while</span>( timercmp( &amp;now, &amp;timer-&gt;next_due_date, &gt;  ) ) {
-       timeradd( &amp;timer-&gt;next_due_date, &amp;timer-&gt;tm, &amp;timer-&gt;next_due_date );
-     }
-     timersub( &amp;timer-&gt;next_due_date, &amp;now, &amp;timer-&gt;tm ); 
-     event_add( &amp;timer-&gt;timer_event, &amp;timer-&gt;tm );
-
-     timer-&gt;state = <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5">EVTIMER_STATE_SCHEDULED</a>;
-   } <span class="keywordflow">else</span> {
-     timer-&gt;state = <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>;
-   }
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="a2d43182e610f4db506b2d60b0ce296d5"></a><!-- doxytag: member="evthread.c::timer_thread_proc" ref="a2d43182e610f4db506b2d60b0ce296d5" args="(VALUES *values)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void timer_thread_proc </td>
-          <td>(</td>
-          <td class="paramtype">VALUES *&#160;</td>
-          <td class="paramname"><em>values</em></td><td>)</td>
-          <td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00007_source.html#l00227">227</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00005.html">EVTIMER</a> *timer;
-
-  VALUES_scan( values, <span class="stringliteral">&quot;%p&quot;</span>, &amp;timer );
-  timer-&gt;<a class="code" href="a00005.html#a4336a1004a67d947772edcf5151f84a6">proc</a>( timer, timer-&gt;<a class="code" href="a00005.html#a060c8465c9ad91aa4690d86ef2029623">user_data</a> );
+   CTHREAD_resume( timer-&gt;<a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">object_base</a>.<a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">owner</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a> , 0, <span class="stringliteral">&quot;%d&quot;</span>, timer-&gt;<a class="code" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">timer_id</a> );
 }
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:34 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

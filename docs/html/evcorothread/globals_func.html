@@ -41,13 +41,13 @@
       <li><a href="globals_type.html"><span>Typedefs</span></a></li>
       <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
       <li><a href="globals_eval.html"><span>Enumerator</span></a></li>
+      <li><a href="globals_defs.html"><span>Defines</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
-      <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_t"><span>t</span></a></li>
     </ul>
@@ -64,24 +64,21 @@
 
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
-<li>ev_mktimer()
-: <a class="el" href="a00007.html#ae7d66724a3893b47b092d8ab33d1781d">evthread.c</a>
-</li>
 <li>EVLOOP_break()
 : <a class="el" href="a00009.html#ga6886f671cea83756af4d537b31c53436">evthread.c</a>
 , <a class="el" href="a00009.html#ga6886f671cea83756af4d537b31c53436">evthread.h</a>
 </li>
 <li>EVLOOP_init()
-: <a class="el" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">evthread.c</a>
-, <a class="el" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">evthread.h</a>
+: <a class="el" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">evthread.h</a>
+, <a class="el" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">evthread.c</a>
 </li>
 <li>EVLOOP_run()
 : <a class="el" href="a00009.html#gaa25fcfb07b6227a4749e2d148bb053b3">evthread.c</a>
 , <a class="el" href="a00009.html#gaa25fcfb07b6227a4749e2d148bb053b3">evthread.h</a>
 </li>
 <li>EVSOCKET_close()
-: <a class="el" href="a00012.html#ga152040d20eb847259e1a5b129d08280d">evthread.c</a>
-, <a class="el" href="a00012.html#ga152040d20eb847259e1a5b129d08280d">evthread.h</a>
+: <a class="el" href="a00012.html#ga152040d20eb847259e1a5b129d08280d">evthread.h</a>
+, <a class="el" href="a00012.html#ga152040d20eb847259e1a5b129d08280d">evthread.c</a>
 </li>
 <li>EVSOCKET_connect()
 : <a class="el" href="a00012.html#ga9611ce37f2fb0b914d624fcfeaf14045">evthread.c</a>
@@ -96,23 +93,34 @@
 , <a class="el" href="a00012.html#ga2400bf324d24d3d0b011f32c7eceecda">evthread.h</a>
 </li>
 <li>EVSOCKET_recv_all()
-: <a class="el" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">evthread.c</a>
-, <a class="el" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">evthread.h</a>
+: <a class="el" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">evthread.h</a>
+, <a class="el" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">evthread.c</a>
+</li>
+<li>EVSOCKET_recv_internal()
+: <a class="el" href="a00007.html#a02f0b25f89a7fa204fa3fa57d7b2ac48">evthread.c</a>
 </li>
 <li>EVSOCKET_send()
 : <a class="el" href="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d">evthread.c</a>
 , <a class="el" href="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d">evthread.h</a>
 </li>
 <li>EVSOCKET_send_internal()
-: <a class="el" href="a00007.html#abcb6b7f63c1fe247e757aab22311098a">evthread.c</a>
+: <a class="el" href="a00007.html#abaac6bb1c818d584e898025fe8904f27">evthread.c</a>
 </li>
 <li>EVSOCKET_set_idle_timeout()
 : <a class="el" href="a00012.html#ga9f1eadc43b53273402e301cbecd5af2f">evthread.c</a>
 , <a class="el" href="a00012.html#ga9f1eadc43b53273402e301cbecd5af2f">evthread.h</a>
 </li>
+<li>EVTCPACCEPTOR_close()
+: <a class="el" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">evthread.c</a>
+, <a class="el" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">evthread.h</a>
+</li>
 <li>EVTCPACCEPTOR_init()
-: <a class="el" href="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4">evthread.c</a>
-, <a class="el" href="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4">evthread.h</a>
+: <a class="el" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">evthread.c</a>
+, <a class="el" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">evthread.h</a>
+</li>
+<li>EVTCPACCEPTOR_init_ex()
+: <a class="el" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">evthread.c</a>
+, <a class="el" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">evthread.h</a>
 </li>
 <li>EVTHREAD_delay()
 : <a class="el" href="a00010.html#ga51f061f7921e0bbce68d3a16e043a0ff">evthread.c</a>
@@ -135,35 +143,24 @@
 : <a class="el" href="a00007.html#abc55701105da0863845a6bf2212ac294">evthread.c</a>
 </li>
 <li>EVTHREAD_start()
-: <a class="el" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">evthread.c</a>
-, <a class="el" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">evthread.h</a>
+: <a class="el" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">evthread.h</a>
+, <a class="el" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">evthread.c</a>
 </li>
 <li>EVTIMER_cancel()
-: <a class="el" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">evthread.h</a>
-, <a class="el" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">evthread.c</a>
+: <a class="el" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">evthread.c</a>
+, <a class="el" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">evthread.h</a>
 </li>
 <li>EVTIMER_free()
 : <a class="el" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">evthread.c</a>
 , <a class="el" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">evthread.h</a>
 </li>
-<li>EVTIMER_init_one_shot()
-: <a class="el" href="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4">evthread.h</a>
-, <a class="el" href="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4">evthread.c</a>
-</li>
-<li>EVTIMER_init_recurrent()
-: <a class="el" href="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6">evthread.h</a>
-, <a class="el" href="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6">evthread.c</a>
+<li>EVTIMER_init()
+: <a class="el" href="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b">evthread.c</a>
+, <a class="el" href="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b">evthread.h</a>
 </li>
 <li>EVTIMER_start()
 : <a class="el" href="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7">evthread.h</a>
 , <a class="el" href="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7">evthread.c</a>
-</li>
-</ul>
-
-
-<h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
-<li>io_timeout_proc()
-: <a class="el" href="a00007.html#a263766876e9dd593e9f37a825aa6bd3f">evthread.c</a>
 </li>
 </ul>
 
@@ -185,12 +182,9 @@
 <li>timer_cb()
 : <a class="el" href="a00007.html#a9152704ad0af03f1ed087d0c20802fcf">evthread.c</a>
 </li>
-<li>timer_thread_proc()
-: <a class="el" href="a00007.html#a2d43182e610f4db506b2d60b0ce296d5">evthread.c</a>
-</li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:34 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: Member List</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: TOKENDEF</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,28 +24,194 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">tagTOKENDEF Member List</div>  </div>
+<div class="title">TOKENDEF</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00002.html">tagTOKENDEF</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a></td><td><a class="el" href="a00002.html">tagTOKENDEF</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00014.html#gab7bce27d71c22f9e38d80845e52f5142">type</a></td><td><a class="el" href="a00002.html">tagTOKENDEF</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:08 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+
+<p>take a string and check if it any one in list of tokens. The entry TOKENDEF defines pair of token string and its integer value that identifies the token. Parsing of string is done by comparing the input token in sequence against each entry in the table. Not very fast, but very convenient.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html">tagTOKENDEF</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagTOKENDEF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga31b87f2e9234f4d8a6844ffa2a401efa">TOKENDEF</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#gadbb6d1869c2d60a2e4f07218472d0039">parse_token</a> (const char *token, <a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga2720d8525084394b4961286ba62371e5">token_string_for_int</a> (int value, <a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ga32074c05714bf643b440ca28b556a998">token_possible_values</a> (<a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#gab7bce27d71c22f9e38d80845e52f5142">tagTOKENDEF::type</a></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>take a string and check if it any one in list of tokens. The entry TOKENDEF defines pair of token string and its integer value that identifies the token. Parsing of string is done by comparing the input token in sequence against each entry in the table. Not very fast, but very convenient. </p>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga31b87f2e9234f4d8a6844ffa2a401efa"></a><!-- doxytag: member="tokparser.h::TOKENDEF" ref="ga31b87f2e9234f4d8a6844ffa2a401efa" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00002.html">tagTOKENDEF</a>  <a class="el" href="a00002.html">TOKENDEF</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="gadbb6d1869c2d60a2e4f07218472d0039"></a><!-- doxytag: member="tokparser.h::parse_token" ref="gadbb6d1869c2d60a2e4f07218472d0039" args="(const char *token, TOKENDEF *tkdef)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int parse_token </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
+          <td class="paramname"><em>tkdef</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00005">5</a> of file <a class="el" href="a00011_source.html">tokparser.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> i;
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    <span class="keywordflow">if</span> ( strcmp(token, tkdef[i].type) == 0 ) {
+      <span class="keywordflow">return</span> tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a>;
+    }
+  }
+  <span class="keywordflow">return</span> -1;
+} 
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga32074c05714bf643b440ca28b556a998"></a><!-- doxytag: member="tokparser.h::token_possible_values" ref="ga32074c05714bf643b440ca28b556a998" args="(TOKENDEF *tkdef)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* token_possible_values </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
+          <td class="paramname"><em>tkdef</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00016">16</a> of file <a class="el" href="a00011_source.html">tokparser.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> i;
+  <span class="keywordtype">int</span> len = 0;
+  <span class="keywordtype">char</span> *ret;
+
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    len += strlen( tkdef[i].type ) + 1;
+  }
+
+  ret = (<span class="keywordtype">char</span> *) malloc( len + 1 );
+  <span class="keywordflow">if</span> (!ret) {
+    <span class="keywordflow">return</span> 0;
+  }
+
+  strcpy(ret, <span class="stringliteral">&quot;&quot;</span> );
+
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    strcat( ret, tkdef[i].type);
+    strcat( ret, <span class="stringliteral">&quot; &quot;</span> );
+  }
+
+  <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2720d8525084394b4961286ba62371e5"></a><!-- doxytag: member="tokparser.h::token_string_for_int" ref="ga2720d8525084394b4961286ba62371e5" args="(int value, TOKENDEF *tkdef)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* token_string_for_int </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
+          <td class="paramname"><em>tkdef</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00011_source.html#l00041">41</a> of file <a class="el" href="a00011_source.html">tokparser.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> i;
+
+  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
+    <span class="keywordflow">if</span> ( tkdef[i].token_type == value ) {
+      <span class="keywordflow">return</span> tkdef[i].<a class="code" href="a00017.html#gab7bce27d71c22f9e38d80845e52f5142">type</a>;  
+    }  
+  }
+  <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
+}
+</pre></div>
+</div>
+</div>
+<hr/><h2>Variable Documentation</h2>
+<a class="anchor" id="gab7bce27d71c22f9e38d80845e52f5142"></a><!-- doxytag: member="tagTOKENDEF::type" ref="gab7bce27d71c22f9e38d80845e52f5142" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* <a class="el" href="a00017.html#gab7bce27d71c22f9e38d80845e52f5142">tagTOKENDEF::type</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00012_source.html#l00016">16</a> of file <a class="el" href="a00012_source.html">tokparser.h</a>.</p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:33 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

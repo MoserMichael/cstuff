@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: strtk.h File Reference</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: logg.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -37,61 +37,71 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Defines</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">strtk.h File Reference</div>  </div>
+<div class="title">logg.h File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;cutils/base.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br/>
 </div>
 <p><a href="a00008_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html">tagSTRTK</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a4718a59241012667de9862df37383a48">STRTK_PATTERN_SIZE</a>&#160;&#160;&#160;( 256 / 8 )</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga6af25e1d072d3e1ed7d7c0682831155c">STRTK_IS_CHAR</a>(tok, ch)&#160;&#160;&#160;( (tok)-&gt;pattern[ (ch) &gt;&gt; 3 ] &amp;&amp; (1 &lt;&lt; ((ch) &amp; 7))  )</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">macro checks if character is part of character class  <a href="a00013.html#ga6af25e1d072d3e1ed7d7c0682831155c"></a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00001.html">tagSTRTK</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga76f725215889db6e091bec0b60be9d33">STRTK</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gaccfe4b146657dc08bac399764fe488a9">MLOG_ERROR</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_ERROR) {  MLOG_printf( MLOG_LEVEL_ERROR, __FILE__, __LINE__,  __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga1e3c71175e1cfb16a658bf70afb840f0">MLOG_WARN</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_WARN) {  MLOG_printf( MLOG_LEVEL_WARN, __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga25c1dbc5e47207e6b29673c15d817feb">MLOG_INFO</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_INFO) {  MLOG_printf( MLOG_LEVEL_INFO,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gad9b5ce484e6e5aeea0a1f231bc9cb05a">MLOG_DEBUG</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_DEBUG) {  MLOG_printf( MLOG_LEVEL_DEBUG,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga2c0b6b38329f95e906198b7b23ef44dd">MLOG_TRACE</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_TRACE) {  MLOG_printf( MLOG_LEVEL_TRACE, __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> { <br/>
+&#160;&#160;<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43aacb3fe0cbf1a107f7cf442a4390dfc51">MLOG_LEVEL_TURN_OFF_LOGGING</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a987dfdab40fb4cff7066880de918ac46">MLOG_LEVEL_ERROR</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ab654f698fdb86e39d3a055ca607b0392">MLOG_LEVEL_WARN</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a8ffc43a57f8b07b226fcb7e8ddf0cf84">MLOG_LEVEL_INFO</a>, 
+<br/>
+&#160;&#160;<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43afab730f69616ab81b856a263f771f572">MLOG_LEVEL_DEBUG</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ad2199d8488ecbea5ae4912eccb28ff7c">MLOG_LEVEL_TRACE</a>
+<br/>
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">defined logging levels  <a href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">MLOG_ACTION</a> { <a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49">MLOG_ACTION_TO_FILE</a> =  0x1, 
+<a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a9420de7fcaf1bcf0ef84b2f90e94f397">MLOG_ACTION_SYSLOG_TRACE</a> =  0x2, 
+<a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a28b468eda2e029c2e9ae441911b6aea6">MLOG_ACTION_CONSOLE</a> =  0x4
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">actions for logging stuff  <a href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga2d7c021b73763bff61683052e2e1e695">MLOG_PREFIX</a> { <a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695afec2d2208fccc9c49688e81d39c15969">MLOG_PREFIX_LOG_LEVEL</a> =  0x1, 
+<a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695aa01d063ac6bbda5767f8ea78ae53d98f">MLOG_PREFIX_SOURCE_FILE</a> =  0x2, 
+<a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695a14cbf3164f8c23ee45f099bb7cc3f6ef">MLOG_PREFIX_TIME</a> =  0x4
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">features to include in logging prefix  <a href="a00015.html#ga2d7c021b73763bff61683052e2e1e695">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga64789137cb6d20255c4ae2f694860956">MLOG_ALLOC</a> { <a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3">MLOG_ALLOC_STACK</a>, 
+<a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28">MLOG_ALLOC_HEAP</a>, 
+<a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4">MLOG_ALLOC_TLS_HEAP</a>
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">how to allocation the scrach pad buffer for logging  <a href="a00015.html#ga64789137cb6d20255c4ae2f694860956">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd">STRTK_init</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *stop_chars)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initalise a character class  <a href="a00013.html#ga5e8e0f7718ea406cdc754e4d6d9f40fd"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gae43120a54e8902f8bd356ee57a9fc7de">STRTK_add_char</a> (<a class="el" href="a00001.html">STRTK</a> *tok, uint8_t ch)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5">STRTK_spn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class.  <a href="a00013.html#gacbaa999a7ed8334ee4f9c074190522f5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031">STRTK_nspn</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns token where all characters belong to argument character class, argument string is limited.  <a href="a00013.html#gaa298a57dd2c32290c6f0d7932d73b031"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gaf5f9a2448a798742f4c632df8207bee6">STRTK_ntok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, size_t nsize, char **end_tok)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="a00013.html#gaf5f9a2448a798742f4c632df8207bee6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga970da7da688e9d0412ef1e688b340f32">STRTK_tok</a> (<a class="el" href="a00001.html">STRTK</a> *tok, const char *hay, char **end_tok)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tokenize a string . the character class is interpreted as set of white spaces.  <a href="a00013.html#ga970da7da688e9d0412ef1e688b340f32"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga33c82ea4ab2a41cdea9054948c9b3ec5">MLOG_init</a> (<a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> current, <a class="el" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">MLOG_ACTION</a> action, void *arg)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">explicitly initialises logging.  <a href="a00015.html#ga33c82ea4ab2a41cdea9054948c9b3ec5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gaf54b9c4ac40e86f37fde4a347eda9413">MLOG_set_prefix_features</a> (int prefix)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">sets level of detail added to prefix of log entry (A bitmask of MLOG_PREFIX values)  <a href="a00015.html#gaf54b9c4ac40e86f37fde4a347eda9413"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gafda3d5be4bd7fe8938c87e71e835f52a">MLOG_alloc_option</a> (<a class="el" href="a00015.html#ga64789137cb6d20255c4ae2f694860956">MLOG_ALLOC</a> option, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">determines memory allocation stragegy used here  <a href="a00015.html#gafda3d5be4bd7fe8938c87e71e835f52a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gaec863161f6870f16f8d9934d83e61e6d">MLOG_dump_stack_level</a> (<a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> <a class="el" href="a00007.html#a4f00fac0b595ea84604ab3105a323930">stack_dump_level</a>)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set log level for which the current stack is dumped. By default this would happen for LOG_LEVEL_ERROR  <a href="a00015.html#gaec863161f6870f16f8d9934d83e61e6d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga0150a13359adcc1be1d1aa0f6c136d80">MLOG_printf</a> (<a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> current, const char *file, int line, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">create a log entry, do not use this function directly, use MLOG_&lt;LOG_LEVEL_NAME&gt; macros instead  <a href="a00015.html#ga0150a13359adcc1be1d1aa0f6c136d80"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a></td></tr>
 </table>
-<hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a4718a59241012667de9862df37383a48"></a><!-- doxytag: member="strtk.h::STRTK_PATTERN_SIZE" ref="a4718a59241012667de9862df37383a48" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define STRTK_PATTERN_SIZE&#160;&#160;&#160;( 256 / 8 )</td>
-        </tr>
-      </table>
 </div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00006">6</a> of file <a class="el" href="a00008_source.html">strtk.h</a>.</p>
-
-</div>
-</div>
-</div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:08 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:33 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

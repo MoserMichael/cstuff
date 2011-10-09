@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: TOKENDEF</title>
+<title>Simple utilities sink - stuff that doesn&#39;t fit anywhere else / objects in plain C: library.</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -31,65 +31,333 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">TOKENDEF</div>  </div>
+<div class="title">library.</div>  </div>
 </div>
 <div class="contents">
-
-<p>take a string and check if it any one in list of tokens. The entry TOKENDEF defines pair of token string and its integer value that identifies the token. Parsing of string is done by comparing the input token in sequence against each entry in the table. Not very fast, but very convenient.  
-<a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html">tagTOKENDEF</a></td></tr>
-<tr><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagTOKENDEF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga31b87f2e9234f4d8a6844ffa2a401efa">TOKENDEF</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gaccfe4b146657dc08bac399764fe488a9">MLOG_ERROR</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_ERROR) {  MLOG_printf( MLOG_LEVEL_ERROR, __FILE__, __LINE__,  __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga1e3c71175e1cfb16a658bf70afb840f0">MLOG_WARN</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_WARN) {  MLOG_printf( MLOG_LEVEL_WARN, __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga25c1dbc5e47207e6b29673c15d817feb">MLOG_INFO</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_INFO) {  MLOG_printf( MLOG_LEVEL_INFO,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gad9b5ce484e6e5aeea0a1f231bc9cb05a">MLOG_DEBUG</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_DEBUG) {  MLOG_printf( MLOG_LEVEL_DEBUG,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga2c0b6b38329f95e906198b7b23ef44dd">MLOG_TRACE</a>(...)&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_TRACE) {  MLOG_printf( MLOG_LEVEL_TRACE, __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> { <br/>
+&#160;&#160;<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43aacb3fe0cbf1a107f7cf442a4390dfc51">MLOG_LEVEL_TURN_OFF_LOGGING</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a987dfdab40fb4cff7066880de918ac46">MLOG_LEVEL_ERROR</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ab654f698fdb86e39d3a055ca607b0392">MLOG_LEVEL_WARN</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a8ffc43a57f8b07b226fcb7e8ddf0cf84">MLOG_LEVEL_INFO</a>, 
+<br/>
+&#160;&#160;<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43afab730f69616ab81b856a263f771f572">MLOG_LEVEL_DEBUG</a>, 
+<a class="el" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ad2199d8488ecbea5ae4912eccb28ff7c">MLOG_LEVEL_TRACE</a>
+<br/>
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">defined logging levels  <a href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">MLOG_ACTION</a> { <a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49">MLOG_ACTION_TO_FILE</a> =  0x1, 
+<a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a9420de7fcaf1bcf0ef84b2f90e94f397">MLOG_ACTION_SYSLOG_TRACE</a> =  0x2, 
+<a class="el" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a28b468eda2e029c2e9ae441911b6aea6">MLOG_ACTION_CONSOLE</a> =  0x4
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">actions for logging stuff  <a href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga2d7c021b73763bff61683052e2e1e695">MLOG_PREFIX</a> { <a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695afec2d2208fccc9c49688e81d39c15969">MLOG_PREFIX_LOG_LEVEL</a> =  0x1, 
+<a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695aa01d063ac6bbda5767f8ea78ae53d98f">MLOG_PREFIX_SOURCE_FILE</a> =  0x2, 
+<a class="el" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695a14cbf3164f8c23ee45f099bb7cc3f6ef">MLOG_PREFIX_TIME</a> =  0x4
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">features to include in logging prefix  <a href="a00015.html#ga2d7c021b73763bff61683052e2e1e695">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga64789137cb6d20255c4ae2f694860956">MLOG_ALLOC</a> { <a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3">MLOG_ALLOC_STACK</a>, 
+<a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28">MLOG_ALLOC_HEAP</a>, 
+<a class="el" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4">MLOG_ALLOC_TLS_HEAP</a>
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">how to allocation the scrach pad buffer for logging  <a href="a00015.html#ga64789137cb6d20255c4ae2f694860956">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gadbb6d1869c2d60a2e4f07218472d0039">parse_token</a> (const char *token, <a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga2720d8525084394b4961286ba62371e5">token_string_for_int</a> (int value, <a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga32074c05714bf643b440ca28b556a998">token_possible_values</a> (<a class="el" href="a00002.html">TOKENDEF</a> *tkdef)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga33c82ea4ab2a41cdea9054948c9b3ec5">MLOG_init</a> (<a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> current, <a class="el" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">MLOG_ACTION</a> action, void *arg)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">explicitly initialises logging.  <a href="#ga33c82ea4ab2a41cdea9054948c9b3ec5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gaf54b9c4ac40e86f37fde4a347eda9413">MLOG_set_prefix_features</a> (int prefix)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">sets level of detail added to prefix of log entry (A bitmask of MLOG_PREFIX values)  <a href="#gaf54b9c4ac40e86f37fde4a347eda9413"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gafda3d5be4bd7fe8938c87e71e835f52a">MLOG_alloc_option</a> (<a class="el" href="a00015.html#ga64789137cb6d20255c4ae2f694860956">MLOG_ALLOC</a> option, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">determines memory allocation stragegy used here  <a href="#gafda3d5be4bd7fe8938c87e71e835f52a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gaec863161f6870f16f8d9934d83e61e6d">MLOG_dump_stack_level</a> (<a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> <a class="el" href="a00007.html#a4f00fac0b595ea84604ab3105a323930">stack_dump_level</a>)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set log level for which the current stack is dumped. By default this would happen for LOG_LEVEL_ERROR  <a href="#gaec863161f6870f16f8d9934d83e61e6d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga0150a13359adcc1be1d1aa0f6c136d80">MLOG_printf</a> (<a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> current, const char *file, int line, const char *format,...)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">create a log entry, do not use this function directly, use MLOG_&lt;LOG_LEVEL_NAME&gt; macros instead  <a href="#ga0150a13359adcc1be1d1aa0f6c136d80"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#gab7bce27d71c22f9e38d80845e52f5142">tagTOKENDEF::type</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>take a string and check if it any one in list of tokens. The entry TOKENDEF defines pair of token string and its integer value that identifies the token. Parsing of string is done by comparing the input token in sequence against each entry in the table. Not very fast, but very convenient. </p>
-<hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="ga31b87f2e9234f4d8a6844ffa2a401efa"></a><!-- doxytag: member="tokparser.h::TOKENDEF" ref="ga31b87f2e9234f4d8a6844ffa2a401efa" args="" -->
+<p>Not so simple logging subsystem - one logging category is supported (one global log level). Otherwise this is a very versatile logging subsystem. </p>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="gad9b5ce484e6e5aeea0a1f231bc9cb05a"></a><!-- doxytag: member="logg.h::MLOG_DEBUG" ref="gad9b5ce484e6e5aeea0a1f231bc9cb05a" args="(...)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="a00002.html">tagTOKENDEF</a>  <a class="el" href="a00002.html">TOKENDEF</a></td>
+          <td class="memname">#define MLOG_DEBUG</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td>&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_DEBUG) {  MLOG_printf( MLOG_LEVEL_DEBUG,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
+<p>Definition at line <a class="el" href="a00008_source.html#l00105">105</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+
 </div>
 </div>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="gadbb6d1869c2d60a2e4f07218472d0039"></a><!-- doxytag: member="tokparser.h::parse_token" ref="gadbb6d1869c2d60a2e4f07218472d0039" args="(const char *token, TOKENDEF *tkdef)" -->
+<a class="anchor" id="gaccfe4b146657dc08bac399764fe488a9"></a><!-- doxytag: member="logg.h::MLOG_ERROR" ref="gaccfe4b146657dc08bac399764fe488a9" args="(...)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int parse_token </td>
+          <td class="memname">#define MLOG_ERROR</td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>token</em>, </td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td>&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_ERROR) {  MLOG_printf( MLOG_LEVEL_ERROR, __FILE__, __LINE__,  __VA_ARGS__ ); } } while(0);</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00099">99</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga25c1dbc5e47207e6b29673c15d817feb"></a><!-- doxytag: member="logg.h::MLOG_INFO" ref="ga25c1dbc5e47207e6b29673c15d817feb" args="(...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MLOG_INFO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td>&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_INFO) {  MLOG_printf( MLOG_LEVEL_INFO,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00103">103</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga2c0b6b38329f95e906198b7b23ef44dd"></a><!-- doxytag: member="logg.h::MLOG_TRACE" ref="ga2c0b6b38329f95e906198b7b23ef44dd" args="(...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MLOG_TRACE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td>&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_TRACE) {  MLOG_printf( MLOG_LEVEL_TRACE, __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00107">107</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga1e3c71175e1cfb16a658bf70afb840f0"></a><!-- doxytag: member="logg.h::MLOG_WARN" ref="ga1e3c71175e1cfb16a658bf70afb840f0" args="(...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MLOG_WARN</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td>&#160;&#160;&#160;do { if (<a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> &gt;= MLOG_LEVEL_WARN) {  MLOG_printf( MLOG_LEVEL_WARN, __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00101">101</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="ga4a5ea034951d1f43cb4e83681ada1450"></a><!-- doxytag: member="logg.h::MLOG_ACTION" ref="ga4a5ea034951d1f43cb4e83681ada1450" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">MLOG_ACTION</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>actions for logging stuff </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49"></a><!-- doxytag: member="MLOG_ACTION_TO_FILE" ref="gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49" args="" -->MLOG_ACTION_TO_FILE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga4a5ea034951d1f43cb4e83681ada1450a9420de7fcaf1bcf0ef84b2f90e94f397"></a><!-- doxytag: member="MLOG_ACTION_SYSLOG_TRACE" ref="gga4a5ea034951d1f43cb4e83681ada1450a9420de7fcaf1bcf0ef84b2f90e94f397" args="" -->MLOG_ACTION_SYSLOG_TRACE</em>&nbsp;</td><td>
+<p>log entries are dumped to file </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga4a5ea034951d1f43cb4e83681ada1450a28b468eda2e029c2e9ae441911b6aea6"></a><!-- doxytag: member="MLOG_ACTION_CONSOLE" ref="gga4a5ea034951d1f43cb4e83681ada1450a28b468eda2e029c2e9ae441911b6aea6" args="" -->MLOG_ACTION_CONSOLE</em>&nbsp;</td><td>
+<p>log entries are dumped to one syslog level </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00031">31</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49">MLOG_ACTION_TO_FILE</a>  = 0x1, <span class="comment">/** log entries are dumped to file */</span>
+  <a class="code" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a9420de7fcaf1bcf0ef84b2f90e94f397">MLOG_ACTION_SYSLOG_TRACE</a> = 0x2, <span class="comment">/** log entries are dumped to one syslog level */</span>
+  <a class="code" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a28b468eda2e029c2e9ae441911b6aea6">MLOG_ACTION_CONSOLE</a> = 0x4, <span class="comment">/** log entries are dumped to console */</span>
+
+} <a class="code" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450" title="actions for logging stuff">MLOG_ACTION</a>;
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga64789137cb6d20255c4ae2f694860956"></a><!-- doxytag: member="logg.h::MLOG_ALLOC" ref="ga64789137cb6d20255c4ae2f694860956" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00015.html#ga64789137cb6d20255c4ae2f694860956">MLOG_ALLOC</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>how to allocation the scrach pad buffer for logging </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3"></a><!-- doxytag: member="MLOG_ALLOC_STACK" ref="gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3" args="" -->MLOG_ALLOC_STACK</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28"></a><!-- doxytag: member="MLOG_ALLOC_HEAP" ref="gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28" args="" -->MLOG_ALLOC_HEAP</em>&nbsp;</td><td>
+<p>buffer for logging allocated on stack (alloca) </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4"></a><!-- doxytag: member="MLOG_ALLOC_TLS_HEAP" ref="gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4" args="" -->MLOG_ALLOC_TLS_HEAP</em>&nbsp;</td><td>
+<p>buffer for logging allocated on heap (pre log request) </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00053">53</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3">MLOG_ALLOC_STACK</a>,     <span class="comment">/** buffer for logging allocated on stack (alloca) */</span>
+  <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28">MLOG_ALLOC_HEAP</a>,      <span class="comment">/** buffer for logging allocated on heap (pre log request) */</span>
+  <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4">MLOG_ALLOC_TLS_HEAP</a>,  <span class="comment">/** buffer for logging allocated on heap once for each operating system thread, stored in thread local storage */</span>
+
+} <a class="code" href="a00015.html#ga64789137cb6d20255c4ae2f694860956" title="how to allocation the scrach pad buffer for logging">MLOG_ALLOC</a>;
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga58ee0f237f34bb12ecd3f3563bae2b43"></a><!-- doxytag: member="logg.h::MLOG_LEVEL" ref="ga58ee0f237f34bb12ecd3f3563bae2b43" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>defined logging levels </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga58ee0f237f34bb12ecd3f3563bae2b43aacb3fe0cbf1a107f7cf442a4390dfc51"></a><!-- doxytag: member="MLOG_LEVEL_TURN_OFF_LOGGING" ref="gga58ee0f237f34bb12ecd3f3563bae2b43aacb3fe0cbf1a107f7cf442a4390dfc51" args="" -->MLOG_LEVEL_TURN_OFF_LOGGING</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga58ee0f237f34bb12ecd3f3563bae2b43a987dfdab40fb4cff7066880de918ac46"></a><!-- doxytag: member="MLOG_LEVEL_ERROR" ref="gga58ee0f237f34bb12ecd3f3563bae2b43a987dfdab40fb4cff7066880de918ac46" args="" -->MLOG_LEVEL_ERROR</em>&nbsp;</td><td>
+<p>setting this level as currrent level will turn off logging </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga58ee0f237f34bb12ecd3f3563bae2b43ab654f698fdb86e39d3a055ca607b0392"></a><!-- doxytag: member="MLOG_LEVEL_WARN" ref="gga58ee0f237f34bb12ecd3f3563bae2b43ab654f698fdb86e39d3a055ca607b0392" args="" -->MLOG_LEVEL_WARN</em>&nbsp;</td><td>
+<p>logging level for errors </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga58ee0f237f34bb12ecd3f3563bae2b43a8ffc43a57f8b07b226fcb7e8ddf0cf84"></a><!-- doxytag: member="MLOG_LEVEL_INFO" ref="gga58ee0f237f34bb12ecd3f3563bae2b43a8ffc43a57f8b07b226fcb7e8ddf0cf84" args="" -->MLOG_LEVEL_INFO</em>&nbsp;</td><td>
+<p>logging level for warnings </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga58ee0f237f34bb12ecd3f3563bae2b43afab730f69616ab81b856a263f771f572"></a><!-- doxytag: member="MLOG_LEVEL_DEBUG" ref="gga58ee0f237f34bb12ecd3f3563bae2b43afab730f69616ab81b856a263f771f572" args="" -->MLOG_LEVEL_DEBUG</em>&nbsp;</td><td>
+<p>logging level for info messages </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga58ee0f237f34bb12ecd3f3563bae2b43ad2199d8488ecbea5ae4912eccb28ff7c"></a><!-- doxytag: member="MLOG_LEVEL_TRACE" ref="gga58ee0f237f34bb12ecd3f3563bae2b43ad2199d8488ecbea5ae4912eccb28ff7c" args="" -->MLOG_LEVEL_TRACE</em>&nbsp;</td><td>
+<p>logging level for debug messages </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00018">18</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43aacb3fe0cbf1a107f7cf442a4390dfc51">MLOG_LEVEL_TURN_OFF_LOGGING</a>,  <span class="comment">/** setting this level as currrent level will turn off logging */</span>
+  <a class="code" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a987dfdab40fb4cff7066880de918ac46">MLOG_LEVEL_ERROR</a>, <span class="comment">/** logging level for errors */</span>
+  <a class="code" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ab654f698fdb86e39d3a055ca607b0392">MLOG_LEVEL_WARN</a>,  <span class="comment">/** logging level for warnings */</span>
+  <a class="code" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43a8ffc43a57f8b07b226fcb7e8ddf0cf84">MLOG_LEVEL_INFO</a>, <span class="comment">/** logging level for info messages */</span>
+  <a class="code" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43afab730f69616ab81b856a263f771f572">MLOG_LEVEL_DEBUG</a>, <span class="comment">/** logging level for debug messages */</span>
+  <a class="code" href="a00015.html#gga58ee0f237f34bb12ecd3f3563bae2b43ad2199d8488ecbea5ae4912eccb28ff7c">MLOG_LEVEL_TRACE</a>, <span class="comment">/** logging level for trace messages */</span>
+
+} <a class="code" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43" title="defined logging levels">MLOG_LEVEL</a>;
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2d7c021b73763bff61683052e2e1e695"></a><!-- doxytag: member="logg.h::MLOG_PREFIX" ref="ga2d7c021b73763bff61683052e2e1e695" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00015.html#ga2d7c021b73763bff61683052e2e1e695">MLOG_PREFIX</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>features to include in logging prefix </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga2d7c021b73763bff61683052e2e1e695afec2d2208fccc9c49688e81d39c15969"></a><!-- doxytag: member="MLOG_PREFIX_LOG_LEVEL" ref="gga2d7c021b73763bff61683052e2e1e695afec2d2208fccc9c49688e81d39c15969" args="" -->MLOG_PREFIX_LOG_LEVEL</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga2d7c021b73763bff61683052e2e1e695aa01d063ac6bbda5767f8ea78ae53d98f"></a><!-- doxytag: member="MLOG_PREFIX_SOURCE_FILE" ref="gga2d7c021b73763bff61683052e2e1e695aa01d063ac6bbda5767f8ea78ae53d98f" args="" -->MLOG_PREFIX_SOURCE_FILE</em>&nbsp;</td><td>
+<p>add log level to entry </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga2d7c021b73763bff61683052e2e1e695a14cbf3164f8c23ee45f099bb7cc3f6ef"></a><!-- doxytag: member="MLOG_PREFIX_TIME" ref="gga2d7c021b73763bff61683052e2e1e695a14cbf3164f8c23ee45f099bb7cc3f6ef" args="" -->MLOG_PREFIX_TIME</em>&nbsp;</td><td>
+<p>add source file / line number of log statement to entry </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00042">42</a> of file <a class="el" href="a00008_source.html">logg.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695afec2d2208fccc9c49688e81d39c15969">MLOG_PREFIX_LOG_LEVEL</a> = 0x1,    <span class="comment">/** add log level to entry */</span>
+  <a class="code" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695aa01d063ac6bbda5767f8ea78ae53d98f">MLOG_PREFIX_SOURCE_FILE</a> = 0x2,  <span class="comment">/** add source file / line number of log statement to entry */</span>
+  <a class="code" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695a14cbf3164f8c23ee45f099bb7cc3f6ef">MLOG_PREFIX_TIME</a> = 0x4,         <span class="comment">/** add HOUR:MINUTE:SECOND:MICROSECOND to log entry */</span>
+
+} <a class="code" href="a00015.html#ga2d7c021b73763bff61683052e2e1e695" title="features to include in logging prefix">MLOG_PREFIX</a>;
+</pre></div>
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="gafda3d5be4bd7fe8938c87e71e835f52a"></a><!-- doxytag: member="logg.h::MLOG_alloc_option" ref="gafda3d5be4bd7fe8938c87e71e835f52a" args="(MLOG_ALLOC option, size_t size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MLOG_alloc_option </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00015.html#ga64789137cb6d20255c4ae2f694860956">MLOG_ALLOC</a>&#160;</td>
+          <td class="paramname"><em>option</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
-          <td class="paramname"><em>tkdef</em>&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -100,118 +368,310 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00010_source.html#l00005">5</a> of file <a class="el" href="a00010_source.html">tokparser.c</a>.</p>
+<p>determines memory allocation stragegy used here </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">option</td><td>- how to allocate buffer for logging. options are: use stack (MLOG_ALLOC_STACK), heap (MLOG_ALLOC_HEAP), heap and store in tls (MLOG_ALLOC_TLS_HEAP) </td></tr>
+    <tr><td class="paramname">size</td><td>- maximum length of a log entry allowed here. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00057">57</a> of file <a class="el" href="a00007_source.html">logg.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <span class="keywordtype">int</span> i;
-  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
-    <span class="keywordflow">if</span> ( strcmp(token, tkdef[i].type) == 0 ) {
-      <span class="keywordflow">return</span> tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a>;
+  <a class="code" href="a00007.html#a8d3637cbadc4f3b006664083b0a9203a">alloc_strategy</a> = option;
+  <a class="code" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">alloc_size</a> = size;
+
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#a8d3637cbadc4f3b006664083b0a9203a">alloc_strategy</a> == <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4">MLOG_ALLOC_TLS_HEAP</a>) {
+    <span class="keywordflow">if</span> (<a class="code" href="a00007.html#ad9b52b6f17eeecc8f9c65ac2bf83ce51">log_tls_entry</a> == 0) {
+      <span class="keywordflow">if</span> (pthread_key_create( &amp;<a class="code" href="a00007.html#ad9b52b6f17eeecc8f9c65ac2bf83ce51">log_tls_entry</a>, <a class="code" href="a00007.html#a0a8a663cc73982f823669e035fe73df6">tls_free</a> )) {
+        <span class="keywordflow">return</span> -1;
+      }
+      pthread_setspecific( <a class="code" href="a00007.html#ad9b52b6f17eeecc8f9c65ac2bf83ce51">log_tls_entry</a>, 0 );
     }
   }
-  <span class="keywordflow">return</span> -1;
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaec863161f6870f16f8d9934d83e61e6d"></a><!-- doxytag: member="logg.h::MLOG_dump_stack_level" ref="gaec863161f6870f16f8d9934d83e61e6d" args="(MLOG_LEVEL stack_dump_level)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MLOG_dump_stack_level </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a>&#160;</td>
+          <td class="paramname"><em>stack_dump_level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>set log level for which the current stack is dumped. By default this would happen for LOG_LEVEL_ERROR </p>
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00074">74</a> of file <a class="el" href="a00007_source.html">logg.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00007.html#a4f00fac0b595ea84604ab3105a323930">stack_dump_level</a> = level;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga33c82ea4ab2a41cdea9054948c9b3ec5"></a><!-- doxytag: member="logg.h::MLOG_init" ref="ga33c82ea4ab2a41cdea9054948c9b3ec5" args="(MLOG_LEVEL current, MLOG_ACTION action, void *arg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MLOG_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a>&#160;</td>
+          <td class="paramname"><em>current</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00015.html#ga4a5ea034951d1f43cb4e83681ada1450">MLOG_ACTION</a>&#160;</td>
+          <td class="paramname"><em>action</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>explicitly initialises logging. </p>
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00043">43</a> of file <a class="el" href="a00007_source.html">logg.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a> = current;
+ 
+  <a class="code" href="a00007.html#ada0962f3c9bfc9ac2ed216c787d5a58d">log_action</a> |= action;
+
+  <span class="keywordflow">if</span> (action &amp; <a class="code" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49">MLOG_ACTION_TO_FILE</a>) {
+    <a class="code" href="a00007.html#ad9f84b0791cb1cac996456b223aeffec">log_fd</a> = open( (<span class="keyword">const</span> <span class="keywordtype">char</span> *) arg , O_CREAT | O_RDWR, S_IWUSR  | S_IRUSR );
+    <span class="keywordflow">return</span> <a class="code" href="a00007.html#ad9f84b0791cb1cac996456b223aeffec">log_fd</a> == -1;
+  }
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0150a13359adcc1be1d1aa0f6c136d80"></a><!-- doxytag: member="logg.h::MLOG_printf" ref="ga0150a13359adcc1be1d1aa0f6c136d80" args="(MLOG_LEVEL current, const char *file, int line, const char *format,...)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MLOG_printf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a>&#160;</td>
+          <td class="paramname"><em>current</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>create a log entry, do not use this function directly, use MLOG_&lt;LOG_LEVEL_NAME&gt; macros instead </p>
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00080">80</a> of file <a class="el" href="a00007_source.html">logg.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">char</span> *sbuf,*pos;
+  <span class="keywordtype">size_t</span> buf_size, msg_len;
+  va_list vlist;
+  <span class="keyword">struct </span>timeval now_time_val;
+  <span class="keyword">struct </span>tm now_time;
+  <span class="keywordtype">int</span> rt;
+
+  <span class="keywordflow">switch</span>(<a class="code" href="a00007.html#a8d3637cbadc4f3b006664083b0a9203a">alloc_strategy</a>) {
+    <span class="keywordflow">case</span> <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3">MLOG_ALLOC_STACK</a>:
+      sbuf = alloca( <a class="code" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">alloc_size</a> );
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">case</span> <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28">MLOG_ALLOC_HEAP</a>:
+      sbuf = (<span class="keywordtype">char</span> *) malloc( <a class="code" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">alloc_size</a> );
+      <span class="keywordflow">if</span> (!sbuf) {
+        <span class="keywordflow">return</span> -1;
+      }
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">case</span> <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4">MLOG_ALLOC_TLS_HEAP</a>:
+      sbuf = pthread_getspecific( <a class="code" href="a00007.html#ad9b52b6f17eeecc8f9c65ac2bf83ce51">log_tls_entry</a> );
+      <span class="keywordflow">if</span> (!sbuf) {
+        sbuf = malloc( <a class="code" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">alloc_size</a> );
+        <span class="keywordflow">if</span> (!sbuf) {
+          <span class="keywordflow">return</span> -1;
+        }
+        pthread_setspecific( <a class="code" href="a00007.html#ad9b52b6f17eeecc8f9c65ac2bf83ce51">log_tls_entry</a>, sbuf );
+      }
+      <span class="keywordflow">break</span>;
+  }
+  
+  buf_size = <a class="code" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">alloc_size</a> - 2;
+  pos = sbuf;
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#a6fb674fec51d550595311a8061028185">log_prefix_level</a> &amp; <a class="code" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695afec2d2208fccc9c49688e81d39c15969">MLOG_PREFIX_LOG_LEVEL</a> &amp;&amp; buf_size &gt; 0) {
+    rt = snprintf( pos, buf_size, <span class="stringliteral">&quot;%s : &quot;</span>, <a class="code" href="a00007.html#a3d1bf03f51fd0feb01a65fffd5ff4f7c">log_level_names</a>[ current ] );
+    <span class="keywordflow">if</span> (rt &lt; 0) {
+      <span class="keywordflow">return</span> -1;
+    }
+    pos += rt;
+    buf_size -= rt;
+  }
+  
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#a6fb674fec51d550595311a8061028185">log_prefix_level</a> &amp; <a class="code" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695aa01d063ac6bbda5767f8ea78ae53d98f">MLOG_PREFIX_SOURCE_FILE</a> &amp;&amp; buf_size &gt; 0) {
+    rt = snprintf( pos, buf_size, <span class="stringliteral">&quot;[%s:%d] &quot;</span>, file, line  );
+    <span class="keywordflow">if</span> (rt &lt; 0) {
+      <span class="keywordflow">return</span> -1;
+    }
+    pos += rt;
+    buf_size -= rt;
+   }
+  
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#a6fb674fec51d550595311a8061028185">log_prefix_level</a> &amp; <a class="code" href="a00015.html#gga2d7c021b73763bff61683052e2e1e695a14cbf3164f8c23ee45f099bb7cc3f6ef">MLOG_PREFIX_TIME</a> &amp;&amp; buf_size &gt; 0) {
+    gettimeofday( &amp;now_time_val, 0 );
+    localtime_r(  &amp;now_time_val.tv_sec, &amp;now_time);
+          
+    rt = snprintf( pos, buf_size, <span class="stringliteral">&quot;%02d:%02d:%02d:%06ld &quot;</span>,
+                                        (<span class="keywordtype">int</span>)  now_time.tm_hour,
+                                        (<span class="keywordtype">int</span>)  now_time.tm_min,
+                                        (<span class="keywordtype">int</span>)  now_time.tm_sec,
+                                        now_time_val.tv_usec );
+    <span class="keywordflow">if</span> (rt &lt; 0) {
+      <span class="keywordflow">return</span> -1;
+    }
+    pos += rt;
+    buf_size -= rt;
+  }
+
+  <span class="keywordflow">if</span> (buf_size &gt; 0) {
+    va_start( vlist, format );
+    rt = vsnprintf( pos, buf_size, format, vlist );
+    va_end( vlist );
+    <span class="keywordflow">if</span> (rt &lt; 0) {
+      <span class="keywordflow">return</span> -1;
+    }
+    pos += rt;
+    buf_size -= rt;
+  }
+  
+  strcpy( pos, <span class="stringliteral">&quot;\n&quot;</span>);
+  msg_len = <a class="code" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">alloc_size</a> - buf_size - 1;
+  
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#ada0962f3c9bfc9ac2ed216c787d5a58d">log_action</a> &amp; <a class="code" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a28b468eda2e029c2e9ae441911b6aea6">MLOG_ACTION_CONSOLE</a>) {
+    write( 2, sbuf, msg_len );
+  } 
+  
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#ada0962f3c9bfc9ac2ed216c787d5a58d">log_action</a> &amp; MLOG_ACTION_CONSOLE) {
+    write( 2, sbuf, msg_len );
+  } 
+  
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#ada0962f3c9bfc9ac2ed216c787d5a58d">log_action</a> &amp; MLOG_ACTION_CONSOLE) {
+    write( 2, sbuf, msg_len );
+  }
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#ada0962f3c9bfc9ac2ed216c787d5a58d">log_action</a> &amp; <a class="code" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a352870a22c79768f7266dede995bef49">MLOG_ACTION_TO_FILE</a>) {
+    write( <a class="code" href="a00007.html#ad9f84b0791cb1cac996456b223aeffec">log_fd</a>, sbuf, msg_len );
+  }
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00007.html#ada0962f3c9bfc9ac2ed216c787d5a58d">log_action</a> &amp; <a class="code" href="a00015.html#gga4a5ea034951d1f43cb4e83681ada1450a9420de7fcaf1bcf0ef84b2f90e94f397">MLOG_ACTION_SYSLOG_TRACE</a>) {
+    syslog( LOG_USER, <span class="stringliteral">&quot;%s&quot;</span>, sbuf );
+  }
+  
+  <span class="keywordflow">if</span> (current &lt;= <a class="code" href="a00007.html#a4f00fac0b595ea84604ab3105a323930">stack_dump_level</a>) {
+    <span class="keywordflow">if</span> (!<a class="code" href="a00013.html#ga581e39706983163a300cd50728794634">errorp_is_file_open</a>()) {
+       <a class="code" href="a00013.html#ga766648cd1050284e3170e1122e776b4f">errorp_open_file</a>( <span class="stringliteral">&quot;err.log&quot;</span> );
+    }
+    <a class="code" href="a00003.html#ac8abec5b575fdad732d9b5fa3b95d608">error_dump_string</a>( sbuf, sbuf, <a class="code" href="a00007.html#a17be629b5c7f3f19ca40d24c42ec7636">alloc_size</a> );
+  }
+
+  <span class="keywordflow">switch</span>(<a class="code" href="a00007.html#a8d3637cbadc4f3b006664083b0a9203a">alloc_strategy</a>) {
+    <span class="keywordflow">case</span> <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a8bb0a30df2cc7447c02f3f72a09109d4">MLOG_ALLOC_TLS_HEAP</a>:
+    <span class="keywordflow">case</span> <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956aa30f577c355d512b02dc3ad0c1b5b3c3">MLOG_ALLOC_STACK</a>:
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">case</span> <a class="code" href="a00015.html#gga64789137cb6d20255c4ae2f694860956a0417454d43c698e83982f3544ae84e28">MLOG_ALLOC_HEAP</a>:
+      free(sbuf);
+      <span class="keywordflow">break</span>;
+  }
+  <span class="keywordflow">return</span> 0;
 } 
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga32074c05714bf643b440ca28b556a998"></a><!-- doxytag: member="tokparser.h::token_possible_values" ref="ga32074c05714bf643b440ca28b556a998" args="(TOKENDEF *tkdef)" -->
+<a class="anchor" id="gaf54b9c4ac40e86f37fde4a347eda9413"></a><!-- doxytag: member="logg.h::MLOG_set_prefix_features" ref="gaf54b9c4ac40e86f37fde4a347eda9413" args="(int prefix)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* token_possible_values </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
-          <td class="paramname"><em>tkdef</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00010_source.html#l00016">16</a> of file <a class="el" href="a00010_source.html">tokparser.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordtype">int</span> i;
-  <span class="keywordtype">int</span> len = 0;
-  <span class="keywordtype">char</span> *ret;
-
-  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
-    len += strlen( tkdef[i].type ) + 1;
-  }
-
-  ret = (<span class="keywordtype">char</span> *) malloc( len + 1 );
-  <span class="keywordflow">if</span> (!ret) {
-    <span class="keywordflow">return</span> 0;
-  }
-
-  strcpy(ret, <span class="stringliteral">&quot;&quot;</span> );
-
-  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
-    strcat( ret, tkdef[i].type);
-    strcat( ret, <span class="stringliteral">&quot; &quot;</span> );
-  }
-
-  <span class="keywordflow">return</span> ret;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga2720d8525084394b4961286ba62371e5"></a><!-- doxytag: member="tokparser.h::token_string_for_int" ref="ga2720d8525084394b4961286ba62371e5" args="(int value, TOKENDEF *tkdef)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* token_string_for_int </td>
+          <td class="memname">void MLOG_set_prefix_features </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>prefix</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00002.html">TOKENDEF</a> *&#160;</td>
-          <td class="paramname"><em>tkdef</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00010_source.html#l00041">41</a> of file <a class="el" href="a00010_source.html">tokparser.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordtype">int</span> i;
+<p>sets level of detail added to prefix of log entry (A bitmask of MLOG_PREFIX values) </p>
 
-  <span class="keywordflow">for</span>(i=0 ; tkdef[i].<a class="code" href="a00002.html#a44e79ba4222415bf07f916e042e7d822">token_type</a> != -1 ; i++) {
-    <span class="keywordflow">if</span> ( tkdef[i].token_type == value ) {
-      <span class="keywordflow">return</span> tkdef[i].<a class="code" href="a00015.html#gab7bce27d71c22f9e38d80845e52f5142">type</a>;  
-    }  
-  }
-  <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
-}
-</pre></div>
 </div>
 </div>
 <hr/><h2>Variable Documentation</h2>
-<a class="anchor" id="gab7bce27d71c22f9e38d80845e52f5142"></a><!-- doxytag: member="tagTOKENDEF::type" ref="gab7bce27d71c22f9e38d80845e52f5142" args="" -->
+<a class="anchor" id="ga1b7a2c0199f158ae15f81e61ec18ad45"></a><!-- doxytag: member="logg.h::m_current_log_level" ref="ga1b7a2c0199f158ae15f81e61ec18ad45" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* <a class="el" href="a00015.html#gab7bce27d71c22f9e38d80845e52f5142">tagTOKENDEF::type</a></td>
+          <td class="memname"><a class="el" href="a00015.html#ga58ee0f237f34bb12ecd3f3563bae2b43">MLOG_LEVEL</a> <a class="el" href="a00015.html#ga1b7a2c0199f158ae15f81e61ec18ad45">m_current_log_level</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00011_source.html#l00016">16</a> of file <a class="el" href="a00011_source.html">tokparser.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00014">14</a> of file <a class="el" href="a00007_source.html">logg.c</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 17:09:53 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:33 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

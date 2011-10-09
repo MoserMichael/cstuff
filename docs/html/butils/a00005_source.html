@@ -49,7 +49,7 @@
 <a name="l00008"></a>00008 
 <a name="l00009"></a><a class="code" href="a00005.html#a1163f5b565bd25e41c6369c510530511">00009</a> <span class="preprocessor">#define HEX_LINE_LENGTH  16</span>
 <a name="l00010"></a>00010 <span class="preprocessor"></span>
-<a name="l00011"></a><a class="code" href="a00012.html#gaebdad1efeb939693a66ba96041b0a7cb">00011</a> <span class="keywordtype">char</span> *<a class="code" href="a00012.html#gaebdad1efeb939693a66ba96041b0a7cb" title="format of hexadecimal dump">make_hex_dump</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">size_t</span> len)
+<a name="l00011"></a><a class="code" href="a00014.html#gaebdad1efeb939693a66ba96041b0a7cb">00011</a> <span class="keywordtype">char</span> *<a class="code" href="a00014.html#gaebdad1efeb939693a66ba96041b0a7cb" title="format of hexadecimal dump">make_hex_dump</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">size_t</span> len)
 <a name="l00012"></a>00012 {
 <a name="l00013"></a>00013     <span class="keywordtype">int</span> lines = (len / <a class="code" href="a00005.html#a1163f5b565bd25e41c6369c510530511">HEX_LINE_LENGTH</a>) + 1;
 <a name="l00014"></a>00014     <span class="keywordtype">char</span>  *buf = malloc(  lines * ( <a class="code" href="a00005.html#a1163f5b565bd25e41c6369c510530511">HEX_LINE_LENGTH</a> * 3 + <a class="code" href="a00005.html#a1163f5b565bd25e41c6369c510530511">HEX_LINE_LENGTH</a> + 2 ) + 2 );
@@ -94,7 +94,7 @@
 <a name="l00053"></a>00053     <span class="keywordflow">return</span> buf;
 <a name="l00054"></a>00054 }
 <a name="l00055"></a>00055 
-<a name="l00056"></a><a class="code" href="a00012.html#ga171452af1102322f5c77dfcf1aa5e8d2">00056</a> <span class="keywordtype">void</span> *<a class="code" href="a00012.html#ga171452af1102322f5c77dfcf1aa5e8d2" title="parsing of hexadecimal string">parse_hexa_string</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">int</span> len, uint32_t *rsize )
+<a name="l00056"></a><a class="code" href="a00014.html#ga171452af1102322f5c77dfcf1aa5e8d2">00056</a> <span class="keywordtype">void</span> *<a class="code" href="a00014.html#ga171452af1102322f5c77dfcf1aa5e8d2" title="parsing of hexadecimal string">parse_hexa_string</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">int</span> len, uint32_t *rsize )
 <a name="l00057"></a>00057 {
 <a name="l00058"></a>00058   uint8_t * buf, *pos;
 <a name="l00059"></a>00059   <span class="keywordtype">int</span> low_val, high_val;
@@ -151,7 +151,7 @@
 <a name="l00110"></a>00110 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:08 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:33 for Simple utilities sink - stuff that doesn't fit anywhere else / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

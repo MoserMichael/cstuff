@@ -59,35 +59,15 @@ Collaboration diagram for tagEVTIMER:</div>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">EVTHREAD_OBJECT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">object_base</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00001.html">EVLOOP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a742e8b7259a65ba5a186a7298e4b191c">loop</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a4336a1004a67d947772edcf5151f84a6">proc</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a060c8465c9ad91aa4690d86ef2029623">user_data</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">timer_id</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">timer_event</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct timeval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a539b7675429899de8dd3a18b237fc872">timer_period</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a76a08cfecc3cb0d919473a0d10aa3d22">is_recurrent</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct timeval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a43ce976f10a5015e918295d8f6950046">tm</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct timeval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a60f4469b2b053810d66cea5b76196f6f">next_due_date</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">timer_event</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html#ga2e6068a47dd625c7ac59d77a4615a181">EVTIMERSTATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">state</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00008_source.html#l00142">142</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00143">143</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 </div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a76a08cfecc3cb0d919473a0d10aa3d22"></a><!-- doxytag: member="tagEVTIMER::is_recurrent" ref="a76a08cfecc3cb0d919473a0d10aa3d22" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="a00005.html#a76a08cfecc3cb0d919473a0d10aa3d22">tagEVTIMER::is_recurrent</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00153">153</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a742e8b7259a65ba5a186a7298e4b191c"></a><!-- doxytag: member="tagEVTIMER::loop" ref="a742e8b7259a65ba5a186a7298e4b191c" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -99,22 +79,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00145">145</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a60f4469b2b053810d66cea5b76196f6f"></a><!-- doxytag: member="tagEVTIMER::next_due_date" ref="a60f4469b2b053810d66cea5b76196f6f" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct timeval <a class="el" href="a00005.html#a60f4469b2b053810d66cea5b76196f6f">tagEVTIMER::next_due_date</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00156">156</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00146">146</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
@@ -129,22 +94,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00143">143</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4336a1004a67d947772edcf5151f84a6"></a><!-- doxytag: member="tagEVTIMER::proc" ref="a4336a1004a67d947772edcf5151f84a6" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> <a class="el" href="a00005.html#a4336a1004a67d947772edcf5151f84a6">tagEVTIMER::proc</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00147">147</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00144">144</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
@@ -159,7 +109,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00158">158</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00151">151</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
@@ -174,7 +124,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00151">151</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00149">149</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
@@ -189,22 +139,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00149">149</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a539b7675429899de8dd3a18b237fc872"></a><!-- doxytag: member="tagEVTIMER::timer_period" ref="a539b7675429899de8dd3a18b237fc872" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct timeval <a class="el" href="a00005.html#a539b7675429899de8dd3a18b237fc872">tagEVTIMER::timer_period</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00008_source.html#l00152">152</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00147">147</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
 </div>
@@ -219,21 +154,6 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00155">155</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a060c8465c9ad91aa4690d86ef2029623"></a><!-- doxytag: member="tagEVTIMER::user_data" ref="a060c8465c9ad91aa4690d86ef2029623" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void* <a class="el" href="a00005.html#a060c8465c9ad91aa4690d86ef2029623">tagEVTIMER::user_data</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
 <p>Definition at line <a class="el" href="a00008_source.html#l00148">148</a> of file <a class="el" href="a00008_source.html">evthread.h</a>.</p>
 
 </div>
@@ -242,7 +162,7 @@ Public Attributes</h2></td></tr>
 <li><a class="el" href="a00008_source.html">evthread.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:34 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

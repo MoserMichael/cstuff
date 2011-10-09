@@ -43,264 +43,263 @@
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __EVTHREAD_H_</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#include &lt;corothread/cthread.h&gt;</span>
-<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;event.h&gt;</span> 
-<a name="l00006"></a>00006 <span class="preprocessor">#include &lt;sys/socket.h&gt;</span>
-<a name="l00007"></a>00007 <span class="preprocessor">#include &lt;sys/types.h&gt;</span>
-<a name="l00008"></a>00008 <span class="preprocessor">#include &lt;cutils/dlist.h&gt;</span>
-<a name="l00009"></a>00009 
-<a name="l00010"></a>00010 <span class="comment">// ---------------------------------------------------------------------------</span>
-<a name="l00011"></a>00011 <span class="comment"></span>
-<a name="l00012"></a>00012 <span class="comment">/**</span>
-<a name="l00013"></a>00013 <span class="comment"> * @defgroup EVLOOP</span>
-<a name="l00014"></a>00014 <span class="comment"> * @brief event loop object.</span>
-<a name="l00015"></a>00015 <span class="comment"> * The event loop  wraps a small user mode threading library where a user mode thread is created per connection.</span>
-<a name="l00016"></a>00016 <span class="comment"> *</span>
-<a name="l00017"></a>00017 <span class="comment"> * When a new connection is received via accept(2), then an EVSOCKET object is created that encapsulates this socket, </span>
-<a name="l00018"></a>00018 <span class="comment"> * and the socket is set to non blocking mode, and a user mode thread EVTHREAD is created that owns the new EVSOCKET object.</span>
-<a name="l00019"></a>00019 <span class="comment"> * TCPACCEPTOR is the class that does all that.</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;corothread/stacks.h&gt;</span>
+<a name="l00006"></a>00006 
+<a name="l00007"></a>00007 <span class="preprocessor">#include &lt;sys/socket.h&gt;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &lt;sys/types.h&gt;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &lt;cutils/dlist.h&gt;</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;nutils/addrutil.h&gt;</span>
+<a name="l00011"></a>00011 
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;event.h&gt;</span> 
+<a name="l00013"></a>00013 
+<a name="l00014"></a>00014 <span class="comment">// ---------------------------------------------------------------------------</span>
+<a name="l00015"></a>00015 <span class="comment"></span>
+<a name="l00016"></a>00016 <span class="comment">/**</span>
+<a name="l00017"></a>00017 <span class="comment"> * @defgroup EVLOOP</span>
+<a name="l00018"></a>00018 <span class="comment"> * @brief event loop object.</span>
+<a name="l00019"></a>00019 <span class="comment"> * The event loop  wraps a small user mode threading library where a user mode thread is created per connection.</span>
 <a name="l00020"></a>00020 <span class="comment"> *</span>
-<a name="l00021"></a>00021 <span class="comment"> * A user mode thread can own one or more EVSOCKET objects, it can read or write to an EVSOCKET object which has the API of a blocking socket.</span>
-<a name="l00022"></a>00022 <span class="comment"> * when the socket blocks, (i.e. recv or send returns -1 and errno == EWOULDBLOCK) then the attached user mode thread is suspended, and control</span>
-<a name="l00023"></a>00023 <span class="comment"> * returns to the event loop, the event loop schedules a different user mode thread, when an IO event occurs on a socket owned by that thread.</span>
+<a name="l00021"></a>00021 <span class="comment"> * When a new connection is received via accept(2), then an EVSOCKET object is created that encapsulates this socket, </span>
+<a name="l00022"></a>00022 <span class="comment"> * and the socket is set to non blocking mode, and a user mode thread EVTHREAD is created that owns the new EVSOCKET object.</span>
+<a name="l00023"></a>00023 <span class="comment"> * TCPACCEPTOR is the class that does all that.</span>
 <a name="l00024"></a>00024 <span class="comment"> *</span>
-<a name="l00025"></a>00025 <span class="comment"> * A user mode thread (EVTHREAD) can create other sockets (EVSOCKET) that are then attached to the current thread.</span>
-<a name="l00026"></a>00026 <span class="comment"> *</span>
-<a name="l00027"></a>00027 <span class="comment"> * A use mode thread also owns a set of timer objects (EVTIMER), when the thread exits, all the timer objects are cleaned up.</span>
+<a name="l00025"></a>00025 <span class="comment"> * A user mode thread can own one or more EVSOCKET objects, it can read or write to an EVSOCKET object which has the API of a blocking socket.</span>
+<a name="l00026"></a>00026 <span class="comment"> * when the socket blocks, (i.e. recv or send returns -1 and errno == EWOULDBLOCK) then the attached user mode thread is suspended, and control</span>
+<a name="l00027"></a>00027 <span class="comment"> * returns to the event loop, the event loop schedules a different user mode thread, when an IO event occurs on a socket owned by that thread.</span>
 <a name="l00028"></a>00028 <span class="comment"> *</span>
-<a name="l00029"></a>00029 <span class="comment"> * The event loop is implemented by libevent.</span>
+<a name="l00029"></a>00029 <span class="comment"> * A user mode thread (EVTHREAD) can create other sockets (EVSOCKET) that are then attached to the current thread.</span>
 <a name="l00030"></a>00030 <span class="comment"> *</span>
-<a name="l00031"></a>00031 <span class="comment"> * Unlike other packages, where one can create several user mode thread and then has to cope with the problem of their synchronization, we keep things simple here.</span>
-<a name="l00032"></a>00032 <span class="comment"> * There is one thread per connection, that is supposed to do protocol handling and processing, all on condition that processing does not involve heavy CPU intensive tasks.</span>
-<a name="l00033"></a>00033 <span class="comment"> * If your problem does have such task, then there is also support for the Half-sync/Half-async pattern.</span>
-<a name="l00034"></a>00034 <span class="comment"> * </span>
-<a name="l00035"></a>00035 <span class="comment"> * @{</span>
-<a name="l00036"></a>00036 <span class="comment"> */</span>
-<a name="l00037"></a><a class="code" href="a00001.html">00037</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00001.html">tagEVLOOP</a> {
-<a name="l00038"></a><a class="code" href="a00001.html#a3ef46ca89266616a4ca06b62e60e8062">00038</a>   <span class="keyword">struct </span>event_base *<a class="code" href="a00001.html#a3ef46ca89266616a4ca06b62e60e8062">ev_base</a>;
-<a name="l00039"></a><a class="code" href="a00001.html#abc5af16a5c530aebd2015bbec8756a52">00039</a>   STACKS *<a class="code" href="a00001.html#abc5af16a5c530aebd2015bbec8756a52">stacks</a>;
-<a name="l00040"></a>00040 } <a class="code" href="a00009.html#ga962e10cc0631184c27e12a42a78e2f38">EVLOOP</a>;
-<a name="l00041"></a>00041 
-<a name="l00042"></a>00042 <a class="code" href="a00001.html">EVLOOP</a> * <a class="code" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">EVLOOP_init</a>(STACKS *stacks );
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044 <span class="keywordtype">int</span> <a class="code" href="a00009.html#gaa25fcfb07b6227a4749e2d148bb053b3">EVLOOP_run</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop );
+<a name="l00031"></a>00031 <span class="comment"> * A use mode thread also owns a set of timer objects (EVTIMER), when the thread exits, all the timer objects are cleaned up.</span>
+<a name="l00032"></a>00032 <span class="comment"> *</span>
+<a name="l00033"></a>00033 <span class="comment"> * The event loop is implemented by libevent.</span>
+<a name="l00034"></a>00034 <span class="comment"> *</span>
+<a name="l00035"></a>00035 <span class="comment"> * Unlike other packages, where one can create several user mode thread and then has to cope with the problem of their synchronization, we keep things simple here.</span>
+<a name="l00036"></a>00036 <span class="comment"> * There is one thread per connection, that is supposed to do protocol handling and processing, all on condition that processing does not involve heavy CPU intensive tasks.</span>
+<a name="l00037"></a>00037 <span class="comment"> * If your problem does have such task, then there is also support for the Half-sync/Half-async pattern.</span>
+<a name="l00038"></a>00038 <span class="comment"> * </span>
+<a name="l00039"></a>00039 <span class="comment"> * @{</span>
+<a name="l00040"></a>00040 <span class="comment"> */</span>
+<a name="l00041"></a><a class="code" href="a00001.html">00041</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00001.html">tagEVLOOP</a> {
+<a name="l00042"></a><a class="code" href="a00001.html#a3ef46ca89266616a4ca06b62e60e8062">00042</a>   <span class="keyword">struct </span>event_base *<a class="code" href="a00001.html#a3ef46ca89266616a4ca06b62e60e8062">ev_base</a>;
+<a name="l00043"></a><a class="code" href="a00001.html#abc5af16a5c530aebd2015bbec8756a52">00043</a>   STACKS *<a class="code" href="a00001.html#abc5af16a5c530aebd2015bbec8756a52">stacks</a>;
+<a name="l00044"></a>00044 } <a class="code" href="a00009.html#ga962e10cc0631184c27e12a42a78e2f38">EVLOOP</a>;
 <a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga6886f671cea83756af4d537b31c53436">EVLOOP_break</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop );
-<a name="l00047"></a>00047 <span class="comment"></span>
-<a name="l00048"></a>00048 <span class="comment">/**</span>
-<a name="l00049"></a>00049 <span class="comment"> * @}</span>
-<a name="l00050"></a>00050 <span class="comment"> */</span>
-<a name="l00051"></a>00051  
-<a name="l00052"></a>00052 <span class="comment">// ---------------------------------------------------------------------------</span>
-<a name="l00053"></a>00053 <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a>;
-<a name="l00054"></a>00054 <span class="keyword">struct </span><a class="code" href="a00003.html">tagEVTHREAD</a>;
-<a name="l00055"></a>00055 <span class="comment"></span>
-<a name="l00056"></a>00056 <span class="comment">/**</span>
-<a name="l00057"></a>00057 <span class="comment"> * @defgroup EVTHREAD</span>
-<a name="l00058"></a>00058 <span class="comment"> * @brief user mode thread attached to an event loop</span>
-<a name="l00059"></a>00059 <span class="comment"> * The thread owns one or more EVSOCKETS, it initially activated when the thread is created, and is futher activated when an IO event occurs on a EVSOCKET object </span>
-<a name="l00060"></a>00060 <span class="comment"> * owned by this thread.</span>
-<a name="l00061"></a>00061 <span class="comment"> *</span>
-<a name="l00062"></a>00062 <span class="comment"> * @{</span>
-<a name="l00063"></a>00063 <span class="comment"> */</span>
-<a name="l00064"></a>00064 
-<a name="l00065"></a><a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">00065</a> <span class="keyword">typedef</span> void (*<a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a>) ( <span class="keyword">struct </span><a class="code" href="a00003.html">tagEVTHREAD</a> *thread, <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a> *socket, <span class="keywordtype">void</span> *user_ctx);
-<a name="l00066"></a>00066 
-<a name="l00067"></a><a class="code" href="a00003.html">00067</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00003.html">tagEVTHREAD</a> {
-<a name="l00068"></a><a class="code" href="a00003.html#abd1b6bd8c48500d617d9779fcac65cdc">00068</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00003.html#abd1b6bd8c48500d617d9779fcac65cdc">loop</a>;
-<a name="l00069"></a><a class="code" href="a00003.html#abb9ebfa4591c3e6538abe7aa8c7cc8ab">00069</a>   <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> <a class="code" href="a00003.html#abb9ebfa4591c3e6538abe7aa8c7cc8ab">thread_proc</a>;
-<a name="l00070"></a><a class="code" href="a00003.html#afc9604c7677fa92279f144561a816438">00070</a>   <span class="keywordtype">void</span> *<a class="code" href="a00003.html#afc9604c7677fa92279f144561a816438">user_context</a>;
-<a name="l00071"></a><a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">00071</a>   CTHREAD *<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>;
-<a name="l00072"></a><a class="code" href="a00003.html#acbc4c1ff508c758eb16d77dc9729fd3a">00072</a>   <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a> *<a class="code" href="a00003.html#acbc4c1ff508c758eb16d77dc9729fd3a">socket</a>; 
-<a name="l00073"></a><a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">00073</a>   <span class="keyword">struct </span>event <a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">timer_event</a>;
-<a name="l00074"></a><a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">00074</a>   DLIST   <a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">object_list</a>;
-<a name="l00075"></a>00075 } <a class="code" href="a00010.html#gadbf6a6fe0e60307b58ee163176c1839a">EVTHREAD</a>;
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077 <a class="code" href="a00003.html">EVTHREAD</a> *<a class="code" href="a00010.html#gaa23e69897b0c289d7da8f8d10435a140">EVTHREAD_init</a>(<a class="code" href="a00001.html">EVLOOP</a> *loop, <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc,  <span class="keywordtype">void</span> *user_ctx);
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079 
-<a name="l00080"></a>00080 <span class="keywordtype">int</span> <a class="code" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">EVTHREAD_start</a>( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keyword">struct</span> <a class="code" href="a00002.html">tagEVSOCKET</a> *socket );
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082 <span class="keywordtype">int</span> <a class="code" href="a00010.html#ga51f061f7921e0bbce68d3a16e043a0ff">EVTHREAD_delay</a>( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keyword">struct</span> timeval delay );
+<a name="l00046"></a>00046 <a class="code" href="a00001.html">EVLOOP</a> * <a class="code" href="a00009.html#gac2c9758c338da8cf0bd5692db7547564">EVLOOP_init</a>(STACKS *stacks );
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048 <span class="keywordtype">int</span> <a class="code" href="a00009.html#gaa25fcfb07b6227a4749e2d148bb053b3">EVLOOP_run</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop );
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="keywordtype">int</span> <a class="code" href="a00009.html#ga6886f671cea83756af4d537b31c53436">EVLOOP_break</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop );
+<a name="l00051"></a>00051 <span class="comment"></span>
+<a name="l00052"></a>00052 <span class="comment">/**</span>
+<a name="l00053"></a>00053 <span class="comment"> * @}</span>
+<a name="l00054"></a>00054 <span class="comment"> */</span>
+<a name="l00055"></a>00055  
+<a name="l00056"></a>00056 <span class="comment">// ---------------------------------------------------------------------------</span>
+<a name="l00057"></a>00057 <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a>;
+<a name="l00058"></a>00058 <span class="keyword">struct </span><a class="code" href="a00003.html">tagEVTHREAD</a>;
+<a name="l00059"></a>00059 <span class="comment"></span>
+<a name="l00060"></a>00060 <span class="comment">/**</span>
+<a name="l00061"></a>00061 <span class="comment"> * @defgroup EVTHREAD</span>
+<a name="l00062"></a>00062 <span class="comment"> * @brief user mode thread attached to an event loop</span>
+<a name="l00063"></a>00063 <span class="comment"> * The thread owns one or more EVSOCKETS, it initially activated when the thread is created, and is futher activated when an IO event occurs on a EVSOCKET object </span>
+<a name="l00064"></a>00064 <span class="comment"> * owned by this thread.</span>
+<a name="l00065"></a>00065 <span class="comment"> *</span>
+<a name="l00066"></a>00066 <span class="comment"> * @{</span>
+<a name="l00067"></a>00067 <span class="comment"> */</span>
+<a name="l00068"></a>00068 
+<a name="l00069"></a><a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">00069</a> <span class="keyword">typedef</span> void (*<a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a>) ( <span class="keyword">struct </span><a class="code" href="a00003.html">tagEVTHREAD</a> *thread, <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a> *socket, <span class="keywordtype">void</span> *user_ctx);
+<a name="l00070"></a>00070 
+<a name="l00071"></a><a class="code" href="a00003.html">00071</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00003.html">tagEVTHREAD</a> {
+<a name="l00072"></a><a class="code" href="a00003.html#abd1b6bd8c48500d617d9779fcac65cdc">00072</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00003.html#abd1b6bd8c48500d617d9779fcac65cdc">loop</a>;
+<a name="l00073"></a><a class="code" href="a00003.html#abb9ebfa4591c3e6538abe7aa8c7cc8ab">00073</a>   <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> <a class="code" href="a00003.html#abb9ebfa4591c3e6538abe7aa8c7cc8ab">thread_proc</a>;
+<a name="l00074"></a><a class="code" href="a00003.html#afc9604c7677fa92279f144561a816438">00074</a>   <span class="keywordtype">void</span> *<a class="code" href="a00003.html#afc9604c7677fa92279f144561a816438">user_context</a>;
+<a name="l00075"></a><a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">00075</a>   CTHREAD *<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>;
+<a name="l00076"></a><a class="code" href="a00003.html#acbc4c1ff508c758eb16d77dc9729fd3a">00076</a>   <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a> *<a class="code" href="a00003.html#acbc4c1ff508c758eb16d77dc9729fd3a">socket</a>; 
+<a name="l00077"></a><a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">00077</a>   <span class="keyword">struct </span>event <a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">timer_event</a>;
+<a name="l00078"></a><a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">00078</a>   DLIST   <a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">object_list</a>;
+<a name="l00079"></a>00079 } <a class="code" href="a00010.html#gadbf6a6fe0e60307b58ee163176c1839a">EVTHREAD</a>;
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081 <a class="code" href="a00003.html">EVTHREAD</a> *<a class="code" href="a00010.html#gaa23e69897b0c289d7da8f8d10435a140">EVTHREAD_init</a>(<a class="code" href="a00001.html">EVLOOP</a> *loop, <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc,  <span class="keywordtype">void</span> *user_ctx);
+<a name="l00082"></a>00082 
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084 <span class="preprocessor">#if 0</span>
-<a name="l00085"></a>00085 <span class="preprocessor"></span><span class="keywordtype">int</span> EVTHREAD_dns_lookup ( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keywordtype">int</span>  addr_family, <span class="keyword">const</span> <span class="keywordtype">char</span> *dns_name );
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087 <span class="keywordtype">int</span> EVTHREAD_dns_lookup ( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keywordtype">int</span>  addr_family, <span class="keyword">const</span> <span class="keywordtype">char</span> *dns_name )
-<a name="l00088"></a>00088 {
-<a name="l00089"></a>00089   CTHREAD *thread;
+<a name="l00084"></a>00084 <span class="keywordtype">int</span> <a class="code" href="a00010.html#gad53dee62668086eb89016bb5b7e14fa5">EVTHREAD_start</a>( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keyword">struct</span> <a class="code" href="a00002.html">tagEVSOCKET</a> *socket );
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086 <span class="keywordtype">int</span> <a class="code" href="a00010.html#ga51f061f7921e0bbce68d3a16e043a0ff">EVTHREAD_delay</a>( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keyword">struct</span> timeval delay );
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088 <span class="preprocessor">#if 0</span>
+<a name="l00089"></a>00089 <span class="preprocessor"></span><span class="keywordtype">int</span> EVTHREAD_dns_lookup ( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keywordtype">int</span>  addr_family, <span class="keyword">const</span> <span class="keywordtype">char</span> *dns_name );
 <a name="l00090"></a>00090 
-<a name="l00091"></a>00091   <span class="keywordflow">switch</span>( addr_family ) {
-<a name="l00092"></a>00092     <span class="keywordflow">case</span> AF_INET:
-<a name="l00093"></a>00093       evdns_resolve_ipv6( dns_name, 0, evdns_callback_type callback, <span class="keywordtype">void</span> *ptr);
-<a name="l00094"></a>00094       <span class="keywordflow">break</span>;
-<a name="l00095"></a>00095     <span class="keywordflow">case</span> AF_INET6:
-<a name="l00096"></a>00096       evdns_resolve_ipv6( dns_name, 0, evdns_callback_type callback, <span class="keywordtype">void</span> *ptr);
-<a name="l00097"></a>00097       <span class="keywordflow">break</span>;
-<a name="l00098"></a>00098   }
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100   CHREAD_yield();
-<a name="l00101"></a>00101 }
-<a name="l00102"></a>00102 <span class="preprocessor">#endif</span>
-<a name="l00103"></a>00103 <span class="preprocessor"></span>
-<a name="l00104"></a>00104 <span class="comment"></span>
-<a name="l00105"></a>00105 <span class="comment">/**</span>
-<a name="l00106"></a>00106 <span class="comment"> * @}</span>
-<a name="l00107"></a>00107 <span class="comment"> */</span>
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109 <span class="comment">// ---------------------------------------------------------------------------</span>
-<a name="l00110"></a>00110 
-<a name="l00111"></a><a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80">00111</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> { 
-<a name="l00112"></a><a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a2411a18bbeb8291e5d6db0f70e1d4cce">00112</a>   <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a2411a18bbeb8291e5d6db0f70e1d4cce">EVTHREAD_OBJECT_SOCKET</a>,
-<a name="l00113"></a><a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a6da017e2006cb13522323794dae0e2a4">00113</a>   <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a6da017e2006cb13522323794dae0e2a4">EVTHREAD_OBJECT_TIMER</a>,
-<a name="l00114"></a>00114 } <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80">EVTHREAD_OBJECT_TYPE</a>;
-<a name="l00115"></a>00115 <span class="comment"></span>
-<a name="l00116"></a>00116 <span class="comment">/**</span>
-<a name="l00117"></a>00117 <span class="comment"> * @brief base class of sockets and timers. API of this class is not not called directly by the user of this library.</span>
-<a name="l00118"></a>00118 <span class="comment"> */</span>
-<a name="l00119"></a><a class="code" href="a00004.html">00119</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">tagEVTHREAD_OBJECT</a> {
-<a name="l00120"></a><a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">00120</a>   DLIST_entry <a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">entry</a>;
-<a name="l00121"></a><a class="code" href="a00004.html#a3e9332299f5b805b4c57003aef3d44a4">00121</a>   <span class="keywordtype">int</span> <a class="code" href="a00004.html#a3e9332299f5b805b4c57003aef3d44a4">object_type</a>;
-<a name="l00122"></a><a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">00122</a>   <a class="code" href="a00003.html">EVTHREAD</a> *<a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">owner</a>;
-<a name="l00123"></a>00123 } <a class="code" href="a00008.html#aec66d4972a98f0832cbb0426f7a2fb2f" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a>;
-<a name="l00124"></a>00124 
-<a name="l00125"></a>00125 <span class="comment">// ---------------------------------------------------------------------------</span>
-<a name="l00126"></a>00126 <span class="comment"></span>
-<a name="l00127"></a>00127 <span class="comment">/**</span>
-<a name="l00128"></a>00128 <span class="comment"> * @defgroup EVTIMER</span>
-<a name="l00129"></a>00129 <span class="comment"> * @brief timer object atached to event loop, a user mode thread is created when the event loop dispatches a timer event.</span>
-<a name="l00130"></a>00130 <span class="comment"> * @{</span>
-<a name="l00131"></a>00131 <span class="comment"> */</span>
-<a name="l00132"></a>00132 <span class="keyword">struct </span><a class="code" href="a00005.html">tagEVTIMER</a>;
-<a name="l00133"></a>00133 
-<a name="l00134"></a><a class="code" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">00134</a> <span class="keyword">typedef</span> void (*<a class="code" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a>) (<span class="keyword">struct </span><a class="code" href="a00005.html">tagEVTIMER</a> *timer, <span class="keywordtype">void</span> *<a class="code" href="a00005.html#a060c8465c9ad91aa4690d86ef2029623">user_data</a>);
-<a name="l00135"></a>00135 
-<a name="l00136"></a><a class="code" href="a00011.html#ga2e6068a47dd625c7ac59d77a4615a181">00136</a> <span class="keyword">typedef</span>  <span class="keyword">enum</span> {
-<a name="l00137"></a><a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">00137</a>   <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>,
-<a name="l00138"></a><a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5">00138</a>   <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5">EVTIMER_STATE_SCHEDULED</a>,
-<a name="l00139"></a><a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ae0c37a0c0a051faa089c7eab772da813">00139</a>   <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ae0c37a0c0a051faa089c7eab772da813">EVTIMER_STATE_HANDLER_RUNNING</a>,
-<a name="l00140"></a>00140 } <a class="code" href="a00011.html#ga2e6068a47dd625c7ac59d77a4615a181">EVTIMERSTATE</a>;
-<a name="l00141"></a>00141 
-<a name="l00142"></a><a class="code" href="a00005.html">00142</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00005.html">tagEVTIMER</a> {
-<a name="l00143"></a><a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">00143</a>   <a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a> <a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">object_base</a>;
-<a name="l00144"></a>00144   
-<a name="l00145"></a><a class="code" href="a00005.html#a742e8b7259a65ba5a186a7298e4b191c">00145</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00005.html#a742e8b7259a65ba5a186a7298e4b191c">loop</a>;
-<a name="l00146"></a>00146  
-<a name="l00147"></a><a class="code" href="a00005.html#a4336a1004a67d947772edcf5151f84a6">00147</a>   <a class="code" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> <a class="code" href="a00005.html#a4336a1004a67d947772edcf5151f84a6">proc</a>;
-<a name="l00148"></a><a class="code" href="a00005.html#a060c8465c9ad91aa4690d86ef2029623">00148</a>   <span class="keywordtype">void</span>  *<a class="code" href="a00005.html#a060c8465c9ad91aa4690d86ef2029623">user_data</a>;
-<a name="l00149"></a><a class="code" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">00149</a>   <span class="keywordtype">int</span>    <a class="code" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">timer_id</a>;
-<a name="l00150"></a>00150 
-<a name="l00151"></a><a class="code" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">00151</a>   <span class="keyword">struct </span>event <a class="code" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">timer_event</a>;
-<a name="l00152"></a><a class="code" href="a00005.html#a539b7675429899de8dd3a18b237fc872">00152</a>   <span class="keyword">struct </span>timeval <a class="code" href="a00005.html#a539b7675429899de8dd3a18b237fc872">timer_period</a>;
-<a name="l00153"></a><a class="code" href="a00005.html#a76a08cfecc3cb0d919473a0d10aa3d22">00153</a>   <span class="keywordtype">int</span>    <a class="code" href="a00005.html#a76a08cfecc3cb0d919473a0d10aa3d22">is_recurrent</a>;
-<a name="l00154"></a>00154  
-<a name="l00155"></a><a class="code" href="a00005.html#a43ce976f10a5015e918295d8f6950046">00155</a>   <span class="keyword">struct </span>timeval <a class="code" href="a00005.html#a43ce976f10a5015e918295d8f6950046">tm</a>;
-<a name="l00156"></a><a class="code" href="a00005.html#a60f4469b2b053810d66cea5b76196f6f">00156</a>   <span class="keyword">struct </span>timeval <a class="code" href="a00005.html#a60f4469b2b053810d66cea5b76196f6f">next_due_date</a>; 
-<a name="l00157"></a>00157 
-<a name="l00158"></a><a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">00158</a>   <a class="code" href="a00011.html#ga2e6068a47dd625c7ac59d77a4615a181">EVTIMERSTATE</a> <a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">state</a>;
-<a name="l00159"></a>00159 } <a class="code" href="a00011.html#gac4efc7b102f8c909be276232fddd95e7">EVTIMER</a>;
+<a name="l00091"></a>00091 <span class="keywordtype">int</span> EVTHREAD_dns_lookup ( <a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keywordtype">int</span>  addr_family, <span class="keyword">const</span> <span class="keywordtype">char</span> *dns_name )
+<a name="l00092"></a>00092 {
+<a name="l00093"></a>00093   CTHREAD *thread;
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095   <span class="keywordflow">switch</span>( addr_family ) {
+<a name="l00096"></a>00096     <span class="keywordflow">case</span> AF_INET:
+<a name="l00097"></a>00097       evdns_resolve_ipv6( dns_name, 0, evdns_callback_type callback, <span class="keywordtype">void</span> *ptr);
+<a name="l00098"></a>00098       <span class="keywordflow">break</span>;
+<a name="l00099"></a>00099     <span class="keywordflow">case</span> AF_INET6:
+<a name="l00100"></a>00100       evdns_resolve_ipv6( dns_name, 0, evdns_callback_type callback, <span class="keywordtype">void</span> *ptr);
+<a name="l00101"></a>00101       <span class="keywordflow">break</span>;
+<a name="l00102"></a>00102   }
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104   CHREAD_yield();
+<a name="l00105"></a>00105 }
+<a name="l00106"></a>00106 <span class="preprocessor">#endif</span>
+<a name="l00107"></a>00107 <span class="preprocessor"></span>
+<a name="l00108"></a>00108 <span class="comment"></span>
+<a name="l00109"></a>00109 <span class="comment">/**</span>
+<a name="l00110"></a>00110 <span class="comment"> * @}</span>
+<a name="l00111"></a>00111 <span class="comment"> */</span>
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113 <span class="comment">// ---------------------------------------------------------------------------</span>
+<a name="l00114"></a>00114 
+<a name="l00115"></a><a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80">00115</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> { 
+<a name="l00116"></a><a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a2411a18bbeb8291e5d6db0f70e1d4cce">00116</a>   <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a2411a18bbeb8291e5d6db0f70e1d4cce">EVTHREAD_OBJECT_SOCKET</a>,
+<a name="l00117"></a><a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a6da017e2006cb13522323794dae0e2a4">00117</a>   <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80a6da017e2006cb13522323794dae0e2a4">EVTHREAD_OBJECT_TIMER</a>,
+<a name="l00118"></a>00118 } <a class="code" href="a00008.html#a3cbb545676ecd40a740416851b4fff80">EVTHREAD_OBJECT_TYPE</a>;
+<a name="l00119"></a>00119 <span class="comment"></span>
+<a name="l00120"></a>00120 <span class="comment">/**</span>
+<a name="l00121"></a>00121 <span class="comment"> * @brief base class of sockets and timers. API of this class is not not called directly by the user of this library.</span>
+<a name="l00122"></a>00122 <span class="comment"> */</span>
+<a name="l00123"></a><a class="code" href="a00004.html">00123</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">tagEVTHREAD_OBJECT</a> {
+<a name="l00124"></a><a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">00124</a>   DLIST_entry <a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">entry</a>;
+<a name="l00125"></a><a class="code" href="a00004.html#a3e9332299f5b805b4c57003aef3d44a4">00125</a>   <span class="keywordtype">int</span> <a class="code" href="a00004.html#a3e9332299f5b805b4c57003aef3d44a4">object_type</a>;
+<a name="l00126"></a><a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">00126</a>   <a class="code" href="a00003.html">EVTHREAD</a> *<a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">owner</a>;
+<a name="l00127"></a>00127 } <a class="code" href="a00008.html#aec66d4972a98f0832cbb0426f7a2fb2f" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a>;
+<a name="l00128"></a>00128 
+<a name="l00129"></a>00129 <span class="comment">// ---------------------------------------------------------------------------</span>
+<a name="l00130"></a>00130 <span class="comment"></span>
+<a name="l00131"></a>00131 <span class="comment">/**</span>
+<a name="l00132"></a>00132 <span class="comment"> * @defgroup EVTIMER</span>
+<a name="l00133"></a>00133 <span class="comment"> * @brief timer object atached to event loop, when the timer fires, the timer id is sent to the thread that has set the timer</span>
+<a name="l00134"></a>00134 <span class="comment"> * @{</span>
+<a name="l00135"></a>00135 <span class="comment"> */</span>
+<a name="l00136"></a>00136 <span class="keyword">struct </span><a class="code" href="a00005.html">tagEVTIMER</a>;
+<a name="l00137"></a>00137 
+<a name="l00138"></a><a class="code" href="a00011.html#ga2e6068a47dd625c7ac59d77a4615a181">00138</a> <span class="keyword">typedef</span>  <span class="keyword">enum</span> {
+<a name="l00139"></a><a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">00139</a>   <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>,
+<a name="l00140"></a><a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5">00140</a>   <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad61503039fa7c8bf1167420ef46f8cf5">EVTIMER_STATE_SCHEDULED</a>,
+<a name="l00141"></a>00141 } <a class="code" href="a00011.html#ga2e6068a47dd625c7ac59d77a4615a181">EVTIMERSTATE</a>;
+<a name="l00142"></a>00142 
+<a name="l00143"></a><a class="code" href="a00005.html">00143</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00005.html">tagEVTIMER</a> {
+<a name="l00144"></a><a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">00144</a>   <a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a> <a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">object_base</a>;
+<a name="l00145"></a>00145   
+<a name="l00146"></a><a class="code" href="a00005.html#a742e8b7259a65ba5a186a7298e4b191c">00146</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00005.html#a742e8b7259a65ba5a186a7298e4b191c">loop</a>;
+<a name="l00147"></a><a class="code" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">00147</a>   <span class="keywordtype">int</span>    <a class="code" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">timer_id</a>;
+<a name="l00148"></a><a class="code" href="a00005.html#a43ce976f10a5015e918295d8f6950046">00148</a>   <span class="keyword">struct </span>timeval <a class="code" href="a00005.html#a43ce976f10a5015e918295d8f6950046">tm</a>;
+<a name="l00149"></a><a class="code" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">00149</a>   <span class="keyword">struct </span>event <a class="code" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">timer_event</a>;
+<a name="l00150"></a>00150   
+<a name="l00151"></a><a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">00151</a>   <a class="code" href="a00011.html#ga2e6068a47dd625c7ac59d77a4615a181">EVTIMERSTATE</a> <a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">state</a>;
+<a name="l00152"></a>00152 } <a class="code" href="a00011.html#gac4efc7b102f8c909be276232fddd95e7">EVTIMER</a>;
+<a name="l00153"></a>00153 
+<a name="l00154"></a>00154 
+<a name="l00155"></a>00155 <a class="code" href="a00005.html">EVTIMER</a> *<a class="code" href="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b">EVTIMER_init</a>(<a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keywordtype">int</span> timer_id, <span class="keyword">struct</span> timeval tm );
+<a name="l00156"></a>00156 
+<a name="l00157"></a>00157 <span class="keywordtype">int</span>  <a class="code" href="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7">EVTIMER_start</a>( <a class="code" href="a00005.html">EVTIMER</a> *ret);
+<a name="l00158"></a>00158 
+<a name="l00159"></a>00159 <span class="keywordtype">int</span>  <a class="code" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">EVTIMER_cancel</a>( <a class="code" href="a00005.html">EVTIMER</a> *timer );
 <a name="l00160"></a>00160 
-<a name="l00161"></a>00161 <a class="code" href="a00005.html">EVTIMER</a> *<a class="code" href="a00011.html#gaa7702b36f1620f2526f4e57e7f4f90f4">EVTIMER_init_one_shot</a>(<a class="code" href="a00003.html">EVTHREAD</a> *loop, <span class="keywordtype">int</span> timer_id, <span class="keyword">struct</span> timeval tm, <a class="code" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> proc, <span class="keywordtype">void</span> *user_data);
-<a name="l00162"></a>00162 
-<a name="l00163"></a>00163 <a class="code" href="a00005.html">EVTIMER</a> *<a class="code" href="a00011.html#gaf4c9953fa5cdd6b815c2f5e06aea2af6">EVTIMER_init_recurrent</a>(<a class="code" href="a00003.html">EVTHREAD</a> *loop, <span class="keywordtype">int</span> timer_id, <span class="keyword">struct</span> timeval tm, <a class="code" href="a00011.html#gade7ae470b6904a89f3467e8535eb197f">EVTIMER_PROC</a> proc, <span class="keywordtype">void</span> *user_data);
-<a name="l00164"></a>00164 
-<a name="l00165"></a>00165 <span class="keywordtype">int</span> <a class="code" href="a00011.html#ga9f5c178bcc529edd33a09632930bc7f7">EVTIMER_start</a>( <a class="code" href="a00005.html">EVTIMER</a> *ret);
+<a name="l00161"></a>00161 <span class="keywordtype">int</span>  <a class="code" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">EVTIMER_free</a>( <a class="code" href="a00005.html">EVTIMER</a> *timer );
+<a name="l00162"></a>00162 <span class="comment"></span>
+<a name="l00163"></a>00163 <span class="comment">/**</span>
+<a name="l00164"></a>00164 <span class="comment"> * @}</span>
+<a name="l00165"></a>00165 <span class="comment"> */</span>
 <a name="l00166"></a>00166 
-<a name="l00167"></a>00167 <span class="keywordtype">int</span>  <a class="code" href="a00011.html#ga9108a7e52c0f3094b41fd0d681b3ef07">EVTIMER_cancel</a>( <a class="code" href="a00005.html">EVTIMER</a> *timer );
-<a name="l00168"></a>00168 
-<a name="l00169"></a>00169 <span class="keywordtype">int</span>  <a class="code" href="a00011.html#ga69cdac6c1ab58a63245fb14dfb43cc70">EVTIMER_free</a>( <a class="code" href="a00005.html">EVTIMER</a> *timer );
-<a name="l00170"></a>00170 <span class="comment"></span>
-<a name="l00171"></a>00171 <span class="comment">/**</span>
-<a name="l00172"></a>00172 <span class="comment"> * @}</span>
-<a name="l00173"></a>00173 <span class="comment"> */</span>
-<a name="l00174"></a>00174 
-<a name="l00175"></a>00175 <span class="comment">// ---------------------------------------------------------------------------</span><span class="comment"></span>
-<a name="l00176"></a>00176 <span class="comment">/**</span>
-<a name="l00177"></a>00177 <span class="comment"> * @defgroup EVSOCKET</span>
-<a name="l00178"></a>00178 <span class="comment"> * @brief a socket attached to user mode thread.</span>
-<a name="l00179"></a>00179 <span class="comment"> *</span>
-<a name="l00180"></a>00180 <span class="comment"> *  - a thread can either read from or write to a socket, not both at the same time.</span>
-<a name="l00181"></a>00181 <span class="comment"> *  - a thread can read or write from one socket at a time.</span>
-<a name="l00182"></a>00182 <span class="comment"> *</span>
-<a name="l00183"></a>00183 <span class="comment"> * @{</span>
-<a name="l00184"></a>00184 <span class="comment"> */</span>
-<a name="l00185"></a>00185 
-<a name="l00186"></a><a class="code" href="a00012.html#ga2c41f6288c8bc944dd898419b7fbbb0c">00186</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
-<a name="l00187"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca58af0fd1980fbcf50615f79a5f5e1bb5">00187</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca58af0fd1980fbcf50615f79a5f5e1bb5">EVSOCKET_STATE_INIT</a>,
-<a name="l00188"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca6fb24f7071ea4cae87a9fa24583dbff0">00188</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca6fb24f7071ea4cae87a9fa24583dbff0">EVSOCKET_STATE_CONNECTING</a>,
-<a name="l00189"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">00189</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">EVSOCKET_STATE_CONNECTED</a>,
-<a name="l00190"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca11d241b716a59cdbc6c07458fbefede5">00190</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca11d241b716a59cdbc6c07458fbefede5">EVSOCKET_STATE_READING</a>,
-<a name="l00191"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca488819d6df0a5d336bec468b8e0ab8cf">00191</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca488819d6df0a5d336bec468b8e0ab8cf">EVSOCKET_STATE_WRITING</a>,
-<a name="l00192"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca409d2782e34636815d4b096daa659f07">00192</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca409d2782e34636815d4b096daa659f07">EVSOCKET_STATE_CLOSED</a>,
-<a name="l00193"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">00193</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>,
-<a name="l00194"></a>00194 } <a class="code" href="a00012.html#ga2c41f6288c8bc944dd898419b7fbbb0c">EVSOCKET_STATE</a>;
-<a name="l00195"></a>00195 
-<a name="l00196"></a>00196 
-<a name="l00197"></a><a class="code" href="a00002.html">00197</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a> {
-<a name="l00198"></a><a class="code" href="a00002.html#aa2f8699d28dc94e1acadc99a1d0aab2a">00198</a>   <a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a> <a class="code" href="a00002.html#aa2f8699d28dc94e1acadc99a1d0aab2a">object_base</a>;
-<a name="l00199"></a>00199   
-<a name="l00200"></a><a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">00200</a>   <span class="keywordtype">int</span> <a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a>;
-<a name="l00201"></a><a class="code" href="a00002.html#a424a834569ee2593b2d04b6e6ae9799b">00201</a>   <span class="keyword">struct </span>event <a class="code" href="a00002.html#a424a834569ee2593b2d04b6e6ae9799b">read_event</a>;
-<a name="l00202"></a><a class="code" href="a00002.html#a25b5c3a94163a89a7bc0dff0dbdeb277">00202</a>   <span class="keyword">struct </span>event <a class="code" href="a00002.html#a25b5c3a94163a89a7bc0dff0dbdeb277">write_event</a>;
-<a name="l00203"></a>00203   
-<a name="l00204"></a><a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">00204</a>   <a class="code" href="a00012.html#ga2c41f6288c8bc944dd898419b7fbbb0c">EVSOCKET_STATE</a> <a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a>;
-<a name="l00205"></a><a class="code" href="a00002.html#a25d6aeb264edc059926e412bbf0d8900">00205</a>   <a class="code" href="a00005.html">EVTIMER</a>  *<a class="code" href="a00002.html#a25d6aeb264edc059926e412bbf0d8900">timer_idle_timeout</a>; <span class="comment">// idle timeout.</span>
-<a name="l00206"></a><a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">00206</a>   <a class="code" href="a00005.html">EVTIMER</a>  *<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>; <span class="comment">// timeout of current operation (read or write).</span>
-<a name="l00207"></a>00207   
-<a name="l00208"></a><a class="code" href="a00002.html#ab7a9905daf7aa5dc109ac87e5dbb33d4">00208</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00002.html#ab7a9905daf7aa5dc109ac87e5dbb33d4">loop</a>;
-<a name="l00209"></a><a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">00209</a>   <a class="code" href="a00003.html">EVTHREAD</a> *<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>;
-<a name="l00210"></a>00210 } 
-<a name="l00211"></a>00211   <a class="code" href="a00012.html#gaa657a3b712a0f84e9b7aeff7059d96a0">EVSOCKET</a>;
-<a name="l00212"></a>00212 
-<a name="l00213"></a>00213 <a class="code" href="a00002.html">EVSOCKET</a> *<a class="code" href="a00012.html#ga2fd5da1f97d6ab55cc7c977d5759558e">EVSOCKET_init</a>(<a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keywordtype">int</span> fd, <span class="keywordtype">int</span> is_connected);
-<a name="l00214"></a>00214 
-<a name="l00215"></a>00215 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga152040d20eb847259e1a5b129d08280d">EVSOCKET_close</a>(<a class="code" href="a00002.html">EVSOCKET</a> *socket);
-<a name="l00216"></a>00216 
-<a name="l00217"></a>00217 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga9611ce37f2fb0b914d624fcfeaf14045">EVSOCKET_connect</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keyword">struct</span> sockaddr *address, socklen_t socklen, <span class="keyword">struct</span> timeval timeout);
-<a name="l00218"></a>00218 
-<a name="l00219"></a>00219 <span class="keywordtype">void</span> <a class="code" href="a00012.html#ga9f1eadc43b53273402e301cbecd5af2f">EVSOCKET_set_idle_timeout</a>(<a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keyword">struct</span> timeval timeout );
-<a name="l00220"></a>00220 
-<a name="l00221"></a>00221 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga2400bf324d24d3d0b011f32c7eceecda">EVSOCKET_recv</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> flags, <span class="keyword">struct</span> timeval timeout );
-<a name="l00222"></a>00222 
-<a name="l00223"></a>00223 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">EVSOCKET_recv_all</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> flags, <span class="keyword">struct</span> timeval timeout );
-<a name="l00224"></a>00224 
-<a name="l00225"></a>00225 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d">EVSOCKET_send</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> flags, <span class="keyword">struct</span> timeval timeout );
-<a name="l00226"></a>00226 <span class="comment"></span>
-<a name="l00227"></a>00227 <span class="comment">/**</span>
-<a name="l00228"></a>00228 <span class="comment"> * @}</span>
-<a name="l00229"></a>00229 <span class="comment"> */</span>
-<a name="l00230"></a>00230 
-<a name="l00231"></a>00231 <span class="comment">// ---------------------------------------------------------------------------</span>
-<a name="l00232"></a>00232 <span class="comment"></span>
-<a name="l00233"></a>00233 <span class="comment">/**</span>
-<a name="l00234"></a>00234 <span class="comment"> * @defgroup TCPACCEPTOR</span>
-<a name="l00235"></a>00235 <span class="comment"> * @brief listener for tcp connections, a usermode thread is created for each new connection.</span>
-<a name="l00236"></a>00236 <span class="comment"> *</span>
-<a name="l00237"></a>00237 <span class="comment"> * @{</span>
-<a name="l00238"></a>00238 <span class="comment"> */</span>
-<a name="l00239"></a>00239 
-<a name="l00240"></a><a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">00240</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a>) (<span class="keywordtype">int</span> fd, <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, <span class="keywordtype">void</span> **ctx );
-<a name="l00241"></a>00241 
+<a name="l00167"></a>00167 <span class="comment">// ---------------------------------------------------------------------------</span><span class="comment"></span>
+<a name="l00168"></a>00168 <span class="comment">/**</span>
+<a name="l00169"></a>00169 <span class="comment"> * @defgroup EVSOCKET</span>
+<a name="l00170"></a>00170 <span class="comment"> * @brief a socket attached to user mode thread.</span>
+<a name="l00171"></a>00171 <span class="comment"> *</span>
+<a name="l00172"></a>00172 <span class="comment"> *  - a thread can either read from or write to a socket, not both at the same time.</span>
+<a name="l00173"></a>00173 <span class="comment"> *  - a thread can read or write from one socket at a time.</span>
+<a name="l00174"></a>00174 <span class="comment"> *</span>
+<a name="l00175"></a>00175 <span class="comment"> * @{</span>
+<a name="l00176"></a>00176 <span class="comment"> */</span>
+<a name="l00177"></a>00177 
+<a name="l00178"></a><a class="code" href="a00012.html#ga2c41f6288c8bc944dd898419b7fbbb0c">00178</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00179"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca58af0fd1980fbcf50615f79a5f5e1bb5">00179</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca58af0fd1980fbcf50615f79a5f5e1bb5">EVSOCKET_STATE_INIT</a>,
+<a name="l00180"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca6fb24f7071ea4cae87a9fa24583dbff0">00180</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca6fb24f7071ea4cae87a9fa24583dbff0">EVSOCKET_STATE_CONNECTING</a>,
+<a name="l00181"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">00181</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0caf309c7d0adb12a6b6c2db8568b2360a1">EVSOCKET_STATE_CONNECTED</a>,
+<a name="l00182"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca11d241b716a59cdbc6c07458fbefede5">00182</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca11d241b716a59cdbc6c07458fbefede5">EVSOCKET_STATE_READING</a>,
+<a name="l00183"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca488819d6df0a5d336bec468b8e0ab8cf">00183</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca488819d6df0a5d336bec468b8e0ab8cf">EVSOCKET_STATE_WRITING</a>,
+<a name="l00184"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca409d2782e34636815d4b096daa659f07">00184</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca409d2782e34636815d4b096daa659f07">EVSOCKET_STATE_CLOSED</a>,
+<a name="l00185"></a><a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">00185</a>   <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>,
+<a name="l00186"></a>00186 } <a class="code" href="a00012.html#ga2c41f6288c8bc944dd898419b7fbbb0c">EVSOCKET_STATE</a>;
+<a name="l00187"></a>00187 
+<a name="l00188"></a>00188 
+<a name="l00189"></a><a class="code" href="a00002.html">00189</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00002.html">tagEVSOCKET</a> {
+<a name="l00190"></a><a class="code" href="a00002.html#aa2f8699d28dc94e1acadc99a1d0aab2a">00190</a>   <a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a> <a class="code" href="a00002.html#aa2f8699d28dc94e1acadc99a1d0aab2a">object_base</a>;
+<a name="l00191"></a>00191   
+<a name="l00192"></a><a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">00192</a>   <span class="keywordtype">int</span> <a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a>;
+<a name="l00193"></a><a class="code" href="a00002.html#a424a834569ee2593b2d04b6e6ae9799b">00193</a>   <span class="keyword">struct </span>event <a class="code" href="a00002.html#a424a834569ee2593b2d04b6e6ae9799b">read_event</a>;
+<a name="l00194"></a><a class="code" href="a00002.html#a25b5c3a94163a89a7bc0dff0dbdeb277">00194</a>   <span class="keyword">struct </span>event <a class="code" href="a00002.html#a25b5c3a94163a89a7bc0dff0dbdeb277">write_event</a>;
+<a name="l00195"></a>00195   
+<a name="l00196"></a><a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">00196</a>   <a class="code" href="a00012.html#ga2c41f6288c8bc944dd898419b7fbbb0c">EVSOCKET_STATE</a> <a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a>;
+<a name="l00197"></a><a class="code" href="a00002.html#a25d6aeb264edc059926e412bbf0d8900">00197</a>   <a class="code" href="a00005.html">EVTIMER</a>  *<a class="code" href="a00002.html#a25d6aeb264edc059926e412bbf0d8900">timer_idle_timeout</a>; <span class="comment">// idle timeout.</span>
+<a name="l00198"></a><a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">00198</a>   <a class="code" href="a00005.html">EVTIMER</a>  *<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a>; <span class="comment">// timeout of current operation (read or write).</span>
+<a name="l00199"></a><a class="code" href="a00002.html#abf2731a67912b2d4881ba9c5651e5562">00199</a>   <span class="keyword">struct </span>timeval <a class="code" href="a00002.html#abf2731a67912b2d4881ba9c5651e5562">idle_timeout</a>;
+<a name="l00200"></a>00200    
+<a name="l00201"></a><a class="code" href="a00002.html#ab7a9905daf7aa5dc109ac87e5dbb33d4">00201</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00002.html#ab7a9905daf7aa5dc109ac87e5dbb33d4">loop</a>;
+<a name="l00202"></a><a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">00202</a>   <a class="code" href="a00003.html">EVTHREAD</a> *<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>;
+<a name="l00203"></a>00203 } 
+<a name="l00204"></a>00204   <a class="code" href="a00012.html#gaa657a3b712a0f84e9b7aeff7059d96a0">EVSOCKET</a>;
+<a name="l00205"></a>00205 
+<a name="l00206"></a>00206 <a class="code" href="a00002.html">EVSOCKET</a> *<a class="code" href="a00012.html#ga2fd5da1f97d6ab55cc7c977d5759558e">EVSOCKET_init</a>(<a class="code" href="a00003.html">EVTHREAD</a> *thread, <span class="keywordtype">int</span> fd, <span class="keywordtype">int</span> is_connected);
+<a name="l00207"></a>00207 
+<a name="l00208"></a>00208 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga152040d20eb847259e1a5b129d08280d">EVSOCKET_close</a>(<a class="code" href="a00002.html">EVSOCKET</a> *socket);
+<a name="l00209"></a>00209 
+<a name="l00210"></a>00210 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga9611ce37f2fb0b914d624fcfeaf14045">EVSOCKET_connect</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keyword">struct</span> sockaddr *address, socklen_t socklen, <span class="keyword">struct</span> timeval timeout);
+<a name="l00211"></a>00211 
+<a name="l00212"></a>00212 <span class="keywordtype">void</span> <a class="code" href="a00012.html#ga9f1eadc43b53273402e301cbecd5af2f">EVSOCKET_set_idle_timeout</a>(<a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keyword">struct</span> timeval timeout );
+<a name="l00213"></a>00213 
+<a name="l00214"></a>00214 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga2400bf324d24d3d0b011f32c7eceecda">EVSOCKET_recv</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> flags, <span class="keyword">struct</span> timeval timeout );
+<a name="l00215"></a>00215 
+<a name="l00216"></a>00216 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">EVSOCKET_recv_all</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> flags, <span class="keyword">struct</span> timeval timeout );
+<a name="l00217"></a>00217 
+<a name="l00218"></a>00218 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d">EVSOCKET_send</a>( <a class="code" href="a00002.html">EVSOCKET</a> *socket, <span class="keywordtype">void</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> flags, <span class="keyword">struct</span> timeval timeout );
+<a name="l00219"></a>00219 <span class="comment"></span>
+<a name="l00220"></a>00220 <span class="comment">/**</span>
+<a name="l00221"></a>00221 <span class="comment"> * @}</span>
+<a name="l00222"></a>00222 <span class="comment"> */</span>
+<a name="l00223"></a>00223 
+<a name="l00224"></a>00224 <span class="comment">// ---------------------------------------------------------------------------</span>
+<a name="l00225"></a>00225 <span class="comment"></span>
+<a name="l00226"></a>00226 <span class="comment">/**</span>
+<a name="l00227"></a>00227 <span class="comment"> * @defgroup TCPACCEPTOR</span>
+<a name="l00228"></a>00228 <span class="comment"> * @brief listener for tcp connections, a usermode thread is created for each new connection.</span>
+<a name="l00229"></a>00229 <span class="comment"> *</span>
+<a name="l00230"></a>00230 <span class="comment"> * @{</span>
+<a name="l00231"></a>00231 <span class="comment"> */</span>
+<a name="l00232"></a>00232 
+<a name="l00233"></a><a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">00233</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a>) (<span class="keywordtype">int</span> fd, <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, <span class="keywordtype">void</span> **ctx );
+<a name="l00234"></a>00234 
+<a name="l00235"></a>00235 
+<a name="l00236"></a><a class="code" href="a00006.html">00236</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00006.html">tagTCPACCEPTOR</a> {
+<a name="l00237"></a><a class="code" href="a00006.html#aa4067896ed166c8c989986d53c22d278">00237</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00006.html#aa4067896ed166c8c989986d53c22d278">loop</a>; 
+<a name="l00238"></a><a class="code" href="a00006.html#a4606db4461a29987675ef98ff69f96d9">00238</a>   <span class="keywordtype">int</span> <a class="code" href="a00006.html#a4606db4461a29987675ef98ff69f96d9">fd</a>;
+<a name="l00239"></a><a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">00239</a>   <span class="keyword">struct </span>event <a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">read_event</a>;
+<a name="l00240"></a><a class="code" href="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45">00240</a>   <span class="keywordtype">int</span> <a class="code" href="a00006.html#a1a5a368dfb77cf7480f8ea493107d823">read_buffer_size</a>,<a class="code" href="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45">send_buffer_size</a>;
+<a name="l00241"></a><a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">00241</a>   <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> <a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a>;
 <a name="l00242"></a>00242 
-<a name="l00243"></a><a class="code" href="a00006.html">00243</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00006.html">tagTCPACCEPTOR</a> {
-<a name="l00244"></a><a class="code" href="a00006.html#aa4067896ed166c8c989986d53c22d278">00244</a>   <a class="code" href="a00001.html">EVLOOP</a> *<a class="code" href="a00006.html#aa4067896ed166c8c989986d53c22d278">loop</a>; 
-<a name="l00245"></a><a class="code" href="a00006.html#a4606db4461a29987675ef98ff69f96d9">00245</a>   <span class="keywordtype">int</span> <a class="code" href="a00006.html#a4606db4461a29987675ef98ff69f96d9">fd</a>;
-<a name="l00246"></a><a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">00246</a>   <span class="keyword">struct </span>event <a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">read_event</a>;
-<a name="l00247"></a><a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">00247</a>   <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> <a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a>;
+<a name="l00243"></a>00243 } <a class="code" href="a00013.html#ga04e932952b59a41f70cbd49ce5680032">EVTCPACCEPTOR</a>;
+<a name="l00244"></a>00244 
+<a name="l00245"></a>00245 <a class="code" href="a00006.html">EVTCPACCEPTOR</a> * <a class="code" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">EVTCPACCEPTOR_init_ex</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop,  SOCKADDR *addr, <span class="keywordtype">int</span> listener_backlog,  <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, <span class="keywordtype">int</span> read_buffer_size, <span class="keywordtype">int</span> write_buffer_size );
+<a name="l00246"></a>00246 
+<a name="l00247"></a>00247 <a class="code" href="a00006.html">EVTCPACCEPTOR</a> * <a class="code" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">EVTCPACCEPTOR_init</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop, <span class="keywordtype">int</span> listener_fd, <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, <span class="keywordtype">int</span> read_buffer_size, <span class="keywordtype">int</span> write_buffer_size );
 <a name="l00248"></a>00248 
-<a name="l00249"></a>00249 } <a class="code" href="a00013.html#ga04e932952b59a41f70cbd49ce5680032">EVTCPACCEPTOR</a>;
+<a name="l00249"></a>00249 <span class="keywordtype">void</span> <a class="code" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">EVTCPACCEPTOR_close</a>(<a class="code" href="a00006.html">EVTCPACCEPTOR</a> *);
 <a name="l00250"></a>00250 
-<a name="l00251"></a>00251 <a class="code" href="a00006.html">EVTCPACCEPTOR</a> * <a class="code" href="a00013.html#ga529f6caf19c2f1a310eedffd93cfc9c4">EVTCPACCEPTOR_init</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop, <span class="keywordtype">int</span> fd, <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory );
-<a name="l00252"></a>00252 <span class="comment"></span>
-<a name="l00253"></a>00253 <span class="comment">/**</span>
-<a name="l00254"></a>00254 <span class="comment"> * @}</span>
-<a name="l00255"></a>00255 <span class="comment"> */</span>
-<a name="l00256"></a>00256 
-<a name="l00257"></a>00257 <span class="preprocessor">#endif</span>
-<a name="l00258"></a>00258 <span class="preprocessor"></span>
-<a name="l00259"></a>00259 
+<a name="l00251"></a>00251 <span class="comment"></span>
+<a name="l00252"></a>00252 <span class="comment">/**</span>
+<a name="l00253"></a>00253 <span class="comment"> * @}</span>
+<a name="l00254"></a>00254 <span class="comment"> */</span>
+<a name="l00255"></a>00255 
+<a name="l00256"></a>00256 <span class="preprocessor">#endif</span>
+<a name="l00257"></a>00257 <span class="preprocessor"></span>
+<a name="l00258"></a>00258 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:10 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:34 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -168,7 +168,7 @@ Functions</h2></td></tr>
 <p>deallocates a thread</p>
 <p>Precondition: the thread must be in CTHREAD_STATE_EXIT state </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00259">259</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00261">261</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
     <span class="keywordflow">return</span> -1;
@@ -196,7 +196,7 @@ Functions</h2></td></tr>
 <p>get thread id </p>
 <p>Precondition: the thread is in any state other than CTHREAD_STATE_INIT </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00268">268</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00270">270</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00001.html">CTHREAD</a> *thread;
  
@@ -244,7 +244,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00046">46</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00045">45</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">void</span> *stack;
   <a class="code" href="a00001.html">CTHREAD</a> *ret;
@@ -338,7 +338,7 @@ err:
 
 <p>waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes. </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00168">168</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00170">170</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{  
    <span class="keywordflow">if</span>( thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a> ||
        thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>) {
@@ -368,7 +368,7 @@ err:
 
 <p>library initialisation </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00023">23</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00022">22</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
 <span class="preprocessor">#ifdef NO_TLS</span>
 <span class="preprocessor"></span>  pthread_key_create( &amp;tls_key, 0);
@@ -421,7 +421,7 @@ err:
 <p>Retrieving parameters from the thread: We can access values returned by the thread, once CTHREAD_resume returns. The values passed by the thread are stored in rvalue parameter.</p>
 <p>Precondition: the thread is in CTHREAD_STATE_SUSPENDED state Postcondition: the thread is in CTHREAD_STATE_RUNNING state </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00180">180</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00182">182</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>) {
     <span class="keywordflow">return</span> -1;
@@ -488,7 +488,7 @@ err:
 
 <p>a running thread sets it return values </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00279">279</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00281">281</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00001.html">CTHREAD</a> *thread;
   va_list vlist;
@@ -547,7 +547,7 @@ err:
 <p>Values passed from the caller to the thread -</p>
 <p>Precondition: the thread is in either CTHREAD_STATE_INIT or CTHREAD_STATE_EXIT state. Postcondition: the thread is in CTHREAD_STATE_RUNNING state. </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00134">134</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00133">133</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>) {
     <span class="keywordflow">return</span> -1;
@@ -566,7 +566,7 @@ err:
     <span class="keywordflow">if</span> (rvalue) {
      *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
     }
-     <span class="keywordflow">return</span> 0;
+    <span class="keywordflow">return</span> 0;
   }
 
   <span class="keywordflow">if</span> (format) {
@@ -600,7 +600,7 @@ err:
 
 <p>get thread state </p>
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00141">141</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00145">145</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a>;
 }
@@ -641,7 +641,7 @@ err:
 <p>a running thread temporarily suspends execution </p>
 <p>Precondition: the thread is in CTHREAD_STATE_RUNNING state Postcondition: the thread is in CTHREAD_STATE_SUSPENDED state </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00219">219</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00221">221</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00001.html">CTHREAD</a> *thread;
   
@@ -683,7 +683,7 @@ err:
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:33 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

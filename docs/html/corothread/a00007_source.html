@@ -129,71 +129,75 @@
 <a name="l00088"></a>00088 <span class="comment"> *</span>
 <a name="l00089"></a>00089 <span class="comment"> */</span>
 <a name="l00090"></a>00090 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga335f6adec427c36c257c4436586f9e41" title="start a new thread - the thread procedure is invoked.">CTHREAD_start</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format , ... );
-<a name="l00091"></a>00091 <span class="comment"></span>
-<a name="l00092"></a>00092 <span class="comment">/**</span>
-<a name="l00093"></a>00093 <span class="comment"> * @brief resume a suspended thread</span>
-<a name="l00094"></a>00094 <span class="comment"> *</span>
-<a name="l00095"></a>00095 <span class="comment"> * Resumes a suspended thread, the function will return when the resumed thread calls CTHREAD_yield or when it exits.</span>
-<a name="l00096"></a>00096 <span class="comment"> *</span>
-<a name="l00097"></a>00097 <span class="comment"> * Passing parameters to the thread; a variable length set of arguments can be sent to the thread, and the thread will be able to read them.</span>
-<a name="l00098"></a>00098 <span class="comment"> * Parameter format is the format specifier, subsequent variable length argument values are then sent to the thread.</span>
-<a name="l00099"></a>00099 <span class="comment"> *  </span>
-<a name="l00100"></a>00100 <span class="comment"> * Retrieving parameters from the thread:</span>
-<a name="l00101"></a>00101 <span class="comment"> * We can access values returned by the thread, once CTHREAD_resume returns. The values passed by the thread are stored in rvalue parameter.</span>
-<a name="l00102"></a>00102 <span class="comment"> *</span>
-<a name="l00103"></a>00103 <span class="comment"> * Precondition: the thread is in CTHREAD_STATE_SUSPENDED state</span>
-<a name="l00104"></a>00104 <span class="comment"> * Postcondition: the thread is in CTHREAD_STATE_RUNNING state</span>
-<a name="l00105"></a>00105 <span class="comment">  */</span>
-<a name="l00106"></a>00106 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gab8e125df749a73083ca34ad4ed608f26" title="resume a suspended thread">CTHREAD_resume</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
-<a name="l00107"></a>00107 <span class="comment"></span>
-<a name="l00108"></a>00108 <span class="comment">/**</span>
-<a name="l00109"></a>00109 <span class="comment"> * @brief a running thread temporarily suspends execution</span>
-<a name="l00110"></a>00110 <span class="comment"> *</span>
-<a name="l00111"></a>00111 <span class="comment"> * Precondition: the thread is in CTHREAD_STATE_RUNNING state</span>
-<a name="l00112"></a>00112 <span class="comment"> * Postcondition: the thread is in CTHREAD_STATE_SUSPENDED state</span>
-<a name="l00113"></a>00113 <span class="comment"> </span>
-<a name="l00114"></a>00114 <span class="comment"> </span>
-<a name="l00115"></a>00115 <span class="comment"> */</span>
-<a name="l00116"></a>00116 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711" title="a running thread temporarily suspends execution">CTHREAD_yield</a>(<a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
-<a name="l00117"></a>00117 <span class="comment"></span>
-<a name="l00118"></a>00118 <span class="comment">/**</span>
-<a name="l00119"></a>00119 <span class="comment"> * @brief waits till the thread has finished </span>
-<a name="l00120"></a>00120 <span class="comment"> * Calls CTHREAD_resume repeatedly unntil the thread finishes.</span>
-<a name="l00121"></a>00121 <span class="comment"> */</span>
-<a name="l00122"></a>00122 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511" title="waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes...">CTHREAD_join</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue );
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124 <span class="comment"></span>
-<a name="l00125"></a>00125 <span class="comment">/**</span>
-<a name="l00126"></a>00126 <span class="comment"> * @brief a running thread sets it return values</span>
-<a name="l00127"></a>00127 <span class="comment"> *</span>
-<a name="l00128"></a>00128 <span class="comment"> */</span>
-<a name="l00129"></a>00129 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955" title="a running thread sets it return values">CTHREAD_set_return_value</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
-<a name="l00130"></a>00130 <span class="comment"></span>
-<a name="l00131"></a>00131 <span class="comment">/**</span>
-<a name="l00132"></a>00132 <span class="comment"> * @brief get thread id</span>
-<a name="l00133"></a>00133 <span class="comment"> *</span>
-<a name="l00134"></a>00134 <span class="comment"> * Precondition: the thread is in any state other than CTHREAD_STATE_INIT</span>
-<a name="l00135"></a>00135 <span class="comment"> */</span>
-<a name="l00136"></a>00136 uint32_t <a class="code" href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7" title="get thread id">CTHREAD_get_tid</a>();
-<a name="l00137"></a>00137 <span class="comment"></span>
-<a name="l00138"></a>00138 <span class="comment">/**</span>
-<a name="l00139"></a>00139 <span class="comment"> * @brief get thread state</span>
-<a name="l00140"></a>00140 <span class="comment"> */</span>
-<a name="l00141"></a><a class="code" href="a00012.html#gac84f3f78f212fb85214833923d755764">00141</a> M_INLINE <a class="code" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> <a class="code" href="a00012.html#gac84f3f78f212fb85214833923d755764" title="get thread state">CTHREAD_state</a>(<a class="code" href="a00001.html">CTHREAD</a> *thread) 
-<a name="l00142"></a>00142 {
-<a name="l00143"></a>00143   <span class="keywordflow">return</span> thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a>;
-<a name="l00144"></a>00144 }
-<a name="l00145"></a>00145 <span class="comment"></span>
-<a name="l00146"></a>00146 <span class="comment">/**</span>
-<a name="l00147"></a>00147 <span class="comment"> * @}</span>
-<a name="l00148"></a>00148 <span class="comment"> */</span>
-<a name="l00149"></a>00149 
-<a name="l00150"></a>00150 <span class="preprocessor">#endif</span>
-<a name="l00151"></a>00151 <span class="preprocessor"></span>
-<a name="l00152"></a>00152 
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092 <span class="comment"></span>
+<a name="l00093"></a>00093 <span class="comment">/**</span>
+<a name="l00094"></a>00094 <span class="comment"> * @brief resume a suspended thread</span>
+<a name="l00095"></a>00095 <span class="comment"> *</span>
+<a name="l00096"></a>00096 <span class="comment"> * Resumes a suspended thread, the function will return when the resumed thread calls CTHREAD_yield or when it exits.</span>
+<a name="l00097"></a>00097 <span class="comment"> *</span>
+<a name="l00098"></a>00098 <span class="comment"> * Passing parameters to the thread; a variable length set of arguments can be sent to the thread, and the thread will be able to read them.</span>
+<a name="l00099"></a>00099 <span class="comment"> * Parameter format is the format specifier, subsequent variable length argument values are then sent to the thread.</span>
+<a name="l00100"></a>00100 <span class="comment"> *  </span>
+<a name="l00101"></a>00101 <span class="comment"> * Retrieving parameters from the thread:</span>
+<a name="l00102"></a>00102 <span class="comment"> * We can access values returned by the thread, once CTHREAD_resume returns. The values passed by the thread are stored in rvalue parameter.</span>
+<a name="l00103"></a>00103 <span class="comment"> *</span>
+<a name="l00104"></a>00104 <span class="comment"> * Precondition: the thread is in CTHREAD_STATE_SUSPENDED state</span>
+<a name="l00105"></a>00105 <span class="comment"> * Postcondition: the thread is in CTHREAD_STATE_RUNNING state</span>
+<a name="l00106"></a>00106 <span class="comment">  */</span>
+<a name="l00107"></a>00107 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gab8e125df749a73083ca34ad4ed608f26" title="resume a suspended thread">CTHREAD_resume</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111 <span class="comment"></span>
+<a name="l00112"></a>00112 <span class="comment">/**</span>
+<a name="l00113"></a>00113 <span class="comment"> * @brief a running thread temporarily suspends execution</span>
+<a name="l00114"></a>00114 <span class="comment"> *</span>
+<a name="l00115"></a>00115 <span class="comment"> * Precondition: the thread is in CTHREAD_STATE_RUNNING state</span>
+<a name="l00116"></a>00116 <span class="comment"> * Postcondition: the thread is in CTHREAD_STATE_SUSPENDED state</span>
+<a name="l00117"></a>00117 <span class="comment"> </span>
+<a name="l00118"></a>00118 <span class="comment"> </span>
+<a name="l00119"></a>00119 <span class="comment"> */</span>
+<a name="l00120"></a>00120 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gabdd07ed1543073aa8ab08cd047b8d711" title="a running thread temporarily suspends execution">CTHREAD_yield</a>(<a class="code" href="a00005.html">VALUES</a> **rvalue, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
+<a name="l00121"></a>00121 <span class="comment"></span>
+<a name="l00122"></a>00122 <span class="comment">/**</span>
+<a name="l00123"></a>00123 <span class="comment"> * @brief waits till the thread has finished </span>
+<a name="l00124"></a>00124 <span class="comment"> * Calls CTHREAD_resume repeatedly unntil the thread finishes.</span>
+<a name="l00125"></a>00125 <span class="comment"> */</span>
+<a name="l00126"></a>00126 <span class="keywordtype">int</span> <a class="code" href="a00012.html#ga31f64d21aa28df2b4ff03a1553f7b511" title="waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes...">CTHREAD_join</a>( <a class="code" href="a00001.html">CTHREAD</a> *thread, <a class="code" href="a00005.html">VALUES</a> **rvalue );
+<a name="l00127"></a>00127 
+<a name="l00128"></a>00128 <span class="comment"></span>
+<a name="l00129"></a>00129 <span class="comment">/**</span>
+<a name="l00130"></a>00130 <span class="comment"> * @brief a running thread sets it return values</span>
+<a name="l00131"></a>00131 <span class="comment"> *</span>
+<a name="l00132"></a>00132 <span class="comment"> */</span>
+<a name="l00133"></a>00133 <span class="keywordtype">int</span> <a class="code" href="a00012.html#gaec45e79d5cff442401d3b075fb7ca955" title="a running thread sets it return values">CTHREAD_set_return_value</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ... );
+<a name="l00134"></a>00134 <span class="comment"></span>
+<a name="l00135"></a>00135 <span class="comment">/**</span>
+<a name="l00136"></a>00136 <span class="comment"> * @brief get thread id</span>
+<a name="l00137"></a>00137 <span class="comment"> *</span>
+<a name="l00138"></a>00138 <span class="comment"> * Precondition: the thread is in any state other than CTHREAD_STATE_INIT</span>
+<a name="l00139"></a>00139 <span class="comment"> */</span>
+<a name="l00140"></a>00140 uint32_t <a class="code" href="a00012.html#ga5482f32cae1c40923e57c44dbcc870f7" title="get thread id">CTHREAD_get_tid</a>();
+<a name="l00141"></a>00141 <span class="comment"></span>
+<a name="l00142"></a>00142 <span class="comment">/**</span>
+<a name="l00143"></a>00143 <span class="comment"> * @brief get thread state</span>
+<a name="l00144"></a>00144 <span class="comment"> */</span>
+<a name="l00145"></a><a class="code" href="a00012.html#gac84f3f78f212fb85214833923d755764">00145</a> M_INLINE <a class="code" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a> <a class="code" href="a00012.html#gac84f3f78f212fb85214833923d755764" title="get thread state">CTHREAD_state</a>(<a class="code" href="a00001.html">CTHREAD</a> *thread) 
+<a name="l00146"></a>00146 {
+<a name="l00147"></a>00147   <span class="keywordflow">return</span> thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a>;
+<a name="l00148"></a>00148 }
+<a name="l00149"></a>00149 <span class="comment"></span>
+<a name="l00150"></a>00150 <span class="comment">/**</span>
+<a name="l00151"></a>00151 <span class="comment"> * @}</span>
+<a name="l00152"></a>00152 <span class="comment"> */</span>
+<a name="l00153"></a>00153 
+<a name="l00154"></a>00154 <span class="preprocessor">#endif</span>
+<a name="l00155"></a>00155 <span class="preprocessor"></span>
+<a name="l00156"></a>00156 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 4 2011 19:17:09 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:33 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
