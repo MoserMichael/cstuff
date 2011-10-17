@@ -15,6 +15,9 @@ void ARRAY_test();
 void TREE_test();
 void DLISTUNR_test_insert();
 void DLISTUNR_test();
+void TEST_properties_basic();
+void TEST_properties_file();
+
 
 
 
@@ -29,6 +32,8 @@ VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( HEAP_test )
 	VTEST_TESTN( ARRAY_test )
 	VTEST_TESTN( TREE_test )
+	VTEST_TESTN( TEST_properties_basic )
+	VTEST_TESTN( TEST_properties_file )
 VTEST_END_SUITE
 
 

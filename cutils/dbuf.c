@@ -8,6 +8,9 @@ int DBUF_add(  DBUF* buf, void *data, size_t data_size )
   
   bs = buf->buf_size;
   if ( (buf->buf_used + data_size) > bs) {
+    if (bs == 0) {
+      bs = 1;
+    }
     do {
       bs *= 2;
     } while( (buf->buf_used + data_size) > bs );

@@ -28,13 +28,20 @@ typedef struct tagDBUF {
  */
 M_INLINE int DBUF_init( DBUF *buf, size_t init_size )
 {
-  buf->buf = malloc( init_size );
-  if (!buf->buf) {
-    return -1;
+  buf->buf =  0;
+  if (init_size) {
+    buf->buf = malloc( init_size );
+    if (!buf->buf) {
+      return -1;
+    }
   }
   buf->buf_used = 0;
   buf->buf_size = init_size;
   return 0;
+}
+
+M_INLINE void DBUF_reset(DBUF *buf) {
+  buf->buf_used = 0;
 }
 
 /**
