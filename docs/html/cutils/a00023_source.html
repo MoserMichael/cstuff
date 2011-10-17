@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dlist.c Source File</title>
+<title>Simple data structures / objects in plain C: dbuf.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,20 +36,45 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">dlist.c</div>  </div>
+<div class="title">dbuf.c</div>  </div>
 </div>
 <div class="contents">
-<a href="a00023.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) Michael Moser (2011) . 3-clause BSD License applies */</span>
-<a name="l00002"></a>00002 
-<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;<a class="code" href="a00024.html">cutils/dlist.h</a>&gt;</span>
-<a name="l00004"></a>00004 
-<a name="l00005"></a>00005 
-<a name="l00006"></a>00006 
-<a name="l00007"></a>00007 
-<a name="l00008"></a>00008 
+<a href="a00023.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;<a class="code" href="a00024.html">dbuf.h</a>&quot;</span>
+<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;string.h&gt;</span>
+<a name="l00003"></a>00003 
+<a name="l00004"></a><a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9">00004</a> <span class="keywordtype">int</span> <a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9" title="add stuff to a buffer">DBUF_add</a>(  <a class="code" href="a00009.html">DBUF</a>* buf, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size )
+<a name="l00005"></a>00005 {
+<a name="l00006"></a>00006   <span class="keywordtype">size_t</span> bs;
+<a name="l00007"></a>00007   uint8_t *nb;
+<a name="l00008"></a>00008   
+<a name="l00009"></a>00009   bs = buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a>;
+<a name="l00010"></a>00010   <span class="keywordflow">if</span> ( (buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> + data_size) &gt; bs) {
+<a name="l00011"></a>00011     <span class="keywordflow">if</span> (bs == 0) {
+<a name="l00012"></a>00012       bs = 1;
+<a name="l00013"></a>00013     }
+<a name="l00014"></a>00014     <span class="keywordflow">do</span> {
+<a name="l00015"></a>00015       bs *= 2;
+<a name="l00016"></a>00016     } <span class="keywordflow">while</span>( (buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> + data_size) &gt; bs );
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018     nb = (uint8_t *) realloc( buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>, bs );
+<a name="l00019"></a>00019     <span class="keywordflow">if</span> (!nb) {
+<a name="l00020"></a>00020       <span class="keywordflow">return</span> -1;
+<a name="l00021"></a>00021     }
+<a name="l00022"></a>00022     buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a> = nb;
+<a name="l00023"></a>00023     buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a> = bs;
+<a name="l00024"></a>00024   }
+<a name="l00025"></a>00025   
+<a name="l00026"></a>00026   memcpy( buf-&gt;<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a> + buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a>, data, data_size );
+<a name="l00027"></a>00027   buf-&gt;<a class="code" href="a00009.html#a9bf75cec63f6286589641d7a7fffa9e9">buf_size</a> = bs;
+<a name="l00028"></a>00028   buf-&gt;<a class="code" href="a00009.html#aa9240201492927bdd3029cd8582fc586">buf_used</a> += data_size;
+<a name="l00029"></a>00029 
+<a name="l00030"></a>00030   <span class="keywordflow">return</span> 0; 
+<a name="l00031"></a>00031 }
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:24 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:51 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

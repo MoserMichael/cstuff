@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: Member List</title>
+<title>Simple data structures / objects in plain C: PROPERTIES</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,30 +24,387 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">ARRAY Member List</div>  </div>
+<div class="title">PROPERTIES</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00001.html">ARRAY</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#aa48e77e31b8f17e52723e568a9be9ff4">elmcount</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a></td><td><a class="el" href="a00001.html">ARRAY</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+
+<p>implements the commonly used idiom of a map from names to values (strings to strings), a hash with a signle values (not multimap).  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html">tagNAMEVALUE_HASH_ENTRY</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html">tagPROPERTIES</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#gae7994cdf1454cc52d2701bf89a2f4599">MAKE_PROPERTIES_DECIMAL_INT_GET</a>(type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga0e3e998b09dccea3ea98c86514984877">MAKE_PROPERTIES_HEX_INT_GET</a>(type)</td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <br class="typebreak"/>
+<a class="el" href="a00013.html">tagNAMEVALUE_HASH_ENTRY</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga709838c73bee6371ed44b9fbdde6d6df">NAMEVALUE_HASH_ENTRY</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00014.html">tagPROPERTIES</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga4102b680eebc891d45292c0ec6f903f3">PROPERTIES</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga1524b28644dffb48b8ad6a524dfb39ee">PROPERTIES_init</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, int num_buckets)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise the object  <a href="#ga1524b28644dffb48b8ad6a524dfb39ee"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga49304d2de29e5a9e8f0ed9e8f703e1d2">PROPERTIES_load</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, const char *file_name)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">loads properties from file, a java properties text file.  <a href="#ga49304d2de29e5a9e8f0ed9e8f703e1d2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga265b01e9522d4ead4890078fad7a2e65">PROPERTIES_free</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">free a properties object  <a href="#ga265b01e9522d4ead4890078fad7a2e65"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#gab32d735a67b3c2a8c386017198ba4809">PROPERTIES_put</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, const char *name, const char *value)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add a name to value mapping  <a href="#gab32d735a67b3c2a8c386017198ba4809"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga23b8c0c9fa9e86b49be50472a1e5522a">PROPERTIES_get</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, const char *name)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get the value for a name, return 0 if no such mapping exists.  <a href="#ga23b8c0c9fa9e86b49be50472a1e5522a"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>implements the commonly used idiom of a map from names to values (strings to strings), a hash with a signle values (not multimap). </p>
+<p>Also supported is reading the properties from a file ( format just like java.lang.Properties ) </p>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="gae7994cdf1454cc52d2701bf89a2f4599"></a><!-- doxytag: member="properties.h::MAKE_PROPERTIES_DECIMAL_INT_GET" ref="gae7994cdf1454cc52d2701bf89a2f4599" args="(type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAKE_PROPERTIES_DECIMAL_INT_GET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">type</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><a class="code" href="a00020.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> PROPERTIES_dec_##type (<a class="code" href="a00014.html">PROPERTIES</a> *props, <span class="keyword">const</span> <span class="keywordtype">char</span> *name, type *rret) \
+{ \
+  <span class="keyword">const</span> <span class="keywordtype">char</span> *value; \
+  <span class="keywordtype">char</span> *eptr; \
+  type ret; \
+  \
+  value = <a class="code" href="a00055.html#ga23b8c0c9fa9e86b49be50472a1e5522a" title="get the value for a name, return 0 if no such mapping exists.">PROPERTIES_get</a>( props, name ); \
+  <span class="keywordflow">if</span> (!value) { \
+    <span class="keywordflow">return</span> -1; \
+  } \
+  <span class="keywordflow">for</span>( ;isspace(*value); ++value ); \
+ \
+  errno = 0; \
+   \
+  ret = strto_##type ( value, &amp;eptr, 10 ); \
+ \
+  <span class="keywordflow">if</span> (errno) {  \
+    <span class="keywordflow">return</span> -2; \
+  } \
+ \
+  <span class="keywordflow">if</span> (*eptr == <span class="charliteral">&#39;\0&#39;</span> || isspace(*eptr)) { \
+    *rret = ( type ) ret; \
+    <span class="keywordflow">return</span> 0; \
+  } \
+  <span class="keywordflow">return</span> -3; \
+}
+</pre></div>
+<p>Definition at line <a class="el" href="a00036_source.html#l00058">58</a> of file <a class="el" href="a00036_source.html">properties.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga0e3e998b09dccea3ea98c86514984877"></a><!-- doxytag: member="properties.h::MAKE_PROPERTIES_HEX_INT_GET" ref="ga0e3e998b09dccea3ea98c86514984877" args="(type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAKE_PROPERTIES_HEX_INT_GET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">type</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><a class="code" href="a00020.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">int</span> PROPERTIES_hex_##type (<a class="code" href="a00014.html">PROPERTIES</a> *props, <span class="keyword">const</span> <span class="keywordtype">char</span> *name, type *rret) \
+{ \
+  <span class="keyword">const</span> <span class="keywordtype">char</span> *value; \
+  <span class="keywordtype">char</span> *eptr; \
+  type ret; \
+  \
+  value = <a class="code" href="a00055.html#ga23b8c0c9fa9e86b49be50472a1e5522a" title="get the value for a name, return 0 if no such mapping exists.">PROPERTIES_get</a>( props, name ); \
+  <span class="keywordflow">if</span> (!value) { \
+    <span class="keywordflow">return</span> -1; \
+  } \
+  <span class="keywordflow">for</span>( ;isspace(*value); ++value ); \
+ \
+  errno = 0; \
+   \
+  ret = strto_##type ( value, &amp;eptr, 16 ); \
+ \
+  <span class="keywordflow">if</span> (errno) {  \
+    <span class="keywordflow">return</span> -2; \
+  } \
+  <span class="keywordflow">if</span> (*eptr == <span class="charliteral">&#39;\0&#39;</span> || isspace(*eptr)) { \
+    *rret = ( type ) ret; \
+    <span class="keywordflow">return</span> 0; \
+  } \
+  <span class="keywordflow">return</span> -3; \
+ \
+}
+</pre></div>
+<p>Definition at line <a class="el" href="a00036_source.html#l00093">93</a> of file <a class="el" href="a00036_source.html">properties.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga709838c73bee6371ed44b9fbdde6d6df"></a><!-- doxytag: member="properties.h::NAMEVALUE_HASH_ENTRY" ref="ga709838c73bee6371ed44b9fbdde6d6df" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00013.html">tagNAMEVALUE_HASH_ENTRY</a>  <a class="el" href="a00013.html">NAMEVALUE_HASH_ENTRY</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ga4102b680eebc891d45292c0ec6f903f3"></a><!-- doxytag: member="properties.h::PROPERTIES" ref="ga4102b680eebc891d45292c0ec6f903f3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00014.html">tagPROPERTIES</a>  <a class="el" href="a00014.html">PROPERTIES</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga265b01e9522d4ead4890078fad7a2e65"></a><!-- doxytag: member="properties.h::PROPERTIES_free" ref="ga265b01e9522d4ead4890078fad7a2e65" args="(PROPERTIES *props)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PROPERTIES_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00014.html">PROPERTIES</a> *&#160;</td>
+          <td class="paramname"><em>props</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>free a properties object </p>
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00034">34</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <a class="code" href="a00006.html">HASH_Entry</a> *cur;
+   <a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *entry;
+
+   <a class="code" href="a00048.html#ga1193ff43ed7c2f743c974d75c39efc93" title="Macro: iterate over all elements in hash table and delete them from the table; allow the user to free...">HASH_DELETEALL</a>(cur, &amp;props-&gt;<a class="code" href="a00014.html#a9c6a01957182ce851dc1f2443904f156">props</a>);
+     entry = (<a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *) cur;
+     free(entry-&gt;<a class="code" href="a00013.html#a0b36aee7553be132af4c5dcceed6ed0f">name</a>);
+     free(entry-&gt;<a class="code" href="a00013.html#a2ee1d678c0132c4da7b9d7e542ef2d93">value</a>);
+     free(entry);
+   <a class="code" href="a00048.html#gaee7185cd320df1c4a801762c8f5201b6" title="Macro: close block opened by HASH_DELETEALL.">HASH_DELETEALL_END</a>
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga23b8c0c9fa9e86b49be50472a1e5522a"></a><!-- doxytag: member="properties.h::PROPERTIES_get" ref="ga23b8c0c9fa9e86b49be50472a1e5522a" args="(PROPERTIES *props, const char *name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* PROPERTIES_get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00014.html">PROPERTIES</a> *&#160;</td>
+          <td class="paramname"><em>props</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>get the value for a name, return 0 if no such mapping exists. </p>
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00082">82</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *value;
+
+  value = (<a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *) <a class="code" href="a00048.html#ga072fef06fb9a516f47771ddd3946bf20" title="find entry with given key in hash table; for multimaps this will return the first occurence of the ke...">HASH_find</a>( &amp;props-&gt;<a class="code" href="a00014.html#a9c6a01957182ce851dc1f2443904f156">props</a>, (<span class="keywordtype">void</span> *) name, -1 );
+  <span class="keywordflow">if</span> (!value) {
+    <span class="keywordflow">return</span> 0;
+  }
+  <span class="keywordflow">return</span> value-&gt;<a class="code" href="a00013.html#a2ee1d678c0132c4da7b9d7e542ef2d93">value</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga1524b28644dffb48b8ad6a524dfb39ee"></a><!-- doxytag: member="properties.h::PROPERTIES_init" ref="ga1524b28644dffb48b8ad6a524dfb39ee" args="(PROPERTIES *props, int num_buckets)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int PROPERTIES_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00014.html">PROPERTIES</a> *&#160;</td>
+          <td class="paramname"><em>props</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_buckets</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>initialise the object </p>
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00029">29</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">return</span> <a class="code" href="a00048.html#ga73ce0ca18399c5db0bac0491aeadba8d" title="Object constructor; initialise the hash that allows one entry for a given key.">HASH_init</a>( &amp;props-&gt;<a class="code" href="a00014.html#a9c6a01957182ce851dc1f2443904f156">props</a>, num_buckets, 0, <a class="code" href="a00035.html#a7003ed324e0c95af477928f44bf5da2d">props_compare_key</a>, 0 );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga49304d2de29e5a9e8f0ed9e8f703e1d2"></a><!-- doxytag: member="properties.h::PROPERTIES_load" ref="ga49304d2de29e5a9e8f0ed9e8f703e1d2" args="(PROPERTIES *props, const char *file_name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int PROPERTIES_load </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00014.html">PROPERTIES</a> *&#160;</td>
+          <td class="paramname"><em>props</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>file_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>loads properties from file, a java properties text file. </p>
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00096">96</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <span class="keywordflow">if</span> (<a class="code" href="a00055.html#ga1524b28644dffb48b8ad6a524dfb39ee" title="initialise the object">PROPERTIES_init</a>( props, 30 )) {
+     <span class="keywordflow">return</span> -1;
+   }
+   <span class="keywordflow">return</span> <a class="code" href="a00035.html#a390ec77a5a058a6aa2c4053a3fbf2c0c">load_properties</a>( props, file_name );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gab32d735a67b3c2a8c386017198ba4809"></a><!-- doxytag: member="properties.h::PROPERTIES_put" ref="gab32d735a67b3c2a8c386017198ba4809" args="(PROPERTIES *props, const char *name, const char *value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int PROPERTIES_put </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00014.html">PROPERTIES</a> *&#160;</td>
+          <td class="paramname"><em>props</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>add a name to value mapping </p>
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00048">48</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *val;
+
+  val = (<a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *) malloc( <span class="keyword">sizeof</span>(  <a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> ) ); 
+  <span class="keywordflow">if</span> (!val) {
+    <span class="keywordflow">return</span> -1;
+  }
+  val-&gt;<a class="code" href="a00013.html#a2ee1d678c0132c4da7b9d7e542ef2d93">value</a> = val-&gt;<a class="code" href="a00013.html#a0b36aee7553be132af4c5dcceed6ed0f">name</a> = 0;
+
+  val-&gt;<a class="code" href="a00013.html#a0b36aee7553be132af4c5dcceed6ed0f">name</a> = strdup( name );
+  <span class="keywordflow">if</span> (!val-&gt;<a class="code" href="a00013.html#a0b36aee7553be132af4c5dcceed6ed0f">name</a>) {
+    <span class="keywordflow">goto</span> err;
+  }
+  val-&gt;<a class="code" href="a00013.html#a2ee1d678c0132c4da7b9d7e542ef2d93">value</a> = strdup( value );
+  <span class="keywordflow">if</span> (!val-&gt;<a class="code" href="a00013.html#a2ee1d678c0132c4da7b9d7e542ef2d93">value</a>) {
+    <span class="keywordflow">goto</span> err;
+  }
+  <span class="keywordflow">if</span> (<a class="code" href="a00048.html#gaf9ce37d092fe7b3ae217336ef623a7dc" title="insert new entry in hash table">HASH_insert</a>( &amp;props-&gt;<a class="code" href="a00014.html#a9c6a01957182ce851dc1f2443904f156">props</a>, &amp;val-&gt;<a class="code" href="a00013.html#a98d2c7ae5dadc1bab4395d95388c8ab9">entry</a>, (<span class="keywordtype">void</span> *)  name, -1 )) {
+    <span class="keywordflow">goto</span> err;
+  }
+  <span class="keywordflow">return</span> 0;
+err:
+  <span class="keywordflow">if</span> (val-&gt;<a class="code" href="a00013.html#a2ee1d678c0132c4da7b9d7e542ef2d93">value</a>) {
+    free( val-&gt;<a class="code" href="a00013.html#a2ee1d678c0132c4da7b9d7e542ef2d93">value</a> );
+  }
+  <span class="keywordflow">if</span> (val-&gt;<a class="code" href="a00013.html#a0b36aee7553be132af4c5dcceed6ed0f">name</a>) {
+    free( val-&gt;<a class="code" href="a00013.html#a0b36aee7553be132af4c5dcceed6ed0f">name</a> );
+  }
+  free( val );
+  <span class="keywordflow">return</span> 0;
+
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

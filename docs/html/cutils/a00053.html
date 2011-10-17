@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: TREE</title>
+<title>Simple data structures / objects in plain C: DRING</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -34,90 +34,100 @@
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Defines</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">TREE</div>  </div>
+<div class="title">DRING</div>  </div>
 </div>
 <div class="contents">
 
-<p>a tree. tree. Each node has variable number of child nodes, the node is embeddable (like ring list). This tree is especially suited for parse trees.  
+<p>Double linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html">tagTREENODE</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html">tagDRING</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>(current, node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>(current, node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current, tree)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gab1367d2f48012bb9b750a0609d1305cf">TREE_FOREACH_PREORDER_END</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current, tree)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gac8118521928cd5a00b83ee9c0ba48308">DRING_FOREACH</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#gac8118521928cd5a00b83ee9c0ba48308"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga550a7b5adbe2d3325db38c49764bdc8c">DRING_FOREACH_REVERSE</a>(loopvarname, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element.  <a href="#ga550a7b5adbe2d3325db38c49764bdc8c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaab96829db58e4eaa3cec725c9c99ff69">DRING_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="#gaab96829db58e4eaa3cec725c9c99ff69"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gac5d159651c812e6785f81bc2dfc73b7d">DRING_FOREACH_REVERSE_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element.  <a href="#gac5d159651c812e6785f81bc2dfc73b7d"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00015.html">tagTREENODE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga105c1d47dd05c5293aff00cecacb8b82">TREENODE</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> )(<a class="el" href="a00015.html">TREENODE</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> )(<a class="el" href="a00015.html">TREENODE</a> *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gad3070030c101f9e06861f273769c333b">TREE_VISITOR_EXT_V</a> )(<a class="el" href="a00015.html">TREENODE</a> *entry, <a class="el" href="a00053.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> visit, void *context)</td></tr>
-<tr><td colspan="2"><h2><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> { <a class="el" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>, 
-<a class="el" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>
- }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> { <a class="el" href="a00053.html#gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f">TREE_PREORDER</a>, 
-<a class="el" href="a00053.html#gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e">TREE_POSTORDER</a>
- }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00012.html">tagDRING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga4630800b5e50c32e36110b0a6dfcadc0">DRING</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> )(<a class="el" href="a00012.html">DRING</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> )(<a class="el" href="a00012.html">DRING</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> )(<a class="el" href="a00012.html">DRING</a> *, <a class="el" href="a00012.html">DRING</a> *)</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a> (<a class="el" href="a00015.html">TREENODE</a> *tree)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga27a00a38d3c36cab6ff6adb7a831c4ce">TREE_parent</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga1ae823cfa1464a0eca0cd376a107b6d9">TREE_leftmost_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *current, <a class="el" href="a00015.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga530586b2042c37e278d8666c75978497">TREE_insert_left_sibling</a> (<a class="el" href="a00015.html">TREENODE</a> *current, <a class="el" href="a00015.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a> (<a class="el" href="a00015.html">TREENODE</a> *parent, <a class="el" href="a00015.html">TREENODE</a> *newnode, <a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, int node_is_leaf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gab2df5d5218e9b473a61b0cbfdb2ae8d0">TREE_merge_childs</a> (<a class="el" href="a00015.html">TREENODE</a> *parent, <a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, <a class="el" href="a00015.html">TREENODE</a> *newnode)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga7beb2cf4338f19f13977cc49b3f2cd43">TREE_unlink_node</a> (<a class="el" href="a00015.html">TREENODE</a> *node)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga53ff6ce0b781ef3165b5239ba466a7a3">TREE_count_child_nodes</a> (<a class="el" href="a00015.html">TREENODE</a> *current)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a> (<a class="el" href="a00015.html">TREENODE</a> *current)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga0843046582beafa1e2158cf0261fe8a1">TREE_foreach_child</a> (<a class="el" href="a00015.html">TREENODE</a> *lst, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list of child nodes, callback is invoked for either element of the list. list is traversed from first element to the last element.  <a href="#ga0843046582beafa1e2158cf0261fe8a1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gacb91cd0e28147dc399cba4cc4ddea1c1">TREE_foreach_child_reverse</a> (<a class="el" href="a00015.html">TREENODE</a> *lst, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga2a122a49ba6652748765845608a019f3">TREE_findif_child</a> (<a class="el" href="a00015.html">TREENODE</a> *tree, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the list of child nodes. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga2a122a49ba6652748765845608a019f3"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga9332aebaeaae4fa46b2668766d07f40c">TREE_findif_child_reverse</a> (<a class="el" href="a00015.html">TREENODE</a> *tree, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a> (<a class="el" href="a00015.html">TREENODE</a> *current, <a class="el" href="a00015.html">TREENODE</a> *prev)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gae16d9f6e7f210f3596a00688b0598a05">TREE_foreach_preorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga5feac0050d51b2ee0886cabe2bcf201b">TREE_find_preorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga272a19d0e9bb16460b010d7c38f6038a">TREE_foreach_postorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00015.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga9b8add397903fd2bd602953efa922101">TREE_find_postorder</a> (<a class="el" href="a00015.html">TREENODE</a> *node, <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga82d94f5f16e87e8dc6047797bda2e080">TREE_check_tree</a> (<a class="el" href="a00015.html">TREENODE</a> *root)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check tree for consistency errors  <a href="#ga82d94f5f16e87e8dc6047797bda2e080"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaea5e890f7d1dab572fe3ef6f067e5d26">DRING_init</a> (<a class="el" href="a00012.html">DRING</a> *head)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises an empty list head  <a href="#gaea5e890f7d1dab572fe3ef6f067e5d26"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3">DRING_isempty</a> (<a class="el" href="a00012.html">DRING</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="#ga7b28ffdc594d835f2c49cf9e74f7c3b3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga93f762e668a7283b18025310886635ea">DRING_insert_before</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00012.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry before a given entry.  <a href="#ga93f762e668a7283b18025310886635ea"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gab65d72bd525d11559228b5aa3aa641f0">DRING_insert_after</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00012.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry.  <a href="#gab65d72bd525d11559228b5aa3aa641f0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gad8c4485c62148db72ca05f55dcc75709">DRING_insert_sorted</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00053.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="el" href="a00012.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="#gad8c4485c62148db72ca05f55dcc75709"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga81d2db3ee3b83fe28393d45530bed230">DRING_unlink</a> (<a class="el" href="a00012.html">DRING</a> *list)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a list.  <a href="#ga81d2db3ee3b83fe28393d45530bed230"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaed724487f6cd26c0b79b875ff3390c61">DRING_push_back</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00012.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain double ended queue)  <a href="#gaed724487f6cd26c0b79b875ff3390c61"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga897228c60f1de15be0799dadea9d0337">DRING_push_front</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00012.html">DRING</a> *newentry)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as first in list (used to maintain double ended queue)  <a href="#ga897228c60f1de15be0799dadea9d0337"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga315bb0f49e0ccbadcc59a5e9258eff19">DRING_pop_front</a> (<a class="el" href="a00012.html">DRING</a> *elem)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove first element from list (used to maintain double ended queue)  <a href="#ga315bb0f49e0ccbadcc59a5e9258eff19"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga50912d37cc30e961dd53ff291b8db05e">DRING_pop_back</a> (<a class="el" href="a00012.html">DRING</a> *elem)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove last element from list (used to maintain double ended queue)  <a href="#ga50912d37cc30e961dd53ff291b8db05e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaa392ee3a23da21ccf4e4ea62bd6c7de8">DRING_get_first</a> (<a class="el" href="a00012.html">DRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gac4fbe3b2aa6b11ce356755c89235b9d4">DRING_get_last</a> (<a class="el" href="a00012.html">DRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga44a51594b007ec843d30bf5c3b3ddc73">DRING_get_next</a> (<a class="el" href="a00012.html">DRING</a> *end, <a class="el" href="a00012.html">DRING</a> *cur)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gae8038a9a107a06bb0fae04cd8f8f7711">DRING_get_prev</a> (<a class="el" href="a00012.html">DRING</a> *end, <a class="el" href="a00012.html">DRING</a> *cur)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gafb5caaea75f7196bd6abe1ac8e81a7f3">DRING_size</a> (<a class="el" href="a00012.html">DRING</a> *list)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga7f552929105d5cf0a6f621c6e8463f2d">DRING_get_nth</a> (<a class="el" href="a00012.html">DRING</a> *list, size_t nth)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga82d60185895dcf1deecd14d4a809741f">DRING_get_nth_reverse</a> (<a class="el" href="a00012.html">DRING</a> *list, size_t nth)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1">DRING_foreach</a> (<a class="el" href="a00012.html">DRING</a> *lst, <a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *context, int save_from_del)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list. list is traversed forward from first element to the last element.  <a href="#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga98724ac564245aa77a1a4c55f83fadb9">DRING_foreach_reverse</a> (<a class="el" href="a00012.html">DRING</a> *lst, <a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *context, int save_from_delete)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.  <a href="#ga98724ac564245aa77a1a4c55f83fadb9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga3efd1408b3d08b2253e1bf781306a425">DRING_findif</a> (<a class="el" href="a00012.html">DRING</a> *lst, <a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> eval, void *context, int32_t *retval, int save_from_del)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga3efd1408b3d08b2253e1bf781306a425"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00012.html">DRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga8d223c41dde7af2a4a154e09bf9c3a03">DRING_find_reverse</a> (<a class="el" href="a00012.html">DRING</a> *lst, <a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> eval, void *context, int32_t *retval, int save_from_delete)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the linked list. callback is invoked for each element of the list, in reverse direction from last element to first element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga8d223c41dde7af2a4a154e09bf9c3a03"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga44b92d9180c58865b9d4a1c6d5d9c37f">DRING_deleteif</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a> check_if, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally)  <a href="#ga44b92d9180c58865b9d4a1c6d5d9c37f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gab49cbee747109aad10c6e6a67c1149d9">DRING_deleteall</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> on_delete, void *context, int offset_of_link)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all entries of the list and delete them.  <a href="#gab49cbee747109aad10c6e6a67c1149d9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#ga02284390005b102707b116d7de2b7ae6">DRING_reverse</a> (<a class="el" href="a00012.html">DRING</a> *lst)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on.  <a href="#ga02284390005b102707b116d7de2b7ae6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#gaead03ab9284bb52e1a5204010109b69d">DRING_check</a> (<a class="el" href="a00012.html">DRING</a> *header)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of list  <a href="#gaead03ab9284bb52e1a5204010109b69d"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>a tree. tree. Each node has variable number of child nodes, the node is embeddable (like ring list). This tree is especially suited for parse trees. </p>
+<p>Double linked circular list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list. </p>
+<p>In a circularly-linked list, the first and final nodes are linked together. To traverse a circular linked list, you begin at any node and follow the list in either direction until you return to the original node. Viewed another way, circularly-linked lists can be seen as having no beginning or end. This type of list is most useful for managing buffers for data ingest, and in cases where you have one object in a list and wish to see all other objects in the list. The pointer pointing to the whole list is usually called the end pointer. (quoted from <a href="http://en.wikipedia.org/wiki/Linked_list">http://en.wikipedia.org/wiki/Linked_list</a> )</p>
+<p>Usage: If the user wants to link his struct(ure) into a list, then he must embed a SLIST_entry into his structure. Access to user defined structure is via embedded DRING. </p>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="gaae718f42f4d1d72b715248550610ebe0"></a><!-- doxytag: member="tree.h::TREE_FOREACH_CHILD" ref="gaae718f42f4d1d72b715248550610ebe0" args="(current, node)" -->
+<a class="anchor" id="gac8118521928cd5a00b83ee9c0ba48308"></a><!-- doxytag: member="dring.h::DRING_FOREACH" ref="gac8118521928cd5a00b83ee9c0ba48308" args="(loopvarname, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_CHILD</td>
+          <td class="memname">#define DRING_FOREACH</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">node&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -127,29 +137,38 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((current) = <a class="code" href="a00053.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a>(node); \
-                (current); \
-                (current) = <a class="code" href="a00053.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a>(current))
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;next;\
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarname )-&gt;next )
 </pre></div>
-<p>Definition at line <a class="el" href="a00038_source.html#l00374">374</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type DRING *) pointer to the current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type DRING *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00204">204</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga6f0686cdd2280d83191f09c671e63ebd"></a><!-- doxytag: member="tree.h::TREE_FOREACH_CHILD_REVERSE" ref="ga6f0686cdd2280d83191f09c671e63ebd" args="(current, node)" -->
+<a class="anchor" id="ga550a7b5adbe2d3325db38c49764bdc8c"></a><!-- doxytag: member="dring.h::DRING_FOREACH_REVERSE" ref="ga550a7b5adbe2d3325db38c49764bdc8c" args="(loopvarname, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_CHILD_REVERSE</td>
+          <td class="memname">#define DRING_FOREACH_REVERSE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">node&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -159,29 +178,44 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((current) = <a class="code" href="a00053.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a>(node); \
-                (current); \
-                (current) = <a class="code" href="a00053.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(current))
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;prev;\
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarname)-&gt;prev )
 </pre></div>
-<p>Definition at line <a class="el" href="a00038_source.html#l00379">379</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type DRING *) pointer to the current element </td></tr>
+    <tr><td class="paramname">list</td><td>(type DRING *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00214">214</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="gaaeea62e7b7e668075caa6ee635fba60a"></a><!-- doxytag: member="tree.h::TREE_FOREACH_POSTORDER" ref="gaaeea62e7b7e668075caa6ee635fba60a" args="(current, tree)" -->
+<a class="anchor" id="gac5d159651c812e6785f81bc2dfc73b7d"></a><!-- doxytag: member="dring.h::DRING_FOREACH_REVERSE_SAVE" ref="gac5d159651c812e6785f81bc2dfc73b7d" args="(loopvarname, loopvarnext, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_POSTORDER</td>
+          <td class="memname">#define DRING_FOREACH_REVERSE_SAVE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">tree&#160;</td>
+          <td class="paramname">loopvarnext, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -191,53 +225,45 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{\
-        <a class="code" href="a00015.html">TREENODE</a> *TREE_nextnode##next,*TREE_nextnode##prev;\
-        TREE_nextnode##prev = 0; \
-        current = <a class="code" href="a00053.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>((tree),TREE_nextnode##prev);\
-        <span class="keywordflow">if</span> (current)\
-                <span class="keywordflow">for</span>( TREE_nextnode##next =  <a class="code" href="a00053.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>(current,TREE_nextnode##prev);\
-                            (current) &amp;&amp; current != (tree); \
-                                TREE_nextnode##prev = (current), \
-                                (current) = TREE_nextnode##next, \
-                                TREE_nextnode##next =  <a class="code" href="a00053.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>(current,TREE_nextnode##prev)) {
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;prev, (loopvarnext) = (loopvarname)-&gt;prev;\
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarnext), (loopvarnext) = (loopvarname)-&gt;prev )
 </pre></div>
-<p>Definition at line <a class="el" href="a00038_source.html#l00604">604</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type DRING *) pointer to the current element </td></tr>
+    <tr><td class="paramname">loopvarnamenext</td><td>(type DRING *) do not modify! pointer to next element after current element (used for iteration). </td></tr>
+    <tr><td class="paramname">list</td><td>(type DRING *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00236">236</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga01c708ec70f756c8045b16d7fca53f5b"></a><!-- doxytag: member="tree.h::TREE_FOREACH_POSTORDER_END" ref="ga01c708ec70f756c8045b16d7fca53f5b" args="" -->
+<a class="anchor" id="gaab96829db58e4eaa3cec725c9c99ff69"></a><!-- doxytag: member="dring.h::DRING_FOREACH_SAVE" ref="gaab96829db58e4eaa3cec725c9c99ff69" args="(loopvarname, loopvarnext, list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TREE_FOREACH_POSTORDER_END</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">}\
-}\
-</pre></div>
-<p>Definition at line <a class="el" href="a00038_source.html#l00619">619</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga78104ec79d0b31f3e06c70b6796a54c8"></a><!-- doxytag: member="tree.h::TREE_FOREACH_PREORDER" ref="ga78104ec79d0b31f3e06c70b6796a54c8" args="(current, tree)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TREE_FOREACH_PREORDER</td>
+          <td class="memname">#define DRING_FOREACH_SAVE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">current, </td>
+          <td class="paramname">loopvarname, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">tree&#160;</td>
+          <td class="paramname">loopvarnext, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">list&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,87 +273,32 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{\
-        <a class="code" href="a00015.html">TREENODE</a> *TREE_nextnode##next;\
-        current = <a class="code" href="a00053.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>((tree));\
-        <span class="keywordflow">if</span> (current)\
-                <span class="keywordflow">for</span>( TREE_nextnode##next =  <a class="code" href="a00053.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>(current);\
-                            (current) &amp;&amp; current != (tree); \
-                                (current) = TREE_nextnode##next, TREE_nextnode##next =  <a class="code" href="a00053.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>(current)) {
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = (list)-&gt;next, (loopvarnext) = (loopvarname)-&gt;next;\
+      (loopvarname) != (list);\
+      (loopvarname) = (loopvarnext), (loopvarnext) = (loopvarname)-&gt;next )
 </pre></div>
-<p>Definition at line <a class="el" href="a00038_source.html#l00554">554</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopvarname</td><td>(type DRING *) pointer to the current element </td></tr>
+    <tr><td class="paramname">loopvarnamenext</td><td>(type DRING *) do not modify! pointer to next element after current element (used for iteration). </td></tr>
+    <tr><td class="paramname">list</td><td>(type DRING *) pointer to the list that is traversed </td></tr>
+  </table>
+  </dd>
+</dl>
 
-</div>
-</div>
-<a class="anchor" id="gab1367d2f48012bb9b750a0609d1305cf"></a><!-- doxytag: member="tree.h::TREE_FOREACH_PREORDER_END" ref="gab1367d2f48012bb9b750a0609d1305cf" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TREE_FOREACH_PREORDER_END</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">}\
-}
-</pre></div>
-<p>Definition at line <a class="el" href="a00038_source.html#l00564">564</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00030_source.html#l00225">225</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="ga10480aa5215e24ed69b820687247e05a"></a><!-- doxytag: member="tree.h::TREE_VISITOR" ref="ga10480aa5215e24ed69b820687247e05a" args=")(TREENODE *entry, void *context)" -->
+<a class="anchor" id="ga4630800b5e50c32e36110b0a6dfcadc0"></a><!-- doxytag: member="dring.h::DRING" ref="ga4630800b5e50c32e36110b0a6dfcadc0" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>)(<a class="el" href="a00015.html">TREENODE</a> *entry, void *context)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00362">362</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="gad3070030c101f9e06861f273769c333b"></a><!-- doxytag: member="tree.h::TREE_VISITOR_EXT_V" ref="gad3070030c101f9e06861f273769c333b" args=")(TREENODE *entry, TREE_VISIT_EVENT visit, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00053.html#gad3070030c101f9e06861f273769c333b">TREE_VISITOR_EXT_V</a>)(<a class="el" href="a00015.html">TREENODE</a> *entry, <a class="el" href="a00053.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> visit, void *context)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00371">371</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga69c7ccf722b0f3e72d2f040b62a7020b"></a><!-- doxytag: member="tree.h::TREE_VISITOR_V" ref="ga69c7ccf722b0f3e72d2f040b62a7020b" args=")(TREENODE *entry, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef void(* <a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>)(<a class="el" href="a00015.html">TREENODE</a> *entry, void *context)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00363">363</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga105c1d47dd05c5293aff00cecacb8b82"></a><!-- doxytag: member="tree.h::TREENODE" ref="ga105c1d47dd05c5293aff00cecacb8b82" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="a00015.html">tagTREENODE</a>  <a class="el" href="a00015.html">TREENODE</a></td>
+          <td class="memname">typedef struct <a class="el" href="a00012.html">tagDRING</a>  
+   <a class="el" href="a00012.html">DRING</a></td>
         </tr>
       </table>
 </div>
@@ -335,477 +306,260 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/><h2>Enumeration Type Documentation</h2>
-<a class="anchor" id="ga5700592b3cba85ef8eac8e784d408736"></a><!-- doxytag: member="tree.h::TREE_INSERT_MODE" ref="ga5700592b3cba85ef8eac8e784d408736" args="" -->
+<a class="anchor" id="ga275575e4b5e7edcaaf471ec1e5f02b5a"></a><!-- doxytag: member="dring.h::DRING_COMPARE" ref="ga275575e4b5e7edcaaf471ec1e5f02b5a" args=")(DRING *, DRING *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a></td>
+          <td class="memname">typedef int32_t(* <a class="el" href="a00053.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a>)(<a class="el" href="a00012.html">DRING</a> *, <a class="el" href="a00012.html">DRING</a> *)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c"></a><!-- doxytag: member="TREE_INSERT_FIRST" ref="gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c" args="" -->TREE_INSERT_FIRST</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0"></a><!-- doxytag: member="TREE_INSERT_LAST" ref="gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0" args="" -->TREE_INSERT_LAST</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00190">190</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">             {
-  <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>,
-  <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>,
+<p>Definition at line <a class="el" href="a00030_source.html#l00039">39</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 
-} <a class="code" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>;
-</pre></div>
 </div>
 </div>
-<a class="anchor" id="ga11e6992d87f7732b07a127c57d5e22f2"></a><!-- doxytag: member="tree.h::TREE_VISIT_EVENT" ref="ga11e6992d87f7732b07a127c57d5e22f2" args="" -->
+<a class="anchor" id="gadbbb7e55996e9a7bc35f1f5bd26b75d0"></a><!-- doxytag: member="dring.h::DRING_VISITOR" ref="gadbbb7e55996e9a7bc35f1f5bd26b75d0" args=")(DRING *entry, void *context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="a00053.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a></td>
+          <td class="memname">typedef int32_t(* <a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>)(<a class="el" href="a00012.html">DRING</a> *entry, void *context)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f"></a><!-- doxytag: member="TREE_PREORDER" ref="gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f" args="" -->TREE_PREORDER</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e"></a><!-- doxytag: member="TREE_POSTORDER" ref="gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e" args="" -->TREE_POSTORDER</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00365">365</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">             {
-  <a class="code" href="a00053.html#gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f">TREE_PREORDER</a>,
-  <a class="code" href="a00053.html#gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e">TREE_POSTORDER</a>,
+<p>Definition at line <a class="el" href="a00030_source.html#l00038">38</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 
-} <a class="code" href="a00053.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a>;
-</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga516498a8d915f013d2466856c72a0bd6"></a><!-- doxytag: member="dring.h::DRING_VISITOR_V" ref="ga516498a8d915f013d2466856c72a0bd6" args=")(DRING *entry, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* <a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>)(<a class="el" href="a00012.html">DRING</a> *entry, void *context)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00037">37</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ga82d94f5f16e87e8dc6047797bda2e080"></a><!-- doxytag: member="tree.h::TREE_check_tree" ref="ga82d94f5f16e87e8dc6047797bda2e080" args="(TREENODE *root)" -->
+<a class="anchor" id="gaead03ab9284bb52e1a5204010109b69d"></a><!-- doxytag: member="dring.h::DRING_check" ref="gaead03ab9284bb52e1a5204010109b69d" args="(DRING *header)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE int TREE_check_tree </td>
+          <td class="memname">M_INLINE int DRING_check </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>root</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>header</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>check tree for consistency errors </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>0 if the tree is inconsistent </dd></dl>
+<p>check consistency of list </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>list header. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>zero if list contains errors. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00715">715</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00030_source.html#l00487">487</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *firstch = root-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <a class="code" href="a00015.html">TREENODE</a> *lastch   = root-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span><span class="preprocessor">#ifndef TREE_NEXTLEVEL_LEFT     </span>
-<span class="preprocessor"></span>        <a class="code" href="a00015.html">TREENODE</a> *slow,*fast, *next;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-        <span class="keywordflow">if</span> (!firstch 
-#ifdef <a class="code" href="a00038.html#a95b940d1ebbfce437fb43d6cfb4b23e1">TREE_NEXTLEVEL_LAST</a>
-                        || !lastch
-#endif
-                ) {
+        <a class="code" href="a00012.html">DRING</a> *cur,*next;
 
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                <span class="keywordflow">if</span> (firstch || lastch) {
-                        <span class="keywordflow">return</span> 0;
-                }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                <span class="keywordflow">return</span> 1;               
-        }       
-        
-        <span class="keywordflow">if</span> (firstch-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> != root) {
-                <span class="keywordflow">return</span> 0;
-        }
+        <a class="code" href="a00053.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>( cur, header ) {
 
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT      </span>
-<span class="preprocessor"></span>        <span class="keywordflow">for</span>(;;firstch = firstch-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                <a class="code" href="a00015.html">TREENODE</a> *next;
-                
-                <span class="keywordflow">if</span> (!firstch) {
-                        <span class="keywordflow">return</span> 0;
-                }
-
-                <span class="keywordflow">if</span> (!<a class="code" href="a00053.html#ga82d94f5f16e87e8dc6047797bda2e080" title="check tree for consistency errors">TREE_check_tree</a>(firstch)) {
-                        <span class="keywordflow">return</span> 0;
-                }
-
-                next = firstch-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                <span class="keywordflow">if</span> (!next) {
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                        <span class="keywordflow">if</span> (lastch != firstch) {
-                                <span class="keywordflow">return</span> 0;
-                        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                        <span class="keywordflow">break</span>;
-                }
-
-                <span class="keywordflow">if</span> (next-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> != firstch) {
+                next = cur-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                <span class="keywordflow">if</span> (!next || next-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> != cur) {               
                         <span class="keywordflow">return</span> 0;
                 }
         }
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        slow=fast=firstch;
-        <span class="keywordflow">while</span>(1) {
-                <span class="keywordflow">if</span> (!<a class="code" href="a00053.html#ga82d94f5f16e87e8dc6047797bda2e080" title="check tree for consistency errors">TREE_check_tree</a>(slow)) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                next = fast-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                <span class="keywordflow">if</span> (!next) {
-                        <span class="keywordflow">break</span>;                  
-                }
-                fast = next;
-                <span class="keywordflow">if</span> (fast == slow) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                next = fast-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                <span class="keywordflow">if</span> (!next) {
-                        <span class="keywordflow">break</span>;                  
-                }
-                fast = next;
-                <span class="keywordflow">if</span> (fast == slow) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                slow = slow-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (lastch != fast) {
-                <span class="keywordflow">return</span> 0;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> 1;
+        <span class="keywordflow">return</span> 1;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga53ff6ce0b781ef3165b5239ba466a7a3"></a><!-- doxytag: member="tree.h::TREE_count_child_nodes" ref="ga53ff6ce0b781ef3165b5239ba466a7a3" args="(TREENODE *current)" -->
+<a class="anchor" id="gab49cbee747109aad10c6e6a67c1149d9"></a><!-- doxytag: member="dring.h::DRING_deleteall" ref="gab49cbee747109aad10c6e6a67c1149d9" args="(DRING *list, DRING_VISITOR_V on_delete, void *context, int offset_of_link)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE size_t TREE_count_child_nodes </td>
+          <td class="memname">M_INLINE void DRING_deleteall </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>on_delete</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset_of_link</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00385">385</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> ret = 0;
-        <a class="code" href="a00015.html">TREENODE</a> *c;
+<p>iterate over all entries of the list and delete them. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object</td></tr>
+    <tr><td class="paramname">on_delete(in)</td><td>if not NULL then this callback is called prior to deleting each list element. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) if on_delete is not NULL then this pointer is passed as argument to on_delete.</td></tr>
+    <tr><td class="paramname">free_ctx</td><td>allocation interface used to free data of entry. </td></tr>
+    <tr><td class="paramname">offset_of_link</td><td>offset of DRING in embedded structure. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-        <a class="code" href="a00053.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>(c,current) {
-                ret++;
+<p>Definition at line <a class="el" href="a00030_source.html#l00436">436</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="a00012.html">DRING</a> *cur,*next,*del;
+
+    <a class="code" href="a00053.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>(cur,next,list) {
+                <span class="keywordflow">if</span> (on_delete) {
+                        on_delete( cur, context);
+                }
+                del = <a class="code" href="a00053.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>( cur );
+                <span class="keywordflow">if</span> (offset_of_link != -1) {
+                        free( <a class="code" href="a00020.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del,offset_of_link) );
+                }
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga44b92d9180c58865b9d4a1c6d5d9c37f"></a><!-- doxytag: member="dring.h::DRING_deleteif" ref="ga44b92d9180c58865b9d4a1c6d5d9c37f" args="(DRING *list, DRING_VISITOR check_if, void *context, int offset_of_link)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t DRING_deleteif </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>check_if</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset_of_link</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>iterate over all entries of the list and delete entries that match predicate from the list, and frees the memory (optionally) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">check_if</td><td>(in) predicate function; the function returns 1 then inspected argument element will be deleted; if argument pointer is NULL then all entries will be deleted. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) data pointer passed to every invocation of check_if </td></tr>
+    <tr><td class="paramname">free_ctx</td><td>(in) interface used to free data of entry, is argument pointer is NULL then nothing is freed. </td></tr>
+    <tr><td class="paramname">offset_of_link</td><td>(in) offset of DRING in embedded structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>nunmber of elements deleted. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00409">409</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="a00012.html">DRING</a> *cur,*next,*del;
+        <span class="keywordtype">size_t</span>  ret = 0;
+
+    <a class="code" href="a00053.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>(cur,next,list) {
+                <span class="keywordflow">if</span> (!check_if || check_if( cur, context))  {
+                        del = <a class="code" href="a00053.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>( cur );
+                        <span class="keywordflow">if</span> (offset_of_link != -1) {
+                                free( <a class="code" href="a00020.html#a7b468c9bd3d1f3de0bb47e2ea23ddb1c">_MEMBEROF</a>(del,offset_of_link) );
+                        }
+                        ret ++;
+                }
         }
         <span class="keywordflow">return</span> ret;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga9b8add397903fd2bd602953efa922101"></a><!-- doxytag: member="tree.h::TREE_find_postorder" ref="ga9b8add397903fd2bd602953efa922101" args="(TREENODE *node, TREE_VISITOR visit, void *context)" -->
+<a class="anchor" id="ga8d223c41dde7af2a4a154e09bf9c3a03"></a><!-- doxytag: member="dring.h::DRING_find_reverse" ref="ga8d223c41dde7af2a4a154e09bf9c3a03" args="(DRING *lst, DRING_VISITOR eval, void *context, int32_t *retval, int save_from_delete)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_find_postorder </td>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_find_reverse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00695">695</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *current;
-
-        <a class="code" href="a00053.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current,node)
-                if (visit(node,context)) {
-                        <span class="keywordflow">return</span> current;
-                }
-        <a class="code" href="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga5feac0050d51b2ee0886cabe2bcf201b"></a><!-- doxytag: member="tree.h::TREE_find_preorder" ref="ga5feac0050d51b2ee0886cabe2bcf201b" args="(TREENODE *node, TREE_VISITOR visit, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_find_preorder </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00643">643</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *current;
-
-        <a class="code" href="a00053.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current,node)
-                if (visit(node,context)) {
-                        <span class="keywordflow">return</span> current;
-                }
-        <a class="code" href="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga2a122a49ba6652748765845608a019f3"></a><!-- doxytag: member="tree.h::TREE_findif_child" ref="ga2a122a49ba6652748765845608a019f3" args="(TREENODE *tree, TREE_VISITOR eval, void *context, int32_t *retval)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_findif_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>tree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int32_t *&#160;</td>
-          <td class="paramname"><em>retval</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>find an element within the list of child nodes. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tree</td><td>(in) node in a tree (parent of enumerated childs). </td></tr>
-    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
-    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
-    <tr><td class="paramname">retval</td><td>(out) optional - the first non zero value returned by eval callback, if NULL then ignored. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00499">499</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">int</span> ret;
-    <a class="code" href="a00015.html">TREENODE</a> *cur;
-
-        <span class="keywordflow">if</span> (retval) {
-                *retval = 0;
-        }
-
-        <span class="keywordflow">if</span> (!eval) {
-                <span class="keywordflow">return</span> 0;
-        }
-        
-
-        <a class="code" href="a00053.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>( cur, tree) {
-                ret = eval( cur, context );
-                <span class="keywordflow">if</span> (ret) {
-                        <span class="keywordflow">if</span> (retval) {
-                                *retval = ret;
-                        }
-                        <span class="keywordflow">return</span> cur;
-                }
-        }
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga9332aebaeaae4fa46b2668766d07f40c"></a><!-- doxytag: member="tree.h::TREE_findif_child_reverse" ref="ga9332aebaeaae4fa46b2668766d07f40c" args="(TREENODE *tree, TREE_VISITOR eval, void *context, int32_t *retval)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_findif_child_reverse </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>tree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
-          <td class="paramname"><em>eval</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int32_t *&#160;</td>
-          <td class="paramname"><em>retval</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00526">526</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">int</span> ret;
-    <a class="code" href="a00015.html">TREENODE</a> *cur;
-
-        <span class="keywordflow">if</span> (retval) {
-                *retval = 0;
-        }
-
-        <span class="keywordflow">if</span> (!eval) {
-                <span class="keywordflow">return</span> 0;
-        }
-        
-
-        <a class="code" href="a00053.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>( cur, tree) {
-                ret = eval( cur, context );
-                <span class="keywordflow">if</span> (ret) {
-                        <span class="keywordflow">if</span> (retval) {
-                                *retval = ret;
-                        }
-                        <span class="keywordflow">return</span> cur;
-                }
-        }
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga2695e9ae02cd3359771cacdf776918e4"></a><!-- doxytag: member="tree.h::TREE_first_child" ref="ga2695e9ae02cd3359771cacdf776918e4" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_first_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00105">105</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga0843046582beafa1e2158cf0261fe8a1"></a><!-- doxytag: member="tree.h::TREE_foreach_child" ref="ga0843046582beafa1e2158cf0261fe8a1" args="(TREENODE *lst, TREE_VISITOR_V eval, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_foreach_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>lst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>&#160;</td>
           <td class="paramname"><em>eval</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>retval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_delete</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -816,10 +570,199 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>iterate over all elements of a list of child nodes, callback is invoked for either element of the list. list is traversed from first element to the last element. </p>
+<p>find an element within the linked list. callback is invoked for each element of the list, in reverse direction from last element to first element; when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lst</td><td>(in) node in a tree (parent of enumerated childs). </td></tr>
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">lastpos</td><td>(out) position in the list that has been found. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00360">360</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">int</span> ret;
+        <a class="code" href="a00012.html">DRING</a> *cur, *next;
+
+        <span class="keywordflow">if</span> (retval) {
+                *retval = 0;
+        }
+
+        <span class="keywordflow">if</span> (!eval) {
+          <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="keywordflow">if</span> ( save_from_delete ) {
+                <a class="code" href="a00053.html#gac5d159651c812e6785f81bc2dfc73b7d" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_REVERSE_SAVE</a>( cur, next, lst ) {
+
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
+                        }
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="a00053.html#ga550a7b5adbe2d3325db38c49764bdc8c" title="Macro for iterate over all elements of a list, the list is traversed in reverse direction from last e...">DRING_FOREACH_REVERSE</a>( cur, lst ) {
+
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
+                        }
+                }
+        }
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga3efd1408b3d08b2253e1bf781306a425"></a><!-- doxytag: member="dring.h::DRING_findif" ref="ga3efd1408b3d08b2253e1bf781306a425" args="(DRING *lst, DRING_VISITOR eval, void *context, int32_t *retval, int save_from_del)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_findif </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00053.html#gadbbb7e55996e9a7bc35f1f5bd26b75d0">DRING_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>retval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_del</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>find an element within the linked list. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">retval</td><td>(out) optional - the first non zero value returned by eval callback, if NULL then ignored. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00310">310</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">int</span> ret;
+    <a class="code" href="a00012.html">DRING</a> *cur, *next;
+
+        <span class="keywordflow">if</span> (retval) {
+                *retval = 0;
+        }
+
+        <span class="keywordflow">if</span> (!eval) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="keywordflow">if</span> (save_from_del) {
+                <a class="code" href="a00053.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, lst) {
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
+                        }
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="a00053.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, lst ) {
+                        ret = eval( cur, context );
+                        <span class="keywordflow">if</span> (ret) {
+                                <span class="keywordflow">if</span> (retval) {
+                                        *retval = ret;
+                                }
+                                <span class="keywordflow">return</span> cur;
+                        }
+                }
+        }
+                
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gacc803a0c5a8bc3ce165f8d8fe5e78ab1"></a><!-- doxytag: member="dring.h::DRING_foreach" ref="gacc803a0c5a8bc3ce165f8d8fe5e78ab1" args="(DRING *lst, DRING_VISITOR_V eval, void *context, int save_from_del)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DRING_foreach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_del</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>iterate over all elements of a list, callback is invoked for either element of the list. list is traversed forward from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
     <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
     <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
     <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
@@ -827,43 +770,55 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00458">458</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00029_source.html#l00007">7</a> of file <a class="el" href="a00029_source.html">dring.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-    <a class="code" href="a00015.html">TREENODE</a> *cur;
+    <a class="code" href="a00012.html">DRING</a> *cur, *next;
 
         <span class="keywordflow">if</span> (!eval) {
           <span class="keywordflow">return</span>;
         }
 
-        <a class="code" href="a00053.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>( cur, lst) {
-                eval( cur, context );
+        <span class="keywordflow">if</span> (save_from_del) {
+                <a class="code" href="a00053.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, lst) {
+                        eval( cur, data );
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="a00053.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, lst ) {
+                        eval( cur, data );
+                }
         }
-        
+                
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gacb91cd0e28147dc399cba4cc4ddea1c1"></a><!-- doxytag: member="tree.h::TREE_foreach_child_reverse" ref="gacb91cd0e28147dc399cba4cc4ddea1c1" args="(TREENODE *lst, TREE_VISITOR_V eval, void *context)" -->
+<a class="anchor" id="ga98724ac564245aa77a1a4c55f83fadb9"></a><!-- doxytag: member="dring.h::DRING_foreach_reverse" ref="ga98724ac564245aa77a1a4c55f83fadb9" args="(DRING *lst, DRING_VISITOR_V eval, void *context, int save_from_delete)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE void TREE_foreach_child_reverse </td>
+          <td class="memname">void DRING_foreach_reverse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
           <td class="paramname"><em>lst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00053.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a>&#160;</td>
           <td class="paramname"><em>eval</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>save_from_delete</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -874,242 +829,105 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00474">474</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) the object. </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00028">28</a> of file <a class="el" href="a00029_source.html">dring.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-    <a class="code" href="a00015.html">TREENODE</a> *cur;
+        <a class="code" href="a00012.html">DRING</a> *cur, *next;
 
         <span class="keywordflow">if</span> (!eval) {
-          <span class="keywordflow">return</span>;
+          return ;
         }
 
+        <span class="keywordflow">if</span> ( save_from_delete ) {
+                <a class="code" href="a00053.html#gac5d159651c812e6785f81bc2dfc73b7d" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_REVERSE_SAVE</a>( cur, next, lst ) {
 
-        <a class="code" href="a00053.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>( cur,lst) {
-                eval( cur, context );
-        }
-        
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga272a19d0e9bb16460b010d7c38f6038a"></a><!-- doxytag: member="tree.h::TREE_foreach_postorder" ref="ga272a19d0e9bb16460b010d7c38f6038a" args="(TREENODE *node, TREE_VISITOR_V visit, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_foreach_postorder </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00668">668</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *current;
-
-        <a class="code" href="a00053.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current,node)
-                visit(node,context);
-        <a class="code" href="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gae16d9f6e7f210f3596a00688b0598a05"></a><!-- doxytag: member="tree.h::TREE_foreach_preorder" ref="gae16d9f6e7f210f3596a00688b0598a05" args="(TREENODE *node, TREE_VISITOR_V visit, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_foreach_preorder </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
-          <td class="paramname"><em>visit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00634">634</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *current;
-
-        <a class="code" href="a00053.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current,node)
-                visit(node,context);
-        <a class="code" href="a00053.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga0ea2162b901f647f5dac3b15dfecdb12"></a><!-- doxytag: member="tree.h::TREE_init_root" ref="ga0ea2162b901f647f5dac3b15dfecdb12" args="(TREENODE *tree)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_init_root </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>tree</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00037">37</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        tree-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = tree-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tree-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = 0;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        tree-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = 0;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span><span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        tree-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = 0;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga604dc40c8dfea4f7beed9b0437dfb496"></a><!-- doxytag: member="tree.h::TREE_insert_child" ref="ga604dc40c8dfea4f7beed9b0437dfb496" args="(TREENODE *parent, TREENODE *newnode, TREE_INSERT_MODE mode, int node_is_leaf)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_insert_child </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00196">196</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{       
-        <span class="comment">/* init new node */</span>
-        <span class="keywordflow">if</span> (node_is_leaf) {
-                newnode-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = 0;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                newnode-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = 0;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        }
-        newnode-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        newnode-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = 0;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = 0;
-<span class="preprocessor">#endif  </span>
-<span class="preprocessor"></span>
-        
-        <span class="keywordflow">if</span> (!parent-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {         
-
-                <span class="comment">/* insert as first child */</span>
-                <span class="comment">//newnode-&gt;nextlevel_first = parent-&gt;nextlevel_first;</span>
-                parent-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = newnode;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                <span class="comment">//newnode-&gt;nextlevel_last = parent-&gt;nextlevel_last;</span>
-                parent-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = newnode;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                
+                        eval( cur, data );
+                }
         } <span class="keywordflow">else</span> {
+                <a class="code" href="a00053.html#ga550a7b5adbe2d3325db38c49764bdc8c" title="Macro for iterate over all elements of a list, the list is traversed in reverse direction from last e...">DRING_FOREACH_REVERSE</a>( cur, lst ) {
 
-                <span class="comment">/* insert as sibling */</span>
-                <span class="keywordflow">switch</span>(mode) {
-                        <span class="keywordflow">case</span> <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>: {
-                                        <a class="code" href="a00053.html#ga530586b2042c37e278d8666c75978497">TREE_insert_left_sibling</a>(parent-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>,newnode, 0);
-                                }
-                                <span class="keywordflow">break</span>;
-                        <span class="keywordflow">case</span> <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>:
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>                                <a class="code" href="a00053.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a>( parent-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>,newnode, 0);
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>                                <a class="code" href="a00053.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a>( <a class="code" href="a00053.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(parent-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>), newnode, 0);
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-                                <span class="keywordflow">break</span>;
+                        eval( cur, data );
                 }
         }
-
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga530586b2042c37e278d8666c75978497"></a><!-- doxytag: member="tree.h::TREE_insert_left_sibling" ref="ga530586b2042c37e278d8666c75978497" args="(TREENODE *current, TREENODE *newnode, int node_is_leaf)" -->
+<a class="anchor" id="gaa392ee3a23da21ccf4e4ea62bd6c7de8"></a><!-- doxytag: member="dring.h::DRING_get_first" ref="gaa392ee3a23da21ccf4e4ea62bd6c7de8" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE int TREE_insert_left_sibling </td>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_get_first </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em>, </td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00163">163</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (<a class="code" href="a00053.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>(list)) {
+    <span class="keywordflow">return</span> 0;
+  }  
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac4fbe3b2aa6b11ce356755c89235b9d4"></a><!-- doxytag: member="dring.h::DRING_get_last" ref="gac4fbe3b2aa6b11ce356755c89235b9d4" args="(DRING *list)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_get_last </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00171">171</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (<a class="code" href="a00053.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>(list)) {
+    <span class="keywordflow">return</span> 0;
+  }
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga44a51594b007ec843d30bf5c3b3ddc73"></a><!-- doxytag: member="dring.h::DRING_get_next" ref="ga44a51594b007ec843d30bf5c3b3ddc73" args="(DRING *end, DRING *cur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_get_next </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>cur</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1120,62 +938,32 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00157">157</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00030_source.html#l00180">180</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = current-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (!parent) {
-                <span class="keywordflow">return</span> -1;
-        }
+  <span class="keywordflow">if</span> (cur-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> == end) { 
+    <span class="keywordflow">return</span> 0;
+  }
+  <span class="keywordflow">return</span> cur-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
 
-        <span class="keywordflow">if</span> (node_is_leaf) {
-                <a class="code" href="a00053.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a>(newnode);
-        }
-
-        <span class="keywordflow">if</span> (parent-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> == current) {
-                parent-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = newnode;
-        }
-
-        newnode-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a>) {
-                current-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a>-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = newnode;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = current;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT      </span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = current-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-        current-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = newnode;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-
-
-        <span class="keywordflow">return</span> 0;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gaa242aa64487dd0db1ee4659a28d9aca9"></a><!-- doxytag: member="tree.h::TREE_insert_right_sibling" ref="gaa242aa64487dd0db1ee4659a28d9aca9" args="(TREENODE *current, TREENODE *newnode, int node_is_leaf)" -->
+<a class="anchor" id="ga7f552929105d5cf0a6f621c6e8463f2d"></a><!-- doxytag: member="dring.h::DRING_get_nth" ref="ga7f552929105d5cf0a6f621c6e8463f2d" args="(DRING *list, size_t nth)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE int TREE_insert_right_sibling </td>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_get_nth </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em>, </td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nth</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1186,152 +974,33 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00123">123</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00030_source.html#l00261">261</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = current-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
 
-        <span class="keywordflow">if</span> (!parent) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">if</span> (node_is_leaf) {
-                <a class="code" href="a00053.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a>(newnode);
-        }
+        <a class="code" href="a00012.html">DRING</a> *elm;
 
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (parent-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> == current) {
-                parent-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = newnode;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-        newnode-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a>  = current;
-        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = newnode;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = newnode;
+        <span class="keywordflow">for</span>(elm = <a class="code" href="a00053.html#gaa392ee3a23da21ccf4e4ea62bd6c7de8">DRING_get_first</a>(list); elm != 0 &amp;&amp; nth &gt; 0; nth -= 1, elm = <a class="code" href="a00053.html#ga44a51594b007ec843d30bf5c3b3ddc73">DRING_get_next</a>(list, elm)); 
 
-
-
-        <span class="keywordflow">return</span> 0;
+        <span class="keywordflow">return</span> elm;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga8f8605be102eedc9bb9e49cf343f2a13"></a><!-- doxytag: member="tree.h::TREE_last_child" ref="ga8f8605be102eedc9bb9e49cf343f2a13" args="(TREENODE *node)" -->
+<a class="anchor" id="ga82d60185895dcf1deecd14d4a809741f"></a><!-- doxytag: member="dring.h::DRING_get_nth_reverse" ref="ga82d60185895dcf1deecd14d4a809741f" args="(DRING *list, size_t nth)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_last_child </td>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_get_nth_reverse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00110">110</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> <a class="code" href="a00053.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(node-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>);
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga06ef1bfc9046f778cf6c8cc287bec132"></a><!-- doxytag: member="tree.h::TREE_left_sibling" ref="ga06ef1bfc9046f778cf6c8cc287bec132" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_left_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00054">54</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        <a class="code" href="a00015.html">TREENODE</a> *tmp;
-
-        <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
-        tmp = node-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-        <span class="keywordflow">if</span> (tmp == node) {
-                <span class="keywordflow">return</span> 0;
-        }
-        <span class="keywordflow">while</span>(tmp &amp;&amp; tmp-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> != node) {
-                tmp = tmp-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-        <span class="keywordflow">return</span> tmp;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga1ae823cfa1464a0eca0cd376a107b6d9"></a><!-- doxytag: member="tree.h::TREE_leftmost_sibling" ref="ga1ae823cfa1464a0eca0cd376a107b6d9" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_leftmost_sibling </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00080">80</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = node-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (parent) {
-                <span class="keywordflow">return</span> parent-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-        }
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gab2df5d5218e9b473a61b0cbfdb2ae8d0"></a><!-- doxytag: member="tree.h::TREE_merge_childs" ref="gab2df5d5218e9b473a61b0cbfdb2ae8d0" args="(TREENODE *parent, TREE_INSERT_MODE mode, TREENODE *newnode)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void TREE_merge_childs </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00053.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>newnode</em>&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nth</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1342,77 +1011,345 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00244">244</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00030_source.html#l00277">277</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{       
-        <a class="code" href="a00015.html">TREENODE</a> *ch;
+        <span class="keywordflow">return</span> <a class="code" href="a00053.html#ga7f552929105d5cf0a6f621c6e8463f2d">DRING_get_nth</a>( list, <a class="code" href="a00053.html#gafb5caaea75f7196bd6abe1ac8e81a7f3">DRING_size</a>( list ) - nth );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gae8038a9a107a06bb0fae04cd8f8f7711"></a><!-- doxytag: member="dring.h::DRING_get_prev" ref="gae8038a9a107a06bb0fae04cd8f8f7711" args="(DRING *end, DRING *cur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_get_prev </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>cur</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-        <span class="keywordflow">switch</span>(mode) {
+<p>Definition at line <a class="el" href="a00030_source.html#l00190">190</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (cur-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> == end) { 
+    <span class="keywordflow">return</span> 0;
+  }
+  <span class="keywordflow">return</span> cur-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
 
-        <span class="keywordflow">case</span> <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>:  
-                ch = <a class="code" href="a00053.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a>(newnode);
-                <span class="keywordflow">if</span> (!ch) {
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaea5e890f7d1dab572fe3ef6f067e5d26"></a><!-- doxytag: member="dring.h::DRING_init" ref="gaea5e890f7d1dab572fe3ef6f067e5d26" args="(DRING *head)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DRING_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>head</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>initialises an empty list head </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">head</td><td>list head </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00046">46</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{ 
+  head-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = head-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = head; 
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gab65d72bd525d11559228b5aa3aa641f0"></a><!-- doxytag: member="dring.h::DRING_insert_after" ref="gab65d72bd525d11559228b5aa3aa641f0" args="(DRING *list, DRING *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DRING_insert_after </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new entry after a given entry. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newentry</td><td>pointer to new list entry (to be inserted). </td></tr>
+    <tr><td class="paramname">list</td><td>current posision (newentry inserted after this one). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00083">83</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <a class="code" href="a00053.html#ga93f762e668a7283b18025310886635ea" title="insert new entry before a given entry.">DRING_insert_before</a>( list-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>, newentry );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga93f762e668a7283b18025310886635ea"></a><!-- doxytag: member="dring.h::DRING_insert_before" ref="ga93f762e668a7283b18025310886635ea" args="(DRING *list, DRING *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DRING_insert_before </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new entry before a given entry. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newentry</td><td>pointer to new list entry (to be inserted). </td></tr>
+    <tr><td class="paramname">list</td><td>current position (newentry inserted before this one). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00067">67</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <a class="code" href="a00012.html">DRING</a> *prev = list-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+
+   prev-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = newentry;    
+   newentry-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = list;
+
+   newentry-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = prev; 
+   list-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = newentry; 
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gad8c4485c62148db72ca05f55dcc75709"></a><!-- doxytag: member="dring.h::DRING_insert_sorted" ref="gad8c4485c62148db72ca05f55dcc75709" args="(DRING *list, DRING_COMPARE compare, DRING *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DRING_insert_sorted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00053.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a>&#160;</td>
+          <td class="paramname"><em>compare</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">compare</td><td>(in) comparison function. </td></tr>
+    <tr><td class="paramname">newentry</td><td>(in) element that is to be inserted into list. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00029_source.html#l00052">52</a> of file <a class="el" href="a00029_source.html">dring.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00012.html">DRING</a> *cur;
+        
+        <a class="code" href="a00053.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, list ) {
+                <span class="keywordflow">if</span> (compare(cur,newentry) &gt; 0) {
+                        <a class="code" href="a00053.html#ga93f762e668a7283b18025310886635ea" title="insert new entry before a given entry.">DRING_insert_before</a>(cur,newentry);
                         <span class="keywordflow">return</span>;
                 }
-
-                <span class="keywordflow">while</span>(ch) {
-                        <a class="code" href="a00053.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a>(parent, ch, <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>, 0 );
-                        ch = <a class="code" href="a00053.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a>(ch);
-                }
-                <span class="keywordflow">break</span>;
-
-        <span class="keywordflow">case</span> <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>: 
-                ch = <a class="code" href="a00053.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a>(newnode);
-                <span class="keywordflow">if</span> (!ch) {
-                        <span class="keywordflow">return</span>;
-                }
-
-                <span class="keywordflow">while</span>(ch) {
-                        <a class="code" href="a00053.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a>(parent, ch, <a class="code" href="a00053.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>, 0 );
-                        ch = <a class="code" href="a00053.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(ch);
-                }
-                <span class="keywordflow">break</span>;
         }
+
+        <a class="code" href="a00053.html#gaed724487f6cd26c0b79b875ff3390c61" title="insert element as last in list (used to maintain double ended queue)">DRING_push_back</a>( list, newentry );
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga27a00a38d3c36cab6ff6adb7a831c4ce"></a><!-- doxytag: member="tree.h::TREE_parent" ref="ga27a00a38d3c36cab6ff6adb7a831c4ce" args="(TREENODE *node)" -->
+<a class="anchor" id="ga7b28ffdc594d835f2c49cf9e74f7c3b3"></a><!-- doxytag: member="dring.h::DRING_isempty" ref="ga7b28ffdc594d835f2c49cf9e74f7c3b3" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_parent </td>
+          <td class="memname">M_INLINE int DRING_isempty </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00048">48</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>checks if argument list is empty </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>pointer to list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>not zero for non empty list. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00057">57</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+  <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> == list;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga064ab627a56dc9871c3869bf62b56d0e"></a><!-- doxytag: member="tree.h::TREE_postorder_next" ref="ga064ab627a56dc9871c3869bf62b56d0e" args="(TREENODE *current, TREENODE *prev)" -->
+<a class="anchor" id="ga50912d37cc30e961dd53ff291b8db05e"></a><!-- doxytag: member="dring.h::DRING_pop_back" ref="ga50912d37cc30e961dd53ff291b8db05e" args="(DRING *elem)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_postorder_next </td>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_pop_back </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em>, </td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>elem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>remove last element from list (used to maintain double ended queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">elem</td><td>(in) list head. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the last element of list, NULL if list empty </dd></dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00150">150</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{ 
+  <a class="code" href="a00012.html">DRING</a> *ret;
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00053.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>( elem )) {
+    <span class="keywordflow">return</span> 0;
+  }
+  ret = elem-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+  <a class="code" href="a00053.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>(elem-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>);
+  <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga315bb0f49e0ccbadcc59a5e9258eff19"></a><!-- doxytag: member="dring.h::DRING_pop_front" ref="ga315bb0f49e0ccbadcc59a5e9258eff19" args="(DRING *elem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_pop_front </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>elem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>remove first element from list (used to maintain double ended queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">elem</td><td>(in) list head </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the first element of list, NULL if list empty </dd></dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00133">133</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00012.html">DRING</a> *ret;
+  <span class="keywordflow">if</span> (<a class="code" href="a00053.html#ga7b28ffdc594d835f2c49cf9e74f7c3b3" title="checks if argument list is empty">DRING_isempty</a>( elem )) {
+    <span class="keywordflow">return</span> 0;
+  }
+  ret = elem-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+  <a class="code" href="a00053.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>(elem-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>);
+  <span class="keywordflow">return</span> ret;  
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaed724487f6cd26c0b79b875ff3390c61"></a><!-- doxytag: member="dring.h::DRING_push_back" ref="gaed724487f6cd26c0b79b875ff3390c61" args="(DRING *list, DRING *newentry)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DRING_push_back </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>prev</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1423,228 +1360,175 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00578">578</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
+<p>insert element as last in list (used to maintain double ended queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>list head. </td></tr>
+    <tr><td class="paramname">newentry</td><td>entry to be inserted into list </td></tr>
+  </table>
+  </dd>
+</dl>
 
-        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> &amp;&amp; (!prev || current-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> == prev)) {
-next_level:
-                <span class="keywordflow">do</span> {            
-                        current = current-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-                }
-                <span class="keywordflow">while</span>(current-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>);
-        } <span class="keywordflow">else</span> {
-                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                        current = current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
-                          <span class="keywordflow">goto</span> next_level;
-                        }
-                } <span class="keywordflow">else</span> {
-                        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                                current = current-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-                        }
-                }
-        }
-        <span class="keywordflow">return</span> current;
+<p>Definition at line <a class="el" href="a00030_source.html#l00113">113</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00053.html#gab65d72bd525d11559228b5aa3aa641f0" title="insert new entry after a given entry.">DRING_insert_after</a>( list-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>, newentry );
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga52b32e7eea57b597b406c36265a1639a"></a><!-- doxytag: member="tree.h::TREE_preorder_next" ref="ga52b32e7eea57b597b406c36265a1639a" args="(TREENODE *current)" -->
+<a class="anchor" id="ga897228c60f1de15be0799dadea9d0337"></a><!-- doxytag: member="dring.h::DRING_push_front" ref="ga897228c60f1de15be0799dadea9d0337" args="(DRING *list, DRING *newentry)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_preorder_next </td>
+          <td class="memname">M_INLINE void DRING_push_front </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert element as first in list (used to maintain double ended queue) </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>list head.s </td></tr>
+    <tr><td class="paramname">newentry</td><td>entry to be inserted into list </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00123">123</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00053.html#gab65d72bd525d11559228b5aa3aa641f0" title="insert new entry after a given entry.">DRING_insert_after</a>( list, newentry );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga02284390005b102707b116d7de2b7ae6"></a><!-- doxytag: member="dring.h::DRING_reverse" ref="ga02284390005b102707b116d7de2b7ae6" args="(DRING *lst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void DRING_reverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>lst</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00403">403</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
-                current = current-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-        } <span class="keywordflow">else</span> {
-                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                        current = current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                } <span class="keywordflow">else</span> {
-                        <span class="keywordflow">while</span>(current-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                                current = current-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-                                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                                        current = current-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                                        <span class="keywordflow">break</span>;
-                                }
-                        }
-                }
-        }
+<p>Reverse a list This function turns the first element into the last element, the second element into the one before the last, and so on and on. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">header</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
 
-        <span class="keywordflow">return</span> current;
+<p>Definition at line <a class="el" href="a00030_source.html#l00457">457</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00012.html">DRING</a> *cur = lst-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>, *next;
+        <a class="code" href="a00012.html">DRING</a> *tmp;
+
+        <span class="keywordflow">if</span> (cur) {
+                next = cur-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                cur-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = lst;
+
+                <span class="keywordflow">while</span>(next) {
+                        tmp = next-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                        
+                        next-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = cur;
+                        cur-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = next;
+
+                        cur = next;
+                        next = tmp;
+                }
+
+                tmp = lst-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+                lst-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = lst-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+                lst-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = tmp;
+        }
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gaa2b3ebe7d515ad3e30c9ad0996109978"></a><!-- doxytag: member="tree.h::TREE_right_sibling" ref="gaa2b3ebe7d515ad3e30c9ad0996109978" args="(TREENODE *node)" -->
+<a class="anchor" id="gafb5caaea75f7196bd6abe1ac8e81a7f3"></a><!-- doxytag: member="dring.h::DRING_size" ref="gafb5caaea75f7196bd6abe1ac8e81a7f3" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_right_sibling </td>
+          <td class="memname">M_INLINE size_t DRING_size </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00075">75</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>Definition at line <a class="el" href="a00030_source.html#l00245">245</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+        <span class="keywordtype">size_t</span> sz;
+        <a class="code" href="a00012.html">DRING</a> * cur;
+        
+        <a class="code" href="a00053.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>( cur, list ) {
+                sz += 1;
+        }
+        <span class="keywordflow">return</span> sz;
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="gaff7bf0e8b830dec211d8760b01427d5a"></a><!-- doxytag: member="tree.h::TREE_rightmost_sibling" ref="gaff7bf0e8b830dec211d8760b01427d5a" args="(TREENODE *node)" -->
+<a class="anchor" id="ga81d2db3ee3b83fe28393d45530bed230"></a><!-- doxytag: member="dring.h::DRING_unlink" ref="ga81d2db3ee3b83fe28393d45530bed230" args="(DRING *list)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_rightmost_sibling </td>
+          <td class="memname">M_INLINE <a class="el" href="a00012.html">DRING</a>* DRING_unlink </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00012.html">DRING</a> *&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00089">89</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
+<p>delete an element from a list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">list</td><td>deletes this list element </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00030_source.html#l00101">101</a> of file <a class="el" href="a00030_source.html">dring.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <a class="code" href="a00015.html">TREENODE</a> *<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = node-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (parent) {
-                <span class="keywordflow">return</span> parent-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-        }
-        <span class="keywordflow">return</span> 0;
-<span class="preprocessor">#else</span>
-<span class="preprocessor"></span>        <span class="keywordflow">while</span>(node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                node = node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">return</span> node;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga7beb2cf4338f19f13977cc49b3f2cd43"></a><!-- doxytag: member="tree.h::TREE_unlink_node" ref="ga7beb2cf4338f19f13977cc49b3f2cd43" args="(TREENODE *node)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00015.html">TREENODE</a>* TREE_unlink_node </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00015.html">TREENODE</a> *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00277">277</a> of file <a class="el" href="a00038_source.html">tree.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00015.html">TREENODE</a> *tmp,*tmp_next, *tmp_last;
-
-        <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
-
-        <span class="comment">/* wrong */</span>
-        tmp = node-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
-        <span class="keywordflow">if</span> (tmp &amp;&amp; tmp-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> == node) {
-
-                <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
-                        tmp-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                        <span class="keywordflow">goto</span> sdel;
-                }
-
-                tmp-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = node-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;                           
-                tmp_next = tmp-&gt;<a class="code" href="a00015.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
-                tmp_last = <a class="code" href="a00053.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(tmp_next);
-
-                tmp_last-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>                <span class="keywordflow">if</span> (node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
-                        node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = tmp_last;
-                }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                <span class="keywordflow">do</span> {
-                        tmp_next-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tmp;
-                        <span class="keywordflow">if</span> (tmp_next == tmp_last) {
-                                <span class="keywordflow">break</span>;
-                        }
-                        tmp_next = tmp_next-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                } <span class="keywordflow">while</span>(tmp_next);
-
-                <span class="keywordflow">return</span> node;
-        }
-
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (tmp &amp;&amp; tmp-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> == node) {
-
-                <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>) {
-                        tmp-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = <a class="code" href="a00053.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node);
-                        <span class="keywordflow">goto</span> sdel;
-                }
-
-                tmp-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = node-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;     
-                tmp_next = tmp-&gt;<a class="code" href="a00015.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
-                tmp_last = <a class="code" href="a00053.html#ga1ae823cfa1464a0eca0cd376a107b6d9">TREE_leftmost_sibling</a>(tmp_next);
-
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>                tmp_last-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = node-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>                <a class="code" href="a00053.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node)-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = tmp_last;
-
-                <span class="keywordflow">do</span> {
-                        tmp_last-&gt;<a class="code" href="a00015.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tmp;
-                        <span class="keywordflow">if</span> (tmp_next == tmp_last) {
-                                <span class="keywordflow">break</span>;
-                        }
-                        tmp_last = tmp_last-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-                } <span class="keywordflow">while</span>(tmp_last);                                      
-
-                <span class="keywordflow">return</span> node;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-sdel:
-
-<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
-<span class="preprocessor"></span>        tmp = node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        <span class="keywordflow">if</span> (tmp) {
-                tmp-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a> = node-&gt;<a class="code" href="a00015.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
-        }
-<span class="preprocessor">#endif</span>
-<span class="preprocessor"></span>
-        tmp = <a class="code" href="a00053.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node);
-        <span class="keywordflow">if</span> (tmp) {
-                tmp-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = node-&gt;<a class="code" href="a00015.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
-        }
-
-        <span class="keywordflow">return</span> node;
+   list-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> = list-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+   list-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a> = list-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+   <span class="keywordflow">return</span> list;
 }
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: SLIST_entry</title>
+<title>Simple data structures / objects in plain C: DLIST_entry</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -32,32 +32,53 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#groups">Modules</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">SLIST_entry</div>  </div>
+<div class="title">DLIST_entry</div>  </div>
 </div>
 <div class="contents">
 
-<p>an entry in single linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00008.html">SLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry.  
+<p>an entry in double linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00002.html">DLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry.  
 <a href="#details">More...</a></p>
+<div class="dynheader">
+Collaboration diagram for DLIST_entry:</div>
+<div class="dyncontent">
+<center><table><tr><td><img src="a00050.png" border="0" alt="" usemap="#a00050"/>
+<map name="a00050" id="a00050">
+<area shape="rect" id="node1" href="a00051.html" title="Double linked list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list." alt="" coords="151,5,209,35"/></map>
+</td></tr></table></center>
+</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html">tagSLIST_entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html">tagDLIST_entry</a></td></tr>
+<tr><td colspan="2"><h2><a name="groups"></a>
+Modules</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00051.html">DLIST</a></td></tr>
+
+<p><tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><p>Double linked list data structure; where each list element can be of different length. Each element has a pointer to the next and previous element of the list. </p>
+<br/></td></tr>
+</p>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00013.html">tagSLIST_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#gaacb00d1a4daaa75eee59c1483cb57b80">SLIST_entry</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00010.html">tagDLIST_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#ga8bcfc120d0cdb50aa5e418d3c7dd1bdf">DLIST_entry</a></td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00010.html">tagDLIST_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#ga6353911f6d3fc5c023e5bc6c520adb34">tagDLIST_entry::prev</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00010.html">DLIST_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#ga68fa6740c5444af3c0bda5bc2f78bff4">DLIST::root</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>an entry in single linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00008.html">SLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry. </p>
+<p>an entry in double linked list, add to structure as member in order to make structure storable in hash table. If the user wants to link his struct(ure) into a <a class="el" href="a00002.html">DLIST</a> linked list, then he must embed a DLIST_entry into his structure. Access to user defined structure is via embedded SLIST_entry. </p>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="gaacb00d1a4daaa75eee59c1483cb57b80"></a><!-- doxytag: member="slist.h::SLIST_entry" ref="gaacb00d1a4daaa75eee59c1483cb57b80" args="" -->
+<a class="anchor" id="ga8bcfc120d0cdb50aa5e418d3c7dd1bdf"></a><!-- doxytag: member="dlist.h::DLIST_entry" ref="ga8bcfc120d0cdb50aa5e418d3c7dd1bdf" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="a00013.html">tagSLIST_entry</a>  
-   <a class="el" href="a00013.html">SLIST_entry</a></td>
+          <td class="memname">typedef struct <a class="el" href="a00010.html">tagDLIST_entry</a>  
+   <a class="el" href="a00010.html">DLIST_entry</a></td>
         </tr>
       </table>
 </div>
@@ -65,8 +86,40 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Variable Documentation</h2>
+<a class="anchor" id="ga6353911f6d3fc5c023e5bc6c520adb34"></a><!-- doxytag: member="tagDLIST_entry::prev" ref="ga6353911f6d3fc5c023e5bc6c520adb34" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="a00010.html">tagDLIST_entry</a> * <a class="el" href="a00050.html#ga6353911f6d3fc5c023e5bc6c520adb34">tagDLIST_entry::prev</a></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00023">23</a> of file <a class="el" href="a00026_source.html">dlist.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga68fa6740c5444af3c0bda5bc2f78bff4"></a><!-- doxytag: member="DLIST::root" ref="ga68fa6740c5444af3c0bda5bc2f78bff4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00010.html">DLIST_entry</a> <a class="el" href="a00050.html#ga68fa6740c5444af3c0bda5bc2f78bff4">DLIST::root</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>number of elements in list </p>
+
+<p>Definition at line <a class="el" href="a00026_source.html#l00049">49</a> of file <a class="el" href="a00026_source.html">dlist.h</a>.</p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: Member List</title>
+<title>Simple data structures / objects in plain C: Strtoint</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,31 +24,238 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#define-members">Defines</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">DLISTUNR Member List</div>  </div>
+<div class="title">Strtoint</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00003.html">DLISTUNR</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a></td><td><a class="el" href="a00003.html">DLISTUNR</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a></td><td><a class="el" href="a00003.html">DLISTUNR</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a></td><td><a class="el" href="a00003.html">DLISTUNR</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a></td><td><a class="el" href="a00003.html">DLISTUNR</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a></td><td><a class="el" href="a00003.html">DLISTUNR</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+
+<p>an attempt to normalize the wild strtol/stroll/strtoul/strtoull set of functions for the stdint.h world.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00059.html#ga3c6d9e8a288578b43dfc04dd3110c8f2">strto_int64_t</a>&#160;&#160;&#160;strtoll</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00059.html#ga09febc2287c7d97af19445938e0b5dcd">strto_uint64_t</a>&#160;&#160;&#160;strtoull</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00059.html#ga3c9e17535c42411584a7c6296354d89e">strto_int16_t</a> (const char *nptr, char **endptr, int base)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00059.html#ga2a642daaaa68d2f9cc4752feb4057ab5">strto_uint16_t</a> (const char *nptr, char **endptr, int base)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00059.html#ga048804d1e3444057a7a853c4cbb1ca85">strto_int32_t</a> (const char *nptr, char **endptr, int base)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00059.html#ga1c2b12345766c71b062f6e7adaacbeba">strto_uint32_t</a> (const char *nptr, char **endptr, int base)</td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>an attempt to normalize the wild strtol/stroll/strtoul/strtoull set of functions for the stdint.h world. </p>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="ga3c6d9e8a288578b43dfc04dd3110c8f2"></a><!-- doxytag: member="strtoint.h::strto_int64_t" ref="ga3c6d9e8a288578b43dfc04dd3110c8f2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define strto_int64_t&#160;&#160;&#160;strtoll</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00041_source.html#l00054">54</a> of file <a class="el" href="a00041_source.html">strtoint.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga09febc2287c7d97af19445938e0b5dcd"></a><!-- doxytag: member="strtoint.h::strto_uint64_t" ref="ga09febc2287c7d97af19445938e0b5dcd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define strto_uint64_t&#160;&#160;&#160;strtoull</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00041_source.html#l00055">55</a> of file <a class="el" href="a00041_source.html">strtoint.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga3c9e17535c42411584a7c6296354d89e"></a><!-- doxytag: member="strtoint.h::strto_int16_t" ref="ga3c9e17535c42411584a7c6296354d89e" args="(const char *nptr, char **endptr, int base)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int16_t strto_int16_t </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>nptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>endptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>base</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00041_source.html#l00017">17</a> of file <a class="el" href="a00041_source.html">strtoint.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">long</span> rval = strtol( nptr, endptr, base );
+  <span class="keywordflow">if</span> (rval &gt; SHRT_MAX) {
+    errno = ERANGE;
+  }
+  <span class="keywordflow">return</span> (int16_t) rval;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga048804d1e3444057a7a853c4cbb1ca85"></a><!-- doxytag: member="strtoint.h::strto_int32_t" ref="ga048804d1e3444057a7a853c4cbb1ca85" args="(const char *nptr, char **endptr, int base)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int32_t strto_int32_t </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>nptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>endptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>base</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00041_source.html#l00036">36</a> of file <a class="el" href="a00041_source.html">strtoint.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">long</span> rval = strtol( nptr, endptr, base );
+  <span class="keywordflow">if</span> (rval &gt; INT_MAX) {
+    errno = ERANGE;
+  }
+  <span class="keywordflow">return</span> (int32_t) rval;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2a642daaaa68d2f9cc4752feb4057ab5"></a><!-- doxytag: member="strtoint.h::strto_uint16_t" ref="ga2a642daaaa68d2f9cc4752feb4057ab5" args="(const char *nptr, char **endptr, int base)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE uint16_t strto_uint16_t </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>nptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>endptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>base</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00041_source.html#l00026">26</a> of file <a class="el" href="a00041_source.html">strtoint.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">long</span> rval = strtoul( nptr, endptr, base );
+  <span class="keywordflow">if</span> (rval &gt; USHRT_MAX) {
+    errno = ERANGE;
+  }
+  <span class="keywordflow">return</span> (uint16_t) rval;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga1c2b12345766c71b062f6e7adaacbeba"></a><!-- doxytag: member="strtoint.h::strto_uint32_t" ref="ga1c2b12345766c71b062f6e7adaacbeba" args="(const char *nptr, char **endptr, int base)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE uint32_t strto_uint32_t </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>nptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>endptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>base</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00041_source.html#l00045">45</a> of file <a class="el" href="a00041_source.html">strtoint.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  uint32_t rval = strtol( nptr, endptr, base );
+  <span class="keywordflow">if</span> (rval &gt; UINT_MAX) {
+    errno = ERANGE;
+  }
+  <span class="keywordflow">return</span> (int32_t) rval;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:53 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

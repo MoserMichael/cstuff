@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: sring.c File Reference</title>
+<title>Simple data structures / objects in plain C: properties.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,17 +36,492 @@
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#define-members">Defines</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">sring.c File Reference</div>  </div>
+<div class="title">properties.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00036_source.html">cutils/sring.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &quot;<a class="el" href="a00036_source.html">properties.h</a>&quot;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
+<code>#include &lt;stdio.h&gt;</code><br/>
+<code>#include &lt;stdlib.h&gt;</code><br/>
+<code>#include &lt;limits.h&gt;</code><br/>
+<code>#include &lt;ctype.h&gt;</code><br/>
+<code>#include &lt;errno.h&gt;</code><br/>
+<code>#include &lt;<a class="el" href="a00024_source.html">cutils/dbuf.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00035_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a08a7e8a6abdc5cf6d2ac4e978e084d1a">IN_BUF_SIZE</a>&#160;&#160;&#160;8192</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>&#160;&#160;&#160;1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>&#160;&#160;&#160;0</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a390ec77a5a058a6aa2c4053a3fbf2c0c">load_properties</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, const char *file_name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a917ff9a043c0330fc9d8290620e063ff">readLine</a> (FILE *fp, <a class="el" href="a00009.html">DBUF</a> *lineBuff, char *inBuf, int *inOff, int *inLimit)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#acbc7bb4f747c02a58726f2fe087338d4">loadConvert</a> (<a class="el" href="a00009.html">DBUF</a> *ret, const char *in, int off, int len)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a7003ed324e0c95af477928f44bf5da2d">props_compare_key</a> (<a class="el" href="a00006.html">HASH_Entry</a> *entry, void *key, ssize_t key_length)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga1524b28644dffb48b8ad6a524dfb39ee">PROPERTIES_init</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, int num_buckets)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise the object  <a href="a00055.html#ga1524b28644dffb48b8ad6a524dfb39ee"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga265b01e9522d4ead4890078fad7a2e65">PROPERTIES_free</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">free a properties object  <a href="a00055.html#ga265b01e9522d4ead4890078fad7a2e65"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#gab32d735a67b3c2a8c386017198ba4809">PROPERTIES_put</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, const char *name, const char *value)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add a name to value mapping  <a href="a00055.html#gab32d735a67b3c2a8c386017198ba4809"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga23b8c0c9fa9e86b49be50472a1e5522a">PROPERTIES_get</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, const char *name)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">get the value for a name, return 0 if no such mapping exists.  <a href="a00055.html#ga23b8c0c9fa9e86b49be50472a1e5522a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00055.html#ga49304d2de29e5a9e8f0ed9e8f703e1d2">PROPERTIES_load</a> (<a class="el" href="a00014.html">PROPERTIES</a> *props, const char *file_name)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">loads properties from file, a java properties text file.  <a href="a00055.html#ga49304d2de29e5a9e8f0ed9e8f703e1d2"></a><br/></td></tr>
 </table>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="aa93f0eb578d23995850d61f7d61c55c1"></a><!-- doxytag: member="properties.c::FALSE" ref="aa93f0eb578d23995850d61f7d61c55c1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FALSE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00014">14</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a08a7e8a6abdc5cf6d2ac4e978e084d1a"></a><!-- doxytag: member="properties.c::IN_BUF_SIZE" ref="a08a7e8a6abdc5cf6d2ac4e978e084d1a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IN_BUF_SIZE&#160;&#160;&#160;8192</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00012">12</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa8cecfc5c5c054d2875c03e77b7be15d"></a><!-- doxytag: member="properties.c::TRUE" ref="aa8cecfc5c5c054d2875c03e77b7be15d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TRUE&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00013">13</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a390ec77a5a058a6aa2c4053a3fbf2c0c"></a><!-- doxytag: member="properties.c::load_properties" ref="a390ec77a5a058a6aa2c4053a3fbf2c0c" args="(PROPERTIES *props, const char *file_name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int load_properties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00014.html">PROPERTIES</a> *&#160;</td>
+          <td class="paramname"><em>props</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>file_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00105">105</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  FILE * fp; 
+  <a class="code" href="a00009.html">DBUF</a> line,name,value;
+  <span class="keywordtype">int</span> limit;
+  <span class="keywordtype">int</span> keyLen;
+  <span class="keywordtype">int</span> valueStart;
+  <span class="keywordtype">char</span> c;
+  <span class="keywordtype">int</span> hasSep;
+  <span class="keywordtype">int</span> precedingBackslash;
+  <span class="keywordtype">char</span> *inBuf;
+  <span class="keywordtype">int</span> inOff = 0, inLimit = 0;
+        
+  fp = fopen( file_name , <span class="stringliteral">&quot;r&quot;</span>);
+  <span class="keywordflow">if</span> (!fp) {
+    <span class="keywordflow">return</span> -1;
+   }
+
+  inBuf = malloc( <a class="code" href="a00035.html#a08a7e8a6abdc5cf6d2ac4e978e084d1a">IN_BUF_SIZE</a> );
+  <span class="keywordflow">if</span> (!inBuf) {
+    fclose(fp);
+    <span class="keywordflow">return</span> -1;
+  }
+
+  <a class="code" href="a00049.html#gad5b419319a7d42a5ef39bfb1c5194f63" title="initialise a buffer">DBUF_init</a>( &amp;line, 0 );
+
+  <span class="keywordflow">while</span>( (limit = <a class="code" href="a00035.html#a917ff9a043c0330fc9d8290620e063ff">readLine</a>(fp, &amp;line, inBuf, &amp;inOff, &amp;inLimit )) &gt;=0 ) {
+        c = 0;
+        <a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9" title="add stuff to a buffer">DBUF_add</a>( &amp;line, &amp;c, <span class="keyword">sizeof</span>(c) );
+        
+
+        keyLen = 0;
+        valueStart = limit;
+        hasSep = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+
+        <span class="comment">//System.out.println(&quot;line=&lt;&quot; + new String(lineBuf, 0, limit) + &quot;&gt;&quot;);</span>
+        precedingBackslash = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+        <span class="keywordflow">while</span> (keyLen &lt; limit) {
+            c = line.<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>[keyLen];
+            <span class="comment">//need check if escaped.</span>
+            <span class="keywordflow">if</span> ((c == <span class="charliteral">&#39;=&#39;</span> ||  c == <span class="charliteral">&#39;:&#39;</span>) &amp;&amp; !precedingBackslash) {
+                valueStart = keyLen + 1;
+                hasSep = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                <span class="keywordflow">break</span>;
+            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((c == <span class="charliteral">&#39; &#39;</span> || c == <span class="charliteral">&#39;\t&#39;</span> ||  c == <span class="charliteral">&#39;\f&#39;</span>) &amp;&amp; !precedingBackslash) {
+                valueStart = keyLen + 1;
+                <span class="keywordflow">break</span>;
+            } 
+            <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;\\&#39;</span>) {
+                precedingBackslash = !precedingBackslash;
+            } <span class="keywordflow">else</span> {
+                precedingBackslash = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+            }
+            keyLen++;
+        }
+        <span class="keywordflow">while</span> (valueStart &lt; limit) {
+            c = line.<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>[valueStart];
+            <span class="keywordflow">if</span> (c != <span class="charliteral">&#39; &#39;</span> &amp;&amp; c != <span class="charliteral">&#39;\t&#39;</span> &amp;&amp;  c != <span class="charliteral">&#39;\f&#39;</span>) {
+                <span class="keywordflow">if</span> (!hasSep &amp;&amp; (c == <span class="charliteral">&#39;=&#39;</span> ||  c == <span class="charliteral">&#39;:&#39;</span>)) {
+                    hasSep = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                } <span class="keywordflow">else</span> {
+                    <span class="keywordflow">break</span>;
+                }
+            }
+            valueStart++;
+        }
+
+        <a class="code" href="a00049.html#gad5b419319a7d42a5ef39bfb1c5194f63" title="initialise a buffer">DBUF_init</a>( &amp;name, 0 );
+        <a class="code" href="a00049.html#gad5b419319a7d42a5ef39bfb1c5194f63" title="initialise a buffer">DBUF_init</a>( &amp;value, 0 );
+
+        <span class="keywordflow">if</span> (<a class="code" href="a00035.html#acbc7bb4f747c02a58726f2fe087338d4">loadConvert</a>(&amp;name, (<span class="keywordtype">char</span> *) line.<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>, 0, keyLen)) {
+                        <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">if</span> (<a class="code" href="a00035.html#acbc7bb4f747c02a58726f2fe087338d4">loadConvert</a>(&amp;value, (<span class="keywordtype">char</span> *) line.<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>, valueStart, limit - valueStart)) {
+                        <span class="keywordflow">return</span> -1;
+        }
+
+        <a class="code" href="a00055.html#gab32d735a67b3c2a8c386017198ba4809" title="add a name to value mapping">PROPERTIES_put</a>( props, (<span class="keywordtype">char</span> *) name.<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a>, (<span class="keywordtype">char</span> *) value.<a class="code" href="a00009.html#a3ff05d9dd5224192d29ab9ba86f942e0">buf</a> );
+  }
+  fclose(fp);
+  free(inBuf);
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="acbc7bb4f747c02a58726f2fe087338d4"></a><!-- doxytag: member="properties.c::loadConvert" ref="acbc7bb4f747c02a58726f2fe087338d4" args="(DBUF *ret, const char *in, int off, int len)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int loadConvert </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">DBUF</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>off</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00297">297</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">                                                                       {
+  <span class="keywordtype">char</span> aChar;
+  <span class="keywordtype">int</span> end = off + len;
+  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value=0; 
+  <span class="keywordtype">int</span> i;
+  
+  <span class="keywordflow">while</span> (off &lt; end) {
+        aChar = in[off++];
+        <span class="keywordflow">if</span> (aChar == <span class="charliteral">&#39;\\&#39;</span>) {
+            aChar = in[off++];   
+            <span class="keywordflow">if</span>(aChar == <span class="charliteral">&#39;u&#39;</span>) {
+                <span class="comment">// Read the xxxx</span>
+               
+                                <span class="keywordflow">for</span> (i=0; i&lt;4; i++) {
+                                        aChar = in[off++];  
+                                        <span class="keywordflow">switch</span> (aChar) {
+                                          <span class="keywordflow">case</span> <span class="charliteral">&#39;0&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;1&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;2&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;3&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;4&#39;</span>:
+                                          <span class="keywordflow">case</span> <span class="charliteral">&#39;5&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;6&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;7&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;8&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;9&#39;</span>:
+                                                         value = (value &lt;&lt; 4) + aChar - <span class="charliteral">&#39;0&#39;</span>;
+                                                 <span class="keywordflow">break</span>;
+                                          <span class="keywordflow">case</span> <span class="charliteral">&#39;a&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;b&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;c&#39;</span>:
+                                                                  <span class="keywordflow">case</span> <span class="charliteral">&#39;d&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;e&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;f&#39;</span>:
+                                                 value = (value &lt;&lt; 4) + 10 + aChar - <span class="charliteral">&#39;a&#39;</span>;
+                                                 <span class="keywordflow">break</span>;
+                                          <span class="keywordflow">case</span> <span class="charliteral">&#39;A&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;B&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;C&#39;</span>:
+                                                                  <span class="keywordflow">case</span> <span class="charliteral">&#39;D&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;E&#39;</span>: <span class="keywordflow">case</span> <span class="charliteral">&#39;F&#39;</span>:
+                                                 value = (value &lt;&lt; 4) + 10 + aChar - <span class="charliteral">&#39;A&#39;</span>;
+                                                 <span class="keywordflow">break</span>;
+                                          <span class="keywordflow">default</span>:
+<span class="preprocessor">#if 0</span>
+<span class="preprocessor"></span>                                                  <span class="keywordflow">if</span> (Log::is_error()) {
+                                                          Log::log( LOG_ERROR, <span class="stringliteral">&quot;Malformed \\uxxxx encoding.&quot;</span>);
+                                                                          <span class="keywordflow">return</span> -1;
+                                                  }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>                                          <span class="keywordflow">return</span> -1;
+                                        }
+                                }
+                                <a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9" title="add stuff to a buffer">DBUF_add</a>( ret, &amp;value, <span class="keyword">sizeof</span>( value ) );
+                        } <span class="keywordflow">else</span> {
+                <span class="keywordflow">if</span> (aChar == <span class="charliteral">&#39;t&#39;</span>) aChar = <span class="charliteral">&#39;\t&#39;</span>; 
+                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (aChar == <span class="charliteral">&#39;r&#39;</span>) aChar = <span class="charliteral">&#39;\r&#39;</span>;
+                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (aChar == <span class="charliteral">&#39;n&#39;</span>) aChar = <span class="charliteral">&#39;\n&#39;</span>;
+                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (aChar == <span class="charliteral">&#39;f&#39;</span>) aChar = <span class="charliteral">&#39;\f&#39;</span>; 
+                
+                <a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9" title="add stuff to a buffer">DBUF_add</a>( ret, &amp;aChar, <span class="keyword">sizeof</span>( aChar ) );
+            }
+        } <span class="keywordflow">else</span> {
+            <a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9" title="add stuff to a buffer">DBUF_add</a>( ret, &amp;aChar, <span class="keyword">sizeof</span>( aChar ) );
+        }
+  }
+
+  aChar = 0;
+  <a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9" title="add stuff to a buffer">DBUF_add</a>( ret, &amp;aChar, <span class="keyword">sizeof</span>( aChar ) );
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a7003ed324e0c95af477928f44bf5da2d"></a><!-- doxytag: member="properties.c::props_compare_key" ref="a7003ed324e0c95af477928f44bf5da2d" args="(HASH_Entry *entry, void *key, ssize_t key_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int props_compare_key </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00006.html">HASH_Entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ssize_t&#160;</td>
+          <td class="paramname"><em>key_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00020">20</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *pe = (<a class="code" href="a00013.html">NAMEVALUE_HASH_ENTRY</a> *) entry;
+
+  <a class="code" href="a00020.html#a8a28f4ccca88db778f9dad279d3ba818">M_UNUSED</a>( key_length );
+  <span class="keywordflow">return</span> strcmp( pe-&gt;<a class="code" href="a00013.html#a0b36aee7553be132af4c5dcceed6ed0f">name</a>, key );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a917ff9a043c0330fc9d8290620e063ff"></a><!-- doxytag: member="properties.c::readLine" ref="a917ff9a043c0330fc9d8290620e063ff" args="(FILE *fp, DBUF *lineBuff, char *inBuf, int *inOff, int *inLimit)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int readLine </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00009.html">DBUF</a> *&#160;</td>
+          <td class="paramname"><em>lineBuff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>inBuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>inOff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>inLimit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00190">190</a> of file <a class="el" href="a00035_source.html">properties.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordtype">int</span> len = 0;
+  <span class="keywordtype">char</span> c = 0;
+ 
+  <a class="code" href="a00049.html#ga1986f51b06eb7cf70ce92b66ee61dcfd">DBUF_reset</a>( lineBuf );
+
+  <span class="keywordtype">int</span> skipWhiteSpace = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+  <span class="keywordtype">int</span> isCommentLine = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+  <span class="keywordtype">int</span> isNewLine = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+  <span class="keywordtype">int</span> appendedLineBegin = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+  <span class="keywordtype">int</span> precedingBackslash = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+  <span class="keywordtype">int</span> skipLF = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+
+  <span class="keywordflow">while</span> (<a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>) {
+                <span class="keywordflow">if</span> ( *inOff &gt;= *inLimit ) {
+                        <span class="comment">//inLimit = inStream.read(inBuf);</span>
+                        *inLimit = fread(inBuf,1,<a class="code" href="a00035.html#a08a7e8a6abdc5cf6d2ac4e978e084d1a">IN_BUF_SIZE</a>,fp);
+                        *inOff = 0;
+                        
+                        <span class="keywordflow">if</span> (*inLimit &lt;= 0) {
+                                <span class="keywordflow">if</span> (len == 0 || isCommentLine) { 
+                                        <span class="keywordflow">return</span> -1; 
+                                }
+                                <span class="keywordflow">return</span> len;
+                        }
+                }     
+                
+                <span class="comment">//The line below is equivalent to calling a </span>
+                <span class="comment">//ISO8859-1 decoder.</span>
+                c = (char) (0xff &amp; inBuf[ (*inOff)++ ]);
+                <span class="keywordflow">if</span> (skipLF) {
+                        skipLF = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+                        <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;\n&#39;</span>) {
+                                <span class="keywordflow">continue</span>;
+                        }
+                }
+                <span class="keywordflow">if</span> (skipWhiteSpace) {
+                        <span class="keywordflow">if</span> (c == <span class="charliteral">&#39; &#39;</span> || c == <span class="charliteral">&#39;\t&#39;</span> || c == <span class="charliteral">&#39;\f&#39;</span>) {
+                                <span class="keywordflow">continue</span>;
+                        }
+                        <span class="keywordflow">if</span> (!appendedLineBegin &amp;&amp; (c == <span class="charliteral">&#39;\r&#39;</span> || c == <span class="charliteral">&#39;\n&#39;</span>)) {
+                                <span class="keywordflow">continue</span>;
+                        }
+                        skipWhiteSpace = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+                        appendedLineBegin = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+                }
+                
+                <span class="keywordflow">if</span> (isNewLine) {
+                        isNewLine = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+                        <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;#&#39;</span> || c == <span class="charliteral">&#39;!&#39;</span>) {
+                                isCommentLine = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                                <span class="keywordflow">continue</span>;
+                        }
+                }
+                
+                <span class="keywordflow">if</span> (c != <span class="charliteral">&#39;\n&#39;</span> &amp;&amp; c != <span class="charliteral">&#39;\r&#39;</span>) {
+                        <span class="comment">//lineBuf[len++] = c;</span>
+                        <span class="comment">//lineBuf += c;</span>
+                        <a class="code" href="a00049.html#gaa94888e27a335faa77790018995cd6f9" title="add stuff to a buffer">DBUF_add</a>( lineBuf, &amp;c, <span class="keyword">sizeof</span>(c) );
+                        len ++;
+                        
+                        <span class="comment">//flip the preceding backslash flag</span>
+                        <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;\\&#39;</span>) {
+                                precedingBackslash = !precedingBackslash;
+                        } <span class="keywordflow">else</span> {
+                                precedingBackslash = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+                        }
+                }
+                <span class="keywordflow">else</span> {
+                        <span class="comment">// reached EOL</span>
+                        <span class="keywordflow">if</span> (isCommentLine || len == 0) {
+                                isCommentLine = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+                                isNewLine = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                                skipWhiteSpace = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                                len = 0;
+                                <a class="code" href="a00049.html#ga1986f51b06eb7cf70ce92b66ee61dcfd">DBUF_reset</a>( lineBuf );
+                                <span class="keywordflow">continue</span>;
+                        }
+                        <span class="keywordflow">if</span> ( *inOff &gt;= *inLimit ) {
+                                <span class="comment">//inLimit = inStream.read(inBuf);</span>
+                                *inLimit = fread(inBuf,1,<a class="code" href="a00035.html#a08a7e8a6abdc5cf6d2ac4e978e084d1a">IN_BUF_SIZE</a>,fp);
+                                *inOff = 0;
+                                <span class="keywordflow">if</span> ( *inLimit &lt;= 0 ) {
+                                        <span class="keywordflow">return</span> len;
+                                }
+                        }
+                        <span class="keywordflow">if</span> (precedingBackslash) {
+                                len -= 1;
+                                <span class="comment">//skip the leading whitespace characters in following line</span>
+                                skipWhiteSpace = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                                appendedLineBegin = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                                precedingBackslash = <a class="code" href="a00035.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+                                <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;\r&#39;</span>) {
+                                        skipLF = <a class="code" href="a00035.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+                                }
+                        } <span class="keywordflow">else</span> {
+                                <span class="keywordflow">return</span> len;
+                        }
+                }
+  }
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

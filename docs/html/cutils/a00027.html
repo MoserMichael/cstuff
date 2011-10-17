@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dring.c File Reference</title>
+<title>Simple data structures / objects in plain C: dlistunr.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -39,24 +39,159 @@
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">dring.c File Reference</div>  </div>
+<div class="title">dlistunr.c File Reference</div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00028_source.html">cutils/dring.h</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="a00028_source.html">cutils/dlistunr.h</a>&gt;</code><br/>
 </div>
 <p><a href="a00027_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1">DRING_foreach</a> (<a class="el" href="a00012.html">DRING</a> *lst, <a class="el" href="a00048.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *data, int save_from_del)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for either element of the list. list is traversed forward from first element to the last element.  <a href="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00048.html#ga98724ac564245aa77a1a4c55f83fadb9">DRING_foreach_reverse</a> (<a class="el" href="a00012.html">DRING</a> *lst, <a class="el" href="a00048.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, void *data, int save_from_delete)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.  <a href="a00048.html#ga98724ac564245aa77a1a4c55f83fadb9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00048.html#gad8c4485c62148db72ca05f55dcc75709">DRING_insert_sorted</a> (<a class="el" href="a00012.html">DRING</a> *list, <a class="el" href="a00048.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="el" href="a00012.html">DRING</a> *newentry)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new element into sorted list; Maintains ordering relationship between elements of linked list (sort by ascending order) A sorting algorithm based on this function is not very efficient; it is of complexity O(n^2); nevertheless usefull if a list is modified and has to be always maintained in sorted order.  <a href="a00048.html#gad8c4485c62148db72ca05f55dcc75709"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00011.html">DLISTUNR_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#aaf8996144c27ab1bb1ce396a87b1e6e1">DLISTUNR_new_list_entry</a> (size_t datasize)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a> (<a class="el" href="a00011.html">DLISTUNR_entry</a> *entry, size_t pos, size_t elmmaxcount, size_t elmsize)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ad57c2c0178439688868899a41d9b7f44">DLISTUNR_insert_newnode</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> insert_pos)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html#ga82205532b2714164ed2a5a4d724f9094">DLISTUNR_insert_after</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry into this unrolled linked list  <a href="a00052.html#ga82205532b2714164ed2a5a4d724f9094"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html#gaaf4a80ee43a17e67d1d646f6520137e3">DLISTUNR_unlink</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a unrolled list.  <a href="a00052.html#gaaf4a80ee43a17e67d1d646f6520137e3"></a><br/></td></tr>
 </table>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a5b41bdb020e3d8cc4e21b684ba5f8033"></a><!-- doxytag: member="dlistunr.c::DLISTUNR_insert_entry" ref="a5b41bdb020e3d8cc4e21b684ba5f8033" args="(DLISTUNR_entry *entry, size_t pos, size_t elmmaxcount, size_t elmsize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void* DLISTUNR_insert_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00011.html">DLISTUNR_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elmmaxcount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elmsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00027_source.html#l00016">16</a> of file <a class="el" href="a00027_source.html">dlistunr.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (!entry) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> &gt;= elmmaxcount || entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> == (<span class="keywordtype">size_t</span>) -1) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        pos ++;
+
+        <span class="keywordflow">if</span> (pos &lt; entry-&gt;elmcount) {    
+                memmove(entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (pos + 1) * elmsize,
+                            entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> +  pos * elmsize, 
+                                (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - pos) * elmsize);
+                
+        } 
+        
+        entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> ++ ;
+        <span class="keywordflow">return</span> entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (pos * elmsize);
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ad57c2c0178439688868899a41d9b7f44"></a><!-- doxytag: member="dlistunr.c::DLISTUNR_insert_newnode" ref="ad57c2c0178439688868899a41d9b7f44" args="(DLISTUNR *list, DLISTUNR_position insert_pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void* DLISTUNR_insert_newnode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
+          <td class="paramname"><em>insert_pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00027_source.html#l00039">39</a> of file <a class="el" href="a00027_source.html">dlistunr.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00011.html">DLISTUNR_entry</a> *newnode;
+
+        newnode = <a class="code" href="a00027.html#aaf8996144c27ab1bb1ce396a87b1e6e1">DLISTUNR_new_list_entry</a>( list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a> * list-&gt;<a class="code" href="a00052.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>);
+        <span class="keywordflow">if</span> (!newnode) {
+                <span class="keywordflow">return</span> 0;
+        }
+        
+        <a class="code" href="a00053.html#gab65d72bd525d11559228b5aa3aa641f0" title="insert new entry after a given entry.">DRING_insert_after</a>( (<a class="code" href="a00012.html">DRING</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>, (<a class="code" href="a00012.html">DRING</a> *) newnode );
+
+        newnode-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> = 1;
+        <span class="keywordflow">return</span> newnode-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="aaf8996144c27ab1bb1ce396a87b1e6e1"></a><!-- doxytag: member="dlistunr.c::DLISTUNR_new_list_entry" ref="aaf8996144c27ab1bb1ce396a87b1e6e1" args="(size_t datasize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00011.html">DLISTUNR_entry</a>* DLISTUNR_new_list_entry </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>datasize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00027_source.html#l00003">3</a> of file <a class="el" href="a00027_source.html">dlistunr.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
+
+        entry = malloc(  <span class="keyword">sizeof</span>(<a class="code" href="a00011.html">DLISTUNR_entry</a>) + datasize );
+        <span class="keywordflow">if</span> (!entry) {
+                <span class="keywordflow">return</span> 0;
+        }
+        entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> = 0;
+        <span class="keywordflow">return</span> entry;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

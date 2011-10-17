@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: array.c File Reference</title>
+<title>Simple data structures / objects in plain C: tagSRING Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,82 +24,65 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">array.c File Reference</div>  </div>
+<div class="title">tagSRING Struct Reference<div class="ingroups"><a class="el" href="a00058.html">SRING</a></div></div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="a00017_source.html">cutils/array.h</a>&gt;</code><br/>
-</div>
-<p><a href="a00016_source.html">Go to the source code of this file.</a></p>
+<!-- doxytag: class="tagSRING" -->
+<p><code>#include &lt;<a class="el" href="a00040_source.html">sring.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for tagSRING:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00089.png" border="0" usemap="#tagSRING_coll__map" alt="Collaboration graph"/></div>
+<map name="tagSRING_coll__map" id="tagSRING_coll__map">
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p><a href="a00090.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a1bd82a22c9afadac7a88445e92161214">ARRAY_grow_default</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t request_size)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ga178c95e99fb2c218963f440c295c8380">ARRAY_insert_at</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t index, void *elm, size_t elmsize)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#gaa527efc4a7222882143f6eaf88474c2e">ARRAY_set_at</a> (<a class="el" href="a00001.html">ARRAY</a> *arr, size_t index, void *elm, size_t elmsize)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00016.html">tagSRING</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a9842e33c47a3fff2a6ddec4078ef7190">next</a></td></tr>
 </table>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a1bd82a22c9afadac7a88445e92161214"></a><!-- doxytag: member="array.c::ARRAY_grow_default" ref="a1bd82a22c9afadac7a88445e92161214" args="(ARRAY *arr, size_t request_size)" -->
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock">
+<p>Definition at line <a class="el" href="a00040_source.html#l00032">32</a> of file <a class="el" href="a00040_source.html">sring.h</a>.</p>
+</div><hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a9842e33c47a3fff2a6ddec4078ef7190"></a><!-- doxytag: member="tagSRING::next" ref="a9842e33c47a3fff2a6ddec4078ef7190" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static int ARRAY_grow_default </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00001.html">ARRAY</a> *&#160;</td>
-          <td class="paramname"><em>arr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>request_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
+          <td class="memname">struct <a class="el" href="a00016.html">tagSRING</a>* <a class="el" href="a00016.html#a9842e33c47a3fff2a6ddec4078ef7190">tagSRING::next</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00016_source.html#l00007">7</a> of file <a class="el" href="a00016_source.html">array.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> sz;
-        <span class="keywordtype">void</span> *rt;
-        
+<p>Definition at line <a class="el" href="a00040_source.html#l00034">34</a> of file <a class="el" href="a00040_source.html">sring.h</a>.</p>
 
-
-        sz = 2 * request_size;
-
-        rt = realloc( arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a>, sz * arr-&gt;<a class="code" href="a00001.html#a0dafbfd308171034ac914536e7410ae3">elmsize</a>);
-        <span class="keywordflow">if</span> (!rt) {
-                <span class="keywordflow">return</span> -1;
-        }
-        arr-&gt;<a class="code" href="a00001.html#a48eec4b964d0ca087087e2dca6a50907">buffer</a> = rt;
-        arr-&gt;<a class="code" href="a00001.html#a6be9a6ad3322cf633af6817b094c0c2f">elmmaxcount</a> = sz;
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
 </div>
 </div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00040_source.html">sring.h</a></li>
+</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:53 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

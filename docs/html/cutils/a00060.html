@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: Member List</title>
+<title>Simple data structures / objects in plain C: TREE</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,27 +24,1627 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Defines</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tagSLIST_entry Member List</div>  </div>
+<div class="title">TREE</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00009.html">tagSLIST_entry</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00009.html#aa1047cea85e491e7d1ae1485e8fc7263">next</a></td><td><a class="el" href="a00009.html">tagSLIST_entry</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:56 for Simple data structures / objects in plain C by&#160;
+
+<p>a tree. tree. Each node has variable number of child nodes, the node is embeddable (like ring list). This tree is especially suited for parse trees.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html">tagTREENODE</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>(current, node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>(current, node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current, tree)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gab1367d2f48012bb9b750a0609d1305cf">TREE_FOREACH_PREORDER_END</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current, tree)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00017.html">tagTREENODE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga105c1d47dd05c5293aff00cecacb8b82">TREENODE</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> )(<a class="el" href="a00017.html">TREENODE</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> )(<a class="el" href="a00017.html">TREENODE</a> *entry, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gad3070030c101f9e06861f273769c333b">TREE_VISITOR_EXT_V</a> )(<a class="el" href="a00017.html">TREENODE</a> *entry, <a class="el" href="a00060.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> visit, void *context)</td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> { <a class="el" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>, 
+<a class="el" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>
+ }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> { <a class="el" href="a00060.html#gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f">TREE_PREORDER</a>, 
+<a class="el" href="a00060.html#gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e">TREE_POSTORDER</a>
+ }</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a> (<a class="el" href="a00017.html">TREENODE</a> *tree)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga27a00a38d3c36cab6ff6adb7a831c4ce">TREE_parent</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga1ae823cfa1464a0eca0cd376a107b6d9">TREE_leftmost_sibling</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a> (<a class="el" href="a00017.html">TREENODE</a> *current, <a class="el" href="a00017.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga530586b2042c37e278d8666c75978497">TREE_insert_left_sibling</a> (<a class="el" href="a00017.html">TREENODE</a> *current, <a class="el" href="a00017.html">TREENODE</a> *newnode, int node_is_leaf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a> (<a class="el" href="a00017.html">TREENODE</a> *parent, <a class="el" href="a00017.html">TREENODE</a> *newnode, <a class="el" href="a00060.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, int node_is_leaf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gab2df5d5218e9b473a61b0cbfdb2ae8d0">TREE_merge_childs</a> (<a class="el" href="a00017.html">TREENODE</a> *parent, <a class="el" href="a00060.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a> mode, <a class="el" href="a00017.html">TREENODE</a> *newnode)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga7beb2cf4338f19f13977cc49b3f2cd43">TREE_unlink_node</a> (<a class="el" href="a00017.html">TREENODE</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga53ff6ce0b781ef3165b5239ba466a7a3">TREE_count_child_nodes</a> (<a class="el" href="a00017.html">TREENODE</a> *current)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a> (<a class="el" href="a00017.html">TREENODE</a> *current)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga0843046582beafa1e2158cf0261fe8a1">TREE_foreach_child</a> (<a class="el" href="a00017.html">TREENODE</a> *lst, <a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate over all elements of a list of child nodes, callback is invoked for either element of the list. list is traversed from first element to the last element.  <a href="#ga0843046582beafa1e2158cf0261fe8a1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gacb91cd0e28147dc399cba4cc4ddea1c1">TREE_foreach_child_reverse</a> (<a class="el" href="a00017.html">TREENODE</a> *lst, <a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga2a122a49ba6652748765845608a019f3">TREE_findif_child</a> (<a class="el" href="a00017.html">TREENODE</a> *tree, <a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">find an element within the list of child nodes. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for.  <a href="#ga2a122a49ba6652748765845608a019f3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga9332aebaeaae4fa46b2668766d07f40c">TREE_findif_child_reverse</a> (<a class="el" href="a00017.html">TREENODE</a> *tree, <a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a> (<a class="el" href="a00017.html">TREENODE</a> *current, <a class="el" href="a00017.html">TREENODE</a> *prev)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#gae16d9f6e7f210f3596a00688b0598a05">TREE_foreach_preorder</a> (<a class="el" href="a00017.html">TREENODE</a> *node, <a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga5feac0050d51b2ee0886cabe2bcf201b">TREE_find_preorder</a> (<a class="el" href="a00017.html">TREENODE</a> *node, <a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga272a19d0e9bb16460b010d7c38f6038a">TREE_foreach_postorder</a> (<a class="el" href="a00017.html">TREENODE</a> *node, <a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00017.html">TREENODE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga9b8add397903fd2bd602953efa922101">TREE_find_postorder</a> (<a class="el" href="a00017.html">TREENODE</a> *node, <a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a> visit, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00060.html#ga82d94f5f16e87e8dc6047797bda2e080">TREE_check_tree</a> (<a class="el" href="a00017.html">TREENODE</a> *root)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check tree for consistency errors  <a href="#ga82d94f5f16e87e8dc6047797bda2e080"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>a tree. tree. Each node has variable number of child nodes, the node is embeddable (like ring list). This tree is especially suited for parse trees. </p>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="gaae718f42f4d1d72b715248550610ebe0"></a><!-- doxytag: member="tree.h::TREE_FOREACH_CHILD" ref="gaae718f42f4d1d72b715248550610ebe0" args="(current, node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TREE_FOREACH_CHILD</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">current, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">node&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((current) = <a class="code" href="a00060.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a>(node); \
+                (current); \
+                (current) = <a class="code" href="a00060.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a>(current))
+</pre></div>
+<p>Definition at line <a class="el" href="a00043_source.html#l00374">374</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga6f0686cdd2280d83191f09c671e63ebd"></a><!-- doxytag: member="tree.h::TREE_FOREACH_CHILD_REVERSE" ref="ga6f0686cdd2280d83191f09c671e63ebd" args="(current, node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TREE_FOREACH_CHILD_REVERSE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">current, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">node&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((current) = <a class="code" href="a00060.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a>(node); \
+                (current); \
+                (current) = <a class="code" href="a00060.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(current))
+</pre></div>
+<p>Definition at line <a class="el" href="a00043_source.html#l00379">379</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaaeea62e7b7e668075caa6ee635fba60a"></a><!-- doxytag: member="tree.h::TREE_FOREACH_POSTORDER" ref="gaaeea62e7b7e668075caa6ee635fba60a" args="(current, tree)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TREE_FOREACH_POSTORDER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">current, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">tree&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">{\
+        <a class="code" href="a00017.html">TREENODE</a> *TREE_nextnode##next,*TREE_nextnode##prev;\
+        TREE_nextnode##prev = 0; \
+        current = <a class="code" href="a00060.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>((tree),TREE_nextnode##prev);\
+        <span class="keywordflow">if</span> (current)\
+                <span class="keywordflow">for</span>( TREE_nextnode##next =  <a class="code" href="a00060.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>(current,TREE_nextnode##prev);\
+                            (current) &amp;&amp; current != (tree); \
+                                TREE_nextnode##prev = (current), \
+                                (current) = TREE_nextnode##next, \
+                                TREE_nextnode##next =  <a class="code" href="a00060.html#ga064ab627a56dc9871c3869bf62b56d0e">TREE_postorder_next</a>(current,TREE_nextnode##prev)) {
+</pre></div>
+<p>Definition at line <a class="el" href="a00043_source.html#l00604">604</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga01c708ec70f756c8045b16d7fca53f5b"></a><!-- doxytag: member="tree.h::TREE_FOREACH_POSTORDER_END" ref="ga01c708ec70f756c8045b16d7fca53f5b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TREE_FOREACH_POSTORDER_END</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">}\
+}\
+</pre></div>
+<p>Definition at line <a class="el" href="a00043_source.html#l00619">619</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga78104ec79d0b31f3e06c70b6796a54c8"></a><!-- doxytag: member="tree.h::TREE_FOREACH_PREORDER" ref="ga78104ec79d0b31f3e06c70b6796a54c8" args="(current, tree)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TREE_FOREACH_PREORDER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">current, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">tree&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">{\
+        <a class="code" href="a00017.html">TREENODE</a> *TREE_nextnode##next;\
+        current = <a class="code" href="a00060.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>((tree));\
+        <span class="keywordflow">if</span> (current)\
+                <span class="keywordflow">for</span>( TREE_nextnode##next =  <a class="code" href="a00060.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>(current);\
+                            (current) &amp;&amp; current != (tree); \
+                                (current) = TREE_nextnode##next, TREE_nextnode##next =  <a class="code" href="a00060.html#ga52b32e7eea57b597b406c36265a1639a">TREE_preorder_next</a>(current)) {
+</pre></div>
+<p>Definition at line <a class="el" href="a00043_source.html#l00554">554</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gab1367d2f48012bb9b750a0609d1305cf"></a><!-- doxytag: member="tree.h::TREE_FOREACH_PREORDER_END" ref="gab1367d2f48012bb9b750a0609d1305cf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TREE_FOREACH_PREORDER_END</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">}\
+}
+</pre></div>
+<p>Definition at line <a class="el" href="a00043_source.html#l00564">564</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga10480aa5215e24ed69b820687247e05a"></a><!-- doxytag: member="tree.h::TREE_VISITOR" ref="ga10480aa5215e24ed69b820687247e05a" args=")(TREENODE *entry, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>)(<a class="el" href="a00017.html">TREENODE</a> *entry, void *context)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00362">362</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gad3070030c101f9e06861f273769c333b"></a><!-- doxytag: member="tree.h::TREE_VISITOR_EXT_V" ref="gad3070030c101f9e06861f273769c333b" args=")(TREENODE *entry, TREE_VISIT_EVENT visit, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00060.html#gad3070030c101f9e06861f273769c333b">TREE_VISITOR_EXT_V</a>)(<a class="el" href="a00017.html">TREENODE</a> *entry, <a class="el" href="a00060.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a> visit, void *context)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00371">371</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga69c7ccf722b0f3e72d2f040b62a7020b"></a><!-- doxytag: member="tree.h::TREE_VISITOR_V" ref="ga69c7ccf722b0f3e72d2f040b62a7020b" args=")(TREENODE *entry, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* <a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>)(<a class="el" href="a00017.html">TREENODE</a> *entry, void *context)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00363">363</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga105c1d47dd05c5293aff00cecacb8b82"></a><!-- doxytag: member="tree.h::TREENODE" ref="ga105c1d47dd05c5293aff00cecacb8b82" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00017.html">tagTREENODE</a>  <a class="el" href="a00017.html">TREENODE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="ga5700592b3cba85ef8eac8e784d408736"></a><!-- doxytag: member="tree.h::TREE_INSERT_MODE" ref="ga5700592b3cba85ef8eac8e784d408736" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00060.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c"></a><!-- doxytag: member="TREE_INSERT_FIRST" ref="gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c" args="" -->TREE_INSERT_FIRST</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0"></a><!-- doxytag: member="TREE_INSERT_LAST" ref="gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0" args="" -->TREE_INSERT_LAST</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00190">190</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>,
+  <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>,
+
+} <a class="code" href="a00060.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>;
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga11e6992d87f7732b07a127c57d5e22f2"></a><!-- doxytag: member="tree.h::TREE_VISIT_EVENT" ref="ga11e6992d87f7732b07a127c57d5e22f2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00060.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f"></a><!-- doxytag: member="TREE_PREORDER" ref="gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f" args="" -->TREE_PREORDER</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e"></a><!-- doxytag: member="TREE_POSTORDER" ref="gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e" args="" -->TREE_POSTORDER</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00365">365</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00060.html#gga11e6992d87f7732b07a127c57d5e22f2a809369ffc0a9dc720deb16e631f1a49f">TREE_PREORDER</a>,
+  <a class="code" href="a00060.html#gga11e6992d87f7732b07a127c57d5e22f2a04ee042a20e0ad6e886f8870e57b5e4e">TREE_POSTORDER</a>,
+
+} <a class="code" href="a00060.html#ga11e6992d87f7732b07a127c57d5e22f2">TREE_VISIT_EVENT</a>;
+</pre></div>
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga82d94f5f16e87e8dc6047797bda2e080"></a><!-- doxytag: member="tree.h::TREE_check_tree" ref="ga82d94f5f16e87e8dc6047797bda2e080" args="(TREENODE *root)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int TREE_check_tree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>root</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>check tree for consistency errors </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>0 if the tree is inconsistent </dd></dl>
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00715">715</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *firstch = root-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>        <a class="code" href="a00017.html">TREENODE</a> *lastch   = root-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span><span class="preprocessor">#ifndef TREE_NEXTLEVEL_LEFT     </span>
+<span class="preprocessor"></span>        <a class="code" href="a00017.html">TREENODE</a> *slow,*fast, *next;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+        <span class="keywordflow">if</span> (!firstch 
+#ifdef <a class="code" href="a00043.html#a95b940d1ebbfce437fb43d6cfb4b23e1">TREE_NEXTLEVEL_LAST</a>
+                        || !lastch
+#endif
+                ) {
+
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>                <span class="keywordflow">if</span> (firstch || lastch) {
+                        <span class="keywordflow">return</span> 0;
+                }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>                <span class="keywordflow">return</span> 1;               
+        }       
+        
+        <span class="keywordflow">if</span> (firstch-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> != root) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT      </span>
+<span class="preprocessor"></span>        <span class="keywordflow">for</span>(;;firstch = firstch-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
+                <a class="code" href="a00017.html">TREENODE</a> *next;
+                
+                <span class="keywordflow">if</span> (!firstch) {
+                        <span class="keywordflow">return</span> 0;
+                }
+
+                <span class="keywordflow">if</span> (!<a class="code" href="a00060.html#ga82d94f5f16e87e8dc6047797bda2e080" title="check tree for consistency errors">TREE_check_tree</a>(firstch)) {
+                        <span class="keywordflow">return</span> 0;
+                }
+
+                next = firstch-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                <span class="keywordflow">if</span> (!next) {
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>                        <span class="keywordflow">if</span> (lastch != firstch) {
+                                <span class="keywordflow">return</span> 0;
+                        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>                        <span class="keywordflow">break</span>;
+                }
+
+                <span class="keywordflow">if</span> (next-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> != firstch) {
+                        <span class="keywordflow">return</span> 0;
+                }
+        }
+<span class="preprocessor">#else</span>
+<span class="preprocessor"></span>        slow=fast=firstch;
+        <span class="keywordflow">while</span>(1) {
+                <span class="keywordflow">if</span> (!<a class="code" href="a00060.html#ga82d94f5f16e87e8dc6047797bda2e080" title="check tree for consistency errors">TREE_check_tree</a>(slow)) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                next = fast-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                <span class="keywordflow">if</span> (!next) {
+                        <span class="keywordflow">break</span>;                  
+                }
+                fast = next;
+                <span class="keywordflow">if</span> (fast == slow) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                next = fast-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                <span class="keywordflow">if</span> (!next) {
+                        <span class="keywordflow">break</span>;                  
+                }
+                fast = next;
+                <span class="keywordflow">if</span> (fast == slow) {
+                        <span class="keywordflow">return</span> 0;
+                }
+                slow = slow-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+        }
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (lastch != fast) {
+                <span class="keywordflow">return</span> 0;
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> 1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga53ff6ce0b781ef3165b5239ba466a7a3"></a><!-- doxytag: member="tree.h::TREE_count_child_nodes" ref="ga53ff6ce0b781ef3165b5239ba466a7a3" args="(TREENODE *current)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t TREE_count_child_nodes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>current</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00385">385</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> ret = 0;
+        <a class="code" href="a00017.html">TREENODE</a> *c;
+
+        <a class="code" href="a00060.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>(c,current) {
+                ret++;
+        }
+        <span class="keywordflow">return</span> ret;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga9b8add397903fd2bd602953efa922101"></a><!-- doxytag: member="tree.h::TREE_find_postorder" ref="ga9b8add397903fd2bd602953efa922101" args="(TREENODE *node, TREE_VISITOR visit, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_find_postorder </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>visit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00695">695</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *current;
+
+        <a class="code" href="a00060.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current,node)
+                if (visit(node,context)) {
+                        <span class="keywordflow">return</span> current;
+                }
+        <a class="code" href="a00060.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga5feac0050d51b2ee0886cabe2bcf201b"></a><!-- doxytag: member="tree.h::TREE_find_preorder" ref="ga5feac0050d51b2ee0886cabe2bcf201b" args="(TREENODE *node, TREE_VISITOR visit, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_find_preorder </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>visit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00643">643</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *current;
+
+        <a class="code" href="a00060.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current,node)
+                if (visit(node,context)) {
+                        <span class="keywordflow">return</span> current;
+                }
+        <a class="code" href="a00060.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2a122a49ba6652748765845608a019f3"></a><!-- doxytag: member="tree.h::TREE_findif_child" ref="ga2a122a49ba6652748765845608a019f3" args="(TREENODE *tree, TREE_VISITOR eval, void *context, int32_t *retval)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_findif_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>retval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>find an element within the list of child nodes. callback is invoked for each element of the list, in forward direction from first element to last element; when the callback returns non zero value the iteration stops as we have found what we searched for. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tree</td><td>(in) node in a tree (parent of enumerated childs). </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">retval</td><td>(out) optional - the first non zero value returned by eval callback, if NULL then ignored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>the list element that has matched (i.e. element that has been found). </dd></dl>
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00499">499</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">int</span> ret;
+    <a class="code" href="a00017.html">TREENODE</a> *cur;
+
+        <span class="keywordflow">if</span> (retval) {
+                *retval = 0;
+        }
+
+        <span class="keywordflow">if</span> (!eval) {
+                <span class="keywordflow">return</span> 0;
+        }
+        
+
+        <a class="code" href="a00060.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>( cur, tree) {
+                ret = eval( cur, context );
+                <span class="keywordflow">if</span> (ret) {
+                        <span class="keywordflow">if</span> (retval) {
+                                *retval = ret;
+                        }
+                        <span class="keywordflow">return</span> cur;
+                }
+        }
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga9332aebaeaae4fa46b2668766d07f40c"></a><!-- doxytag: member="tree.h::TREE_findif_child_reverse" ref="ga9332aebaeaae4fa46b2668766d07f40c" args="(TREENODE *tree, TREE_VISITOR eval, void *context, int32_t *retval)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_findif_child_reverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga10480aa5215e24ed69b820687247e05a">TREE_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>retval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00526">526</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">int</span> ret;
+    <a class="code" href="a00017.html">TREENODE</a> *cur;
+
+        <span class="keywordflow">if</span> (retval) {
+                *retval = 0;
+        }
+
+        <span class="keywordflow">if</span> (!eval) {
+                <span class="keywordflow">return</span> 0;
+        }
+        
+
+        <a class="code" href="a00060.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>( cur, tree) {
+                ret = eval( cur, context );
+                <span class="keywordflow">if</span> (ret) {
+                        <span class="keywordflow">if</span> (retval) {
+                                *retval = ret;
+                        }
+                        <span class="keywordflow">return</span> cur;
+                }
+        }
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2695e9ae02cd3359771cacdf776918e4"></a><!-- doxytag: member="tree.h::TREE_first_child" ref="ga2695e9ae02cd3359771cacdf776918e4" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_first_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00105">105</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0843046582beafa1e2158cf0261fe8a1"></a><!-- doxytag: member="tree.h::TREE_foreach_child" ref="ga0843046582beafa1e2158cf0261fe8a1" args="(TREENODE *lst, TREE_VISITOR_V eval, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void TREE_foreach_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>iterate over all elements of a list of child nodes, callback is invoked for either element of the list. list is traversed from first element to the last element. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lst</td><td>(in) node in a tree (parent of enumerated childs). </td></tr>
+    <tr><td class="paramname">eval</td><td>(in) callback that is called to visit each set (or cleared) bit. </td></tr>
+    <tr><td class="paramname">context</td><td>(in) pointer that is passed as context on each invocation of callback. </td></tr>
+    <tr><td class="paramname">save_from_del</td><td>(in) if non zero then callback can remove the current link from the list (a bit slower); if null then not; if zero then can't remove the current link from the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00458">458</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="a00017.html">TREENODE</a> *cur;
+
+        <span class="keywordflow">if</span> (!eval) {
+          <span class="keywordflow">return</span>;
+        }
+
+        <a class="code" href="a00060.html#gaae718f42f4d1d72b715248550610ebe0">TREE_FOREACH_CHILD</a>( cur, lst) {
+                eval( cur, context );
+        }
+        
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gacb91cd0e28147dc399cba4cc4ddea1c1"></a><!-- doxytag: member="tree.h::TREE_foreach_child_reverse" ref="gacb91cd0e28147dc399cba4cc4ddea1c1" args="(TREENODE *lst, TREE_VISITOR_V eval, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void TREE_foreach_child_reverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>lst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00474">474</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="a00017.html">TREENODE</a> *cur;
+
+        <span class="keywordflow">if</span> (!eval) {
+          <span class="keywordflow">return</span>;
+        }
+
+
+        <a class="code" href="a00060.html#ga6f0686cdd2280d83191f09c671e63ebd">TREE_FOREACH_CHILD_REVERSE</a>( cur,lst) {
+                eval( cur, context );
+        }
+        
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga272a19d0e9bb16460b010d7c38f6038a"></a><!-- doxytag: member="tree.h::TREE_foreach_postorder" ref="ga272a19d0e9bb16460b010d7c38f6038a" args="(TREENODE *node, TREE_VISITOR_V visit, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void TREE_foreach_postorder </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>visit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00668">668</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *current;
+
+        <a class="code" href="a00060.html#gaaeea62e7b7e668075caa6ee635fba60a">TREE_FOREACH_POSTORDER</a>(current,node)
+                visit(node,context);
+        <a class="code" href="a00060.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gae16d9f6e7f210f3596a00688b0598a05"></a><!-- doxytag: member="tree.h::TREE_foreach_preorder" ref="gae16d9f6e7f210f3596a00688b0598a05" args="(TREENODE *node, TREE_VISITOR_V visit, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void TREE_foreach_preorder </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga69c7ccf722b0f3e72d2f040b62a7020b">TREE_VISITOR_V</a>&#160;</td>
+          <td class="paramname"><em>visit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00634">634</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *current;
+
+        <a class="code" href="a00060.html#ga78104ec79d0b31f3e06c70b6796a54c8">TREE_FOREACH_PREORDER</a>(current,node)
+                visit(node,context);
+        <a class="code" href="a00060.html#ga01c708ec70f756c8045b16d7fca53f5b">TREE_FOREACH_POSTORDER_END</a>
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0ea2162b901f647f5dac3b15dfecdb12"></a><!-- doxytag: member="tree.h::TREE_init_root" ref="ga0ea2162b901f647f5dac3b15dfecdb12" args="(TREENODE *tree)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void TREE_init_root </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>tree</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00037">37</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        tree-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = tree-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tree-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = 0;
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>        tree-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = 0;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span><span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>        tree-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = 0;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga604dc40c8dfea4f7beed9b0437dfb496"></a><!-- doxytag: member="tree.h::TREE_insert_child" ref="ga604dc40c8dfea4f7beed9b0437dfb496" args="(TREENODE *parent, TREENODE *newnode, TREE_INSERT_MODE mode, int node_is_leaf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void TREE_insert_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>newnode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00196">196</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{       
+        <span class="comment">/* init new node */</span>
+        <span class="keywordflow">if</span> (node_is_leaf) {
+                newnode-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = 0;
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>                newnode-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = 0;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>        }
+        newnode-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+        newnode-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = 0;
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = 0;
+<span class="preprocessor">#endif  </span>
+<span class="preprocessor"></span>
+        
+        <span class="keywordflow">if</span> (!parent-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {         
+
+                <span class="comment">/* insert as first child */</span>
+                <span class="comment">//newnode-&gt;nextlevel_first = parent-&gt;nextlevel_first;</span>
+                parent-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = newnode;
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>                <span class="comment">//newnode-&gt;nextlevel_last = parent-&gt;nextlevel_last;</span>
+                parent-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = newnode;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>                
+        } <span class="keywordflow">else</span> {
+
+                <span class="comment">/* insert as sibling */</span>
+                <span class="keywordflow">switch</span>(mode) {
+                        <span class="keywordflow">case</span> <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>: {
+                                        <a class="code" href="a00060.html#ga530586b2042c37e278d8666c75978497">TREE_insert_left_sibling</a>(parent-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>,newnode, 0);
+                                }
+                                <span class="keywordflow">break</span>;
+                        <span class="keywordflow">case</span> <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>:
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>                                <a class="code" href="a00060.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a>( parent-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>,newnode, 0);
+<span class="preprocessor">#else</span>
+<span class="preprocessor"></span>                                <a class="code" href="a00060.html#gaa242aa64487dd0db1ee4659a28d9aca9">TREE_insert_right_sibling</a>( <a class="code" href="a00060.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(parent-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>), newnode, 0);
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+                                <span class="keywordflow">break</span>;
+                }
+        }
+
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga530586b2042c37e278d8666c75978497"></a><!-- doxytag: member="tree.h::TREE_insert_left_sibling" ref="ga530586b2042c37e278d8666c75978497" args="(TREENODE *current, TREENODE *newnode, int node_is_leaf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int TREE_insert_left_sibling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>current</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>newnode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00157">157</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = current-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+        <span class="keywordflow">if</span> (!parent) {
+                <span class="keywordflow">return</span> -1;
+        }
+
+        <span class="keywordflow">if</span> (node_is_leaf) {
+                <a class="code" href="a00060.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a>(newnode);
+        }
+
+        <span class="keywordflow">if</span> (parent-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> == current) {
+                parent-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = newnode;
+        }
+
+        newnode-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a>) {
+                current-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a>-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = newnode;
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = current;
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT      </span>
+<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = current-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
+        current-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = newnode;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaa242aa64487dd0db1ee4659a28d9aca9"></a><!-- doxytag: member="tree.h::TREE_insert_right_sibling" ref="gaa242aa64487dd0db1ee4659a28d9aca9" args="(TREENODE *current, TREENODE *newnode, int node_is_leaf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int TREE_insert_right_sibling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>current</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>newnode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>node_is_leaf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00123">123</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = current-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+
+        <span class="keywordflow">if</span> (!parent) {
+                <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">if</span> (node_is_leaf) {
+                <a class="code" href="a00060.html#ga0ea2162b901f647f5dac3b15dfecdb12">TREE_init_root</a>(newnode);
+        }
+
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (parent-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> == current) {
+                parent-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = newnode;
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+        newnode-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = <a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+        
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a>  = current;
+        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
+                current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = newnode;
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>        newnode-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+        current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = newnode;
+
+
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga8f8605be102eedc9bb9e49cf343f2a13"></a><!-- doxytag: member="tree.h::TREE_last_child" ref="ga8f8605be102eedc9bb9e49cf343f2a13" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_last_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00110">110</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
+<span class="preprocessor">#else</span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> <a class="code" href="a00060.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(node-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>);
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga06ef1bfc9046f778cf6c8cc287bec132"></a><!-- doxytag: member="tree.h::TREE_left_sibling" ref="ga06ef1bfc9046f778cf6c8cc287bec132" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_left_sibling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00054">54</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
+<span class="preprocessor">#else</span>
+<span class="preprocessor"></span>        <a class="code" href="a00017.html">TREENODE</a> *tmp;
+
+        <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
+                <span class="keywordflow">return</span> 0;
+        }
+        tmp = node-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
+        <span class="keywordflow">if</span> (tmp == node) {
+                <span class="keywordflow">return</span> 0;
+        }
+        <span class="keywordflow">while</span>(tmp &amp;&amp; tmp-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> != node) {
+                tmp = tmp-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+        }
+        <span class="keywordflow">return</span> tmp;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga1ae823cfa1464a0eca0cd376a107b6d9"></a><!-- doxytag: member="tree.h::TREE_leftmost_sibling" ref="ga1ae823cfa1464a0eca0cd376a107b6d9" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_leftmost_sibling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00080">80</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = node-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+        <span class="keywordflow">if</span> (parent) {
+                <span class="keywordflow">return</span> parent-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
+        }
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gab2df5d5218e9b473a61b0cbfdb2ae8d0"></a><!-- doxytag: member="tree.h::TREE_merge_childs" ref="gab2df5d5218e9b473a61b0cbfdb2ae8d0" args="(TREENODE *parent, TREE_INSERT_MODE mode, TREENODE *newnode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void TREE_merge_childs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00060.html#ga5700592b3cba85ef8eac8e784d408736">TREE_INSERT_MODE</a>&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>newnode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00244">244</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{       
+        <a class="code" href="a00017.html">TREENODE</a> *ch;
+
+        <span class="keywordflow">switch</span>(mode) {
+
+        <span class="keywordflow">case</span> <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>:  
+                ch = <a class="code" href="a00060.html#ga2695e9ae02cd3359771cacdf776918e4">TREE_first_child</a>(newnode);
+                <span class="keywordflow">if</span> (!ch) {
+                        <span class="keywordflow">return</span>;
+                }
+
+                <span class="keywordflow">while</span>(ch) {
+                        <a class="code" href="a00060.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a>(parent, ch, <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736ae058f886793e29ef262fee2ef766a6e0">TREE_INSERT_LAST</a>, 0 );
+                        ch = <a class="code" href="a00060.html#gaa2b3ebe7d515ad3e30c9ad0996109978">TREE_right_sibling</a>(ch);
+                }
+                <span class="keywordflow">break</span>;
+
+        <span class="keywordflow">case</span> <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>: 
+                ch = <a class="code" href="a00060.html#ga8f8605be102eedc9bb9e49cf343f2a13">TREE_last_child</a>(newnode);
+                <span class="keywordflow">if</span> (!ch) {
+                        <span class="keywordflow">return</span>;
+                }
+
+                <span class="keywordflow">while</span>(ch) {
+                        <a class="code" href="a00060.html#ga604dc40c8dfea4f7beed9b0437dfb496">TREE_insert_child</a>(parent, ch, <a class="code" href="a00060.html#gga5700592b3cba85ef8eac8e784d408736a47aa04f3ffb4563c60becb0546af290c">TREE_INSERT_FIRST</a>, 0 );
+                        ch = <a class="code" href="a00060.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(ch);
+                }
+                <span class="keywordflow">break</span>;
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga27a00a38d3c36cab6ff6adb7a831c4ce"></a><!-- doxytag: member="tree.h::TREE_parent" ref="ga27a00a38d3c36cab6ff6adb7a831c4ce" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_parent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00048">48</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga064ab627a56dc9871c3869bf62b56d0e"></a><!-- doxytag: member="tree.h::TREE_postorder_next" ref="ga064ab627a56dc9871c3869bf62b56d0e" args="(TREENODE *current, TREENODE *prev)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_postorder_next </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>current</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>prev</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00578">578</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+
+        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> &amp;&amp; (!prev || current-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> == prev)) {
+next_level:
+                <span class="keywordflow">do</span> {            
+                        current = current-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
+                }
+                <span class="keywordflow">while</span>(current-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>);
+        } <span class="keywordflow">else</span> {
+                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
+                        current = current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
+                          <span class="keywordflow">goto</span> next_level;
+                        }
+                } <span class="keywordflow">else</span> {
+                        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
+                                current = current-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+                        }
+                }
+        }
+        <span class="keywordflow">return</span> current;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga52b32e7eea57b597b406c36265a1639a"></a><!-- doxytag: member="tree.h::TREE_preorder_next" ref="ga52b32e7eea57b597b406c36265a1639a" args="(TREENODE *current)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_preorder_next </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>current</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00403">403</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
+                current = current-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
+        } <span class="keywordflow">else</span> {
+                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
+                        current = current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                } <span class="keywordflow">else</span> {
+                        <span class="keywordflow">while</span>(current-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
+                                current = current-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+                                <span class="keywordflow">if</span> (current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
+                                        current = current-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                                        <span class="keywordflow">break</span>;
+                                }
+                        }
+                }
+        }
+
+        <span class="keywordflow">return</span> current;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaa2b3ebe7d515ad3e30c9ad0996109978"></a><!-- doxytag: member="tree.h::TREE_right_sibling" ref="gaa2b3ebe7d515ad3e30c9ad0996109978" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_right_sibling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00075">75</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaff7bf0e8b830dec211d8760b01427d5a"></a><!-- doxytag: member="tree.h::TREE_rightmost_sibling" ref="gaff7bf0e8b830dec211d8760b01427d5a" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_rightmost_sibling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00089">89</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>        <a class="code" href="a00017.html">TREENODE</a> *<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = node-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+        <span class="keywordflow">if</span> (parent) {
+                <span class="keywordflow">return</span> parent-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
+        }
+        <span class="keywordflow">return</span> 0;
+<span class="preprocessor">#else</span>
+<span class="preprocessor"></span>        <span class="keywordflow">while</span>(node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
+                node = node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> node;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga7beb2cf4338f19f13977cc49b3f2cd43"></a><!-- doxytag: member="tree.h::TREE_unlink_node" ref="ga7beb2cf4338f19f13977cc49b3f2cd43" args="(TREENODE *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE <a class="el" href="a00017.html">TREENODE</a>* TREE_unlink_node </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00017.html">TREENODE</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00043_source.html#l00277">277</a> of file <a class="el" href="a00043_source.html">tree.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00017.html">TREENODE</a> *tmp,*tmp_next, *tmp_last;
+
+        <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="comment">/* wrong */</span>
+        tmp = node-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+        <span class="keywordflow">if</span> (tmp &amp;&amp; tmp-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> == node) {
+
+                <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>) {
+                        tmp-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                        <span class="keywordflow">goto</span> sdel;
+                }
+
+                tmp-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a> = node-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;                           
+                tmp_next = tmp-&gt;<a class="code" href="a00017.html#af76e9208f6c55ff1069fde7b66c3f232">nextlevel_first</a>;
+                tmp_last = <a class="code" href="a00060.html#gaff7bf0e8b830dec211d8760b01427d5a">TREE_rightmost_sibling</a>(tmp_next);
+
+                tmp_last-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>                <span class="keywordflow">if</span> (node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>) {
+                        node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = tmp_last;
+                }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>                <span class="keywordflow">do</span> {
+                        tmp_next-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tmp;
+                        <span class="keywordflow">if</span> (tmp_next == tmp_last) {
+                                <span class="keywordflow">break</span>;
+                        }
+                        tmp_next = tmp_next-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                } <span class="keywordflow">while</span>(tmp_next);
+
+                <span class="keywordflow">return</span> node;
+        }
+
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LAST</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (tmp &amp;&amp; tmp-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> == node) {
+
+                <span class="keywordflow">if</span> (!node-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>) {
+                        tmp-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = <a class="code" href="a00060.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node);
+                        <span class="keywordflow">goto</span> sdel;
+                }
+
+                tmp-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a> = node-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;     
+                tmp_next = tmp-&gt;<a class="code" href="a00017.html#aa851db5a7e782b18f81d32fa31b58440">nextlevel_last</a>;
+                tmp_last = <a class="code" href="a00060.html#ga1ae823cfa1464a0eca0cd376a107b6d9">TREE_leftmost_sibling</a>(tmp_next);
+
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>                tmp_last-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = node-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>                <a class="code" href="a00060.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node)-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = tmp_last;
+
+                <span class="keywordflow">do</span> {
+                        tmp_last-&gt;<a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a> = tmp;
+                        <span class="keywordflow">if</span> (tmp_next == tmp_last) {
+                                <span class="keywordflow">break</span>;
+                        }
+                        tmp_last = tmp_last-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+                } <span class="keywordflow">while</span>(tmp_last);                                      
+
+                <span class="keywordflow">return</span> node;
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+sdel:
+
+<span class="preprocessor">#ifdef TREE_NEXTLEVEL_LEFT</span>
+<span class="preprocessor"></span>        tmp = node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+        <span class="keywordflow">if</span> (tmp) {
+                tmp-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a> = node-&gt;<a class="code" href="a00017.html#a5606167dda105adf0db9728c2004f2f3">left</a>;
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+        tmp = <a class="code" href="a00060.html#ga06ef1bfc9046f778cf6c8cc287bec132">TREE_left_sibling</a>(node);
+        <span class="keywordflow">if</span> (tmp) {
+                tmp-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a> = node-&gt;<a class="code" href="a00017.html#a3e635860e1ac41723bfca6cb3417af95">right</a>;
+        }
+
+        <span class="keywordflow">return</span> node;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:53 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

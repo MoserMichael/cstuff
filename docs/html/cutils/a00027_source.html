@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: dring.c Source File</title>
+<title>Simple data structures / objects in plain C: dlistunr.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,77 +36,161 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">dring.c</div>  </div>
+<div class="title">dlistunr.c</div>  </div>
 </div>
 <div class="contents">
-<a href="a00027.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) Michael Moser (2011) . 3-clause BSD License applies */</span>
+<a href="a00027.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;<a class="code" href="a00028.html">cutils/dlistunr.h</a>&gt;</span>
 <a name="l00002"></a>00002 
-<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;<a class="code" href="a00028.html">cutils/dring.h</a>&gt;</span>
-<a name="l00004"></a>00004 
-<a name="l00005"></a>00005 
+<a name="l00003"></a><a class="code" href="a00027.html#aaf8996144c27ab1bb1ce396a87b1e6e1">00003</a> <a class="code" href="a00020.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <a class="code" href="a00011.html">DLISTUNR_entry</a> *<a class="code" href="a00027.html#aaf8996144c27ab1bb1ce396a87b1e6e1">DLISTUNR_new_list_entry</a>( <span class="keywordtype">size_t</span> datasize)
+<a name="l00004"></a>00004 {
+<a name="l00005"></a>00005         <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
 <a name="l00006"></a>00006 
-<a name="l00007"></a><a class="code" href="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1">00007</a>  <span class="keywordtype">void</span> <a class="code" href="a00048.html#gacc803a0c5a8bc3ce165f8d8fe5e78ab1" title="iterate over all elements of a list, callback is invoked for either element of the list...">DRING_foreach</a>( <a class="code" href="a00012.html">DRING</a> *lst, <a class="code" href="a00048.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, <span class="keywordtype">void</span> *data, <span class="keywordtype">int</span> save_from_del)
-<a name="l00008"></a>00008 {
-<a name="l00009"></a>00009     <a class="code" href="a00012.html">DRING</a> *cur, *next;
-<a name="l00010"></a>00010 
-<a name="l00011"></a>00011         <span class="keywordflow">if</span> (!eval) {
-<a name="l00012"></a>00012           <span class="keywordflow">return</span>;
-<a name="l00013"></a>00013         }
+<a name="l00007"></a>00007         entry = malloc(  <span class="keyword">sizeof</span>(<a class="code" href="a00011.html">DLISTUNR_entry</a>) + datasize );
+<a name="l00008"></a>00008         <span class="keywordflow">if</span> (!entry) {
+<a name="l00009"></a>00009                 <span class="keywordflow">return</span> 0;
+<a name="l00010"></a>00010         }
+<a name="l00011"></a>00011         entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> = 0;
+<a name="l00012"></a>00012         <span class="keywordflow">return</span> entry;
+<a name="l00013"></a>00013 }
 <a name="l00014"></a>00014 
-<a name="l00015"></a>00015         <span class="keywordflow">if</span> (save_from_del) {
-<a name="l00016"></a>00016                 <a class="code" href="a00048.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, lst) {
-<a name="l00017"></a>00017                         eval( cur, data );
-<a name="l00018"></a>00018                 }
-<a name="l00019"></a>00019         } <span class="keywordflow">else</span> {
-<a name="l00020"></a>00020                 <a class="code" href="a00048.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, lst ) {
-<a name="l00021"></a>00021                         eval( cur, data );
-<a name="l00022"></a>00022                 }
-<a name="l00023"></a>00023         }
-<a name="l00024"></a>00024                 
-<a name="l00025"></a>00025 }
-<a name="l00026"></a>00026 
+<a name="l00015"></a>00015 
+<a name="l00016"></a><a class="code" href="a00027.html#a5b41bdb020e3d8cc4e21b684ba5f8033">00016</a> <a class="code" href="a00020.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> *<a class="code" href="a00027.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a>(<a class="code" href="a00011.html">DLISTUNR_entry</a> *entry, <span class="keywordtype">size_t</span> pos, <span class="keywordtype">size_t</span> elmmaxcount, <span class="keywordtype">size_t</span> elmsize)
+<a name="l00017"></a>00017 {
+<a name="l00018"></a>00018         <span class="keywordflow">if</span> (!entry) {
+<a name="l00019"></a>00019                 <span class="keywordflow">return</span> 0;
+<a name="l00020"></a>00020         }
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022         <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> &gt;= elmmaxcount || entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> == (<span class="keywordtype">size_t</span>) -1) {
+<a name="l00023"></a>00023                 <span class="keywordflow">return</span> 0;
+<a name="l00024"></a>00024         }
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026         pos ++;
 <a name="l00027"></a>00027 
-<a name="l00028"></a><a class="code" href="a00048.html#ga98724ac564245aa77a1a4c55f83fadb9">00028</a>  <span class="keywordtype">void</span> <a class="code" href="a00048.html#ga98724ac564245aa77a1a4c55f83fadb9" title="iterate over all elements of a list, callback is invoked for each element of the list. list is traversed backword from last element to the first element.">DRING_foreach_reverse</a>( <a class="code" href="a00012.html">DRING</a> *lst, <a class="code" href="a00048.html#ga516498a8d915f013d2466856c72a0bd6">DRING_VISITOR_V</a> eval, <span class="keywordtype">void</span> *data, <span class="keywordtype">int</span> save_from_delete)
-<a name="l00029"></a>00029 {
-<a name="l00030"></a>00030         <a class="code" href="a00012.html">DRING</a> *cur, *next;
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032         <span class="keywordflow">if</span> (!eval) {
-<a name="l00033"></a>00033           return ;
-<a name="l00034"></a>00034         }
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036         <span class="keywordflow">if</span> ( save_from_delete ) {
-<a name="l00037"></a>00037                 <a class="code" href="a00048.html#gac5d159651c812e6785f81bc2dfc73b7d" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_REVERSE_SAVE</a>( cur, next, lst ) {
+<a name="l00028"></a>00028         <span class="keywordflow">if</span> (pos &lt; entry-&gt;elmcount) {    
+<a name="l00029"></a>00029                 memmove(entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (pos + 1) * elmsize,
+<a name="l00030"></a>00030                             entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> +  pos * elmsize, 
+<a name="l00031"></a>00031                                 (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - pos) * elmsize);
+<a name="l00032"></a>00032                 
+<a name="l00033"></a>00033         } 
+<a name="l00034"></a>00034         
+<a name="l00035"></a>00035         entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> ++ ;
+<a name="l00036"></a>00036         <span class="keywordflow">return</span> entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (pos * elmsize);
+<a name="l00037"></a>00037 }
 <a name="l00038"></a>00038 
-<a name="l00039"></a>00039                         eval( cur, data );
-<a name="l00040"></a>00040                 }
-<a name="l00041"></a>00041         } <span class="keywordflow">else</span> {
-<a name="l00042"></a>00042                 <a class="code" href="a00048.html#ga550a7b5adbe2d3325db38c49764bdc8c" title="Macro for iterate over all elements of a list, the list is traversed in reverse direction from last e...">DRING_FOREACH_REVERSE</a>( cur, lst ) {
+<a name="l00039"></a><a class="code" href="a00027.html#ad57c2c0178439688868899a41d9b7f44">00039</a> <a class="code" href="a00020.html#ad8685d2efad5bbbf60ebe6bc79e05350">M_INLINE</a> <span class="keywordtype">void</span> *<a class="code" href="a00027.html#ad57c2c0178439688868899a41d9b7f44">DLISTUNR_insert_newnode</a>(<a class="code" href="a00003.html">DLISTUNR</a> *list,
+<a name="l00040"></a>00040                                                                                                   <a class="code" href="a00004.html">DLISTUNR_position</a> insert_pos)
+<a name="l00041"></a>00041 {
+<a name="l00042"></a>00042         <a class="code" href="a00011.html">DLISTUNR_entry</a> *newnode;
 <a name="l00043"></a>00043 
-<a name="l00044"></a>00044                         eval( cur, data );
-<a name="l00045"></a>00045                 }
-<a name="l00046"></a>00046         }
-<a name="l00047"></a>00047 }
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049 
+<a name="l00044"></a>00044         newnode = <a class="code" href="a00027.html#aaf8996144c27ab1bb1ce396a87b1e6e1">DLISTUNR_new_list_entry</a>( list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a> * list-&gt;<a class="code" href="a00052.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>);
+<a name="l00045"></a>00045         <span class="keywordflow">if</span> (!newnode) {
+<a name="l00046"></a>00046                 <span class="keywordflow">return</span> 0;
+<a name="l00047"></a>00047         }
+<a name="l00048"></a>00048         
+<a name="l00049"></a>00049         <a class="code" href="a00053.html#gab65d72bd525d11559228b5aa3aa641f0" title="insert new entry after a given entry.">DRING_insert_after</a>( (<a class="code" href="a00012.html">DRING</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>, (<a class="code" href="a00012.html">DRING</a> *) newnode );
 <a name="l00050"></a>00050 
-<a name="l00051"></a>00051 
-<a name="l00052"></a><a class="code" href="a00048.html#gad8c4485c62148db72ca05f55dcc75709">00052</a>  <span class="keywordtype">void</span> <a class="code" href="a00048.html#gad8c4485c62148db72ca05f55dcc75709" title="insert new element into sorted list; Maintains ordering relationship between elements of linked list ...">DRING_insert_sorted</a>( <a class="code" href="a00012.html">DRING</a> *list, <a class="code" href="a00048.html#ga275575e4b5e7edcaaf471ec1e5f02b5a">DRING_COMPARE</a> compare, <a class="code" href="a00012.html">DRING</a> *newentry) 
-<a name="l00053"></a>00053 {
-<a name="l00054"></a>00054         <a class="code" href="a00012.html">DRING</a> *cur;
-<a name="l00055"></a>00055         
-<a name="l00056"></a>00056         <a class="code" href="a00048.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>(  cur, list ) {
-<a name="l00057"></a>00057                 <span class="keywordflow">if</span> (compare(cur,newentry) &gt; 0) {
-<a name="l00058"></a>00058                         <a class="code" href="a00048.html#ga93f762e668a7283b18025310886635ea" title="insert new entry before a given entry.">DRING_insert_before</a>(cur,newentry);
-<a name="l00059"></a>00059                         <span class="keywordflow">return</span>;
-<a name="l00060"></a>00060                 }
-<a name="l00061"></a>00061         }
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063         <a class="code" href="a00048.html#gaed724487f6cd26c0b79b875ff3390c61" title="insert element as last in list (used to maintain double ended queue)">DRING_push_back</a>( list, newentry );
-<a name="l00064"></a>00064 }
-<a name="l00065"></a>00065 
+<a name="l00051"></a>00051         newnode-&gt;elmcount = 1;
+<a name="l00052"></a>00052         <span class="keywordflow">return</span> newnode-&gt;buffer;
+<a name="l00053"></a>00053 }
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056 
+<a name="l00057"></a><a class="code" href="a00052.html#ga82205532b2714164ed2a5a4d724f9094">00057</a> <span class="keywordtype">int</span> <a class="code" href="a00052.html#ga82205532b2714164ed2a5a4d724f9094" title="insert new entry after a given entry into this unrolled linked list">DLISTUNR_insert_after</a>(<a class="code" href="a00003.html">DLISTUNR</a> *list, <a class="code" href="a00004.html">DLISTUNR_position</a> pos, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> size)
+<a name="l00058"></a>00058 {
+<a name="l00059"></a>00059         <span class="keywordtype">size_t</span> elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
+<a name="l00060"></a>00060         <span class="keywordtype">size_t</span> elmmaxcount = list-&gt;<a class="code" href="a00052.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>;
+<a name="l00061"></a>00061         <a class="code" href="a00004.html">DLISTUNR_position</a> insert_pos = pos;
+<a name="l00062"></a>00062         <a class="code" href="a00011.html">DLISTUNR_entry</a> *next;
+<a name="l00063"></a>00063         <span class="keywordtype">void</span> *newnodepos;
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065         <span class="keywordflow">if</span> (size != list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>) {
+<a name="l00066"></a>00066                 <span class="keywordflow">return</span> -1;
+<a name="l00067"></a>00067         }
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069         <span class="keywordflow">if</span> (!insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>) {
+<a name="l00070"></a>00070                 insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) list-&gt;<a class="code" href="a00052.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
+<a name="l00071"></a>00071         }
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073         <span class="keywordflow">if</span> ((newnodepos = <a class="code" href="a00027.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a>(
+<a name="l00074"></a>00074                                                                 insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>, 
+<a name="l00075"></a>00075                                                                 insert_pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a>, 
+<a name="l00076"></a>00076                                                                 elmmaxcount, 
+<a name="l00077"></a>00077                                                                 elmsize)) == 0) {
+<a name="l00078"></a>00078                 
+<a name="l00079"></a>00079                 next = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+<a name="l00080"></a>00080                  
+<a name="l00081"></a>00081                 if ((newnodepos = <a class="code" href="a00027.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a>(next, (<span class="keywordtype">size_t</span>) -1, elmmaxcount, elmsize)) == 0){
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083                         <span class="keywordflow">if</span> ((newnodepos = <a class="code" href="a00027.html#ad57c2c0178439688868899a41d9b7f44">DLISTUNR_insert_newnode</a>(list, insert_pos)) == 0) {
+<a name="l00084"></a>00084                                 <span class="keywordflow">return</span> -1;
+<a name="l00085"></a>00085                         }
+<a name="l00086"></a>00086                         list-&gt;<a class="code" href="a00052.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> ++;
+<a name="l00087"></a>00087                         next = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089                 } 
+<a name="l00090"></a>00090                         
+<a name="l00091"></a>00091                 <span class="keywordflow">if</span> (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != (<span class="keywordtype">size_t</span>) -1 &amp;&amp; 
+<a name="l00092"></a>00092                         insert_pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> &lt; (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - 1) ) {
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094                         <span class="comment">/* bad bad */</span>
+<a name="l00095"></a>00095                         insert_pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> ++;
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097                         <span class="comment">/* move elements from prev node to new node */</span>
+<a name="l00098"></a>00098                         memcpy(next-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a>, 
+<a name="l00099"></a>00099                                    insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (list-&gt;<a class="code" href="a00052.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a> - 1) * elmsize,
+<a name="l00100"></a>00100                                    elmsize);
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102                         <span class="comment">/* move elements in current node */</span>             
+<a name="l00103"></a>00103                         memmove(insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (insert_pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> + 1) * elmsize,
+<a name="l00104"></a>00104                                         insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + insert_pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a>  * elmsize,
+<a name="l00105"></a>00105                                         (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - insert_pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> - 1) * elmsize);
+<a name="l00106"></a>00106                 
+<a name="l00107"></a>00107                         <span class="comment">/* copy new node into insert_pos.index */</span>
+<a name="l00108"></a>00108                         newnodepos = insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + insert_pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a>  * elmsize;
+<a name="l00109"></a>00109                 }
+<a name="l00110"></a>00110         } 
+<a name="l00111"></a>00111         
+<a name="l00112"></a>00112         memcpy(newnodepos, data, elmsize);
+<a name="l00113"></a>00113         list-&gt;<a class="code" href="a00052.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> ++;
+<a name="l00114"></a>00114         <span class="keywordflow">return</span> 0;
+<a name="l00115"></a>00115 }
+<a name="l00116"></a>00116 
+<a name="l00117"></a>00117 
+<a name="l00118"></a><a class="code" href="a00052.html#gaaf4a80ee43a17e67d1d646f6520137e3">00118</a> <span class="keywordtype">int</span> <a class="code" href="a00052.html#gaaf4a80ee43a17e67d1d646f6520137e3" title="delete an element from a unrolled list.">DLISTUNR_unlink</a>(<a class="code" href="a00003.html">DLISTUNR</a> *list, <a class="code" href="a00004.html">DLISTUNR_position</a> pos)
+<a name="l00119"></a>00119 {
+<a name="l00120"></a>00120         <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
+<a name="l00121"></a>00121         <span class="keywordtype">size_t</span> elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
+<a name="l00122"></a>00122 
+<a name="l00123"></a>00123         <span class="keywordflow">if</span> (<a class="code" href="a00052.html#ga1dd2966c185e463aa8c40126122e96e2" title="verify a position structure.">DLISTUNR_check_position</a>(pos)) {
+<a name="l00124"></a>00124                 <span class="keywordflow">return</span> -1;
+<a name="l00125"></a>00125         }
+<a name="l00126"></a>00126         entry = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>;
+<a name="l00127"></a>00127 
+<a name="l00128"></a>00128         <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> == (<span class="keywordtype">size_t</span>) -1) {
+<a name="l00129"></a>00129                 <span class="keywordflow">return</span> -1;
+<a name="l00130"></a>00130         }
+<a name="l00131"></a>00131 
+<a name="l00132"></a>00132         <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != 1) {
+<a name="l00133"></a>00133                 <span class="keywordflow">if</span> (pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> &lt; (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>-1)) {
+<a name="l00134"></a>00134                         memmove(entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> * elmsize,
+<a name="l00135"></a>00135                                         entry-&gt;<a class="code" href="a00052.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> + 1) * elmsize, 
+<a name="l00136"></a>00136                                         (entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - pos.<a class="code" href="a00052.html#ga1e227c665237c422e471818cbc8008c6">index</a> - 1) * elmsize );
+<a name="l00137"></a>00137                 }
+<a name="l00138"></a>00138                 entry-&gt;<a class="code" href="a00052.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> --;
+<a name="l00139"></a>00139         } <span class="keywordflow">else</span> {
+<a name="l00140"></a>00140                 <a class="code" href="a00053.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>((<a class="code" href="a00012.html">DRING</a> *)pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>);
+<a name="l00141"></a>00141                 free( pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>);
+<a name="l00142"></a>00142                 list-&gt;<a class="code" href="a00052.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> --;
+<a name="l00143"></a>00143         }
+<a name="l00144"></a>00144 
+<a name="l00145"></a>00145         list-&gt;<a class="code" href="a00052.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> --;
+<a name="l00146"></a>00146         <span class="keywordflow">return</span> 0;
+<a name="l00147"></a>00147 }
+<a name="l00148"></a>00148 
+<a name="l00149"></a>00149 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:24 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: DLISTUNR</title>
+<title>Simple data structures / objects in plain C: HASH_entry</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -32,1468 +32,241 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Defines</a> &#124;
+<a href="#groups">Modules</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">DLISTUNR</div>  </div>
+<div class="title">HASH_entry</div>  </div>
 </div>
 <div class="contents">
 
-<p>unrolled list where each list node contains an array of nodes. Unlike other lists here, each element in a list is of the same size.  
+<p>Entry in bucket hash table, add to structure as member in order to make structure storable in hash table. Each hash table entry has to embed a VBUCKETHASH_Entry as part of its structure. The user of this hash thing can please key/value wherever he likes.  
 <a href="#details">More...</a></p>
+<div class="dynheader">
+Collaboration diagram for HASH_entry:</div>
+<div class="dyncontent">
+<center><table><tr><td><img src="a00047.png" border="0" alt="" usemap="#a00047"/>
+<map name="a00047" id="a00047">
+<area shape="rect" id="node1" href="a00048.html" title="Hash table that is implemented as bucket hash table." alt="" coords="151,5,209,35"/></map>
+</td></tr></table></center>
+</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">DLISTUNR</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">DLISTUNR_position</a></td></tr>
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2199fa5ef5950c4321c960de07c1dd96">DLISTUNR_FOREACH</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element.  <a href="#ga2199fa5ef5950c4321c960de07c1dd96"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga6f36f5cdff7dc616d78ac582375fa9ff">DLISTUNR_FOREACH_REVERSE</a>(loopvarname, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element.  <a href="#ga6f36f5cdff7dc616d78ac582375fa9ff"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga92ff07b38bfb3654352b4ed371a657b2">DLISTUNR_FOREACH_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element.  <a href="#ga92ff07b38bfb3654352b4ed371a657b2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad317561e804f3d6e5eabb799690da1c9">DLISTUNR_FOREACH_REVERSE_SAVE</a>(loopvarname, loopvarnext, list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element.  <a href="#gad317561e804f3d6e5eabb799690da1c9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html">HASH_Entry</a></td></tr>
+<tr><td colspan="2"><h2><a name="groups"></a>
+Modules</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00048.html">HASH</a></td></tr>
+
+<p><tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><p>Hash table that is implemented as bucket hash table. </p>
+<br/></td></tr>
+</p>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a> )(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaab1a298e92d3537d3d99fb3026fa8878">DLISTUNR_VISITOR</a> )(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td></tr>
-<tr><td colspan="2"><h2><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga2030d9ff4e1c5e8b4cbd74590b93d8ce">DLISTUNR_init</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, size_t elmsize, size_t elmmaxcount)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises a new unrolled list. List entries are all of a fixed size.  <a href="#ga2030d9ff4e1c5e8b4cbd74590b93d8ce"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gafd9592650b47d236f472a4a9eb5b115b">DLISTUNR_check</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check validity of unrolled list instance  <a href="#gafd9592650b47d236f472a4a9eb5b115b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0290d4b52497dc3690054049f2817647">DLISTUNR_isempty</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if argument list is empty  <a href="#ga0290d4b52497dc3690054049f2817647"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gadc37166b1334645228fc25a9e6771506">DLISTUNR_size</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga4db401e1c08b3d07a78985fea9961936">DLISTUNR_maxsize</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c">DLISTUNR_get_first</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position structure of first element in unrolled linked list.  <a href="#gad6e5c8c22793aefefeff560f1cb55f3c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289">DLISTUNR_get_last</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position structure of last element in unrolled linked list.  <a href="#ga49b8d112ee987796b6a90920dd82a289"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga686e489382b845f2887e4610929bd473">DLISTUNR_next</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position to the next element in unrolled linked list.  <a href="#ga686e489382b845f2887e4610929bd473"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga185f2f68ab909782dbe196dc8756979e">DLISTUNR_is_eof</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5">DLISTUNR_prev</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns position to the previous element in unrolled linked list.  <a href="#gaff214a850e77e1053a319ec96e70e6f5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2">DLISTUNR_check_position</a> (<a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">verify a position structure.  <a href="#ga1dd2966c185e463aa8c40126122e96e2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gac38a1a149a73bda69de14aac70f116f6">DLISTUNR_copy_at</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy list entry identified by position structure (pos) into user supplied memory area  <a href="#gac38a1a149a73bda69de14aac70f116f6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga7845b66b9da685fbdd9671a2f8f8af97">DLISTUNR_at</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return pointer to list entry identified by position structure (pos).  <a href="#ga7845b66b9da685fbdd9671a2f8f8af97"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga82205532b2714164ed2a5a4d724f9094">DLISTUNR_insert_after</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry after a given entry into this unrolled linked list  <a href="#ga82205532b2714164ed2a5a4d724f9094"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga226340b3f31b861f5180d637d2c795c6">DLISTUNR_insert_before</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos, void *data, size_t size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert new entry before a given entry into this unrolled linked list  <a href="#ga226340b3f31b861f5180d637d2c795c6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3">DLISTUNR_unlink</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00004.html">DLISTUNR_position</a> pos)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">delete an element from a unrolled list.  <a href="#gaaf4a80ee43a17e67d1d646f6520137e3"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gad94fe8e20708dc1b6c3e244dd8f4b7b9">DLISTUNR_push_back</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain queue)  <a href="#gad94fe8e20708dc1b6c3e244dd8f4b7b9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gacc9f0635aadc53905275d684bde629a7">DLISTUNR_push_front</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert element as last in list (used to maintain queue)  <a href="#gacc9f0635aadc53905275d684bde629a7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga3286a39fe8434d31e4fba39b25a60dfe">DLISTUNR_pop_back</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data of last element into user supplied buffer and remove the last element from list (used to maintain double ended queue)  <a href="#ga3286a39fe8434d31e4fba39b25a60dfe"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gac6338ee42fd69900475253be10c462e5">DLISTUNR_pop_front</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, void *data, size_t size)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data of first element into user supplied buffer and remove the first element from list (used to maintain double ended queue)  <a href="#gac6338ee42fd69900475253be10c462e5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gabe7992a9cd77af1e758ce634779565df">DLISTUNR_free</a> (<a class="el" href="a00003.html">DLISTUNR</a> *list, <a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a> free_func, void *context)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">list free all entries of the list. The list will then be an empty list.  <a href="#gabe7992a9cd77af1e758ce634779565df"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00032.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> )(void *data, ssize_t length)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> )(<a class="el" href="a00006.html">HASH_Entry</a> *, void *key, ssize_t key_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a> )(<a class="el" href="a00006.html">HASH_Entry</a> *, void *context)</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">tagDLISTUNR_entry::elmcount</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">tagDLISTUNR_entry::buffer</a> []</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">DLISTUNR::elmmaxcount</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">DLISTUNR::elmcount</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">DLISTUNR::entrycount</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">DLISTUNR_entry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">DLISTUNR::root</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">DLISTUNR_position::index</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00032.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga0a321e75db9083da90e2557e6cc24de8">HASH_Entry::hash</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga1e56521c716b07928dc326eced3b50c0">HASH::ismultimap</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga13b4c75f393b997dc965cef4fc2508c1">HASH::buckets_size</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gadfd1d7fb9add98a87d2852e45c7cd018">HASH::elmcount</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga00bd0beb9248ca36fff916569eb71526">HASH::resize_threshold</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga8713031ba9a40fa717f1d3b8114691c0">HASH::mult_load_factor</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga6f4e674640c97d88dfd2e557d660f147">HASH::div_load_factor</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00047.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">HASH::hash_func</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00047.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">HASH::compare_key</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<p>unrolled list where each list node contains an array of nodes. Unlike other lists here, each element in a list is of the same size. </p>
-<p>an unrolled linked list is a variation on the linked list which stores multiple elements in each node. It can drastically increase cache performance, while decreasing the memory overhead associated with storing links to other list elements..</p>
-<p>Each node holds up to a certain maximum number of elements, typically just large enough so that the node fills a single cache line or a small multiple thereof. A position in the list is indicated by both a reference to the node and a position in the elements array. It's also possible to include a previous pointer for an unrolled doubly-linked linked list. Quoted from <a href="http://en.wikipedia.org/wiki/Unrolled_linked_list">http://en.wikipedia.org/wiki/Unrolled_linked_list</a> </p>
-<hr/><h2>Define Documentation</h2>
-<a class="anchor" id="ga2199fa5ef5950c4321c960de07c1dd96"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH" ref="ga2199fa5ef5950c4321c960de07c1dd96" args="(loopvarname, list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DLISTUNR_FOREACH</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarname, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">list&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list );\
-      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
-      (loopvarname) = <a class="code" href="a00047.html#ga686e489382b845f2887e4610929bd473" title="Returns position to the next element in unrolled linked list.">DLISTUNR_next</a>( loopvarname ) )
-</pre></div>
-<p>Macro for iterate over all elements of a list, the list is traversed in forward direction from first element to the last element. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) struct that identifies current element </td></tr>
-    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00412">412</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga6f36f5cdff7dc616d78ac582375fa9ff"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH_REVERSE" ref="ga6f36f5cdff7dc616d78ac582375fa9ff" args="(loopvarname, list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DLISTUNR_FOREACH_REVERSE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarname, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">list&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>( list );\
-      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
-      (loopvarname) = <a class="code" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5" title="Returns position to the previous element in unrolled linked list.">DLISTUNR_prev</a>( loopvarname ) )
-</pre></div>
-<p>Macro for iterate over all elements of a list, the list is traversed in reverse direction from last element to the first element. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) pointer to the current element </td></tr>
-    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00422">422</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="gad317561e804f3d6e5eabb799690da1c9"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH_REVERSE_SAVE" ref="gad317561e804f3d6e5eabb799690da1c9" args="(loopvarname, loopvarnext, list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DLISTUNR_FOREACH_REVERSE_SAVE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarname, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarnext, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">list&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>(list);\
-      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
-      (loopvarname) = (loopvarnext), (loopvarnext) = <a class="code" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5" title="Returns position to the previous element in unrolled linked list.">DLISTUNR_prev</a>(loopvarname) )
-</pre></div>
-<p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in reverse direction from last element to the first element. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) pointer to the current element </td></tr>
-    <tr><td class="paramname">loopvarnamenext</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) do not modify! pointer to next element after current element (used for iteration). </td></tr>
-    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00444">444</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga92ff07b38bfb3654352b4ed371a657b2"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_FOREACH_SAVE" ref="ga92ff07b38bfb3654352b4ed371a657b2" args="(loopvarname, loopvarnext, list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DLISTUNR_FOREACH_SAVE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarname, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">loopvarnext, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">list&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">for</span>((loopvarname) = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list ), (loopvarnext) = <a class="code" href="a00047.html#ga686e489382b845f2887e4610929bd473" title="Returns position to the next element in unrolled linked list.">DLISTUNR_next</a>( loopvarname );\
-      (loopvarname).entry != (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;(list)-&gt;root;\
-      (loopvarname) = (loopvarnext), (loopvarnext) = <a class="code" href="a00047.html#ga686e489382b845f2887e4610929bd473" title="Returns position to the next element in unrolled linked list.">DLISTUNR_next</a>(loopvarname) )
-</pre></div>
-<p>Macro for iterate over all elements of a list, You may delete the current element; the list is traversed in forward direction from first element to the last element. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">loopvarname</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) pointer to the current element </td></tr>
-    <tr><td class="paramname">loopvarnamenext</td><td>(type <a class="el" href="a00004.html">DLISTUNR_position</a>) do not modify! pointer to next element after current element (used for iteration). </td></tr>
-    <tr><td class="paramname">list</td><td>(type <a class="el" href="a00003.html">DLISTUNR</a> *) pointer to the list that is traversed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00433">433</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-
-</div>
-</div>
+<p>Entry in bucket hash table, add to structure as member in order to make structure storable in hash table. Each hash table entry has to embed a VBUCKETHASH_Entry as part of its structure. The user of this hash thing can please key/value wherever he likes. </p>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="gaab1a298e92d3537d3d99fb3026fa8878"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_VISITOR" ref="gaab1a298e92d3537d3d99fb3026fa8878" args=")(DLISTUNR *list, void *entry, void *context)" -->
+<a class="anchor" id="gaf9eab147ddd898a2d7fb376e1f8753a3"></a><!-- doxytag: member="bhash.h::HASH_COMPARE_KEY" ref="gaf9eab147ddd898a2d7fb376e1f8753a3" args=")(HASH_Entry *, void *key, ssize_t key_size)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00047.html#gaab1a298e92d3537d3d99fb3026fa8878">DLISTUNR_VISITOR</a>)(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td>
+          <td class="memname">typedef int(* <a class="el" href="a00047.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a>)(<a class="el" href="a00006.html">HASH_Entry</a> *, void *key, ssize_t key_size)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Compare argument key with hash key embedded in entry. </p>
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00054">54</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00037">37</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga0f32e9881b86c7ddab83041de9f6888c"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_VISITOR_V" ref="ga0f32e9881b86c7ddab83041de9f6888c" args=")(DLISTUNR *list, void *entry, void *context)" -->
+<a class="anchor" id="ga11718c21601b9ee597d31cb7e720c260"></a><!-- doxytag: member="bhash.h::HASH_FUNCTION" ref="ga11718c21601b9ee597d31cb7e720c260" args=")(void *data, ssize_t length)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* <a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a>)(<a class="el" href="a00003.html">DLISTUNR</a> *list, void *entry, void *context)</td>
+          <td class="memname">typedef <a class="el" href="a00032.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a>(* <a class="el" href="a00047.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a>)(void *data, ssize_t length)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>compute hash value </p>
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00053">53</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00031">31</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ga7845b66b9da685fbdd9671a2f8f8af97"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_at" ref="ga7845b66b9da685fbdd9671a2f8f8af97" args="(DLISTUNR *list, DLISTUNR_position pos)" -->
+<a class="anchor" id="ga1bcff3f62d46d79b790bed89891cd9a5"></a><!-- doxytag: member="bhash.h::HASH_VISITOR" ref="ga1bcff3f62d46d79b790bed89891cd9a5" args=")(HASH_Entry *, void *context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">M_INLINE uint8_t* DLISTUNR_at </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">typedef int(* <a class="el" href="a00047.html#ga1bcff3f62d46d79b790bed89891cd9a5">HASH_VISITOR</a>)(<a class="el" href="a00006.html">HASH_Entry</a> *, void *context)</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>Visit a hash entry. </p>
 
-<p>return pointer to list entry identified by position structure (pos). </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">pos</td><td>(in) position pointer </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to data entry in linked list. </dd></dl>
+<p>Definition at line <a class="el" href="a00022_source.html#l00042">42</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00284">284</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2" title="verify a position structure.">DLISTUNR_check_position</a>(pos)) {
-                <span class="keywordflow">return</span> 0;
-        }
-
-        <span class="keywordflow">return</span> pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> * list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gafd9592650b47d236f472a4a9eb5b115b"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_check" ref="gafd9592650b47d236f472a4a9eb5b115b" args="(DLISTUNR *list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_check </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>check validity of unrolled list instance </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>the object </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>0 if list is invalid. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00090">90</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> elmcount, size = 0;
-        <span class="keywordtype">size_t</span> cursize = 0;
-        <a class="code" href="a00012.html">DRING</a> *cur,*next;
-
-        <span class="keywordflow">if</span> (list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != (<span class="keywordtype">size_t</span>) -1) {
-                <span class="keywordflow">return</span> 0;
-        }
-
-        <a class="code" href="a00048.html#gac8118521928cd5a00b83ee9c0ba48308" title="Macro for iterate over all elements of a list, the list is traversed in forward direction from first ...">DRING_FOREACH</a>( cur, &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>)   {
-
-                next = cur-&gt;<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
-                <span class="keywordflow">if</span> (!next || next-&gt;<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a> != cur) {               
-                        <span class="keywordflow">return</span> 0;
-                }
-                elmcount = ((<a class="code" href="a00011.html">DLISTUNR_entry</a> *) cur)-&gt;elmcount;
-                <span class="keywordflow">if</span> ( elmcount &gt; list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                <span class="keywordflow">if</span> (elmcount == 0) {
-                        <span class="keywordflow">return</span> 0;
-                }
-                size++;
-                cursize += elmcount;
-        }
-
-        <span class="keywordflow">if</span> (size != list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
-        <span class="keywordflow">if</span> (cursize != list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a>) {
-                <span class="keywordflow">return</span> 0;
-        }
-
-        <span class="keywordflow">return</span> 1;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga1dd2966c185e463aa8c40126122e96e2"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_check_position" ref="ga1dd2966c185e463aa8c40126122e96e2" args="(DLISTUNR_position pos)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_check_position </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>verify a position structure. </p>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00242">242</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">if</span> (!pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">if</span> (pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &gt;= pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gac38a1a149a73bda69de14aac70f116f6"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_copy_at" ref="gac38a1a149a73bda69de14aac70f116f6" args="(DLISTUNR *list, DLISTUNR_position pos, void *data, size_t size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_copy_at </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>copy list entry identified by position structure (pos) into user supplied memory area </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">pos</td><td>(in) position pointer </td></tr>
-    <tr><td class="paramname">data</td><td>(in|out) user supplied buffer </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of user supplied buffer (must be equal to the size of one element). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>0 on success -1 on failure </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00261">261</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">void</span> *ptr;
-        <span class="keywordflow">if</span> (size != list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2" title="verify a position structure.">DLISTUNR_check_position</a>(pos)) {
-                <span class="keywordflow">return</span> -1;
-        }
-
-        ptr = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> * size;
-        memcpy(data, ptr, size);
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gabe7992a9cd77af1e758ce634779565df"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_free" ref="gabe7992a9cd77af1e758ce634779565df" args="(DLISTUNR *list, DLISTUNR_VISITOR_V free_func, void *context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void DLISTUNR_free </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00047.html#ga0f32e9881b86c7ddab83041de9f6888c">DLISTUNR_VISITOR_V</a>&#160;</td>
-          <td class="paramname"><em>free_func</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>list free all entries of the list. The list will then be an empty list. </p>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00453">453</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00012.html">DRING</a> *next,*cur;
-        <a class="code" href="a00011.html">DLISTUNR_entry</a> *curr;
-        <span class="keywordtype">size_t</span> pos,elmsize,i;
-        
-        elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
-
-        <a class="code" href="a00048.html#gaab96829db58e4eaa3cec725c9c99ff69" title="Macro for iterate over all elements of a list, You may delete the current element; the list is traver...">DRING_FOREACH_SAVE</a>( cur, next, &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>) {
-        
-                curr = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) cur;
-                <span class="keywordflow">if</span> (free_func) {
-                        <span class="keywordflow">for</span>(pos = 0,i=0;i&lt;curr-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>;i++) {
-                                free_func(list,  (<span class="keywordtype">void</span> *) (curr-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> +pos), context);
-                                pos += elmsize;
-                        }
-                }
-                <span class="comment">/*list-&gt;ctx-&gt;free( DRING_unlink(cur) );*/</span>
-                free( cur );
-                
-        }       
-        <a class="code" href="a00048.html#gaea5e890f7d1dab572fe3ef6f067e5d26" title="initialises an empty list head">DRING_init</a>( &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a> );
-        list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> = 0;
-        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> = 0;
-}       
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gad6e5c8c22793aefefeff560f1cb55f3c"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_get_first" ref="gad6e5c8c22793aefefeff560f1cb55f3c" args="(DLISTUNR *list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_get_first </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns position structure of first element in unrolled linked list. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of first element </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00155">155</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
-
-        ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
-        ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = 0;
-
-        <span class="keywordflow">return</span> ret;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga49b8d112ee987796b6a90920dd82a289"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_get_last" ref="ga49b8d112ee987796b6a90920dd82a289" args="(DLISTUNR *list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_get_last </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns position structure of last element in unrolled linked list. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of first element </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00171">171</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
-
-        <span class="keywordflow">if</span> (list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a>) {
-                ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
-                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - 1;            
-        } <span class="keywordflow">else</span>  {
-                ret = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list);
-        }
-        
-        <span class="keywordflow">return</span> ret;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga2030d9ff4e1c5e8b4cbd74590b93d8ce"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_init" ref="ga2030d9ff4e1c5e8b4cbd74590b93d8ce" args="(DLISTUNR *list, size_t elmsize, size_t elmmaxcount)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>elmsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>elmmaxcount</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>initialises a new unrolled list. List entries are all of a fixed size. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ctx</td><td>(in) allocator interface. (if null we are using the default allocator) </td></tr>
-    <tr><td class="paramname">list</td><td>(in) object that is initialised </td></tr>
-    <tr><td class="paramname">elmsize</td><td>(in) size of one element in list. </td></tr>
-    <tr><td class="paramname">elmmaxcount</td><td>(in) number of element stored in one list entry </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00072">72</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{       
-        list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a> = elmmaxcount;
-        list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a> = elmsize;
-
-        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> = list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> = 0;
-
-        <a class="code" href="a00048.html#gaea5e890f7d1dab572fe3ef6f067e5d26" title="initialises an empty list head">DRING_init</a>( &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a> );
-        list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> = (size_t) -1;
-
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga82205532b2714164ed2a5a4d724f9094"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_insert_after" ref="ga82205532b2714164ed2a5a4d724f9094" args="(DLISTUNR *list, DLISTUNR_position pos, void *data, size_t size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int DLISTUNR_insert_after </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>insert new entry after a given entry into this unrolled linked list </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) pointer to list head </td></tr>
-    <tr><td class="paramname">pos</td><td>(in) current position (newentry inserted after this one). </td></tr>
-    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00025_source.html#l00057">57</a> of file <a class="el" href="a00025_source.html">dlistunr.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordtype">size_t</span> elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
-        <span class="keywordtype">size_t</span> elmmaxcount = list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>;
-        <a class="code" href="a00004.html">DLISTUNR_position</a> insert_pos = pos;
-        <a class="code" href="a00011.html">DLISTUNR_entry</a> *next;
-        <span class="keywordtype">void</span> *newnodepos;
-
-        <span class="keywordflow">if</span> (size != list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>) {
-                <span class="keywordflow">return</span> -1;
-        }
-
-        <span class="keywordflow">if</span> (!insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>) {
-                insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>.<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
-        }
-
-        <span class="keywordflow">if</span> ((newnodepos = <a class="code" href="a00025.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a>(
-                                                                insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>, 
-                                                                insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>, 
-                                                                elmmaxcount, 
-                                                                elmsize)) == 0) {
-                
-                next = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
-                 
-                if ((newnodepos = <a class="code" href="a00025.html#a5b41bdb020e3d8cc4e21b684ba5f8033">DLISTUNR_insert_entry</a>(next, (<span class="keywordtype">size_t</span>) -1, elmmaxcount, elmsize)) == 0){
-
-                        <span class="keywordflow">if</span> ((newnodepos = <a class="code" href="a00025.html#ad57c2c0178439688868899a41d9b7f44">DLISTUNR_insert_newnode</a>(list, insert_pos)) == 0) {
-                                <span class="keywordflow">return</span> -1;
-                        }
-                        list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> ++;
-                        next = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
-
-                } 
-                        
-                <span class="keywordflow">if</span> (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != (<span class="keywordtype">size_t</span>) -1 &amp;&amp; 
-                        insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &lt; (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - 1) ) {
-
-                        <span class="comment">/* bad bad */</span>
-                        insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> ++;
-
-                        <span class="comment">/* move elements from prev node to new node */</span>
-                        memcpy(next-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a>, 
-                                   insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a> - 1) * elmsize,
-                                   elmsize);
-
-                        <span class="comment">/* move elements in current node */</span>             
-                        memmove(insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> + 1) * elmsize,
-                                        insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>  * elmsize,
-                                        (insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> - 1) * elmsize);
-                
-                        <span class="comment">/* copy new node into insert_pos.index */</span>
-                        newnodepos = insert_pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + insert_pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>  * elmsize;
-                }
-        } 
-        
-        memcpy(newnodepos, data, elmsize);
-        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> ++;
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga226340b3f31b861f5180d637d2c795c6"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_insert_before" ref="ga226340b3f31b861f5180d637d2c795c6" args="(DLISTUNR *list, DLISTUNR_position pos, void *data, size_t size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_insert_before </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>insert new entry before a given entry into this unrolled linked list </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) pointer to list head </td></tr>
-    <tr><td class="paramname">pos</td><td>(in) current position (newentry inserted before this one). </td></tr>
-    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00309">309</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> insert_pos = <a class="code" href="a00047.html#gaff214a850e77e1053a319ec96e70e6f5" title="Returns position to the previous element in unrolled linked list.">DLISTUNR_prev</a>(pos);
-        
-        <span class="keywordflow">return</span> <a class="code" href="a00047.html#ga82205532b2714164ed2a5a4d724f9094" title="insert new entry after a given entry into this unrolled linked list">DLISTUNR_insert_after</a>( list, insert_pos, data, size);
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga185f2f68ab909782dbe196dc8756979e"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_is_eof" ref="ga185f2f68ab909782dbe196dc8756979e" args="(DLISTUNR *list, DLISTUNR_position pos)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_is_eof </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00207">207</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-    <span class="keywordflow">return</span> pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> == (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) &amp;list-&gt;<a class="code" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">root</a>; 
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga0290d4b52497dc3690054049f2817647"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_isempty" ref="ga0290d4b52497dc3690054049f2817647" args="(DLISTUNR *list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_isempty </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>checks if argument list is empty </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>pointer to list. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>not zero for non empty list. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00133">133</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> == 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga4db401e1c08b3d07a78985fea9961936"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_maxsize" ref="ga4db401e1c08b3d07a78985fea9961936" args="(DLISTUNR *list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE size_t DLISTUNR_maxsize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00145">145</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">elmmaxcount</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga686e489382b845f2887e4610929bd473"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_next" ref="ga686e489382b845f2887e4610929bd473" args="(DLISTUNR_position pos)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_next </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns position to the next element in unrolled linked list. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">pos</td><td>(in) iteration position in list. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of the element that follows the element identified by pos structure. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00191">191</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
-        <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
-
-        ret = pos;
-        entry = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>;
-
-        ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>++;
-        <span class="keywordflow">if</span> (ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &gt;= entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>) {
-                ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) entry-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#aec13745a49e3ff2cd72745c0ff3e4e45">next</a>;
-                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = 0;
-        }
-        <span class="keywordflow">return</span> ret;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="ga3286a39fe8434d31e4fba39b25a60dfe"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_pop_back" ref="ga3286a39fe8434d31e4fba39b25a60dfe" args="(DLISTUNR *list, void *data, size_t size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_pop_back </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>copy data of last element into user supplied buffer and remove the last element from list (used to maintain double ended queue) </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">data</td><td>(in) pointer to element that is to receive data of list entry </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>return 0 on success. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00359">359</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> pos;
-
-        
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga0290d4b52497dc3690054049f2817647" title="checks if argument list is empty">DLISTUNR_isempty</a>(list)) {
-                <span class="keywordflow">return</span> -1;
-        }
-        
-        pos = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>( list );
-        
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gac38a1a149a73bda69de14aac70f116f6" title="copy list entry identified by position structure (pos) into user supplied memory area">DLISTUNR_copy_at</a>(list, pos, data, size)) {
-                <span class="keywordflow">return</span> -1;
-        }
-
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3" title="delete an element from a unrolled list.">DLISTUNR_unlink</a>(list,pos)) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gac6338ee42fd69900475253be10c462e5"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_pop_front" ref="gac6338ee42fd69900475253be10c462e5" args="(DLISTUNR *list, void *data, size_t size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_pop_front </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>copy data of first element into user supplied buffer and remove the first element from list (used to maintain double ended queue) </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">data</td><td>(in) pointer to element that is to receive data of list entry </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>return 0 on success. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00387">387</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> pos;
-
-        
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga0290d4b52497dc3690054049f2817647" title="checks if argument list is empty">DLISTUNR_isempty</a>(list)) {
-                <span class="keywordflow">return</span> -1;
-        }
-        
-        pos = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list );
-
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gac38a1a149a73bda69de14aac70f116f6" title="copy list entry identified by position structure (pos) into user supplied memory area">DLISTUNR_copy_at</a>(list, pos, data, size)) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#gaaf4a80ee43a17e67d1d646f6520137e3" title="delete an element from a unrolled list.">DLISTUNR_unlink</a>(list,pos)) {
-                <span class="keywordflow">return</span> -1;
-        }
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gaff214a850e77e1053a319ec96e70e6f5"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_prev" ref="gaff214a850e77e1053a319ec96e70e6f5" args="(DLISTUNR_position pos)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE <a class="el" href="a00004.html">DLISTUNR_position</a> DLISTUNR_prev </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns position to the previous element in unrolled linked list. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">pos</td><td>(in) iteration position in list. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>position structure of the element that precedes the element identified by pos structure. </dd></dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00219">219</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> ret;
-        <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
-
-        ret = pos;
-        entry = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>;
-        <span class="keywordflow">if</span> (ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>) {
-                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a>--;
-        } <span class="keywordflow">else</span> {
-                ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> = (<a class="code" href="a00011.html">DLISTUNR_entry</a> *) entry-&gt;<a class="code" href="a00011.html#a035195f28a7455ee105ab3b4920186da">ring</a>.<a class="code" href="a00012.html#a8f2313e1ce7ba8c157ce612faad73aad">prev</a>;
-                ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = 0;
-                if (ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a> &amp;&amp; ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != (<span class="keywordtype">size_t</span>) -1) {
-                        ret.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> = ret.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - 1;
-                } 
-        }
-        <span class="keywordflow">return</span> ret;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gad94fe8e20708dc1b6c3e244dd8f4b7b9"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_push_back" ref="gad94fe8e20708dc1b6c3e244dd8f4b7b9" args="(DLISTUNR *list, void *data, size_t size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_push_back </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>insert element as last in list (used to maintain queue) </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00332">332</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> last = <a class="code" href="a00047.html#ga49b8d112ee987796b6a90920dd82a289" title="Returns position structure of last element in unrolled linked list.">DLISTUNR_get_last</a>( list );
-        <span class="keywordflow">return</span> <a class="code" href="a00047.html#ga82205532b2714164ed2a5a4d724f9094" title="insert new entry after a given entry into this unrolled linked list">DLISTUNR_insert_after</a>(list, last, data, size);
-                
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gacc9f0635aadc53905275d684bde629a7"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_push_front" ref="gacc9f0635aadc53905275d684bde629a7" args="(DLISTUNR *list, void *data, size_t size)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int DLISTUNR_push_front </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>insert element as last in list (used to maintain queue) </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">data</td><td>(in) pointer to element that is to be inserted into this list. </td></tr>
-    <tr><td class="paramname">size</td><td>(in) size of area identified by data pointer. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00345">345</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00004.html">DLISTUNR_position</a> last = <a class="code" href="a00047.html#gad6e5c8c22793aefefeff560f1cb55f3c" title="Returns position structure of first element in unrolled linked list.">DLISTUNR_get_first</a>( list );
-        <span class="keywordflow">return</span> <a class="code" href="a00047.html#ga226340b3f31b861f5180d637d2c795c6" title="insert new entry before a given entry into this unrolled linked list">DLISTUNR_insert_before</a>(list, last, data, size);
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gadc37166b1334645228fc25a9e6771506"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_size" ref="gadc37166b1334645228fc25a9e6771506" args="(DLISTUNR *list)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE size_t DLISTUNR_size </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00026_source.html#l00139">139</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <span class="keywordflow">return</span> list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a>;
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="gaaf4a80ee43a17e67d1d646f6520137e3"></a><!-- doxytag: member="dlistunr.h::DLISTUNR_unlink" ref="gaaf4a80ee43a17e67d1d646f6520137e3" args="(DLISTUNR *list, DLISTUNR_position pos)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int DLISTUNR_unlink </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00003.html">DLISTUNR</a> *&#160;</td>
-          <td class="paramname"><em>list</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00004.html">DLISTUNR_position</a>&#160;</td>
-          <td class="paramname"><em>pos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>delete an element from a unrolled list. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">list</td><td>(in) the object </td></tr>
-    <tr><td class="paramname">pos</td><td>(in) deletes element identified by this position structure return -1 on failure 0 on success. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00025_source.html#l00118">118</a> of file <a class="el" href="a00025_source.html">dlistunr.c</a>.</p>
-<div class="fragment"><pre class="fragment">{
-        <a class="code" href="a00011.html">DLISTUNR_entry</a> *entry;
-        <span class="keywordtype">size_t</span> elmsize = list-&gt;<a class="code" href="a00003.html#a3fcc16c9e16c759cd63a2a5aa48364ec">elmsize</a>;
-
-        <span class="keywordflow">if</span> (<a class="code" href="a00047.html#ga1dd2966c185e463aa8c40126122e96e2" title="verify a position structure.">DLISTUNR_check_position</a>(pos)) {
-                <span class="keywordflow">return</span> -1;
-        }
-        entry = pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>;
-
-        <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> == (<span class="keywordtype">size_t</span>) -1) {
-                <span class="keywordflow">return</span> -1;
-        }
-
-        <span class="keywordflow">if</span> (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> != 1) {
-                <span class="keywordflow">if</span> (pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> &lt; (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a>-1)) {
-                        memmove(entry-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> * elmsize,
-                                        entry-&gt;<a class="code" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">buffer</a> + (pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> + 1) * elmsize, 
-                                        (entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> - pos.<a class="code" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">index</a> - 1) * elmsize );
-                }
-                entry-&gt;<a class="code" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">elmcount</a> --;
-        } <span class="keywordflow">else</span> {
-                <a class="code" href="a00048.html#ga81d2db3ee3b83fe28393d45530bed230" title="delete an element from a list.">DRING_unlink</a>((<a class="code" href="a00012.html">DRING</a> *)pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>);
-                free( pos.<a class="code" href="a00004.html#aeb6ab9ce857eed02ddfd3a3906cde45b">entry</a>);
-                list-&gt;<a class="code" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">entrycount</a> --;
-        }
-
-        list-&gt;<a class="code" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">elmcount</a> --;
-        <span class="keywordflow">return</span> 0;
-}
-</pre></div>
 </div>
 </div>
 <hr/><h2>Variable Documentation</h2>
-<a class="anchor" id="ga0d7c4fdd75e4ee98f34e8e428291d1fc"></a><!-- doxytag: member="tagDLISTUNR_entry::buffer" ref="ga0d7c4fdd75e4ee98f34e8e428291d1fc" args="[]" -->
+<a class="anchor" id="ga13b4c75f393b997dc965cef4fc2508c1"></a><!-- doxytag: member="HASH::buckets_size" ref="ga13b4c75f393b997dc965cef4fc2508c1" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t <a class="el" href="a00047.html#ga0d7c4fdd75e4ee98f34e8e428291d1fc">tagDLISTUNR_entry::buffer</a>[]</td>
+          <td class="memname">size_t <a class="el" href="a00047.html#ga13b4c75f393b997dc965cef4fc2508c1">HASH::buckets_size</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00017">17</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00062">62</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga746831dd1567f68b1ebbe4b2da5d21d7"></a><!-- doxytag: member="tagDLISTUNR_entry::elmcount" ref="ga746831dd1567f68b1ebbe4b2da5d21d7" args="" -->
+<a class="anchor" id="ga9f012f5c0abfa8de8f6ff6d98a3d5f83"></a><!-- doxytag: member="HASH::compare_key" ref="ga9f012f5c0abfa8de8f6ff6d98a3d5f83" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="a00047.html#ga746831dd1567f68b1ebbe4b2da5d21d7">tagDLISTUNR_entry::elmcount</a></td>
+          <td class="memname"><a class="el" href="a00047.html#gaf9eab147ddd898a2d7fb376e1f8753a3">HASH_COMPARE_KEY</a> <a class="el" href="a00047.html#ga9f012f5c0abfa8de8f6ff6d98a3d5f83">HASH::compare_key</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00016">16</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00070">70</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga0e262304c4fb6cd12e2911cec49f4346"></a><!-- doxytag: member="DLISTUNR::elmcount" ref="ga0e262304c4fb6cd12e2911cec49f4346" args="" -->
+<a class="anchor" id="ga6f4e674640c97d88dfd2e557d660f147"></a><!-- doxytag: member="HASH::div_load_factor" ref="ga6f4e674640c97d88dfd2e557d660f147" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="a00047.html#ga0e262304c4fb6cd12e2911cec49f4346">DLISTUNR::elmcount</a></td>
+          <td class="memname">int <a class="el" href="a00047.html#ga6f4e674640c97d88dfd2e557d660f147">HASH::div_load_factor</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00045">45</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00066">66</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="gada6452d1a52bb049d90bfaba44a88b3c"></a><!-- doxytag: member="DLISTUNR::elmmaxcount" ref="gada6452d1a52bb049d90bfaba44a88b3c" args="" -->
+<a class="anchor" id="gadfd1d7fb9add98a87d2852e45c7cd018"></a><!-- doxytag: member="HASH::elmcount" ref="gadfd1d7fb9add98a87d2852e45c7cd018" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="a00047.html#gada6452d1a52bb049d90bfaba44a88b3c">DLISTUNR::elmmaxcount</a></td>
+          <td class="memname">size_t <a class="el" href="a00047.html#gadfd1d7fb9add98a87d2852e45c7cd018">HASH::elmcount</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00043">43</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00063">63</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga384be6ddd260b20b9b6060579e53e78b"></a><!-- doxytag: member="DLISTUNR::entrycount" ref="ga384be6ddd260b20b9b6060579e53e78b" args="" -->
+<a class="anchor" id="ga0a321e75db9083da90e2557e6cc24de8"></a><!-- doxytag: member="HASH_Entry::hash" ref="ga0a321e75db9083da90e2557e6cc24de8" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="a00047.html#ga384be6ddd260b20b9b6060579e53e78b">DLISTUNR::entrycount</a></td>
+          <td class="memname"><a class="el" href="a00032.html#a0add298fa768754c300d2489164b8677">HASH_VALUE</a> <a class="el" href="a00047.html#ga0a321e75db9083da90e2557e6cc24de8">HASH_Entry::hash</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00046">46</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00022">22</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga1e227c665237c422e471818cbc8008c6"></a><!-- doxytag: member="DLISTUNR_position::index" ref="ga1e227c665237c422e471818cbc8008c6" args="" -->
+<a class="anchor" id="gaa8d9ed13981a492e221f55d4a0ff8a9b"></a><!-- doxytag: member="HASH::hash_func" ref="gaa8d9ed13981a492e221f55d4a0ff8a9b" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="a00047.html#ga1e227c665237c422e471818cbc8008c6">DLISTUNR_position::index</a></td>
+          <td class="memname"><a class="el" href="a00047.html#ga11718c21601b9ee597d31cb7e720c260">HASH_FUNCTION</a> <a class="el" href="a00047.html#gaa8d9ed13981a492e221f55d4a0ff8a9b">HASH::hash_func</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00061">61</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00069">69</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga54f568b298b25c9e2c8d1b50dfc43a97"></a><!-- doxytag: member="DLISTUNR::root" ref="ga54f568b298b25c9e2c8d1b50dfc43a97" args="" -->
+<a class="anchor" id="ga1e56521c716b07928dc326eced3b50c0"></a><!-- doxytag: member="HASH::ismultimap" ref="ga1e56521c716b07928dc326eced3b50c0" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00011.html">DLISTUNR_entry</a> <a class="el" href="a00047.html#ga54f568b298b25c9e2c8d1b50dfc43a97">DLISTUNR::root</a></td>
+          <td class="memname">int <a class="el" href="a00047.html#ga1e56521c716b07928dc326eced3b50c0">HASH::ismultimap</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00026_source.html#l00048">48</a> of file <a class="el" href="a00026_source.html">dlistunr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00022_source.html#l00061">61</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga8713031ba9a40fa717f1d3b8114691c0"></a><!-- doxytag: member="HASH::mult_load_factor" ref="ga8713031ba9a40fa717f1d3b8114691c0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="a00047.html#ga8713031ba9a40fa717f1d3b8114691c0">HASH::mult_load_factor</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00022_source.html#l00066">66</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga00bd0beb9248ca36fff916569eb71526"></a><!-- doxytag: member="HASH::resize_threshold" ref="ga00bd0beb9248ca36fff916569eb71526" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="a00047.html#ga00bd0beb9248ca36fff916569eb71526">HASH::resize_threshold</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00022_source.html#l00064">64</a> of file <a class="el" href="a00022_source.html">bhash.h</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 9 2011 03:08:25 for Simple data structures / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

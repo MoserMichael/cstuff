@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Simple data structures / objects in plain C: Member List</title>
+<title>Simple data structures / objects in plain C: HEAP</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,29 +24,660 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">SLIST Member List</div>  </div>
+<div class="title">HEAP</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00006.html">SLIST</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00006.html#a7361a7792b34b35b4bdd5bdcace39d38">elmcount</a></td><td><a class="el" href="a00006.html">SLIST</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00006.html#aec4f4d9f8363c74fdbf19e4e48e5138b">next</a></td><td><a class="el" href="a00006.html">SLIST</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00006.html#a1277c2a660611df18e9e9f22c7ed8717">prev</a></td><td><a class="el" href="a00006.html">SLIST</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Sep 6 2011 17:06:56 for Simple data structures / objects in plain C by&#160;
+
+<p>Heap data structure; all elements in the heap must be of the same size. A heap data structure is an ordered tree where the root node contains the smallest value. The smallest element in the whole heap is alway the top element. This heap is implemented by an array.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html">HEAP</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> )(int index, void *elm, size_t elmsize, void *context)</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#gac152cfd9171fdc1cee9f7d08ba85f6c4">HEAP_init</a> (<a class="el" href="a00007.html">HEAP</a> *heap, size_t elmcount, size_t elmsize, <a class="el" href="a00034.html#aa0102894a26d562e126b76e7df87a143">HEAP_compare</a> compare_func)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga74a671a1104e9a2d48a430427a2f729b">HEAP_free</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">free all memory used by the heap (object destructor).  heap (in) the object.  <a href="#ga74a671a1104e9a2d48a430427a2f729b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga4c1edfd6bdc79001bb92fcd20efc0058">HEAP_size</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga4f0ddfd22ffd30752a88c25c27508ff1">HEAP_maxsize</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga2a7f7199e6201e88740ee037daef1027">HEAP_elmsize</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga3cdfaf0ef3e2728601b89c445b938b31">HEAP_top</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns pointer to the top element of the heap.  <a href="#ga3cdfaf0ef3e2728601b89c445b938b31"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#gac1bbf31bcce42f7b63433f0ba732a1bf">HEAP_get_at</a> (<a class="el" href="a00007.html">HEAP</a> *heap, int index)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#gadb9cc342dba8eb29fe8be37e56a16370">HEAP_pop</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">remove the top element from the heap  <a href="#gadb9cc342dba8eb29fe8be37e56a16370"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#gaf33187b5e3ea29b6da1ccf4b2490bc7f">HEAP_push</a> (<a class="el" href="a00007.html">HEAP</a> *heap, void *element, size_t elmsize)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">insert a new element into the heap  <a href="#gaf33187b5e3ea29b6da1ccf4b2490bc7f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga689c175c301ff3025290d37ca5800039">HEAP_check</a> (<a class="el" href="a00007.html">HEAP</a> *heap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">check consistency of heap object.  <a href="#ga689c175c301ff3025290d37ca5800039"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga72dd058aadb08417c5fcb618e9be6833">HEAP_foreach_sorted</a> (<a class="el" href="a00007.html">HEAP</a> *heap, <a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#ga4bc6463fb11b07c4fa67125675342066">HEAP_foreach</a> (<a class="el" href="a00007.html">HEAP</a> *heap, <a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html#gac2fb2dbcb7d6f5b2d394046334a696f4">HEAP_findif</a> (<a class="el" href="a00007.html">HEAP</a> *heap, <a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a> eval, void *context, int32_t *retval)</td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>Heap data structure; all elements in the heap must be of the same size. A heap data structure is an ordered tree where the root node contains the smallest value. The smallest element in the whole heap is alway the top element. This heap is implemented by an array. </p>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga13498c6ee613dce46c5f505dc66fa6dc"></a><!-- doxytag: member="heap.h::HEAP_VISITOR" ref="ga13498c6ee613dce46c5f505dc66fa6dc" args=")(int index, void *elm, size_t elmsize, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a>)(int index, void *elm, size_t elmsize, void *context)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00141">141</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga689c175c301ff3025290d37ca5800039"></a><!-- doxytag: member="heap.h::HEAP_check" ref="ga689c175c301ff3025290d37ca5800039" args="(HEAP *heap)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HEAP_check </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>check consistency of heap object. </p>
+
+<p>Definition at line <a class="el" href="a00033_source.html#l00165">165</a> of file <a class="el" href="a00033_source.html">heap.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+
+        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> &gt; heap-&gt;<a class="code" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a>) {
+                <span class="keywordflow">return</span> 0;
+        }
+        <span class="keywordflow">if</span> (!<a class="code" href="a00033.html#a68f48f61e4ae987ccd74d127d7cf7c76">check_recursive</a>(heap, 1)) {
+                <span class="keywordflow">return</span> 0;
+        }
+        <span class="keywordflow">return</span> 1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga2a7f7199e6201e88740ee037daef1027"></a><!-- doxytag: member="heap.h::HEAP_elmsize" ref="ga2a7f7199e6201e88740ee037daef1027" args="(HEAP *heap)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t HEAP_elmsize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00089">89</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac2fb2dbcb7d6f5b2d394046334a696f4"></a><!-- doxytag: member="heap.h::HEAP_findif" ref="gac2fb2dbcb7d6f5b2d394046334a696f4" args="(HEAP *heap, HEAP_VISITOR eval, void *context, int32_t *retval)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int HEAP_findif </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>retval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00160">160</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> i;
+        <span class="keywordtype">size_t</span> sz = heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a>;
+        <span class="keywordtype">size_t</span> elmsz = heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+        int32_t ret;
+        uint8_t *pos;
+
+        <span class="keywordflow">if</span> (!retval) {
+          *retval = 0;
+        }
+
+        <span class="keywordflow">for</span>(i = 0, pos = heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a>; i &lt; sz; i++, pos += elmsz) {
+                <span class="keywordflow">if</span> ( (ret = eval( i, pos, elmsz, context )) != 0) {
+                        <span class="keywordflow">if</span> (retval) {
+                                *retval = ret;
+                        }
+                        <span class="keywordflow">return</span> i;
+                }
+        }
+        <span class="keywordflow">return</span> -1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga4bc6463fb11b07c4fa67125675342066"></a><!-- doxytag: member="heap.h::HEAP_foreach" ref="ga4bc6463fb11b07c4fa67125675342066" args="(HEAP *heap, HEAP_VISITOR eval, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void HEAP_foreach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00148">148</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> i;
+        <span class="keywordtype">size_t</span> sz = heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a>;
+        <span class="keywordtype">size_t</span> elmsz = heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+        uint8_t *pos;
+
+        <span class="keywordflow">for</span>(pos = heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a>, i = 0; i &lt; sz; i++, pos += elmsz) {
+                eval( i, pos, elmsz, context ); 
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga72dd058aadb08417c5fcb618e9be6833"></a><!-- doxytag: member="heap.h::HEAP_foreach_sorted" ref="ga72dd058aadb08417c5fcb618e9be6833" args="(HEAP *heap, HEAP_VISITOR eval, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HEAP_foreach_sorted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00054.html#ga13498c6ee613dce46c5f505dc66fa6dc">HEAP_VISITOR</a>&#160;</td>
+          <td class="paramname"><em>eval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00033_source.html#l00205">205</a> of file <a class="el" href="a00033_source.html">heap.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <a class="code" href="a00033.html#a0f51edc6a8cf741b8a292e63f59cbd10">visit_sorted</a>( heap, 1, eval, context );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga74a671a1104e9a2d48a430427a2f729b"></a><!-- doxytag: member="heap.h::HEAP_free" ref="ga74a671a1104e9a2d48a430427a2f729b" args="(HEAP *heap)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void HEAP_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>free all memory used by the heap (object destructor).  heap (in) the object. </p>
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00068">68</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a>) {
+                free(heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a>);
+                heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> = 0;
+                heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> = 0;
+                heap-&gt;<a class="code" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a> = 0;
+                heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a> = 0;
+        }
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac1bbf31bcce42f7b63433f0ba732a1bf"></a><!-- doxytag: member="heap.h::HEAP_get_at" ref="gac1bbf31bcce42f7b63433f0ba732a1bf" args="(HEAP *heap, int index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void* HEAP_get_at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00108">108</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> == 0) {
+                <span class="keywordflow">return</span> 0;
+        }
+        <span class="keywordflow">if</span> (index &gt; (<span class="keywordtype">int</span>) heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> || index &lt; 0) {
+                <span class="keywordflow">return</span> 0;
+        }
+
+        <span class="keywordflow">return</span> heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + index * heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac152cfd9171fdc1cee9f7d08ba85f6c4"></a><!-- doxytag: member="heap.h::HEAP_init" ref="gac152cfd9171fdc1cee9f7d08ba85f6c4" args="(HEAP *heap, size_t elmcount, size_t elmsize, HEAP_compare compare_func)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE int HEAP_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elmcount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elmsize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00034.html#aa0102894a26d562e126b76e7df87a143">HEAP_compare</a>&#160;</td>
+          <td class="paramname"><em>compare_func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00046">46</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        
+        heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a> = elmsize;
+        heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> = 0;
+        heap-&gt;<a class="code" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a> = elmcount;
+        heap-&gt;<a class="code" href="a00007.html#a58d5a3131976055b67894a0ba8467210">compare_func</a> = compare_func;
+
+        heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *) malloc( elmcount * elmsize );
+        <span class="keywordflow">if</span> (!heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a>) {
+                <span class="keywordflow">return</span> -1;
+        }
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga4f0ddfd22ffd30752a88c25c27508ff1"></a><!-- doxytag: member="heap.h::HEAP_maxsize" ref="ga4f0ddfd22ffd30752a88c25c27508ff1" args="(HEAP *heap)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t HEAP_maxsize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00084">84</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> heap-&gt;<a class="code" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gadb9cc342dba8eb29fe8be37e56a16370"></a><!-- doxytag: member="heap.h::HEAP_pop" ref="gadb9cc342dba8eb29fe8be37e56a16370" args="(HEAP *heap)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HEAP_pop </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>remove the top element from the heap </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">heap</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00033_source.html#l00060">60</a> of file <a class="el" href="a00033_source.html">heap.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> pos, pos_offset;
+        <span class="keywordtype">size_t</span> left_child, left_child_offset;
+        <span class="keywordtype">size_t</span> right_child, right_child_offset;
+        <span class="keywordtype">size_t</span> next_pos, next_pos_offset;
+        <span class="keywordtype">size_t</span> last_element, last_element_offset;
+        <span class="keywordtype">size_t</span> elmsize;
+
+        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> == 0) {
+                <span class="keywordflow">return</span> -1;
+        }
+
+        elmsize = heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+
+        last_element = heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a>;
+        last_element_offset = (last_element -1) * elmsize;
+        heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a>--;
+        
+        pos = 1;
+        <span class="keywordflow">while</span>( pos &lt;= heap-&gt;elmcount) {
+                
+                left_child = (pos &lt;&lt; 1);
+                <span class="keywordflow">if</span> (left_child &gt; heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a>) {
+                        <span class="keywordflow">break</span>;
+                }
+
+
+                right_child = left_child + 1;
+
+                right_child_offset = (right_child - 1) * elmsize;
+                left_child_offset = (left_child - 1) * elmsize;
+
+                <span class="keywordflow">if</span> (left_child != heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> &amp;&amp;
+                        heap-&gt;<a class="code" href="a00007.html#a58d5a3131976055b67894a0ba8467210">compare_func</a>( heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + right_child_offset, 
+                                                                heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + left_child_offset, 
+                                                                elmsize) &lt; 0) {
+
+                        next_pos = right_child;
+                } <span class="keywordflow">else</span> {
+                        next_pos = left_child;
+                }
+
+
+                next_pos_offset = (next_pos-1) * elmsize;
+                <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00007.html#a58d5a3131976055b67894a0ba8467210">compare_func</a>(heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + last_element_offset,
+                                                           heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + next_pos_offset,
+                                                           elmsize) &gt; 0) {
+
+                        pos_offset = (pos - 1) * elmsize;
+                        memcpy( heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + pos_offset, heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + next_pos_offset, elmsize);
+                } <span class="keywordflow">else</span> {
+                        <span class="keywordflow">break</span>;
+                }
+                pos = next_pos;
+                
+        }
+        
+        pos_offset = (pos - 1) * elmsize;
+        <span class="keywordflow">if</span> (pos_offset != last_element_offset) {
+            memcpy( heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + pos_offset, heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + last_element_offset, elmsize);
+        }
+
+
+
+        <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaf33187b5e3ea29b6da1ccf4b2490bc7f"></a><!-- doxytag: member="heap.h::HEAP_push" ref="gaf33187b5e3ea29b6da1ccf4b2490bc7f" args="(HEAP *heap, void *element, size_t elmsize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HEAP_push </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>element</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elmsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>insert a new element into the heap </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">heap</td><td>(in) the object </td></tr>
+    <tr><td class="paramname">element</td><td>(in) data of object to be inserted into heap </td></tr>
+    <tr><td class="paramname">elmsize</td><td>(in) size of data area for element pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00033_source.html#l00007">7</a> of file <a class="el" href="a00033_source.html">heap.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordtype">size_t</span> pos, pos_offset;
+        <span class="keywordtype">size_t</span> <a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>, parent_offset;
+
+        <span class="keywordflow">if</span> (elmsize != heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>) {
+                <span class="keywordflow">return</span> -1;
+        }
+
+
+        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> &gt;= (heap-&gt;<a class="code" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a> - 1)) {
+                <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *pbuffer;
+                <span class="keywordtype">size_t</span> sz = heap-&gt;<a class="code" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a> * 2;
+
+                
+                pbuffer = realloc( heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a>, (sz) * heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a> );        
+                <span class="keywordflow">if</span> (!pbuffer) {
+                        <span class="keywordflow">return</span> -1;
+                }
+                heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> = pbuffer;
+                heap-&gt;<a class="code" href="a00007.html#a11522bc8e4a0ea00b3ce3b6893eba413">elmmaxcount</a> = sz;
+        }
+
+        elmsize = heap-&gt;<a class="code" href="a00007.html#aae914a0aafd256e96e7742eaed23633a">elmsize</a>;
+
+        heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> ++;
+
+        pos = heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a>;
+        <span class="keywordflow">while</span>(pos &gt; 1) {
+
+                parent = pos / 2;
+
+                pos_offset = (pos - 1) * elmsize;
+                parent_offset = (parent - 1) * elmsize;
+
+                <span class="keywordflow">if</span> ( heap-&gt;<a class="code" href="a00007.html#a58d5a3131976055b67894a0ba8467210">compare_func</a>( heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + parent_offset, 
+                                                                 element, 
+                                                                 elmsize ) &gt; 0) {
+                        
+                        memcpy( heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + pos_offset, heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + parent_offset, elmsize);
+                        pos = <a class="code" href="a00017.html#a3be948eaba1ce4c959c4211c487e775e">parent</a>;
+                } <span class="keywordflow">else</span> {
+                        <span class="keywordflow">break</span>;
+                }
+        }
+
+        memcpy( heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a> + (pos - 1) * elmsize, element, elmsize);
+
+
+        <span class="keywordflow">return</span> 0;
+}       
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga4c1edfd6bdc79001bb92fcd20efc0058"></a><!-- doxytag: member="heap.h::HEAP_size" ref="ga4c1edfd6bdc79001bb92fcd20efc0058" args="(HEAP *heap)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE size_t HEAP_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00079">79</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">return</span> heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga3cdfaf0ef3e2728601b89c445b938b31"></a><!-- doxytag: member="heap.h::HEAP_top" ref="ga3cdfaf0ef3e2728601b89c445b938b31" args="(HEAP *heap)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void* HEAP_top </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00007.html">HEAP</a> *&#160;</td>
+          <td class="paramname"><em>heap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>returns pointer to the top element of the heap. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">heap</td><td>(in) the object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the top element of the heap or 0 if heap is empty. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00034_source.html#l00099">99</a> of file <a class="el" href="a00034_source.html">heap.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+        <span class="keywordflow">if</span> (heap-&gt;<a class="code" href="a00007.html#a0dd2675a99a68e7109d4d890fb4ce8f6">elmcount</a> == 0) {
+                <span class="keywordflow">return</span> 0;
+        }
+        <span class="keywordflow">return</span> heap-&gt;<a class="code" href="a00007.html#ae4ae987dedca7bef9a8eb5628a8af092">buffer</a>;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:52 for Simple data structures / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
