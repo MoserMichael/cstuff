@@ -12,9 +12,11 @@ Which gives you license to do as you please with this stuff, except that you may
 h3. Why C
 
 These projects are mostly written in C with classes / Abstract data types. Here are my reasons to prefer C over C++ or Java.
-Higher order languages like C++ and Java have a much more expressive syntax.  Now with these capabilities comes an abundance of stylistic choices that divert attention from the real goal of writing a program.
+ 
+Higher order languages like C++ and Java have a much more expressive syntax. Now with these capabilities comes an abundance of stylistic choices that divert attention from the real goal of writing a program.
 
-* With C++ one has to make a set of decisions; is it wise to use C++ exceptions / RTTI or not? Will one use the STL library? What about BOOST, or rather which subset of BOOST? What is your position on template metaprogramming (I strongly dislike this kind of abuse) ?  All these choices are normally codified into a style guide, for example the "Google C++ style guide":http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml is a very thorough document and I largely agree with what it says; however all these decision points taken together tend to restrict you with regards to third party libraries and tools that you can interact with; so they in fact restrict your freedom of choice. Now open source is mainly about freedom of choice, both for users and for developers, so there is some conflict here.
+
+* With C++ one has to make a set of decisions; is it wise to use C++ exceptions / RTTI or not? Will one use the STL library? What about C++ exceptions or not ? What about BOOST, or rather which subset of BOOST? What is your position on template metaprogramming (I strongly dislike this kind of abuse) ?  All these choices are normally codified into a style guide, for example the "Google C++ style guide":http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml is a very thorough document and I largely agree with what it says; however all these decision points taken together tend to restrict you with regards to third party libraries and tools that you can interact with; so they in fact restrict your freedom of choice. Now open source is mainly about freedom of choice, both for users and for developers, so there is some conflict here.
 
 * In Java you have much less choice in terms of styles and programming paradigms; one should generally stick with how the JDK does it. However with Java you have an abundance of framework for any occasion; Choice of adopted framework has a strong lock in affect (will you use SPRING or OSGI or whatever kind of Beans? Which subset of the "Jakarta":http://jakarta.apache.org/ alphabet soup is in use?  All these choices usually come with a lot of internal politics, programmers tend to invest and band around technological choices.
 
@@ -26,6 +28,10 @@ Higher order languages like C++ and Java have a much more expressive syntax.  No
 
 * An obligatory reference to the "C+ FQA":http://yosefk.com/c++fqa/  is hereby made.
 
-The point is that I still do C++ and Java for paid work, as best as I can; but all the fluff and politics around it is; well, really no fun. Also please note that most programs that matter are written in C, the Linux kernel, the gcc toolchain, most scripting languages - all in C; 
+The point is that I still do C++ and Java for paid work, as best as I can; but all the fluff and politics around it is; well, really no fun. Also please note that most programs that matter are written in C, the Linux kernel, the gcc toolchain, most scripting language interpreters - all in C; 
 
 While C++ may be best suited for companies that build large monolithic applications, it is not the best choice for your garage open source project.  
+
+Still C++ is a good language for comercial projects, on condition that one really needs to utilise the computing machine to its maximum. The language creates a common vocabulary for such things as collection classes and object oriented design with patterns, things that are very important when trying to communicate the design of a project to a new programmer, just added to the team.
+
+Still Java may be the best language, on condition that one does not strive to utilize the computing machine to its very maximum, but one still cares for good performance. Its development tools allow for great productivity, automated memory management may still be the best improvement in programmer productivity, maybe even by an order of magnitude. One can build very tall abstractions in java, however one still may need the help of the occasional hackers, those that care for 'low level details'; one needs them for example when sorting out things like reference leaks, and helpng out if things don't quite work ;-)
