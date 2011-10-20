@@ -1,0 +1,11 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Content-Length: 10
+Content-Type: text/plain
+
+0123456789HTTP/1.1 200 OK
+Connection: close
+Content-Type: text/plain
+
+0123456789
