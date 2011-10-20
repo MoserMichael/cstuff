@@ -70,11 +70,6 @@ M_INLINE int http_is_separator( char ch )
 }
 
 
-typedef struct tagSTRINGPAIR {
-  char *key;
-  char *value;
-} STRINGPAIR;
-
 static void free_stringpair( DLISTUNR *list, void *entry, void *context)
 {
   STRINGPAIR *pair = (STRINGPAIR *) entry;
@@ -116,6 +111,36 @@ int HTTP_MESSAGE_add_header( HTTP_MESSAGE *message, const char *name , const cha
 
   return DLISTUNR_push_back( &message->header_values, &entry, sizeof(entry));
 }
+
+const char * HTTP_MESSAGE_find_header( HTTP_MESSAGE *message, const char *name ) {
+  DLISTUNR_position idx;
+  STRINGPAIR *cur;
+
+  DLISTUNR_FOREACH( idx, &message->header_values ) {
+     cur = (STRINGPAIR *) DLISTUNR_at( &message->header_values, idx );
+     if (strcmp(cur->key, name) == 0)  {
+        return cur->value;
+     }
+  }
+  return 0;
+}
+
+STRINGPAIR * HTTP_MESSAGE_first_header( HTTP_MESSAGE *message, DLISTUNR_position *pos )
+{
+  *pos =  DLISTUNR_get_first( &message->header_values );
+  return (STRINGPAIR *)  DLISTUNR_at(  &message->header_values, *pos );
+}
+
+STRINGPAIR * HTTP_MESSAGE_next_header(HTTP_MESSAGE *message, DLISTUNR_position *pos )
+{
+  if (pos->entry == (DLISTUNR_entry *) &message->header_values.root) {
+    return 0;
+  }
+  *pos =  DLISTUNR_next( *pos );
+  return (STRINGPAIR *)  DLISTUNR_at(  &message->header_values, *pos );
+}
+
+
 
 //==========================================================================
 
@@ -724,6 +749,21 @@ req_do_return:
   return rt;
 }
 
+int HTTP_REQUEST_is_persistent( HTTP_REQUEST *message )
+{
+  if (message->version == HTTP_VERSION_1_1) {
+     if (message->base.flags & HTTP_MESSAGE_FLAG_CONNECTION_CLOSE) {
+       return 0;
+     }
+     return 1;
+  }
+
+  if (message->base.flags & HTTP_MESSAGE_FLAG_KEEPALIVE) {
+    return 0;
+  }
+  return 0;
+}
+
 
 // =============================================================================
 //Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF
@@ -1023,6 +1063,9 @@ PARSER_STATUS HTTP_RESPONSE_WRITER_write( HTTP_RESPONSE_WRITER *writer, BF *bf )
       break;
     case HTTP_RESPONSE_WR_EOF:
 wr_eof:    
+      if (BF_putn( bf, "\r\n", 2)) {
+          RETURN_WRITER_MORE_DATA;
+      }
       return PARSER_STATUS_COMPLETED; 
     }
   }

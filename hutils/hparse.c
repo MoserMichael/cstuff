@@ -39,6 +39,9 @@ static int parser_connection_header(  struct tagHTTP_MESSAGE *message, struct ta
     message->flags |= HTTP_MESSAGE_FLAG_CONNECTION_CLOSE;
     return 0;
   }
+  if ( strcasecmp( parser->token,"keep-alive") == 0) {
+    message->flags |= HTTP_MESSAGE_FLAG_KEEPALIVE;
+  }
 
   return -1;
 }

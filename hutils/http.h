@@ -13,14 +13,23 @@
 #define HTTP_MESSAGE_FLAG_CONNECTION_CLOSE   1
 #define HTTP_MESSAGE_FLAG_TRANSFER_CHUNKED   2
 #define HTTP_MESSAGE_FLAG_HAS_CONTENT_LENGTH 4
-
+#define HTTP_MESSAGE_FLAG_KEEPALIVE          8
 
 /**
+ * @defgroup HTTP_MESSAGE
  * @brief Holds common data of both HTTP request and response objects.
  *
  * @{
  */
+
+typedef struct tagSTRINGPAIR {
+  char *key;
+  char *value;
+} STRINGPAIR;
+
+
 typedef struct tagHTTP_MESSAGE {
+  
   int flags;
   int content_length;
   DLISTUNR header_values;
@@ -37,6 +46,14 @@ M_INLINE void HTTP_MESSAGE_set_content_length( HTTP_MESSAGE *message, int conten
   message->flags |= HTTP_MESSAGE_FLAG_HAS_CONTENT_LENGTH;
   message->content_length = content_length;
 }
+
+const char * HTTP_MESSAGE_find_header( HTTP_MESSAGE *message, const char *name );
+
+STRINGPAIR * HTTP_MESSAGE_first_header( HTTP_MESSAGE *message, DLISTUNR_position *pos );
+
+STRINGPAIR * HTTP_MESSAGE_next_header( HTTP_MESSAGE *message, DLISTUNR_position *pos );
+
+
 
 /**
  * @}
@@ -98,6 +115,7 @@ typedef struct tagHTTP_REQUEST {
 
 } HTTP_REQUEST;
 
+int HTTP_REQUEST_is_persistent( HTTP_REQUEST *message );
 
 M_INLINE int HTTP_REQUEST_init( HTTP_REQUEST *message )
 {
@@ -138,6 +156,7 @@ M_INLINE void HTTP_REQUEST_free( HTTP_REQUEST *message )
  * @}
  */
 
+// ===============================================================
 
 typedef int  (*HTTP_REQ_HEADER_PARSED)	   (HTTP_REQUEST *request, void *ctx);
 typedef int  (*HTTP_REQ_MESSAGE_BODY_DATA) (HTTP_REQUEST *request, void *data, size_t data_size, void *ctx);
