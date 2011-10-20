@@ -1,7 +1,7 @@
 TOPDIR=../..
 
 
-TESTS=cutilstestsh cutilstest
+TESTS=cutilstest cutilstestsh  
 
 
 cutilstest_TYPE=exe
