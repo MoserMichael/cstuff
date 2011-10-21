@@ -6,6 +6,7 @@
 #include <cutils/properties.h>
 #include <butils/logg.h>
 
+
 // ====================================================================
 #define RESERVED_FOR_CHUNK_HEADER_SIZE 15
 
@@ -20,14 +21,30 @@
 
 
 // ====================================================================
+typedef struct tagVIRTUAL_HOST_DEFINITION {
+  char  *host;
+  int    host_port;
+  
+  size_t next_filter_idx;
+  size_t last_filter_idx;
+
+} VIRTUAL_HOST_DEFINITION;
+
 typedef struct tagDATA_SINK_FILTER {
   HTTP_FILTER base;
+  
+  ARRAY vhosts;
+  VIRTUAL_HOST_DEFINITION default_vhost;
+  WEBBY *server;
+
 } DATA_SINK_FILTER;
 
 typedef struct tagDATA_SINK_FILTER_CONNECTION_CONTEXT {
   BF *out_buf;
   HTTP_RESPONSE_WRITER writer;  
   void *impl_connection_ctx;
+
+  size_t next_request_filter;
 
 } DATA_SINK_FILTER_CONNECTION_CONTEXT; 
 
@@ -42,6 +59,8 @@ DATA_SINK_FILTER_CONNECTION_CONTEXT *DATA_SINK_FILTER_CONNECTION_CONTEXT_init(vo
   }
   ret->impl_connection_ctx = impl_connection_ctx; 
   ret->out_buf = out_buf;
+  ret->next_request_filter = (size_t) -1;
+
   return ret;
 }
 
@@ -50,7 +69,78 @@ void DATA_SINK_FILTER_CONNECTION_CONTEXT_free( DATA_SINK_FILTER_CONNECTION_CONTE
   free(ctx);
 }
 
-int    sink_on_response_header       (HTTP_RESPONSE *response,  FILTER_CONTEXT *context )
+static int sink_req_header_parsed(HTTP_REQUEST *request,  FILTER_CONTEXT *context )
+{ 
+  DATA_SINK_FILTER *sink_filter; 
+  DATA_SINK_FILTER_CONNECTION_CONTEXT *sink;
+  VIRTUAL_HOST_DEFINITION *vhosts_def; 
+  size_t i, found;
+
+  // no host header in HTTP 1.0; go to the next filter.
+  if (request->version == HTTP_VERSION_1_0) {
+    return call_next_filter_request_header_parsed( request, context );
+  }
+
+  // presence of Host header is absolutely required with HTTP/1.1
+  if (!request->has_host_header) {
+    return -1;
+  }
+
+  sink_filter = (DATA_SINK_FILTER *) context->filter;
+  if (ARRAY_size( &sink_filter->vhosts ) == 0)  {
+    return call_next_filter_request_header_parsed( request, context );
+  }
+
+  // find which virtua host corresponds to the request host entry
+  for( found = i = 0, vhosts_def = (VIRTUAL_HOST_DEFINITION *) ARRAY_at( &sink_filter->vhosts, 0 ); 
+       i < ARRAY_size( &sink_filter->vhosts); 
+       ++i, ++vhosts_def ) {
+
+     if ( strcmp( request->host_header, vhosts_def->host ) == 0 && request->host_header_port == vhosts_def->host_port) {
+       found = 1;
+       break;
+     }
+  }
+
+  if (!found) {
+     return -1;
+  }
+  
+  // now that the virtual host is found - remember the next filter index for the following notifications.
+  sink = (DATA_SINK_FILTER_CONNECTION_CONTEXT *) context;
+  sink->next_request_filter = vhosts_def->next_filter_idx; 
+ 
+  // call next filter.
+  context = context + vhosts_def->next_filter_idx;
+  return context->filter->on_request_header_parsed( request, context );
+}
+static int sink_req_data(HTTP_REQUEST *request, void *data, size_t data_size,  FILTER_CONTEXT *context )
+{
+  DATA_SINK_FILTER_CONNECTION_CONTEXT * sink;
+
+  sink = (DATA_SINK_FILTER_CONNECTION_CONTEXT *) context;
+  if (sink->next_request_filter == (size_t) -1) {
+    return call_next_filter_request_data( request, data, data_size, context ); 
+  }
+  
+  context = context + sink->next_request_filter; 
+  return context->filter->on_request_data( request, data, data_size, context );
+}
+
+static int sink_req_completed( HTTP_REQUEST *request, FILTER_CONTEXT *context )
+{ 
+  DATA_SINK_FILTER_CONNECTION_CONTEXT * sink;
+
+  sink = (DATA_SINK_FILTER_CONNECTION_CONTEXT *) context;
+  if (sink->next_request_filter == (size_t) -1) {
+    return call_next_filter_request_completed( request, context );
+  }
+  
+  context = context + sink->next_request_filter;
+  return context->filter->on_request_completed( request, context );
+} 
+
+static int    sink_on_response_header       (HTTP_RESPONSE *response,  FILTER_CONTEXT *context )
 {
    DATA_SINK_FILTER_CONNECTION_CONTEXT *sink = (DATA_SINK_FILTER_CONNECTION_CONTEXT *)  context->connection_ctx;
    BF *bf;
@@ -79,7 +169,7 @@ int    sink_on_response_header       (HTTP_RESPONSE *response,  FILTER_CONTEXT *
 
 }
 
-int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chunk, RDATA rdata, FILTER_CONTEXT *context )
+static int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chunk, RDATA rdata, FILTER_CONTEXT *context )
 {
   DATA_SINK_FILTER_CONNECTION_CONTEXT *sink = (DATA_SINK_FILTER_CONNECTION_CONTEXT *)  context->connection_ctx;
   BF *bf;
@@ -123,7 +213,7 @@ int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chunk, RDA
 }
 
  
-int    sink_on_response_complete     (HTTP_RESPONSE *response, FILTER_CONTEXT *context )
+static int    sink_on_response_complete     (HTTP_RESPONSE *response, FILTER_CONTEXT *context )
 {
   DATA_SINK_FILTER_CONNECTION_CONTEXT *sink = (DATA_SINK_FILTER_CONNECTION_CONTEXT *)  context->connection_ctx;
 
@@ -132,7 +222,15 @@ int    sink_on_response_complete     (HTTP_RESPONSE *response, FILTER_CONTEXT *c
   return WEBBY_impl_response_completed( sink->impl_connection_ctx, response->base.flags & HTTP_MESSAGE_FLAG_CONNECTION_CLOSE );
 }
 
-DATA_SINK_FILTER *DATA_SINK_FILTER_init()
+static int sink_connection_close( FILTER_CONTEXT *context )
+{
+  if (context->connection_ctx) {
+    free( context->connection_ctx);
+  }
+  return 0;
+}
+
+DATA_SINK_FILTER *DATA_SINK_FILTER_init(WEBBY *server)
 {
   DATA_SINK_FILTER * ret;
 
@@ -140,14 +238,100 @@ DATA_SINK_FILTER *DATA_SINK_FILTER_init()
   if (!ret) {
     return 0;
   }
+
+  ret->base.on_request_header_parsed = sink_req_header_parsed;
+  ret->base.on_request_data = sink_req_data;
+  ret->base.on_request_completed = sink_req_completed;
   ret->base.on_response_header =  sink_on_response_header; 
   ret->base.on_response_data = sink_on_response_data;   
   ret->base.on_response_completed = sink_on_response_complete;  
+  ret->base.on_connection_close = sink_connection_close;
+
+  ret->server = server;
+ 
+  memset( &ret->default_vhost, 0, sizeof( VIRTUAL_HOST_DEFINITION ) );
+  ret->default_vhost.next_filter_idx = ret->default_vhost.last_filter_idx = (size_t) -1;
+  
+  if (ARRAY_init( &ret->vhosts, sizeof( VIRTUAL_HOST_DEFINITION ), 10 )) {
+    return 0;
+  }
 
   return ret;
 }
 
+int DATA_SINK_FILTER_add_vhost( DATA_SINK_FILTER *vhost_filter, const char *host, int port_num, size_t * vhost_idx )
+{
+  VIRTUAL_HOST_DEFINITION def;
 
+  def.host = strdup(host);
+  def.host_port = port_num;
+  def.next_filter_idx = def.last_filter_idx = (size_t) -1;
+ 
+  *vhost_idx = ARRAY_size( &vhost_filter->vhosts ) ;
+
+  if ( ARRAY_push_back( &vhost_filter->vhosts, &def, sizeof( VIRTUAL_HOST_DEFINITION ) ) )  {
+    return -1;
+  }
+  return 0;
+}
+
+int DATA_SINK_FILTER_add_filter_to_vhost( DATA_SINK_FILTER *vhost_filter, size_t vhost_idx, HTTP_FILTER *new_filter )
+{
+  size_t filter_idx;
+  VIRTUAL_HOST_DEFINITION  *vhost; 
+  HTTP_FILTER *last_filter;
+  HTTP_FILTER **tmp;
+
+  // get virtual host defnition
+  if (ARRAY_size( &vhost_filter->vhosts ) == 0) {
+    vhost = &vhost_filter->default_vhost; 
+  } else {
+    vhost = (VIRTUAL_HOST_DEFINITION  *) ARRAY_at( &vhost_filter->vhosts, vhost_idx );
+  }
+  if (!vhost) {
+    return -1;
+  }
+
+  // insert the new filter
+  if (ARRAY_push_back( &vhost_filter->server->filters, &new_filter, sizeof(void *) ) ) {
+    return -1;
+  }
+  filter_idx = ARRAY_size( &vhost_filter->server->filters ) - 1;  
+
+
+  // update virtual host filter chain.
+  if (vhost->next_filter_idx == (size_t) -1) {
+    vhost->next_filter_idx = filter_idx;
+    vhost->last_filter_idx = filter_idx;
+
+    new_filter->next_response_filter_idx = 0;
+    new_filter->next_request_filter_idx = (size_t) -1; 
+ 
+  } else {
+    new_filter->next_response_filter_idx =  vhost->last_filter_idx;
+    new_filter->next_request_filter_idx = (size_t) -1; 
+    
+    tmp = (HTTP_FILTER **) ARRAY_at( &vhost_filter->server->filters, vhost->next_filter_idx );
+    last_filter = *tmp;
+    last_filter->next_request_filter_idx = filter_idx;
+
+    vhost->last_filter_idx = filter_idx;
+  }
+  return 0;
+}
+
+
+
+
+// ====================================================================
+#if 0
+typedef struct tagVIRTUAL_HOST_FILTER {
+ VIRTUAL_HOST_FILTER;
+
+
+
+
+#endif
 
 
 // ====================================================================
@@ -427,51 +611,74 @@ WEBBY *WEBBY_init( WEBBY_CONFIG * cfg )
     return 0;
   }
  
-  data_sink = DATA_SINK_FILTER_init();
+  // first filter is sink filter - receives response data.
+  data_sink = DATA_SINK_FILTER_init( ret );
+  if (!data_sink) {
+    return 0;
+  }
   ARRAY_push_back( &ret->filters, &data_sink, sizeof( void * ) );
-   
+  ret->sink_filter = data_sink;
+
   ret->servlet_runner_filter = SERVLET_RUNNER_FILTER_init();
   if (!ret->servlet_runner_filter) {
     return 0;
   }
 
-   if (WEBBY_impl_new( ret, &ret->impl ) ) {
+  // get the implementation object.
+  if (WEBBY_impl_new( ret, &ret->impl ) ) {
     return 0;
   }
   return ret;
 }
 
-int WEBBY_add_filter(  WEBBY *server, HTTP_FILTER *filter )
+int WEBBY_add_vhost( WEBBY *server, const char *host, int port_num, size_t * vhost_idx )
 {
-
-#if 0
-  filter->filter_ctx = 0;
-  if (filter->init_filter!=0) {
-    if (filter->init_filter( &filter->filter_ctx ) ) {
-      return -1;
-    }
-  }
-#endif  
-
-  return ARRAY_push_back( &server->filters, &filter, sizeof( void * ) );
+  return DATA_SINK_FILTER_add_vhost(  server->sink_filter, host, port_num, vhost_idx );
 }
+
+int WEBBY_add_filter(  WEBBY *server, size_t vhost_idx, HTTP_FILTER *filter )
+{
+  return DATA_SINK_FILTER_add_filter_to_vhost(  server->sink_filter, vhost_idx, filter );
+}
+
+int WEBBY_add_servlet( WEBBY *server, HTTP_SERVLET * servlet )
+{
+  return SERVLET_RUNNER_FILTER_add_servlet( server->servlet_runner_filter, servlet );
+}
+
 
 int WEBBY_run( WEBBY *server )
 {
-  if (WEBBY_add_filter( server, &server->servlet_runner_filter->base ) ) {
+  FILTER_CONTEXT *cur,*layout;
+  HTTP_FILTER **tmp;
+  size_t i;
+
+  if (WEBBY_add_filter( server, 0, &server->servlet_runner_filter->base ) ) {
     return -1;
   }
+
+  server->filter_ctx_layout_size =  sizeof( FILTER_CONTEXT ) * ARRAY_size( &server->filters ); 
+  layout = (FILTER_CONTEXT *) malloc(  server->filter_ctx_layout_size );
+  if (! layout ) {
+    return -1;
+  }
+  server->filter_ctx_layout = layout;
+
+  for(i = 0, cur = (FILTER_CONTEXT *) layout; i < ARRAY_size( &server->filters ); cur++, i++ ) {
+     cur->connection_ctx = 0;
+     tmp = (HTTP_FILTER **) ARRAY_at( &server->filters, i );
+ 
+     cur->filter = *tmp;
+     cur->next_request_filter_idx = cur->filter->next_request_filter_idx - i;     
+     cur->next_response_filter_idx = i - cur->filter->next_response_filter_idx;
+  }
+ 
   return WEBBY_impl_run( server->impl );
 }
 
 int WEBBY_shutdown( WEBBY *server )
 {
   return WEBBY_impl_shutdown( server->impl ); 
-}
-
-int WEBBY_add_servlet( WEBBY *server, HTTP_SERVLET * servlet )
-{
-  return SERVLET_RUNNER_FILTER_add_servlet( (SERVLET_RUNNER_FILTER *) server->servlet_runner_filter, servlet );
 }
 
 static int http_header_parsed	   (HTTP_REQUEST *request, void *ctx)
@@ -483,7 +690,6 @@ static int http_header_parsed	   (HTTP_REQUEST *request, void *ctx)
   return filter_data->filter->on_request_header_parsed(request, filter_data );
 }
 
- 
 static int http_on_message_data       (HTTP_REQUEST *request, void *data, size_t data_size, void *ctx)
 {
   FILTER_CONTEXT *filter_data = (FILTER_CONTEXT *) ctx;
@@ -506,11 +712,9 @@ static int http_req_finished	   (HTTP_REQUEST *request, void *ctx)
 WEBBY_CONNECTION *WEBBY_new_connection( WEBBY *server, void *implconndata  )
 {
   WEBBY_CONNECTION *ret = 0;
-  FILTER_CONTEXT *filter_data = 0,*cur;
-  HTTP_FILTER **tmp;
+  FILTER_CONTEXT *filter_data = 0;
   void *buff = 0;
   DATA_SINK_FILTER_CONNECTION_CONTEXT *sink_conn_ctx = 0;
-  size_t nfilters, i;
 
   ret = (WEBBY_CONNECTION *)  malloc( sizeof(WEBBY_CONNECTION) ); 
   if (!ret) {
@@ -522,29 +726,19 @@ WEBBY_CONNECTION *WEBBY_new_connection( WEBBY *server, void *implconndata  )
     goto err;
   }
   BF_init( &ret->in_buf, buff, HTTP_PARSER_BUFFER_SIZE);
- 
-  nfilters = ARRAY_size( &server->filters );  
-  filter_data = (FILTER_CONTEXT *) malloc( (nfilters + 1)  * sizeof(FILTER_CONTEXT) );
+  
+  filter_data = (FILTER_CONTEXT *) malloc( server->filter_ctx_layout_size );
   if (!filter_data) {
     goto err;
   }
-  ret->filter_data = filter_data; 
-
-  for( i = 0, cur = filter_data; i < nfilters; ++i, ++cur) {
-     cur->connection_ctx = 0;
-   
-     tmp = (HTTP_FILTER **) ARRAY_at( &server->filters, i );
-     cur->filter =  *tmp;
-  }
-  cur->connection_ctx = 0;
-  cur->filter = 0;
+  memcpy( filter_data, server->filter_ctx_layout, server->filter_ctx_layout_size );
+  ret->num_filters = ARRAY_size( &server->filters );
 
   sink_conn_ctx = DATA_SINK_FILTER_CONNECTION_CONTEXT_init( implconndata, &ret->in_buf ); 
   if (! sink_conn_ctx) {   
     goto err;
   }
   filter_data->connection_ctx = sink_conn_ctx; 
- 
  
  
   HTTP_REQUEST_PARSER_init( &ret->request_parser,
@@ -594,10 +788,14 @@ int WEBBY_connection_data_received( WEBBY_CONNECTION * connection  )
   return 0;
 }
 
-int WEBBY_connection_close( WEBBY_CONNECTION * connection  )
+void WEBBY_connection_close( WEBBY_CONNECTION * connection  )
 {
-  FILTER_CONTEXT *context = connection->filter_data;
-  return context->filter->on_connection_close( context );
+  FILTER_CONTEXT *ctx;
+  size_t i;
+
+  for( ctx = connection->filter_data, i = 0; i < connection->num_filters ; ++ctx ) {
+    ctx->filter->on_connection_close( ctx );
+  } 
 }
 
 // ====================================================================

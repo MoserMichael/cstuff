@@ -33,9 +33,9 @@ struct tagHTTP_SERVLET;
 typedef struct tagFILTER_CONTEXT {
   void *connection_ctx;               /** per connection data data maintained for particular filter */
   struct tagHTTP_FILTER *filter;      /** pointer to filter instance */
-#if 0
-  struct tagHTTP_FILTER *next_filter;      /** pointer to filter instance */
-#endif
+ 
+  size_t next_request_filter_idx;     /** relative offset to next request filter */
+  size_t next_response_filter_idx;    /** relative offset to next response filter */
 
 } FILTER_CONTEXT;
  
@@ -70,7 +70,7 @@ typedef int    (*HTTP_FILTER_REQUEST_DATA)          (HTTP_REQUEST *request, void
  * @brief request - the http request header.
  * @param context - filter context, we need it to call the next filter.
  */
-    typedef int    (*HTTP_FILTER_REQUEST_COMPLETED)     (HTTP_REQUEST *request, FILTER_CONTEXT *context );
+typedef int    (*HTTP_FILTER_REQUEST_COMPLETED)     (HTTP_REQUEST *request, FILTER_CONTEXT *context );
 
 /**
  * @brief filter callback: a response header has now passed through the filter.
@@ -131,12 +131,15 @@ typedef int    (*HTTP_FILTER_RESPONSE_COMPLETED)     (HTTP_RESPONSE *response, F
  */
 typedef int    (*HTTP_FILTER_CONNECTION_CLOSE)	     (FILTER_CONTEXT *context );
 
-
 /**
  * @brief http filter definition
  */
 typedef struct tagHTTP_FILTER {
   
+  size_t next_request_filter_idx;    /** absolute index of next request filter */
+  size_t next_response_filter_idx;   /** absolute index of next response filter */
+
+ 
   HTTP_FILTER_INIT		     filter_free;
   HTTP_FILTER_FREE		     filter_init; 
   
@@ -158,7 +161,7 @@ typedef struct tagHTTP_FILTER {
  */
 M_INLINE int call_next_filter_request_header_parsed( HTTP_REQUEST *request, FILTER_CONTEXT *context )
 {
-  FILTER_CONTEXT *next = context + 1;
+  FILTER_CONTEXT *next = context + context->next_request_filter_idx;
   if (next->filter == 0) {
     return 0;
   }
@@ -170,7 +173,7 @@ M_INLINE int call_next_filter_request_header_parsed( HTTP_REQUEST *request, FILT
  */
 M_INLINE int call_next_filter_request_data( HTTP_REQUEST *request, void *data, size_t data_size, FILTER_CONTEXT *context )
 {
-  FILTER_CONTEXT *next = context + 1;
+  FILTER_CONTEXT *next = context + context->next_request_filter_idx;
   if (next->filter == 0) {
     return 0;
   }
@@ -182,7 +185,7 @@ M_INLINE int call_next_filter_request_data( HTTP_REQUEST *request, void *data, s
  */
 M_INLINE int call_next_filter_request_completed( HTTP_REQUEST *request,  FILTER_CONTEXT *context )
 {
-  FILTER_CONTEXT *next = context + 1;
+  FILTER_CONTEXT *next = context +  context->next_request_filter_idx;
   if (next->filter == 0) {
     return 0;
   }
@@ -194,7 +197,7 @@ M_INLINE int call_next_filter_request_completed( HTTP_REQUEST *request,  FILTER_
  */
 M_INLINE int call_next_filter_response_header (HTTP_RESPONSE *response,  FILTER_CONTEXT *context )
 {
-  FILTER_CONTEXT *next = context - 1;
+  FILTER_CONTEXT *next = context - context->next_response_filter_idx;
   if (next->filter == 0) {
     return 0;
   }
@@ -206,7 +209,7 @@ M_INLINE int call_next_filter_response_header (HTTP_RESPONSE *response,  FILTER_
  */
 M_INLINE int call_next_filter_response_data (HTTP_RESPONSE *response,  int is_chunk, RDATA rdata, FILTER_CONTEXT *context )
 {
-  FILTER_CONTEXT *next = context - 1;
+  FILTER_CONTEXT *next = context -  context->next_response_filter_idx;
   if (next->filter == 0) {
     return 0;
   }
@@ -218,24 +221,12 @@ M_INLINE int call_next_filter_response_data (HTTP_RESPONSE *response,  int is_ch
  */
 M_INLINE int call_next_filter_response_completed (HTTP_RESPONSE *response, FILTER_CONTEXT *context )
 {
-  FILTER_CONTEXT *next = context - 1;
+  FILTER_CONTEXT *next = context -  context->next_response_filter_idx;
   if (next->filter == 0) {
     return 0;
   }
   return next->filter->on_response_completed( response, next );
 }
-
-/**
- * @brief called by implementaiton of HTTP_FILTER_CONNECTION_CLOSE filter callback, calls the next filter in the chain
- */
-M_INLINE int call_next_filter_connection_close( FILTER_CONTEXT *context )
-{
-  FILTER_CONTEXT *next = context + 1;
-  if (next->filter == 0) {
-    return 0;
-  }
-  return next->filter->on_connection_close( next );
-} 
 
 
 /**
@@ -447,20 +438,31 @@ struct tagSERVLET_RUNNER_FILTER;
  * @{
  */
 typedef struct tagWEBBY {
-  WEBBY_CONFIG *cfg;
-  ARRAY filters;
-  struct tagSERVLET_RUNNER_FILTER * servlet_runner_filter;
-  void *impl;
+  void *impl;			    /** implementation object used to send / receive data on connection */
+  
+  FILTER_CONTEXT *filter_ctx_layout;/** precompouted filter context layout - copied for each new connection */
+  size_t	  filter_ctx_layout_size;       /** size of filter context layoyt */
+
+  ARRAY filters;		    /** all filters, all of them */
+  struct tagSERVLET_RUNNER_FILTER * servlet_runner_filter; /** the filter that runs servlets */
+  struct tagDATA_SINK_FILTER * sink_filter;
+
+  WEBBY_CONFIG *cfg;		    /** configuration */
+  
 } WEBBY;
 
 
 WEBBY *WEBBY_init( WEBBY_CONFIG * );
 
-int WEBBY_add_filter(  WEBBY *, HTTP_FILTER * );
-int WEBBY_add_servlet( WEBBY *, HTTP_SERVLET * );	
+int WEBBY_add_vhost( WEBBY *server, const char *host, int port_num, size_t * vhost_idx );
 
-int WEBBY_run( WEBBY * );
-int WEBBY_shutdown( WEBBY * );
+int WEBBY_add_filter(  WEBBY *server, size_t vhost_idx, HTTP_FILTER *filter );
+
+int WEBBY_add_servlet( WEBBY *server, HTTP_SERVLET *servlet );	
+
+int WEBBY_run( WEBBY *server );
+
+int WEBBY_shutdown( WEBBY *server );
 
 
 #define HTTP_PARSER_BUFFER_SIZE 4096
@@ -470,12 +472,15 @@ typedef struct tagWEBBY_CONNECTION {
   BF in_buf;
   HTTP_REQUEST_PARSER request_parser;
   HTTP_REQUEST request;
+
   FILTER_CONTEXT *filter_data;  
+  size_t num_filters;
 
 } WEBBY_CONNECTION;
 
 WEBBY_CONNECTION *WEBBY_new_connection( WEBBY *server, void *implconndata );
 int WEBBY_connection_data_received( WEBBY_CONNECTION * connection );
+void WEBBY_connection_close( WEBBY_CONNECTION * connection  );
 
 /**
  * @}
