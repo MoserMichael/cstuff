@@ -77,7 +77,8 @@ CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc )
   ret->thread_id = -1;   
   ret->state = CTHREAD_STATE_INIT;
 
-
+  ret->caller_to_thread_value_set = ret->thread_to_caller_value_set = 0;
+ 
   if (getcontext( &ret->context_coroutine )) {
     if (ret->state == CTHREAD_STATE_INIT) {
       goto err;
@@ -140,18 +141,27 @@ int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... )
     // got here when the running thread called yield for the first time, or exited without calling yield.
     thread->state = CTHREAD_STATE_SUSPENDED;
     if (rvalue) {
-     *rvalue = &thread->thread_to_caller_value; 
+     if (thread->thread_to_caller_value_set) {
+      *rvalue = &thread->thread_to_caller_value; 
+     } else {
+       *rvalue = 0;
+     }
     }
     return 0;
   }
   if (thread->state == CTHREAD_STATE_EXIT) {
     // got here from thread that has exited.
     if (rvalue) {
-     *rvalue = &thread->thread_to_caller_value; 
+     if (thread->thread_to_caller_value_set) {
+       *rvalue = &thread->thread_to_caller_value; 
+     } else {
+       *rvalue = 0;
+     }
     }
     return 0;
   }
 
+  thread->caller_to_thread_value_set = 0;
   if (format) {
     va_list vlist;
     
@@ -160,7 +170,11 @@ int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... )
     if (VALUES_printv( &thread->caller_to_thread_value, format, vlist ) ) {
       return -1;
     }
+
+    thread->caller_to_thread_value_set = 1;
   } 
+  
+
   return do_start( thread );
 }
 
@@ -190,18 +204,25 @@ int CTHREAD_resume( CTHREAD *thread, VALUES **rvalue, const char *format, ... )
     // got here when the running thread called yield for the first time, or exited without calling yield.
     thread->state = CTHREAD_STATE_SUSPENDED;
     if (rvalue) {
-     *rvalue = &thread->thread_to_caller_value; 
+     if (thread->thread_to_caller_value_set) {
+       *rvalue = &thread->thread_to_caller_value; 
+     } else {
+       *rvalue = 0;
+     }
     }
     return 0;
   }
   if (thread->state == CTHREAD_STATE_EXIT) {
     // got here from thread that has exited.
-    if (rvalue) {
-     *rvalue = &thread->thread_to_caller_value; 
-    }
+     if (thread->thread_to_caller_value_set) {
+       *rvalue = &thread->thread_to_caller_value; 
+     } else {
+       *rvalue = 0;
+     }
     return 0;
   }
 
+  thread->caller_to_thread_value_set = 0;
   if (format) {
     va_list vlist;
     
@@ -210,6 +231,7 @@ int CTHREAD_resume( CTHREAD *thread, VALUES **rvalue, const char *format, ... )
     if (VALUES_printv( &thread->caller_to_thread_value, format, vlist ) ) {
       return -1;
     }
+    thread->caller_to_thread_value_set = 1;
   } 
 
   SET_TLS( thread );
@@ -237,11 +259,16 @@ int CTHREAD_yield(VALUES **rvalue, const char *format, ... )
     // got here when this thread was resumed.
     thread->state = CTHREAD_STATE_RUNNING;
     if (rvalue) {
-     *rvalue = &thread->caller_to_thread_value; 
+     if (thread->caller_to_thread_value_set) {
+       *rvalue = &thread->caller_to_thread_value; 
+     } else {
+       *rvalue = 0;
+     }
     }
     return 0;
   }
  
+  thread->thread_to_caller_value_set = 0;
   if (format) {
     va_list vlist;
     
@@ -250,7 +277,8 @@ int CTHREAD_yield(VALUES **rvalue, const char *format, ... )
     if (VALUES_printv( &thread->thread_to_caller_value, format, vlist ) ) {
       return -1;
     }
-  } 
+    thread->thread_to_caller_value_set = 1;
+  }
 
   SET_TLS( thread->prev_thread );
  
@@ -289,7 +317,15 @@ int CTHREAD_set_return_value( const char *format, ... )
   }
 
   va_start( vlist, format );
-  return VALUES_printv( &thread->thread_to_caller_value, format, vlist );
+  
+  thread->thread_to_caller_value_set = 0;
+  if (VALUES_printv( &thread->thread_to_caller_value, format, vlist )) {
+    thread->thread_to_caller_value_set = 0;
+    return -1;
+  }
+
+  thread->thread_to_caller_value_set = 1;
+  return 0;
 }
 
 

@@ -41,7 +41,9 @@ typedef struct tagCTHREAD {
   CTHREAD_STATE state;
   uint32_t thread_id;
  
+  int    thread_to_caller_value_set;
   VALUES thread_to_caller_value; 
+  int    caller_to_thread_value_set;
   VALUES caller_to_thread_value;  
 
   CTHREAD_PROC proc;  
@@ -49,7 +51,7 @@ typedef struct tagCTHREAD {
   STACK_ENTRY *stack_entry;  
 } CTHREAD;
 
-
+ 
 
 /**
  * @brief library initialisation
