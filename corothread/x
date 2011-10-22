@@ -1,0 +1,1118 @@
+
+****
+* Target:    corothread
+* Type:      Static library
+* Host:      os: GNU-Linux os-version: 2.6.38-8-generic architecture: i686
+* Directory: /home/mmoser/archive/cstuff_bak/corothread
+****
+
+****
+* Target:    corothreadsh
+* Type:      Shared library
+* Host:      os: GNU-Linux os-version: 2.6.38-8-generic architecture: i686
+* Directory: /home/mmoser/archive/cstuff_bak/corothread
+****
+
+****
+* Target:    corothreadtest
+* Type:      Executable test program
+* Host:      os: GNU-Linux os-version: 2.6.38-8-generic architecture: i686
+* Directory: /home/mmoser/archive/cstuff_bak/corothread/test
+****
+
+****
+* Target:    corothreadtestsh
+* Type:      Executable test program
+* Host:      os: GNU-Linux os-version: 2.6.38-8-generic architecture: i686
+* Directory: /home/mmoser/archive/cstuff_bak/corothread/test
+****
+
+*** running test corothreadtest ***
+
+make[1]: Entering directory `/home/mmoser/archive/cstuff_bak/corothread/test'
+valgrind ../../GNU-Linux-2.6.38-8-generic-i686/test/corothreadtest 	
+==12039== Memcheck, a memory error detector
+==12039== Copyright (C) 2002-2010, and GNU GPL'd, by Julian Seward et al.
+==12039== Using Valgrind-3.6.1 and LibVEX; rerun with -h for copyright info
+==12039== Command: ../../GNU-Linux-2.6.38-8-generic-i686/test/corothreadtest
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F3FC: makecontext (makecontext.S:62)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048B8B: CTHREAD_test (tcthread.c:41)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc104 is not stack'd, malloc'd or (recently) free'd
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F406: makecontext (makecontext.S:67)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048B8B: CTHREAD_test (tcthread.c:41)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc100 is not stack'd, malloc'd or (recently) free'd
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F418: makecontext (makecontext.S:83)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048B8B: CTHREAD_test (tcthread.c:41)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc0fc is not stack'd, malloc'd or (recently) free'd
+==12039== 
+==12039== Warning: client switching stacks?  SP change: 0xbee33e2c --> 0x41bc0f8
+==12039==          to suppress, use: --max-stackframe=1161331404 or greater
+==12039== Invalid write of size 4
+==12039==    at 0x408F387: setcontext (setcontext.S:74)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048B8B: CTHREAD_test (tcthread.c:41)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc0f8 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F39D: setcontext (setcontext.S:94)
+==12039==    by 0x8048B8B: CTHREAD_test (tcthread.c:41)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc0f8 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x804969F: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048B8B: CTHREAD_test (tcthread.c:41)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc100 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496A8: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048B8B: CTHREAD_test (tcthread.c:41)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc100 is on thread 1's stack
+==12039== 
+	Generate fibonaci 2
+==12039== Warning: client switching stacks?  SP change: 0x41bc07c --> 0xbee33e4c
+==12039==          to suppress, use: --max-stackframe=1161331248 or greater
+	->received fibonaci 2
+==12039== Warning: client switching stacks?  SP change: 0xbee33e4c --> 0x41bc07c
+==12039==          to suppress, use: --max-stackframe=1161331248 or greater
+==12039==          further instances of this message will not be shown.
+	Generate fibonaci 3
+	->received fibonaci 3
+	Generate fibonaci 5
+	->received fibonaci 5
+	Generate fibonaci 8
+	->received fibonaci 8
+	Generate fibonaci 13
+	->received fibonaci 13
+	Generate fibonaci 21
+	->received fibonaci 21
+	Generate fibonaci 34
+	->received fibonaci 34
+	Generate fibonaci 55
+	->received fibonaci 55
+	Generate fibonaci 89
+	->received fibonaci 89
+	Generate fibonaci 144
+	->received fibonaci 144
+	Generate fibonaci 233
+	->received fibonaci 233
+	Generate fibonaci 377
+	->received fibonaci 377
+	Generate fibonaci 610
+	->received fibonaci 610
+	Generate fibonaci 987
+	->received fibonaci 987
+	Generate fibonaci 1597
+	->received fibonaci 1597
+	Generate fibonaci 2584
+	->received fibonaci 2584
+	Generate fibonaci 4181
+	->received fibonaci 4181
+	Generate fibonaci 6765
+	->received fibonaci 6765
+	Generate fibonaci 10946
+	->received fibonaci 10946
+	Generate fibonaci 17711
+	->received fibonaci 17711
+	Generate fibonaci 28657
+	->received fibonaci 28657
+	Generate fibonaci 46368
+	->received fibonaci 46368
+	Generate fibonaci 75025
+	->received fibonaci 75025
+	Generate fibonaci 121393
+	->received fibonaci 121393
+	Generate fibonaci 196418
+	->received fibonaci 196418
+	Generate fibonaci 317811
+	->received fibonaci 317811
+	Generate fibonaci 514229
+	->received fibonaci 514229
+	Generate fibonaci 832040
+	->received fibonaci 832040
+	Generate fibonaci 1346269
+	->received fibonaci 1346269
+	Generate fibonaci 2178309
+	->received fibonaci 2178309
+==12039== Invalid read of size 4
+==12039==    at 0x80496B6: cthread_init (cthread.c:34)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048C2F: CTHREAD_test (tcthread.c:46)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc100 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496C3: cthread_init (cthread.c:36)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048C2F: CTHREAD_test (tcthread.c:46)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc100 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496D5: cthread_init (cthread.c:41)
+==12039==    by 0x8048C2F: CTHREAD_test (tcthread.c:46)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc0fc is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F42A: makecontext (makecontext.S:108)
+==12039==    by 0x8048C2F: CTHREAD_test (tcthread.c:46)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc104 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F350: setcontext (setcontext.S:28)
+==12039==    by 0x8048C2F: CTHREAD_test (tcthread.c:46)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc104 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F373: setcontext (setcontext.S:48)
+==12039==    by 0x8048C2F: CTHREAD_test (tcthread.c:46)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc104 is on thread 1's stack
+==12039== 
+ -- count 30
+==12039== Invalid write of size 4
+==12039==    at 0x408F3FC: makecontext (makecontext.S:62)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc5f4 is not stack'd, malloc'd or (recently) free'd
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F406: makecontext (makecontext.S:67)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc5f0 is not stack'd, malloc'd or (recently) free'd
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F418: makecontext (makecontext.S:83)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc5ec is not stack'd, malloc'd or (recently) free'd
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F387: setcontext (setcontext.S:74)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc5e8 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F39D: setcontext (setcontext.S:94)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc5e8 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x804969F: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc5f0 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496A8: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bc5f0 is on thread 1's stack
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F3FC: makecontext (makecontext.S:62)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048DAB: first_level (tcthread.c:89)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bca64 is on thread 1's stack
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F406: makecontext (makecontext.S:67)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048DAB: first_level (tcthread.c:89)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bca60 is on thread 1's stack
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F418: makecontext (makecontext.S:83)
+==12039==    by 0x80499A7: CTHREAD_start (cthread.c:164)
+==12039==    by 0x8048DAB: first_level (tcthread.c:89)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039==  Address 0x41bca5c is on thread 1's stack
+==12039== 
+==12039== Invalid write of size 4
+==12039==    at 0x408F387: setcontext (setcontext.S:74)
+==12039==  Address 0x41bca58 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F39D: setcontext (setcontext.S:94)
+==12039==    by 0x8049698: CTHREAD_libinit (cthread.c:28)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x41B7A6F: ???
+==12039==  Address 0x41bca58 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x804969F: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x41B7A6F: ???
+==12039==  Address 0x41bca60 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496A8: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x41B7A6F: ???
+==12039==  Address 0x41bca60 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496B6: cthread_init (cthread.c:34)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x41B7A6F: ???
+==12039==  Address 0x41bca60 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496C3: cthread_init (cthread.c:36)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x41B7A6F: ???
+==12039==  Address 0x41bca60 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x80496D5: cthread_init (cthread.c:41)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x41B7A6F: ???
+==12039==  Address 0x41bca5c is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F42A: makecontext (makecontext.S:108)
+==12039==  Address 0x41bca64 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F350: setcontext (setcontext.S:28)
+==12039==    by 0x408F434: makecontext (makecontext.S:111)
+==12039==  Address 0x41bca64 is on thread 1's stack
+==12039== 
+==12039== Invalid read of size 4
+==12039==    at 0x408F373: setcontext (setcontext.S:48)
+==12039==    by 0x408F434: makecontext (makecontext.S:111)
+==12039==  Address 0x41bca64 is on thread 1's stack
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x804990B: CTHREAD_start (cthread.c:139)
+==12039==    by 0x8048DAB: first_level (tcthread.c:89)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x8049941: CTHREAD_start (cthread.c:147)
+==12039==    by 0x8048DAB: first_level (tcthread.c:89)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Conditional jump or move depends on uninitialised value(s)
+==12039==    at 0x8049950: CTHREAD_start (cthread.c:149)
+==12039==    by 0x8048DAB: first_level (tcthread.c:89)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x80499A9: CTHREAD_start (cthread.c:165)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x8048DCE: first_level (tcthread.c:91)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x8049BB5: CTHREAD_free (cthread.c:263)
+==12039==    by 0x8048DD8: first_level (tcthread.c:91)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Conditional jump or move depends on uninitialised value(s)
+==12039==    at 0x4025BB0: free (vg_replace_malloc.c:366)
+==12039==    by 0x8049BD1: CTHREAD_free (cthread.c:266)
+==12039==    by 0x8048DD8: first_level (tcthread.c:91)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x8048DFB: first_level (tcthread.c:93)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x8048DFE: first_level (tcthread.c:93)
+==12039==    by 0x80496B5: cthread_init (cthread.c:32)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x8048E06: first_level (tcthread.c:94)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x80496B6: cthread_init (cthread.c:34)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x80496B9: cthread_init (cthread.c:34)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x80496C6: cthread_init (cthread.c:36)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x80496D4: cthread_init (cthread.c:41)
+==12039==    by 0x408F41A: makecontext (makecontext.S:88)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x80496D5: cthread_init (cthread.c:41)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Conditional jump or move depends on uninitialised value(s)
+==12039==    at 0x408F42E: makecontext (makecontext.S:109)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Syscall param sigprocmask(set) contains uninitialised byte(s)
+==12039==    at 0x408F36B: setcontext (setcontext.S:41)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x408F377: setcontext (setcontext.S:52)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+==12039== Use of uninitialised value of size 4
+==12039==    at 0x408F37C: setcontext (setcontext.S:57)
+==12039==    by 0x8048EE9: CTHREAD_test_nested (tcthread.c:113)
+==12039==    by 0x804AE00: VTEST_test_runner_cmdline (vtest.c:336)
+==12039==    by 0x804B237: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12039==    by 0x8048A06: main (main.c:29)
+==12039== 
+Suite BASETEST
+  Test: BASETEST/VAL_test started
+    Status: Ok
+  Test: BASETEST/CTHREAD_test started
+    Status: Ok
+  Test: BASETEST/CTHREAD_test_nested started
+    Status: Ok
+Suite LASTTEST
+
+Test summary
+  Tests passed:			3
+  Tests failed:			0
+  Tests not run:		0 (due to suite setup failure)
+  Suites setup failed:		0
+  Suites teardown failed:	0
+
+ALL TESTS PASSED
+==12039== 
+==12039== HEAP SUMMARY:
+==12039==     in use at exit: 768 bytes in 9 blocks
+==12039==   total heap usage: 13 allocs, 4 frees, 3,132 bytes allocated
+==12039== 
+==12039== LEAK SUMMARY:
+==12039==    definitely lost: 752 bytes in 8 blocks
+==12039==    indirectly lost: 16 bytes in 1 blocks
+==12039==      possibly lost: 0 bytes in 0 blocks
+==12039==    still reachable: 0 bytes in 0 blocks
+==12039==         suppressed: 0 bytes in 0 blocks
+==12039== Rerun with --leak-check=full to see details of leaked memory
+==12039== 
+==12039== For counts of detected and suppressed errors, rerun with: -v
+==12039== Use --track-origins=yes to see where uninitialised values come from
+==12039== ERROR SUMMARY: 52 errors from 52 contexts (suppressed: 13 from 6)
+
+*** running test corothreadtestsh ***
+
+valgrind ../../GNU-Linux-2.6.38-8-generic-i686/test/corothreadtestsh 	
+==12042== Memcheck, a memory error detector
+==12042== Copyright (C) 2002-2010, and GNU GPL'd, by Julian Seward et al.
+==12042== Using Valgrind-3.6.1 and LibVEX; rerun with -h for copyright info
+==12042== Command: ../../GNU-Linux-2.6.38-8-generic-i686/test/corothreadtestsh
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E3FC: makecontext (makecontext.S:62)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048C2B: CTHREAD_test (tcthread.c:41)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc104 is not stack'd, malloc'd or (recently) free'd
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E406: makecontext (makecontext.S:67)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048C2B: CTHREAD_test (tcthread.c:41)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc100 is not stack'd, malloc'd or (recently) free'd
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E418: makecontext (makecontext.S:83)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048C2B: CTHREAD_test (tcthread.c:41)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc0fc is not stack'd, malloc'd or (recently) free'd
+==12042== 
+==12042== Warning: client switching stacks?  SP change: 0xbeb28e1c --> 0x41cc0f8
+==12042==          to suppress, use: --max-stackframe=1164587740 or greater
+==12042== Invalid write of size 4
+==12042==    at 0x409E387: setcontext (setcontext.S:74)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048C2B: CTHREAD_test (tcthread.c:41)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc0f8 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E39D: setcontext (setcontext.S:94)
+==12042==    by 0x8048C2B: CTHREAD_test (tcthread.c:41)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc0f8 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DB93: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048C2B: CTHREAD_test (tcthread.c:41)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc100 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DB9C: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048C2B: CTHREAD_test (tcthread.c:41)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc100 is on thread 1's stack
+==12042== 
+	Generate fibonaci 2
+==12042== Warning: client switching stacks?  SP change: 0x41cc07c --> 0xbeb28e3c
+==12042==          to suppress, use: --max-stackframe=1164587584 or greater
+	->received fibonaci 2
+==12042== Warning: client switching stacks?  SP change: 0xbeb28e3c --> 0x41cc07c
+==12042==          to suppress, use: --max-stackframe=1164587584 or greater
+==12042==          further instances of this message will not be shown.
+	Generate fibonaci 3
+	->received fibonaci 3
+	Generate fibonaci 5
+	->received fibonaci 5
+	Generate fibonaci 8
+	->received fibonaci 8
+	Generate fibonaci 13
+	->received fibonaci 13
+	Generate fibonaci 21
+	->received fibonaci 21
+	Generate fibonaci 34
+	->received fibonaci 34
+	Generate fibonaci 55
+	->received fibonaci 55
+	Generate fibonaci 89
+	->received fibonaci 89
+	Generate fibonaci 144
+	->received fibonaci 144
+	Generate fibonaci 233
+	->received fibonaci 233
+	Generate fibonaci 377
+	->received fibonaci 377
+	Generate fibonaci 610
+	->received fibonaci 610
+	Generate fibonaci 987
+	->received fibonaci 987
+	Generate fibonaci 1597
+	->received fibonaci 1597
+	Generate fibonaci 2584
+	->received fibonaci 2584
+	Generate fibonaci 4181
+	->received fibonaci 4181
+	Generate fibonaci 6765
+	->received fibonaci 6765
+	Generate fibonaci 10946
+	->received fibonaci 10946
+	Generate fibonaci 17711
+	->received fibonaci 17711
+	Generate fibonaci 28657
+	->received fibonaci 28657
+	Generate fibonaci 46368
+	->received fibonaci 46368
+	Generate fibonaci 75025
+	->received fibonaci 75025
+	Generate fibonaci 121393
+	->received fibonaci 121393
+	Generate fibonaci 196418
+	->received fibonaci 196418
+	Generate fibonaci 317811
+	->received fibonaci 317811
+	Generate fibonaci 514229
+	->received fibonaci 514229
+	Generate fibonaci 832040
+	->received fibonaci 832040
+	Generate fibonaci 1346269
+	->received fibonaci 1346269
+	Generate fibonaci 2178309
+	->received fibonaci 2178309
+==12042== Invalid read of size 4
+==12042==    at 0x402DBAA: cthread_init (cthread.c:34)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048CCF: CTHREAD_test (tcthread.c:46)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc100 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DBB7: cthread_init (cthread.c:36)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048CCF: CTHREAD_test (tcthread.c:46)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc100 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DBCD: cthread_init (cthread.c:41)
+==12042==    by 0x8048CCF: CTHREAD_test (tcthread.c:46)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc0fc is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E42A: makecontext (makecontext.S:108)
+==12042==    by 0x8048CCF: CTHREAD_test (tcthread.c:46)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc104 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E350: setcontext (setcontext.S:28)
+==12042==    by 0x8048CCF: CTHREAD_test (tcthread.c:46)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc104 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E373: setcontext (setcontext.S:48)
+==12042==    by 0x8048CCF: CTHREAD_test (tcthread.c:46)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc104 is on thread 1's stack
+==12042== 
+ -- count 30
+==12042== Invalid write of size 4
+==12042==    at 0x409E3FC: makecontext (makecontext.S:62)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc5f4 is not stack'd, malloc'd or (recently) free'd
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E406: makecontext (makecontext.S:67)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc5f0 is not stack'd, malloc'd or (recently) free'd
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E418: makecontext (makecontext.S:83)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc5ec is not stack'd, malloc'd or (recently) free'd
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E387: setcontext (setcontext.S:74)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc5e8 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E39D: setcontext (setcontext.S:94)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc5e8 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DB93: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc5f0 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DB9C: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cc5f0 is on thread 1's stack
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E3FC: makecontext (makecontext.S:62)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048E4B: first_level (tcthread.c:89)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cca64 is on thread 1's stack
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E406: makecontext (makecontext.S:67)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048E4B: first_level (tcthread.c:89)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cca60 is on thread 1's stack
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E418: makecontext (makecontext.S:83)
+==12042==    by 0x402DEDF: CTHREAD_start (cthread.c:164)
+==12042==    by 0x8048E4B: first_level (tcthread.c:89)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042==  Address 0x41cca5c is on thread 1's stack
+==12042== 
+==12042== Invalid write of size 4
+==12042==    at 0x409E387: setcontext (setcontext.S:74)
+==12042==  Address 0x41cca58 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E39D: setcontext (setcontext.S:94)
+==12042==    by 0x402DB80: CTHREAD_libinit (cthread.c:28)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x41C7A6F: ???
+==12042==  Address 0x41cca58 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DB93: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x41C7A6F: ???
+==12042==  Address 0x41cca60 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DB9C: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x41C7A6F: ???
+==12042==  Address 0x41cca60 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DBAA: cthread_init (cthread.c:34)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x41C7A6F: ???
+==12042==  Address 0x41cca60 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DBB7: cthread_init (cthread.c:36)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x41C7A6F: ???
+==12042==  Address 0x41cca60 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x402DBCD: cthread_init (cthread.c:41)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x41C7A6F: ???
+==12042==  Address 0x41cca5c is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E42A: makecontext (makecontext.S:108)
+==12042==  Address 0x41cca64 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E350: setcontext (setcontext.S:28)
+==12042==    by 0x409E434: makecontext (makecontext.S:111)
+==12042==  Address 0x41cca64 is on thread 1's stack
+==12042== 
+==12042== Invalid read of size 4
+==12042==    at 0x409E373: setcontext (setcontext.S:48)
+==12042==    by 0x409E434: makecontext (makecontext.S:111)
+==12042==  Address 0x41cca64 is on thread 1's stack
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402DE43: CTHREAD_start (cthread.c:139)
+==12042==    by 0x8048E4B: first_level (tcthread.c:89)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402DE79: CTHREAD_start (cthread.c:147)
+==12042==    by 0x8048E4B: first_level (tcthread.c:89)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Conditional jump or move depends on uninitialised value(s)
+==12042==    at 0x402DE88: CTHREAD_start (cthread.c:149)
+==12042==    by 0x8048E4B: first_level (tcthread.c:89)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402DEE5: CTHREAD_start (cthread.c:165)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x8048E6E: first_level (tcthread.c:91)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402E147: CTHREAD_free (cthread.c:263)
+==12042==    by 0x8048E78: first_level (tcthread.c:91)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Conditional jump or move depends on uninitialised value(s)
+==12042==    at 0x4025BB0: free (vg_replace_malloc.c:366)
+==12042==    by 0x402E163: CTHREAD_free (cthread.c:266)
+==12042==    by 0x8048E78: first_level (tcthread.c:91)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x8048E9B: first_level (tcthread.c:93)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x8048E9E: first_level (tcthread.c:93)
+==12042==    by 0x402DBA9: cthread_init (cthread.c:32)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x8048EA6: first_level (tcthread.c:94)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402DBAA: cthread_init (cthread.c:34)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402DBAD: cthread_init (cthread.c:34)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402DBBA: cthread_init (cthread.c:36)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402D95C: ??? (in /home/mmoser/archive/cstuff_bak/GNU-Linux-2.6.38-8-generic-i686/lib/libcorothreadsh.so)
+==12042==    by 0x409E41A: makecontext (makecontext.S:88)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x402DBCD: cthread_init (cthread.c:41)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x409E42A: makecontext (makecontext.S:108)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Conditional jump or move depends on uninitialised value(s)
+==12042==    at 0x409E42E: makecontext (makecontext.S:109)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x409E430: makecontext (makecontext.S:111)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Syscall param sigprocmask(set) contains uninitialised byte(s)
+==12042==    at 0x409E36B: setcontext (setcontext.S:41)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x409E377: setcontext (setcontext.S:52)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+==12042== Use of uninitialised value of size 4
+==12042==    at 0x409E37C: setcontext (setcontext.S:57)
+==12042==    by 0x8048F89: CTHREAD_test_nested (tcthread.c:113)
+==12042==    by 0x8049C30: VTEST_test_runner_cmdline (vtest.c:336)
+==12042==    by 0x804A067: VTEST_CUI_test_runner_cmdline (cuitestrunner.c:164)
+==12042==    by 0x8048AA6: main (main.c:29)
+==12042== 
+Suite BASETEST
+  Test: BASETEST/VAL_test started
+    Status: Ok
+  Test: BASETEST/CTHREAD_test started
+    Status: Ok
+  Test: BASETEST/CTHREAD_test_nested started
+    Status: Ok
+Suite LASTTEST
+
+Test summary
+  Tests passed:			3
+  Tests failed:			0
+  Tests not run:		0 (due to suite setup failure)
+  Suites setup failed:		0
+  Suites teardown failed:	0
+
+ALL TESTS PASSED
+==12042== 
+==12042== HEAP SUMMARY:
+==12042==     in use at exit: 768 bytes in 9 blocks
+==12042==   total heap usage: 13 allocs, 4 frees, 3,132 bytes allocated
+==12042== 
+==12042== LEAK SUMMARY:
+==12042==    definitely lost: 752 bytes in 8 blocks
+==12042==    indirectly lost: 16 bytes in 1 blocks
+==12042==      possibly lost: 0 bytes in 0 blocks
+==12042==    still reachable: 0 bytes in 0 blocks
+==12042==         suppressed: 0 bytes in 0 blocks
+==12042== Rerun with --leak-check=full to see details of leaked memory
+==12042== 
+==12042== For counts of detected and suppressed errors, rerun with: -v
+==12042== Use --track-origins=yes to see where uninitialised values come from
+==12042== ERROR SUMMARY: 54 errors from 54 contexts (suppressed: 19 from 6)
+make[1]: Leaving directory `/home/mmoser/archive/cstuff_bak/corothread/test'

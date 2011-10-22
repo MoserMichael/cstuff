@@ -1,6 +1,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include "stacks.h"
+#include <stdio.h>
 
 STACK_DIR stack_dir( int *ptr )
 {
@@ -34,6 +35,7 @@ int STACKS_init( STACKS *stack, int num_stacks, int pages_per_stack )
   dir = stack_direction();
 
   mapping = (uint8_t *) mmap( 0 , len, PROT_READ|PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS 
+
 #if 0
 #ifdef MAP_STACK
 			| MAP_STACK
@@ -43,10 +45,13 @@ int STACKS_init( STACKS *stack, int num_stacks, int pages_per_stack )
   if (!mapping) {
     return -1;
   }
+
+  //fprintf( stderr, "all stacks %p - %p\n", mapping, mapping + len );
+  
   stack->mapping = mapping;
   stack->mapping_length = len;
   stack->num_stacks = num_stacks;
-  stack->one_stack_size = one_stack_size;  
+  stack->one_stack_size = one_stack_size - page_size;
  
   DLIST_init( &stack->root );
 

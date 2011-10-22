@@ -33,6 +33,9 @@ void cthread_init( CTHREAD *arg )
   
   arg->state = CTHREAD_STATE_EXIT; 
 
+  //fprintf( stderr,"relase stack %p\n",arg->stack_entry->stack_start);
+
+
   STACKS_release( arg->stack_entry );
 
 #if 0
@@ -86,7 +89,9 @@ CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc )
     return 0;
   }
 
-  ret->context_coroutine.uc_stack.ss_sp = ret;
+  //fprintf( stderr,"thread stack start %p\n",stack);
+
+  ret->context_coroutine.uc_stack.ss_sp = stack;
   ret->context_coroutine.uc_stack.ss_size = STACKS_get_stack_size( stacks );
 
 
@@ -214,11 +219,13 @@ int CTHREAD_resume( CTHREAD *thread, VALUES **rvalue, const char *format, ... )
   }
   if (thread->state == CTHREAD_STATE_EXIT) {
     // got here from thread that has exited.
+    if (rvalue) {
      if (thread->thread_to_caller_value_set) {
        *rvalue = &thread->thread_to_caller_value; 
      } else {
        *rvalue = 0;
      }
+    }
     return 0;
   }
 
