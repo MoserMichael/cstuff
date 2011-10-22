@@ -3,6 +3,9 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <nutils/ioutils.h>
+#include <butils/logg.h>
+
+
 
 // ---------------------------------------------------------------------------
 
@@ -135,7 +138,7 @@ static void thread_timer_cb( int fd, short event, void *ctx)
  
   M_UNUSED(fd);
   M_UNUSED(event);
-
+    
   CTHREAD_resume( thread->cthread, 0, 0 );
 }
 
@@ -191,6 +194,7 @@ int EVTIMER_start( EVTIMER *ret)
   event_base_set( ret->loop->ev_base, &ret->timer_event );
   event_add( &ret->timer_event, &ret->tm );
 
+  MLOG_TRACE( "Timer %p started %ld:%ld", &ret->timer_event, ret->tm.tv_sec, ret->tm.tv_usec ); 
   return 0;
 }
 
@@ -199,6 +203,9 @@ int  EVTIMER_cancel( EVTIMER *timer )
   if (timer->state != EVTIMER_STATE_SCHEDULED) {
     return -1;
   }
+  
+  MLOG_TRACE( "Timer %p canceled", &timer->timer_event ); 
+
   event_del( &timer->timer_event );
   timer->state = EVTIMER_STATE_INIT;
   return 0;
@@ -225,6 +232,7 @@ static void timer_cb( int fd, short event, void *ctx)
    event_del( &timer->timer_event );
    timer->state = EVTIMER_STATE_INIT;
    
+   MLOG_TRACE( "Timer %p event occured", &timer->timer_event ); 
    CTHREAD_resume( timer->object_base.owner->cthread , 0, "%d", timer->timer_id );
 }
 
@@ -272,6 +280,10 @@ int EVSOCKET_close(EVSOCKET *socket)
 {
   int rt;
 
+  if ( socket->fd == -1) {
+    return -1;
+  }
+
   if (socket->timer_idle_timeout) {
     EVTIMER_free( socket->timer_idle_timeout );
   }
@@ -285,7 +297,7 @@ int EVSOCKET_close(EVSOCKET *socket)
   do {
     rt = close(socket->fd);
   } while(rt == -1 && errno == EINTR);
-  
+  socket->fd = -1;
 
   EVTHREAD_OBJECT_free( &socket->object_base );
   return rt;
@@ -301,19 +313,25 @@ static void socket_cb( int fd, short event, void *ctx)
 
    if (event & EV_READ && event & EV_WRITE) {
      socket->state = EVSOCKET_STATE_ERROR;
-     CTHREAD_resume( socket->thread->cthread, 0, 0 );
+     CTHREAD_resume( socket->thread->cthread, 0, "%d", EVENT_ID_HAS_IO_ERROR );
      return;
    }
 
    if (event & EV_READ) {
      if (socket->state == EVSOCKET_STATE_READING) {
-	CTHREAD_resume( socket->thread->cthread, 0, 0 );
+        MLOG_TRACE( "socket %d read event occured", fd ); 
+ 	CTHREAD_resume( socket->thread->cthread, 0, "%d", EVENT_ID_HAS_IO_EVENT);
+     } else {
+        MLOG_INFO( "socket %d read event ignored !!!", fd ); 
      }
    }
   
    if (event & EV_WRITE) {
      if (socket->state == EVSOCKET_STATE_CONNECTING || socket->state == EVSOCKET_STATE_WRITING) {
-	CTHREAD_resume( socket->thread->cthread, 0, 0 );
+        MLOG_TRACE( "socket %d write event occured", fd ); 
+ 	CTHREAD_resume( socket->thread->cthread, 0, "%d", EVENT_ID_HAS_IO_EVENT);
+     } else {
+        MLOG_INFO( "socket %d write event ignored !!!", fd ); 
      }
    }
 }
@@ -347,11 +365,12 @@ int EVSOCKET_connect( EVSOCKET *socket, struct sockaddr *address, socklen_t sock
   } while (rt == -1 && errno == EINTR);
  
   if (rt == 0) {
+     MLOG_DEBUG( "socket %d connected", socket->fd ); 
      socket->state = EVSOCKET_STATE_CONNECTED;
      return 0;
   }
-  if (rt == -1 && errno == EINPROGRESS) {
- 
+  if (rt == -1)  {
+    if (errno == EINPROGRESS) {
      socket->state = EVSOCKET_STATE_CONNECTING;
 
      socket->timer_io_timeout = EVTIMER_init( socket->thread, TIMER_ID_COMM_TIMEOUT, timeout );
@@ -373,17 +392,22 @@ int EVSOCKET_connect( EVSOCKET *socket, struct sockaddr *address, socklen_t sock
 
      switch(event_id) {
        case EVENT_ID_HAS_IO_EVENT:
+         MLOG_DEBUG( "socket %d connected", socket->fd ); 
 	 socket->state = EVSOCKET_STATE_CONNECTED;
 	 rt = 0;
 	 break;
        default: 
+         MLOG_DEBUG( "socket %d connect timeout", socket->fd ); 
          socket->state = EVSOCKET_STATE_ERROR;
 	 close( socket->fd );
 	 socket->fd = -1;
 	 rt = -1;
 	 break;
       }
-  } 
+    } else {
+      MLOG_DEBUG("socket %d connect error, errno %d", socket->fd, errno );
+    }
+  }
   return rt;
 }
 
@@ -406,6 +430,8 @@ r_again:
    if (rt == -1) {
      if (errno == EAGAIN) {
 
+       MLOG_TRACE( "socket %d read has blocked", socket->fd ); 
+       
        socket->state = EVSOCKET_STATE_READING;
        
        socket->timer_io_timeout = EVTIMER_init( socket->thread, TIMER_ID_COMM_TIMEOUT, timeout );
@@ -428,15 +454,20 @@ r_again:
       
        switch(event_id) {
          case EVENT_ID_HAS_IO_EVENT:
-	   goto r_again;
+           MLOG_DEBUG( "socket %d received read event", socket->fd ); 
+ 	   goto r_again;
          default: 
-	   socket->state = EVSOCKET_STATE_ERROR;
+           MLOG_DEBUG( "socket %d read timed out", socket->fd ); 
+ 	   socket->state = EVSOCKET_STATE_ERROR;
 	   close( socket->fd );
 	   socket->fd = -1;
 	   rt = -1;
 	   break;
        }
+     } else {
+       MLOG_DEBUG( "socket %d read error. errno %d", socket->fd, errno );
      }
+     return -1;
    }
 
    if (has_event) {
@@ -499,8 +530,10 @@ w_again:
       
        switch(event_id) {
          case EVENT_ID_HAS_IO_EVENT:
-	   goto w_again;
+           MLOG_DEBUG( "socket %d received write event", socket->fd ); 
+ 	   goto w_again;
          default: 
+           MLOG_DEBUG( "socket %d write timed out", socket->fd ); 
 	   socket->state = EVSOCKET_STATE_ERROR;
 	   close( socket->fd );
 	   socket->fd = -1;
@@ -579,7 +612,7 @@ int EVSOCKET_send( EVSOCKET *socket, void *buf, size_t buf_size, int flags, stru
 
 static void socket_listener_cb( int fd, short event, void *ctx);
 
-EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop, SOCKADDR *addr, int listener_backlog,  EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size )
+EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop, SOCKADDR *addr, int listener_backlog,  EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size, void *ctx )
 {
   int listener_fd;
 
@@ -588,12 +621,12 @@ EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop, SOCKADDR *addr, int listene
     return 0; 
   }
 
-  return EVTCPACCEPTOR_init( loop, listener_fd, factory, read_buffer_size, send_buffer_size );
+  return EVTCPACCEPTOR_init( loop, listener_fd, factory, read_buffer_size, send_buffer_size, ctx );
  
 
 }
 
-EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size )
+EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size, void *ctx )
 {
   EVTCPACCEPTOR *acceptor;
 
@@ -610,6 +643,7 @@ EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int fd, EVTHREAD_FACTORY facto
   acceptor->loop = loop;
   acceptor->factory = factory;
   acceptor->fd = fd;
+  acceptor->ctx = ctx;
 
   acceptor->read_buffer_size = read_buffer_size;
   acceptor->send_buffer_size = send_buffer_size;
@@ -656,6 +690,9 @@ static void socket_listener_cb( int fd, short event, void *ctx)
    if (sock == -1) {
      return;
    }
+
+   MLOG_TRACE( "socket %d accepted", sock ); 
+ 
    
    if (acceptor->read_buffer_size != -1) {
      fd_set_buf_size( sock, Receive_buffer, acceptor->read_buffer_size );
@@ -666,7 +703,7 @@ static void socket_listener_cb( int fd, short event, void *ctx)
    }
   
    // get thread procedure and thread argument data.
-   if ( acceptor->factory( sock, &thread_proc, &thread_ctx ) ) {
+   if ( acceptor->factory( sock, &thread_proc, &thread_ctx, acceptor->ctx ) ) {
      close(sock);
      return;
    }

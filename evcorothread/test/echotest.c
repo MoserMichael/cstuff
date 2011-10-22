@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include <butils/logg.h>
+
 #include "vtest/vtest.h"
 
 
@@ -30,10 +32,10 @@ static void echo_thread( EVTHREAD *thread, struct tagEVSOCKET *socket, void *use
 
   M_UNUSED(thread);
   M_UNUSED(user_ctx);
-
+  
   buffer = malloc( BF_SIZE);
   if (!buffer) {
-    // don't worry, the socket will be closed by the library here.
+	// don't worry, the socket will be closed by the library here.
     return;
   }
 
@@ -46,9 +48,10 @@ static void echo_thread( EVTHREAD *thread, struct tagEVSOCKET *socket, void *use
   free(buffer);
 }
 
-static int echo_thread_factory (int fd, EVTHREAD_PROC *proc, void **ctx )
+static int echo_thread_factory (int fd, EVTHREAD_PROC *proc, void **ctx, void *factory_ctx )
 {
   M_UNUSED(fd);
+  M_UNUSED(factory_ctx);
 
   *proc = echo_thread;
   *ctx = 0;
@@ -61,13 +64,15 @@ static  EVLOOP *loop;
 // ------------------------------------------------------------------------------------
 static void *test_thread(void * arg)
 {
+
   int *status = (int *) arg;
   SOCKCTX ctx;
   char msg[ MSG_SIZE ],msg_in[ MSG_SIZE ];
   int i;
   IPADDRESS addr;
   SOCKADDR saddr;
-  
+   
+ 
   sleep(1);
 
   for(i = 0; i< MSG_SIZE;i++)  {
@@ -98,6 +103,7 @@ static void *test_thread(void * arg)
   } 
   EVLOOP_break( loop );
   *status = 0;
+ 
   return 0;
  
 err:
@@ -118,6 +124,16 @@ static int start_test_client(int *status)
   return pthread_create(&pth, &attr, test_thread, status);
 }
 
+#if 0 
+void save_mmaps()
+{
+  char cmd[100];
+
+  sprintf(cmd,"cat /proc/%d/maps >maps", getpid());
+  system(cmd);
+}
+#endif
+
 // ------------------------------------------------------------------------------------
 void EVTHREAD_echo_server_test()
     {
@@ -127,10 +143,16 @@ void EVTHREAD_echo_server_test()
   SOCKADDR saddr;
   int status;
 
+  MLOG_init( MLOG_LEVEL_TRACE, MLOG_ACTION_CONSOLE, 0);
+
   // ** init thread library and init the loop
   VASSERT( ! CTHREAD_libinit() );
   
   VASSERT( ! STACKS_init( &stacks, 100 , 5 ) );
+
+#if 0
+  save_mmaps();
+#endif
 
   VASSERT( loop = EVLOOP_init( &stacks ) );
 
@@ -139,7 +161,7 @@ void EVTHREAD_echo_server_test()
 
   VASSERT( ! SOCKADDR_init( &saddr, &addr, TEST_PORT  ) );
 
-  VASSERT( acceptor = EVTCPACCEPTOR_init_ex( loop, &saddr, 30, echo_thread_factory, -1, -1 ) );
+  VASSERT( acceptor = EVTCPACCEPTOR_init_ex( loop, &saddr, 30, echo_thread_factory, -1, -1, 0 ) );
 
   VASSERT( start_test_client(&status) == 0 );
 

@@ -230,7 +230,7 @@ int EVSOCKET_send( EVSOCKET *socket, void *buf, size_t buf_size, int flags, stru
  * @{
  */
 
-typedef int (*EVTHREAD_FACTORY) (int fd, EVTHREAD_PROC *proc, void **ctx );
+typedef int (*EVTHREAD_FACTORY) (int fd, EVTHREAD_PROC *proc, void **ctx, void *factory_ctx );
 
 
 typedef struct tagTCPACCEPTOR {
@@ -239,12 +239,13 @@ typedef struct tagTCPACCEPTOR {
   struct event read_event;
   int read_buffer_size,send_buffer_size;
   EVTHREAD_FACTORY factory;
+  void *ctx;
 
 } EVTCPACCEPTOR;
 
-EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop,  SOCKADDR *addr, int listener_backlog,  EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size );
+EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop,  SOCKADDR *addr, int listener_backlog,  EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size, void *ctx );
 
-EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size );
+EVTCPACCEPTOR * EVTCPACCEPTOR_init( EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size, void *ctx );
 
 void EVTCPACCEPTOR_close(EVTCPACCEPTOR *);
 

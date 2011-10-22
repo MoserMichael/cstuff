@@ -1,7 +1,9 @@
 TOPDIR=../..
 
 
-TESTS=evcorothreadtest evcorothreadtestsh  
+#TESTS=evcorothreadtest evcorothreadtestsh  
+TESTS=evcorothreadtest
+
 
 
 evcorothreadtest_TYPE=exe

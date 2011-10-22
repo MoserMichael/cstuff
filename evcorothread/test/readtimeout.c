@@ -45,9 +45,10 @@ static void echo_thread( EVTHREAD *thread, struct tagEVSOCKET *socket, void *use
   free(buffer);
 }
 
-static int echo_thread_factory (int fd, EVTHREAD_PROC *proc, void **ctx )
+static int echo_thread_factory (int fd, EVTHREAD_PROC *proc, void **ctx, void *factory_ctx )
 {
   M_UNUSED(fd);
+  M_UNUSED(factory_ctx);
 
   *proc = echo_thread;
   *ctx = 0;
@@ -119,7 +120,7 @@ void EVTHREAD_read_timeout_test()
 
   VASSERT( (listener = fd_make_tcp_listener( &saddr, 30) ) != -1 );
 
-  acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory, -1, -1 );
+  acceptor = EVTCPACCEPTOR_init( loop, listener, echo_thread_factory, -1, -1, 0 );
 
   start_test_client();
 
