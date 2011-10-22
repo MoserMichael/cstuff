@@ -162,14 +162,7 @@ int MLOG_printf( MLOG_LEVEL current,  const char *file, int line, const char *fo
   if (log_action & MLOG_ACTION_CONSOLE) {
     write( 2, sbuf, msg_len );
   } 
-  
-  if (log_action & MLOG_ACTION_CONSOLE) {
-    write( 2, sbuf, msg_len );
-  } 
-  
-  if (log_action & MLOG_ACTION_CONSOLE) {
-    write( 2, sbuf, msg_len );
-  }
+
 
   if (log_action & MLOG_ACTION_TO_FILE) {
     write( log_fd, sbuf, msg_len );
