@@ -235,19 +235,22 @@ void HTTP_request_ok()
   }
 }
 
+#if 0
 static REQUEST_PARSER_TEST_DATA fdata [] = {
     { "data/bad_no_host", 0, 1, 0 },
     { 0 , 0 , 0, 0 }
     
 };
-
+#endif
 
 void HTTP_request_fail()
 {
+#if 0
   int i;
 
   for( i = 0; fdata[i].file_name != 0; ++i) {
     do_test( &fdata[i] );    
   }
+#endif
 }
 

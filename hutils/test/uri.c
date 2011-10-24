@@ -28,6 +28,55 @@ typedef struct tagURLTEST {
 } URLTEST;
 
 URLTEST url_tests[] = {
+
+		
+	{ 
+	  "/path#fragment",
+
+	  0,  
+	  0,
+	  0,
+
+	  0,
+	  -1, 
+	  
+	  "/path", 
+	  "/path", 
+	 
+	  0,
+	  0,
+	 
+	  "fragment",
+	  "fragment",
+	 
+	  0,
+	  0
+	},	
+
+	{ 
+	  "http://host/path?query=result#fragment",
+
+	  "http",
+	    
+	  0,
+	  0,
+
+	  "host", 
+	  -1,
+	  
+	  "/path", 
+	  "/path", 
+	  
+	  "query=result",
+	  "query=result",
+	 
+	  "fragment",
+	  "fragment",
+	 
+	  0,
+	  0
+	},	
+	
 	{ 
 	  "http:///path",
 

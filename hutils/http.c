@@ -418,7 +418,9 @@ int HTTP_PARSER_content_length_process( HTTP_PARSER *parser, BF *bf, HTTP_PROCES
      bytes_to_take = bytes_available;
    } 
 
-   cb( msg, bf->get_pos, bytes_to_take, ctx );
+   if (cb( msg, bf->get_pos, bytes_to_take, ctx )) {
+     return PARSER_STATUS_ERROR; 
+   }
 
    parser->content_left -= bytes_to_take;
    bf->get_pos += bytes_to_take;
@@ -689,15 +691,20 @@ PARSER_STATUS HTTP_REQUEST_PARSER_process( HTTP_REQUEST_PARSER *parser, HTTP_REQ
       }
 
       if (eof_header) {
+#if 0
+	  // this check will we done by web server; if no host header then send back HTTP status 400.
 
 	  // if http 1.1 then host header is a must. no host header is an error.
 	  if (request->version ==  HTTP_VERSION_1_1 &&
 	      !request->has_host_header) {
 	    return PARSER_STATUS_ERROR;  
 	  }
+#endif	  
 
 	  // eof parsing http header.
-	  parser->ev_header( request, parser->ctx ); 
+	  if (parser->ev_header( request, parser->ctx )) {
+	    return PARSER_STATUS_ERROR; 
+	  }
 	  BF_compact(bf);
 
 	  if (request->base.flags & HTTP_MESSAGE_FLAG_TRANSFER_CHUNKED) {
@@ -712,7 +719,9 @@ PARSER_STATUS HTTP_REQUEST_PARSER_process( HTTP_REQUEST_PARSER *parser, HTTP_REQ
 	  }
 
 next_request:
-	  parser->ev_finish( request, parser->ctx ); 
+	  if (parser->ev_finish( request, parser->ctx )) {
+	    return PARSER_STATUS_ERROR;
+	  }
 	  parser->base.state = HTTP_STATE_PARSING_REQUEST_LINE; 
 	  HTTP_REQUEST_free(request);  
           return PARSER_STATUS_COMPLETED;
