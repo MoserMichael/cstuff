@@ -42,7 +42,7 @@ void TPOOL_test()
 
   for(i = 0; i < NUM_REQUESTS; i++ ) {
      tmp = (ADDER *) malloc( sizeof(ADDER) );
-     tmp->base.handle_request = (RUNNABLE_HANDLER) do_adder;
+     RUNNABLE_init( &tmp->base, (RUNNABLE_HANDLER) do_adder, 0 );
      tmp->arg = i;
 
      THREADPOOL_send_block_on_queue_full( pool, &tmp->base );
@@ -59,6 +59,7 @@ void TPOOL_test()
      tmp = (ADDER *) TQUEUE_pop( &rqueue );
      VASSERT( tmp->res > 0 && tmp->res <= NUM_REQUESTS );
      res_numbers[ tmp->res - 1 ] = tmp->res;
+     RUNNABLE_free( &tmp->base );
    }
 
    for(i = 0; i <  NUM_REQUESTS;  i++ ) {
