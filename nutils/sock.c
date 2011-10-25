@@ -18,9 +18,7 @@
 #include "sock.h"
 #include "ioutils.h"
 
-
-
-int SOCK_init( SOCKCTX *ctx , int verbose, int flags)
+int SOCK_attach( SOCKCTX *ctx , int fd, int verbose, int flags)
 {
   ctx->verbose = verbose;
   ctx->connected = 0;
@@ -30,15 +28,9 @@ int SOCK_init( SOCKCTX *ctx , int verbose, int flags)
 
   disable_sigpipe();
  
-  ctx->fd = socket( PF_INET, SOCK_STREAM, 0 );
-  if (ctx->fd == -1) {
-     if (ctx->verbose) {
-       fprintf(stderr, "Failed to create socket %d\n", errno);
-     }
-     return -1;
-  }
-
-  if ( fd_set_blocking( ctx->fd, 0 ) ) {
+  ctx->fd = fd;
+ 
+ if ( fd_set_blocking( ctx->fd, 0 ) ) {
      if (ctx->verbose) {
        fprintf(stderr, "Failed to make socket non blocking errno %d\n", errno);
      }
@@ -63,6 +55,22 @@ int SOCK_init( SOCKCTX *ctx , int verbose, int flags)
   }
 
   return 0;
+}
+
+
+int SOCK_init( SOCKCTX *ctx , int verbose, int flags)
+{
+  int fd;
+ 
+  fd = socket( PF_INET, SOCK_STREAM, 0 );
+  if (fd == -1) {
+     if (verbose) {
+       fprintf(stderr, "Failed to create socket %d\n", errno);
+     }
+     return -1;
+  }
+
+  return SOCK_attach( ctx , fd, verbose, flags);
 }
  
 
@@ -175,7 +183,7 @@ err:
 
 
 
-int SOCK_recv( SOCKCTX *ctx, char *msg, size_t length, int read_timeout )
+int SOCK_recv( SOCKCTX *ctx, void *msg, size_t length, int read_timeout )
 {
   int rt;
   fd_set rset;
@@ -234,7 +242,7 @@ err:
    return -1;
 }	 
 
-int SOCK_recv_all( SOCKCTX *ctx, char *msg, size_t length, int read_timeout )
+int SOCK_recv_all( SOCKCTX *ctx, void *msg, size_t length, int read_timeout )
 {
   size_t pos;
   int rt;

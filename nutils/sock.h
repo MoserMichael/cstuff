@@ -70,6 +70,18 @@ typedef struct tagSOCKCTX {
 */
 int SOCK_init( SOCKCTX *ctx , int verbose, int flags);
 
+int SOCK_attach( SOCKCTX *ctx , int fd, int verbose, int flags);
+
+
+/**
+@brief creates a socket and sets some options
+@param ctx - pointer to socket object.
+@param verbose
+@param flags  - bitmask of SOCKTX_FLAGS_xxx values
+*/
+int SOCK_init( SOCKCTX *ctx , int verbose, int flags);
+
+
 /**
  @brief set read and write buffer sizes; a value of -1 for buffer size is ignored.
  @param ctx - pointer to socket object.
@@ -92,14 +104,14 @@ int SOCK_connect( SOCKCTX *ctx, void *addr, int addr_size, int connect_timeout);
  @param ctx - pointer to socket object.
  @return either one of: -1 on error, 0 if socket has been closed, number of bytes read.
  */
-int SOCK_recv( SOCKCTX *ctx, char *msg, size_t length, int read_timeout );
+int SOCK_recv( SOCKCTX *ctx, void *msg, size_t length, int read_timeout );
 
 /**
  @brief read whe whole buffer from a socket with timeout (in seconds)
  @param ctx - pointer to socket object.
  @return either one of: -1 on error, 0 if socket has been closed during receiving buffer, length on success.
 */
-int SOCK_recv_all( SOCKCTX *ctx, char *msg, size_t length, int read_timeout );
+int SOCK_recv_all( SOCKCTX *ctx, void *msg, size_t length, int read_timeout );
 
 /**
  @brief write whe whole buffer from a socket with timeout (in seconds)
