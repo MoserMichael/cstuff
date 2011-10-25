@@ -454,7 +454,7 @@ r_again:
       
        switch(event_id) {
          case EVENT_ID_HAS_IO_EVENT:
-           MLOG_DEBUG( "socket %d received read event", socket->fd ); 
+           MLOG_TRACE( "socket %d received read event", socket->fd ); 
  	   goto r_again;
          default: 
            MLOG_DEBUG( "socket %d read timed out", socket->fd ); 
@@ -530,7 +530,7 @@ w_again:
       
        switch(event_id) {
          case EVENT_ID_HAS_IO_EVENT:
-           MLOG_DEBUG( "socket %d received write event", socket->fd ); 
+           MLOG_TRACE( "socket %d received write event", socket->fd ); 
  	   goto w_again;
          default: 
            MLOG_DEBUG( "socket %d write timed out", socket->fd ); 
@@ -618,6 +618,7 @@ EVTCPACCEPTOR * EVTCPACCEPTOR_init_ex( EVLOOP *loop, SOCKADDR *addr, int listene
 
   listener_fd = fd_make_tcp_listener( addr, listener_backlog );
   if (listener_fd == -1) {
+    MLOG_ERROR( "Can't listen on address %s. error errno %d", SOCKADDR_to_string( addr ), errno );
     return 0; 
   }
 
