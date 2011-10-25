@@ -21,6 +21,9 @@ doxygen  oct-corothread.doxygen
 mkdir -p ../docs/html/evcorothread
 doxygen  oct-evcorothread.doxygen
 
+mkdir -p ../docs/html/webby
+doxygen  oct-webby.doxygen
+
 mkdir -p ../docs/html/vtest
 doxygen  oct-vtest.doxygen
 
