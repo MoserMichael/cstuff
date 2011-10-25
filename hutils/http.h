@@ -61,6 +61,13 @@ STRINGPAIR * HTTP_MESSAGE_next_header( HTTP_MESSAGE *message, DLISTUNR_position 
 
 //===============================================================
 
+/**
+ * @defgroup HTTP_REQUEST 
+ * @brief http request object.
+ *
+ * @{
+ */
+
 struct tagHTTP_PARSER;
 struct tagHTTP_REQUEST_PARSER; 
 
@@ -90,12 +97,6 @@ typedef enum tagHttp_version_type {
 
 } Http_version_type;
 
-
-/**
- * @brief HTTP_REQUEST - holds information of an http request.
- *
- * @{
- */
 typedef struct tagHTTP_REQUEST {
   HTTP_MESSAGE base;
   
@@ -158,16 +159,9 @@ M_INLINE void HTTP_REQUEST_free( HTTP_REQUEST *message )
 
 // ===============================================================
 
-typedef int  (*HTTP_REQ_HEADER_PARSED)	   (HTTP_REQUEST *request, void *ctx);
-typedef int  (*HTTP_REQ_MESSAGE_BODY_DATA) (HTTP_REQUEST *request, void *data, size_t data_size, void *ctx);
-typedef int  (*HTTP_REQ_FINISHED)	   (HTTP_REQUEST *request, void *ctx);  
-
-
-// ===============================================================
-
 
 /**
- * @brief HTTP_REQUEST - holds information of an http response.
+ * @brief HTTP_RESPONSE - holds information of an http response.
  *
  * @{
  */
@@ -208,6 +202,13 @@ typedef int (*HTTP_RESP_FINISHED)	   (HTTP_RESPONSE *request, void *ctx);
 
 // ===============================================================
 
+/** 
+ * @defgroup HTTP_PARSER
+ * @brief base class of both http request and http response parsers
+ *
+ * @{
+ */
+
 typedef enum tagHTTP_STATE_PARSING {
 
   HTTP_STATE_PARSING_REQUEST_LINE,
@@ -218,15 +219,8 @@ typedef enum tagHTTP_STATE_PARSING {
   HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA,
   HTTP_STATE_PARSING_BODY_CHUNK_TRAILER,
 
-
 } HTTP_STATE_PARSING;
 
-
-/** 
- * @brief base class of both http request and http response parsers
- *
- * @{
- */
 typedef struct tagHTTP_PARSER {
   HTTP_STATE_PARSING  state;
   HASH header_action;  
@@ -253,7 +247,12 @@ typedef enum {
   HTTP_TK_EOF,
 } HTTP_TK_TYPE;
 
-typedef int (*HTTP_PROCESS_MSG_DATA) ( HTTP_MESSAGE *msg, void *data, size_t data_size, void *ctx);
+typedef int  (*HTTP_PROCESS_MSG_DATA) ( HTTP_MESSAGE *msg, void *data, size_t data_size, void *ctx);
+typedef int  (*HTTP_REQ_HEADER_PARSED)	   (HTTP_REQUEST *request, void *ctx);
+typedef int  (*HTTP_REQ_MESSAGE_BODY_DATA) (HTTP_REQUEST *request, void *data, size_t data_size, void *ctx);
+typedef int  (*HTTP_REQ_FINISHED)	   (HTTP_REQUEST *request, void *ctx);  
+
+
 
 int  HTTP_PARSER_init(  HTTP_PARSER *parser );
 int  HTTP_PARSER_free(  HTTP_PARSER *parser );
@@ -311,6 +310,7 @@ PARSER_STATUS HTTP_PARSER_chunked_data_process( HTTP_PARSER *parser, BF *bf, HTT
 
 
 /** 
+ * @defgroup HTTP_REQUEST_PARSER parser of http requests
  * @brief parser of  http requests
  *
  * @{
@@ -353,7 +353,8 @@ PARSER_STATUS HTTP_REQUEST_PARSER_process( HTTP_REQUEST_PARSER *parser, HTTP_REQ
 // ===============================================================
 
 
-/** 
+/**
+ * @defgroup HTTP_RESPONSE_PARSER - parser of http responses
  * @brief parser of  http responses
  *
  * @{
@@ -397,6 +398,12 @@ PARSER_STATUS HTTP_RESPONSE_PARSER_process( HTTP_RESPONSE_PARSER *parser, HTTP_R
 
 // ===============================================================
 
+
+/**
+ * @defgroup HTTP_RESPONSE_WRITER - writer of http responss
+ * @{
+ */
+
 typedef enum {
  HTTP_RESPONSE_WR_STATUS_LINE,
  HTTP_RESPONSE_WR_CONNECTION_CLOSE,
@@ -406,13 +413,6 @@ typedef enum {
  HTTP_RESPONSE_WR_EOF,
 
 } HTTP_RESPONSE_WR_STATE;
-
-/** 
- * @brief writer of http responses
- *
- * @{
- */
-
 
 typedef struct tagHTTP_RESPONSE_WRITER
 {

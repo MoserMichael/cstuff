@@ -6,6 +6,12 @@
 
 // ===============================================================
 
+/**
+ * @defgroup URI
+ * @brief uri parser
+ *
+ * @{
+ */
 
 #define URI_FLAGS_PARSE_PARTS     1
 #define URI_FLAGS_IS_ABSOLUTE_URI 2
@@ -137,7 +143,9 @@ M_INLINE const char *URI_opaque( URI *url )
   return url->opaque;
 }
 
-
+/**
+ * @}
+ */
 
 #endif
 
