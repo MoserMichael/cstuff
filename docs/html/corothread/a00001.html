@@ -61,7 +61,9 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ucontext_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#aee14cdad40d62281ab3ccfaf25e76cd3">context_caller</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00012.html#ga87a29e5321e1ae9ab5a3e043e850e160">CTHREAD_STATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a3f7ef430812f309728071e027ec90532">thread_id</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00005.html">VALUES</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">caller_to_thread_value_set</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00005.html">VALUES</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00012.html#gadf72fbde4d6beb181e58d60050136c49">CTHREAD_PROC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#a5ff356da73817c9a3d239dbde9e80c85">proc</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00001.html">tagCTHREAD</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00001.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a></td></tr>
@@ -82,7 +84,22 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00045">45</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00047">47</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afff9bc0410b2bbf30b84340597b784b0"></a><!-- doxytag: member="tagCTHREAD::caller_to_thread_value_set" ref="afff9bc0410b2bbf30b84340597b784b0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">tagCTHREAD::caller_to_thread_value_set</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00007_source.html#l00046">46</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
 
 </div>
 </div>
@@ -127,7 +144,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00048">48</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00050">50</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
 
 </div>
 </div>
@@ -142,7 +159,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00047">47</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00049">49</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
 
 </div>
 </div>
@@ -157,7 +174,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00049">49</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00051">51</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
 
 </div>
 </div>
@@ -202,6 +219,21 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>Definition at line <a class="el" href="a00007_source.html#l00045">45</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8943218e751cf02961b72ac51ee58c69"></a><!-- doxytag: member="tagCTHREAD::thread_to_caller_value_set" ref="a8943218e751cf02961b72ac51ee58c69" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">tagCTHREAD::thread_to_caller_value_set</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
 <p>Definition at line <a class="el" href="a00007_source.html#l00044">44</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
 
 </div>
@@ -210,7 +242,7 @@ Public Attributes</h2></td></tr>
 <li><a class="el" href="a00007_source.html">cthread.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:57 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:32 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -42,113 +42,118 @@
 <a href="a00008.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;sys/mman.h&gt;</span>
 <a name="l00002"></a>00002 <span class="preprocessor">#include &lt;unistd.h&gt;</span>
 <a name="l00003"></a>00003 <span class="preprocessor">#include &quot;<a class="code" href="a00009.html">stacks.h</a>&quot;</span>
-<a name="l00004"></a>00004 
-<a name="l00005"></a><a class="code" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">00005</a> <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> <a class="code" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( <span class="keywordtype">int</span> *ptr )
-<a name="l00006"></a>00006 {
-<a name="l00007"></a>00007    <span class="keywordtype">int</span> a = 0;
-<a name="l00008"></a>00008    <span class="keywordflow">if</span> ((<span class="keywordtype">size_t</span>) &amp;a &lt; (<span class="keywordtype">size_t</span>) ptr ) {
-<a name="l00009"></a>00009      <span class="keywordflow">return</span> <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>; 
-<a name="l00010"></a>00010    }
-<a name="l00011"></a>00011    <span class="keywordflow">return</span> <a class="code" href="a00013.html#ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3">STACK_DIR_GROWING_UP</a>;
-<a name="l00012"></a>00012 }
-<a name="l00013"></a>00013 
-<a name="l00014"></a><a class="code" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">00014</a> <span class="keywordtype">int</span> <a class="code" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a>()
-<a name="l00015"></a>00015 {
-<a name="l00016"></a>00016   <span class="keywordtype">int</span> a = 0;
-<a name="l00017"></a>00017 
-<a name="l00018"></a>00018   <span class="keywordflow">return</span> <a class="code" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( &amp; a );
-<a name="l00019"></a>00019 }
-<a name="l00020"></a>00020 
-<a name="l00021"></a><a class="code" href="a00013.html#gacae5bd5f2d666108ed11d96c877999bd">00021</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#gacae5bd5f2d666108ed11d96c877999bd">STACKS_init</a>( <a class="code" href="a00003.html">STACKS</a> *stack, <span class="keywordtype">int</span> num_stacks, <span class="keywordtype">int</span> pages_per_stack )
-<a name="l00022"></a>00022 {
-<a name="l00023"></a>00023   <span class="keywordtype">int</span> page_size;
-<a name="l00024"></a>00024   <span class="keywordtype">size_t</span> len, one_stack_size;
-<a name="l00025"></a>00025   <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> dir;
-<a name="l00026"></a>00026   <a class="code" href="a00002.html">STACK_ENTRY</a> *entry;
-<a name="l00027"></a>00027   uint8_t *mapping, *stack_start;
-<a name="l00028"></a>00028   uint8_t *guard_page;
-<a name="l00029"></a>00029   <span class="keywordtype">int</span> i;
-<a name="l00030"></a>00030   
-<a name="l00031"></a>00031   page_size = sysconf( _SC_PAGE_SIZE );
-<a name="l00032"></a>00032   one_stack_size = page_size *  pages_per_stack; 
-<a name="l00033"></a>00033   len = num_stacks * one_stack_size;
-<a name="l00034"></a>00034   dir = <a class="code" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a>();
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036   mapping = (uint8_t *) mmap( 0 , len, PROT_READ|PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS 
-<a name="l00037"></a>00037 #<span class="keywordflow">if</span> 0
-<a name="l00038"></a>00038 #ifdef MAP_STACK
-<a name="l00039"></a>00039                         | MAP_STACK
-<a name="l00040"></a>00040 #endif
-<a name="l00041"></a>00041 #endif
-<a name="l00042"></a>00042                       , -1, 0 );
-<a name="l00043"></a>00043   <span class="keywordflow">if</span> (!mapping) {
-<a name="l00044"></a>00044     <span class="keywordflow">return</span> -1;
-<a name="l00045"></a>00045   }
-<a name="l00046"></a>00046   stack-&gt;<a class="code" href="a00003.html#a3e089321a0d191b9291649c828fe9c48">mapping</a> = mapping;
-<a name="l00047"></a>00047   stack-&gt;<a class="code" href="a00013.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a> = len;
-<a name="l00048"></a>00048   stack-&gt;<a class="code" href="a00013.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> = num_stacks;
-<a name="l00049"></a>00049   stack-&gt;<a class="code" href="a00013.html#gab7c15d9df43b0f687f3c9c712fae0e82">one_stack_size</a> = one_stack_size;  
-<a name="l00050"></a>00050  
-<a name="l00051"></a>00051   DLIST_init( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> );
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053   <span class="keywordflow">for</span>( i = 0; i &lt; num_stacks; i ++ ) {
-<a name="l00054"></a>00054     stack_start = mapping + ( i * one_stack_size);
-<a name="l00055"></a>00055     
-<a name="l00056"></a>00056     <span class="keywordflow">if</span> (dir == <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>) {
-<a name="l00057"></a>00057     <span class="comment">//stack_start = mapping + ( (i + 1) * one_stack_size) - 1;</span>
-<a name="l00058"></a>00058       guard_page =  mapping + (i * one_stack_size);
-<a name="l00059"></a>00059     } <span class="keywordflow">else</span> {
-<a name="l00060"></a>00060       guard_page = mapping + ( i + 1 ) * one_stack_size - page_size;
-<a name="l00061"></a>00061     }
-<a name="l00062"></a>00062   
-<a name="l00063"></a>00063     <span class="keywordflow">if</span> (mprotect( guard_page , page_size, PROT_NONE )) {
-<a name="l00064"></a>00064       <span class="keywordflow">return</span> -1;
-<a name="l00065"></a>00065     }
-<a name="l00066"></a>00066     
-<a name="l00067"></a>00067     entry = (<a class="code" href="a00002.html">STACK_ENTRY</a> *) malloc( <span class="keyword">sizeof</span>( <a class="code" href="a00002.html">STACK_ENTRY</a> ) );
-<a name="l00068"></a>00068     <span class="keywordflow">if</span> (!entry) {
+<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<a name="l00005"></a>00005 
+<a name="l00006"></a><a class="code" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">00006</a> <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> <a class="code" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( <span class="keywordtype">int</span> *ptr )
+<a name="l00007"></a>00007 {
+<a name="l00008"></a>00008    <span class="keywordtype">int</span> a = 0;
+<a name="l00009"></a>00009    <span class="keywordflow">if</span> ((<span class="keywordtype">size_t</span>) &amp;a &lt; (<span class="keywordtype">size_t</span>) ptr ) {
+<a name="l00010"></a>00010      <span class="keywordflow">return</span> <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>; 
+<a name="l00011"></a>00011    }
+<a name="l00012"></a>00012    <span class="keywordflow">return</span> <a class="code" href="a00013.html#ga79aa0db3fbf651329d7613f5de3dac9fa621ce0873731906e2c682899a1718dd3">STACK_DIR_GROWING_UP</a>;
+<a name="l00013"></a>00013 }
+<a name="l00014"></a>00014 
+<a name="l00015"></a><a class="code" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">00015</a> <span class="keywordtype">int</span> <a class="code" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a>()
+<a name="l00016"></a>00016 {
+<a name="l00017"></a>00017   <span class="keywordtype">int</span> a = 0;
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019   <span class="keywordflow">return</span> <a class="code" href="a00008.html#aca3b0b9dea91da057a9d4f1e8c190a23">stack_dir</a>( &amp; a );
+<a name="l00020"></a>00020 }
+<a name="l00021"></a>00021 
+<a name="l00022"></a><a class="code" href="a00013.html#gacae5bd5f2d666108ed11d96c877999bd">00022</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#gacae5bd5f2d666108ed11d96c877999bd">STACKS_init</a>( <a class="code" href="a00003.html">STACKS</a> *stack, <span class="keywordtype">int</span> num_stacks, <span class="keywordtype">int</span> pages_per_stack )
+<a name="l00023"></a>00023 {
+<a name="l00024"></a>00024   <span class="keywordtype">int</span> page_size;
+<a name="l00025"></a>00025   <span class="keywordtype">size_t</span> len, one_stack_size;
+<a name="l00026"></a>00026   <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9f">STACK_DIR</a> dir;
+<a name="l00027"></a>00027   <a class="code" href="a00002.html">STACK_ENTRY</a> *entry;
+<a name="l00028"></a>00028   uint8_t *mapping, *stack_start;
+<a name="l00029"></a>00029   uint8_t *guard_page;
+<a name="l00030"></a>00030   <span class="keywordtype">int</span> i;
+<a name="l00031"></a>00031   
+<a name="l00032"></a>00032   page_size = sysconf( _SC_PAGE_SIZE );
+<a name="l00033"></a>00033   one_stack_size = page_size *  pages_per_stack; 
+<a name="l00034"></a>00034   len = num_stacks * one_stack_size;
+<a name="l00035"></a>00035   dir = <a class="code" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a>();
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037   mapping = (uint8_t *) mmap( 0 , len, PROT_READ|PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS 
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039 #<span class="keywordflow">if</span> 0
+<a name="l00040"></a>00040 #ifdef MAP_STACK
+<a name="l00041"></a>00041                         | MAP_STACK
+<a name="l00042"></a>00042 #endif
+<a name="l00043"></a>00043 #endif
+<a name="l00044"></a>00044                       , -1, 0 );
+<a name="l00045"></a>00045   <span class="keywordflow">if</span> (!mapping) {
+<a name="l00046"></a>00046     <span class="keywordflow">return</span> -1;
+<a name="l00047"></a>00047   }
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049   <span class="comment">//fprintf( stderr, &quot;all stacks %p - %p\n&quot;, mapping, mapping + len );</span>
+<a name="l00050"></a>00050   
+<a name="l00051"></a>00051   stack-&gt;<a class="code" href="a00003.html#a3e089321a0d191b9291649c828fe9c48">mapping</a> = mapping;
+<a name="l00052"></a>00052   stack-&gt;<a class="code" href="a00013.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a> = len;
+<a name="l00053"></a>00053   stack-&gt;<a class="code" href="a00013.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> = num_stacks;
+<a name="l00054"></a>00054   stack-&gt;<a class="code" href="a00013.html#gab7c15d9df43b0f687f3c9c712fae0e82">one_stack_size</a> = one_stack_size - page_size;
+<a name="l00055"></a>00055  
+<a name="l00056"></a>00056   DLIST_init( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> );
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058   <span class="keywordflow">for</span>( i = 0; i &lt; num_stacks; i ++ ) {
+<a name="l00059"></a>00059     stack_start = mapping + ( i * one_stack_size);
+<a name="l00060"></a>00060     
+<a name="l00061"></a>00061     <span class="keywordflow">if</span> (dir == <a class="code" href="a00009.html#a79aa0db3fbf651329d7613f5de3dac9fa82b589a14df95f45bb876d3f44f8969c">STACK_DIR_GROWING_DOWN</a>) {
+<a name="l00062"></a>00062     <span class="comment">//stack_start = mapping + ( (i + 1) * one_stack_size) - 1;</span>
+<a name="l00063"></a>00063       guard_page =  mapping + (i * one_stack_size);
+<a name="l00064"></a>00064     } <span class="keywordflow">else</span> {
+<a name="l00065"></a>00065       guard_page = mapping + ( i + 1 ) * one_stack_size - page_size;
+<a name="l00066"></a>00066     }
+<a name="l00067"></a>00067   
+<a name="l00068"></a>00068     <span class="keywordflow">if</span> (mprotect( guard_page , page_size, PROT_NONE )) {
 <a name="l00069"></a>00069       <span class="keywordflow">return</span> -1;
 <a name="l00070"></a>00070     }
-<a name="l00071"></a>00071     entry-&gt;<a class="code" href="a00013.html#ga9c067ef2a750355a9ce3360ac2ead65b">stack_start</a> = stack_start;
-<a name="l00072"></a>00072     entry-&gt;<a class="code" href="a00013.html#ga3bf0755824c9a30451e247848157685b">stacks</a> = stack;
-<a name="l00073"></a>00073     DLIST_push_back( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>, &amp;entry-&gt;<a class="code" href="a00002.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a> );
-<a name="l00074"></a>00074   }
-<a name="l00075"></a>00075   <span class="keywordflow">return</span> 0;
-<a name="l00076"></a>00076 }
-<a name="l00077"></a>00077 
-<a name="l00078"></a><a class="code" href="a00013.html#ga416929f1d8b2f705c238c9a22fbe64cc">00078</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#ga416929f1d8b2f705c238c9a22fbe64cc">STACKS_destroy</a>( <a class="code" href="a00003.html">STACKS</a> *stack )
-<a name="l00079"></a>00079 {
-<a name="l00080"></a>00080   <span class="keywordflow">if</span> ( DLIST_size( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>) != (<span class="keywordtype">size_t</span>) stack-&gt;<a class="code" href="a00013.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> ) {
-<a name="l00081"></a>00081     <span class="keywordflow">return</span> -1;
-<a name="l00082"></a>00082   }
-<a name="l00083"></a>00083   
-<a name="l00084"></a>00084   <span class="keywordflow">if</span> (munmap( stack-&gt;<a class="code" href="a00003.html#a3e089321a0d191b9291649c828fe9c48">mapping</a>, stack-&gt;<a class="code" href="a00013.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a>)) {
-<a name="l00085"></a>00085     <span class="keywordflow">return</span> -1;
-<a name="l00086"></a>00086   }
-<a name="l00087"></a>00087   <span class="keywordflow">return</span> 0;
-<a name="l00088"></a>00088 }
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090 
-<a name="l00091"></a><a class="code" href="a00013.html#ga363c86e7f58727269a1b09271b521c95">00091</a> <span class="keywordtype">void</span> *<a class="code" href="a00013.html#ga363c86e7f58727269a1b09271b521c95">STACKS_get</a>(<a class="code" href="a00003.html">STACKS</a> *stack, <a class="code" href="a00002.html">STACK_ENTRY</a> **rentry )
-<a name="l00092"></a>00092 {
-<a name="l00093"></a>00093   <a class="code" href="a00002.html">STACK_ENTRY</a> *entry;
-<a name="l00094"></a>00094   <span class="keywordflow">if</span> (DLIST_isempty( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> ) ) {
-<a name="l00095"></a>00095     <span class="keywordflow">return</span> 0;
-<a name="l00096"></a>00096   }
-<a name="l00097"></a>00097   entry = (<a class="code" href="a00002.html">STACK_ENTRY</a> *) DLIST_pop_front( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> );
-<a name="l00098"></a>00098   *rentry = entry;
-<a name="l00099"></a>00099   <span class="keywordflow">return</span> entry-&gt;<a class="code" href="a00013.html#ga9c067ef2a750355a9ce3360ac2ead65b">stack_start</a>;
-<a name="l00100"></a>00100 }
-<a name="l00101"></a>00101 
-<a name="l00102"></a><a class="code" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">00102</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a>(<a class="code" href="a00002.html">STACK_ENTRY</a> *entry)
-<a name="l00103"></a>00103 {
-<a name="l00104"></a>00104   <a class="code" href="a00003.html">STACKS</a> *stack = entry-&gt;<a class="code" href="a00013.html#ga3bf0755824c9a30451e247848157685b">stacks</a>;
-<a name="l00105"></a>00105   DLIST_push_front( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>, &amp;entry-&gt;<a class="code" href="a00002.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a> );
-<a name="l00106"></a>00106   <span class="keywordflow">return</span> 0;
-<a name="l00107"></a>00107 }
+<a name="l00071"></a>00071     
+<a name="l00072"></a>00072     entry = (<a class="code" href="a00002.html">STACK_ENTRY</a> *) malloc( <span class="keyword">sizeof</span>( <a class="code" href="a00002.html">STACK_ENTRY</a> ) );
+<a name="l00073"></a>00073     <span class="keywordflow">if</span> (!entry) {
+<a name="l00074"></a>00074       <span class="keywordflow">return</span> -1;
+<a name="l00075"></a>00075     }
+<a name="l00076"></a>00076     entry-&gt;<a class="code" href="a00013.html#ga9c067ef2a750355a9ce3360ac2ead65b">stack_start</a> = stack_start;
+<a name="l00077"></a>00077     entry-&gt;<a class="code" href="a00013.html#ga3bf0755824c9a30451e247848157685b">stacks</a> = stack;
+<a name="l00078"></a>00078     DLIST_push_back( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>, &amp;entry-&gt;<a class="code" href="a00002.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a> );
+<a name="l00079"></a>00079   }
+<a name="l00080"></a>00080   <span class="keywordflow">return</span> 0;
+<a name="l00081"></a>00081 }
+<a name="l00082"></a>00082 
+<a name="l00083"></a><a class="code" href="a00013.html#ga416929f1d8b2f705c238c9a22fbe64cc">00083</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#ga416929f1d8b2f705c238c9a22fbe64cc">STACKS_destroy</a>( <a class="code" href="a00003.html">STACKS</a> *stack )
+<a name="l00084"></a>00084 {
+<a name="l00085"></a>00085   <span class="keywordflow">if</span> ( DLIST_size( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>) != (<span class="keywordtype">size_t</span>) stack-&gt;<a class="code" href="a00013.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> ) {
+<a name="l00086"></a>00086     <span class="keywordflow">return</span> -1;
+<a name="l00087"></a>00087   }
+<a name="l00088"></a>00088   
+<a name="l00089"></a>00089   <span class="keywordflow">if</span> (munmap( stack-&gt;<a class="code" href="a00003.html#a3e089321a0d191b9291649c828fe9c48">mapping</a>, stack-&gt;<a class="code" href="a00013.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a>)) {
+<a name="l00090"></a>00090     <span class="keywordflow">return</span> -1;
+<a name="l00091"></a>00091   }
+<a name="l00092"></a>00092   <span class="keywordflow">return</span> 0;
+<a name="l00093"></a>00093 }
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 
+<a name="l00096"></a><a class="code" href="a00013.html#ga363c86e7f58727269a1b09271b521c95">00096</a> <span class="keywordtype">void</span> *<a class="code" href="a00013.html#ga363c86e7f58727269a1b09271b521c95">STACKS_get</a>(<a class="code" href="a00003.html">STACKS</a> *stack, <a class="code" href="a00002.html">STACK_ENTRY</a> **rentry )
+<a name="l00097"></a>00097 {
+<a name="l00098"></a>00098   <a class="code" href="a00002.html">STACK_ENTRY</a> *entry;
+<a name="l00099"></a>00099   <span class="keywordflow">if</span> (DLIST_isempty( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> ) ) {
+<a name="l00100"></a>00100     <span class="keywordflow">return</span> 0;
+<a name="l00101"></a>00101   }
+<a name="l00102"></a>00102   entry = (<a class="code" href="a00002.html">STACK_ENTRY</a> *) DLIST_pop_front( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> );
+<a name="l00103"></a>00103   *rentry = entry;
+<a name="l00104"></a>00104   <span class="keywordflow">return</span> entry-&gt;<a class="code" href="a00013.html#ga9c067ef2a750355a9ce3360ac2ead65b">stack_start</a>;
+<a name="l00105"></a>00105 }
+<a name="l00106"></a>00106 
+<a name="l00107"></a><a class="code" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">00107</a> <span class="keywordtype">int</span> <a class="code" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a>(<a class="code" href="a00002.html">STACK_ENTRY</a> *entry)
+<a name="l00108"></a>00108 {
+<a name="l00109"></a>00109   <a class="code" href="a00003.html">STACKS</a> *stack = entry-&gt;<a class="code" href="a00013.html#ga3bf0755824c9a30451e247848157685b">stacks</a>;
+<a name="l00110"></a>00110   DLIST_push_front( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>, &amp;entry-&gt;<a class="code" href="a00002.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a> );
+<a name="l00111"></a>00111   <span class="keywordflow">return</span> 0;
+<a name="l00112"></a>00112 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:57 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:32 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -168,7 +168,7 @@ Functions</h2></td></tr>
 <p>deallocates a thread</p>
 <p>Precondition: the thread must be in CTHREAD_STATE_EXIT state </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00261">261</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00296">296</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
     <span class="keywordflow">return</span> -1;
@@ -196,7 +196,7 @@ Functions</h2></td></tr>
 <p>get thread id </p>
 <p>Precondition: the thread is in any state other than CTHREAD_STATE_INIT </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00270">270</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00305">305</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00001.html">CTHREAD</a> *thread;
  
@@ -244,7 +244,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00045">45</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00048">48</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">void</span> *stack;
   <a class="code" href="a00001.html">CTHREAD</a> *ret;
@@ -279,7 +279,8 @@ Functions</h2></td></tr>
   ret-&gt;<a class="code" href="a00001.html#a3f7ef430812f309728071e027ec90532">thread_id</a> = -1;   
   ret-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>;
 
-
+  ret-&gt;<a class="code" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">caller_to_thread_value_set</a> = ret-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a> = 0;
+ 
   <span class="keywordflow">if</span> (getcontext( &amp;ret-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a> )) {
     <span class="keywordflow">if</span> (ret-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>) {
       <span class="keywordflow">goto</span> err;
@@ -287,7 +288,9 @@ Functions</h2></td></tr>
     <span class="keywordflow">return</span> 0;
   }
 
-  ret-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>.uc_stack.ss_sp = ret;
+  <span class="comment">//fprintf( stderr,&quot;thread stack start %p\n&quot;,stack);</span>
+
+  ret-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>.uc_stack.ss_sp = stack;
   ret-&gt;<a class="code" href="a00001.html#a74b86a0255cf15d3cfcb21389f590fde">context_coroutine</a>.uc_stack.ss_size = <a class="code" href="a00013.html#ga76bb6e2354e42c959cf28d7ad9be8387">STACKS_get_stack_size</a>( stacks );
 
 
@@ -338,7 +341,7 @@ err:
 
 <p>waits till the thread has finished Calls CTHREAD_resume repeatedly unntil the thread finishes. </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00170">170</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00189">189</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{  
    <span class="keywordflow">if</span>( thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a> ||
        thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>) {
@@ -421,7 +424,7 @@ err:
 <p>Retrieving parameters from the thread: We can access values returned by the thread, once CTHREAD_resume returns. The values passed by the thread are stored in rvalue parameter.</p>
 <p>Precondition: the thread is in CTHREAD_STATE_SUSPENDED state Postcondition: the thread is in CTHREAD_STATE_RUNNING state </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00182">182</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00201">201</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>) {
     <span class="keywordflow">return</span> -1;
@@ -432,18 +435,27 @@ err:
     <span class="comment">// got here when the running thread called yield for the first time, or exited without calling yield.</span>
     thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>;
     <span class="keywordflow">if</span> (rvalue) {
-     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a>) {
+       *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     } <span class="keywordflow">else</span> {
+       *rvalue = 0;
+     }
     }
     <span class="keywordflow">return</span> 0;
   }
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
     <span class="comment">// got here from thread that has exited.</span>
     <span class="keywordflow">if</span> (rvalue) {
-     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a>) {
+       *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     } <span class="keywordflow">else</span> {
+       *rvalue = 0;
+     }
     }
     <span class="keywordflow">return</span> 0;
   }
 
+  thread-&gt;<a class="code" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">caller_to_thread_value_set</a> = 0;
   <span class="keywordflow">if</span> (format) {
     va_list vlist;
     
@@ -452,6 +464,7 @@ err:
     <span class="keywordflow">if</span> (<a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>, format, vlist ) ) {
       <span class="keywordflow">return</span> -1;
     }
+    thread-&gt;<a class="code" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">caller_to_thread_value_set</a> = 1;
   } 
 
   <a class="code" href="a00006.html#a1e7894c85352e355590b323f53b5fc17">SET_TLS</a>( thread );
@@ -488,7 +501,7 @@ err:
 
 <p>a running thread sets it return values </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00281">281</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00316">316</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00001.html">CTHREAD</a> *thread;
   va_list vlist;
@@ -499,7 +512,15 @@ err:
   }
 
   va_start( vlist, format );
-  <span class="keywordflow">return</span> <a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>, format, vlist );
+  
+  thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a> = 0;
+  <span class="keywordflow">if</span> (<a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>, format, vlist )) {
+    thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a> = 0;
+    <span class="keywordflow">return</span> -1;
+  }
+
+  thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a> = 1;
+  <span class="keywordflow">return</span> 0;
 }
 </pre></div>
 </div>
@@ -547,7 +568,7 @@ err:
 <p>Values passed from the caller to the thread -</p>
 <p>Precondition: the thread is in either CTHREAD_STATE_INIT or CTHREAD_STATE_EXIT state. Postcondition: the thread is in CTHREAD_STATE_RUNNING state. </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00133">133</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00139">139</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> != <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a480fa30892a6a2e7f742de0dba23bdc0">CTHREAD_STATE_INIT</a>) {
     <span class="keywordflow">return</span> -1;
@@ -557,18 +578,27 @@ err:
     <span class="comment">// got here when the running thread called yield for the first time, or exited without calling yield.</span>
     thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160abe71ffbb5113b86ca46f76144ab3030d">CTHREAD_STATE_SUSPENDED</a>;
     <span class="keywordflow">if</span> (rvalue) {
-     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a>) {
+      *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     } <span class="keywordflow">else</span> {
+       *rvalue = 0;
+     }
     }
     <span class="keywordflow">return</span> 0;
   }
   <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> == <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>) {
     <span class="comment">// got here from thread that has exited.</span>
     <span class="keywordflow">if</span> (rvalue) {
-     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a>) {
+       *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>; 
+     } <span class="keywordflow">else</span> {
+       *rvalue = 0;
+     }
     }
     <span class="keywordflow">return</span> 0;
   }
 
+  thread-&gt;<a class="code" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">caller_to_thread_value_set</a> = 0;
   <span class="keywordflow">if</span> (format) {
     va_list vlist;
     
@@ -577,7 +607,11 @@ err:
     <span class="keywordflow">if</span> (<a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>, format, vlist ) ) {
       <span class="keywordflow">return</span> -1;
     }
+
+    thread-&gt;<a class="code" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">caller_to_thread_value_set</a> = 1;
   } 
+  
+
   <span class="keywordflow">return</span> <a class="code" href="a00006.html#a8dcb24ceb1c69153bb683b05eccd02f9">do_start</a>( thread );
 }
 </pre></div>
@@ -600,7 +634,7 @@ err:
 
 <p>get thread state </p>
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00145">145</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00147">147</a> of file <a class="el" href="a00007_source.html">cthread.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a>;
 }
@@ -641,7 +675,7 @@ err:
 <p>a running thread temporarily suspends execution </p>
 <p>Precondition: the thread is in CTHREAD_STATE_RUNNING state Postcondition: the thread is in CTHREAD_STATE_SUSPENDED state </p>
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00221">221</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00250">250</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00001.html">CTHREAD</a> *thread;
   
@@ -660,11 +694,16 @@ err:
     <span class="comment">// got here when this thread was resumed.</span>
     thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>;
     <span class="keywordflow">if</span> (rvalue) {
-     *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>; 
+     <span class="keywordflow">if</span> (thread-&gt;<a class="code" href="a00001.html#afff9bc0410b2bbf30b84340597b784b0">caller_to_thread_value_set</a>) {
+       *rvalue = &amp;thread-&gt;<a class="code" href="a00001.html#a6082b1d33c73c020445f737a4be86a63">caller_to_thread_value</a>; 
+     } <span class="keywordflow">else</span> {
+       *rvalue = 0;
+     }
     }
     <span class="keywordflow">return</span> 0;
   }
  
+  thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a> = 0;
   <span class="keywordflow">if</span> (format) {
     va_list vlist;
     
@@ -673,7 +712,8 @@ err:
     <span class="keywordflow">if</span> (<a class="code" href="a00015.html#gac97baad2ae0049269577a1e3b9cbd712" title="insert typed tuple of values">VALUES_printv</a>( &amp;thread-&gt;<a class="code" href="a00001.html#ac2075ed7f30ce63845463d08c24b45f9">thread_to_caller_value</a>, format, vlist ) ) {
       <span class="keywordflow">return</span> -1;
     }
-  } 
+    thread-&gt;<a class="code" href="a00001.html#a8943218e751cf02961b72ac51ee58c69">thread_to_caller_value_set</a> = 1;
+  }
 
   <a class="code" href="a00006.html#a1e7894c85352e355590b323f53b5fc17">SET_TLS</a>( thread-&gt;<a class="code" href="a00001.html#ae6fb70fa6314738018642f89ca5c359c">prev_thread</a> );
  
@@ -683,7 +723,7 @@ err:
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:57 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:32 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

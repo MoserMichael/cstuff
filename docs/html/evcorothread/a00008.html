@@ -73,7 +73,7 @@ Typedefs</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">base class of sockets and timers. API of this class is not not called directly by the user of this library.  <a href="#aec66d4972a98f0832cbb0426f7a2fb2f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00005.html">tagEVTIMER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#gac4efc7b102f8c909be276232fddd95e7">EVTIMER</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagEVSOCKET</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gaa657a3b712a0f84e9b7aeff7059d96a0">EVSOCKET</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> )(int fd, <a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, void **ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> )(int fd, <a class="el" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, void **ctx, void *factory_ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00006.html">tagTCPACCEPTOR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga04e932952b59a41f70cbd49ce5680032">EVTCPACCEPTOR</a></td></tr>
 <tr><td colspan="2"><h2><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -113,8 +113,8 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga2400bf324d24d3d0b011f32c7eceecda">EVSOCKET_recv</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">EVSOCKET_recv_all</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d">EVSOCKET_send</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">EVTCPACCEPTOR_init_ex</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, SOCKADDR *addr, int listener_backlog, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int write_buffer_size)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int listener_fd, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int write_buffer_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gadb5017af22d215456c365c17e075e5cd">EVTCPACCEPTOR_init_ex</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, SOCKADDR *addr, int listener_backlog, <a class="el" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int write_buffer_size, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga61d91f59540dd1bd01ca46a3d9daddcd">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int listener_fd, <a class="el" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int write_buffer_size, void *ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">EVTCPACCEPTOR_close</a> (<a class="el" href="a00006.html">EVTCPACCEPTOR</a> *)</td></tr>
 </table>
 <hr/><h2>Typedef Documentation</h2>
@@ -162,7 +162,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:58 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:33 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -226,15 +226,15 @@
       <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init_ex</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga537b80ed744dbda49efb413b669bdebc</anchor>
-      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size)</arglist>
+      <anchor>gadb5017af22d215456c365c17e075e5cd</anchor>
+      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga53a501bf2cbac06aa2f984fda46dd035</anchor>
-      <arglist>(EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size)</arglist>
+      <anchor>ga61d91f59540dd1bd01ca46a3d9daddcd</anchor>
+      <arglist>(EVLOOP *loop, int fd, EVTHREAD_FACTORY factory, int read_buffer_size, int send_buffer_size, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -307,8 +307,8 @@
       <type>int(*</type>
       <name>EVTHREAD_FACTORY</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga51673c2cea9c3ed041a2511977c04148</anchor>
-      <arglist>)(int fd, EVTHREAD_PROC *proc, void **ctx)</arglist>
+      <anchor>ga3b4b25166853fd7da6d1db7dd133ed3f</anchor>
+      <arglist>)(int fd, EVTHREAD_PROC *proc, void **ctx, void *factory_ctx)</arglist>
     </member>
     <member kind="typedef">
       <type>struct tagTCPACCEPTOR</type>
@@ -524,15 +524,15 @@
       <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init_ex</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga537b80ed744dbda49efb413b669bdebc</anchor>
-      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+      <anchor>gadb5017af22d215456c365c17e075e5cd</anchor>
+      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga53a501bf2cbac06aa2f984fda46dd035</anchor>
-      <arglist>(EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+      <anchor>ga61d91f59540dd1bd01ca46a3d9daddcd</anchor>
+      <arglist>(EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -795,8 +795,8 @@
       <type>int(*</type>
       <name>EVTHREAD_FACTORY</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga51673c2cea9c3ed041a2511977c04148</anchor>
-      <arglist>)(int fd, EVTHREAD_PROC *proc, void **ctx)</arglist>
+      <anchor>ga3b4b25166853fd7da6d1db7dd133ed3f</anchor>
+      <arglist>)(int fd, EVTHREAD_PROC *proc, void **ctx, void *factory_ctx)</arglist>
     </member>
     <member kind="typedef">
       <type>struct tagTCPACCEPTOR</type>
@@ -809,15 +809,15 @@
       <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init_ex</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga537b80ed744dbda49efb413b669bdebc</anchor>
-      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+      <anchor>gadb5017af22d215456c365c17e075e5cd</anchor>
+      <arglist>(EVLOOP *loop, SOCKADDR *addr, int listener_backlog, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>EVTCPACCEPTOR *</type>
       <name>EVTCPACCEPTOR_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga53a501bf2cbac06aa2f984fda46dd035</anchor>
-      <arglist>(EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size)</arglist>
+      <anchor>ga61d91f59540dd1bd01ca46a3d9daddcd</anchor>
+      <arglist>(EVLOOP *loop, int listener_fd, EVTHREAD_FACTORY factory, int read_buffer_size, int write_buffer_size, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1086,6 +1086,13 @@
       <name>factory</name>
       <anchorfile>a00006.html</anchorfile>
       <anchor>af8f56cf09d1124217ec73e367348662f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>void *</type>
+      <name>ctx</name>
+      <anchorfile>a00006.html</anchorfile>
+      <anchor>ae1c02b46eebbdd2f2dd58aba91b6b00b</anchor>
       <arglist></arglist>
     </member>
   </compound>

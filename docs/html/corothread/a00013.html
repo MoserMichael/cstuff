@@ -113,7 +113,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00078">78</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00083">83</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> ( DLIST_size( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>) != (<span class="keywordtype">size_t</span>) stack-&gt;<a class="code" href="a00013.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> ) {
     <span class="keywordflow">return</span> -1;
@@ -152,7 +152,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00091">91</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00096">96</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00002.html">STACK_ENTRY</a> *entry;
   <span class="keywordflow">if</span> (DLIST_isempty( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> ) ) {
@@ -218,7 +218,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00021">21</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00022">22</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> page_size;
   <span class="keywordtype">size_t</span> len, one_stack_size;
@@ -234,6 +234,7 @@ Variables</h2></td></tr>
   dir = <a class="code" href="a00008.html#a4951230d1c901c4533d0a0a3bed8c95e">stack_direction</a>();
 
   mapping = (uint8_t *) mmap( 0 , len, PROT_READ|PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS 
+
 #<span class="keywordflow">if</span> 0
 #ifdef MAP_STACK
                         | MAP_STACK
@@ -243,10 +244,13 @@ Variables</h2></td></tr>
   <span class="keywordflow">if</span> (!mapping) {
     <span class="keywordflow">return</span> -1;
   }
+
+  <span class="comment">//fprintf( stderr, &quot;all stacks %p - %p\n&quot;, mapping, mapping + len );</span>
+  
   stack-&gt;<a class="code" href="a00003.html#a3e089321a0d191b9291649c828fe9c48">mapping</a> = mapping;
   stack-&gt;<a class="code" href="a00013.html#ga8ee90716d7d4f9c1bf7974fd196ca352">mapping_length</a> = len;
   stack-&gt;<a class="code" href="a00013.html#ga7a15b42db6ba74d038ea49fdf51a4086">num_stacks</a> = num_stacks;
-  stack-&gt;<a class="code" href="a00013.html#gab7c15d9df43b0f687f3c9c712fae0e82">one_stack_size</a> = one_stack_size;  
+  stack-&gt;<a class="code" href="a00013.html#gab7c15d9df43b0f687f3c9c712fae0e82">one_stack_size</a> = one_stack_size - page_size;
  
   DLIST_init( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a> );
 
@@ -292,7 +296,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00102">102</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00107">107</a> of file <a class="el" href="a00008_source.html">stacks.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00003.html">STACKS</a> *stack = entry-&gt;<a class="code" href="a00013.html#ga3bf0755824c9a30451e247848157685b">stacks</a>;
   DLIST_push_front( &amp;stack-&gt;<a class="code" href="a00013.html#ga08030f5ed264a29c070d11287938979d">root</a>, &amp;entry-&gt;<a class="code" href="a00002.html#a9c3527c5b313fb4fd382f47f1fc4f8b3">entry</a> );
@@ -393,7 +397,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:57 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:32 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

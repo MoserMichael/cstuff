@@ -271,7 +271,7 @@
 <a name="l00230"></a>00230 <span class="comment"> * @{</span>
 <a name="l00231"></a>00231 <span class="comment"> */</span>
 <a name="l00232"></a>00232 
-<a name="l00233"></a><a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">00233</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a>) (<span class="keywordtype">int</span> fd, <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, <span class="keywordtype">void</span> **ctx );
+<a name="l00233"></a><a class="code" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">00233</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a>) (<span class="keywordtype">int</span> fd, <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> *proc, <span class="keywordtype">void</span> **ctx, <span class="keywordtype">void</span> *factory_ctx );
 <a name="l00234"></a>00234 
 <a name="l00235"></a>00235 
 <a name="l00236"></a><a class="code" href="a00006.html">00236</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00006.html">tagTCPACCEPTOR</a> {
@@ -279,27 +279,28 @@
 <a name="l00238"></a><a class="code" href="a00006.html#a4606db4461a29987675ef98ff69f96d9">00238</a>   <span class="keywordtype">int</span> <a class="code" href="a00006.html#a4606db4461a29987675ef98ff69f96d9">fd</a>;
 <a name="l00239"></a><a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">00239</a>   <span class="keyword">struct </span>event <a class="code" href="a00006.html#a85a6ecdfac5b71883114be1a3b554cd7">read_event</a>;
 <a name="l00240"></a><a class="code" href="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45">00240</a>   <span class="keywordtype">int</span> <a class="code" href="a00006.html#a1a5a368dfb77cf7480f8ea493107d823">read_buffer_size</a>,<a class="code" href="a00006.html#ae506894f3e6b20c320a9bcd4089d4a45">send_buffer_size</a>;
-<a name="l00241"></a><a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">00241</a>   <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> <a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a>;
-<a name="l00242"></a>00242 
-<a name="l00243"></a>00243 } <a class="code" href="a00013.html#ga04e932952b59a41f70cbd49ce5680032">EVTCPACCEPTOR</a>;
-<a name="l00244"></a>00244 
-<a name="l00245"></a>00245 <a class="code" href="a00006.html">EVTCPACCEPTOR</a> * <a class="code" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">EVTCPACCEPTOR_init_ex</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop,  SOCKADDR *addr, <span class="keywordtype">int</span> listener_backlog,  <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, <span class="keywordtype">int</span> read_buffer_size, <span class="keywordtype">int</span> write_buffer_size );
-<a name="l00246"></a>00246 
-<a name="l00247"></a>00247 <a class="code" href="a00006.html">EVTCPACCEPTOR</a> * <a class="code" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">EVTCPACCEPTOR_init</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop, <span class="keywordtype">int</span> listener_fd, <a class="code" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, <span class="keywordtype">int</span> read_buffer_size, <span class="keywordtype">int</span> write_buffer_size );
-<a name="l00248"></a>00248 
-<a name="l00249"></a>00249 <span class="keywordtype">void</span> <a class="code" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">EVTCPACCEPTOR_close</a>(<a class="code" href="a00006.html">EVTCPACCEPTOR</a> *);
-<a name="l00250"></a>00250 
-<a name="l00251"></a>00251 <span class="comment"></span>
-<a name="l00252"></a>00252 <span class="comment">/**</span>
-<a name="l00253"></a>00253 <span class="comment"> * @}</span>
-<a name="l00254"></a>00254 <span class="comment"> */</span>
-<a name="l00255"></a>00255 
-<a name="l00256"></a>00256 <span class="preprocessor">#endif</span>
-<a name="l00257"></a>00257 <span class="preprocessor"></span>
-<a name="l00258"></a>00258 
+<a name="l00241"></a><a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">00241</a>   <a class="code" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> <a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a>;
+<a name="l00242"></a><a class="code" href="a00006.html#ae1c02b46eebbdd2f2dd58aba91b6b00b">00242</a>   <span class="keywordtype">void</span> *<a class="code" href="a00006.html#ae1c02b46eebbdd2f2dd58aba91b6b00b">ctx</a>;
+<a name="l00243"></a>00243 
+<a name="l00244"></a>00244 } <a class="code" href="a00013.html#ga04e932952b59a41f70cbd49ce5680032">EVTCPACCEPTOR</a>;
+<a name="l00245"></a>00245 
+<a name="l00246"></a>00246 <a class="code" href="a00006.html">EVTCPACCEPTOR</a> * <a class="code" href="a00013.html#gadb5017af22d215456c365c17e075e5cd">EVTCPACCEPTOR_init_ex</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop,  SOCKADDR *addr, <span class="keywordtype">int</span> listener_backlog,  <a class="code" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> factory, <span class="keywordtype">int</span> read_buffer_size, <span class="keywordtype">int</span> write_buffer_size, <span class="keywordtype">void</span> *ctx );
+<a name="l00247"></a>00247 
+<a name="l00248"></a>00248 <a class="code" href="a00006.html">EVTCPACCEPTOR</a> * <a class="code" href="a00013.html#ga61d91f59540dd1bd01ca46a3d9daddcd">EVTCPACCEPTOR_init</a>( <a class="code" href="a00001.html">EVLOOP</a> *loop, <span class="keywordtype">int</span> listener_fd, <a class="code" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> factory, <span class="keywordtype">int</span> read_buffer_size, <span class="keywordtype">int</span> write_buffer_size, <span class="keywordtype">void</span> *ctx );
+<a name="l00249"></a>00249 
+<a name="l00250"></a>00250 <span class="keywordtype">void</span> <a class="code" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">EVTCPACCEPTOR_close</a>(<a class="code" href="a00006.html">EVTCPACCEPTOR</a> *);
+<a name="l00251"></a>00251 
+<a name="l00252"></a>00252 <span class="comment"></span>
+<a name="l00253"></a>00253 <span class="comment">/**</span>
+<a name="l00254"></a>00254 <span class="comment"> * @}</span>
+<a name="l00255"></a>00255 <span class="comment"> */</span>
+<a name="l00256"></a>00256 
+<a name="l00257"></a>00257 <span class="preprocessor">#endif</span>
+<a name="l00258"></a>00258 <span class="preprocessor"></span>
+<a name="l00259"></a>00259 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:58 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:33 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

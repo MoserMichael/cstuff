@@ -115,7 +115,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00073">73</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00083">83</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> i;
 
@@ -187,7 +187,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00034">34</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00044">44</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00003.html">THREADPOOL</a> *pool;
   pthread_t pth;
@@ -257,7 +257,7 @@ Functions</h2></td></tr>
 <p>A request is always queued. If request queue limit is reached then this method blocks until the size of the queue falls back, In this case the request is enqueued and this method returns.</p>
 <p>Returns 0 on success, -1 on failure (can't allocate memory for request) </p>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00084">84</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00094">94</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> <a class="code" href="a00015.html#gab61172de6cf3a4f11122696a48665c1b" title="add new entry to queue, block if maximum queue limit has been reached">TQUEUE_push_block_on_queue_full</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a>, request);
 }
@@ -293,7 +293,7 @@ Functions</h2></td></tr>
 <p>A request is queued if the request queue did not reach its size limit. If request queue limit is reached then this method returns an error.</p>
 <p>Returns 0 on success, -1 on failure </p>
 
-<p>Definition at line <a class="el" href="a00008_source.html#l00089">89</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
+<p>Definition at line <a class="el" href="a00008_source.html#l00099">99</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">return</span> <a class="code" href="a00015.html#ga371657b010acd669b760f72307d7ab99" title="add new entry to queue, fail if maximum queue limit has been reached">TQUEUE_push_fail_on_queue_full</a>( &amp;pool-&gt;<a class="code" href="a00003.html#a4b67f6780a55d06dda8ad7f893b0b95b">request_queue</a>, request);
 }
@@ -301,7 +301,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:55 for Simple tools for multi threading / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:30 for Simple tools for multi threading / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

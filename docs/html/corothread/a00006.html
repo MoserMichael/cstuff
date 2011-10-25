@@ -134,7 +134,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00043">43</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00046">46</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 
 </div>
 </div>
@@ -160,6 +160,9 @@ Variables</h2></td></tr>
   
   arg-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160a3fc6ca6d7269ee6cc18ccdbfe5b042dc">CTHREAD_STATE_EXIT</a>; 
 
+  <span class="comment">//fprintf( stderr,&quot;relase stack %p\n&quot;,arg-&gt;stack_entry-&gt;stack_start);</span>
+
+
   <a class="code" href="a00013.html#ga6e3257e3fc51994cabf5bc418ed16648">STACKS_release</a>( arg-&gt;<a class="code" href="a00001.html#ae435552c206d330befbad33b9fdfb3a0">stack_entry</a> );
 
 <span class="preprocessor">#if 0</span>
@@ -184,7 +187,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00006_source.html#l00110">110</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00006_source.html#l00116">116</a> of file <a class="el" href="a00006_source.html">cthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   thread-&gt;<a class="code" href="a00001.html#ae5e75d1abd9dbf7dee8d91e9864f8456">state</a> = <a class="code" href="a00012.html#gga87a29e5321e1ae9ab5a3e043e850e160ac83851f1b0105868c14e98d8cb3a4c6b">CTHREAD_STATE_RUNNING</a>;
   
@@ -241,7 +244,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:57 for Simple coroutine library / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:32 for Simple coroutine library / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

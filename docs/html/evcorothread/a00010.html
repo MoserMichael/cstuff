@@ -112,7 +112,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00107">107</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00110">110</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   event_set( &amp;thread-&gt;<a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">timer_event</a>, -1, 0, <a class="code" href="a00007.html#a205141cb4354a9ea6d692c30c0a62bd4">thread_timer_cb</a>, (<span class="keywordtype">void</span> *) thread );
   event_base_set( thread-&gt;<a class="code" href="a00003.html#abd1b6bd8c48500d617d9779fcac65cdc">loop</a>-&gt;<a class="code" href="a00001.html#a3ef46ca89266616a4ca06b62e60e8062">ev_base</a>, &amp;thread-&gt;<a class="code" href="a00003.html#acd108dfbd9acff91f9f19be88df46369">timer_event</a> );
@@ -159,7 +159,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00076">76</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00079">79</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00003.html">EVTHREAD</a> *thread;
 
@@ -210,7 +210,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00100">100</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00103">103</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   thread-&gt;<a class="code" href="a00003.html#acbc4c1ff508c758eb16d77dc9729fd3a">socket</a> = socket;
   CTHREAD_start( thread-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, <span class="stringliteral">&quot;%p&quot;</span>, thread );
@@ -220,7 +220,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:58 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:33 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

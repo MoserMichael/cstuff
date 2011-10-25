@@ -50,8 +50,10 @@ Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00002.html">tagRUNNABLE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga3f3ff8a5ef0014f681395dda3e8e5ca6">RUNNABLE</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga26254071747a14c26402a397d3766f9f">RUNNABLE_init</a> (<a class="el" href="a00002.html">RUNNABLE</a> *runnable, <a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> handler)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a RUNNABLE instance  <a href="#ga26254071747a14c26402a397d3766f9f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gafc638ee20898326f8ea9ed7da80b6eeb">RUNNABLE_init</a> (<a class="el" href="a00002.html">RUNNABLE</a> *runnable, <a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> handler, <a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a> free_request)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a RUNNABLE instance  <a href="#gafc638ee20898326f8ea9ed7da80b6eeb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga5569bf9fbaecb51cd63b7a0de8b64e31">RUNNABLE_free</a> (<a class="el" href="a00002.html">RUNNABLE</a> *runnable)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">free a RUNNABLE instance  <a href="#ga5569bf9fbaecb51cd63b7a0de8b64e31"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <p>an interface to run a unit of work. </p>
@@ -72,7 +74,34 @@ Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ga26254071747a14c26402a397d3766f9f"></a><!-- doxytag: member="tpool.h::RUNNABLE_init" ref="ga26254071747a14c26402a397d3766f9f" args="(RUNNABLE *runnable, RUNNABLE_HANDLER handler)" -->
+<a class="anchor" id="ga5569bf9fbaecb51cd63b7a0de8b64e31"></a><!-- doxytag: member="tpool.h::RUNNABLE_free" ref="ga5569bf9fbaecb51cd63b7a0de8b64e31" args="(RUNNABLE *runnable)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RUNNABLE_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html">RUNNABLE</a> *&#160;</td>
+          <td class="paramname"><em>runnable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>free a RUNNABLE instance </p>
+
+<p>Definition at line <a class="el" href="a00008_source.html#l00015">15</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (runnable-&gt;<a class="code" href="a00002.html#a64377d7bcb7c3d0d562c731acfc77889">free_request</a>) {
+    runnable-&gt;<a class="code" href="a00002.html#a64377d7bcb7c3d0d562c731acfc77889">free_request</a>( runnable );
+  }
+  free( runnable );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gafc638ee20898326f8ea9ed7da80b6eeb"></a><!-- doxytag: member="tpool.h::RUNNABLE_init" ref="gafc638ee20898326f8ea9ed7da80b6eeb" args="(RUNNABLE *runnable, RUNNABLE_HANDLER handler, RUNNABLE_HANDLER free_request)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -86,7 +115,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a>&#160;</td>
-          <td class="paramname"><em>handler</em>&#160;</td>
+          <td class="paramname"><em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00009.html#af16d7d96e7ed5b618a81394d68de79e4">RUNNABLE_HANDLER</a>&#160;</td>
+          <td class="paramname"><em>free_request</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -102,12 +137,13 @@ Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="a00008_source.html#l00008">8</a> of file <a class="el" href="a00008_source.html">tpool.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    runnable-&gt;<a class="code" href="a00002.html#a127e2ce895ac78923ce28190c1c793f9">handle_request</a> = handler;
+   runnable-&gt;<a class="code" href="a00002.html#a64377d7bcb7c3d0d562c731acfc77889">free_request</a> = free_request;  
 }
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:55 for Simple tools for multi threading / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:30 for Simple tools for multi threading / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

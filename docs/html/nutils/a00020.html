@@ -58,14 +58,15 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#gaa58093540ffae6b2fd5114af70ea9249">SOCK_init</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, int verbose, int flags)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a socket and sets some options  <a href="#gaa58093540ffae6b2fd5114af70ea9249"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ga00e3c145efbdb0861247b6f3fe61a870">SOCK_attach</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, int fd, int verbose, int flags)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ga691ca5d5947940ef7bb8e05f5f4381ee">SOCK_send_buffer_sizes</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, int read_buffer_size, int write_buffer_size)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set read and write buffer sizes; a value of -1 for buffer size is ignored.  <a href="#ga691ca5d5947940ef7bb8e05f5f4381ee"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ga9a6c6d2ae46cdab6fe52e285f9a8990d">SOCK_connect</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, void *addr, int addr_size, int connect_timeout)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">connects a sockets with timeout (in seconds)  <a href="#ga9a6c6d2ae46cdab6fe52e285f9a8990d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ga29f9645369f83530169a0009c19ed35c">SOCK_recv</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, char *msg, size_t length, int read_timeout)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read some data from a socket with timeout (in seconds)  <a href="#ga29f9645369f83530169a0009c19ed35c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ga4d44efb92c4cd8cc45d2f7434d0f34bf">SOCK_recv_all</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, char *msg, size_t length, int read_timeout)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read whe whole buffer from a socket with timeout (in seconds)  <a href="#ga4d44efb92c4cd8cc45d2f7434d0f34bf"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ga94bdf0c4fa82a188848fc5b63022a258">SOCK_recv</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, void *msg, size_t length, int read_timeout)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read some data from a socket with timeout (in seconds)  <a href="#ga94bdf0c4fa82a188848fc5b63022a258"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#gafa03c58e51fbfd0ed3d659f3830e046a">SOCK_recv_all</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, void *msg, size_t length, int read_timeout)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">read whe whole buffer from a socket with timeout (in seconds)  <a href="#gafa03c58e51fbfd0ed3d659f3830e046a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#gabbd75054a6005f6da12fa57a9032495a">SOCK_send</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx, void *msg, size_t length, int write_timeout)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">write whe whole buffer from a socket with timeout (in seconds)  <a href="#gabbd75054a6005f6da12fa57a9032495a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#gad78589add776d85bd1c2e25a9d960eef">SOCK_close</a> (<a class="el" href="a00005.html">SOCKCTX</a> *ctx)</td></tr>
@@ -147,6 +148,84 @@ Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga00e3c145efbdb0861247b6f3fe61a870"></a><!-- doxytag: member="sock.h::SOCK_attach" ref="ga00e3c145efbdb0861247b6f3fe61a870" args="(SOCKCTX *ctx, int fd, int verbose, int flags)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SOCK_attach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00005.html">SOCKCTX</a> *&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>verbose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00013_source.html#l00021">21</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a> = verbose;
+  ctx-&gt;<a class="code" href="a00005.html#a5283ea4aa0d2447d230e37074a0589ef">connected</a> = 0;
+
+  ctx-&gt;<a class="code" href="a00005.html#a3d6d0b0910922102ef30609abf8e9abf">addr</a> = 0;
+  ctx-&gt;<a class="code" href="a00005.html#a090065b6dfa838ecdf5ca535d6befa24">addr_size</a> = 0;
+
+  <a class="code" href="a00019.html#ga87e2c01b17992795a3f9dc192ad79b87" title="disable SIG_PIPE signal, checks for static flag so as not to call system call again and again...">disable_sigpipe</a>();
+ 
+  ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a> = fd;
+ 
+ <span class="keywordflow">if</span> ( <a class="code" href="a00019.html#ga6e6e3c7f96d02d8c98ef4ccc252915f0" title="set mode to blocking / non blocking.">fd_set_blocking</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>, 0 ) ) {
+     <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a>) {
+       fprintf(stderr, <span class="stringliteral">&quot;Failed to make socket non blocking errno %d\n&quot;</span>, errno);
+     }
+  }
+
+  <span class="keywordflow">if</span> ((flags &amp; <a class="code" href="a00020.html#ga387cd63d9202db79a473a4312e50a6d0">SOCKCTX_FLAGS_NAGLE_ON</a>) == 0) {  
+    <span class="keywordflow">if</span> ( <a class="code" href="a00019.html#ga9d2212efa865252b2cc1f81f006f1af1" title="set naggle algorithm (tcp no delay option)">fd_set_nagling</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>, 1 ) ) {
+       <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a>) {
+         fprintf(stderr,<span class="stringliteral">&quot;Failed to set nodelay option (set nodelay option). errno %d\n&quot;</span>,errno);
+       }    
+    }
+  }
+
+  ctx-&gt;<a class="code" href="a00005.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a> = 1; 
+  <span class="keywordflow">if</span> (flags &amp; <a class="code" href="a00020.html#ga4e5ab8d07bf7233fe5358f74f89192d0">SOCKTCX_FLAGS_DONT_CLOSE_ON_PEER_CLOSE</a>) {
+    <span class="keywordflow">if</span> ( <a class="code" href="a00019.html#gaa78ceabb6e37ea92f269eea695729e7f" title="set linger option">fd_set_linger_option</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>, 1, <a class="code" href="a00020.html#ga3adf1d96e791aba989b3bcd0ff855d44">LINGER_OPTION_VALUE</a>) ) {
+      <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a>) {
+       fprintf(stderr,<span class="stringliteral">&quot;Failed to set linger option. %d\n&quot;</span>, errno );
+      }
+    }
+    ctx-&gt;<a class="code" href="a00005.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a> = 0; 
+  }
+
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
 <a class="anchor" id="gad78589add776d85bd1c2e25a9d960eef"></a><!-- doxytag: member="sock.h::SOCK_close" ref="gad78589add776d85bd1c2e25a9d960eef" args="(SOCKCTX *ctx)" -->
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +249,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00309">309</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00317">317</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a> != -1) {
     <span class="keywordflow">if</span> (close(ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>)) {
@@ -215,7 +294,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00323">323</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00331">331</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a> != -1) {
     <span class="keywordflow">if</span> (<a class="code" href="a00019.html#gaa222e4e337f8a8a1a9978291f496a7b6" title="ungracefull connection termination - send RST to peer;">fd_close_by_RST</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a> )) {
@@ -279,7 +358,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00089">89</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00097">97</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> rt;
   fd_set wset,eset;
@@ -409,54 +488,24 @@ err:
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00023">23</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00061">61</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a> = verbose;
-  ctx-&gt;<a class="code" href="a00005.html#a5283ea4aa0d2447d230e37074a0589ef">connected</a> = 0;
-
-  ctx-&gt;<a class="code" href="a00005.html#a3d6d0b0910922102ef30609abf8e9abf">addr</a> = 0;
-  ctx-&gt;<a class="code" href="a00005.html#a090065b6dfa838ecdf5ca535d6befa24">addr_size</a> = 0;
-
-  <a class="code" href="a00019.html#ga87e2c01b17992795a3f9dc192ad79b87" title="disable SIG_PIPE signal, checks for static flag so as not to call system call again and again...">disable_sigpipe</a>();
+  <span class="keywordtype">int</span> fd;
  
-  ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a> = socket( PF_INET, SOCK_STREAM, 0 );
-  <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a> == -1) {
-     <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a>) {
+  fd = socket( PF_INET, SOCK_STREAM, 0 );
+  <span class="keywordflow">if</span> (fd == -1) {
+     <span class="keywordflow">if</span> (verbose) {
        fprintf(stderr, <span class="stringliteral">&quot;Failed to create socket %d\n&quot;</span>, errno);
      }
      <span class="keywordflow">return</span> -1;
   }
 
-  <span class="keywordflow">if</span> ( <a class="code" href="a00019.html#ga6e6e3c7f96d02d8c98ef4ccc252915f0" title="set mode to blocking / non blocking.">fd_set_blocking</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>, 0 ) ) {
-     <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a>) {
-       fprintf(stderr, <span class="stringliteral">&quot;Failed to make socket non blocking errno %d\n&quot;</span>, errno);
-     }
-  }
-
-  <span class="keywordflow">if</span> ((flags &amp; <a class="code" href="a00020.html#ga387cd63d9202db79a473a4312e50a6d0">SOCKCTX_FLAGS_NAGLE_ON</a>) == 0) {  
-    <span class="keywordflow">if</span> ( <a class="code" href="a00019.html#ga9d2212efa865252b2cc1f81f006f1af1" title="set naggle algorithm (tcp no delay option)">fd_set_nagling</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>, 1 ) ) {
-       <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a>) {
-         fprintf(stderr,<span class="stringliteral">&quot;Failed to set nodelay option (set nodelay option). errno %d\n&quot;</span>,errno);
-       }    
-    }
-  }
-
-  ctx-&gt;<a class="code" href="a00005.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a> = 1; 
-  <span class="keywordflow">if</span> (flags &amp; <a class="code" href="a00020.html#ga4e5ab8d07bf7233fe5358f74f89192d0">SOCKTCX_FLAGS_DONT_CLOSE_ON_PEER_CLOSE</a>) {
-    <span class="keywordflow">if</span> ( <a class="code" href="a00019.html#gaa78ceabb6e37ea92f269eea695729e7f" title="set linger option">fd_set_linger_option</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>, 1, <a class="code" href="a00020.html#ga3adf1d96e791aba989b3bcd0ff855d44">LINGER_OPTION_VALUE</a>) ) {
-      <span class="keywordflow">if</span> (ctx-&gt;<a class="code" href="a00005.html#aaa34bd395f2c627e0497599095582550">verbose</a>) {
-       fprintf(stderr,<span class="stringliteral">&quot;Failed to set linger option. %d\n&quot;</span>, errno );
-      }
-    }
-    ctx-&gt;<a class="code" href="a00005.html#a21ecb44f25561d43dd4b154348562d6a">close_on_peer_close</a> = 0; 
-  }
-
-  <span class="keywordflow">return</span> 0;
+  <span class="keywordflow">return</span> <a class="code" href="a00020.html#ga00e3c145efbdb0861247b6f3fe61a870">SOCK_attach</a>( ctx , fd, verbose, flags);
 }
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga29f9645369f83530169a0009c19ed35c"></a><!-- doxytag: member="sock.h::SOCK_recv" ref="ga29f9645369f83530169a0009c19ed35c" args="(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)" -->
+<a class="anchor" id="ga94bdf0c4fa82a188848fc5b63022a258"></a><!-- doxytag: member="sock.h::SOCK_recv" ref="ga94bdf0c4fa82a188848fc5b63022a258" args="(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -469,7 +518,7 @@ err:
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>msg</em>, </td>
         </tr>
         <tr>
@@ -502,7 +551,7 @@ err:
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>either one of: -1 on error, 0 if socket has been closed, number of bytes read. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00178">178</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00186">186</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> rt;
   fd_set rset;
@@ -563,7 +612,7 @@ err:
 </pre></div>
 </div>
 </div>
-<a class="anchor" id="ga4d44efb92c4cd8cc45d2f7434d0f34bf"></a><!-- doxytag: member="sock.h::SOCK_recv_all" ref="ga4d44efb92c4cd8cc45d2f7434d0f34bf" args="(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)" -->
+<a class="anchor" id="gafa03c58e51fbfd0ed3d659f3830e046a"></a><!-- doxytag: member="sock.h::SOCK_recv_all" ref="gafa03c58e51fbfd0ed3d659f3830e046a" args="(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -576,7 +625,7 @@ err:
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>msg</em>, </td>
         </tr>
         <tr>
@@ -609,14 +658,14 @@ err:
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>either one of: -1 on error, 0 if socket has been closed during receiving buffer, length on success. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00237">237</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00245">245</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">size_t</span> pos;
   <span class="keywordtype">int</span> rt;
 
 
   <span class="keywordflow">for</span>(pos = 0; pos &lt; length; ) {
-      rt = <a class="code" href="a00020.html#ga29f9645369f83530169a0009c19ed35c" title="read some data from a socket with timeout (in seconds)">SOCK_recv</a>( ctx, msg, length, read_timeout );
+      rt = <a class="code" href="a00020.html#ga94bdf0c4fa82a188848fc5b63022a258" title="read some data from a socket with timeout (in seconds)">SOCK_recv</a>( ctx, msg, length, read_timeout );
       <span class="keywordflow">if</span> (rt &lt;= 0) {
         <span class="keywordflow">return</span> rt;
       }
@@ -672,7 +721,7 @@ err:
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00254">254</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00262">262</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> rt;
   <span class="keywordtype">size_t</span> pos;
@@ -770,7 +819,7 @@ err:
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00013_source.html#l00069">69</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
+<p>Definition at line <a class="el" href="a00013_source.html#l00077">77</a> of file <a class="el" href="a00013_source.html">sock.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordflow">if</span> (read_buffer_size &gt; 0) {
     <span class="keywordflow">if</span> (<a class="code" href="a00019.html#ga6c87321a99f019ef47f9b54e37011b56" title="set receive or send buffer size">fd_set_buf_size</a>( ctx-&gt;<a class="code" href="a00005.html#addcdd353858c7738ccde887e2fa48501">fd</a>, <a class="code" href="a00019.html#ggaee27e07f008622fa5249794ed32b926fa31333bbcaf5149721fd74541a44396b5">Receive_buffer</a>, read_buffer_size)) {
@@ -792,7 +841,7 @@ err:
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:56 for Simple tools for networking / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:31 for Simple tools for networking / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -930,10 +930,24 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>int</type>
+      <name>thread_to_caller_value_set</name>
+      <anchorfile>a00001.html</anchorfile>
+      <anchor>a8943218e751cf02961b72ac51ee58c69</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>VALUES</type>
       <name>thread_to_caller_value</name>
       <anchorfile>a00001.html</anchorfile>
       <anchor>ac2075ed7f30ce63845463d08c24b45f9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>caller_to_thread_value_set</name>
+      <anchorfile>a00001.html</anchorfile>
+      <anchor>afff9bc0410b2bbf30b84340597b784b0</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">

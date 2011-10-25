@@ -84,8 +84,15 @@
       <type>void</type>
       <name>RUNNABLE_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga26254071747a14c26402a397d3766f9f</anchor>
-      <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler)</arglist>
+      <anchor>gafc638ee20898326f8ea9ed7da80b6eeb</anchor>
+      <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler, RUNNABLE_HANDLER free_request)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RUNNABLE_free</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga5569bf9fbaecb51cd63b7a0de8b64e31</anchor>
+      <arglist>(RUNNABLE *runnable)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static void *</type>
@@ -156,8 +163,15 @@
       <type>void</type>
       <name>RUNNABLE_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga26254071747a14c26402a397d3766f9f</anchor>
-      <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler)</arglist>
+      <anchor>gafc638ee20898326f8ea9ed7da80b6eeb</anchor>
+      <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler, RUNNABLE_HANDLER free_request)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RUNNABLE_free</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga5569bf9fbaecb51cd63b7a0de8b64e31</anchor>
+      <arglist>(RUNNABLE *runnable)</arglist>
     </member>
     <member kind="function">
       <type>THREADPOOL *</type>
@@ -370,8 +384,15 @@
       <type>void</type>
       <name>RUNNABLE_init</name>
       <anchorfile>a00013.html</anchorfile>
-      <anchor>ga26254071747a14c26402a397d3766f9f</anchor>
-      <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler)</arglist>
+      <anchor>gafc638ee20898326f8ea9ed7da80b6eeb</anchor>
+      <arglist>(RUNNABLE *runnable, RUNNABLE_HANDLER handler, RUNNABLE_HANDLER free_request)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RUNNABLE_free</name>
+      <anchorfile>a00013.html</anchorfile>
+      <anchor>ga5569bf9fbaecb51cd63b7a0de8b64e31</anchor>
+      <arglist>(RUNNABLE *runnable)</arglist>
     </member>
   </compound>
   <compound kind="group">
@@ -532,6 +553,13 @@
       <name>handle_request</name>
       <anchorfile>a00002.html</anchorfile>
       <anchor>a127e2ce895ac78923ce28190c1c793f9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>RUNNABLE_HANDLER</type>
+      <name>free_request</name>
+      <anchorfile>a00002.html</anchorfile>
+      <anchor>a64377d7bcb7c3d0d562c731acfc77889</anchor>
       <arglist></arglist>
     </member>
   </compound>

@@ -721,6 +721,13 @@
     <includes id="a00012" name="ioutils.h" local="yes" imported="no">ioutils.h</includes>
     <member kind="function">
       <type>int</type>
+      <name>SOCK_attach</name>
+      <anchorfile>a00020.html</anchorfile>
+      <anchor>ga00e3c145efbdb0861247b6f3fe61a870</anchor>
+      <arglist>(SOCKCTX *ctx, int fd, int verbose, int flags)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>SOCK_init</name>
       <anchorfile>a00020.html</anchorfile>
       <anchor>gaa58093540ffae6b2fd5114af70ea9249</anchor>
@@ -744,15 +751,15 @@
       <type>int</type>
       <name>SOCK_recv</name>
       <anchorfile>a00020.html</anchorfile>
-      <anchor>ga29f9645369f83530169a0009c19ed35c</anchor>
-      <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
+      <anchor>ga94bdf0c4fa82a188848fc5b63022a258</anchor>
+      <arglist>(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv_all</name>
       <anchorfile>a00020.html</anchorfile>
-      <anchor>ga4d44efb92c4cd8cc45d2f7434d0f34bf</anchor>
-      <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
+      <anchor>gafa03c58e51fbfd0ed3d659f3830e046a</anchor>
+      <arglist>(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -818,6 +825,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>SOCK_attach</name>
+      <anchorfile>a00020.html</anchorfile>
+      <anchor>ga00e3c145efbdb0861247b6f3fe61a870</anchor>
+      <arglist>(SOCKCTX *ctx, int fd, int verbose, int flags)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>SOCK_send_buffer_sizes</name>
       <anchorfile>a00020.html</anchorfile>
       <anchor>ga691ca5d5947940ef7bb8e05f5f4381ee</anchor>
@@ -834,15 +848,15 @@
       <type>int</type>
       <name>SOCK_recv</name>
       <anchorfile>a00020.html</anchorfile>
-      <anchor>ga29f9645369f83530169a0009c19ed35c</anchor>
-      <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
+      <anchor>ga94bdf0c4fa82a188848fc5b63022a258</anchor>
+      <arglist>(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv_all</name>
       <anchorfile>a00020.html</anchorfile>
-      <anchor>ga4d44efb92c4cd8cc45d2f7434d0f34bf</anchor>
-      <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
+      <anchor>gafa03c58e51fbfd0ed3d659f3830e046a</anchor>
+      <arglist>(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1396,6 +1410,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>SOCK_attach</name>
+      <anchorfile>a00020.html</anchorfile>
+      <anchor>ga00e3c145efbdb0861247b6f3fe61a870</anchor>
+      <arglist>(SOCKCTX *ctx, int fd, int verbose, int flags)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>SOCK_send_buffer_sizes</name>
       <anchorfile>a00020.html</anchorfile>
       <anchor>ga691ca5d5947940ef7bb8e05f5f4381ee</anchor>
@@ -1412,15 +1433,15 @@
       <type>int</type>
       <name>SOCK_recv</name>
       <anchorfile>a00020.html</anchorfile>
-      <anchor>ga29f9645369f83530169a0009c19ed35c</anchor>
-      <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
+      <anchor>ga94bdf0c4fa82a188848fc5b63022a258</anchor>
+      <arglist>(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>SOCK_recv_all</name>
       <anchorfile>a00020.html</anchorfile>
-      <anchor>ga4d44efb92c4cd8cc45d2f7434d0f34bf</anchor>
-      <arglist>(SOCKCTX *ctx, char *msg, size_t length, int read_timeout)</arglist>
+      <anchor>gafa03c58e51fbfd0ed3d659f3830e046a</anchor>
+      <arglist>(SOCKCTX *ctx, void *msg, size_t length, int read_timeout)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

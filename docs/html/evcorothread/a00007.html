@@ -48,6 +48,7 @@
 <code>#include &lt;unistd.h&gt;</code><br/>
 <code>#include &lt;sys/time.h&gt;</code><br/>
 <code>#include &lt;nutils/ioutils.h&gt;</code><br/>
+<code>#include &lt;butils/logg.h&gt;</code><br/>
 </div>
 <p><a href="a00007_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -86,8 +87,8 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#gae70737035f6cd136a85b6b24e31fe8be">EVSOCKET_recv_all</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ga6c9dc88bb3fbe603473bc694664cdc7d">EVSOCKET_send</a> (<a class="el" href="a00002.html">EVSOCKET</a> *socket, void *buf, size_t buf_size, int flags, struct timeval timeout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aaf2800e17c660488fc490769a930c43c">socket_listener_cb</a> (int fd, short event, void *ctx)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga537b80ed744dbda49efb413b669bdebc">EVTCPACCEPTOR_init_ex</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, SOCKADDR *addr, int listener_backlog, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int send_buffer_size)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga53a501bf2cbac06aa2f984fda46dd035">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int fd, <a class="el" href="a00013.html#ga51673c2cea9c3ed041a2511977c04148">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int send_buffer_size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#gadb5017af22d215456c365c17e075e5cd">EVTCPACCEPTOR_init_ex</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, SOCKADDR *addr, int listener_backlog, <a class="el" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int send_buffer_size, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">EVTCPACCEPTOR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga61d91f59540dd1bd01ca46a3d9daddcd">EVTCPACCEPTOR_init</a> (<a class="el" href="a00001.html">EVLOOP</a> *loop, int fd, <a class="el" href="a00013.html#ga3b4b25166853fd7da6d1db7dd133ed3f">EVTHREAD_FACTORY</a> factory, int read_buffer_size, int send_buffer_size, void *ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html#ga41290a3a6ed59142a584f16f9fd0f79e">EVTCPACCEPTOR_close</a> (<a class="el" href="a00006.html">EVTCPACCEPTOR</a> *acceptor)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a42e820bb41711d718897b1989348fd0c">custom_timeout_handling</a> (struct event_base *base, struct timeval *tv)</td></tr>
 </table>
@@ -103,7 +104,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00010">10</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00013">13</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 
 </div>
 </div>
@@ -118,7 +119,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00009">9</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00012">12</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 
 </div>
 </div>
@@ -133,7 +134,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00011">11</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00014">14</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 
 </div>
 </div>
@@ -148,7 +149,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00012">12</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00015">15</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 
 </div>
 </div>
@@ -178,7 +179,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00693">693</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00731">731</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    M_UNUSED(base);
    M_UNUSED(tv);
@@ -229,7 +230,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00390">390</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00414">414</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <span class="keywordtype">int</span> rt;
    <span class="keywordtype">int</span> has_event = 0;
@@ -248,6 +249,8 @@ r_again:
    <span class="keywordflow">if</span> (rt == -1) {
      <span class="keywordflow">if</span> (errno == EAGAIN) {
 
+       MLOG_TRACE( <span class="stringliteral">&quot;socket %d read has blocked&quot;</span>, socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> ); 
+       
        socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca11d241b716a59cdbc6c07458fbefede5">EVSOCKET_STATE_READING</a>;
        
        socket-&gt;<a class="code" href="a00002.html#ad73f5d6d015fd3f464b9e6c1894e9836">timer_io_timeout</a> = <a class="code" href="a00011.html#ga107d2c4b4ba03deee5490f40d0d4752b">EVTIMER_init</a>( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>, <a class="code" href="a00007.html#a796e3303f722ae381725e79a330be583">TIMER_ID_COMM_TIMEOUT</a>, timeout );
@@ -270,15 +273,20 @@ r_again:
       
        <span class="keywordflow">switch</span>(event_id) {
          <span class="keywordflow">case</span> <a class="code" href="a00007.html#a0e9d7e454d783a729f7138c013b63fa1">EVENT_ID_HAS_IO_EVENT</a>:
+           MLOG_TRACE( <span class="stringliteral">&quot;socket %d received read event&quot;</span>, socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> ); 
            <span class="keywordflow">goto</span> r_again;
          <span class="keywordflow">default</span>: 
+           MLOG_DEBUG( <span class="stringliteral">&quot;socket %d read timed out&quot;</span>, socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> ); 
            socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>;
            close( socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> );
            socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> = -1;
            rt = -1;
            <span class="keywordflow">break</span>;
        }
+     } <span class="keywordflow">else</span> {
+       MLOG_DEBUG( <span class="stringliteral">&quot;socket %d read error. errno %d&quot;</span>, socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a>, errno );
      }
+     <span class="keywordflow">return</span> -1;
    }
 
    <span class="keywordflow">if</span> (has_event) {
@@ -344,7 +352,7 @@ r_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00460">460</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00491">491</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <span class="keywordtype">int</span> rt;
    <span class="keywordtype">int</span> has_event = 0;
@@ -386,8 +394,10 @@ w_again:
       
        <span class="keywordflow">switch</span>(event_id) {
          <span class="keywordflow">case</span> <a class="code" href="a00007.html#a0e9d7e454d783a729f7138c013b63fa1">EVENT_ID_HAS_IO_EVENT</a>:
+           MLOG_TRACE( <span class="stringliteral">&quot;socket %d received write event&quot;</span>, socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> ); 
            <span class="keywordflow">goto</span> w_again;
          <span class="keywordflow">default</span>: 
+           MLOG_DEBUG( <span class="stringliteral">&quot;socket %d write timed out&quot;</span>, socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> ); 
            socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>;
            close( socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> );
            socket-&gt;<a class="code" href="a00002.html#ac4f60cb252957d83ab97420d9ba75a7f">fd</a> = -1;
@@ -426,7 +436,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00051">51</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00054">54</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    DLIST_entry *entry, *next;
    <a class="code" href="a00004.html" title="base class of sockets and timers. API of this class is not not called directly by the user of this li...">EVTHREAD_OBJECT</a> *obj;
@@ -465,7 +475,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00151">151</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00154">154</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   DLIST_unlink( &amp;obj-&gt;<a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">owner</a>-&gt;<a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">object_list</a>, &amp;obj-&gt;<a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">entry</a> );
   free(obj);
@@ -504,7 +514,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00144">144</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00147">147</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   DLIST_push_back( &amp;owner-&gt;<a class="code" href="a00003.html#ab6d295983287160d97863ce19955cb34">object_list</a>, &amp;obj-&gt;<a class="code" href="a00004.html#a55a3a585eee64b4f19b168df6388523d">entry</a> );
   obj-&gt;<a class="code" href="a00004.html#a3e9332299f5b805b4c57003aef3d44a4">object_type</a> = type;
@@ -528,7 +538,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00121">121</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00124">124</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00003.html">EVTHREAD</a> *thread;
 
@@ -572,7 +582,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00294">294</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00306">306</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <a class="code" href="a00002.html">EVSOCKET</a> *socket; 
 
@@ -582,19 +592,25 @@ w_again:
 
    <span class="keywordflow">if</span> (event &amp; EV_READ &amp;&amp; event &amp; EV_WRITE) {
      socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> = <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca9a409c3600e382e41ace36599966aec7">EVSOCKET_STATE_ERROR</a>;
-     CTHREAD_resume( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, 0 );
+     CTHREAD_resume( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, <span class="stringliteral">&quot;%d&quot;</span>, <a class="code" href="a00007.html#a51be86b706137641b29d5c0796b0c2d1">EVENT_ID_HAS_IO_ERROR</a> );
      <span class="keywordflow">return</span>;
    }
 
    <span class="keywordflow">if</span> (event &amp; EV_READ) {
      <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> == <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca11d241b716a59cdbc6c07458fbefede5">EVSOCKET_STATE_READING</a>) {
-        CTHREAD_resume( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, 0 );
+        MLOG_TRACE( <span class="stringliteral">&quot;socket %d read event occured&quot;</span>, fd ); 
+        CTHREAD_resume( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, <span class="stringliteral">&quot;%d&quot;</span>, <a class="code" href="a00007.html#a0e9d7e454d783a729f7138c013b63fa1">EVENT_ID_HAS_IO_EVENT</a>);
+     } <span class="keywordflow">else</span> {
+        MLOG_INFO( <span class="stringliteral">&quot;socket %d read event ignored !!!&quot;</span>, fd ); 
      }
    }
   
    <span class="keywordflow">if</span> (event &amp; EV_WRITE) {
      <span class="keywordflow">if</span> (socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> == <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca6fb24f7071ea4cae87a9fa24583dbff0">EVSOCKET_STATE_CONNECTING</a> || socket-&gt;<a class="code" href="a00002.html#a8841e3dec607bf1eaeee342eda681adb">state</a> == <a class="code" href="a00012.html#gga2c41f6288c8bc944dd898419b7fbbb0ca488819d6df0a5d336bec468b8e0ab8cf">EVSOCKET_STATE_WRITING</a>) {
-        CTHREAD_resume( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, 0 );
+        MLOG_TRACE( <span class="stringliteral">&quot;socket %d write event occured&quot;</span>, fd ); 
+        CTHREAD_resume( socket-&gt;<a class="code" href="a00002.html#ac7bd1c84d925b7c459220750b47d3d09">thread</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, <span class="stringliteral">&quot;%d&quot;</span>, <a class="code" href="a00007.html#a0e9d7e454d783a729f7138c013b63fa1">EVENT_ID_HAS_IO_EVENT</a>);
+     } <span class="keywordflow">else</span> {
+        MLOG_INFO( <span class="stringliteral">&quot;socket %d write event ignored !!!&quot;</span>, fd ); 
      }
    }
 }
@@ -632,7 +648,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00635">635</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00670">670</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <a class="code" href="a00006.html">EVTCPACCEPTOR</a> *acceptor;
    <a class="code" href="a00010.html#ga234cc8fab2090c3bf2314d41f23f66d5">EVTHREAD_PROC</a> thread_proc;
@@ -656,6 +672,9 @@ w_again:
    <span class="keywordflow">if</span> (sock == -1) {
      <span class="keywordflow">return</span>;
    }
+
+   MLOG_TRACE( <span class="stringliteral">&quot;socket %d accepted&quot;</span>, sock ); 
+ 
    
    <span class="keywordflow">if</span> (acceptor-&gt;<a class="code" href="a00006.html#a1a5a368dfb77cf7480f8ea493107d823">read_buffer_size</a> != -1) {
      fd_set_buf_size( sock, Receive_buffer, acceptor-&gt;<a class="code" href="a00006.html#a1a5a368dfb77cf7480f8ea493107d823">read_buffer_size</a> );
@@ -666,7 +685,7 @@ w_again:
    }
   
    <span class="comment">// get thread procedure and thread argument data.</span>
-   <span class="keywordflow">if</span> ( acceptor-&gt;<a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a>( sock, &amp;thread_proc, &amp;thread_ctx ) ) {
+   <span class="keywordflow">if</span> ( acceptor-&gt;<a class="code" href="a00006.html#af8f56cf09d1124217ec73e367348662f">factory</a>( sock, &amp;thread_proc, &amp;thread_ctx, acceptor-&gt;<a class="code" href="a00006.html#ae1c02b46eebbdd2f2dd58aba91b6b00b">ctx</a> ) ) {
      close(sock);
      <span class="keywordflow">return</span>;
    }
@@ -723,13 +742,13 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00132">132</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00135">135</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00003.html">EVTHREAD</a> *thread = (<a class="code" href="a00003.html">EVTHREAD</a> *) ctx;
  
   M_UNUSED(fd);
   M_UNUSED(event);
-
+    
   CTHREAD_resume( thread-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a>, 0, 0 );
 }
 </pre></div>
@@ -766,7 +785,7 @@ w_again:
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00007_source.html#l00216">216</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
+<p>Definition at line <a class="el" href="a00007_source.html#l00223">223</a> of file <a class="el" href="a00007_source.html">evthread.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
    <a class="code" href="a00005.html">EVTIMER</a> *timer;
 
@@ -778,13 +797,14 @@ w_again:
    event_del( &amp;timer-&gt;<a class="code" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">timer_event</a> );
    timer-&gt;<a class="code" href="a00005.html#ac2e80bcde19b90fdc4f0c986c370e592">state</a> = <a class="code" href="a00011.html#gga2e6068a47dd625c7ac59d77a4615a181ad4b9bc14f751efa2be25f60604052ed8">EVTIMER_STATE_INIT</a>;
    
+   MLOG_TRACE( <span class="stringliteral">&quot;Timer %p event occured&quot;</span>, &amp;timer-&gt;<a class="code" href="a00005.html#a11f2b0cfebce383190acf1ca2e435240">timer_event</a> ); 
    CTHREAD_resume( timer-&gt;<a class="code" href="a00005.html#a56cb98d864f6dcbdc1d95c81b6fc5270">object_base</a>.<a class="code" href="a00004.html#a6b5d3c3169d6b9e8770d15c92dc5b81f">owner</a>-&gt;<a class="code" href="a00003.html#add57a915bbd0ab5ee1ba23f2f000ced6">cthread</a> , 0, <span class="stringliteral">&quot;%d&quot;</span>, timer-&gt;<a class="code" href="a00005.html#ab0896ef55a4486c2555d8e8e851e8232">timer_id</a> );
 }
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Oct 16 2011 22:00:58 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 24 2011 21:28:33 for Simple coroutine library integrated with IO event loop (libevent) / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
