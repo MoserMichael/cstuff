@@ -1,15 +1,22 @@
 TOPDIR=..
 
-POSTBUILD_SUBDIRS=test
+POSTBUILD_SUBDIRS=test webbyimpl
 
-TARGETS:=webbylib
+TARGETS:=webbylib webbylibsh
 
 
-# - sexe target compiles all files in current directory with extension *.c
+# --------------------------------------------:w
 
 webbylib_TYPE=lib
 
 webbylib_SRC_EXTENSION=c
+
+# --------------------------------------------:w
+
+webbylibsh_TYPE=shlib
+
+webbylibsh_SRC_EXTENSION=c
+
 
 
 include $(TOPDIR)/rules.make
