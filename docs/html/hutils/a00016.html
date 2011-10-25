@@ -104,38 +104,38 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">STRINGPAIR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ga225a9e18b90020b71906c943ef3bcde3">HTTP_MESSAGE_first_header</a> (<a class="el" href="a00003.html">HTTP_MESSAGE</a> *message, DLISTUNR_position *pos)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00011.html">STRINGPAIR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ga405406f091c3d4236fc340910391cc87">HTTP_MESSAGE_next_header</a> (<a class="el" href="a00003.html">HTTP_MESSAGE</a> *message, DLISTUNR_position *pos)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a3fcdd47ea95ee4ef2da80d5e1f4c250f">hash_compare</a> (HASH_Entry *entry, void *key, ssize_t key_length)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa5370897809bd47280b44b5fa679d2d3">HTTP_PARSER_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaf7d9eeee759da719084291a7cd155c94">HTTP_PARSER_free</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541">HTTP_add_header_parser</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, const char *header_name, <a class="el" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f">HEADER_ACTION</a> action_func)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add a parser for a specific http header type  <a href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gac5e21a738d73d75ebec125c97038961a">HTTP_get_line</a> (BF *bf, char **start_line)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns next raw line from http header, adjoins line continuations.  <a href="a00025.html#gac5e21a738d73d75ebec125c97038961a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962">HTTP_get_header_token</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return next token while parsing http header value.  <a href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa737a4c11979880764fb8031d5dfc488">HTTP_parse_header_line</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *request, BF *bf, int *eof_header)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">dispatch parsing of one http header  <a href="a00025.html#gaa737a4c11979880764fb8031d5dfc488"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8b4ee246e968497579a9d9d194a92571">HTTP_PARSER_content_length_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing content length message body  <a href="a00025.html#ga8b4ee246e968497579a9d9d194a92571"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga34a73b6fe4c943ce1831c8b93c7fb426">HTTP_PARSER_content_length_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">consume content length message body.  <a href="a00025.html#ga34a73b6fe4c943ce1831c8b93c7fb426"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga0cfd781757cd6db4812087df78424fda">HTTP_PARSER_chunked_data_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing chunked data  <a href="a00025.html#ga0cfd781757cd6db4812087df78424fda"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gac93ea444be8644a86692ae98ec0b86c6">HTTP_PARSER_chunked_data_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">finish parsind chunked content data.  <a href="a00025.html#gac93ea444be8644a86692ae98ec0b86c6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a6dbb89ef5afb7d9640fad8c33c6cda21">parse_request_line</a> (<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, BF *bf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaf0a986ea0582bfc4b011d2ac61aac9ca">HTTP_REQUEST_PARSER_init</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> header_parsed, <a class="el" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> on_request_finished, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00026.html#gaf0a986ea0582bfc4b011d2ac61aac9ca"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga84afcea80bc8b534b3eee27594d2afbd">HTTP_REQUEST_PARSER_process</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00005.html">HTTP_REQUEST</a> *request, BF *bf)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http request  <a href="a00026.html#ga84afcea80bc8b534b3eee27594d2afbd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaa5370897809bd47280b44b5fa679d2d3">HTTP_PARSER_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaf7d9eeee759da719084291a7cd155c94">HTTP_PARSER_free</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541">HTTP_add_header_parser</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, const char *header_name, <a class="el" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f">HEADER_ACTION</a> action_func)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add a parser for a specific http header type  <a href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gac5e21a738d73d75ebec125c97038961a">HTTP_get_line</a> (BF *bf, char **start_line)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns next raw line from http header, adjoins line continuations.  <a href="a00026.html#gac5e21a738d73d75ebec125c97038961a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962">HTTP_get_header_token</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return next token while parsing http header value.  <a href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaa737a4c11979880764fb8031d5dfc488">HTTP_parse_header_line</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *request, BF *bf, int *eof_header)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">dispatch parsing of one http header  <a href="a00026.html#gaa737a4c11979880764fb8031d5dfc488"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga8b4ee246e968497579a9d9d194a92571">HTTP_PARSER_content_length_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing content length message body  <a href="a00026.html#ga8b4ee246e968497579a9d9d194a92571"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga34a73b6fe4c943ce1831c8b93c7fb426">HTTP_PARSER_content_length_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">consume content length message body.  <a href="a00026.html#ga34a73b6fe4c943ce1831c8b93c7fb426"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga0cfd781757cd6db4812087df78424fda">HTTP_PARSER_chunked_data_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing chunked data  <a href="a00026.html#ga0cfd781757cd6db4812087df78424fda"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gac93ea444be8644a86692ae98ec0b86c6">HTTP_PARSER_chunked_data_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">finish parsind chunked content data.  <a href="a00026.html#gac93ea444be8644a86692ae98ec0b86c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a6dbb89ef5afb7d9640fad8c33c6cda21">parse_request_line</a> (<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, BF *bf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#gaf0a986ea0582bfc4b011d2ac61aac9ca">HTTP_REQUEST_PARSER_init</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00026.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> header_parsed, <a class="el" href="a00026.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00026.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> on_request_finished, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00027.html#gaf0a986ea0582bfc4b011d2ac61aac9ca"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ga84afcea80bc8b534b3eee27594d2afbd">HTTP_REQUEST_PARSER_process</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00005.html">HTTP_REQUEST</a> *request, BF *bf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http request  <a href="a00027.html#ga84afcea80bc8b534b3eee27594d2afbd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#gaa3893b9709b438c414da743d2e9ba285">HTTP_REQUEST_is_persistent</a> (<a class="el" href="a00005.html">HTTP_REQUEST</a> *message)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#af2d54b915c5c209b05dfeb84b4dd640d">parse_response_line</a> (<a class="el" href="a00007.html">HTTP_RESPONSE</a> *response, BF *bf)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ga00451ddae893b0ea2fb035d9cd1b319a">HTTP_RESPONSE_PARSER_init</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a> header_parsed, <a class="el" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a> on_request_finished, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00027.html#ga00451ddae893b0ea2fb035d9cd1b319a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#gac69a62184875abe24177d14f0a9a0313">HTTP_RESPONSE_PARSER_process</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00007.html">HTTP_RESPONSE</a> *response, BF *bf)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http response  <a href="a00027.html#gac69a62184875abe24177d14f0a9a0313"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#af2d54b915c5c209b05dfeb84b4dd640d">parse_response_line</a> (<a class="el" href="a00007.html">HTTP_RESPONSE</a> *response, BF *bf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga00451ddae893b0ea2fb035d9cd1b319a">HTTP_RESPONSE_PARSER_init</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00025.html#gab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a> header_parsed, <a class="el" href="a00025.html#ga3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00025.html#ga27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a> on_request_finished, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00028.html#ga00451ddae893b0ea2fb035d9cd1b319a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#gac69a62184875abe24177d14f0a9a0313">HTTP_RESPONSE_PARSER_process</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00007.html">HTTP_RESPONSE</a> *response, BF *bf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http response  <a href="a00028.html#gac69a62184875abe24177d14f0a9a0313"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a21309e0c6192fd4b8a34e3aabf7ccad7">http_version_to_str</a> (<a class="el" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a> ver)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ae3f621842d3c96a248f1a1d6a7b21d9e">get_reason_phrase</a> (int code)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga52fcf93eeb1c013427abde12a234adff">HTTP_RESPONSE_WRITER_write</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, BF *bf)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#ga52fcf93eeb1c013427abde12a234adff">HTTP_RESPONSE_WRITER_write</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, BF *bf)</td></tr>
 </table>
 <hr/><h2>Define Documentation</h2>
 <a class="anchor" id="aa14dc30ffe09bc9349ddf289170c3c15"></a><!-- doxytag: member="http.c::HTTP_EOF_LINE" ref="aa14dc30ffe09bc9349ddf289170c3c15" args="" -->
@@ -224,9 +224,9 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 <b>Value:</b><div class="fragment"><pre class="fragment"><span class="keywordflow">if</span> (bf-&gt;start == bf-&gt;put_pos) { \
-    <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;  <span class="comment">/* the buffer can&#39;t hold a single value */</span> \
+    <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;  <span class="comment">/* the buffer can&#39;t hold a single value */</span> \
   } \
-  <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+  <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
 </pre></div>
 <p>Definition at line <a class="el" href="a00016_source.html#l00939">939</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
 
@@ -855,9 +855,9 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="a00015_source.html#l00113">113</a> of file <a class="el" href="a00015_source.html">hparse.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">if</span> (<a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;content-length&quot;</span>,  <a class="code" href="a00015.html#a94ed21024788a6468bef1254fbcc601a">parser_content_length_header</a>) ||
-      <a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;connection&quot;</span>,  <a class="code" href="a00015.html#a40d967c801e7387bf035ca0180cf65c5">parser_connection_header</a>) || 
-       <a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;transfer-encoding&quot;</span>,  <a class="code" href="a00015.html#a60ca36cce17075b298907e33a65e8074">parser_transfer_encoding_header</a>) ) {
+  <span class="keywordflow">if</span> (<a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;content-length&quot;</span>,  <a class="code" href="a00015.html#a94ed21024788a6468bef1254fbcc601a">parser_content_length_header</a>) ||
+      <a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;connection&quot;</span>,  <a class="code" href="a00015.html#a40d967c801e7387bf035ca0180cf65c5">parser_connection_header</a>) || 
+       <a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;transfer-encoding&quot;</span>,  <a class="code" href="a00015.html#a60ca36cce17075b298907e33a65e8074">parser_transfer_encoding_header</a>) ) {
     <span class="keywordflow">return</span> -1;
   }
   <span class="keywordflow">return</span> 0;
@@ -882,8 +882,8 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="a00015_source.html#l00123">123</a> of file <a class="el" href="a00015_source.html">hparse.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">if</span> (<a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;expect&quot;</span>,  <a class="code" href="a00015.html#aacd9120df894136a7ee383efcb4698c3">parser_expect_header</a>) || 
-      <a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;host&quot;</span>,  <a class="code" href="a00015.html#a1afdaf777be1d5dfaab44388faf46531">parser_host_header</a>) ) {
+  <span class="keywordflow">if</span> (<a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;expect&quot;</span>,  <a class="code" href="a00015.html#aacd9120df894136a7ee383efcb4698c3">parser_expect_header</a>) || 
+      <a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;host&quot;</span>,  <a class="code" href="a00015.html#a1afdaf777be1d5dfaab44388faf46531">parser_host_header</a>) ) {
     <span class="keywordflow">return</span> -1;
   }
   <span class="keywordflow">return</span> 0;
@@ -896,7 +896,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> parse_request_line </td>
+          <td class="memname">static <a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> parse_request_line </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="a00005.html">HTTP_REQUEST</a> *&#160;</td>
           <td class="paramname"><em>request</em>, </td>
@@ -920,17 +920,17 @@ Functions</h2></td></tr>
 <div class="fragment"><pre class="fragment">{
   <a class="code" href="a00024.html#gac5182036656d3198819f12ef9ec9d08b">Http_method_type</a> method;
   <span class="keywordtype">char</span> *eof,*tok, *line;
-  <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> rt;  
+  <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> rt;  
 
-  rt = <a class="code" href="a00025.html#gac5e21a738d73d75ebec125c97038961a" title="returns next raw line from http header, adjoins line continuations.">HTTP_get_line</a>( bf, &amp;line );
-  <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>) {
+  rt = <a class="code" href="a00026.html#gac5e21a738d73d75ebec125c97038961a" title="returns next raw line from http header, adjoins line continuations.">HTTP_get_line</a>( bf, &amp;line );
+  <span class="keywordflow">if</span> (rt != <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>) {
     <span class="keywordflow">return</span> rt;
   }
 
   <span class="keywordflow">switch</span>( *line ) {
     <span class="keywordflow">case</span> <span class="charliteral">&#39;G&#39;</span>:
       <span class="keywordflow">if</span> (strncmp( line, <a class="code" href="a00016.html#a5b1419b28ee900c497c9d12a3d55a086">S_METHOD_GET</a>, <a class="code" href="a00016.html#a6039dc3a681b3e19368e2697573956be">S_METHOD_GET_LEN</a> ) != 0) {
-        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
       }
       method = <a class="code" href="a00024.html#gga254d7e697a3b26a246614dd867644816a90754abc55dbb76862fa50abee5af659">HTTP_METHOD_GET</a>; 
       line += <a class="code" href="a00016.html#a6039dc3a681b3e19368e2697573956be">S_METHOD_GET_LEN</a>;
@@ -943,33 +943,33 @@ Functions</h2></td></tr>
         method = <a class="code" href="a00024.html#gga254d7e697a3b26a246614dd867644816af7557927b605c64f35f629b43823b1c9">HTTP_METHOD_PUT</a>; 
         line += <a class="code" href="a00016.html#a9dcd450da87c90b4cfc3455721ad51d6">S_METHOD_PUT_LEN</a>;
       } <span class="keywordflow">else</span> {
-        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
       }
       <span class="keywordflow">break</span>;
     <span class="keywordflow">case</span> <span class="charliteral">&#39;H&#39;</span>:
       <span class="keywordflow">if</span> (strncmp( line, <a class="code" href="a00016.html#a51339cf7ae257dd055af3f07507660ec">S_METHOD_HEAD</a>, <a class="code" href="a00016.html#abf39a335866cfd4ae3898f699bb53a2f">S_METHOD_HEAD_LEN</a> ) != 0) {
-        <span class="keywordflow">return</span>  <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span>  <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
       }
       method = <a class="code" href="a00024.html#gga254d7e697a3b26a246614dd867644816a27e993d38ff6b43284014a10798b6223">HTTP_METHOD_HEAD</a>;
       line += <a class="code" href="a00016.html#abf39a335866cfd4ae3898f699bb53a2f">S_METHOD_HEAD_LEN</a> ;
       <span class="keywordflow">break</span>;
     <span class="keywordflow">case</span> <span class="charliteral">&#39;D&#39;</span>:
       <span class="keywordflow">if</span> (strncmp( line, <a class="code" href="a00016.html#a0577b387a60434ff4178b0d5a8a75f73">S_METHOD_DELETE</a>, <a class="code" href="a00016.html#adca36b9ed5af9ed93bd488c3c8df3728">S_METHOD_DELETE_LEN</a> ) != 0) {
-        <span class="keywordflow">return</span>  <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span>  <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
       }
       method = <a class="code" href="a00024.html#gga254d7e697a3b26a246614dd867644816a761371f7807255b7912afbac2f665ffe">HTTP_METHOD_DELETE</a>;
       line += <a class="code" href="a00016.html#adca36b9ed5af9ed93bd488c3c8df3728">S_METHOD_DELETE_LEN</a> ;
       <span class="keywordflow">break</span>;
     <span class="keywordflow">case</span> <span class="charliteral">&#39;T&#39;</span>:
       <span class="keywordflow">if</span> (strncmp( line, <a class="code" href="a00016.html#a01fd12e9de2f85def75e0370e212c3a4">S_METHOD_TRACE</a>, <a class="code" href="a00016.html#a419bfe90e9a5a493e1c39d96d0ca4b38">S_METHOD_TRACE_LEN</a> ) != 0) {
-        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
       }
       method = <a class="code" href="a00024.html#gga254d7e697a3b26a246614dd867644816a95b5b19305a14de1400aedfdec1c1eed">HTTP_METHOD_TRACE</a>;
       line += <a class="code" href="a00016.html#a419bfe90e9a5a493e1c39d96d0ca4b38">S_METHOD_TRACE_LEN</a> ;
       <span class="keywordflow">break</span>;
     <span class="keywordflow">case</span> <span class="charliteral">&#39;C&#39;</span>:
       <span class="keywordflow">if</span> (strncmp( line, <a class="code" href="a00016.html#a55bf7b1c612fef715d52dc12dc90b940">S_METHOD_CONNECT</a>, <a class="code" href="a00016.html#a51d6c342d92ab5bc91de12d16270ca0e">S_METHOD_CONNECT_LEN</a> ) != 0) {
-        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
       }
       method = <a class="code" href="a00024.html#gga254d7e697a3b26a246614dd867644816a3755246bea87120e8311dc914d573fbf">HTTP_METHOD_CONNECT</a>; 
       line += <a class="code" href="a00016.html#a51d6c342d92ab5bc91de12d16270ca0e">S_METHOD_CONNECT_LEN</a>;
@@ -981,26 +981,26 @@ Functions</h2></td></tr>
 
   tok =  <a class="code" href="a00020.html#add28c967c71026785db6e89be7d006b2">get_token</a>( line, &amp;eof );
   <span class="keywordflow">if</span> (!tok) {
-   <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+   <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
   }
 
   *eof = 0;
   request-&gt;<a class="code" href="a00005.html#a429a80b15eec069ce2f6ddf3751ccbb5">raw_url</a> = strdup( tok );
 
   <span class="keywordflow">if</span> (method != <a class="code" href="a00024.html#gga254d7e697a3b26a246614dd867644816a3755246bea87120e8311dc914d573fbf">HTTP_METHOD_CONNECT</a>) {
-    <span class="keywordflow">if</span> (<a class="code" href="a00029.html#gab9acb8adb11be6e657892d858f40e917">URI_parse</a>( &amp;request-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a>, tok )) {
-      <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+    <span class="keywordflow">if</span> (<a class="code" href="a00030.html#gab9acb8adb11be6e657892d858f40e917">URI_parse</a>( &amp;request-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a>, tok )) {
+      <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
     }
   } <span class="keywordflow">else</span> {
     <span class="keywordflow">if</span> (strcmp(tok, <span class="stringliteral">&quot;*&quot;</span>) != 0) {
-      <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+      <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
     }
-    <a class="code" href="a00029.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( &amp;request-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
+    <a class="code" href="a00030.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( &amp;request-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
   }
 
   tok =  <a class="code" href="a00020.html#add28c967c71026785db6e89be7d006b2">get_token</a>( eof+1, &amp;eof );
   <span class="keywordflow">if</span> (strncmp( tok, <a class="code" href="a00016.html#a00b0ac1e809bca4fb7929dbd137c5a8a">HTTP_START_S</a>, <a class="code" href="a00016.html#a788ad423247009c8ed8797848d27f30b">HTTP_START_S_LEN</a> ) != 0) {
-    <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+    <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
   }
   tok += <a class="code" href="a00016.html#a788ad423247009c8ed8797848d27f30b">HTTP_START_S_LEN</a>;
 
@@ -1012,9 +1012,9 @@ Functions</h2></td></tr>
         request-&gt;<a class="code" href="a00005.html#a6225f594931f6ff84063b1affca2f582">version</a> =  <a class="code" href="a00024.html#gga92ff2f79ea14e92657972a36d58883a1af1a34119b438038bc609a273f9bc08c6">HTTP_VERSION_1_1</a>; 
         <span class="keywordflow">break</span>;
      <span class="keywordflow">default</span>:
-        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
   }
-  <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
+  <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
 }
 </pre></div>
 </div>
@@ -1024,7 +1024,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> parse_response_line </td>
+          <td class="memname">static <a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> parse_response_line </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="a00007.html">HTTP_RESPONSE</a> *&#160;</td>
           <td class="paramname"><em>response</em>, </td>
@@ -1046,18 +1046,18 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="a00016_source.html#l00779">779</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> rt;  
+  <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> rt;  
   <span class="keywordtype">char</span> *line, *tok, *eof;
   <span class="keywordtype">int</span> st;
 
-  rt = <a class="code" href="a00025.html#gac5e21a738d73d75ebec125c97038961a" title="returns next raw line from http header, adjoins line continuations.">HTTP_get_line</a>( bf, &amp;line );
-  <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>) {
+  rt = <a class="code" href="a00026.html#gac5e21a738d73d75ebec125c97038961a" title="returns next raw line from http header, adjoins line continuations.">HTTP_get_line</a>( bf, &amp;line );
+  <span class="keywordflow">if</span> (rt != <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>) {
     <span class="keywordflow">return</span> rt;
   }
 
   tok = line;
   <span class="keywordflow">if</span> (strncmp( tok, <a class="code" href="a00016.html#a00b0ac1e809bca4fb7929dbd137c5a8a">HTTP_START_S</a>, <a class="code" href="a00016.html#a788ad423247009c8ed8797848d27f30b">HTTP_START_S_LEN</a> ) != 0) {
-    <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+    <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
   }
   tok += <a class="code" href="a00016.html#a788ad423247009c8ed8797848d27f30b">HTTP_START_S_LEN</a>;
 
@@ -1069,28 +1069,28 @@ Functions</h2></td></tr>
         response-&gt;<a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">version</a> =  <a class="code" href="a00024.html#gga92ff2f79ea14e92657972a36d58883a1af1a34119b438038bc609a273f9bc08c6">HTTP_VERSION_1_1</a>; 
         <span class="keywordflow">break</span>;
      <span class="keywordflow">default</span>:
-        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
   }
  
   tok =  <a class="code" href="a00020.html#add28c967c71026785db6e89be7d006b2">get_token</a>( line, &amp;eof );
   <span class="keywordflow">if</span> (!tok) {
-   <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+   <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
   }
 
   st = atoi( tok );
   <span class="keywordflow">if</span> (st &lt; 100 || st &gt;= 600) {
-    <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+    <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
   }
  
   response-&gt;<a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a> = st;
 
-  <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
+  <span class="keywordflow">return</span> <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
 }
 </pre></div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:17:12 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

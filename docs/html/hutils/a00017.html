@@ -60,7 +60,6 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">tagHTTP_MESSAGE</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html">tagHTTP_REQUEST</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html">tagHTTP_RESPONSE</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP_RESPONSE - holds information of an http response.  <a href="a00007.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">tagHTTP_PARSER</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html">tagHTTP_REQUEST_PARSER</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html">tagHTTP_RESPONSE_PARSER</a></td></tr>
@@ -80,18 +79,22 @@ Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00024.html#ga254d7e697a3b26a246614dd867644816">tagHttp_method_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#gac5182036656d3198819f12ef9ec9d08b">Http_method_type</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00024.html#ga92ff2f79ea14e92657972a36d58883a1">tagHttp_version_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00005.html">tagHTTP_REQUEST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ga7548b2c494ccf7acc059409a5d21ccaf">HTTP_REQUEST</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00004.html">tagHTTP_PARSER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga1a0ea2ba6e2fd94a692102126e5ac0f5">HTTP_PARSER</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> )(<a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *data, size_t data_size, void *ctx)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *data, size_t data_size, void *ctx)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00007.html">tagHTTP_RESPONSE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gac0d52817d9795fea81e6cfa5afa369e2">HTTP_RESPONSE</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a> )(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a> )(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *data, size_t data_size, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a> )(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00026.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00004.html">tagHTTP_PARSER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga1a0ea2ba6e2fd94a692102126e5ac0f5">HTTP_PARSER</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> )(<a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *data, size_t data_size, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *data, size_t data_size, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <br class="typebreak"/>
-<a class="el" href="a00006.html">tagHTTP_REQUEST_PARSER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga21137341221e8a3b92b3a73253d2fb08">HTTP_REQUEST_PARSER</a></td></tr>
+<a class="el" href="a00006.html">tagHTTP_REQUEST_PARSER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ga21137341221e8a3b92b3a73253d2fb08">HTTP_REQUEST_PARSER</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <br class="typebreak"/>
-<a class="el" href="a00008.html">tagHTTP_RESPONSE_PARSER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ga9fd23307e5d20621c1ae6973172f3d6b">HTTP_RESPONSE_PARSER</a></td></tr>
+<a class="el" href="a00008.html">tagHTTP_RESPONSE_PARSER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga9fd23307e5d20621c1ae6973172f3d6b">HTTP_RESPONSE_PARSER</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <br class="typebreak"/>
-<a class="el" href="a00009.html">tagHTTP_RESPONSE_WRITER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga666a8001dbee4674469ba1124d4f0e2b">HTTP_RESPONSE_WRITER</a></td></tr>
+<a class="el" href="a00009.html">tagHTTP_RESPONSE_WRITER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#ga666a8001dbee4674469ba1124d4f0e2b">HTTP_RESPONSE_WRITER</a></td></tr>
 <tr><td colspan="2"><h2><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ga254d7e697a3b26a246614dd867644816">tagHttp_method_type</a> { <br/>
@@ -109,34 +112,34 @@ Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ga92ff2f79ea14e92657972a36d58883a1">tagHttp_version_type</a> { <a class="el" href="a00024.html#gga92ff2f79ea14e92657972a36d58883a1a3932308db22120ce049dd60f3430b814">HTTP_VERSION_1_0</a>, 
 <a class="el" href="a00024.html#gga92ff2f79ea14e92657972a36d58883a1af1a34119b438038bc609a273f9bc08c6">HTTP_VERSION_1_1</a>
  }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a> { <br/>
-&#160;&#160;<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>, 
-<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">HTTP_STATE_PARSING_HEADERS</a>, 
-<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</a>, 
-<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>, 
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a> { <br/>
+&#160;&#160;<a class="el" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>, 
+<a class="el" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">HTTP_STATE_PARSING_HEADERS</a>, 
+<a class="el" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</a>, 
+<a class="el" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>, 
 <br/>
-&#160;&#160;<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>, 
-<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>, 
-<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>
+&#160;&#160;<a class="el" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>, 
+<a class="el" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>, 
+<a class="el" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>
 <br/>
  }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> { <a class="el" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a> =  -1, 
-<a class="el" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a> =  0, 
-<a class="el" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a> =  1
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> { <a class="el" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a> =  -1, 
+<a class="el" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a> =  0, 
+<a class="el" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a> =  1
  }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">HTTP_TK_TYPE</a> { <a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">HTTP_TK_QUOTED_STRING</a>, 
-<a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>, 
-<a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a>, 
-<a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">HTTP_TK_EOF</a>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">HTTP_TK_TYPE</a> { <a class="el" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">HTTP_TK_QUOTED_STRING</a>, 
+<a class="el" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>, 
+<a class="el" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a>, 
+<a class="el" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">HTTP_TK_EOF</a>
  }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a> { <br/>
-&#160;&#160;<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>, 
-<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>, 
-<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>, 
-<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>, 
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a> { <br/>
+&#160;&#160;<a class="el" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>, 
+<a class="el" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>, 
+<a class="el" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>, 
+<a class="el" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>, 
 <br/>
-&#160;&#160;<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>, 
-<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>
+&#160;&#160;<a class="el" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>, 
+<a class="el" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>
 <br/>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
@@ -151,46 +154,36 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#gaa3893b9709b438c414da743d2e9ba285">HTTP_REQUEST_is_persistent</a> (<a class="el" href="a00005.html">HTTP_REQUEST</a> *message)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#gab308a83fced871be3693cdb3fba3ec09">HTTP_REQUEST_init</a> (<a class="el" href="a00005.html">HTTP_REQUEST</a> *message)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ga4ab326e8402a38ac166e2f90a50d91ec">HTTP_REQUEST_free</a> (<a class="el" href="a00005.html">HTTP_REQUEST</a> *message)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa5370897809bd47280b44b5fa679d2d3">HTTP_PARSER_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaf7d9eeee759da719084291a7cd155c94">HTTP_PARSER_free</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541">HTTP_add_header_parser</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, const char *header_name, <a class="el" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f">HEADER_ACTION</a> action)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add a parser for a specific http header type  <a href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gac5e21a738d73d75ebec125c97038961a">HTTP_get_line</a> (BF *bf, char **start_line)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns next raw line from http header, adjoins line continuations.  <a href="a00025.html#gac5e21a738d73d75ebec125c97038961a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962">HTTP_get_header_token</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return next token while parsing http header value.  <a href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa737a4c11979880764fb8031d5dfc488">HTTP_parse_header_line</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *request, BF *bf, int *eof_header)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">dispatch parsing of one http header  <a href="a00025.html#gaa737a4c11979880764fb8031d5dfc488"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8b4ee246e968497579a9d9d194a92571">HTTP_PARSER_content_length_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing content length message body  <a href="a00025.html#ga8b4ee246e968497579a9d9d194a92571"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga34a73b6fe4c943ce1831c8b93c7fb426">HTTP_PARSER_content_length_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">consume content length message body.  <a href="a00025.html#ga34a73b6fe4c943ce1831c8b93c7fb426"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga0cfd781757cd6db4812087df78424fda">HTTP_PARSER_chunked_data_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing chunked data  <a href="a00025.html#ga0cfd781757cd6db4812087df78424fda"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gac93ea444be8644a86692ae98ec0b86c6">HTTP_PARSER_chunked_data_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">finish parsind chunked content data.  <a href="a00025.html#gac93ea444be8644a86692ae98ec0b86c6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaf0a986ea0582bfc4b011d2ac61aac9ca">HTTP_REQUEST_PARSER_init</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> header_parsed, <a class="el" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> on_request_finished, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00026.html#gaf0a986ea0582bfc4b011d2ac61aac9ca"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga84afcea80bc8b534b3eee27594d2afbd">HTTP_REQUEST_PARSER_process</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00005.html">HTTP_REQUEST</a> *request, BF *data)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http request  <a href="a00026.html#ga84afcea80bc8b534b3eee27594d2afbd"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ga00451ddae893b0ea2fb035d9cd1b319a">HTTP_RESPONSE_PARSER_init</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a> header_parsed, <a class="el" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a> on_request_finished, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00027.html#ga00451ddae893b0ea2fb035d9cd1b319a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#gac69a62184875abe24177d14f0a9a0313">HTTP_RESPONSE_PARSER_process</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00007.html">HTTP_RESPONSE</a> *response, BF *data)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http response  <a href="a00027.html#gac69a62184875abe24177d14f0a9a0313"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#gabf2bcdffe3cecb7ca6484489009d8004">HTTP_RESPONSE_WRITER_init</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, <a class="el" href="a00007.html">HTTP_RESPONSE</a> *response)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga52fcf93eeb1c013427abde12a234adff">HTTP_RESPONSE_WRITER_write</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, BF *data)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00007.html">tagHTTP_RESPONSE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ac0d52817d9795fea81e6cfa5afa369e2">HTTP_RESPONSE</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP_RESPONSE - holds information of an http response.  <a href="#ac0d52817d9795fea81e6cfa5afa369e2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a> )(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP_RESPONSE - holds information of an http response.  <a href="#ab50a0c614e6c5e0b1364121270be9076"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a> )(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *data, size_t data_size, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP_RESPONSE - holds information of an http response.  <a href="#a3c216fb9f06ecedc1565d2479c20a51e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a> )(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *ctx)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP_RESPONSE - holds information of an http response.  <a href="#a27680b8dcf2740e6afd384f0f0b26003"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#acc700a0e0c7ed34df458f567dad4c374">HTTP_RESPONSE_init</a> (<a class="el" href="a00007.html">HTTP_RESPONSE</a> *message, <a class="el" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a> version, int status_code)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP_RESPONSE - holds information of an http response.  <a href="#acc700a0e0c7ed34df458f567dad4c374"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a7ca06985dfe2540a91cc74927115cde0">HTTP_RESPONSE_free</a> (<a class="el" href="a00007.html">HTTP_RESPONSE</a> *message)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP_RESPONSE - holds information of an http response.  <a href="#a7ca06985dfe2540a91cc74927115cde0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gacc700a0e0c7ed34df458f567dad4c374">HTTP_RESPONSE_init</a> (<a class="el" href="a00007.html">HTTP_RESPONSE</a> *message, <a class="el" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a> version, int status_code)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga7ca06985dfe2540a91cc74927115cde0">HTTP_RESPONSE_free</a> (<a class="el" href="a00007.html">HTTP_RESPONSE</a> *message)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaa5370897809bd47280b44b5fa679d2d3">HTTP_PARSER_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaf7d9eeee759da719084291a7cd155c94">HTTP_PARSER_free</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541">HTTP_add_header_parser</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, const char *header_name, <a class="el" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f">HEADER_ACTION</a> action)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add a parser for a specific http header type  <a href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gac5e21a738d73d75ebec125c97038961a">HTTP_get_line</a> (BF *bf, char **start_line)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns next raw line from http header, adjoins line continuations.  <a href="a00026.html#gac5e21a738d73d75ebec125c97038961a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962">HTTP_get_header_token</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return next token while parsing http header value.  <a href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gaa737a4c11979880764fb8031d5dfc488">HTTP_parse_header_line</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *request, BF *bf, int *eof_header)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">dispatch parsing of one http header  <a href="a00026.html#gaa737a4c11979880764fb8031d5dfc488"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga8b4ee246e968497579a9d9d194a92571">HTTP_PARSER_content_length_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing content length message body  <a href="a00026.html#ga8b4ee246e968497579a9d9d194a92571"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga34a73b6fe4c943ce1831c8b93c7fb426">HTTP_PARSER_content_length_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">consume content length message body.  <a href="a00026.html#ga34a73b6fe4c943ce1831c8b93c7fb426"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ga0cfd781757cd6db4812087df78424fda">HTTP_PARSER_chunked_data_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing chunked data  <a href="a00026.html#ga0cfd781757cd6db4812087df78424fda"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#gac93ea444be8644a86692ae98ec0b86c6">HTTP_PARSER_chunked_data_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">finish parsind chunked content data.  <a href="a00026.html#gac93ea444be8644a86692ae98ec0b86c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#gaf0a986ea0582bfc4b011d2ac61aac9ca">HTTP_REQUEST_PARSER_init</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00026.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> header_parsed, <a class="el" href="a00026.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00026.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> on_request_finished, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00027.html#gaf0a986ea0582bfc4b011d2ac61aac9ca"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ga84afcea80bc8b534b3eee27594d2afbd">HTTP_REQUEST_PARSER_process</a> (<a class="el" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="el" href="a00005.html">HTTP_REQUEST</a> *request, BF *data)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http request  <a href="a00027.html#ga84afcea80bc8b534b3eee27594d2afbd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga00451ddae893b0ea2fb035d9cd1b319a">HTTP_RESPONSE_PARSER_init</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00025.html#gab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a> header_parsed, <a class="el" href="a00025.html#ga3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a> on_message_body_data, <a class="el" href="a00025.html#ga27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a> on_request_finished, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise request parser object  <a href="a00028.html#ga00451ddae893b0ea2fb035d9cd1b319a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#gac69a62184875abe24177d14f0a9a0313">HTTP_RESPONSE_PARSER_process</a> (<a class="el" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="el" href="a00007.html">HTTP_RESPONSE</a> *response, BF *data)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">parse a http response  <a href="a00028.html#gac69a62184875abe24177d14f0a9a0313"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#gabf2bcdffe3cecb7ca6484489009d8004">HTTP_RESPONSE_WRITER_init</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, <a class="el" href="a00007.html">HTTP_RESPONSE</a> *response)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#ga52fcf93eeb1c013427abde12a234adff">HTTP_RESPONSE_WRITER_write</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, BF *data)</td></tr>
 </table>
 <hr/><h2>Define Documentation</h2>
 <a class="anchor" id="a0a66a9905aa743b7f731f1c5f1f9e981"></a><!-- doxytag: member="http.h::HTTP_MESSAGE_FLAG_CONNECTION_CLOSE" ref="a0a66a9905aa743b7f731f1c5f1f9e981" args="" -->
@@ -253,145 +246,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="a27680b8dcf2740e6afd384f0f0b26003"></a><!-- doxytag: member="http.h::HTTP_RESP_FINISHED" ref="a27680b8dcf2740e6afd384f0f0b26003" args=")(HTTP_RESPONSE *request, void *ctx)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a>)(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *ctx)</td>
-        </tr>
-      </table>
 </div>
-<div class="memdoc">
-
-<p>HTTP_RESPONSE - holds information of an http response. </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00195">195</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab50a0c614e6c5e0b1364121270be9076"></a><!-- doxytag: member="http.h::HTTP_RESP_HEADER_PARSED" ref="ab50a0c614e6c5e0b1364121270be9076" args=")(HTTP_RESPONSE *request, void *ctx)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a>)(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *ctx)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>HTTP_RESPONSE - holds information of an http response. </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00193">193</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3c216fb9f06ecedc1565d2479c20a51e"></a><!-- doxytag: member="http.h::HTTP_RESP_MESSAGE_BODY_DATA" ref="a3c216fb9f06ecedc1565d2479c20a51e" args=")(HTTP_RESPONSE *request, void *data, size_t data_size, void *ctx)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int(* <a class="el" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a>)(<a class="el" href="a00007.html">HTTP_RESPONSE</a> *request, void *data, size_t data_size, void *ctx)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>HTTP_RESPONSE - holds information of an http response. </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00194">194</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac0d52817d9795fea81e6cfa5afa369e2"></a><!-- doxytag: member="http.h::HTTP_RESPONSE" ref="ac0d52817d9795fea81e6cfa5afa369e2" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="a00007.html">tagHTTP_RESPONSE</a>  <a class="el" href="a00007.html">HTTP_RESPONSE</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>HTTP_RESPONSE - holds information of an http response. </p>
-
-</div>
-</div>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a7ca06985dfe2540a91cc74927115cde0"></a><!-- doxytag: member="http.h::HTTP_RESPONSE_free" ref="a7ca06985dfe2540a91cc74927115cde0" args="(HTTP_RESPONSE *message)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE void HTTP_RESPONSE_free </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00007.html">HTTP_RESPONSE</a> *&#160;</td>
-          <td class="paramname"><em>message</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>HTTP_RESPONSE - holds information of an http response. </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00188">188</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00023.html#gab01f22c91d577dfae9702308dbd0c518">HTTP_MESSAGE_free</a>( &amp;message-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a> );
-}
-</pre></div>
-</div>
-</div>
-<a class="anchor" id="acc700a0e0c7ed34df458f567dad4c374"></a><!-- doxytag: member="http.h::HTTP_RESPONSE_init" ref="acc700a0e0c7ed34df458f567dad4c374" args="(HTTP_RESPONSE *message, Http_version_type version, int status_code)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">M_INLINE int HTTP_RESPONSE_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00007.html">HTTP_RESPONSE</a> *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a>&#160;</td>
-          <td class="paramname"><em>version</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>status_code</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>HTTP_RESPONSE - holds information of an http response. </p>
-
-<p>Definition at line <a class="el" href="a00017_source.html#l00177">177</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
-<div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">if</span> (<a class="code" href="a00023.html#ga14d478691c5f29cd966cb8abc4700a1f">HTTP_MESSAGE_init</a>( &amp;message-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a> ) ) {
-    <span class="keywordflow">return</span> -1;
-  }
-  message-&gt;<a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a> = status_code;
-  message-&gt;<a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">version</a> = version;
-  <span class="keywordflow">return</span> 0;
-}
-</pre></div>
-</div>
-</div>
-</div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:17:12 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

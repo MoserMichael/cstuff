@@ -54,13 +54,13 @@
 <a name="l00013"></a>00013 <span class="comment"> * @{</span>
 <a name="l00014"></a>00014 <span class="comment"> */</span>
 <a name="l00015"></a>00015 
-<a name="l00016"></a><a class="code" href="a00029.html#ga681056ca2fe0804b02c215e651dcbb2c">00016</a> <span class="preprocessor">#define URI_FLAGS_PARSE_PARTS     1</span>
-<a name="l00017"></a><a class="code" href="a00029.html#gafa8525689f71c3fcc360d66eb75b79ed">00017</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_IS_ABSOLUTE_URI 2</span>
-<a name="l00018"></a><a class="code" href="a00029.html#gab18d910ab6fe32e5e2bd49e138f1f1e5">00018</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_IS_OPAQUE       4</span>
-<a name="l00019"></a><a class="code" href="a00029.html#ga88117f2de53ca60461fdbfc19195c5e6">00019</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HOST_IPv4       8</span>
-<a name="l00020"></a><a class="code" href="a00029.html#gabdb6298e0841c217c1799c247fd27e60">00020</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HOST_IPv6       16</span>
-<a name="l00021"></a><a class="code" href="a00029.html#gaa8b74e1e32f1bfcbdc1c35bc351d0c37">00021</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HOST_HOSTNAME   32</span>
-<a name="l00022"></a><a class="code" href="a00029.html#gae3a98cd8c957552df89bce7b42ad9692">00022</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HAS_SCHEME      64</span>
+<a name="l00016"></a><a class="code" href="a00030.html#ga681056ca2fe0804b02c215e651dcbb2c">00016</a> <span class="preprocessor">#define URI_FLAGS_PARSE_PARTS     1</span>
+<a name="l00017"></a><a class="code" href="a00030.html#gafa8525689f71c3fcc360d66eb75b79ed">00017</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_IS_ABSOLUTE_URI 2</span>
+<a name="l00018"></a><a class="code" href="a00030.html#gab18d910ab6fe32e5e2bd49e138f1f1e5">00018</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_IS_OPAQUE       4</span>
+<a name="l00019"></a><a class="code" href="a00030.html#ga88117f2de53ca60461fdbfc19195c5e6">00019</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HOST_IPv4       8</span>
+<a name="l00020"></a><a class="code" href="a00030.html#gabdb6298e0841c217c1799c247fd27e60">00020</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HOST_IPv6       16</span>
+<a name="l00021"></a><a class="code" href="a00030.html#gaa8b74e1e32f1bfcbdc1c35bc351d0c37">00021</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HOST_HOSTNAME   32</span>
+<a name="l00022"></a><a class="code" href="a00030.html#gae3a98cd8c957552df89bce7b42ad9692">00022</a> <span class="preprocessor"></span><span class="preprocessor">#define URI_FLAGS_HAS_SCHEME      64</span>
 <a name="l00023"></a>00023 <span class="preprocessor"></span>
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025 
@@ -91,9 +91,9 @@
 <a name="l00050"></a><a class="code" href="a00012.html#a7dc74378d1a475a10d1528d7ad4dd968">00050</a>   <span class="keywordtype">char</span> *<a class="code" href="a00012.html#a7dc74378d1a475a10d1528d7ad4dd968">opaque_raw</a>;
 <a name="l00051"></a><a class="code" href="a00012.html#a591b8403463e8028851a7a84068672cf">00051</a>   <span class="keywordtype">char</span> *<a class="code" href="a00012.html#a591b8403463e8028851a7a84068672cf">opaque</a>;
 <a name="l00052"></a>00052 
-<a name="l00053"></a>00053 } <a class="code" href="a00029.html#ga5297e3ae1364bb45d1ab31ecba29aeaf">URI</a>;
+<a name="l00053"></a>00053 } <a class="code" href="a00030.html#ga5297e3ae1364bb45d1ab31ecba29aeaf">URI</a>;
 <a name="l00054"></a>00054 
-<a name="l00055"></a><a class="code" href="a00029.html#ga8ff72430ab547d0151fc8c58c8039825">00055</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00029.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00055"></a><a class="code" href="a00030.html#ga8ff72430ab547d0151fc8c58c8039825">00055</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00030.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00056"></a>00056 {
 <a name="l00057"></a>00057   memset( url, 0, <span class="keyword">sizeof</span>( <a class="code" href="a00012.html">URI</a> ) );
 <a name="l00058"></a>00058   url-&gt;<a class="code" href="a00012.html#a90106354cb3a73f8035dd377eed540d8">port</a> = -1;
@@ -101,9 +101,9 @@
 <a name="l00060"></a>00060 
 <a name="l00061"></a>00061 
 <a name="l00062"></a>00062 
-<a name="l00063"></a>00063 <span class="keywordtype">int</span> <a class="code" href="a00029.html#gab9acb8adb11be6e657892d858f40e917">URI_parse</a>( <a class="code" href="a00012.html">URI</a> *url, <span class="keywordtype">char</span> *line);
+<a name="l00063"></a>00063 <span class="keywordtype">int</span> <a class="code" href="a00030.html#gab9acb8adb11be6e657892d858f40e917">URI_parse</a>( <a class="code" href="a00012.html">URI</a> *url, <span class="keywordtype">char</span> *line);
 <a name="l00064"></a>00064 
-<a name="l00065"></a><a class="code" href="a00029.html#gab82397c63ee9a3456c6bdb8e109a007a">00065</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00029.html#gab82397c63ee9a3456c6bdb8e109a007a">URI_free</a>( <a class="code" href="a00012.html">URI</a> *url) {
+<a name="l00065"></a><a class="code" href="a00030.html#gab82397c63ee9a3456c6bdb8e109a007a">00065</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00030.html#gab82397c63ee9a3456c6bdb8e109a007a">URI_free</a>( <a class="code" href="a00012.html">URI</a> *url) {
 <a name="l00066"></a>00066   <span class="keywordflow">if</span> (url-&gt;<a class="code" href="a00012.html#a11ae40e294bcabbeb21d210fbc324a16">cdata_raw</a>) {
 <a name="l00067"></a>00067     free( url-&gt;<a class="code" href="a00012.html#a11ae40e294bcabbeb21d210fbc324a16">cdata_raw</a> );
 <a name="l00068"></a>00068   }
@@ -115,71 +115,71 @@
 <a name="l00074"></a>00074   <span class="keywordflow">if</span> ( url-&gt;<a class="code" href="a00012.html#a3dda8a91c57bac6e9db0edc60c0572e8">cdata_is_escaped</a> ) {
 <a name="l00075"></a>00075     free( url-&gt;<a class="code" href="a00012.html#a3dda8a91c57bac6e9db0edc60c0572e8">cdata_is_escaped</a> );
 <a name="l00076"></a>00076   }
-<a name="l00077"></a>00077   <a class="code" href="a00029.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( url );
+<a name="l00077"></a>00077   <a class="code" href="a00030.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( url );
 <a name="l00078"></a>00078 }
 <a name="l00079"></a>00079 
-<a name="l00080"></a><a class="code" href="a00029.html#gad25a20b072ea1273ceae9c415f60885a">00080</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#gad25a20b072ea1273ceae9c415f60885a">URI_scheme</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00080"></a><a class="code" href="a00030.html#gad25a20b072ea1273ceae9c415f60885a">00080</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#gad25a20b072ea1273ceae9c415f60885a">URI_scheme</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00081"></a>00081 {
 <a name="l00082"></a>00082   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#ac943b7c7bd534ddc1a84db68fdb9dbed">scheme</a>;
 <a name="l00083"></a>00083 }
 <a name="l00084"></a>00084 
-<a name="l00085"></a><a class="code" href="a00029.html#ga7e7b36dd5a61ed237af86b2f61f18afe">00085</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#ga7e7b36dd5a61ed237af86b2f61f18afe">URI_userinfo_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00085"></a><a class="code" href="a00030.html#ga7e7b36dd5a61ed237af86b2f61f18afe">00085</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#ga7e7b36dd5a61ed237af86b2f61f18afe">URI_userinfo_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00086"></a>00086 {
 <a name="l00087"></a>00087   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#ada1006ea50c7792e3645fc5be0dc3a2d">userinfo_raw</a>;
 <a name="l00088"></a>00088 }
 <a name="l00089"></a>00089 
-<a name="l00090"></a><a class="code" href="a00029.html#gac9ffe857583c93e3f670fe91386b5007">00090</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#gac9ffe857583c93e3f670fe91386b5007">URI_userinfo</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00090"></a><a class="code" href="a00030.html#gac9ffe857583c93e3f670fe91386b5007">00090</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#gac9ffe857583c93e3f670fe91386b5007">URI_userinfo</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00091"></a>00091 {
 <a name="l00092"></a>00092   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#afff11e0c3c453382ec37ea31aee23753">userinfo</a>;
 <a name="l00093"></a>00093 }
 <a name="l00094"></a>00094 
-<a name="l00095"></a><a class="code" href="a00029.html#ga49cd1027b83d86b0fb2feaeb9a5512b6">00095</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#ga49cd1027b83d86b0fb2feaeb9a5512b6">URI_host</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00095"></a><a class="code" href="a00030.html#ga49cd1027b83d86b0fb2feaeb9a5512b6">00095</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#ga49cd1027b83d86b0fb2feaeb9a5512b6">URI_host</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00096"></a>00096 {
 <a name="l00097"></a>00097   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a7ec586c2aee51d79c245ffce344a6c18">host</a>;
 <a name="l00098"></a>00098 }
 <a name="l00099"></a>00099 
-<a name="l00100"></a><a class="code" href="a00029.html#ga1e247e963b134702005b8594f1208229">00100</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00029.html#ga1e247e963b134702005b8594f1208229">URI_port</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00100"></a><a class="code" href="a00030.html#ga1e247e963b134702005b8594f1208229">00100</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00030.html#ga1e247e963b134702005b8594f1208229">URI_port</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00101"></a>00101 {
 <a name="l00102"></a>00102   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a90106354cb3a73f8035dd377eed540d8">port</a>;
 <a name="l00103"></a>00103 }
 <a name="l00104"></a>00104 
 <a name="l00105"></a>00105 
-<a name="l00106"></a><a class="code" href="a00029.html#ga45df5100f7aaf9ff9b3a48a7e1b8058f">00106</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#ga45df5100f7aaf9ff9b3a48a7e1b8058f">URI_path_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00106"></a><a class="code" href="a00030.html#ga45df5100f7aaf9ff9b3a48a7e1b8058f">00106</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#ga45df5100f7aaf9ff9b3a48a7e1b8058f">URI_path_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00107"></a>00107 {
 <a name="l00108"></a>00108   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a928a5e3c37023a0a884a703077924eeb">path_raw</a>;
 <a name="l00109"></a>00109 }
 <a name="l00110"></a>00110 
-<a name="l00111"></a><a class="code" href="a00029.html#gafc9b62fcf20ed6453067e40b73afda3e">00111</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#gafc9b62fcf20ed6453067e40b73afda3e">URI_path</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00111"></a><a class="code" href="a00030.html#gafc9b62fcf20ed6453067e40b73afda3e">00111</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#gafc9b62fcf20ed6453067e40b73afda3e">URI_path</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00112"></a>00112 {
 <a name="l00113"></a>00113   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a8fb5ba5e6bb70ec1b3599bdcaf813093">path</a>;
 <a name="l00114"></a>00114 }
 <a name="l00115"></a>00115 
-<a name="l00116"></a><a class="code" href="a00029.html#gacb7e21082a7179b1c28b1790f5add72b">00116</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#gacb7e21082a7179b1c28b1790f5add72b">URI_query_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00116"></a><a class="code" href="a00030.html#gacb7e21082a7179b1c28b1790f5add72b">00116</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#gacb7e21082a7179b1c28b1790f5add72b">URI_query_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00117"></a>00117 {
 <a name="l00118"></a>00118   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a93e6702c354c94b3157df02701827a2c">query_raw</a>;
 <a name="l00119"></a>00119 }
 <a name="l00120"></a>00120 
-<a name="l00121"></a><a class="code" href="a00029.html#gae515aeb08040a6457cc2e0100bd3be99">00121</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#gae515aeb08040a6457cc2e0100bd3be99">URI_query</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00121"></a><a class="code" href="a00030.html#gae515aeb08040a6457cc2e0100bd3be99">00121</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#gae515aeb08040a6457cc2e0100bd3be99">URI_query</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00122"></a>00122 {
 <a name="l00123"></a>00123   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a398a57e4184218f02fc33b04da7819fa">query</a>;
 <a name="l00124"></a>00124 }
 <a name="l00125"></a>00125 
-<a name="l00126"></a><a class="code" href="a00029.html#ga622da4084e73a2c02abde7034f8ad6ea">00126</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#ga622da4084e73a2c02abde7034f8ad6ea">URI_fragment_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00126"></a><a class="code" href="a00030.html#ga622da4084e73a2c02abde7034f8ad6ea">00126</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#ga622da4084e73a2c02abde7034f8ad6ea">URI_fragment_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00127"></a>00127 {
 <a name="l00128"></a>00128   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a474ccc0167a309bffaa8339f55ba51ef">fragment_raw</a>;
 <a name="l00129"></a>00129 }
 <a name="l00130"></a>00130 
-<a name="l00131"></a><a class="code" href="a00029.html#gae6489119ac652510ee30ed253635f8b6">00131</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#gae6489119ac652510ee30ed253635f8b6">URI_fragment</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00131"></a><a class="code" href="a00030.html#gae6489119ac652510ee30ed253635f8b6">00131</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#gae6489119ac652510ee30ed253635f8b6">URI_fragment</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00132"></a>00132 {
 <a name="l00133"></a>00133   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#afb4b0def9276bead2a348bab74e1034e">fragment</a>;
 <a name="l00134"></a>00134 }
 <a name="l00135"></a>00135 
-<a name="l00136"></a><a class="code" href="a00029.html#gaff48eba33becc19347ac38fcf53d98b7">00136</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#gaff48eba33becc19347ac38fcf53d98b7">URI_opaque_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00136"></a><a class="code" href="a00030.html#gaff48eba33becc19347ac38fcf53d98b7">00136</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#gaff48eba33becc19347ac38fcf53d98b7">URI_opaque_raw</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00137"></a>00137 {
 <a name="l00138"></a>00138   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a7dc74378d1a475a10d1528d7ad4dd968">opaque_raw</a>;
 <a name="l00139"></a>00139 }
 <a name="l00140"></a>00140 
-<a name="l00141"></a><a class="code" href="a00029.html#ga773c3e4af0c6238a6412da8f6f59898f">00141</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00029.html#ga773c3e4af0c6238a6412da8f6f59898f">URI_opaque</a>( <a class="code" href="a00012.html">URI</a> *url )
+<a name="l00141"></a><a class="code" href="a00030.html#ga773c3e4af0c6238a6412da8f6f59898f">00141</a> M_INLINE <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00030.html#ga773c3e4af0c6238a6412da8f6f59898f">URI_opaque</a>( <a class="code" href="a00012.html">URI</a> *url )
 <a name="l00142"></a>00142 {
 <a name="l00143"></a>00143   <span class="keywordflow">return</span> url-&gt;<a class="code" href="a00012.html#a591b8403463e8028851a7a84068672cf">opaque</a>;
 <a name="l00144"></a>00144 }
@@ -192,7 +192,7 @@
 <a name="l00151"></a>00151 <span class="preprocessor"></span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:17:12 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

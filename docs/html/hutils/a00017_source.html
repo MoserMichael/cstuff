@@ -165,7 +165,7 @@
 <a name="l00124"></a>00124     <span class="keywordflow">return</span> -1;
 <a name="l00125"></a>00125   }
 <a name="l00126"></a>00126 
-<a name="l00127"></a>00127   <a class="code" href="a00029.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( &amp; message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
+<a name="l00127"></a>00127   <a class="code" href="a00030.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( &amp; message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
 <a name="l00128"></a>00128 
 <a name="l00129"></a>00129   message-&gt;<a class="code" href="a00005.html#a1a7c838fee849231ffe764fd004dadab">expect_100_continue</a> = message-&gt;<a class="code" href="a00005.html#a013e5373d35354986ff53b318452edf5">has_host_header</a> = 0;
 <a name="l00130"></a>00130   message-&gt;<a class="code" href="a00005.html#a429a80b15eec069ce2f6ddf3751ccbb5">raw_url</a> = message-&gt;<a class="code" href="a00005.html#a2a389a3f86e4c557499801b8b9999000">host_header</a> = 0;
@@ -177,7 +177,7 @@
 <a name="l00136"></a>00136 
 <a name="l00137"></a><a class="code" href="a00024.html#ga4ab326e8402a38ac166e2f90a50d91ec">00137</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00024.html#ga4ab326e8402a38ac166e2f90a50d91ec">HTTP_REQUEST_free</a>( <a class="code" href="a00005.html">HTTP_REQUEST</a> *message )
 <a name="l00138"></a>00138 {
-<a name="l00139"></a>00139   <a class="code" href="a00029.html#gab82397c63ee9a3456c6bdb8e109a007a">URI_free</a>( &amp;message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
+<a name="l00139"></a>00139   <a class="code" href="a00030.html#gab82397c63ee9a3456c6bdb8e109a007a">URI_free</a>( &amp;message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
 <a name="l00140"></a>00140   
 <a name="l00141"></a>00141   <span class="keywordflow">if</span> (message-&gt;<a class="code" href="a00005.html#a2a389a3f86e4c557499801b8b9999000">host_header</a>) {
 <a name="l00142"></a>00142     free( message-&gt;<a class="code" href="a00005.html#a2a389a3f86e4c557499801b8b9999000">host_header</a>);
@@ -202,288 +202,290 @@
 <a name="l00161"></a>00161 
 <a name="l00162"></a>00162 <span class="comment"></span>
 <a name="l00163"></a>00163 <span class="comment">/**</span>
-<a name="l00164"></a>00164 <span class="comment"> * @brief HTTP_RESPONSE - holds information of an http response.</span>
-<a name="l00165"></a>00165 <span class="comment"> *</span>
-<a name="l00166"></a>00166 <span class="comment"> * @{</span>
-<a name="l00167"></a>00167 <span class="comment"> */</span>
-<a name="l00168"></a><a class="code" href="a00007.html">00168</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">tagHTTP_RESPONSE</a> {
-<a name="l00169"></a><a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">00169</a>   <a class="code" href="a00003.html">HTTP_MESSAGE</a> <a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>;
-<a name="l00170"></a>00170  
-<a name="l00171"></a><a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">00171</a>   <span class="keywordtype">int</span> <a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a>;
-<a name="l00172"></a><a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">00172</a>   <a class="code" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a> <a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">version</a>; 
-<a name="l00173"></a>00173 
+<a name="l00164"></a>00164 <span class="comment"> * @defgroup HTTP_RESPONSE</span>
+<a name="l00165"></a>00165 <span class="comment"> * @brief - holds information of an http response.</span>
+<a name="l00166"></a>00166 <span class="comment"> *</span>
+<a name="l00167"></a>00167 <span class="comment"> * @{</span>
+<a name="l00168"></a>00168 <span class="comment"> */</span>
+<a name="l00169"></a><a class="code" href="a00007.html">00169</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00007.html">tagHTTP_RESPONSE</a> {
+<a name="l00170"></a><a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">00170</a>   <a class="code" href="a00003.html">HTTP_MESSAGE</a> <a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>;
+<a name="l00171"></a>00171  
+<a name="l00172"></a><a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">00172</a>   <span class="keywordtype">int</span> <a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a>;
+<a name="l00173"></a><a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">00173</a>   <a class="code" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a> <a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">version</a>; 
 <a name="l00174"></a>00174 
-<a name="l00175"></a>00175 } <a class="code" href="a00017.html#ac0d52817d9795fea81e6cfa5afa369e2" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a>;
-<a name="l00176"></a>00176 
-<a name="l00177"></a><a class="code" href="a00017.html#acc700a0e0c7ed34df458f567dad4c374">00177</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00017.html#acc700a0e0c7ed34df458f567dad4c374" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE_init</a>( <a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *message, <a class="code" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a> version, <span class="keywordtype">int</span> status_code )
-<a name="l00178"></a>00178 {
-<a name="l00179"></a>00179   <span class="keywordflow">if</span> (<a class="code" href="a00023.html#ga14d478691c5f29cd966cb8abc4700a1f">HTTP_MESSAGE_init</a>( &amp;message-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a> ) ) {
-<a name="l00180"></a>00180     <span class="keywordflow">return</span> -1;
-<a name="l00181"></a>00181   }
-<a name="l00182"></a>00182   message-&gt;<a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a> = status_code;
-<a name="l00183"></a>00183   message-&gt;<a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">version</a> = version;
-<a name="l00184"></a>00184   <span class="keywordflow">return</span> 0;
-<a name="l00185"></a>00185 }
-<a name="l00186"></a>00186 
+<a name="l00175"></a>00175 
+<a name="l00176"></a>00176 } <a class="code" href="a00025.html#gac0d52817d9795fea81e6cfa5afa369e2">HTTP_RESPONSE</a>;
+<a name="l00177"></a>00177 
+<a name="l00178"></a><a class="code" href="a00025.html#gacc700a0e0c7ed34df458f567dad4c374">00178</a> M_INLINE <span class="keywordtype">int</span> <a class="code" href="a00025.html#gacc700a0e0c7ed34df458f567dad4c374">HTTP_RESPONSE_init</a>( <a class="code" href="a00007.html">HTTP_RESPONSE</a> *message, <a class="code" href="a00024.html#ga06dc534889d1806e0448e56dd9757dae">Http_version_type</a> version, <span class="keywordtype">int</span> status_code )
+<a name="l00179"></a>00179 {
+<a name="l00180"></a>00180   <span class="keywordflow">if</span> (<a class="code" href="a00023.html#ga14d478691c5f29cd966cb8abc4700a1f">HTTP_MESSAGE_init</a>( &amp;message-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a> ) ) {
+<a name="l00181"></a>00181     <span class="keywordflow">return</span> -1;
+<a name="l00182"></a>00182   }
+<a name="l00183"></a>00183   message-&gt;<a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a> = status_code;
+<a name="l00184"></a>00184   message-&gt;<a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">version</a> = version;
+<a name="l00185"></a>00185   <span class="keywordflow">return</span> 0;
+<a name="l00186"></a>00186 }
 <a name="l00187"></a>00187 
-<a name="l00188"></a><a class="code" href="a00017.html#a7ca06985dfe2540a91cc74927115cde0">00188</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00017.html#a7ca06985dfe2540a91cc74927115cde0" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE_free</a>( <a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *message )
-<a name="l00189"></a>00189 {
-<a name="l00190"></a>00190   <a class="code" href="a00023.html#gab01f22c91d577dfae9702308dbd0c518">HTTP_MESSAGE_free</a>( &amp;message-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a> );
-<a name="l00191"></a>00191 }
-<a name="l00192"></a>00192 
-<a name="l00193"></a><a class="code" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076">00193</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_HEADER_PARSED</a>)     (<a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *request, <span class="keywordtype">void</span> *ctx);
-<a name="l00194"></a><a class="code" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e">00194</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_MESSAGE_BODY_DATA</a>) (<a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *request, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size, <span class="keywordtype">void</span> *ctx);
-<a name="l00195"></a><a class="code" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003">00195</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_FINISHED</a>)          (<a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *request, <span class="keywordtype">void</span> *ctx);  
-<a name="l00196"></a>00196 <span class="comment"></span>
-<a name="l00197"></a>00197 <span class="comment">/**</span>
-<a name="l00198"></a>00198 <span class="comment"> * @}</span>
-<a name="l00199"></a>00199 <span class="comment"> */</span>
-<a name="l00200"></a>00200 
+<a name="l00188"></a>00188 
+<a name="l00189"></a><a class="code" href="a00025.html#ga7ca06985dfe2540a91cc74927115cde0">00189</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00025.html#ga7ca06985dfe2540a91cc74927115cde0">HTTP_RESPONSE_free</a>( <a class="code" href="a00007.html">HTTP_RESPONSE</a> *message )
+<a name="l00190"></a>00190 {
+<a name="l00191"></a>00191   <a class="code" href="a00023.html#gab01f22c91d577dfae9702308dbd0c518">HTTP_MESSAGE_free</a>( &amp;message-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a> );
+<a name="l00192"></a>00192 }
+<a name="l00193"></a>00193 
+<a name="l00194"></a><a class="code" href="a00025.html#gab50a0c614e6c5e0b1364121270be9076">00194</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00025.html#gab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a>)     (<a class="code" href="a00007.html">HTTP_RESPONSE</a> *request, <span class="keywordtype">void</span> *ctx);
+<a name="l00195"></a><a class="code" href="a00025.html#ga3c216fb9f06ecedc1565d2479c20a51e">00195</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00025.html#ga3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a>) (<a class="code" href="a00007.html">HTTP_RESPONSE</a> *request, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size, <span class="keywordtype">void</span> *ctx);
+<a name="l00196"></a><a class="code" href="a00025.html#ga27680b8dcf2740e6afd384f0f0b26003">00196</a> <span class="keyword">typedef</span> int (*<a class="code" href="a00025.html#ga27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a>)          (<a class="code" href="a00007.html">HTTP_RESPONSE</a> *request, <span class="keywordtype">void</span> *ctx);  
+<a name="l00197"></a>00197 <span class="comment"></span>
+<a name="l00198"></a>00198 <span class="comment">/**</span>
+<a name="l00199"></a>00199 <span class="comment"> * @}</span>
+<a name="l00200"></a>00200 <span class="comment"> */</span>
 <a name="l00201"></a>00201 
 <a name="l00202"></a>00202 
-<a name="l00203"></a>00203 <span class="comment">// ===============================================================</span>
-<a name="l00204"></a>00204 <span class="comment"></span>
-<a name="l00205"></a>00205 <span class="comment">/** </span>
-<a name="l00206"></a>00206 <span class="comment"> * @defgroup HTTP_PARSER</span>
-<a name="l00207"></a>00207 <span class="comment"> * @brief base class of both http request and http response parsers</span>
-<a name="l00208"></a>00208 <span class="comment"> *</span>
-<a name="l00209"></a>00209 <span class="comment"> * @{</span>
-<a name="l00210"></a>00210 <span class="comment"> */</span>
-<a name="l00211"></a>00211 
-<a name="l00212"></a><a class="code" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">00212</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a> {
-<a name="l00213"></a>00213 
-<a name="l00214"></a><a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">00214</a>   <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>,
-<a name="l00215"></a><a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">00215</a>   <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">HTTP_STATE_PARSING_HEADERS</a>,
-<a name="l00216"></a><a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">00216</a>   <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</a>,
-<a name="l00217"></a><a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">00217</a>   <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>,
-<a name="l00218"></a><a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">00218</a>   <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>,
-<a name="l00219"></a><a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">00219</a>   <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>,
-<a name="l00220"></a><a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">00220</a>   <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>,
-<a name="l00221"></a>00221 
-<a name="l00222"></a>00222 } <a class="code" href="a00025.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a>;
-<a name="l00223"></a>00223 
-<a name="l00224"></a><a class="code" href="a00004.html">00224</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00004.html">tagHTTP_PARSER</a> {
-<a name="l00225"></a><a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">00225</a>   <a class="code" href="a00025.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a>  <a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a>;
-<a name="l00226"></a><a class="code" href="a00004.html#a3ec9458f4c7de0bc079b002d0b64441d">00226</a>   HASH <a class="code" href="a00004.html#a3ec9458f4c7de0bc079b002d0b64441d">header_action</a>;  
-<a name="l00227"></a><a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">00227</a>   <span class="keywordtype">char</span> *<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>;  <span class="comment">// the current parsed header token.</span>
-<a name="l00228"></a><a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">00228</a>   <span class="keywordtype">size_t</span> <a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">token_length</a>; <span class="comment">// length of token buffer</span>
-<a name="l00229"></a>00229 
-<a name="l00230"></a><a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">00230</a>   <span class="keywordtype">char</span> *<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a>; <span class="comment">// current position in http header data - during parsing of header.</span>
-<a name="l00231"></a>00231  
-<a name="l00232"></a><a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">00232</a>   <span class="keywordtype">size_t</span>  <a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">content_left</a>; <span class="comment">// how many bytes will make up the following chunk or Content-length data.</span>
-<a name="l00233"></a>00233 
-<a name="l00234"></a>00234 } <a class="code" href="a00025.html#ga1a0ea2ba6e2fd94a692102126e5ac0f5">HTTP_PARSER</a>;
-<a name="l00235"></a>00235 
-<a name="l00236"></a><a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">00236</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
-<a name="l00237"></a><a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">00237</a>   <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a> = -1,
-<a name="l00238"></a><a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">00238</a>   <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a> = 0,
-<a name="l00239"></a><a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">00239</a>   <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a> = 1,
-<a name="l00240"></a>00240 }
-<a name="l00241"></a>00241   <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>;
-<a name="l00242"></a>00242 
-<a name="l00243"></a><a class="code" href="a00025.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">00243</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
-<a name="l00244"></a><a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">00244</a>   <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">HTTP_TK_QUOTED_STRING</a>,
-<a name="l00245"></a><a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">00245</a>   <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>,
-<a name="l00246"></a><a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">00246</a>   <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a>,
-<a name="l00247"></a><a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">00247</a>   <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">HTTP_TK_EOF</a>,
-<a name="l00248"></a>00248 } <a class="code" href="a00025.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">HTTP_TK_TYPE</a>;
-<a name="l00249"></a>00249 
-<a name="l00250"></a><a class="code" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">00250</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a>) ( <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size, <span class="keywordtype">void</span> *ctx);
-<a name="l00251"></a><a class="code" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">00251</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a>)     (<a class="code" href="a00005.html">HTTP_REQUEST</a> *request, <span class="keywordtype">void</span> *ctx);
-<a name="l00252"></a><a class="code" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">00252</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a>) (<a class="code" href="a00005.html">HTTP_REQUEST</a> *request, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size, <span class="keywordtype">void</span> *ctx);
-<a name="l00253"></a><a class="code" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">00253</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a>)          (<a class="code" href="a00005.html">HTTP_REQUEST</a> *request, <span class="keywordtype">void</span> *ctx);  
-<a name="l00254"></a>00254 
+<a name="l00203"></a>00203 
+<a name="l00204"></a>00204 <span class="comment">// ===============================================================</span>
+<a name="l00205"></a>00205 <span class="comment"></span>
+<a name="l00206"></a>00206 <span class="comment">/** </span>
+<a name="l00207"></a>00207 <span class="comment"> * @defgroup HTTP_PARSER</span>
+<a name="l00208"></a>00208 <span class="comment"> * @brief base class of both http request and http response parsers</span>
+<a name="l00209"></a>00209 <span class="comment"> *</span>
+<a name="l00210"></a>00210 <span class="comment"> * @{</span>
+<a name="l00211"></a>00211 <span class="comment"> */</span>
+<a name="l00212"></a>00212 
+<a name="l00213"></a><a class="code" href="a00026.html#ga8399cf0558ed67328d5221a21a155cd2">00213</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code" href="a00026.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a> {
+<a name="l00214"></a>00214 
+<a name="l00215"></a><a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">00215</a>   <a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>,
+<a name="l00216"></a><a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">00216</a>   <a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">HTTP_STATE_PARSING_HEADERS</a>,
+<a name="l00217"></a><a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">00217</a>   <a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</a>,
+<a name="l00218"></a><a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">00218</a>   <a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>,
+<a name="l00219"></a><a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">00219</a>   <a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>,
+<a name="l00220"></a><a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">00220</a>   <a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>,
+<a name="l00221"></a><a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">00221</a>   <a class="code" href="a00026.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>,
+<a name="l00222"></a>00222 
+<a name="l00223"></a>00223 } <a class="code" href="a00026.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a>;
+<a name="l00224"></a>00224 
+<a name="l00225"></a><a class="code" href="a00004.html">00225</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00004.html">tagHTTP_PARSER</a> {
+<a name="l00226"></a><a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">00226</a>   <a class="code" href="a00026.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a>  <a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a>;
+<a name="l00227"></a><a class="code" href="a00004.html#a3ec9458f4c7de0bc079b002d0b64441d">00227</a>   HASH <a class="code" href="a00004.html#a3ec9458f4c7de0bc079b002d0b64441d">header_action</a>;  
+<a name="l00228"></a><a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">00228</a>   <span class="keywordtype">char</span> *<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>;  <span class="comment">// the current parsed header token.</span>
+<a name="l00229"></a><a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">00229</a>   <span class="keywordtype">size_t</span> <a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">token_length</a>; <span class="comment">// length of token buffer</span>
+<a name="l00230"></a>00230 
+<a name="l00231"></a><a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">00231</a>   <span class="keywordtype">char</span> *<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a>; <span class="comment">// current position in http header data - during parsing of header.</span>
+<a name="l00232"></a>00232  
+<a name="l00233"></a><a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">00233</a>   <span class="keywordtype">size_t</span>  <a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">content_left</a>; <span class="comment">// how many bytes will make up the following chunk or Content-length data.</span>
+<a name="l00234"></a>00234 
+<a name="l00235"></a>00235 } <a class="code" href="a00026.html#ga1a0ea2ba6e2fd94a692102126e5ac0f5">HTTP_PARSER</a>;
+<a name="l00236"></a>00236 
+<a name="l00237"></a><a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">00237</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00238"></a><a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">00238</a>   <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a> = -1,
+<a name="l00239"></a><a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">00239</a>   <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a> = 0,
+<a name="l00240"></a><a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">00240</a>   <a class="code" href="a00026.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a> = 1,
+<a name="l00241"></a>00241 }
+<a name="l00242"></a>00242   <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>;
+<a name="l00243"></a>00243 
+<a name="l00244"></a><a class="code" href="a00026.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">00244</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00245"></a><a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">00245</a>   <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">HTTP_TK_QUOTED_STRING</a>,
+<a name="l00246"></a><a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">00246</a>   <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>,
+<a name="l00247"></a><a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">00247</a>   <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a>,
+<a name="l00248"></a><a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">00248</a>   <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">HTTP_TK_EOF</a>,
+<a name="l00249"></a>00249 } <a class="code" href="a00026.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">HTTP_TK_TYPE</a>;
+<a name="l00250"></a>00250 
+<a name="l00251"></a><a class="code" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">00251</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a>) ( <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size, <span class="keywordtype">void</span> *ctx);
+<a name="l00252"></a><a class="code" href="a00026.html#ga50bf360c3d97280b2666c1809a506e2a">00252</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00026.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a>)     (<a class="code" href="a00005.html">HTTP_REQUEST</a> *request, <span class="keywordtype">void</span> *ctx);
+<a name="l00253"></a><a class="code" href="a00026.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">00253</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00026.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a>) (<a class="code" href="a00005.html">HTTP_REQUEST</a> *request, <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> data_size, <span class="keywordtype">void</span> *ctx);
+<a name="l00254"></a><a class="code" href="a00026.html#gaaad3a1f235bb76629fb76266f229a6bc">00254</a> <span class="keyword">typedef</span> int  (*<a class="code" href="a00026.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a>)          (<a class="code" href="a00005.html">HTTP_REQUEST</a> *request, <span class="keywordtype">void</span> *ctx);  
 <a name="l00255"></a>00255 
 <a name="l00256"></a>00256 
-<a name="l00257"></a>00257 <span class="keywordtype">int</span>  <a class="code" href="a00025.html#gaa5370897809bd47280b44b5fa679d2d3">HTTP_PARSER_init</a>(  <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
-<a name="l00258"></a>00258 <span class="keywordtype">int</span>  <a class="code" href="a00025.html#gaf7d9eeee759da719084291a7cd155c94">HTTP_PARSER_free</a>(  <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
-<a name="l00259"></a>00259 
-<a name="l00260"></a>00260 <span class="comment"></span>
-<a name="l00261"></a>00261 <span class="comment">/**</span>
-<a name="l00262"></a>00262 <span class="comment"> * @brief add a parser for a specific http header type</span>
-<a name="l00263"></a>00263 <span class="comment"> */</span>
-<a name="l00264"></a>00264 <span class="keywordtype">int</span> <a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, <span class="keyword">const</span> <span class="keywordtype">char</span> *header_name, <a class="code" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f" title="callback that is invoked in order to parse contents of a specific http header">HEADER_ACTION</a> action );
-<a name="l00265"></a>00265 <span class="comment"></span>
-<a name="l00266"></a>00266 <span class="comment">/**</span>
-<a name="l00267"></a>00267 <span class="comment"> * @brief returns next raw line from http header, adjoins line continuations.</span>
-<a name="l00268"></a>00268 <span class="comment"> */</span>
-<a name="l00269"></a>00269 <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00025.html#gac5e21a738d73d75ebec125c97038961a" title="returns next raw line from http header, adjoins line continuations.">HTTP_get_line</a>( BF *bf, <span class="keywordtype">char</span> **start_line );
-<a name="l00270"></a>00270 <span class="comment"></span>
-<a name="l00271"></a>00271 <span class="comment">/**</span>
-<a name="l00272"></a>00272 <span class="comment"> * @brief return next token while parsing http header value.</span>
-<a name="l00273"></a>00273 <span class="comment"> * @return -1 on error, otherwise type of token returns (value out of HTTP_TK_TYPE)</span>
-<a name="l00274"></a>00274 <span class="comment"> */</span>
-<a name="l00275"></a>00275 <span class="keywordtype">int</span> <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
-<a name="l00276"></a>00276 <span class="comment"></span>
-<a name="l00277"></a>00277 <span class="comment">/**</span>
-<a name="l00278"></a>00278 <span class="comment"> * @brief dispatch parsing of one http header</span>
-<a name="l00279"></a>00279 <span class="comment"> * @return -1 error, 0 - http header finished, 1 - need more data, 2 - header line parsed ok.</span>
-<a name="l00280"></a>00280 <span class="comment"> */</span>
-<a name="l00281"></a>00281 <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00025.html#gaa737a4c11979880764fb8031d5dfc488" title="dispatch parsing of one http header">HTTP_parse_header_line</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *request, BF *bf, <span class="keywordtype">int</span> *eof_header );
-<a name="l00282"></a>00282 <span class="comment"></span>
-<a name="l00283"></a>00283 <span class="comment">/**</span>
-<a name="l00284"></a>00284 <span class="comment"> * @brief start parsing content length message body </span>
-<a name="l00285"></a>00285 <span class="comment"> */</span>
-<a name="l00286"></a>00286 <span class="keywordtype">int</span> <a class="code" href="a00025.html#ga8b4ee246e968497579a9d9d194a92571" title="start parsing content length message body">HTTP_PARSER_content_length_init</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg );
-<a name="l00287"></a>00287 <span class="comment"></span>
-<a name="l00288"></a>00288 <span class="comment">/**</span>
-<a name="l00289"></a>00289 <span class="comment"> * @brief consume content length message body.</span>
-<a name="l00290"></a>00290 <span class="comment"> */</span>
-<a name="l00291"></a>00291 <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00025.html#ga34a73b6fe4c943ce1831c8b93c7fb426" title="consume content length message body.">HTTP_PARSER_content_length_process</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="code" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg, <span class="keywordtype">void</span> *ctx);
-<a name="l00292"></a>00292 <span class="comment"></span>
-<a name="l00293"></a>00293 <span class="comment">/**</span>
-<a name="l00294"></a>00294 <span class="comment"> * @brief start parsing chunked data </span>
-<a name="l00295"></a>00295 <span class="comment"> */</span>
-<a name="l00296"></a>00296 <span class="keywordtype">int</span> <a class="code" href="a00025.html#ga0cfd781757cd6db4812087df78424fda" title="start parsing chunked data">HTTP_PARSER_chunked_data_init</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
-<a name="l00297"></a>00297 <span class="comment"></span>
-<a name="l00298"></a>00298 <span class="comment">/**</span>
-<a name="l00299"></a>00299 <span class="comment"> * @brief finish parsind chunked content data.</span>
-<a name="l00300"></a>00300 <span class="comment"> */</span>
-<a name="l00301"></a>00301 <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00025.html#gac93ea444be8644a86692ae98ec0b86c6" title="finish parsind chunked content data.">HTTP_PARSER_chunked_data_process</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="code" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg, <span class="keywordtype">void</span> *ctx);
-<a name="l00302"></a>00302 <span class="comment"></span>
-<a name="l00303"></a>00303 <span class="comment">/**</span>
-<a name="l00304"></a>00304 <span class="comment"> * @}</span>
-<a name="l00305"></a>00305 <span class="comment"> */</span>
-<a name="l00306"></a>00306 
+<a name="l00257"></a>00257 
+<a name="l00258"></a>00258 <span class="keywordtype">int</span>  <a class="code" href="a00026.html#gaa5370897809bd47280b44b5fa679d2d3">HTTP_PARSER_init</a>(  <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
+<a name="l00259"></a>00259 <span class="keywordtype">int</span>  <a class="code" href="a00026.html#gaf7d9eeee759da719084291a7cd155c94">HTTP_PARSER_free</a>(  <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
+<a name="l00260"></a>00260 
+<a name="l00261"></a>00261 <span class="comment"></span>
+<a name="l00262"></a>00262 <span class="comment">/**</span>
+<a name="l00263"></a>00263 <span class="comment"> * @brief add a parser for a specific http header type</span>
+<a name="l00264"></a>00264 <span class="comment"> */</span>
+<a name="l00265"></a>00265 <span class="keywordtype">int</span> <a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, <span class="keyword">const</span> <span class="keywordtype">char</span> *header_name, <a class="code" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f" title="callback that is invoked in order to parse contents of a specific http header">HEADER_ACTION</a> action );
+<a name="l00266"></a>00266 <span class="comment"></span>
+<a name="l00267"></a>00267 <span class="comment">/**</span>
+<a name="l00268"></a>00268 <span class="comment"> * @brief returns next raw line from http header, adjoins line continuations.</span>
+<a name="l00269"></a>00269 <span class="comment"> */</span>
+<a name="l00270"></a>00270 <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00026.html#gac5e21a738d73d75ebec125c97038961a" title="returns next raw line from http header, adjoins line continuations.">HTTP_get_line</a>( BF *bf, <span class="keywordtype">char</span> **start_line );
+<a name="l00271"></a>00271 <span class="comment"></span>
+<a name="l00272"></a>00272 <span class="comment">/**</span>
+<a name="l00273"></a>00273 <span class="comment"> * @brief return next token while parsing http header value.</span>
+<a name="l00274"></a>00274 <span class="comment"> * @return -1 on error, otherwise type of token returns (value out of HTTP_TK_TYPE)</span>
+<a name="l00275"></a>00275 <span class="comment"> */</span>
+<a name="l00276"></a>00276 <span class="keywordtype">int</span> <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
+<a name="l00277"></a>00277 <span class="comment"></span>
+<a name="l00278"></a>00278 <span class="comment">/**</span>
+<a name="l00279"></a>00279 <span class="comment"> * @brief dispatch parsing of one http header</span>
+<a name="l00280"></a>00280 <span class="comment"> * @return -1 error, 0 - http header finished, 1 - need more data, 2 - header line parsed ok.</span>
+<a name="l00281"></a>00281 <span class="comment"> */</span>
+<a name="l00282"></a>00282 <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00026.html#gaa737a4c11979880764fb8031d5dfc488" title="dispatch parsing of one http header">HTTP_parse_header_line</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *request, BF *bf, <span class="keywordtype">int</span> *eof_header );
+<a name="l00283"></a>00283 <span class="comment"></span>
+<a name="l00284"></a>00284 <span class="comment">/**</span>
+<a name="l00285"></a>00285 <span class="comment"> * @brief start parsing content length message body </span>
+<a name="l00286"></a>00286 <span class="comment"> */</span>
+<a name="l00287"></a>00287 <span class="keywordtype">int</span> <a class="code" href="a00026.html#ga8b4ee246e968497579a9d9d194a92571" title="start parsing content length message body">HTTP_PARSER_content_length_init</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg );
+<a name="l00288"></a>00288 <span class="comment"></span>
+<a name="l00289"></a>00289 <span class="comment">/**</span>
+<a name="l00290"></a>00290 <span class="comment"> * @brief consume content length message body.</span>
+<a name="l00291"></a>00291 <span class="comment"> */</span>
+<a name="l00292"></a>00292 <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00026.html#ga34a73b6fe4c943ce1831c8b93c7fb426" title="consume content length message body.">HTTP_PARSER_content_length_process</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="code" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg, <span class="keywordtype">void</span> *ctx);
+<a name="l00293"></a>00293 <span class="comment"></span>
+<a name="l00294"></a>00294 <span class="comment">/**</span>
+<a name="l00295"></a>00295 <span class="comment"> * @brief start parsing chunked data </span>
+<a name="l00296"></a>00296 <span class="comment"> */</span>
+<a name="l00297"></a>00297 <span class="keywordtype">int</span> <a class="code" href="a00026.html#ga0cfd781757cd6db4812087df78424fda" title="start parsing chunked data">HTTP_PARSER_chunked_data_init</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser );
+<a name="l00298"></a>00298 <span class="comment"></span>
+<a name="l00299"></a>00299 <span class="comment">/**</span>
+<a name="l00300"></a>00300 <span class="comment"> * @brief finish parsind chunked content data.</span>
+<a name="l00301"></a>00301 <span class="comment"> */</span>
+<a name="l00302"></a>00302 <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00026.html#gac93ea444be8644a86692ae98ec0b86c6" title="finish parsind chunked content data.">HTTP_PARSER_chunked_data_process</a>( <a class="code" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="code" href="a00026.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="code" href="a00003.html">HTTP_MESSAGE</a> *msg, <span class="keywordtype">void</span> *ctx);
+<a name="l00303"></a>00303 <span class="comment"></span>
+<a name="l00304"></a>00304 <span class="comment">/**</span>
+<a name="l00305"></a>00305 <span class="comment"> * @}</span>
+<a name="l00306"></a>00306 <span class="comment"> */</span>
 <a name="l00307"></a>00307 
-<a name="l00308"></a>00308 <span class="comment">// ===============================================================</span>
-<a name="l00309"></a>00309 
+<a name="l00308"></a>00308 
+<a name="l00309"></a>00309 <span class="comment">// ===============================================================</span>
 <a name="l00310"></a>00310 
-<a name="l00311"></a>00311 <span class="comment"></span>
-<a name="l00312"></a>00312 <span class="comment">/** </span>
-<a name="l00313"></a>00313 <span class="comment"> * @defgroup HTTP_REQUEST_PARSER parser of http requests</span>
-<a name="l00314"></a>00314 <span class="comment"> * @brief parser of  http requests</span>
-<a name="l00315"></a>00315 <span class="comment"> *</span>
-<a name="l00316"></a>00316 <span class="comment"> * @{</span>
-<a name="l00317"></a>00317 <span class="comment"> */</span>
-<a name="l00318"></a>00318 
-<a name="l00319"></a><a class="code" href="a00006.html">00319</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00006.html">tagHTTP_REQUEST_PARSER</a> {
-<a name="l00320"></a>00320 
-<a name="l00321"></a><a class="code" href="a00006.html#aabce9198ce8df4a2bdda071cc49d2f98">00321</a>   <a class="code" href="a00004.html">HTTP_PARSER</a>  <a class="code" href="a00006.html#aabce9198ce8df4a2bdda071cc49d2f98">base</a>;
-<a name="l00322"></a><a class="code" href="a00006.html#ae225e688d56dd152ac4ffa8c36d38770">00322</a>   <span class="keywordtype">void</span> *<a class="code" href="a00006.html#ae225e688d56dd152ac4ffa8c36d38770">ctx</a>;
-<a name="l00323"></a>00323 
-<a name="l00324"></a><a class="code" href="a00006.html#add769d72f649da147653730b07d10865">00324</a>   <a class="code" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a>     <a class="code" href="a00006.html#add769d72f649da147653730b07d10865">ev_header</a>;
-<a name="l00325"></a><a class="code" href="a00006.html#a23d5b42db28063c39c624b2ffcb51d0d">00325</a>   <a class="code" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> <a class="code" href="a00006.html#a23d5b42db28063c39c624b2ffcb51d0d">ev_body</a>  ;
-<a name="l00326"></a><a class="code" href="a00006.html#ae45a5d00172db9563679af5fb3f6f808">00326</a>   <a class="code" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a>          <a class="code" href="a00006.html#ae45a5d00172db9563679af5fb3f6f808">ev_finish</a>;  
-<a name="l00327"></a>00327 
-<a name="l00328"></a>00328 } <a class="code" href="a00026.html#ga21137341221e8a3b92b3a73253d2fb08">HTTP_REQUEST_PARSER</a>;
-<a name="l00329"></a>00329 
+<a name="l00311"></a>00311 
+<a name="l00312"></a>00312 <span class="comment"></span>
+<a name="l00313"></a>00313 <span class="comment">/** </span>
+<a name="l00314"></a>00314 <span class="comment"> * @defgroup HTTP_REQUEST_PARSER</span>
+<a name="l00315"></a>00315 <span class="comment"> * @brief parser of  http requests</span>
+<a name="l00316"></a>00316 <span class="comment"> *</span>
+<a name="l00317"></a>00317 <span class="comment"> * @{</span>
+<a name="l00318"></a>00318 <span class="comment"> */</span>
+<a name="l00319"></a>00319 
+<a name="l00320"></a><a class="code" href="a00006.html">00320</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00006.html">tagHTTP_REQUEST_PARSER</a> {
+<a name="l00321"></a>00321 
+<a name="l00322"></a><a class="code" href="a00006.html#aabce9198ce8df4a2bdda071cc49d2f98">00322</a>   <a class="code" href="a00004.html">HTTP_PARSER</a>  <a class="code" href="a00006.html#aabce9198ce8df4a2bdda071cc49d2f98">base</a>;
+<a name="l00323"></a><a class="code" href="a00006.html#ae225e688d56dd152ac4ffa8c36d38770">00323</a>   <span class="keywordtype">void</span> *<a class="code" href="a00006.html#ae225e688d56dd152ac4ffa8c36d38770">ctx</a>;
+<a name="l00324"></a>00324 
+<a name="l00325"></a><a class="code" href="a00006.html#add769d72f649da147653730b07d10865">00325</a>   <a class="code" href="a00026.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a>     <a class="code" href="a00006.html#add769d72f649da147653730b07d10865">ev_header</a>;
+<a name="l00326"></a><a class="code" href="a00006.html#a23d5b42db28063c39c624b2ffcb51d0d">00326</a>   <a class="code" href="a00026.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> <a class="code" href="a00006.html#a23d5b42db28063c39c624b2ffcb51d0d">ev_body</a>  ;
+<a name="l00327"></a><a class="code" href="a00006.html#ae45a5d00172db9563679af5fb3f6f808">00327</a>   <a class="code" href="a00026.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a>          <a class="code" href="a00006.html#ae45a5d00172db9563679af5fb3f6f808">ev_finish</a>;  
+<a name="l00328"></a>00328 
+<a name="l00329"></a>00329 } <a class="code" href="a00027.html#ga21137341221e8a3b92b3a73253d2fb08">HTTP_REQUEST_PARSER</a>;
 <a name="l00330"></a>00330 
-<a name="l00331"></a>00331 <span class="comment"></span>
-<a name="l00332"></a>00332 <span class="comment">/**</span>
-<a name="l00333"></a>00333 <span class="comment"> * @brief initialise request parser object</span>
-<a name="l00334"></a>00334 <span class="comment"> */</span>
-<a name="l00335"></a>00335 <span class="keywordtype">int</span> <a class="code" href="a00026.html#gaf0a986ea0582bfc4b011d2ac61aac9ca" title="initialise request parser object">HTTP_REQUEST_PARSER_init</a>( <a class="code" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, 
-<a name="l00336"></a>00336                               <a class="code" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> header_parsed,
-<a name="l00337"></a>00337                               <a class="code" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> on_message_body_data,
-<a name="l00338"></a>00338                               <a class="code" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> on_request_finished,
-<a name="l00339"></a>00339                               <span class="keywordtype">void</span> *ctx);
-<a name="l00340"></a>00340 
-<a name="l00341"></a>00341 <span class="comment"></span>
-<a name="l00342"></a>00342 <span class="comment">/**</span>
-<a name="l00343"></a>00343 <span class="comment"> * @brief parse a http request </span>
-<a name="l00344"></a>00344 <span class="comment"> * @return  0 - done parsing, 1 need more data, -1 error occured.</span>
-<a name="l00345"></a>00345 <span class="comment"> */</span>
-<a name="l00346"></a>00346 <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00026.html#ga84afcea80bc8b534b3eee27594d2afbd" title="parse a http request">HTTP_REQUEST_PARSER_process</a>( <a class="code" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="code" href="a00005.html">HTTP_REQUEST</a> *request, BF *data);
-<a name="l00347"></a>00347 <span class="comment"></span>
-<a name="l00348"></a>00348 <span class="comment">/**</span>
-<a name="l00349"></a>00349 <span class="comment"> * @}</span>
-<a name="l00350"></a>00350 <span class="comment"> */</span>
-<a name="l00351"></a>00351 
+<a name="l00331"></a>00331 
+<a name="l00332"></a>00332 <span class="comment"></span>
+<a name="l00333"></a>00333 <span class="comment">/**</span>
+<a name="l00334"></a>00334 <span class="comment"> * @brief initialise request parser object</span>
+<a name="l00335"></a>00335 <span class="comment"> */</span>
+<a name="l00336"></a>00336 <span class="keywordtype">int</span> <a class="code" href="a00027.html#gaf0a986ea0582bfc4b011d2ac61aac9ca" title="initialise request parser object">HTTP_REQUEST_PARSER_init</a>( <a class="code" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, 
+<a name="l00337"></a>00337                               <a class="code" href="a00026.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> header_parsed,
+<a name="l00338"></a>00338                               <a class="code" href="a00026.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> on_message_body_data,
+<a name="l00339"></a>00339                               <a class="code" href="a00026.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> on_request_finished,
+<a name="l00340"></a>00340                               <span class="keywordtype">void</span> *ctx);
+<a name="l00341"></a>00341 
+<a name="l00342"></a>00342 <span class="comment"></span>
+<a name="l00343"></a>00343 <span class="comment">/**</span>
+<a name="l00344"></a>00344 <span class="comment"> * @brief parse a http request </span>
+<a name="l00345"></a>00345 <span class="comment"> * @return  0 - done parsing, 1 need more data, -1 error occured.</span>
+<a name="l00346"></a>00346 <span class="comment"> */</span>
+<a name="l00347"></a>00347 <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00027.html#ga84afcea80bc8b534b3eee27594d2afbd" title="parse a http request">HTTP_REQUEST_PARSER_process</a>( <a class="code" href="a00006.html">HTTP_REQUEST_PARSER</a> *parser, <a class="code" href="a00005.html">HTTP_REQUEST</a> *request, BF *data);
+<a name="l00348"></a>00348 <span class="comment"></span>
+<a name="l00349"></a>00349 <span class="comment">/**</span>
+<a name="l00350"></a>00350 <span class="comment"> * @}</span>
+<a name="l00351"></a>00351 <span class="comment"> */</span>
 <a name="l00352"></a>00352 
-<a name="l00353"></a>00353 <span class="comment">// ===============================================================</span>
-<a name="l00354"></a>00354 
-<a name="l00355"></a>00355 <span class="comment"></span>
-<a name="l00356"></a>00356 <span class="comment">/**</span>
-<a name="l00357"></a>00357 <span class="comment"> * @defgroup HTTP_RESPONSE_PARSER - parser of http responses</span>
-<a name="l00358"></a>00358 <span class="comment"> * @brief parser of  http responses</span>
-<a name="l00359"></a>00359 <span class="comment"> *</span>
-<a name="l00360"></a>00360 <span class="comment"> * @{</span>
-<a name="l00361"></a>00361 <span class="comment"> */</span>
-<a name="l00362"></a>00362 
-<a name="l00363"></a><a class="code" href="a00008.html">00363</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00008.html">tagHTTP_RESPONSE_PARSER</a> {
-<a name="l00364"></a>00364 
-<a name="l00365"></a><a class="code" href="a00008.html#aed394eb19316db4cf7a4269649489937">00365</a>   <a class="code" href="a00004.html">HTTP_PARSER</a>  <a class="code" href="a00008.html#aed394eb19316db4cf7a4269649489937">base</a>;
-<a name="l00366"></a>00366 
-<a name="l00367"></a><a class="code" href="a00008.html#a1c4042cbfe80f87e256d02899c4988f6">00367</a>   <a class="code" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_HEADER_PARSED</a>       <a class="code" href="a00008.html#a1c4042cbfe80f87e256d02899c4988f6">ev_header</a>;
-<a name="l00368"></a><a class="code" href="a00008.html#aa4022d67b56504039b6351c6cdbd1ffb">00368</a>   <a class="code" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_MESSAGE_BODY_DATA</a>   <a class="code" href="a00008.html#aa4022d67b56504039b6351c6cdbd1ffb">ev_body</a>  ;
-<a name="l00369"></a><a class="code" href="a00008.html#aa6a6117b92ad2641df0cc4d5c491e9e4">00369</a>   <a class="code" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_FINISHED</a>            <a class="code" href="a00008.html#aa6a6117b92ad2641df0cc4d5c491e9e4">ev_finish</a>;  
-<a name="l00370"></a>00370 
-<a name="l00371"></a><a class="code" href="a00008.html#a89e4a9f3306c2644fa461cd4436cf3cc">00371</a>   <a class="code" href="a00025.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a>  <a class="code" href="a00008.html#a89e4a9f3306c2644fa461cd4436cf3cc">state</a>;
-<a name="l00372"></a><a class="code" href="a00008.html#ae0027fa6c255faf0cc9ae2a1858c3186">00372</a>   <span class="keywordtype">void</span> *<a class="code" href="a00008.html#ae0027fa6c255faf0cc9ae2a1858c3186">ctx</a>;
-<a name="l00373"></a>00373 
-<a name="l00374"></a>00374 } <a class="code" href="a00027.html#ga9fd23307e5d20621c1ae6973172f3d6b">HTTP_RESPONSE_PARSER</a>;
-<a name="l00375"></a>00375 
-<a name="l00376"></a>00376 <span class="comment"></span>
-<a name="l00377"></a>00377 <span class="comment">/**</span>
-<a name="l00378"></a>00378 <span class="comment"> * @brief initialise request parser object</span>
-<a name="l00379"></a>00379 <span class="comment"> */</span>
-<a name="l00380"></a>00380 <span class="keywordtype">int</span> <a class="code" href="a00027.html#ga00451ddae893b0ea2fb035d9cd1b319a" title="initialise request parser object">HTTP_RESPONSE_PARSER_init</a>( <a class="code" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser,
-<a name="l00381"></a>00381                                <a class="code" href="a00017.html#ab50a0c614e6c5e0b1364121270be9076" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_HEADER_PARSED</a> header_parsed,
-<a name="l00382"></a>00382                                <a class="code" href="a00017.html#a3c216fb9f06ecedc1565d2479c20a51e" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_MESSAGE_BODY_DATA</a> on_message_body_data,
-<a name="l00383"></a>00383                                <a class="code" href="a00017.html#a27680b8dcf2740e6afd384f0f0b26003" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESP_FINISHED</a> on_request_finished,
-<a name="l00384"></a>00384                                <span class="keywordtype">void</span> *ctx);
-<a name="l00385"></a>00385         
-<a name="l00386"></a>00386 
-<a name="l00387"></a>00387         <span class="comment"></span>
-<a name="l00388"></a>00388 <span class="comment">/**</span>
-<a name="l00389"></a>00389 <span class="comment"> * @brief parse a http response</span>
-<a name="l00390"></a>00390 <span class="comment"> * @return  0 - done parsing, 1 need more data, -1 error occured.</span>
-<a name="l00391"></a>00391 <span class="comment"> */</span>
-<a name="l00392"></a>00392 <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00027.html#gac69a62184875abe24177d14f0a9a0313" title="parse a http response">HTTP_RESPONSE_PARSER_process</a>( <a class="code" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *response, BF *data );
-<a name="l00393"></a>00393 <span class="comment"></span>
-<a name="l00394"></a>00394 <span class="comment">/**</span>
-<a name="l00395"></a>00395 <span class="comment"> * @}</span>
-<a name="l00396"></a>00396 <span class="comment"> */</span>
-<a name="l00397"></a>00397 
+<a name="l00353"></a>00353 
+<a name="l00354"></a>00354 <span class="comment">// ===============================================================</span>
+<a name="l00355"></a>00355 
+<a name="l00356"></a>00356 <span class="comment"></span>
+<a name="l00357"></a>00357 <span class="comment">/**</span>
+<a name="l00358"></a>00358 <span class="comment"> * @defgroup HTTP_RESPONSE_PARSER </span>
+<a name="l00359"></a>00359 <span class="comment"> * @brief parser of http responses</span>
+<a name="l00360"></a>00360 <span class="comment"> *</span>
+<a name="l00361"></a>00361 <span class="comment"> * @{</span>
+<a name="l00362"></a>00362 <span class="comment"> */</span>
+<a name="l00363"></a>00363 
+<a name="l00364"></a><a class="code" href="a00008.html">00364</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00008.html">tagHTTP_RESPONSE_PARSER</a> {
+<a name="l00365"></a>00365 
+<a name="l00366"></a><a class="code" href="a00008.html#aed394eb19316db4cf7a4269649489937">00366</a>   <a class="code" href="a00004.html">HTTP_PARSER</a>  <a class="code" href="a00008.html#aed394eb19316db4cf7a4269649489937">base</a>;
+<a name="l00367"></a>00367 
+<a name="l00368"></a><a class="code" href="a00008.html#a1c4042cbfe80f87e256d02899c4988f6">00368</a>   <a class="code" href="a00025.html#gab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a>       <a class="code" href="a00008.html#a1c4042cbfe80f87e256d02899c4988f6">ev_header</a>;
+<a name="l00369"></a><a class="code" href="a00008.html#aa4022d67b56504039b6351c6cdbd1ffb">00369</a>   <a class="code" href="a00025.html#ga3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a>   <a class="code" href="a00008.html#aa4022d67b56504039b6351c6cdbd1ffb">ev_body</a>  ;
+<a name="l00370"></a><a class="code" href="a00008.html#aa6a6117b92ad2641df0cc4d5c491e9e4">00370</a>   <a class="code" href="a00025.html#ga27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a>            <a class="code" href="a00008.html#aa6a6117b92ad2641df0cc4d5c491e9e4">ev_finish</a>;  
+<a name="l00371"></a>00371 
+<a name="l00372"></a><a class="code" href="a00008.html#a89e4a9f3306c2644fa461cd4436cf3cc">00372</a>   <a class="code" href="a00026.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a>  <a class="code" href="a00008.html#a89e4a9f3306c2644fa461cd4436cf3cc">state</a>;
+<a name="l00373"></a><a class="code" href="a00008.html#ae0027fa6c255faf0cc9ae2a1858c3186">00373</a>   <span class="keywordtype">void</span> *<a class="code" href="a00008.html#ae0027fa6c255faf0cc9ae2a1858c3186">ctx</a>;
+<a name="l00374"></a>00374 
+<a name="l00375"></a>00375 } <a class="code" href="a00028.html#ga9fd23307e5d20621c1ae6973172f3d6b">HTTP_RESPONSE_PARSER</a>;
+<a name="l00376"></a>00376 
+<a name="l00377"></a>00377 <span class="comment"></span>
+<a name="l00378"></a>00378 <span class="comment">/**</span>
+<a name="l00379"></a>00379 <span class="comment"> * @brief initialise request parser object</span>
+<a name="l00380"></a>00380 <span class="comment"> */</span>
+<a name="l00381"></a>00381 <span class="keywordtype">int</span> <a class="code" href="a00028.html#ga00451ddae893b0ea2fb035d9cd1b319a" title="initialise request parser object">HTTP_RESPONSE_PARSER_init</a>( <a class="code" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser,
+<a name="l00382"></a>00382                                <a class="code" href="a00025.html#gab50a0c614e6c5e0b1364121270be9076">HTTP_RESP_HEADER_PARSED</a> header_parsed,
+<a name="l00383"></a>00383                                <a class="code" href="a00025.html#ga3c216fb9f06ecedc1565d2479c20a51e">HTTP_RESP_MESSAGE_BODY_DATA</a> on_message_body_data,
+<a name="l00384"></a>00384                                <a class="code" href="a00025.html#ga27680b8dcf2740e6afd384f0f0b26003">HTTP_RESP_FINISHED</a> on_request_finished,
+<a name="l00385"></a>00385                                <span class="keywordtype">void</span> *ctx);
+<a name="l00386"></a>00386         
+<a name="l00387"></a>00387 
+<a name="l00388"></a>00388         <span class="comment"></span>
+<a name="l00389"></a>00389 <span class="comment">/**</span>
+<a name="l00390"></a>00390 <span class="comment"> * @brief parse a http response</span>
+<a name="l00391"></a>00391 <span class="comment"> * @return  0 - done parsing, 1 need more data, -1 error occured.</span>
+<a name="l00392"></a>00392 <span class="comment"> */</span>
+<a name="l00393"></a>00393 <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00028.html#gac69a62184875abe24177d14f0a9a0313" title="parse a http response">HTTP_RESPONSE_PARSER_process</a>( <a class="code" href="a00008.html">HTTP_RESPONSE_PARSER</a> *parser, <a class="code" href="a00007.html">HTTP_RESPONSE</a> *response, BF *data );
+<a name="l00394"></a>00394 <span class="comment"></span>
+<a name="l00395"></a>00395 <span class="comment">/**</span>
+<a name="l00396"></a>00396 <span class="comment"> * @}</span>
+<a name="l00397"></a>00397 <span class="comment"> */</span>
 <a name="l00398"></a>00398 
-<a name="l00399"></a>00399 <span class="comment">// ===============================================================</span>
-<a name="l00400"></a>00400 
-<a name="l00401"></a>00401 <span class="comment"></span>
-<a name="l00402"></a>00402 <span class="comment">/**</span>
-<a name="l00403"></a>00403 <span class="comment"> * @defgroup HTTP_RESPONSE_WRITER - writer of http responss</span>
-<a name="l00404"></a>00404 <span class="comment"> * @{</span>
-<a name="l00405"></a>00405 <span class="comment"> */</span>
-<a name="l00406"></a>00406 
-<a name="l00407"></a><a class="code" href="a00028.html#ga9e080e7ca1d16b175996b2cda2576672">00407</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
-<a name="l00408"></a><a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">00408</a>  <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>,
-<a name="l00409"></a><a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">00409</a>  <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>,
-<a name="l00410"></a><a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">00410</a>  <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>,
-<a name="l00411"></a><a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">00411</a>  <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>,
-<a name="l00412"></a><a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">00412</a>  <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>,
-<a name="l00413"></a><a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">00413</a>  <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>,
-<a name="l00414"></a>00414 
-<a name="l00415"></a>00415 } <a class="code" href="a00028.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a>;
+<a name="l00399"></a>00399 
+<a name="l00400"></a>00400 <span class="comment">// ===============================================================</span>
+<a name="l00401"></a>00401 
+<a name="l00402"></a>00402 <span class="comment"></span>
+<a name="l00403"></a>00403 <span class="comment">/**</span>
+<a name="l00404"></a>00404 <span class="comment"> * @defgroup HTTP_RESPONSE_WRITER </span>
+<a name="l00405"></a>00405 <span class="comment"> * @brief writer of http responss</span>
+<a name="l00406"></a>00406 <span class="comment"> * @{</span>
+<a name="l00407"></a>00407 <span class="comment"> */</span>
+<a name="l00408"></a>00408 
+<a name="l00409"></a><a class="code" href="a00029.html#ga9e080e7ca1d16b175996b2cda2576672">00409</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00410"></a><a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">00410</a>  <a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>,
+<a name="l00411"></a><a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">00411</a>  <a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>,
+<a name="l00412"></a><a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">00412</a>  <a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>,
+<a name="l00413"></a><a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">00413</a>  <a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>,
+<a name="l00414"></a><a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">00414</a>  <a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>,
+<a name="l00415"></a><a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">00415</a>  <a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>,
 <a name="l00416"></a>00416 
-<a name="l00417"></a><a class="code" href="a00009.html">00417</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00009.html">tagHTTP_RESPONSE_WRITER</a>
-<a name="l00418"></a>00418 {
-<a name="l00419"></a><a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">00419</a>    <a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *<a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">response</a>;
-<a name="l00420"></a><a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">00420</a>    <a class="code" href="a00028.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a> <a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a>; 
-<a name="l00421"></a><a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">00421</a>    DLISTUNR_position <a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">header_position</a>;
-<a name="l00422"></a><a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">00422</a>    <span class="keywordtype">int</span> <a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a>;
-<a name="l00423"></a>00423 
-<a name="l00424"></a>00424 }  <a class="code" href="a00028.html#ga666a8001dbee4674469ba1124d4f0e2b">HTTP_RESPONSE_WRITER</a>;
+<a name="l00417"></a>00417 } <a class="code" href="a00029.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a>;
+<a name="l00418"></a>00418 
+<a name="l00419"></a><a class="code" href="a00009.html">00419</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="a00009.html">tagHTTP_RESPONSE_WRITER</a>
+<a name="l00420"></a>00420 {
+<a name="l00421"></a><a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">00421</a>    <a class="code" href="a00007.html">HTTP_RESPONSE</a> *<a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">response</a>;
+<a name="l00422"></a><a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">00422</a>    <a class="code" href="a00029.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a> <a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a>; 
+<a name="l00423"></a><a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">00423</a>    DLISTUNR_position <a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">header_position</a>;
+<a name="l00424"></a><a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">00424</a>    <span class="keywordtype">int</span> <a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a>;
 <a name="l00425"></a>00425 
-<a name="l00426"></a>00426 
-<a name="l00427"></a><a class="code" href="a00028.html#gabf2bcdffe3cecb7ca6484489009d8004">00427</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00028.html#gabf2bcdffe3cecb7ca6484489009d8004">HTTP_RESPONSE_WRITER_init</a>( <a class="code" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, <a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *response)
-<a name="l00428"></a>00428 {
-<a name="l00429"></a>00429   writer-&gt;<a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">response</a> = response;
-<a name="l00430"></a>00430   writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>;
-<a name="l00431"></a>00431 }
-<a name="l00432"></a>00432 
-<a name="l00433"></a>00433 
-<a name="l00434"></a>00434 <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00028.html#ga52fcf93eeb1c013427abde12a234adff">HTTP_RESPONSE_WRITER_write</a>( <a class="code" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, BF *data );
-<a name="l00435"></a>00435 <span class="comment"></span>
-<a name="l00436"></a>00436 <span class="comment">/**</span>
-<a name="l00437"></a>00437 <span class="comment"> * @}</span>
-<a name="l00438"></a>00438 <span class="comment"> */</span>
-<a name="l00439"></a>00439 
-<a name="l00440"></a>00440 
-<a name="l00441"></a>00441 <span class="preprocessor">#endif</span>
-<a name="l00442"></a>00442 <span class="preprocessor"></span>
+<a name="l00426"></a>00426 }  <a class="code" href="a00029.html#ga666a8001dbee4674469ba1124d4f0e2b">HTTP_RESPONSE_WRITER</a>;
+<a name="l00427"></a>00427 
+<a name="l00428"></a>00428 
+<a name="l00429"></a><a class="code" href="a00029.html#gabf2bcdffe3cecb7ca6484489009d8004">00429</a> M_INLINE <span class="keywordtype">void</span> <a class="code" href="a00029.html#gabf2bcdffe3cecb7ca6484489009d8004">HTTP_RESPONSE_WRITER_init</a>( <a class="code" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, <a class="code" href="a00007.html">HTTP_RESPONSE</a> *response)
+<a name="l00430"></a>00430 {
+<a name="l00431"></a>00431   writer-&gt;<a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">response</a> = response;
+<a name="l00432"></a>00432   writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00029.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>;
+<a name="l00433"></a>00433 }
+<a name="l00434"></a>00434 
+<a name="l00435"></a>00435 
+<a name="l00436"></a>00436 <a class="code" href="a00026.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> <a class="code" href="a00029.html#ga52fcf93eeb1c013427abde12a234adff">HTTP_RESPONSE_WRITER_write</a>( <a class="code" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, BF *data );
+<a name="l00437"></a>00437 <span class="comment"></span>
+<a name="l00438"></a>00438 <span class="comment">/**</span>
+<a name="l00439"></a>00439 <span class="comment"> * @}</span>
+<a name="l00440"></a>00440 <span class="comment"> */</span>
+<a name="l00441"></a>00441 
+<a name="l00442"></a>00442 
+<a name="l00443"></a>00443 <span class="preprocessor">#endif</span>
+<a name="l00444"></a>00444 <span class="preprocessor"></span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:17:12 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

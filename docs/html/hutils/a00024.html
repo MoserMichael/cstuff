@@ -228,7 +228,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="a00017_source.html#l00137">137</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <a class="code" href="a00029.html#gab82397c63ee9a3456c6bdb8e109a007a">URI_free</a>( &amp;message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
+  <a class="code" href="a00030.html#gab82397c63ee9a3456c6bdb8e109a007a">URI_free</a>( &amp;message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
   
   <span class="keywordflow">if</span> (message-&gt;<a class="code" href="a00005.html#a2a389a3f86e4c557499801b8b9999000">host_header</a>) {
     free( message-&gt;<a class="code" href="a00005.html#a2a389a3f86e4c557499801b8b9999000">host_header</a>);
@@ -268,7 +268,7 @@ Functions</h2></td></tr>
     <span class="keywordflow">return</span> -1;
   }
 
-  <a class="code" href="a00029.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( &amp; message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
+  <a class="code" href="a00030.html#ga8ff72430ab547d0151fc8c58c8039825">URI_init</a>( &amp; message-&gt;<a class="code" href="a00005.html#aa43cab316cd65661dc36cf8f5d0b78c5">url</a> );
 
   message-&gt;<a class="code" href="a00005.html#a1a7c838fee849231ffe764fd004dadab">expect_100_continue</a> = message-&gt;<a class="code" href="a00005.html#a013e5373d35354986ff53b318452edf5">has_host_header</a> = 0;
   message-&gt;<a class="code" href="a00005.html#a429a80b15eec069ce2f6ddf3751ccbb5">raw_url</a> = message-&gt;<a class="code" href="a00005.html#a2a389a3f86e4c557499801b8b9999000">host_header</a> = 0;
@@ -313,7 +313,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:17:12 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -74,9 +74,9 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="a00015_source.html#l00113">113</a> of file <a class="el" href="a00015_source.html">hparse.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">if</span> (<a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;content-length&quot;</span>,  <a class="code" href="a00015.html#a94ed21024788a6468bef1254fbcc601a">parser_content_length_header</a>) ||
-      <a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;connection&quot;</span>,  <a class="code" href="a00015.html#a40d967c801e7387bf035ca0180cf65c5">parser_connection_header</a>) || 
-       <a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;transfer-encoding&quot;</span>,  <a class="code" href="a00015.html#a60ca36cce17075b298907e33a65e8074">parser_transfer_encoding_header</a>) ) {
+  <span class="keywordflow">if</span> (<a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;content-length&quot;</span>,  <a class="code" href="a00015.html#a94ed21024788a6468bef1254fbcc601a">parser_content_length_header</a>) ||
+      <a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;connection&quot;</span>,  <a class="code" href="a00015.html#a40d967c801e7387bf035ca0180cf65c5">parser_connection_header</a>) || 
+       <a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;transfer-encoding&quot;</span>,  <a class="code" href="a00015.html#a60ca36cce17075b298907e33a65e8074">parser_transfer_encoding_header</a>) ) {
     <span class="keywordflow">return</span> -1;
   }
   <span class="keywordflow">return</span> 0;
@@ -101,8 +101,8 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="a00015_source.html#l00123">123</a> of file <a class="el" href="a00015_source.html">hparse.c</a>.</p>
 <div class="fragment"><pre class="fragment">{
-  <span class="keywordflow">if</span> (<a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;expect&quot;</span>,  <a class="code" href="a00015.html#aacd9120df894136a7ee383efcb4698c3">parser_expect_header</a>) || 
-      <a class="code" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;host&quot;</span>,  <a class="code" href="a00015.html#a1afdaf777be1d5dfaab44388faf46531">parser_host_header</a>) ) {
+  <span class="keywordflow">if</span> (<a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;expect&quot;</span>,  <a class="code" href="a00015.html#aacd9120df894136a7ee383efcb4698c3">parser_expect_header</a>) || 
+      <a class="code" href="a00026.html#gae0af51ac516c4e68c9d7ba843fbea541" title="add a parser for a specific http header type">HTTP_add_header_parser</a>( parser, <span class="stringliteral">&quot;host&quot;</span>,  <a class="code" href="a00015.html#a1afdaf777be1d5dfaab44388faf46531">parser_host_header</a>) ) {
     <span class="keywordflow">return</span> -1;
   }
   <span class="keywordflow">return</span> 0;
@@ -139,8 +139,8 @@ Functions</h2></td></tr>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> rt;
   
-  rt = <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
-  <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
+  rt = <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
+  <span class="keywordflow">if</span> (rt != <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
     <span class="keywordflow">return</span> -1;
   }
 
@@ -186,8 +186,8 @@ Functions</h2></td></tr>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> rt;
   
-  rt = <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
-  <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
+  rt = <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
+  <span class="keywordflow">if</span> (rt != <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
     <span class="keywordflow">return</span> -1;
   }
 
@@ -233,8 +233,8 @@ Functions</h2></td></tr>
   <a class="code" href="a00005.html">HTTP_REQUEST</a> *req;
   <span class="keywordtype">int</span> rt;
   
-  rt = <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
-  <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
+  rt = <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
+  <span class="keywordflow">if</span> (rt != <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
         <span class="keywordflow">return</span> -1;
   }
 
@@ -281,13 +281,13 @@ Functions</h2></td></tr>
   req-&gt;<a class="code" href="a00005.html#a013e5373d35354986ff53b318452edf5">has_host_header</a> = 1;
   req-&gt;<a class="code" href="a00005.html#a53fed18a89d849dadd1d59b353c48553">host_header_port</a> = -1;
   
-  rt = <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
-  <span class="keywordflow">if</span> (rt == <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
+  rt = <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
+  <span class="keywordflow">if</span> (rt == <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
     req-&gt;<a class="code" href="a00005.html#a2a389a3f86e4c557499801b8b9999000">host_header</a> = strdup( parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a> );
-    rt = <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
-    <span class="keywordflow">if</span> (rt == <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a> &amp;&amp; parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[0] == <span class="charliteral">&#39;:&#39;</span>) {
-      rt = <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
-      <span class="keywordflow">if</span> (rt == <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
+    rt = <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
+    <span class="keywordflow">if</span> (rt == <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a> &amp;&amp; parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[0] == <span class="charliteral">&#39;:&#39;</span>) {
+      rt = <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
+      <span class="keywordflow">if</span> (rt == <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
         req-&gt;<a class="code" href="a00005.html#a53fed18a89d849dadd1d59b353c48553">host_header_port</a> = atoi( parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a> );
       }
     }
@@ -327,8 +327,8 @@ Functions</h2></td></tr>
 <div class="fragment"><pre class="fragment">{
   <span class="keywordtype">int</span> rt;
   
-  rt = <a class="code" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
-  <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
+  rt = <a class="code" href="a00026.html#ga8d14d1a7cd91bbd477872efafe8e9962" title="return next token while parsing http header value.">HTTP_get_header_token</a>( parser );
+  <span class="keywordflow">if</span> (rt != <a class="code" href="a00026.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>) {
     <span class="keywordflow">return</span> -1;
   }
 
@@ -343,7 +343,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:17:12 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
