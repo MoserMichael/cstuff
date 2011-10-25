@@ -10,14 +10,23 @@
 // ====================================================================
 #define RESERVED_FOR_CHUNK_HEADER_SIZE 15
 
-#define LAST_CHUNK_NOT_FIRST "\r\n0\r\n"
-#define LAST_CHUNK_NOT_FIRST_SIZE  5
+#define LAST_CHUNK_NOT_FIRST "\r\n0\r\n\r\n"
+#define LAST_CHUNK_NOT_FIRST_SIZE 7
 
-#define LAST_CHUNK_FIRST  "0\r\n"
-#define LAST_CHUNK_FIRST_SIZE  3
+#define LAST_CHUNK_FIRST  "0\r\n\r\n"
+#define LAST_CHUNK_FIRST_SIZE  5
 
 #define HTTP_100_CONTINUE_RESPONSE "HTTP/1.1 100 Continue\r\n\r\n"
 #define HTTP_100_CONTINUE_RESPONSE_LEN 25
+
+#define HTTP_400_BAD_REQUEST "HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\n\r\n"
+#define HTTP_400_BAD_REQUEST_LEN 47
+
+#define HTTP_404_NOT_FOUND "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n"
+#define HTTP_404_NOT_FOUND_LEN 45
+
+#define HTTP_500_SERVER_ERROR "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\n\r\n"
+#define HTTP_500_SERVER_ERROR_LEN 57
 
 
 // ====================================================================
@@ -75,6 +84,8 @@ static int sink_req_header_parsed(HTTP_REQUEST *request,  FILTER_CONTEXT *contex
   DATA_SINK_FILTER_CONNECTION_CONTEXT *sink;
   VIRTUAL_HOST_DEFINITION *vhosts_def; 
   size_t i, found;
+  RDATA rd;
+
 
   // no host header in HTTP 1.0; go to the next filter.
   if (request->version == HTTP_VERSION_1_0) {
@@ -83,7 +94,8 @@ static int sink_req_header_parsed(HTTP_REQUEST *request,  FILTER_CONTEXT *contex
 
   // presence of Host header is absolutely required with HTTP/1.1
   if (!request->has_host_header) {
-    return -1;
+     MLOG_INFO( "HTTP/1.1 no host header" ); 
+     goto bad_request;
   }
 
   sink_filter = (DATA_SINK_FILTER *) context->filter;
@@ -103,7 +115,8 @@ static int sink_req_header_parsed(HTTP_REQUEST *request,  FILTER_CONTEXT *contex
   }
 
   if (!found) {
-     return -1;
+     MLOG_INFO( "Host header %s %d does not correspond to any virtual hosts", request->host_header, request->host_header_port ); 
+     goto bad_request;
   }
   
   // now that the virtual host is found - remember the next filter index for the following notifications.
@@ -113,7 +126,19 @@ static int sink_req_header_parsed(HTTP_REQUEST *request,  FILTER_CONTEXT *contex
   // call next filter.
   context = context + vhosts_def->next_filter_idx;
   return context->filter->on_request_header_parsed( request, context );
+
+bad_request:
+  rd.no_chunk.data =  HTTP_400_BAD_REQUEST;
+  rd.no_chunk.data_size =  HTTP_400_BAD_REQUEST_LEN; 
+
+  context->filter->on_response_data( 0, 0, rd, context );
+  //call_next_filter_response_data( 0, 0, rd, context );
+  return -1;
+ 
 }
+
+
+
 static int sink_req_data(HTTP_REQUEST *request, void *data, size_t data_size,  FILTER_CONTEXT *context )
 {
   DATA_SINK_FILTER_CONNECTION_CONTEXT * sink;
@@ -152,15 +177,18 @@ static int    sink_on_response_header       (HTTP_RESPONSE *response,  FILTER_CO
     stat =  HTTP_RESPONSE_WRITER_write( &sink->writer, bf );
     switch(stat) {
       case PARSER_STATUS_ERROR:
+        MLOG_INFO( "Failed to format response header" );
         return -1;
       case PARSER_STATUS_COMPLETED:
         if (WEBBY_impl_send_data( sink->impl_connection_ctx, bf->get_pos, BF_get_size( bf ) ) ) {
+	  MLOG_INFO( "Failed to send response header" );
 	  return -1;
 	}
 	return 0;
 
       case PARSER_STATUS_NEED_MORE_DATA:
         if (WEBBY_impl_send_data( sink->impl_connection_ctx, bf->get_pos, BF_get_size( bf ) ) ) {
+	  MLOG_INFO( "Failed to send response header" );
 	  return -1;
 	}
         break;
@@ -192,12 +220,15 @@ static int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chu
       len = snprintf( chunk_header, sizeof( chunk_header ),  "%x\r\n", BF_get_size(bf) );
     }
     if ( (bf->start - bf->bf) < len) {
+      MLOG_INFO( "Failed to send chunk - buffer did not reserved enough room before start of chunk data" );
       return -1;
     }
     bf->start -= len;
     strncpy( (char *) bf->start, chunk_header, len );
  
-    return WEBBY_impl_send_data( sink->impl_connection_ctx, bf->start, bf->put_pos - bf->start  );
+    if (WEBBY_impl_send_data( sink->impl_connection_ctx, bf->start, bf->put_pos - bf->start  )) {
+     MLOG_INFO( "Failed to send chunk data" );
+    }
  
   } else {
     
@@ -208,8 +239,12 @@ static int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chu
       data = LAST_CHUNK_FIRST;
       size = LAST_CHUNK_FIRST_SIZE;
     }
-    return WEBBY_impl_send_data( sink->impl_connection_ctx, data, size  );
+    if (WEBBY_impl_send_data( sink->impl_connection_ctx, data, size  )) {
+      MLOG_INFO( "Failed to send chunk data" );
+    }
+ 
   }
+  return 0;
 }
 
  
@@ -281,12 +316,15 @@ int DATA_SINK_FILTER_add_filter_to_vhost( DATA_SINK_FILTER *vhost_filter, size_t
   VIRTUAL_HOST_DEFINITION  *vhost; 
   HTTP_FILTER *last_filter;
   HTTP_FILTER **tmp;
+  int is_default_vhost;
 
   // get virtual host defnition
   if (ARRAY_size( &vhost_filter->vhosts ) == 0) {
     vhost = &vhost_filter->default_vhost; 
+    is_default_vhost = 1;
   } else {
     vhost = (VIRTUAL_HOST_DEFINITION  *) ARRAY_at( &vhost_filter->vhosts, vhost_idx );
+    is_default_vhost = 0;
   }
   if (!vhost) {
     return -1;
@@ -304,9 +342,13 @@ int DATA_SINK_FILTER_add_filter_to_vhost( DATA_SINK_FILTER *vhost_filter, size_t
     vhost->next_filter_idx = filter_idx;
     vhost->last_filter_idx = filter_idx;
 
+    new_filter->next_request_filter_idx = (size_t) -1;  ;
     new_filter->next_response_filter_idx = 0;
-    new_filter->next_request_filter_idx = (size_t) -1; 
  
+    if (is_default_vhost) {
+      vhost_filter->base.next_request_filter_idx = filter_idx;
+      vhost_filter->base.next_response_filter_idx = (size_t) -1;
+    }
   } else {
     new_filter->next_response_filter_idx =  vhost->last_filter_idx;
     new_filter->next_request_filter_idx = (size_t) -1; 
@@ -319,20 +361,6 @@ int DATA_SINK_FILTER_add_filter_to_vhost( DATA_SINK_FILTER *vhost_filter, size_t
   }
   return 0;
 }
-
-
-
-
-// ====================================================================
-#if 0
-typedef struct tagVIRTUAL_HOST_FILTER {
- VIRTUAL_HOST_FILTER;
-
-
-
-
-#endif
-
 
 // ====================================================================
 
@@ -451,12 +479,23 @@ static int servlets_req_finished	 (HTTP_REQUEST *request, FILTER_CONTEXT *contex
   for(i = 0, scontext = (SERVLET_CONTEXT *) fcontext->servlet_contexts;  i < ARRAY_size( &runner->servlets ); ++i, ++scontext) {
      status = scontext->servlet->servlet_action( &fcontext->request, &fcontext->response, scontext );  
      if (status == SERVLET_REQUEST_HANDLED) {
-       break;
+       return 0;
      }
      if (status == SERVLET_REQUEST_ERROR) {
+       
+       rd.no_chunk.data =  HTTP_500_SERVER_ERROR;
+       rd.no_chunk.data_size = HTTP_500_SERVER_ERROR_LEN; 
+
+       call_next_filter_response_data( 0, 0, rd,  context );
        return -1;
      }
   }
+ 
+  rd.no_chunk.data =  HTTP_404_NOT_FOUND;
+  rd.no_chunk.data_size =   HTTP_404_NOT_FOUND_LEN; 
+
+  call_next_filter_response_data( 0, 0, rd,  context );
+ 
   return 0;
 }
 
@@ -465,12 +504,16 @@ static int servlets_connection_close     (FILTER_CONTEXT *context)
   size_t i;
   SERVLET_FILTER_CONNECTION_CONTEXT *fcontext = (SERVLET_FILTER_CONNECTION_CONTEXT * ) context->connection_ctx;
   SERVLET_RUNNER_FILTER *runner = (SERVLET_RUNNER_FILTER *) context->filter; 
-  HTTP_SERVLET *servlet;
   SERVLET_CONTEXT *scontext;
 
+  if (!fcontext->servlet_contexts) {
+    return 0;
+  }
+
   for(i = 0, scontext = (SERVLET_CONTEXT *) fcontext->servlet_contexts;  i < ARRAY_size( &runner->servlets ); ++i, ++scontext) {
-     servlet = (HTTP_SERVLET *) ARRAY_at( &runner->servlets, i );
-     servlet->free_connection( scontext ); 
+     if (scontext->servlet->free_connection) {
+       scontext->servlet->free_connection( scontext ); 
+     }
   }
   return 0;
 }
@@ -625,7 +668,7 @@ WEBBY *WEBBY_init( WEBBY_CONFIG * cfg )
   }
 
   // get the implementation object.
-  if (WEBBY_impl_new( ret, &ret->impl ) ) {
+  if (WEBBY_impl_new( ret, cfg, &ret->impl ) ) {
     return 0;
   }
   return ret;
@@ -683,27 +726,27 @@ int WEBBY_shutdown( WEBBY *server )
 
 static int http_header_parsed	   (HTTP_REQUEST *request, void *ctx)
 {
+  MLOG_TRACE( "webby - http header parsed" );
+  
   FILTER_CONTEXT *filter_data = (FILTER_CONTEXT *) ctx;
-
-  ++filter_data;
 
   return filter_data->filter->on_request_header_parsed(request, filter_data );
 }
 
 static int http_on_message_data       (HTTP_REQUEST *request, void *data, size_t data_size, void *ctx)
 {
+  MLOG_TRACE( "webby - request body data parsed. size %u", data_size );
+  
   FILTER_CONTEXT *filter_data = (FILTER_CONTEXT *) ctx;
-
-  ++filter_data;
 
   return filter_data->filter->on_request_data( request, data, data_size, filter_data );
 }
 
 static int http_req_finished	   (HTTP_REQUEST *request, void *ctx)
 {
+  MLOG_TRACE( "webby - request parsing finished" );
+  
   FILTER_CONTEXT *filter_data = (FILTER_CONTEXT *) ctx;
-
-  ++filter_data;
 
   return filter_data->filter->on_request_completed( request, filter_data );
 }
@@ -733,6 +776,7 @@ WEBBY_CONNECTION *WEBBY_new_connection( WEBBY *server, void *implconndata  )
   }
   memcpy( filter_data, server->filter_ctx_layout, server->filter_ctx_layout_size );
   ret->num_filters = ARRAY_size( &server->filters );
+  ret->filter_data = filter_data;
 
   sink_conn_ctx = DATA_SINK_FILTER_CONNECTION_CONTEXT_init( implconndata, &ret->in_buf ); 
   if (! sink_conn_ctx) {   
@@ -777,6 +821,7 @@ int WEBBY_connection_data_received( WEBBY_CONNECTION * connection  )
   st = HTTP_REQUEST_PARSER_process( &connection->request_parser, &connection->request, &connection->in_buf );
   switch( st ) {
     case PARSER_STATUS_ERROR:
+      MLOG_INFO( "Error during parsing of HTTP header" ); 
       return -1;
     case PARSER_STATUS_COMPLETED:
       HTTP_REQUEST_init( &connection->request );
@@ -793,9 +838,16 @@ void WEBBY_connection_close( WEBBY_CONNECTION * connection  )
   FILTER_CONTEXT *ctx;
   size_t i;
 
-  for( ctx = connection->filter_data, i = 0; i < connection->num_filters ; ++ctx ) {
+  if (!connection->filter_data) {
+    return;
+  }
+
+  for( ctx = connection->filter_data, i = 0; i < connection->num_filters ; ++ctx, ++i ) {
     ctx->filter->on_connection_close( ctx );
-  } 
+  }
+
+  free( connection->filter_data );
+  connection->filter_data = 0;
 }
 
 // ====================================================================
@@ -988,4 +1040,5 @@ int HTTP_response_finish( HTTP_servlet_response *resp )
   
   return call_next_filter_response_completed ( &resp->response, resp->filter_context );
 }
- 
+
+

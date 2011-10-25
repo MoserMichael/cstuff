@@ -1,0 +1,69 @@
+webbymain -c <cfg_file> [ -v <vhost_definition> ] * [ -f <filter_definition> ] * [ -s <servlet_definition> ] *
+
+Starts webby http server.
+
+OPTIONS:
+
+-c <cfg_file>   
+  the configuration file. This parameter is mandatory,
+  it also has to be the first command line option.
+  for format of file see CONFIGURATION FILE section
+
+-v <hostname>[,<port number>]  
+  defines a new virtual host. This parameter is optional
+  If no virtual hosts are defined, then all values of HTTP header Host are accepted.
+  If there are virtual hosts, the nonly those values that match a virtual host definition
+  are accepted.
+  The first virtual host will be refered to as virtual host Id 0, the second as 
+  virtual host Id 1, etc.
+
+-f [<virtual host id>],<shared library name>[,<filter factory function>]
+  instantiate a filter object from shared library and add it to the processing chain.
+ 
+  <virtual host id>	    - (optional) the virutal host id that the filter will be added to.
+  <shared library name>     - file name of shared library that hosts this filter.
+  <filter factory function> - (optional) the exported function name that creates the filter.
+    If this parameter is ommited then factory function load_filter is assumed.
+
+-s <shared library name>[,<servlet factory function>]
+  instantiate a servlet object from shared library and add it to the processing chain.
+
+  <shared library name>     - file name of shared library that hosts this shared library
+  <filter factory function> - (optional) the exported function name that creates the servlet.
+
+  If this parameter is ommited then factory function load_servlet is assumed.
+
+
+CONFIGURATION FILE
+
+An example configuration file:
+
+-------------------------------------------------------------------
+
+#  listening on the following interface (0.0.0.0 on all interfaces)
+host=0.0.0.0
+
+# listening address
+port=12321
+
+# backlog of accepted connections (accept(2) parameter)
+listen_backlog=30
+
+# read and write buffer sizes of connections
+socket_buffer_size=8192
+
+# maximum number of serviced connections.
+max_connections=300
+
+# read / write timeout (in seconds)
+io_timeout=30
+
+# connection idle timeout (in seconds)
+idle_timeout=300
+
+# size of the thread stack in memory pages.
+stack_pages_per_thread=8
+
+
+
+

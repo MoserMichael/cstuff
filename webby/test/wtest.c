@@ -1,5 +1,6 @@
 #include <webby/webby.h>
 #include <webby/webbyimpl.h>
+#include <butils/logg.h>
 #include <stdio.h>
 #include "vtest/vtest.h"
 
@@ -7,9 +8,11 @@
 
 
 
-int WEBBY_impl_new( WEBBY *srv, void **ret )
+int WEBBY_impl_new( WEBBY *srv, WEBBY_CONFIG *cfg, void **ret )
 {
-  M_UNUSED(srv);
+  M_UNUSED( cfg );
+  M_UNUSED( srv );
+
   *ret = 0;
   return 0;
 }
@@ -114,7 +117,7 @@ void WEBBY_one_test(const char *in_file_name, const char *out_file_name, int con
   WEBBY_CONFIG cfg;
   WEBBY_CONNECTION *conn;
   FILE *fp_in,*fp_out;
-  int ch,rt;
+  int ch,rt, error_processing; 
   char tmp_out[ 512 ], cmd[ 512 ];
 
   fprintf(stderr,"\tChecking %s\n", in_file_name );
@@ -141,17 +144,22 @@ void WEBBY_one_test(const char *in_file_name, const char *out_file_name, int con
 
   conn = WEBBY_new_connection( server, fp_out );
 
+  error_processing = 0; 
   while( 1 ) {
     ch = fgetc( fp_in );
     if (ch == -1) {
       break;
     }
     VASSERT( BF_put_uint8_t( &conn->in_buf, (uint8_t) ch ) == 0 );
-    VASSERT( ! WEBBY_connection_data_received( conn ) );
+    if (  WEBBY_connection_data_received( conn ) ) {
+      error_processing = 1; 
+      break;
+    }
+    WEBBY_connection_data_received( conn ); 
   }
   
   fclose(fp_in);
-  if (! connection_close ) {
+  if (! connection_close || error_processing) {
     fclose(fp_out);
   }
   VASSERT( WEBBY_shutdown( server ) == 0 );
@@ -164,12 +172,14 @@ void WEBBY_one_test(const char *in_file_name, const char *out_file_name, int con
 
 void WEBBY_test()
 {
+  //MLOG_init( MLOG_LEVEL_TRACE, MLOG_ACTION_CONSOLE, 0);
+ 
   WEBBY_one_test("data/chunk.test", "data/chunk.result", 1, header_echo_servlet_action);
 
   WEBBY_one_test("data/contentlen.test", "data/contentlen.result", 1, fixed_response_servlet_action);
 
   WEBBY_one_test("data/contentlen-100.test", "data/contentlen-100.result", 1, fixed_response_servlet_action);
-
-
+  
+  WEBBY_one_test("data/no-host-header.test", "data/no-host-header.result", 1, fixed_response_servlet_action);
 }
 

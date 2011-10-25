@@ -233,15 +233,18 @@ M_INLINE int call_next_filter_response_completed (HTTP_RESPONSE *response, FILTE
  * @}
  */
 
+// =============================================================================================
 /**
  * @defgroup HTTP_SERVLET
- * @brief Servlet - the logic of processing the http request and producer of http response
- *
- * @{
+ * @brief a servlet is a class that processes the http request and produces the http response
  */
 
-// =============================================================================================
-
+/** 
+ * @defgroup HTTP_servlet_request
+ * @ingroup HTTP_SERVLET
+ * @brief represents the http request and includes methods to access the request header and request body.
+ * @{
+ */
 typedef struct tagHTTP_servlet_request
 {
   HTTP_REQUEST *request;
@@ -280,9 +283,19 @@ M_INLINE DBUF * HTTP_servlet_data( HTTP_servlet_request * req ) {
   return req->request_data;
 }
 
+/**
+ *
+ * @}
+ */
 
 // =============================================================================================
 
+/** 
+ * @defgroup HTTP_servlet_response
+ * @ingroup HTTP_SERVLET
+ * @brief represents the http response and includes methods to set response header and send the response body.
+ * @{
+ */
 typedef struct tagHTTP_servlet_response {
   HTTP_RESPONSE response;
   HTTP_REQUEST *request;
@@ -334,23 +347,42 @@ BF *HTTP_response_get_chunk_buffer( HTTP_servlet_response *resp, size_t chunk_si
  */
 int HTTP_response_write_chunk( HTTP_servlet_response *resp, BF *bf);
 
+/**
+ *
+ * @}
+ */
 
 
 // =============================================================================================
 
+/** 
+ * @addtogroup HTTP_SERVLET
+ *
+ * @{
+ */
+
 struct tagHTTP_SERVLET;
 
 typedef enum {
-  SERVLET_REQUEST_IGNORED,  /** the request has not been handled by this servlet */
-  SERVLET_REQUEST_HANDLED,  /** the request has been handled by this servlet */
-  SERVLET_REQUEST_ERROR,    /** error occured while servlet instance has handled a request  */
+  /** error occured while servlet instance has handled a request  */
+  SERVLET_REQUEST_ERROR = -1,    
 
-
+  /** the request has been handled by this servlet */
+  SERVLET_REQUEST_HANDLED = 0,  
+  
+  /** the request has not been handled by this servlet */
+  SERVLET_REQUEST_IGNORED = 1,
+  
+ 
 } SERVLET_STATUS;
 
 typedef struct tagSERVLET_CONTEXT {
-  struct tagHTTP_SERVLET *servlet; /** pointer to servlet */
-  void *connection_ctx;    /** per connection data of servlet */
+  /** pointer to servlet */
+  struct tagHTTP_SERVLET *servlet;   
+  
+  /** per connection data of servlet */
+  void *connection_ctx;    
+
 } SERVLET_CONTEXT;
 
 /**
@@ -410,14 +442,28 @@ M_INLINE void HTTP_SERVLET_init( HTTP_SERVLET *servlet, HTTP_SERVLET_INIT init_s
  */
 
 typedef struct tagWEBBY_CONFIG {
-  SOCKADDR listening_address;	   /** listening address */
-  int listen_backlog;		   /** listen(2) backlog parameter */
-  int socket_buffer_size;          /** socket buffer size, in bytes, for each client connection (both receive and send buffer sizes) */
-  int max_connections;		   /** maximum number of connections supported at the same time */
-  int io_timeout;                  /** read / write timeout in seconds. */
-  int idle_timeout;		   /** idle timeout in seconds - if connection that inactive for more than this value between requests then connection will be close */
-  int stack_pages_per_thread;	  /** pages per thread */
- 
+  
+  /** listening address */
+  SOCKADDR listening_address;	     
+  
+  /** listen(2) backlog parameter */
+  int listen_backlog;		     
+  
+  /** socket buffer size, in bytes, for each client connection (both receive and send buffer sizes) */
+  int socket_buffer_size;            
+  
+  /** maximum number of connections supported at the same time */
+  int max_connections;		     
+  
+  /** read / write timeout in seconds. */
+  int io_timeout;                    
+  
+  /** idle timeout in seconds - if connection that inactive for more than this value between requests then connection will be close */
+  int idle_timeout;		     
+  
+  /** pages per thread */
+  int stack_pages_per_thread;	   
+
 } WEBBY_CONFIG;
 
 int WEBBY_CONFIG_load( WEBBY_CONFIG *cfg, const char *file);
@@ -438,17 +484,26 @@ struct tagSERVLET_RUNNER_FILTER;
  * @{
  */
 typedef struct tagWEBBY {
-  void *impl;			    /** implementation object used to send / receive data on connection */
+  /** implementation object used to send / receive data on connection */
+  void *impl;			      
   
-  FILTER_CONTEXT *filter_ctx_layout;/** precompouted filter context layout - copied for each new connection */
-  size_t	  filter_ctx_layout_size;       /** size of filter context layoyt */
-
-  ARRAY filters;		    /** all filters, all of them */
-  struct tagSERVLET_RUNNER_FILTER * servlet_runner_filter; /** the filter that runs servlets */
+  /** precompouted filter context layout - copied for each new connection */
+  FILTER_CONTEXT *filter_ctx_layout;  
+ 
+  /** size of filter context layoyt */
+  size_t	  filter_ctx_layout_size;       
+  
+  /** all filters, all of them */
+  ARRAY filters;		     
+  
+  /** the filter that runs servlets */
+  struct tagSERVLET_RUNNER_FILTER * servlet_runner_filter;   
+  
   struct tagDATA_SINK_FILTER * sink_filter;
 
-  WEBBY_CONFIG *cfg;		    /** configuration */
-  
+  /** configuration */
+  WEBBY_CONFIG *cfg;		      
+
 } WEBBY;
 
 
