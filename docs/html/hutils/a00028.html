@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>HTTP Parser and message builder / objects in plain C: Member List</title>
+<title>HTTP Parser and message builder / objects in plain C: - writer of http responss</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,29 +24,256 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tagHTTP_MESSAGE Member List</div>  </div>
+<div class="title">- writer of http responss</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00003.html">tagHTTP_MESSAGE</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a8db203330e6b1c3fb859697a1d81494c">content_length</a></td><td><a class="el" href="a00003.html">tagHTTP_MESSAGE</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a7aa368f6b6bd57c4503b088bd60f6168">flags</a></td><td><a class="el" href="a00003.html">tagHTTP_MESSAGE</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00003.html#a15b288a53fc55ce8d89c1fdef6aab26e">header_values</a></td><td><a class="el" href="a00003.html">tagHTTP_MESSAGE</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 00:52:51 for HTTP Parser and message builder / objects in plain C by&#160;
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html">tagHTTP_RESPONSE_WRITER</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <br class="typebreak"/>
+<a class="el" href="a00009.html">tagHTTP_RESPONSE_WRITER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga666a8001dbee4674469ba1124d4f0e2b">HTTP_RESPONSE_WRITER</a></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a> { <br/>
+&#160;&#160;<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>, 
+<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>, 
+<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>, 
+<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>, 
+<br/>
+&#160;&#160;<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>, 
+<a class="el" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>
+<br/>
+ }</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">M_INLINE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#gabf2bcdffe3cecb7ca6484489009d8004">HTTP_RESPONSE_WRITER_init</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, <a class="el" href="a00007.html">HTTP_RESPONSE</a> *response)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ga52fcf93eeb1c013427abde12a234adff">HTTP_RESPONSE_WRITER_write</a> (<a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *writer, BF *data)</td></tr>
+</table>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga666a8001dbee4674469ba1124d4f0e2b"></a><!-- doxytag: member="http.h::HTTP_RESPONSE_WRITER" ref="ga666a8001dbee4674469ba1124d4f0e2b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00009.html">tagHTTP_RESPONSE_WRITER</a>   <a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="ga9e080e7ca1d16b175996b2cda2576672"></a><!-- doxytag: member="http.h::HTTP_RESPONSE_WR_STATE" ref="ga9e080e7ca1d16b175996b2cda2576672" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00028.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9"></a><!-- doxytag: member="HTTP_RESPONSE_WR_STATUS_LINE" ref="gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9" args="" -->HTTP_RESPONSE_WR_STATUS_LINE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553"></a><!-- doxytag: member="HTTP_RESPONSE_WR_CONNECTION_CLOSE" ref="gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553" args="" -->HTTP_RESPONSE_WR_CONNECTION_CLOSE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20"></a><!-- doxytag: member="HTTP_RESPONSE_WR_CHUNKED" ref="gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20" args="" -->HTTP_RESPONSE_WR_CHUNKED</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d"></a><!-- doxytag: member="HTTP_RESPONSE_WR_CONTENT_LENGTH" ref="gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d" args="" -->HTTP_RESPONSE_WR_CONTENT_LENGTH</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9"></a><!-- doxytag: member="HTTP_RESPONSE_WR_HEADERS" ref="gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9" args="" -->HTTP_RESPONSE_WR_HEADERS</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86"></a><!-- doxytag: member="HTTP_RESPONSE_WR_EOF" ref="gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86" args="" -->HTTP_RESPONSE_WR_EOF</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00407">407</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+ <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>,
+ <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>,
+ <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>,
+ <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>,
+ <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>,
+ <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>,
+
+} <a class="code" href="a00028.html#ga9e080e7ca1d16b175996b2cda2576672">HTTP_RESPONSE_WR_STATE</a>;
+</pre></div>
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="gabf2bcdffe3cecb7ca6484489009d8004"></a><!-- doxytag: member="http.h::HTTP_RESPONSE_WRITER_init" ref="gabf2bcdffe3cecb7ca6484489009d8004" args="(HTTP_RESPONSE_WRITER *writer, HTTP_RESPONSE *response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">M_INLINE void HTTP_RESPONSE_WRITER_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *&#160;</td>
+          <td class="paramname"><em>writer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00007.html">HTTP_RESPONSE</a> *&#160;</td>
+          <td class="paramname"><em>response</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00427">427</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  writer-&gt;<a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">response</a> = response;
+  writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga52fcf93eeb1c013427abde12a234adff"></a><!-- doxytag: member="http.h::HTTP_RESPONSE_WRITER_write" ref="ga52fcf93eeb1c013427abde12a234adff" args="(HTTP_RESPONSE_WRITER *writer, BF *data)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> HTTP_RESPONSE_WRITER_write </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00009.html">HTTP_RESPONSE_WRITER</a> *&#160;</td>
+          <td class="paramname"><em>writer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BF *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00992">992</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{ 
+  <a class="code" href="a00007.html" title="HTTP_RESPONSE - holds information of an http response.">HTTP_RESPONSE</a> *resp = writer-&gt;<a class="code" href="a00009.html#aa2d61ec9418183f40814fe75a576441d">response</a>;
+  <span class="keywordtype">char</span> line_buf[40];
+  <span class="keywordtype">int</span> nlen;
+
+  <span class="keywordflow">while</span>(1) {
+  <span class="keywordflow">switch</span>( writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> ) {
+    <span class="keywordflow">case</span> <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9">HTTP_RESPONSE_WR_STATUS_LINE</a>:
+      nlen = sprintf(line_buf,<span class="stringliteral">&quot;HTTP/%s %d %s\r\n&quot;</span>, <a class="code" href="a00016.html#a21309e0c6192fd4b8a34e3aabf7ccad7">http_version_to_str</a>( resp-&gt;<a class="code" href="a00007.html#a648d45911f049bab758356e9dc4713b4">version</a> ), resp-&gt;<a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a>, <a class="code" href="a00016.html#ae3f621842d3c96a248f1a1d6a7b21d9e">get_reason_phrase</a>( resp-&gt;<a class="code" href="a00007.html#abc01517233416f0822c535a25876ef2c">status_code</a> ) );
+      <span class="keywordflow">if</span> (BF_putn( bf, line_buf, nlen) ) {
+         <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+      }
+      writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>; 
+    <span class="comment">//break;</span>
+    <span class="keywordflow">case</span> <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553">HTTP_RESPONSE_WR_CONNECTION_CLOSE</a>:
+      <span class="keywordflow">if</span> (resp-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>.<a class="code" href="a00003.html#a7aa368f6b6bd57c4503b088bd60f6168">flags</a> &amp; <a class="code" href="a00017.html#a0a66a9905aa743b7f731f1c5f1f9e981">HTTP_MESSAGE_FLAG_CONNECTION_CLOSE</a> ) {
+        <span class="keywordflow">if</span> (BF_putn( bf, <a class="code" href="a00016.html#a3c2b0d5e4dae1a3b6b38e47275dac583">S_CONNECTION_CLOSE</a>, <a class="code" href="a00016.html#a36802223fbb5d545dcbb6e4e684ba519">S_CONNECTION_CLOSE_LEN</a> ) ) {
+          <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+        } 
+      }
+      writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>; 
+    <span class="comment">//break;</span>
+    <span class="keywordflow">case</span> <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20">HTTP_RESPONSE_WR_CHUNKED</a>:
+      <span class="keywordflow">if</span> (resp-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>.<a class="code" href="a00003.html#a7aa368f6b6bd57c4503b088bd60f6168">flags</a> &amp; <a class="code" href="a00017.html#ac8a5bb01ca6fedc97a5a5377397f5a84">HTTP_MESSAGE_FLAG_TRANSFER_CHUNKED</a> ) {
+        <span class="keywordflow">if</span> (BF_putn( bf, <a class="code" href="a00016.html#aa6f01c37e720b04b0f7271e8077c104f">S_TRANSFER_CHUNKED</a>, <a class="code" href="a00016.html#ae639266697246d81f6b3a89a700d6071">S_TRANSFER_CHUNKED_LEN</a> ) ) {
+          <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+        }
+      }
+      writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>; 
+     <span class="comment">//break;</span>
+    <span class="keywordflow">case</span> <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d">HTTP_RESPONSE_WR_CONTENT_LENGTH</a>:
+      <span class="keywordflow">if</span> (resp-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>.<a class="code" href="a00003.html#a7aa368f6b6bd57c4503b088bd60f6168">flags</a> &amp; <a class="code" href="a00017.html#a091dd3c50642a1632d85fe2d552d4a69">HTTP_MESSAGE_FLAG_HAS_CONTENT_LENGTH</a> ) {
+        nlen = sprintf(line_buf,<span class="stringliteral">&quot;Content-Length: %d\r\n&quot;</span>, resp-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>.<a class="code" href="a00003.html#a8db203330e6b1c3fb859697a1d81494c">content_length</a> );
+        <span class="keywordflow">if</span> (BF_putn( bf, line_buf, nlen) ) {
+          <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+        }
+      }
+      writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>; 
+      writer-&gt;<a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">header_position</a> = DLISTUNR_get_first( &amp;resp-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>.<a class="code" href="a00003.html#a15b288a53fc55ce8d89c1fdef6aab26e">header_values</a> );
+      writer-&gt;<a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a> = 0;
+     <span class="comment">//break;</span>
+    <span class="keywordflow">case</span> <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9">HTTP_RESPONSE_WR_HEADERS</a>:
+      <span class="keywordflow">if</span> ( ! DLISTUNR_is_eof( &amp;resp-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>.<a class="code" href="a00003.html#a15b288a53fc55ce8d89c1fdef6aab26e">header_values</a>, writer-&gt;<a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">header_position</a>)) {
+        <a class="code" href="a00011.html">STRINGPAIR</a> *header = (<a class="code" href="a00011.html">STRINGPAIR</a> *) DLISTUNR_at(&amp;resp-&gt;<a class="code" href="a00007.html#af1abce2e9b1a425200c02c4c9fa8b710">base</a>.<a class="code" href="a00003.html#a15b288a53fc55ce8d89c1fdef6aab26e">header_values</a>, writer-&gt;<a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">header_position</a>);
+        <span class="keywordflow">switch</span>(writer-&gt;<a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a>) {
+            <span class="keywordflow">case</span> 0:
+                <span class="keywordflow">if</span> (BF_putn( bf, header-&gt;<a class="code" href="a00011.html#ac2ecc9b0399e0309fbba83739f1c4c40">key</a>, strlen(header-&gt;<a class="code" href="a00011.html#ac2ecc9b0399e0309fbba83739f1c4c40">key</a>))) {
+                  <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+                }
+                writer-&gt;<a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a> = 1;
+              <span class="comment">//break;</span>
+                
+            <span class="keywordflow">case</span> 1:
+                <span class="keywordflow">if</span> (BF_putn( bf, <span class="stringliteral">&quot;: &quot;</span>, 2)) {
+                  <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+                }
+                writer-&gt;<a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a> = 2;
+              <span class="comment">//break;</span>
+
+            <span class="keywordflow">case</span> 2:
+                <span class="keywordflow">if</span> (BF_putn( bf, header-&gt;<a class="code" href="a00011.html#a396c2de767eded3dc6ec524ea1a714a8">value</a>, strlen(header-&gt;<a class="code" href="a00011.html#a396c2de767eded3dc6ec524ea1a714a8">value</a>))) {
+                  <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+                }
+                writer-&gt;<a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a> = 3;
+              <span class="comment">//break;</span>
+
+            <span class="keywordflow">case</span> 3:
+                <span class="keywordflow">if</span> (BF_putn( bf, <span class="stringliteral">&quot;\r\n&quot;</span>, 2)) {
+                  <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+                }
+                writer-&gt;<a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">header_position</a> = DLISTUNR_next(writer-&gt;<a class="code" href="a00009.html#acdfd9571982ff46434b3d95001148d38">header_position</a>);
+                writer-&gt;<a class="code" href="a00009.html#af272831a354b83a6ef0f011e9673cf53">state_header</a> = 0;
+                <span class="keywordflow">break</span>;
+           }
+      } <span class="keywordflow">else</span> {
+         writer-&gt;<a class="code" href="a00009.html#a5cdc7b37263211895aea5b90e695b774">state</a> = <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>;
+         <span class="keywordflow">goto</span> wr_eof;
+        
+      }
+      <span class="keywordflow">break</span>;
+    <span class="keywordflow">case</span> <a class="code" href="a00028.html#gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86">HTTP_RESPONSE_WR_EOF</a>:
+wr_eof:    
+      <span class="keywordflow">if</span> (BF_putn( bf, <span class="stringliteral">&quot;\r\n&quot;</span>, 2)) {
+          <a class="code" href="a00016.html#a3ee4cd5eec968a38b7280244c5d72bc4">RETURN_WRITER_MORE_DATA</a>;
+      }
+      <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>; 
+    }
+  }
+
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

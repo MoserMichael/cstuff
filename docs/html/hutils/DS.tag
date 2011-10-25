@@ -407,71 +407,71 @@
     <member kind="function">
       <type>int</type>
       <name>HTTP_PARSER_init</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>aa5370897809bd47280b44b5fa679d2d3</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa5370897809bd47280b44b5fa679d2d3</anchor>
       <arglist>(HTTP_PARSER *parser)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_PARSER_free</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>af7d9eeee759da719084291a7cd155c94</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaf7d9eeee759da719084291a7cd155c94</anchor>
       <arglist>(HTTP_PARSER *parser)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_add_header_parser</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a300d31aa0dcc4d92aebf3d92a318e336</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gae0af51ac516c4e68c9d7ba843fbea541</anchor>
       <arglist>(HTTP_PARSER *parser, const char *header_name, HEADER_ACTION action_func)</arglist>
     </member>
     <member kind="function">
       <type>PARSER_STATUS</type>
       <name>HTTP_get_line</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>ac5e21a738d73d75ebec125c97038961a</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gac5e21a738d73d75ebec125c97038961a</anchor>
       <arglist>(BF *bf, char **start_line)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_get_header_token</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a8d14d1a7cd91bbd477872efafe8e9962</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8d14d1a7cd91bbd477872efafe8e9962</anchor>
       <arglist>(HTTP_PARSER *parser)</arglist>
     </member>
     <member kind="function">
       <type>PARSER_STATUS</type>
       <name>HTTP_parse_header_line</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>aa737a4c11979880764fb8031d5dfc488</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa737a4c11979880764fb8031d5dfc488</anchor>
       <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *request, BF *bf, int *eof_header)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_PARSER_content_length_init</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a8b4ee246e968497579a9d9d194a92571</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8b4ee246e968497579a9d9d194a92571</anchor>
       <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *msg)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_PARSER_content_length_process</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>ab30ee3c576a69e486a1ca2497a23c8bd</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga34a73b6fe4c943ce1831c8b93c7fb426</anchor>
       <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_PARSER_chunked_data_init</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a0cfd781757cd6db4812087df78424fda</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga0cfd781757cd6db4812087df78424fda</anchor>
       <arglist>(HTTP_PARSER *parser)</arglist>
     </member>
     <member kind="function">
       <type>PARSER_STATUS</type>
       <name>HTTP_PARSER_chunked_data_process</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>ac93ea444be8644a86692ae98ec0b86c6</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gac93ea444be8644a86692ae98ec0b86c6</anchor>
       <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
     </member>
     <member kind="function" static="yes">
@@ -484,22 +484,22 @@
     <member kind="function">
       <type>int</type>
       <name>HTTP_REQUEST_PARSER_init</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>af0a986ea0582bfc4b011d2ac61aac9ca</anchor>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>gaf0a986ea0582bfc4b011d2ac61aac9ca</anchor>
       <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQ_HEADER_PARSED header_parsed, HTTP_REQ_MESSAGE_BODY_DATA on_message_body_data, HTTP_REQ_FINISHED on_request_finished, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>PARSER_STATUS</type>
       <name>HTTP_REQUEST_PARSER_process</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a9a488531e6617f48b28fe0b7b70a7a76</anchor>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>ga84afcea80bc8b534b3eee27594d2afbd</anchor>
       <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQUEST *request, BF *bf)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_REQUEST_is_persistent</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>aa3893b9709b438c414da743d2e9ba285</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gaa3893b9709b438c414da743d2e9ba285</anchor>
       <arglist>(HTTP_REQUEST *message)</arglist>
     </member>
     <member kind="function" static="yes">
@@ -512,15 +512,15 @@
     <member kind="function">
       <type>int</type>
       <name>HTTP_RESPONSE_PARSER_init</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a00451ddae893b0ea2fb035d9cd1b319a</anchor>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>ga00451ddae893b0ea2fb035d9cd1b319a</anchor>
       <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESP_HEADER_PARSED header_parsed, HTTP_RESP_MESSAGE_BODY_DATA on_message_body_data, HTTP_RESP_FINISHED on_request_finished, void *ctx)</arglist>
     </member>
     <member kind="function">
       <type>PARSER_STATUS</type>
       <name>HTTP_RESPONSE_PARSER_process</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a985a62f492200e8dae3c80ccc6f5ef91</anchor>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>gac69a62184875abe24177d14f0a9a0313</anchor>
       <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESPONSE *response, BF *bf)</arglist>
     </member>
     <member kind="function" static="yes">
@@ -540,8 +540,8 @@
     <member kind="function">
       <type>PARSER_STATUS</type>
       <name>HTTP_RESPONSE_WRITER_write</name>
-      <anchorfile>a00016.html</anchorfile>
-      <anchor>a8bc4b9726c48f3c1a1cbf3f9156f7d09</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>ga52fcf93eeb1c013427abde12a234adff</anchor>
       <arglist>(HTTP_RESPONSE_WRITER *writer, BF *bf)</arglist>
     </member>
   </compound>
@@ -603,212 +603,308 @@
     <member kind="typedef">
       <type>int(*</type>
       <name>HEADER_ACTION</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>aef3a97b256b09f6a4ef1527ead10d52f</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gaef3a97b256b09f6a4ef1527ead10d52f</anchor>
       <arglist>)(struct tagHTTP_MESSAGE *request, struct tagHTTP_PARSER *parser)</arglist>
     </member>
     <member kind="typedef">
       <type>enum tagHttp_method_type</type>
       <name>Http_method_type</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ac5182036656d3198819f12ef9ec9d08b</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gac5182036656d3198819f12ef9ec9d08b</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>enum tagHttp_version_type</type>
       <name>Http_version_type</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a06dc534889d1806e0448e56dd9757dae</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga06dc534889d1806e0448e56dd9757dae</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct tagHTTP_REQUEST</type>
+      <name>HTTP_REQUEST</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga7548b2c494ccf7acc059409a5d21ccaf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>enum tagHTTP_STATE_PARSING</type>
+      <name>HTTP_STATE_PARSING</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga5112371ddec9917722b85465dc5b3062</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct tagHTTP_PARSER</type>
+      <name>HTTP_PARSER</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga1a0ea2ba6e2fd94a692102126e5ac0f5</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>int(*</type>
+      <name>HTTP_PROCESS_MSG_DATA</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaccc79fd2431c99ecd68a090469da5d40</anchor>
+      <arglist>)(HTTP_MESSAGE *msg, void *data, size_t data_size, void *ctx)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>int(*</type>
       <name>HTTP_REQ_HEADER_PARSED</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a50bf360c3d97280b2666c1809a506e2a</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga50bf360c3d97280b2666c1809a506e2a</anchor>
       <arglist>)(HTTP_REQUEST *request, void *ctx)</arglist>
     </member>
     <member kind="typedef">
       <type>int(*</type>
       <name>HTTP_REQ_MESSAGE_BODY_DATA</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>aa24d67ab42bb7b2da8c617b1b21b54a9</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa24d67ab42bb7b2da8c617b1b21b54a9</anchor>
       <arglist>)(HTTP_REQUEST *request, void *data, size_t data_size, void *ctx)</arglist>
     </member>
     <member kind="typedef">
       <type>int(*</type>
       <name>HTTP_REQ_FINISHED</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>aaad3a1f235bb76629fb76266f229a6bc</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaaad3a1f235bb76629fb76266f229a6bc</anchor>
       <arglist>)(HTTP_REQUEST *request, void *ctx)</arglist>
     </member>
     <member kind="typedef">
-      <type>enum tagHTTP_STATE_PARSING</type>
-      <name>HTTP_STATE_PARSING</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a5112371ddec9917722b85465dc5b3062</anchor>
+      <type>struct tagHTTP_REQUEST_PARSER</type>
+      <name>HTTP_REQUEST_PARSER</name>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>ga21137341221e8a3b92b3a73253d2fb08</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct tagHTTP_RESPONSE_PARSER</type>
+      <name>HTTP_RESPONSE_PARSER</name>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>ga9fd23307e5d20621c1ae6973172f3d6b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct tagHTTP_RESPONSE_WRITER</type>
+      <name>HTTP_RESPONSE_WRITER</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>ga666a8001dbee4674469ba1124d4f0e2b</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
       <name>tagHttp_method_type</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga254d7e697a3b26a246614dd867644816</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_GET</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816a90754abc55dbb76862fa50abee5af659</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a90754abc55dbb76862fa50abee5af659</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_POST</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816a1944682922ac79b2e682312d8f3f71e2</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a1944682922ac79b2e682312d8f3f71e2</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_PUT</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816af7557927b605c64f35f629b43823b1c9</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816af7557927b605c64f35f629b43823b1c9</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_HEAD</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816a27e993d38ff6b43284014a10798b6223</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a27e993d38ff6b43284014a10798b6223</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_OPTIONS</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816af6b02f8ff0467dbdaebb24f0a996cdd4</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816af6b02f8ff0467dbdaebb24f0a996cdd4</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_DELETE</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816a761371f7807255b7912afbac2f665ffe</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a761371f7807255b7912afbac2f665ffe</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_TRACE</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816a95b5b19305a14de1400aedfdec1c1eed</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a95b5b19305a14de1400aedfdec1c1eed</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_METHOD_CONNECT</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a254d7e697a3b26a246614dd867644816a3755246bea87120e8311dc914d573fbf</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a3755246bea87120e8311dc914d573fbf</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
       <name>tagHttp_version_type</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a92ff2f79ea14e92657972a36d58883a1</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga92ff2f79ea14e92657972a36d58883a1</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_VERSION_1_0</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a92ff2f79ea14e92657972a36d58883a1a3932308db22120ce049dd60f3430b814</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga92ff2f79ea14e92657972a36d58883a1a3932308db22120ce049dd60f3430b814</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_VERSION_1_1</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a92ff2f79ea14e92657972a36d58883a1af1a34119b438038bc609a273f9bc08c6</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga92ff2f79ea14e92657972a36d58883a1af1a34119b438038bc609a273f9bc08c6</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
       <name>tagHTTP_STATE_PARSING</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8399cf0558ed67328d5221a21a155cd2</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_STATE_PARSING_REQUEST_LINE</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_STATE_PARSING_HEADERS</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_STATE_PARSING_BODY_CHUNK_HEADER</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_STATE_PARSING_BODY_CHUNK_DATA</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3</anchor>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>PARSER_STATUS</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gace21a5a69d5e05c5c42d4861f37a49c4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>PARSER_STATUS_ERROR</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>PARSER_STATUS_COMPLETED</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>PARSER_STATUS_NEED_MORE_DATA</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>HTTP_TK_TYPE</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga7c53c9c3c95f9f3ac02e3c9428639f8a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_QUOTED_STRING</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_TEXT</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_SEPARATOR</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_EOF</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
       <name>HTTP_RESPONSE_WR_STATE</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9e080e7ca1d16b175996b2cda2576672</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>ga9e080e7ca1d16b175996b2cda2576672</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_RESPONSE_WR_STATUS_LINE</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_RESPONSE_WR_CONNECTION_CLOSE</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_RESPONSE_WR_CHUNKED</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_RESPONSE_WR_CONTENT_LENGTH</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_RESPONSE_WR_HEADERS</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>HTTP_RESPONSE_WR_EOF</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86</anchor>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -860,33 +956,138 @@
       <anchor>ga405406f091c3d4236fc340910391cc87</anchor>
       <arglist>(HTTP_MESSAGE *message, DLISTUNR_position *pos)</arglist>
     </member>
-    <member kind="typedef">
-      <type>struct tagHTTP_REQUEST</type>
-      <name>HTTP_REQUEST</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a7548b2c494ccf7acc059409a5d21ccaf</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type>int</type>
       <name>HTTP_REQUEST_is_persistent</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>aa3893b9709b438c414da743d2e9ba285</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gaa3893b9709b438c414da743d2e9ba285</anchor>
       <arglist>(HTTP_REQUEST *message)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE int</type>
       <name>HTTP_REQUEST_init</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ab308a83fced871be3693cdb3fba3ec09</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gab308a83fced871be3693cdb3fba3ec09</anchor>
       <arglist>(HTTP_REQUEST *message)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE void</type>
       <name>HTTP_REQUEST_free</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a4ab326e8402a38ac166e2f90a50d91ec</anchor>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga4ab326e8402a38ac166e2f90a50d91ec</anchor>
       <arglist>(HTTP_REQUEST *message)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_init</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa5370897809bd47280b44b5fa679d2d3</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_free</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaf7d9eeee759da719084291a7cd155c94</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_add_header_parser</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gae0af51ac516c4e68c9d7ba843fbea541</anchor>
+      <arglist>(HTTP_PARSER *parser, const char *header_name, HEADER_ACTION action)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_get_line</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gac5e21a738d73d75ebec125c97038961a</anchor>
+      <arglist>(BF *bf, char **start_line)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_get_header_token</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8d14d1a7cd91bbd477872efafe8e9962</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_parse_header_line</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa737a4c11979880764fb8031d5dfc488</anchor>
+      <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *request, BF *bf, int *eof_header)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_content_length_init</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8b4ee246e968497579a9d9d194a92571</anchor>
+      <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *msg)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_PARSER_content_length_process</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga34a73b6fe4c943ce1831c8b93c7fb426</anchor>
+      <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_chunked_data_init</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga0cfd781757cd6db4812087df78424fda</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_PARSER_chunked_data_process</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gac93ea444be8644a86692ae98ec0b86c6</anchor>
+      <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_REQUEST_PARSER_init</name>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>gaf0a986ea0582bfc4b011d2ac61aac9ca</anchor>
+      <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQ_HEADER_PARSED header_parsed, HTTP_REQ_MESSAGE_BODY_DATA on_message_body_data, HTTP_REQ_FINISHED on_request_finished, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_REQUEST_PARSER_process</name>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>ga84afcea80bc8b534b3eee27594d2afbd</anchor>
+      <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQUEST *request, BF *data)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_RESPONSE_PARSER_init</name>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>ga00451ddae893b0ea2fb035d9cd1b319a</anchor>
+      <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESP_HEADER_PARSED header_parsed, HTTP_RESP_MESSAGE_BODY_DATA on_message_body_data, HTTP_RESP_FINISHED on_request_finished, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_RESPONSE_PARSER_process</name>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>gac69a62184875abe24177d14f0a9a0313</anchor>
+      <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESPONSE *response, BF *data)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE void</type>
+      <name>HTTP_RESPONSE_WRITER_init</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gabf2bcdffe3cecb7ca6484489009d8004</anchor>
+      <arglist>(HTTP_RESPONSE_WRITER *writer, HTTP_RESPONSE *response)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_RESPONSE_WRITER_write</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>ga52fcf93eeb1c013427abde12a234adff</anchor>
+      <arglist>(HTTP_RESPONSE_WRITER *writer, BF *data)</arglist>
     </member>
     <member kind="typedef">
       <type>struct tagHTTP_RESPONSE</type>
@@ -929,207 +1130,6 @@
       <anchorfile>a00017.html</anchorfile>
       <anchor>a7ca06985dfe2540a91cc74927115cde0</anchor>
       <arglist>(HTTP_RESPONSE *message)</arglist>
-    </member>
-    <member kind="enumeration">
-      <name>PARSER_STATUS</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ace21a5a69d5e05c5c42d4861f37a49c4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>PARSER_STATUS_ERROR</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>PARSER_STATUS_COMPLETED</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>PARSER_STATUS_NEED_MORE_DATA</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumeration">
-      <name>HTTP_TK_TYPE</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a7c53c9c3c95f9f3ac02e3c9428639f8a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>HTTP_TK_QUOTED_STRING</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>HTTP_TK_TEXT</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>HTTP_TK_SEPARATOR</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>HTTP_TK_EOF</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>struct tagHTTP_PARSER</type>
-      <name>HTTP_PARSER</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a1a0ea2ba6e2fd94a692102126e5ac0f5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>int(*</type>
-      <name>HTTP_PROCESS_MSG_DATA</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>accc79fd2431c99ecd68a090469da5d40</anchor>
-      <arglist>)(HTTP_MESSAGE *msg, void *data, size_t data_size, void *ctx)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_PARSER_init</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>aa5370897809bd47280b44b5fa679d2d3</anchor>
-      <arglist>(HTTP_PARSER *parser)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_PARSER_free</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>af7d9eeee759da719084291a7cd155c94</anchor>
-      <arglist>(HTTP_PARSER *parser)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_add_header_parser</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ae0af51ac516c4e68c9d7ba843fbea541</anchor>
-      <arglist>(HTTP_PARSER *parser, const char *header_name, HEADER_ACTION action)</arglist>
-    </member>
-    <member kind="function">
-      <type>PARSER_STATUS</type>
-      <name>HTTP_get_line</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ac5e21a738d73d75ebec125c97038961a</anchor>
-      <arglist>(BF *bf, char **start_line)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_get_header_token</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8d14d1a7cd91bbd477872efafe8e9962</anchor>
-      <arglist>(HTTP_PARSER *parser)</arglist>
-    </member>
-    <member kind="function">
-      <type>PARSER_STATUS</type>
-      <name>HTTP_parse_header_line</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>aa737a4c11979880764fb8031d5dfc488</anchor>
-      <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *request, BF *bf, int *eof_header)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_PARSER_content_length_init</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a8b4ee246e968497579a9d9d194a92571</anchor>
-      <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *msg)</arglist>
-    </member>
-    <member kind="function">
-      <type>PARSER_STATUS</type>
-      <name>HTTP_PARSER_content_length_process</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a34a73b6fe4c943ce1831c8b93c7fb426</anchor>
-      <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_PARSER_chunked_data_init</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a0cfd781757cd6db4812087df78424fda</anchor>
-      <arglist>(HTTP_PARSER *parser)</arglist>
-    </member>
-    <member kind="function">
-      <type>PARSER_STATUS</type>
-      <name>HTTP_PARSER_chunked_data_process</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ac93ea444be8644a86692ae98ec0b86c6</anchor>
-      <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
-    </member>
-    <member kind="typedef">
-      <type>struct tagHTTP_REQUEST_PARSER</type>
-      <name>HTTP_REQUEST_PARSER</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a21137341221e8a3b92b3a73253d2fb08</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_REQUEST_PARSER_init</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>af0a986ea0582bfc4b011d2ac61aac9ca</anchor>
-      <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQ_HEADER_PARSED header_parsed, HTTP_REQ_MESSAGE_BODY_DATA on_message_body_data, HTTP_REQ_FINISHED on_request_finished, void *ctx)</arglist>
-    </member>
-    <member kind="function">
-      <type>PARSER_STATUS</type>
-      <name>HTTP_REQUEST_PARSER_process</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a84afcea80bc8b534b3eee27594d2afbd</anchor>
-      <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQUEST *request, BF *data)</arglist>
-    </member>
-    <member kind="typedef">
-      <type>struct tagHTTP_RESPONSE_PARSER</type>
-      <name>HTTP_RESPONSE_PARSER</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a9fd23307e5d20621c1ae6973172f3d6b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>HTTP_RESPONSE_PARSER_init</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a00451ddae893b0ea2fb035d9cd1b319a</anchor>
-      <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESP_HEADER_PARSED header_parsed, HTTP_RESP_MESSAGE_BODY_DATA on_message_body_data, HTTP_RESP_FINISHED on_request_finished, void *ctx)</arglist>
-    </member>
-    <member kind="function">
-      <type>PARSER_STATUS</type>
-      <name>HTTP_RESPONSE_PARSER_process</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>ac69a62184875abe24177d14f0a9a0313</anchor>
-      <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESPONSE *response, BF *data)</arglist>
-    </member>
-    <member kind="typedef">
-      <type>struct tagHTTP_RESPONSE_WRITER</type>
-      <name>HTTP_RESPONSE_WRITER</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a666a8001dbee4674469ba1124d4f0e2b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>M_INLINE void</type>
-      <name>HTTP_RESPONSE_WRITER_init</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>abf2bcdffe3cecb7ca6484489009d8004</anchor>
-      <arglist>(HTTP_RESPONSE_WRITER *writer, HTTP_RESPONSE *response)</arglist>
-    </member>
-    <member kind="function">
-      <type>PARSER_STATUS</type>
-      <name>HTTP_RESPONSE_WRITER_write</name>
-      <anchorfile>a00017.html</anchorfile>
-      <anchor>a52fcf93eeb1c013427abde12a234adff</anchor>
-      <arglist>(HTTP_RESPONSE_WRITER *writer, BF *data)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -1471,8 +1471,8 @@
     <member kind="function">
       <type>int</type>
       <name>URI_parse</name>
-      <anchorfile>a00021.html</anchorfile>
-      <anchor>ab9acb8adb11be6e657892d858f40e917</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gab9acb8adb11be6e657892d858f40e917</anchor>
       <arglist>(URI *url, char *line)</arglist>
     </member>
   </compound>
@@ -1484,169 +1484,169 @@
     <member kind="define">
       <type>#define</type>
       <name>URI_FLAGS_PARSE_PARTS</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a681056ca2fe0804b02c215e651dcbb2c</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga681056ca2fe0804b02c215e651dcbb2c</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>URI_FLAGS_IS_ABSOLUTE_URI</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>afa8525689f71c3fcc360d66eb75b79ed</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gafa8525689f71c3fcc360d66eb75b79ed</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>URI_FLAGS_IS_OPAQUE</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ab18d910ab6fe32e5e2bd49e138f1f1e5</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gab18d910ab6fe32e5e2bd49e138f1f1e5</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>URI_FLAGS_HOST_IPv4</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a88117f2de53ca60461fdbfc19195c5e6</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga88117f2de53ca60461fdbfc19195c5e6</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>URI_FLAGS_HOST_IPv6</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>abdb6298e0841c217c1799c247fd27e60</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gabdb6298e0841c217c1799c247fd27e60</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>URI_FLAGS_HOST_HOSTNAME</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>aa8b74e1e32f1bfcbdc1c35bc351d0c37</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gaa8b74e1e32f1bfcbdc1c35bc351d0c37</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
       <type>#define</type>
       <name>URI_FLAGS_HAS_SCHEME</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ae3a98cd8c957552df89bce7b42ad9692</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gae3a98cd8c957552df89bce7b42ad9692</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>struct tagURI</type>
       <name>URI</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a5297e3ae1364bb45d1ab31ecba29aeaf</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga5297e3ae1364bb45d1ab31ecba29aeaf</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>M_INLINE void</type>
       <name>URI_init</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a8ff72430ab547d0151fc8c58c8039825</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga8ff72430ab547d0151fc8c58c8039825</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>URI_parse</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ab9acb8adb11be6e657892d858f40e917</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gab9acb8adb11be6e657892d858f40e917</anchor>
       <arglist>(URI *url, char *line)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE void</type>
       <name>URI_free</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ab82397c63ee9a3456c6bdb8e109a007a</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gab82397c63ee9a3456c6bdb8e109a007a</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_scheme</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ad25a20b072ea1273ceae9c415f60885a</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gad25a20b072ea1273ceae9c415f60885a</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_userinfo_raw</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a7e7b36dd5a61ed237af86b2f61f18afe</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga7e7b36dd5a61ed237af86b2f61f18afe</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_userinfo</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ac9ffe857583c93e3f670fe91386b5007</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gac9ffe857583c93e3f670fe91386b5007</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_host</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a49cd1027b83d86b0fb2feaeb9a5512b6</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga49cd1027b83d86b0fb2feaeb9a5512b6</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE int</type>
       <name>URI_port</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a1e247e963b134702005b8594f1208229</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga1e247e963b134702005b8594f1208229</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_path_raw</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a45df5100f7aaf9ff9b3a48a7e1b8058f</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga45df5100f7aaf9ff9b3a48a7e1b8058f</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_path</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>afc9b62fcf20ed6453067e40b73afda3e</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gafc9b62fcf20ed6453067e40b73afda3e</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_query_raw</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>acb7e21082a7179b1c28b1790f5add72b</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gacb7e21082a7179b1c28b1790f5add72b</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_query</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ae515aeb08040a6457cc2e0100bd3be99</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gae515aeb08040a6457cc2e0100bd3be99</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_fragment_raw</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a622da4084e73a2c02abde7034f8ad6ea</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga622da4084e73a2c02abde7034f8ad6ea</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_fragment</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>ae6489119ac652510ee30ed253635f8b6</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gae6489119ac652510ee30ed253635f8b6</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_opaque_raw</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>aff48eba33becc19347ac38fcf53d98b7</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gaff48eba33becc19347ac38fcf53d98b7</anchor>
       <arglist>(URI *url)</arglist>
     </member>
     <member kind="function">
       <type>M_INLINE const char *</type>
       <name>URI_opaque</name>
-      <anchorfile>a00022.html</anchorfile>
-      <anchor>a773c3e4af0c6238a6412da8f6f59898f</anchor>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga773c3e4af0c6238a6412da8f6f59898f</anchor>
       <arglist>(URI *url)</arglist>
     </member>
   </compound>
@@ -1718,6 +1718,650 @@
       <anchorfile>a00023.html</anchorfile>
       <anchor>ga405406f091c3d4236fc340910391cc87</anchor>
       <arglist>(HTTP_MESSAGE *message, DLISTUNR_position *pos)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>HTTP_REQUEST</name>
+    <title>HTTP_REQUEST</title>
+    <filename>a00024.html</filename>
+    <class kind="struct">tagHTTP_REQUEST</class>
+    <member kind="typedef">
+      <type>int(*</type>
+      <name>HEADER_ACTION</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gaef3a97b256b09f6a4ef1527ead10d52f</anchor>
+      <arglist>)(struct tagHTTP_MESSAGE *request, struct tagHTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>enum tagHttp_method_type</type>
+      <name>Http_method_type</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gac5182036656d3198819f12ef9ec9d08b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>enum tagHttp_version_type</type>
+      <name>Http_version_type</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga06dc534889d1806e0448e56dd9757dae</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct tagHTTP_REQUEST</type>
+      <name>HTTP_REQUEST</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga7548b2c494ccf7acc059409a5d21ccaf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>tagHttp_method_type</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga254d7e697a3b26a246614dd867644816</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_GET</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a90754abc55dbb76862fa50abee5af659</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_POST</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a1944682922ac79b2e682312d8f3f71e2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_PUT</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816af7557927b605c64f35f629b43823b1c9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_HEAD</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a27e993d38ff6b43284014a10798b6223</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_OPTIONS</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816af6b02f8ff0467dbdaebb24f0a996cdd4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_DELETE</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a761371f7807255b7912afbac2f665ffe</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_TRACE</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a95b5b19305a14de1400aedfdec1c1eed</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_METHOD_CONNECT</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga254d7e697a3b26a246614dd867644816a3755246bea87120e8311dc914d573fbf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>tagHttp_version_type</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga92ff2f79ea14e92657972a36d58883a1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_VERSION_1_0</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga92ff2f79ea14e92657972a36d58883a1a3932308db22120ce049dd60f3430b814</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_VERSION_1_1</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gga92ff2f79ea14e92657972a36d58883a1af1a34119b438038bc609a273f9bc08c6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_REQUEST_is_persistent</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gaa3893b9709b438c414da743d2e9ba285</anchor>
+      <arglist>(HTTP_REQUEST *message)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE int</type>
+      <name>HTTP_REQUEST_init</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>gab308a83fced871be3693cdb3fba3ec09</anchor>
+      <arglist>(HTTP_REQUEST *message)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE void</type>
+      <name>HTTP_REQUEST_free</name>
+      <anchorfile>a00024.html</anchorfile>
+      <anchor>ga4ab326e8402a38ac166e2f90a50d91ec</anchor>
+      <arglist>(HTTP_REQUEST *message)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>HTTP_PARSER</name>
+    <title>HTTP_PARSER</title>
+    <filename>a00025.html</filename>
+    <class kind="struct">tagHTTP_PARSER</class>
+    <member kind="typedef">
+      <type>enum tagHTTP_STATE_PARSING</type>
+      <name>HTTP_STATE_PARSING</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga5112371ddec9917722b85465dc5b3062</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct tagHTTP_PARSER</type>
+      <name>HTTP_PARSER</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga1a0ea2ba6e2fd94a692102126e5ac0f5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>int(*</type>
+      <name>HTTP_PROCESS_MSG_DATA</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaccc79fd2431c99ecd68a090469da5d40</anchor>
+      <arglist>)(HTTP_MESSAGE *msg, void *data, size_t data_size, void *ctx)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>int(*</type>
+      <name>HTTP_REQ_HEADER_PARSED</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga50bf360c3d97280b2666c1809a506e2a</anchor>
+      <arglist>)(HTTP_REQUEST *request, void *ctx)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>int(*</type>
+      <name>HTTP_REQ_MESSAGE_BODY_DATA</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa24d67ab42bb7b2da8c617b1b21b54a9</anchor>
+      <arglist>)(HTTP_REQUEST *request, void *data, size_t data_size, void *ctx)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>int(*</type>
+      <name>HTTP_REQ_FINISHED</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaaad3a1f235bb76629fb76266f229a6bc</anchor>
+      <arglist>)(HTTP_REQUEST *request, void *ctx)</arglist>
+    </member>
+    <member kind="enumeration">
+      <name>tagHTTP_STATE_PARSING</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8399cf0558ed67328d5221a21a155cd2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_STATE_PARSING_REQUEST_LINE</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_STATE_PARSING_HEADERS</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_STATE_PARSING_BODY_CHUNK_HEADER</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_STATE_PARSING_BODY_CHUNK_DATA</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>PARSER_STATUS</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gace21a5a69d5e05c5c42d4861f37a49c4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>PARSER_STATUS_ERROR</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>PARSER_STATUS_COMPLETED</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>PARSER_STATUS_NEED_MORE_DATA</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>HTTP_TK_TYPE</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga7c53c9c3c95f9f3ac02e3c9428639f8a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_QUOTED_STRING</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_TEXT</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_SEPARATOR</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_TK_EOF</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_init</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa5370897809bd47280b44b5fa679d2d3</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_free</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaf7d9eeee759da719084291a7cd155c94</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_add_header_parser</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gae0af51ac516c4e68c9d7ba843fbea541</anchor>
+      <arglist>(HTTP_PARSER *parser, const char *header_name, HEADER_ACTION action)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_get_line</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gac5e21a738d73d75ebec125c97038961a</anchor>
+      <arglist>(BF *bf, char **start_line)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_get_header_token</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8d14d1a7cd91bbd477872efafe8e9962</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_parse_header_line</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gaa737a4c11979880764fb8031d5dfc488</anchor>
+      <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *request, BF *bf, int *eof_header)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_content_length_init</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga8b4ee246e968497579a9d9d194a92571</anchor>
+      <arglist>(HTTP_PARSER *parser, HTTP_MESSAGE *msg)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_PARSER_content_length_process</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga34a73b6fe4c943ce1831c8b93c7fb426</anchor>
+      <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_PARSER_chunked_data_init</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>ga0cfd781757cd6db4812087df78424fda</anchor>
+      <arglist>(HTTP_PARSER *parser)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_PARSER_chunked_data_process</name>
+      <anchorfile>a00025.html</anchorfile>
+      <anchor>gac93ea444be8644a86692ae98ec0b86c6</anchor>
+      <arglist>(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>HTTP_REQUEST_PARSER</name>
+    <title>parser of http requests</title>
+    <filename>a00026.html</filename>
+    <class kind="struct">tagHTTP_REQUEST_PARSER</class>
+    <member kind="typedef">
+      <type>struct tagHTTP_REQUEST_PARSER</type>
+      <name>HTTP_REQUEST_PARSER</name>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>ga21137341221e8a3b92b3a73253d2fb08</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_REQUEST_PARSER_init</name>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>gaf0a986ea0582bfc4b011d2ac61aac9ca</anchor>
+      <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQ_HEADER_PARSED header_parsed, HTTP_REQ_MESSAGE_BODY_DATA on_message_body_data, HTTP_REQ_FINISHED on_request_finished, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_REQUEST_PARSER_process</name>
+      <anchorfile>a00026.html</anchorfile>
+      <anchor>ga84afcea80bc8b534b3eee27594d2afbd</anchor>
+      <arglist>(HTTP_REQUEST_PARSER *parser, HTTP_REQUEST *request, BF *data)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>HTTP_RESPONSE_PARSER</name>
+    <title>- parser of http responses</title>
+    <filename>a00027.html</filename>
+    <class kind="struct">tagHTTP_RESPONSE_PARSER</class>
+    <member kind="typedef">
+      <type>struct tagHTTP_RESPONSE_PARSER</type>
+      <name>HTTP_RESPONSE_PARSER</name>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>ga9fd23307e5d20621c1ae6973172f3d6b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>HTTP_RESPONSE_PARSER_init</name>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>ga00451ddae893b0ea2fb035d9cd1b319a</anchor>
+      <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESP_HEADER_PARSED header_parsed, HTTP_RESP_MESSAGE_BODY_DATA on_message_body_data, HTTP_RESP_FINISHED on_request_finished, void *ctx)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_RESPONSE_PARSER_process</name>
+      <anchorfile>a00027.html</anchorfile>
+      <anchor>gac69a62184875abe24177d14f0a9a0313</anchor>
+      <arglist>(HTTP_RESPONSE_PARSER *parser, HTTP_RESPONSE *response, BF *data)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>HTTP_RESPONSE_WRITER</name>
+    <title>- writer of http responss</title>
+    <filename>a00028.html</filename>
+    <class kind="struct">tagHTTP_RESPONSE_WRITER</class>
+    <member kind="typedef">
+      <type>struct tagHTTP_RESPONSE_WRITER</type>
+      <name>HTTP_RESPONSE_WRITER</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>ga666a8001dbee4674469ba1124d4f0e2b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>HTTP_RESPONSE_WR_STATE</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>ga9e080e7ca1d16b175996b2cda2576672</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_RESPONSE_WR_STATUS_LINE</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a5e5a98554127cc4161ac3e6f9a224fd9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_RESPONSE_WR_CONNECTION_CLOSE</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a802496a2dfbfa20b8949c1f826ada553</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_RESPONSE_WR_CHUNKED</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a2046b96a1daddcaea11fedf47c9aef20</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_RESPONSE_WR_CONTENT_LENGTH</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a048c496846785f0052808907603e5a6d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_RESPONSE_WR_HEADERS</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a9616a2518f4fdffcc45caf3458b2a7a9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HTTP_RESPONSE_WR_EOF</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gga9e080e7ca1d16b175996b2cda2576672a42c49006e654df7b1449bbd96acb3b86</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE void</type>
+      <name>HTTP_RESPONSE_WRITER_init</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>gabf2bcdffe3cecb7ca6484489009d8004</anchor>
+      <arglist>(HTTP_RESPONSE_WRITER *writer, HTTP_RESPONSE *response)</arglist>
+    </member>
+    <member kind="function">
+      <type>PARSER_STATUS</type>
+      <name>HTTP_RESPONSE_WRITER_write</name>
+      <anchorfile>a00028.html</anchorfile>
+      <anchor>ga52fcf93eeb1c013427abde12a234adff</anchor>
+      <arglist>(HTTP_RESPONSE_WRITER *writer, BF *data)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>URI</name>
+    <title>URI</title>
+    <filename>a00029.html</filename>
+    <class kind="struct">tagURI</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>URI_FLAGS_PARSE_PARTS</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga681056ca2fe0804b02c215e651dcbb2c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>URI_FLAGS_IS_ABSOLUTE_URI</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gafa8525689f71c3fcc360d66eb75b79ed</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>URI_FLAGS_IS_OPAQUE</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gab18d910ab6fe32e5e2bd49e138f1f1e5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>URI_FLAGS_HOST_IPv4</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga88117f2de53ca60461fdbfc19195c5e6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>URI_FLAGS_HOST_IPv6</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gabdb6298e0841c217c1799c247fd27e60</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>URI_FLAGS_HOST_HOSTNAME</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gaa8b74e1e32f1bfcbdc1c35bc351d0c37</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>URI_FLAGS_HAS_SCHEME</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gae3a98cd8c957552df89bce7b42ad9692</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct tagURI</type>
+      <name>URI</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga5297e3ae1364bb45d1ab31ecba29aeaf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE void</type>
+      <name>URI_init</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga8ff72430ab547d0151fc8c58c8039825</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>URI_parse</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gab9acb8adb11be6e657892d858f40e917</anchor>
+      <arglist>(URI *url, char *line)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE void</type>
+      <name>URI_free</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gab82397c63ee9a3456c6bdb8e109a007a</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_scheme</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gad25a20b072ea1273ceae9c415f60885a</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_userinfo_raw</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga7e7b36dd5a61ed237af86b2f61f18afe</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_userinfo</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gac9ffe857583c93e3f670fe91386b5007</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_host</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga49cd1027b83d86b0fb2feaeb9a5512b6</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE int</type>
+      <name>URI_port</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga1e247e963b134702005b8594f1208229</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_path_raw</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga45df5100f7aaf9ff9b3a48a7e1b8058f</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_path</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gafc9b62fcf20ed6453067e40b73afda3e</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_query_raw</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gacb7e21082a7179b1c28b1790f5add72b</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_query</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gae515aeb08040a6457cc2e0100bd3be99</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_fragment_raw</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga622da4084e73a2c02abde7034f8ad6ea</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_fragment</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gae6489119ac652510ee30ed253635f8b6</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_opaque_raw</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>gaff48eba33becc19347ac38fcf53d98b7</anchor>
+      <arglist>(URI *url)</arglist>
+    </member>
+    <member kind="function">
+      <type>M_INLINE const char *</type>
+      <name>URI_opaque</name>
+      <anchorfile>a00029.html</anchorfile>
+      <anchor>ga773c3e4af0c6238a6412da8f6f59898f</anchor>
+      <arglist>(URI *url)</arglist>
     </member>
   </compound>
   <compound kind="struct">

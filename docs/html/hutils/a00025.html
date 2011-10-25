@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>HTTP Parser and message builder / objects in plain C: Member List</title>
+<title>HTTP Parser and message builder / objects in plain C: HTTP_PARSER</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -24,29 +24,910 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">tagHASHNAMEVALUE Member List</div>  </div>
+<div class="title">HTTP_PARSER</div>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="a00001.html">tagHASHNAMEVALUE</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a9b0aa2a1d02e97c7c6cc418c6796719c">entry</a></td><td><a class="el" href="a00001.html">tagHASHNAMEVALUE</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a07221fee023c96635ad91fc46453111f">name</a></td><td><a class="el" href="a00001.html">tagHASHNAMEVALUE</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="a00001.html#a9a64ab3ffcef1e3ef1771dd98d31ceb7">value</a></td><td><a class="el" href="a00001.html">tagHASHNAMEVALUE</a></td><td></td></tr>
-</table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 00:52:51 for HTTP Parser and message builder / objects in plain C by&#160;
+
+<p>base class of both http request and http response parsers  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">tagHTTP_PARSER</a></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a00004.html">tagHTTP_PARSER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga1a0ea2ba6e2fd94a692102126e5ac0f5">HTTP_PARSER</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> )(<a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *data, size_t data_size, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *data, size_t data_size, void *ctx)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a> )(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a> { <br/>
+&#160;&#160;<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>, 
+<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">HTTP_STATE_PARSING_HEADERS</a>, 
+<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</a>, 
+<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>, 
+<br/>
+&#160;&#160;<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>, 
+<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>, 
+<a class="el" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>
+<br/>
+ }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> { <a class="el" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a> =  -1, 
+<a class="el" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a> =  0, 
+<a class="el" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a> =  1
+ }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">HTTP_TK_TYPE</a> { <a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">HTTP_TK_QUOTED_STRING</a>, 
+<a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>, 
+<a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a>, 
+<a class="el" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">HTTP_TK_EOF</a>
+ }</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa5370897809bd47280b44b5fa679d2d3">HTTP_PARSER_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaf7d9eeee759da719084291a7cd155c94">HTTP_PARSER_free</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gae0af51ac516c4e68c9d7ba843fbea541">HTTP_add_header_parser</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, const char *header_name, <a class="el" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f">HEADER_ACTION</a> action)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">add a parser for a specific http header type  <a href="#gae0af51ac516c4e68c9d7ba843fbea541"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gac5e21a738d73d75ebec125c97038961a">HTTP_get_line</a> (BF *bf, char **start_line)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">returns next raw line from http header, adjoins line continuations.  <a href="#gac5e21a738d73d75ebec125c97038961a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8d14d1a7cd91bbd477872efafe8e9962">HTTP_get_header_token</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return next token while parsing http header value.  <a href="#ga8d14d1a7cd91bbd477872efafe8e9962"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gaa737a4c11979880764fb8031d5dfc488">HTTP_parse_header_line</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *request, BF *bf, int *eof_header)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">dispatch parsing of one http header  <a href="#gaa737a4c11979880764fb8031d5dfc488"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga8b4ee246e968497579a9d9d194a92571">HTTP_PARSER_content_length_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing content length message body  <a href="#ga8b4ee246e968497579a9d9d194a92571"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga34a73b6fe4c943ce1831c8b93c7fb426">HTTP_PARSER_content_length_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">consume content length message body.  <a href="#ga34a73b6fe4c943ce1831c8b93c7fb426"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ga0cfd781757cd6db4812087df78424fda">HTTP_PARSER_chunked_data_init</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">start parsing chunked data  <a href="#ga0cfd781757cd6db4812087df78424fda"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#gac93ea444be8644a86692ae98ec0b86c6">HTTP_PARSER_chunked_data_process</a> (<a class="el" href="a00004.html">HTTP_PARSER</a> *parser, BF *bf, <a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a> cb, <a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *ctx)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">finish parsind chunked content data.  <a href="#gac93ea444be8644a86692ae98ec0b86c6"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<p>base class of both http request and http response parsers </p>
+<hr/><h2>Typedef Documentation</h2>
+<a class="anchor" id="ga1a0ea2ba6e2fd94a692102126e5ac0f5"></a><!-- doxytag: member="http.h::HTTP_PARSER" ref="ga1a0ea2ba6e2fd94a692102126e5ac0f5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="a00004.html">tagHTTP_PARSER</a>  <a class="el" href="a00004.html">HTTP_PARSER</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="gaccc79fd2431c99ecd68a090469da5d40"></a><!-- doxytag: member="http.h::HTTP_PROCESS_MSG_DATA" ref="gaccc79fd2431c99ecd68a090469da5d40" args=")(HTTP_MESSAGE *msg, void *data, size_t data_size, void *ctx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a>)(<a class="el" href="a00003.html">HTTP_MESSAGE</a> *msg, void *data, size_t data_size, void *ctx)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00250">250</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaaad3a1f235bb76629fb76266f229a6bc"></a><!-- doxytag: member="http.h::HTTP_REQ_FINISHED" ref="gaaad3a1f235bb76629fb76266f229a6bc" args=")(HTTP_REQUEST *request, void *ctx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00025.html#gaaad3a1f235bb76629fb76266f229a6bc">HTTP_REQ_FINISHED</a>)(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00253">253</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga50bf360c3d97280b2666c1809a506e2a"></a><!-- doxytag: member="http.h::HTTP_REQ_HEADER_PARSED" ref="ga50bf360c3d97280b2666c1809a506e2a" args=")(HTTP_REQUEST *request, void *ctx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00025.html#ga50bf360c3d97280b2666c1809a506e2a">HTTP_REQ_HEADER_PARSED</a>)(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *ctx)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00251">251</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaa24d67ab42bb7b2da8c617b1b21b54a9"></a><!-- doxytag: member="http.h::HTTP_REQ_MESSAGE_BODY_DATA" ref="gaa24d67ab42bb7b2da8c617b1b21b54a9" args=")(HTTP_REQUEST *request, void *data, size_t data_size, void *ctx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* <a class="el" href="a00025.html#gaa24d67ab42bb7b2da8c617b1b21b54a9">HTTP_REQ_MESSAGE_BODY_DATA</a>)(<a class="el" href="a00005.html">HTTP_REQUEST</a> *request, void *data, size_t data_size, void *ctx)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00252">252</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga5112371ddec9917722b85465dc5b3062"></a><!-- doxytag: member="http.h::HTTP_STATE_PARSING" ref="ga5112371ddec9917722b85465dc5b3062" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a>  <a class="el" href="a00025.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="ga7c53c9c3c95f9f3ac02e3c9428639f8a"></a><!-- doxytag: member="http.h::HTTP_TK_TYPE" ref="ga7c53c9c3c95f9f3ac02e3c9428639f8a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00025.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">HTTP_TK_TYPE</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23"></a><!-- doxytag: member="HTTP_TK_QUOTED_STRING" ref="gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23" args="" -->HTTP_TK_QUOTED_STRING</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a"></a><!-- doxytag: member="HTTP_TK_TEXT" ref="gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a" args="" -->HTTP_TK_TEXT</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15"></a><!-- doxytag: member="HTTP_TK_SEPARATOR" ref="gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15" args="" -->HTTP_TK_SEPARATOR</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78"></a><!-- doxytag: member="HTTP_TK_EOF" ref="gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78" args="" -->HTTP_TK_EOF</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00243">243</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">HTTP_TK_QUOTED_STRING</a>,
+  <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>,
+  <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a>,
+  <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">HTTP_TK_EOF</a>,
+} <a class="code" href="a00025.html#ga7c53c9c3c95f9f3ac02e3c9428639f8a">HTTP_TK_TYPE</a>;
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gace21a5a69d5e05c5c42d4861f37a49c4"></a><!-- doxytag: member="http.h::PARSER_STATUS" ref="gace21a5a69d5e05c5c42d4861f37a49c4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d"></a><!-- doxytag: member="PARSER_STATUS_ERROR" ref="ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d" args="" -->PARSER_STATUS_ERROR</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6"></a><!-- doxytag: member="PARSER_STATUS_COMPLETED" ref="ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6" args="" -->PARSER_STATUS_COMPLETED</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b"></a><!-- doxytag: member="PARSER_STATUS_NEED_MORE_DATA" ref="ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b" args="" -->PARSER_STATUS_NEED_MORE_DATA</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00236">236</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+<div class="fragment"><pre class="fragment">             {
+  <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a> = -1,
+  <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a> = 0,
+  <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a> = 1,
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga8399cf0558ed67328d5221a21a155cd2"></a><!-- doxytag: member="http.h::tagHTTP_STATE_PARSING" ref="ga8399cf0558ed67328d5221a21a155cd2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00025.html#ga8399cf0558ed67328d5221a21a155cd2">tagHTTP_STATE_PARSING</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa"></a><!-- doxytag: member="HTTP_STATE_PARSING_REQUEST_LINE" ref="gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa" args="" -->HTTP_STATE_PARSING_REQUEST_LINE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97"></a><!-- doxytag: member="HTTP_STATE_PARSING_HEADERS" ref="gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97" args="" -->HTTP_STATE_PARSING_HEADERS</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0"></a><!-- doxytag: member="HTTP_STATE_PARSING_BODY_CONTENT_LENGTH" ref="gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0" args="" -->HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989"></a><!-- doxytag: member="HTTP_STATE_PARSING_BODY_CHUNK_HEADER" ref="gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989" args="" -->HTTP_STATE_PARSING_BODY_CHUNK_HEADER</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa"></a><!-- doxytag: member="HTTP_STATE_PARSING_BODY_CHUNK_DATA" ref="gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa" args="" -->HTTP_STATE_PARSING_BODY_CHUNK_DATA</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a"></a><!-- doxytag: member="HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA" ref="gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a" args="" -->HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3"></a><!-- doxytag: member="HTTP_STATE_PARSING_BODY_CHUNK_TRAILER" ref="gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3" args="" -->HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00017_source.html#l00212">212</a> of file <a class="el" href="a00017_source.html">http.h</a>.</p>
+<div class="fragment"><pre class="fragment">                                   {
+
+  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>,
+  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ab6734bc6ccbc93928357db1f17dd9e97">HTTP_STATE_PARSING_HEADERS</a>,
+  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</a>,
+  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>,
+  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>,
+  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>,
+  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>,
+
+} <a class="code" href="a00025.html#ga5112371ddec9917722b85465dc5b3062">HTTP_STATE_PARSING</a>;
+</pre></div>
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="gae0af51ac516c4e68c9d7ba843fbea541"></a><!-- doxytag: member="http.h::HTTP_add_header_parser" ref="gae0af51ac516c4e68c9d7ba843fbea541" args="(HTTP_PARSER *parser, const char *header_name, HEADER_ACTION action)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HTTP_add_header_parser </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>header_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00024.html#gaef3a97b256b09f6a4ef1527ead10d52f">HEADER_ACTION</a>&#160;</td>
+          <td class="paramname"><em>action</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>add a parser for a specific http header type </p>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00191">191</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00002.html">HEADER_HASH_ACTION</a> * action;
+  
+  action = ( <a class="code" href="a00002.html">HEADER_HASH_ACTION</a> *) malloc( <span class="keyword">sizeof</span>( <a class="code" href="a00002.html">HEADER_HASH_ACTION</a> ) ) ;
+  <span class="keywordflow">if</span> (!action) {
+    <span class="keywordflow">return</span> -1;
+  }
+  action-&gt;<a class="code" href="a00002.html#a41da7c59b49a7ca0bcc5345fc603c9a1">key</a> = strdup( header_name );
+  action-&gt;<a class="code" href="a00002.html#afa5c2b37b34012114d61e1e9f730b854">key_size</a> = strlen( header_name );
+  action-&gt;<a class="code" href="a00002.html#a85615c856f9538b55f4739674e034f21">action</a> = action_func;
+
+
+  <span class="keywordflow">return</span> HASH_insert( &amp;parser-&gt;<a class="code" href="a00004.html#a3ec9458f4c7de0bc079b002d0b64441d">header_action</a>, &amp;action-&gt;<a class="code" href="a00002.html#a6b9b4472573fb86e787436c2582d901e">entry</a>, (<span class="keywordtype">void</span> *) header_name, strlen(header_name) );
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga8d14d1a7cd91bbd477872efafe8e9962"></a><!-- doxytag: member="http.h::HTTP_get_header_token" ref="ga8d14d1a7cd91bbd477872efafe8e9962" args="(HTTP_PARSER *parser)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HTTP_get_header_token </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>return next token while parsing http header value. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>-1 on error, otherwise type of token returns (value out of HTTP_TK_TYPE) </dd></dl>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00275">275</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <span class="keywordtype">char</span> ch;
+   <span class="keywordtype">size_t</span> token_pos;
+
+   <span class="keywordflow">if</span> (*parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a> == <span class="charliteral">&#39;\0&#39;</span>) {
+     <span class="keywordflow">return</span>  <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad0b61dc2115021e1798bc23bd4fabf78">HTTP_TK_EOF</a>;
+   }
+    
+
+     <span class="comment">// skip leading spaces</span>
+   <span class="keywordflow">for</span>( ;<a class="code" href="a00016.html#a079ef1c165906ce8b5bced46a7746680">http_is_space</a>( *parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a> ); ++parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a> );
+
+   ch = *parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a>;
+
+   <span class="keywordflow">if</span> (<a class="code" href="a00016.html#ac42c9702c6a1547de4493f7f3ef21bc1">http_is_separator</a>(ch)) {
+     parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[ 0 ] = ch;
+     parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[ 1 ] = <span class="charliteral">&#39;\0&#39;</span>;
+     ++ parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a>;
+     <span class="keywordflow">return</span> <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aae5c3c691300dabcc36e7c1bb99149f15">HTTP_TK_SEPARATOR</a>;
+   }
+
+   
+   <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;&quot;&#39;</span>) {
+      token_pos = 0; 
+      <span class="keywordflow">do</span> {
+        ch = *parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a> ++ ;
+chk:
+        <span class="keywordflow">if</span> (<a class="code" href="a00016.html#a2ca5809163b8fa1bb3cb98e92087ba71">http_is_ctl</a>( ch )) {
+           <span class="keywordflow">return</span> -1;
+        }
+        <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;&quot;&#39;</span>) {
+          <span class="keywordflow">if</span> (token_pos &gt; parser-&gt;<a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">token_length</a>) {
+            <span class="keywordflow">return</span> -1;
+          }
+          parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[ token_pos++ ] = <span class="charliteral">&#39;\0&#39;</span>;
+          <span class="keywordflow">return</span>  <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aad6d7754244a911a6b8cd06a72bae0a23">HTTP_TK_QUOTED_STRING</a>; 
+        } <span class="keywordflow">else</span> {
+          <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;\\&#39;</span>) {
+            <span class="keywordflow">goto</span> chk;
+          }
+        }
+
+        <span class="comment">// add character.</span>
+        <span class="keywordflow">if</span> (token_pos &gt; parser-&gt;<a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">token_length</a>) {
+           <span class="keywordflow">return</span> -1;
+        }
+        parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[ token_pos++ ] = ch;
+
+      } <span class="keywordflow">while</span> (ch != <span class="charliteral">&#39;\0&#39;</span>);
+      
+   }
+
+   <span class="keywordflow">if</span> ( !<a class="code" href="a00016.html#ac42c9702c6a1547de4493f7f3ef21bc1">http_is_separator</a>( ch ) ) {
+     token_pos = 0; 
+     <span class="keywordflow">do</span> {
+
+        <span class="keywordflow">if</span> (token_pos &gt;= parser-&gt;<a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">token_length</a>) {
+           <span class="keywordflow">return</span> -1;
+        }
+        parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[ token_pos++ ] = ch;
+
+       ch = *( ++ parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a> );
+     } <span class="keywordflow">while</span>( ch != 0 &amp;&amp; ! <a class="code" href="a00016.html#a2ca5809163b8fa1bb3cb98e92087ba71">http_is_ctl</a>( ch ) &amp;&amp;  ! <a class="code" href="a00016.html#ac42c9702c6a1547de4493f7f3ef21bc1">http_is_separator</a>( ch ) );
+
+     parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>[ token_pos ] = <span class="charliteral">&#39;\0&#39;</span>;
+     <span class="keywordflow">return</span> <a class="code" href="a00025.html#gga7c53c9c3c95f9f3ac02e3c9428639f8aa5a1d5470fadc11e11133c6cde6152a8a">HTTP_TK_TEXT</a>; 
+   }
+
+   <span class="keywordflow">return</span> -1;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac5e21a738d73d75ebec125c97038961a"></a><!-- doxytag: member="http.h::HTTP_get_line" ref="gac5e21a738d73d75ebec125c97038961a" args="(BF *bf, char **start_line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> HTTP_get_line </td>
+          <td>(</td>
+          <td class="paramtype">BF *&#160;</td>
+          <td class="paramname"><em>bf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>start_line</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>returns next raw line from http header, adjoins line continuations. </p>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00208">208</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   uint8_t *pos;
+<span class="preprocessor">#if 0   </span>
+<span class="preprocessor"></span>   uint8_t *prev;
+<span class="preprocessor">#endif   </span>
+<span class="preprocessor"></span>   <span class="keywordtype">char</span> *line;
+
+   pos = bf-&gt;get_pos;
+   line = BF_get_line_ext( bf, <a class="code" href="a00016.html#aa14dc30ffe09bc9349ddf289170c3c15">HTTP_EOF_LINE</a>, <a class="code" href="a00016.html#a0bcec4a44eab88ca0b2e278aeeb94397">HTTP_EOF_LINE_LEN</a> );
+   <span class="keywordflow">if</span> (!line) {
+      <span class="keywordflow">if</span> (BF_is_full( bf ) ) {
+        <span class="comment">// whole buffer does not even contain a line. untennable.</span>
+        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+      }
+      BF_compact(bf);
+      <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+   }
+
+
+<span class="preprocessor">#if 0</span>
+<span class="preprocessor"></span>   <span class="comment">// check if this line is continued.</span>
+   <span class="keywordflow">while</span> ( 1 ) {
+     prev = bf-&gt;get_pos;
+     line = BF_get_line_ext( bf, <a class="code" href="a00016.html#aa14dc30ffe09bc9349ddf289170c3c15">HTTP_EOF_LINE</a>, <a class="code" href="a00016.html#a0bcec4a44eab88ca0b2e278aeeb94397">HTTP_EOF_LINE_LEN</a> );
+     <span class="keywordflow">if</span> (!line) {
+       <span class="comment">// restore the line marker.</span>
+       *(bf-&gt;get_pos - 2)  = <span class="charliteral">&#39;\r&#39;</span>;
+
+        <span class="keywordflow">if</span> (BF_is_full( bf ) ) {
+          <span class="comment">// a continuation line spans the whole input buffer,</span>
+          <span class="comment">// That&#39;s very bad, unfortunately we can&#39;t support this.</span>
+          <span class="keywordflow">return</span>  <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+        }
+        bf-&gt;get_pos = pos;
+        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+     }
+
+     <span class="keywordflow">if</span> (!<a class="code" href="a00020.html#abed2077fd9ffa7b7c62e7b9d6e72d54a">is_space</a>( *line )) {
+       *(bf-&gt;get_pos - 2)  = <span class="charliteral">&#39;\r&#39;</span>;
+       bf-&gt;get_pos = prev;
+       <span class="keywordflow">break</span>;
+     }
+     <span class="comment">// adjoin the previous line to this line.</span>
+     *(bf-&gt;get_pos - 2)  = <span class="charliteral">&#39; &#39;</span>;
+     *(bf-&gt;get_pos - 1)  = <span class="charliteral">&#39; &#39;</span>;
+   }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>   
+   *start_line = (<span class="keywordtype">char</span> *) pos;
+   <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaa737a4c11979880764fb8031d5dfc488"></a><!-- doxytag: member="http.h::HTTP_parse_header_line" ref="gaa737a4c11979880764fb8031d5dfc488" args="(HTTP_PARSER *parser, HTTP_MESSAGE *request, BF *bf, int *eof_header)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> HTTP_parse_header_line </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00003.html">HTTP_MESSAGE</a> *&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BF *&#160;</td>
+          <td class="paramname"><em>bf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>eof_header</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>dispatch parsing of one http header </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>-1 error, 0 - http header finished, 1 - need more data, 2 - header line parsed ok. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00347">347</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <a class="code" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> rt;
+  <a class="code" href="a00002.html">HEADER_HASH_ACTION</a> *action;
+  <span class="keywordtype">char</span> *line, *pos;
+  
+  *eof_header = 0;
+
+  rt = <a class="code" href="a00025.html#gac5e21a738d73d75ebec125c97038961a" title="returns next raw line from http header, adjoins line continuations.">HTTP_get_line</a>( bf, &amp;line );
+  <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>) {
+    <span class="keywordflow">return</span> rt;
+  }
+
+  <span class="keywordflow">if</span> (! *line ) {
+    *eof_header = 1;
+     <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
+  }
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00020.html#abed2077fd9ffa7b7c62e7b9d6e72d54a">is_space</a>(*line)) {
+    <span class="keywordflow">return</span> -1;
+  }
+  <span class="comment">// good enough, do not test for all separators though.</span>
+  <span class="keywordflow">for</span>( pos = line  ;!<a class="code" href="a00016.html#a4c076db9ce25ed33a2ce16be3dc277aa">http_is_ctl_or_space</a>( *pos ) &amp;&amp; *pos != <span class="charliteral">&#39;:&#39;</span>; ++pos ) {
+     <a class="code" href="a00016.html#a407d07021aeaf63da6145057e7fd7d93">to_lower</a>( pos );
+  } 
+  <span class="keywordflow">if</span> (*pos != <span class="charliteral">&#39;:&#39;</span>) {
+    <span class="keywordflow">return</span> -1;
+  }
+  *pos = <span class="charliteral">&#39;\0&#39;</span>;
+
+  <span class="keywordflow">if</span> (<a class="code" href="a00023.html#ga1ca9f7fea4b5dfd0d084c546a489220e">HTTP_MESSAGE_add_header</a>( request, line, pos+1 )) {
+     <span class="keywordflow">return</span> -1;
+  }
+
+
+  <span class="comment">// got the header line. find header processor.</span>
+  action = (<a class="code" href="a00002.html">HEADER_HASH_ACTION</a> *) HASH_find( &amp;parser-&gt;<a class="code" href="a00004.html#a3ec9458f4c7de0bc079b002d0b64441d">header_action</a>, line, pos - line );
+  <span class="keywordflow">if</span> (action) {
+
+    parser-&gt;<a class="code" href="a00004.html#a6d0367b48bfcd2d8b670930d0a6a5e12">tokpos</a> = pos + 1;
+    action-&gt;<a class="code" href="a00002.html#a85615c856f9538b55f4739674e034f21">action</a>( request, parser );
+  }
+
+  <span class="comment">// recored header value in http request (optional)</span>
+
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga0cfd781757cd6db4812087df78424fda"></a><!-- doxytag: member="http.h::HTTP_PARSER_chunked_data_init" ref="ga0cfd781757cd6db4812087df78424fda" args="(HTTP_PARSER *parser)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HTTP_PARSER_chunked_data_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>start parsing chunked data </p>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00437">437</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> = <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>;
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gac93ea444be8644a86692ae98ec0b86c6"></a><!-- doxytag: member="http.h::HTTP_PARSER_chunked_data_process" ref="gac93ea444be8644a86692ae98ec0b86c6" args="(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> HTTP_PARSER_chunked_data_process </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BF *&#160;</td>
+          <td class="paramname"><em>bf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a>&#160;</td>
+          <td class="paramname"><em>cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00003.html">HTTP_MESSAGE</a> *&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ctx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>finish parsind chunked content data. </p>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00459">459</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <span class="keywordtype">char</span> *line,*pos,*cur, *endptr;
+    <span class="keywordtype">int</span> rt, eof_header;
+    <span class="keywordtype">long</span> val;
+
+    <span class="keywordflow">switch</span>( parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> ) {
+      <span class="keywordflow">case</span> <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>:
+chunk_header:      
+         line = BF_get_line_ext( bf, <a class="code" href="a00016.html#aa14dc30ffe09bc9349ddf289170c3c15">HTTP_EOF_LINE</a>, <a class="code" href="a00016.html#a0bcec4a44eab88ca0b2e278aeeb94397">HTTP_EOF_LINE_LEN</a> );
+         <span class="keywordflow">if</span> (!line) {
+           BF_compact(bf);
+           <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+         }
+         <span class="keywordflow">for</span>(pos = line; <a class="code" href="a00020.html#abed2077fd9ffa7b7c62e7b9d6e72d54a">is_space</a>(*pos); ++pos);
+         <span class="keywordflow">for</span>(cur = pos; <a class="code" href="a00014.html#a5f8d72d8577cc7ff464bcc2a322890f4">is_hex</a>(*cur); ++cur);
+         *cur = <span class="charliteral">&#39;\0&#39;</span>;
+
+         val = strtol( pos, &amp;endptr, 16 );
+         <span class="keywordflow">if</span> (val != 0) {
+           parser-&gt;<a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">content_left</a> = (size_t) val;
+           parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> = <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>;
+           <span class="keywordflow">goto</span> chunk_data; 
+         } <span class="keywordflow">else</span> {
+           parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> = <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>;
+           <span class="keywordflow">goto</span> chunk_trailer;
+         }      
+         
+
+      <span class="keywordflow">case</span> <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a477106ecea88e2d9e496913739e9f3aa">HTTP_STATE_PARSING_BODY_CHUNK_DATA</a>:
+chunk_data:      
+        rt = <a class="code" href="a00025.html#ga34a73b6fe4c943ce1831c8b93c7fb426" title="consume content length message body.">HTTP_PARSER_content_length_process</a>( parser, bf, cb, msg, ctx );
+        <span class="keywordflow">if</span> (rt != 0) {
+          <span class="keywordflow">return</span> rt;
+        }
+
+        parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> = <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>;
+        <span class="keywordflow">goto</span> chunk_eof_data;
+
+     <span class="keywordflow">case</span> <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4529c656e6bcf37dfb70ea237b08602a">HTTP_STATE_PARSING_BODY_CHUNK_EOF_AFTER_DATA</a>:
+chunk_eof_data:
+        line = BF_get_line_ext( bf, <a class="code" href="a00016.html#aa14dc30ffe09bc9349ddf289170c3c15">HTTP_EOF_LINE</a>, <a class="code" href="a00016.html#a0bcec4a44eab88ca0b2e278aeeb94397">HTTP_EOF_LINE_LEN</a> );
+        <span class="keywordflow">if</span> (!line) {
+          BF_compact(bf);
+          <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+        }
+        parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> = <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a0a070153481a16d24111499b85b08989">HTTP_STATE_PARSING_BODY_CHUNK_HEADER</a>;
+        <span class="keywordflow">goto</span> chunk_header;
+
+      <span class="keywordflow">case</span> <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2aed4bf2d5e923949fa9b3697ae97020c3">HTTP_STATE_PARSING_BODY_CHUNK_TRAILER</a>:
+chunk_trailer:      
+        rt = <a class="code" href="a00025.html#gaa737a4c11979880764fb8031d5dfc488" title="dispatch parsing of one http header">HTTP_parse_header_line</a>( parser, msg , bf, &amp;eof_header );
+        <span class="keywordflow">if</span> (rt != <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>) {
+          <span class="keywordflow">return</span> rt;
+        }
+        <span class="keywordflow">if</span> (eof_header) {
+          BF_compact(bf);
+          <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
+        }   
+        <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+      
+      <span class="keywordflow">default</span>:
+        <span class="keywordflow">return</span> -1;
+    }
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga8b4ee246e968497579a9d9d194a92571"></a><!-- doxytag: member="http.h::HTTP_PARSER_content_length_init" ref="ga8b4ee246e968497579a9d9d194a92571" args="(HTTP_PARSER *parser, HTTP_MESSAGE *msg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HTTP_PARSER_content_length_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00003.html">HTTP_MESSAGE</a> *&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>start parsing content length message body </p>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00395">395</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> = <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2ade8a7e55f2fe126b0bddf7780bff40a0">HTTP_STATE_PARSING_BODY_CONTENT_LENGTH</a>;
+    parser-&gt;<a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">content_left</a> = msg-&gt; content_length;
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="ga34a73b6fe4c943ce1831c8b93c7fb426"></a><!-- doxytag: member="http.h::HTTP_PARSER_content_length_process" ref="ga34a73b6fe4c943ce1831c8b93c7fb426" args="(HTTP_PARSER *parser, BF *bf, HTTP_PROCESS_MSG_DATA cb, HTTP_MESSAGE *msg, void *ctx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00025.html#gace21a5a69d5e05c5c42d4861f37a49c4">PARSER_STATUS</a> HTTP_PARSER_content_length_process </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BF *&#160;</td>
+          <td class="paramname"><em>bf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00025.html#gaccc79fd2431c99ecd68a090469da5d40">HTTP_PROCESS_MSG_DATA</a>&#160;</td>
+          <td class="paramname"><em>cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00003.html">HTTP_MESSAGE</a> *&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ctx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>consume content length message body. </p>
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00402">402</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+   <span class="keywordtype">size_t</span> bytes_to_take;
+   <span class="keywordtype">size_t</span> bytes_available; 
+
+   bytes_available = BF_get_size( bf );
+   <span class="keywordflow">if</span> (bytes_available == 0) {
+       <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+   }
+
+   bytes_to_take =  parser-&gt;<a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">content_left</a>; 
+   <span class="keywordflow">if</span> (bytes_to_take == 0) {
+     <span class="keywordflow">return</span>  <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>;
+   }
+
+   <span class="keywordflow">if</span> (bytes_available &lt; bytes_to_take) {
+     bytes_to_take = bytes_available;
+   } 
+
+   <span class="keywordflow">if</span> (cb( msg, bf-&gt;get_pos, bytes_to_take, ctx )) {
+     <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a4bd96b2bfcb709eb5caf0ef934cc921d">PARSER_STATUS_ERROR</a>; 
+   }
+
+   parser-&gt;<a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">content_left</a> -= bytes_to_take;
+   bf-&gt;get_pos += bytes_to_take;
+
+   <span class="keywordflow">if</span> (parser-&gt;<a class="code" href="a00004.html#a390ab241d634a4041103ba39096f090f">content_left</a> == 0) {
+     parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> =  <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>;
+     <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4a25ead330805092a1babdf67ca0f018c6">PARSER_STATUS_COMPLETED</a>;
+   }
+
+   BF_compact(bf);
+   <span class="keywordflow">return</span> <a class="code" href="a00025.html#ggace21a5a69d5e05c5c42d4861f37a49c4af41f996b5530777e9711a51a4050bb9b">PARSER_STATUS_NEED_MORE_DATA</a>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaf7d9eeee759da719084291a7cd155c94"></a><!-- doxytag: member="http.h::HTTP_PARSER_free" ref="gaf7d9eeee759da719084291a7cd155c94" args="(HTTP_PARSER *parser)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HTTP_PARSER_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00181">181</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  <span class="keywordflow">if</span> (parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a>) {
+    free( parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a> );
+    parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a> = 0;
+  }
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="gaa5370897809bd47280b44b5fa679d2d3"></a><!-- doxytag: member="http.h::HTTP_PARSER_init" ref="gaa5370897809bd47280b44b5fa679d2d3" args="(HTTP_PARSER *parser)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HTTP_PARSER_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00004.html">HTTP_PARSER</a> *&#160;</td>
+          <td class="paramname"><em>parser</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00016_source.html#l00165">165</a> of file <a class="el" href="a00016_source.html">http.c</a>.</p>
+<div class="fragment"><pre class="fragment">{
+  parser-&gt;<a class="code" href="a00004.html#ac18acb9d3ec3879248cee7e1f448a81a">state</a> = <a class="code" href="a00025.html#gga8399cf0558ed67328d5221a21a155cd2a4b3e4ef1a704d0e1c16ad482d0bb38aa">HTTP_STATE_PARSING_REQUEST_LINE</a>;
+  parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a> = malloc( <a class="code" href="a00016.html#ab1dd5ca9a62c5ae382e84d2993da6498">MAX_HTTP_TOKEN_SIZE</a> );
+  <span class="keywordflow">if</span> (! parser-&gt;<a class="code" href="a00004.html#abb7efefca85ab0dd6f7058d3ba4b14e3">token</a> ) {
+    <span class="keywordflow">return</span> -1;
+  }
+  parser-&gt;<a class="code" href="a00004.html#ab092d2eec30e89f56c762ce5123f2d84">token_length</a> = <a class="code" href="a00016.html#ab1dd5ca9a62c5ae382e84d2993da6498">MAX_HTTP_TOKEN_SIZE</a>;
+  
+  <span class="keywordflow">if</span> (HASH_init( &amp;parser-&gt;<a class="code" href="a00004.html#a3ec9458f4c7de0bc079b002d0b64441d">header_action</a>, 32, 0, <a class="code" href="a00016.html#a3fcdd47ea95ee4ef2da80d5e1f4c250f">hash_compare</a>, 0 ) ) {
+    <span class="keywordflow">return</span> -1;
+  }
+ 
+  <span class="keywordflow">return</span> 0;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Tue Oct 25 2011 01:10:43 for HTTP Parser and message builder / objects in plain C by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
