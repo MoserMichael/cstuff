@@ -11,10 +11,9 @@
  * @{
  */
 
-int WEBBY_impl_new( WEBBY *srv, void **impl );
+int WEBBY_impl_new( WEBBY *srv, WEBBY_CONFIG *cfg, void **impl );
 int WEBBY_impl_shutdown( void *impl );
 int WEBBY_impl_run( void *impl );
-
 int WEBBY_impl_send_data( void *conndata, void *data, size_t size );
 int WEBBY_impl_response_completed(  void *conndata, int connection_close );
 
