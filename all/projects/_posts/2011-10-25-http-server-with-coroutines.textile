@@ -20,15 +20,15 @@ The system is therefore implemented as a "pipeline of handlers":http://en.wikipe
   
 Each filter must be able to alter a particular aspect of the HTTP request or response, so each filter will have a chance to alter one of the following events
 
-* an object representing the parsed HTTP request header in memory
-* Zero or more blocks of data that make up the HTTP request body (without "chunk headers":http://en.wikipedia.org/wiki/Chunked_transfer_encoding)
-* An event that signals the end of the HTTP request
+* The event that a "http header has been parsed":http://mosermichael.github.com/cstuff/docs/html/webby/a00019.html#ga27407d3eb9a137407a8432603325b5b0 ; an object representing the parsed "HTTP request":http://mosermichael.github.com/cstuff/docs/html/hutils/a00024.html header in memory
+* The event that "http request data has been parsed":http://mosermichael.github.com/cstuff/docs/html/webby/a00019.html#ga07fb25acde5fb71c0bbcad748331e462  ; zero or more blocks of data that make up the HTTP request body (without "chunk headers":http://en.wikipedia.org/wiki/Chunked_transfer_encoding)
+* An event that signals that "HTTP request has been parsed completely":http://mosermichael.github.com/cstuff/docs/html/webby/a00019.html#gaf6f5ee2b34c30cd71ddeccf8a8cc98c8
 
 These events make up one direction, the processing of the request, at some stage a filter will generate a response, which will traverse the same sequence of filters backwards. Now each filter will have a chance to alter one of the following events
 
-* An object representing the HTTP response header
-* One or more blocks of data that make up the HTTP response body, or a single object representing a chunk of the response, in case that chunked transfer encoding is used for the response.
-* An event that signals the end of the HTTP response.
+* The event that a "HTTP response has been generated":http://mosermichael.github.com/cstuff/docs/html/webby/a00019.html#gace404adfffdcfe00660631c1b74d141e  with an object representing the "HTTP response header":http://mosermichael.github.com/cstuff/docs/html/hutils/a00025.html
+* A response data block or chunk "has been generated":http://mosermichael.github.com/cstuff/docs/html/webby/a00019.html#ga3fc7467c414925853cc55e085bef5ddc , one or more blocks of data that make up the HTTP response body, or a single object representing a chunk of the response, in case that chunked transfer encoding is used for the response.
+* An event that signals the "end of the HTTP response":http://mosermichael.github.com/cstuff/docs/html/webby/a00019.html#ga3424cf82a3e72ff1a900de9383c52e61
 
 The more or less detailed documentation of this interface can be "found here":http://mosermichael.github.com/cstuff/docs/html/webby/a00019.html.
 
