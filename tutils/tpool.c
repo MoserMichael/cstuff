@@ -5,9 +5,19 @@
 
 //---
 
-void RUNNABLE_init(RUNNABLE *runnable, RUNNABLE_HANDLER handler)
+void RUNNABLE_init(RUNNABLE *runnable, RUNNABLE_HANDLER handler, RUNNABLE_HANDLER free_request  )
 {
    runnable->handle_request = handler;
+   runnable->free_request = free_request;  
+}
+
+
+void RUNNABLE_free(RUNNABLE *runnable )
+{
+  if (runnable->free_request) {
+    runnable->free_request( runnable );
+  }
+  free( runnable );
 }
 
 //---

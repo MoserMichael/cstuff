@@ -11,6 +11,7 @@ struct tagTHREADPOOL;
 
 typedef void (*RUNNABLE_HANDLER) (struct tagRUNNABLE *request);
 
+
 /**
   @defgroup RUNNABLE
 
@@ -25,12 +26,18 @@ typedef void (*RUNNABLE_HANDLER) (struct tagRUNNABLE *request);
  */
 typedef struct tagRUNNABLE {
   RUNNABLE_HANDLER handle_request;
+  RUNNABLE_HANDLER free_request;
 } RUNNABLE;
 
 /**
  @brief constructs a RUNNABLE instance
  */
-void RUNNABLE_init(RUNNABLE *runnable, RUNNABLE_HANDLER handler);
+void RUNNABLE_init(RUNNABLE *runnable, RUNNABLE_HANDLER handler, RUNNABLE_HANDLER free_request );
+
+/**
+ @brief free a RUNNABLE instance
+ */
+void RUNNABLE_free(RUNNABLE *runnable );
 
 /**
  @}
