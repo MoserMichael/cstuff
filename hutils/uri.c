@@ -409,6 +409,11 @@ M_INLINE int parse_abs_path( URIPARSECTX *ctx, char *ptr, char **next )
     char *start;
 
     start = ptr;
+
+    if (*ptr == '/') {
+      ctx_add_escaped_char( ctx, '/', 0 );
+      *next = ++ptr;
+    }
     if (parse_path_segments( ctx, ptr, next ) < 0) {
       return -1;
     }
@@ -474,7 +479,8 @@ int parse_hier_part( URIPARSECTX *ctx, char *ptr , char **next, int parse_opaque
         return -1;
       }
     } else {
-      if (parse_abs_path( ctx, ptr + 1, next )) {
+    //ctx_add_escaped_char( ctx, '/', 0 );
+      if (parse_abs_path( ctx, ptr, next )) {
         return -1;
       }
     } 
