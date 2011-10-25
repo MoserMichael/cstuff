@@ -161,7 +161,8 @@ M_INLINE void HTTP_REQUEST_free( HTTP_REQUEST *message )
 
 
 /**
- * @brief HTTP_RESPONSE - holds information of an http response.
+ * @defgroup HTTP_RESPONSE
+ * @brief - holds information of an http response.
  *
  * @{
  */
@@ -310,7 +311,7 @@ PARSER_STATUS HTTP_PARSER_chunked_data_process( HTTP_PARSER *parser, BF *bf, HTT
 
 
 /** 
- * @defgroup HTTP_REQUEST_PARSER parser of http requests
+ * @defgroup HTTP_REQUEST_PARSER
  * @brief parser of  http requests
  *
  * @{
@@ -354,8 +355,8 @@ PARSER_STATUS HTTP_REQUEST_PARSER_process( HTTP_REQUEST_PARSER *parser, HTTP_REQ
 
 
 /**
- * @defgroup HTTP_RESPONSE_PARSER - parser of http responses
- * @brief parser of  http responses
+ * @defgroup HTTP_RESPONSE_PARSER 
+ * @brief parser of http responses
  *
  * @{
  */
@@ -400,7 +401,8 @@ PARSER_STATUS HTTP_RESPONSE_PARSER_process( HTTP_RESPONSE_PARSER *parser, HTTP_R
 
 
 /**
- * @defgroup HTTP_RESPONSE_WRITER - writer of http responss
+ * @defgroup HTTP_RESPONSE_WRITER 
+ * @brief writer of http responss
  * @{
  */
 
