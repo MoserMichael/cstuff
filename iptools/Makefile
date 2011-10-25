@@ -58,12 +58,12 @@ include $(TOPDIR)/rules.make
 #---------------------------------------
 
 udpsim_blurb.c : udpsim_blurb.txt
-	perl make-blurb.pl $<
+	perl $(TOPDIR)/scripts/make-blurb.pl $<
 
 loop_udp_blurb.c : loop_udp_blurb.txt
-	perl make-blurb.pl $<
+	perl $(TOPDIR)/scripts/make-blurb.pl $<
 
 captest_blurb.c : captest_blurb.txt
-	perl make-blurb.pl $<
+	perl $(TOPDIR)/scripts/make-blurb.pl $<
 
 

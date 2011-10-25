@@ -11,8 +11,17 @@ $outfile="$outfile.c";
 
 
 if ($infile eq "") {
-  print "Missing input file argument <infile>\n";
-  exit(1);
+  print <<EOF
+Missing input file argument <infile>
+
+Usage:
+    The script takes a text file as argument (infile.txt for example) , and creates a C file infile.c
+    The C file consists of the function print_help, which prints out contents of infile.txt
+    Used to make the help blurb of command line programs.
+EOF
+;
+  
+ exit(1);
 }
 
 
