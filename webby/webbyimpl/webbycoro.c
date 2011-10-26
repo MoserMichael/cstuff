@@ -54,6 +54,7 @@ ret:
     EVSOCKET_close( wimpl->socket );
   }
   WEBBY_connection_close(wimpl->connection);
+  free(wimpl);
 }
 
 static int webby_thread_factory (int fd, EVTHREAD_PROC *proc, void **ctx, void *factory_ctx )

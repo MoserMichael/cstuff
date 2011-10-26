@@ -416,6 +416,16 @@ SERVLET_FILTER_CONNECTION_CONTEXT * SERVLET_FILTER_CONNECTION_CONTEXT_init(SERVL
   return ret;
 }
 
+void SERVLET_FILTER_CONNECTION_CONTEXT_free(SERVLET_FILTER_CONNECTION_CONTEXT *context)
+{
+  HTTP_RESPONSE_free( &context->response.response );
+  DBUF_free( &context->request_data );
+  if ( context->response.chunk_buf ) {
+    free( context->response.chunk_buf );
+  }
+  free(context->servlet_contexts);
+  free(context);
+}
 
 static int servlets_req_header_parsed	  (HTTP_REQUEST *request, FILTER_CONTEXT *context ) 
 {
@@ -515,6 +525,8 @@ static int servlets_connection_close     (FILTER_CONTEXT *context)
        scontext->servlet->free_connection( scontext ); 
      }
   }
+
+  SERVLET_FILTER_CONNECTION_CONTEXT_free( fcontext);
   return 0;
 }
 
