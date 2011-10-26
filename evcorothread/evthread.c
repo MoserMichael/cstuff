@@ -35,7 +35,10 @@ EVLOOP * EVLOOP_init(STACKS *stacks )
   loop->ev_base = event_init();
   if (!loop->ev_base) {
     return 0;
-  }
+  } 
+
+  // we might get short of stack space, so allocate logging buffer dynamically and put it into shared memory.
+  MLOG_alloc_option( MLOG_ALLOC_TLS_HEAP, 1024 ); 
 
   return loop;
 }
