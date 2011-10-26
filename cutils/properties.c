@@ -42,6 +42,8 @@ void PROPERTIES_free( PROPERTIES *props )
      free(entry->value);
      free(entry);
    HASH_DELETEALL_END
+ 
+   HASH_free( &props->props );
 }
 
 
@@ -95,9 +97,6 @@ const char * PROPERTIES_get( PROPERTIES *props, const char *name )
 
 int PROPERTIES_load(PROPERTIES *props, const char *file_name)
 {
-   if (PROPERTIES_init( props, 30 )) {
-     return -1;
-   }
    return load_properties( props, file_name );
 }
 
@@ -180,9 +179,13 @@ static int load_properties(PROPERTIES *props, const char *file_name)
 	}
 
         PROPERTIES_put( props, (char *) name.buf, (char *) value.buf );
+
+	DBUF_free( &name );
+	DBUF_free( &value );
   }
   fclose(fp);
   free(inBuf);
+  DBUF_free(&line);
   return 0;
 }
 
