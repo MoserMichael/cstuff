@@ -781,7 +781,7 @@ WEBBY_CONNECTION *WEBBY_new_connection( WEBBY *server, void *implconndata  )
     goto err;
   }
   BF_init( &ret->in_buf, buff, HTTP_PARSER_BUFFER_SIZE);
-  
+ 
   filter_data = (FILTER_CONTEXT *) malloc( server->filter_ctx_layout_size );
   if (!filter_data) {
     goto err;
@@ -857,9 +857,16 @@ void WEBBY_connection_close( WEBBY_CONNECTION * connection  )
   for( ctx = connection->filter_data, i = 0; i < connection->num_filters ; ++ctx, ++i ) {
     ctx->filter->on_connection_close( ctx );
   }
+		    
 
   free( connection->filter_data );
-  connection->filter_data = 0;
+  //connection->filter_data = 0;
+
+  HTTP_PARSER_free( &connection->request_parser.base );
+
+  free(connection->in_buf.bf); 
+  
+  free(connection);
 }
 
 // ====================================================================
