@@ -180,10 +180,21 @@ int  HTTP_PARSER_init(  HTTP_PARSER *parser )
 
 int  HTTP_PARSER_free(  HTTP_PARSER *parser )
 {
+  HEADER_HASH_ACTION  *entry;
+  HASH_Entry *cur;
+ 
   if (parser->token) {
     free( parser->token );
-    parser->token = 0;
+    //parser->token = 0;
   }
+
+  HASH_DELETEALL(cur, &parser->header_action );
+    entry = (HEADER_HASH_ACTION *) cur;
+    free(entry->key);
+    free(entry);
+  HASH_DELETEALL_END
+ 
+  HASH_free( &parser->header_action );
   return 0;
 }
 
@@ -191,7 +202,7 @@ int  HTTP_PARSER_free(  HTTP_PARSER *parser )
 int HTTP_add_header_parser( HTTP_PARSER *parser, const char *header_name, HEADER_ACTION action_func )
 {
   HEADER_HASH_ACTION * action;
-  
+   
   action = ( HEADER_HASH_ACTION *) malloc( sizeof( HEADER_HASH_ACTION ) ) ;
   if (!action) {
     return -1;
@@ -199,6 +210,7 @@ int HTTP_add_header_parser( HTTP_PARSER *parser, const char *header_name, HEADER
   action->key = strdup( header_name );
   action->key_size = strlen( header_name );
   action->action = action_func;
+
 
 
   return HASH_insert( &parser->header_action, &action->entry, (void *) header_name, strlen(header_name) );
