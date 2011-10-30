@@ -194,6 +194,8 @@ void do_test(REQUEST_PARSER_TEST_DATA *rdata)
 
      }
   }
+  HTTP_REQUEST_free( &request );
+
 
 }
 

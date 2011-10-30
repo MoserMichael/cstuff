@@ -8,12 +8,6 @@ static int QUERYSTRING_add(QUERYSTRING *query, char *name, char *value )
   HASHNAMEVALUE *entry; 
 
   if (!name || !value) {
-    if (name) {
-      free(name);
-    }
-    if (value) {
-      free(value);
-    }
     return -1;
   }
 
@@ -99,8 +93,9 @@ int QUERYSTRING_free(QUERYSTRING *query )
 
   HASH_DELETEALL( cur, &query->name_to_value )
     nv = (HASHNAMEVALUE *) cur;
-    free( nv->name );
-    free( nv->value );
+    free(nv->name);
+    free(nv->value);
+    free(nv);
   HASH_DELETEALL_END
   HASH_free( &query->name_to_value );
   return 0;

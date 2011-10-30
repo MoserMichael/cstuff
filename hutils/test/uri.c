@@ -467,7 +467,7 @@ void  URI_test_ok()
      VASSERT( mystrcmp( url_tests[ i ].fragment, URI_fragment( &uri ) ) == 0 );
      VASSERT( mystrcmp( url_tests[ i ].opaque_raw, URI_opaque_raw( &uri ) ) == 0 );
      VASSERT( mystrcmp( url_tests[ i ].opaque, URI_opaque( &uri ) ) == 0 );
-
+     URI_free( & uri );
   }
 }
 

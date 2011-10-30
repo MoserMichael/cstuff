@@ -530,14 +530,14 @@ int URI_parse( URI *url, char *line )
    ctx.rep = url;
 
    slen = strlen( line );
-   url->cdata = (char *) malloc( slen );
+   url->cdata = (char *) malloc( slen + 1 );
    if (!url->cdata) {
      goto err;
    }
 
    ctx.cdata_pos_off = ctx.cdata_pos_start = ctx.cdata_pos = url->cdata;
 
-   url->cdata_raw = (char *) malloc( slen );
+   url->cdata_raw = (char *) malloc( slen + 1 );
    if (!url->cdata_raw) {
      goto err;
    }

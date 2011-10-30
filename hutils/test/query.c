@@ -71,6 +71,7 @@ void QUERY_test()
     }
 
     QUERYSTRING_free( &query );
+    URI_free( &uri );
   }
 }
  

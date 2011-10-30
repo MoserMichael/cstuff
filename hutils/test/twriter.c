@@ -50,7 +50,8 @@ static void test_write_header( HTTP_RESPONSE *resp, const char *file)
     stat =  HTTP_RESPONSE_WRITER_write( &writer, &bf );
     switch(stat) {
       case PARSER_STATUS_ERROR:
-        VASSERT(0);
+       	free(buffer);
+	 VASSERT(0);
         break;
     
       case PARSER_STATUS_COMPLETED:
@@ -58,6 +59,7 @@ static void test_write_header( HTTP_RESPONSE *resp, const char *file)
         VASSERT( compare_text( fp, &bf ) == 0 );
 	VASSERT( bf.get_pos == bf.put_pos );
 	fclose(fp);
+	free(buffer);
 	return;
 
       case PARSER_STATUS_NEED_MORE_DATA:
