@@ -107,6 +107,11 @@ int SOCK_connect( SOCKCTX *ctx, void *addr, int addr_size, int connect_timeout);
 int SOCK_recv( SOCKCTX *ctx, void *msg, size_t length, int read_timeout );
 
 /**
+ * @brief wait for a read event to occur, if one occurs until timeout, then 0 is returned, if no event occured then 1 is returned, -1 is returned on socket error.
+ */
+int SOCK_wait_for_read_event( SOCKCTX *ctx, int read_timeout );
+
+/**
  @brief read whe whole buffer from a socket with timeout (in seconds)
  @param ctx - pointer to socket object.
  @return either one of: -1 on error, 0 if socket has been closed during receiving buffer, length on success.

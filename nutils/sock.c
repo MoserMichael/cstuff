@@ -181,13 +181,44 @@ err:
   return -1;
 }
 
+int SOCK_wait_for_read_event( SOCKCTX *ctx, int read_timeout )
+{
+  int rt;
+  fd_set rset;
+  struct timeval tv;
+
+  FD_ZERO(&rset);
+  FD_SET(ctx->fd,&rset);
+
+  tv.tv_sec = read_timeout;
+  tv.tv_usec = 0;
+
+   do {
+     rt = select( ctx->fd + 1, &rset, 0, 0, &tv ); 
+   } while( rt == -1 && errno == EINTR);
+	
+
+   if (rt == -1) {
+     if (ctx->verbose) {
+       fprintf(stderr, "select failed. %d\n", errno );
+     }
+     return -1;
+   }
+     
+   if (rt == 0) {
+     if (ctx->verbose) {
+        fprintf(stderr,"read timed out\n" );
+     }
+     return 1;
+   }
+
+   return 0;
+}
 
 
 int SOCK_recv( SOCKCTX *ctx, void *msg, size_t length, int read_timeout )
 {
   int rt;
-  fd_set rset;
-  struct timeval tv;
      
 retry:
      do {
@@ -203,33 +234,11 @@ retry:
            goto err;
         }
 
- 	FD_ZERO(&rset);
-        FD_SET(ctx->fd,&rset);
-
-        tv.tv_sec = read_timeout;
-        tv.tv_usec = 0;
-
-        do {
-          rt = select( ctx->fd + 1, &rset, 0, 0, &tv ); 
-        } while( rt == -1 && errno == EINTR);
-	
-
-	if (rt == -1) {
-	  if (ctx->verbose) {
-	    fprintf(stderr, "select failed. %d\n", errno );
-	  }
-	}
-     
-        if (rt == 0) {
-           if (ctx->verbose) {
-             fprintf(stderr,"read timed out\n" );
-           }
-       	   goto err;
-        }
-
-	if (rt == 1) {
+	rt = SOCK_wait_for_read_event( ctx, read_timeout ); 
+	if (rt == 0) {
 	   goto retry;
 	}
+	return -1;
 
      }
 
