@@ -16,7 +16,8 @@ h3. The many functions of a WEB server and its design by filters/modules.
 
 The HTTP protocol consists of a set of non overlapping features that complement each other without interfering with each other, this state is called "Orthogonal set of features":http://en.wikipedia.org/wiki/Orthogonality#Computer_science  . For example the protocol has the option of "compressing the request/response body":http://en.wikipedia.org/wiki/HTTP_compression , which does not bother the feature of "HTTP Basic Access authentication":http://en.wikipedia.org/wiki/Basic_access_authentication 
 
-The system is therefore implemented as a "pipeline of handlers":http://en.wikipedia.org/wiki/Pipeline_(computing)  where each feature is implemented by a dedicated handler, the output of one handler is automatically used as the input to the next, following handler (very common theme with programming ;-). Each such handler is called a filter, all usable HTTP servers have this concept ("Apache":http://httpd.apache.org and "nginx":http://nginx.org/ it 'module')
+The system is therefore implemented as a "pipeline of handlers":http://en.wikipedia.org/wiki/Pipeline_(computing)  where each feature is implemented by a dedicated handler, the output of one handler is automatically used as the input to the next, following handler (very common theme with programming ;-). Each such handler is called a filter, all usable HTTP servers have this concept ("Apache":http://httpd.apache.org and "nginx":http://nginx.org/ it   
+is called a 'module')
   
 Each filter must be able to alter a particular aspect of the HTTP request or response, so each filter will have a chance to alter one of the following events
 
@@ -76,4 +77,19 @@ Technically there is a risk here, does the "Lua":http://www.lua.org/  runtime / 
 
 What if non blocking event driven server does not have a sufficient practical advantage over connection per operating system thread model ? So at least some level of stress testing is required, before plan B is pursued. One thing I do strongly dislike of is to speculate on the subject of performance;  so that's exactly the reason why WEBBY has multiple implementations.
 
-So long, there are interesting times ahead.
+h3. Still further deliberations on the same subject
+
+I guess Lua would not be the right language ; for whatever reasons it is popular with embedded applications and games; also very special hacker applications like nmap and wiresharks use Lua as a scripting language. The rather conservative world of WEB development sticks with Java;  Another reason is that Lua already has its own co-routines; and we have little to offer here.
+
+There are of course, some lesser used but still wide spread tools like PHP, ColdFusion or ASP. One possibility is to implement such a niche system from scratch and to market a commercial solution for any of these tools; Such a product would receive only limited attention of a niche system, and in the long term it would probably be futile to invest in a fading platform; alas people would probably be more prepared to spend money on it.
+
+Of course we could do a version for Java; I guess the most general solution here would be to create a customized JVM starting with the OpenJDK sources; the JVM would introduce the concept of co-routine threads;
+
+So a regular Java thread will be able to host multiple co-routine, cooperatively scheduled threads;
+A regular thread object will then have a field that says if a co-routine is currently executed.
+
+Now when the application may well call one of the java monitor synchronization primitives of class java.lang.Object wait/notify/notifyall; if a co-routine thread is currently executed, then a special version of these function has called, one that does not block the co-routine thread completely, wait would yield control, notify would resume the co-routine; of course both wait and notify have to be called from a co-routine that is invoked as part of the current operating system thread.
+
+Also specialized versions of java.net.Socket and their nio counterparts will be implemented, those will suspend the current co-routine thread when the socket operation blocks; just like the "EVCOROTHREAD":http://mosermichael.github.com/cstuff/all/projects/2011/10/09/Non-Blocking-IO-with-coroutines.html  package does. 
+
+This is a fine design, but I am not quite sure if I want to donate my effort to "Mr. Ellison":http://en.wikipedia.org/wiki/Larry_Ellison  for free, without charge, after all the guy already has a "very big yacht":http://en.wikipedia.org/wiki/Rising_Sun_(yacht)  in the world.
