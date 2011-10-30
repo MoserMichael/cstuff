@@ -14,7 +14,7 @@
 MLOG_LEVEL m_current_log_level = MLOG_LEVEL_ERROR;
 
 static MLOG_ACTION log_action;
-static MLOG_ALLOC alloc_strategy = MLOG_ALLOC_TLS_HEAP;
+static MLOG_ALLOC alloc_strategy = MLOG_ALLOC_STACK;
 static MLOG_LEVEL stack_dump_level = MLOG_LEVEL_ERROR;
 static size_t alloc_size = 1024;
 static pthread_key_t log_tls_entry;
