@@ -21,6 +21,7 @@ typedef struct tagWEBBY_CONNECTION_IMPL {
   WEBBY_CONNECTION *connection;
   SOCKCTX socket;
   int  io_timeout;
+  int  idle_timeout;
   WEBBY_IMPL *server_impl;
 
 } WEBBY_CONNECTION_IMPL;
@@ -33,6 +34,11 @@ void run_request( WEBBY_CONNECTION_IMPL *wimpl ){
   bf = &wimpl->connection->in_buf;
 
   while( 1 ) {
+
+    rt = SOCK_wait_for_read_event( &wimpl->socket, wimpl->idle_timeout );
+    if (rt  != 0) {
+      goto ret;
+    }
 
     rt = SOCK_recv( &wimpl->socket, bf->get_pos, BF_put_size( bf ), wimpl->io_timeout );
     if (rt < 0) {
@@ -82,7 +88,8 @@ void  *acceptor_thread(void * arg)
 
     conn->connection = WEBBY_new_connection( wimpl->server, conn );
     conn->io_timeout = wimpl->config->io_timeout;
- 
+    conn->idle_timeout = wimpl->config->idle_timeout;
+
     RUNNABLE_init( &conn->base, (RUNNABLE_HANDLER) run_request,  (RUNNABLE_HANDLER) free_request );
 
     if (THREADPOOL_send_fail_on_queue_full( wimpl->thread_pool, &conn->base ) ) {
