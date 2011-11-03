@@ -88,19 +88,49 @@ int main()
 .
 This mode of doing things has a marked disadvantage: The procedure of computing the sum of roots is now chopped up into multiple calls of the callback function fibonacci_cb ;  on each call this function has to retrieve the current state of the computation from the argument 'context parameter' , perform a processing step and then update the result back into the 'context parameter'. A more complex process also must be partitioned into a state machine, the state is maintained extra in the 'context parameter'. No fun.
 
-So we need to have both processes running at the same time, and passing a message between them.
+So one need sto have both processes running one after the other; first a number is produced , and then one wants to switch to consuming it; alas each process should be able to run in parallel - as if it were a sequence of steps that does not bother of the other process at all.
+
 So each procedure needs its own stack. Now the same basic problem is being solved in a multitude of ways; each solution solves the problem for some specific context, 
 
 
 * multi processing: Two processes are connected via a pipe; the Fibonacci number generator writes its result to the pipe; the square root adder  reads each number off the pipe.
-* Multi-threading: 
-* actor model - several threads communicate via known queues; 
-* Python / Perl generator functions.
+* Multi-threading with shared state;
+* actor model - several threads communicate via known queues; there is no shared state between the threads other than the queues; all communication between the threads is strictly via the queues; each message is not modifiable. 
+* Python / Perl generator functions (co -routines implemented by the interpreter run-time).
 
 
-Now co-routine will simply maintain a stack per process, the Fibonacci number generator has its own stack, the consumer of Fibonacci numbers has its own stack. When a new number is computed, Fibonacci number generator switches the stack to the consumer of numbers, when the consumer is ready and wants to get a new number then it switches the stack to the generator function.
+Now co-routine will simply maintain multiple stacks per procedure; the Fibonacci number generator function has its own stack, the function that consumes Fibonacci numbers has its own stack. When a new number is computed, Fibonacci number generator switches the stack to the consumer of numbers, when the consumer is ready and wants to get a new number then it switches the stack to the generator function.
 
 There is a significant difference - with multiple threads or multiple processes it is the operating system that decides which task will run next; with co-routine the application decides when to switch between stacks.
+
+<notextile>
+<a name="pf" ></a>
+</notextile>
+
+h3. Performance advantages
+
+Another motivation for co-routines is performance. Lets say we have the following example that creates 10000 operating system threads with the pthread package, where all threads are put to sleep.
+
+With Linux (2.6.38-8) you will see that responsiveness of the system will decrease dramatically; The top utility will display a CPU usage of 30% and more and the load average (a somewhat obscure statistic that sums up the system utilization) will increase dramatically, all within a very short time.
+
+How could that be explained? The Linux scheduler maintains several run queues - each run queue is a data structure (not necessarily a queue in that sense) that maintains each tasks (processes or threads) of a given priority class; overall there are 255 priority classes. Now on Linux a run queue holds all tasks; those that are runnable and those that are sleeping; this implies that at the time when the operating system scheduler is deciding which task to run next, it has to consider all tasks of a given priority class. That implies that the Linux kernel is probably not too good at scheduling a large number of threads; 
+
+Another issue is that with cooperative multitasking a switch of context occurs when the application decides that such as switch must be done; so a context switch is performed when one is needed; On the other hand, a preemptive scheduler has to maintain a lot of other consideration like fairness of tasks, system throughput,  responsiveness of the system, etc. etc. so the decision to switch contexts will be taken at a different time; not at exactly the same spot when one is required by the task at hand.
+
+Please note that an operating system that maintains separate queues for sleeping tasks as opposed to runnable tasks will probably be much better at the task of scheduling a huge number of threads; BSD appears to do so, alas I currently don't have access to the required hardware / software in order to do sufficient benchmarks; etc. etc. 
+
+Historically high performance systems where all done with user mode scheduled threads; CICS does so - which is of course a very important system on the Mainframe; and this system is of course still very much in use for certain tasks.
+
+Some more obscure details on running the test that creates 10000 threads via pthreads.
+make sure that the system wide limit on the number of tasks does not bother this test;  you can display the current limit by running ''cat /proc/sys/kernel/threads-max"; the root/superuser can change this value at run time, one does not have to restart the system for that. An enterprise system 
+Make sure that the current soft limit does not limit the number of tasks that can be created; the command "ulimit -u" will display the current value of a shell; 
+the test application creates a short stack for each thread, this way a 32 bit process will not run out of virtual memory address space (by default a pthread stack has 10 MB).
+     
+
+h3. The CTHREAD package
+
+The remainder of this article will introduce a cooperative user-mode threading package; which is implemented as a library of functions callable by any C program on Linux, alas portable to any POSIX compliant operating system; 
+This package will be named the CTHREAD package.
 
 h3. How to pass a typed set of values around.
 
