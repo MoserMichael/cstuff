@@ -1,0 +1,113 @@
+---
+layout: post
+title:  Next project, The Pooh programming language
+---
+
+h2. {{ page.title }}
+<p class="publish_date">8 November 2011</p>
+
+I want a new tinker project, so a scripting language will be created. The project will be presented as a series of articles; the first article will define the language in some detail.
+
+First the name; It will be the 'Pooh programming language' ; I think that if there is a Python in honor of Monty , then there should be a Pooh in honor of Pooh, so to speak, this is a long missing detail, so I will strive to correct it ;-)
+
+h3. General Terms / General requirements
+
+This section defines the design goals / requirements for the Pooh programming language.
+
+* Language must serve an educational purpose / be suited for the purpose of introducing kids to 
+programming; It is not a functional programming language; one has assignments. It is not object oriented, but it will have closures.
+
+* They syntax may not force the user to perform anal retentive repetitive tasks over and over again ; 
+For example it may not require the user to put in semicolon delimiter between statements - that's an 
+evil; or it may not require the user to declare variables / types of variables.
+
+* The syntax must take the 'there is one way to do a thing' approach; It is not possible to do the PERL 
+philosophy of 'there is more than one way to do a thing.
+
+* Be fun to use. It is very difficult to quantify this or to give a definition for this concept, but we will try. 
+
+* Encourage data driven programming / it must be possible to declare complex lists / hashes in code / Nesting of hashes and lists;
+
+* Quickest way of debugging should be by means of a built in tracing facility. Here we learn from other 
+languages, like in Korn/Bash shells we have set -x; in Chez Scheme there is also a very strong built in 
+trace facility.
+
+* Encourage bottom up software construction / exploratory programming;   (That means we need a 
+REPL)
+
+* Must have a wide field of application; must be able to serve as a scripting language / maybe even as a general purpose programming language (must not be the most efficient one for that purpose);  One should get the impression of learning something tangible.
+
+* It must be possible to read the code - meaning that it is essential to be able to understand what a 
+line of code does; no 'Under the scene' actions like nested construction/destruction, operator 
+overloading, no macros (never), No advanced looping construct that does assign an initial value to index, check the exit condition on index and pass to next iteration in one line (like for in C); No "eval" like construct (strong opinion of the author).
+
+* There is no concept of a classes with inheritance and virtual functions.  Normal people (not conditioned by years of programming practice) are no good at growing / maintaining hierarchies, the class concepts is very confusing on first use (usually there is a multitude of possible ways to decompose a system into classes). 
+Further justification: usually people try to avoid hierarchies in their daily life, they always try.
+Examples
+     People tend to put all their file on the desktop instead of creating hierarchies of folders.
+     Discussion boards: Once upon a time each discussion board had threaded discussions (each item 
+had its replies, etc. Nowadays Facebook doesn't have that; it's simpler to manage for most people; I 
+think Joel on Software said that first with regards to discussion boards. Once upon a time that was a 
+very novel view.
+
+* Instead of classes there will be closures; closures are a 'poor mans classes'; also SICP doesn't do classes and is regarded as a good intro to programming languages (alas for people who are already programmers). In a way, closures are not  too intuitive either; but we will try;
+
+h3. Defining the details of the Pooh language
+
+* Language must be _somewhat_ dynamically typed; A variable is defined 
+by assigning a value to a name; if identifier on the left hand side is not defined, it is hereby defined as a variable.
+If the assignment is in a function, and variable is not yet defined, then the variable scope is in the function; if the assignment is a global scope, then the variable will be a global variable.
+ 
+* We can't do eval or create any bindings other than by declaring that binding explicitly in 
+the code. Also variable binding is created either by assignment or by parameter 
+declaration. 
+
+* One may not reference a variable that is not defined - this will be an error. (like STRICT mode in Perl - this will be the only available option). 
+
+* Variable scope: A variable first assigned at global scope is global, a name assigned in a function is of local scope; 
+
+* Look up the value of a variables; there are several possible ways / dilemmas.
+  
+_Implicit rules_  a name is first interpreted as function local; if there is no such variable then enclosing functions scope is tested for that name; if there is one, then we have a new closure, otherwise global scope is tested for that name; if a global variable is found then we have a reference to it. 
+
+There are several problems with this approach:
+
+Problem:  One also has declare a variable somehow before using it, as one needs to know if this is a local or a global or whatever scope;
+
+Problem: with larger functions it is not easy to understand the program, it is not clear what a variable reference means;  
+
+Problem with closures. there are several possible types of bindings, the closure may either be a reference to the variable of the enclosing scope, or it may copy the value of that variable; the second option is thus ignored.
+
+_Explicit rules_  the  syntax has some means to tell if this name is supposed to be interpreted as function local/enclosing function scope or global scope; if not qualifier is given then current scope is meant; if there is a $ as name prefix then this is a global if there is a & as name prefix, then a closure as reference is created , a  # as name prefix copies the current value of the closure.
+
+I think that explicit rule is better for this purpose; also it avoids the need to declare variables before assignment.
+ 
+* Variable type: do not have to define the type of a variable; it will become obvious from how the variable is later used; if a variable is used as an array (a[ 0 ] = 0 ), it is an array; the same variable name can not be later used as a scalar. Problem: it is not always possible to tell the type of a binding: If you insert something into an array / hash, then later access to this entry is untyped and must be checked at run time;
+
+* General principle: If you can infer the type of something during parsing/compilation then do so, if you can't then defer type check to run time ('somewhat' dynamically typed)
+
+* More on type system: There are different approaches
+  	- Everything is a reference (Smalltalk, Lisp)
+	- There are primitive types and object references (Java, Scala)
+	- There are primitive types, object references and object values (C,C++).
+What is the most appropriate thing to do here?
+
+Primitive types and references: The problem here is that assignment of numbers is a special case; either the number object has to be cloned explicitly (choice A), or the cloning of number object is done 'under the hood' (choice B); or you have a different operator for copying an object by value and by reference a = 12 / b = [ 1, 2, 4 ] would be copy by value  (deep copy, if the array contains other arrays and hashes, then these will be copied too); and  a <= 10 / b <= [ 1, 2, 3 ] . I think that this is a clearer approach. There is no operator to dereference a reference;   
+
+* Functions have prototypes, but the type of the parameters is not defined in the prototype. All values are passed by reference (The reason for this decision is to avoid confusion)
+
+* Check function prototype on call: If function is called directly then check number of parameters and if their types match (for example check if scalar is not passed instead of an array); If type is difficult to establish (function reference stored in hash) then defer check to run time.
+
+* functions are 'first class' - meaning that we have anonymous functions, and 
+functions can be returned as return values, etc. 
+
+* To be handy we have a built in regular expressions  (syntax like perl) or multi line strings 
+(syntax like in python).  Also one needs array slices in order to return multiple variables from functions.
+
+* Reflection, will be done as a library, so no need for special syntactic constructs here.
+
+* Co-routines / will have generator functions with yield; *must have for nice iteration *;
+
+
+
+       
