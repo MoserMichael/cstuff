@@ -12,83 +12,112 @@ First the name; It will be the 'Pooh programming language' ; I think that if the
 
 h3. General Terms / General requirements
 
-This section defines the design goals / requirements for the Pooh programming language.
 
-* Language must serve an educational purpose / be suited for the purpose of introducing kids to 
-programming; It is not a functional programming language; one has assignments. It is not object oriented, but it will have closures.
+(GR1) This section defines the design goals / requirements for the Pooh programming language.
 
-* They syntax may not force the user to perform anal retentive repetitive tasks over and over again ; 
-For example it may not require the user to put in semicolon delimiter between statements - that's an 
-evil; or it may not require the user to declare variables / types of variables.
+(GR2) Language must serve an educational purpose / be suited for the purpose of introducing kids to programming; It is not a functional programming language; one has assignments. It is not object oriented (no class concept with inheritance and virtual functions), instead it will have closures.
 
-* The syntax must take the 'there is one way to do a thing' approach; It is not possible to do the PERL 
-philosophy of 'there is more than one way to do a thing.
+(GR3) The syntax may not force the user to perform anal retentive repetitive tasks over and over again ; For example it may not require the user to put in semicolon delimiter between statements - that's an  evil; or it may not require the user to declare variables / types of variables.
 
-* Be fun to use. It is very difficult to quantify this or to give a definition for this concept, but we will try. 
+(GR4) The syntax must take the 'there is one way to do a thing' approach; It is not possible to do the PERL philosophy of 'there is more than one way to do a thing.
 
-* Encourage data driven programming / it must be possible to declare complex lists / hashes in code / Nesting of hashes and lists;
+(GR5) Be fun to use. It is very difficult to quantify this or to give a definition for this concept, but we will try. 
 
-* Quickest way of debugging should be by means of a built in tracing facility. Here we learn from other 
+(GR6) Encourage data driven programming / it must be possible to declare complex lists / hashes in code / Nesting of hashes and lists;
+
+(GR7) Quickest way of debugging should be by means of a built in tracing facility. Here we learn from other 
 languages, like in Korn/Bash shells we have set -x; in Chez Scheme there is also a very strong built in 
 trace facility.
 
-* Encourage bottom up software construction / exploratory programming;   (That means we need a 
+(GR8) Encourage bottom up software construction / exploratory programming;   (That means we need a 
 REPL)
 
-* Must have a wide field of application; must be able to serve as a scripting language / maybe even as a general purpose programming language (must not be the most efficient one for that purpose);  One should get the impression of learning something tangible.
+(GR9) Must have a wide field of application; must be able to serve as a scripting language / maybe even as a general purpose programming language (must not be the most efficient one for that purpose);  One should get the impression of learning something tangible.
 
-* It must be possible to read the code - meaning that it is essential to be able to understand what a 
-line of code does; no 'Under the scene' actions like nested construction/destruction, operator 
+(GR10) It must be possible to read the code - meaning that it is essential to be able to understand what a line of code does; no 'Under the scene' actions like nested construction/destruction, operator 
 overloading, no macros (never), No advanced looping construct that does assign an initial value to index, check the exit condition on index and pass to next iteration in one line (like for in C); No "eval" like construct (strong opinion of the author).
 
-* There is no concept of a classes with inheritance and virtual functions.  Normal people (not conditioned by years of programming practice) are no good at growing / maintaining hierarchies, the class concepts is very confusing on first use (usually there is a multitude of possible ways to decompose a system into classes). 
+(GR11) There is _no_ concept of a classes with inheritance and virtual functions.  Normal people (not conditioned by years of programming practice) are no good at growing / maintaining hierarchies, the class concepts is very confusing on first use (usually there is a multitude of possible ways to decompose a system into classes). 
 Further justification: usually people try to avoid hierarchies in their daily life, they always try.
 Examples
      People tend to put all their file on the desktop instead of creating hierarchies of folders.
-     Discussion boards: Once upon a time each discussion board had threaded discussions (each item had its replies, etc. Nowadays Facebook doesn't have that; it's simpler to manage for most people; I think Joel on Software said that first with regards to discussion boards. Once upon a time that was a very novel view.
+     Discussion boards: Once upon a time each discussion board had threaded discussions (each item had its replies, etc. Nowadays Facebook doesn't have that; it's simpler to manage for most people; I think Joel on Software said that first with regards to discussion boards. Once upon a time that was really a very novel view on things.
 
-* Instead of classes there will be closures; closures are a 'poor mans classes'; also "SICP":http://mitpress.mit.edu/sicp/  does everything as closures and is regarded as a good intro to programming languages (alas for people who are already programmers). In a way, closures are not  too intuitive either; but we will try;
+ Instead of classes there will be closures; closures are a 'poor mans classes'; also SICP doesn't do classes and is regarded as a good intro to programming languages (alas for people who are already programmers). In a way, closures are not  too intuitive either; but we will try;
 
 h3. Defining the details of the Pooh language
 
-* Language must be _somewhat_ dynamically typed; A variable is defined by assigning a value to a name; if identifier on the left hand side is not defined, it is hereby defined as a variable.If the assignment is in a function, and left hand side of assignment is not yet defined, then the left hand side defines a variable with function scope; if assignment is at global scope, then the variable will be a global variable / of global scope. The type of variable is defined by its usage, either scalars, hashes or arrays are allowed.
+(R1) Language must be _somewhat_ dynamically typed; A variable is defined 
+by assigning a value to a name; if identifier on the left hand side is not defined, it is hereby defined as a variable.
+If the assignment is in a function, and variable is not yet defined, then the variable scope is in the function; if the assignment is a global scope, then the variable will be a global variable.
+ 
+(R2) We can't do eval or create any bindings other than by declaring that binding explicitly in 
+the code. Also variable binding is created either by assignment or by parameter 
+declaration. 
 
-* Look up the value of a variables from a different scope; there are several possible ways / dilemmas.
-  _Implicit rules_  a name is first interpreted as function local; if there is no such variable then enclosing functions scope is tested for that name; if there is one, then we have a new closure, otherwise global scope is tested for that name; if a global variable is found then we have a reference to it. 
+(R3) One may not reference a variable that is not defined - this will be an error. (like STRICT mode in Perl - this will be the only available option). 
+
+(R4) Variable scope: A variable first assigned at global scope is global, a name assigned in a function is of local scope; 
+
+* Look up the value of a variables / variable scope; there are several possible ways / dilemmas.
+ _Implicit rules_  a name is first interpreted as function local; if there is no such variable then enclosing functions scope is tested for that name; if there is one, then we have a new closure, otherwise global scope is tested for that name; if a global variable is found then we have a reference to it. 
 There are several problems with this approach:
-Problem:  a feature to declare a variable somehow before using it is required; it might be that a local variable clashes with name of a global, in this case assignment does not define a local variable, it assigns a value to a global. Most scripting languages have some way of declaring function local variables or package level namespace - all in order to disambiguate these situation. 
-Problem: with larger functions it is not easy to understand the program, it is not clear what a variable reference means; is it a global? Is it a local or a closure ?  
-Problem with closures. there are several possible types of bindings, the closure may either be a reference to the variable of the enclosing scope, or it may copy the value of that variable; the second option is therefore most often ignored.
+Problem: One also has declare a variable somehow before using it, as one needs to know if this is a local or a global or whatever scope;
+Problem: with larger functions it is not easy to understand the program, it is not clear what a variable reference means;  
+Problem with closures. there are several possible types of bindings, the closure may either be a reference to the variable of the enclosing scope, or it may copy the value of that variable; the second option is thus ignored.
 _Explicit rules_  the  syntax has some means to tell if this name is supposed to be interpreted as function local/enclosing function scope or global scope; if not qualifier is given then current scope is meant; if there is a $ as name prefix then this is a global if there is a & as name prefix, then a closure as reference is created , a  # as name prefix copies the current value of the closure.
 I think that explicit rule is better for this purpose; also it avoids the need to declare variables before assignment.
  
-* One may not reference a variable that is not defined - this will be an error. (like STRICT mode in Perl - this will be the only available option). 
+(R5) Variable type: do not have to define the type of a variable; it will become obvious from how the variable is later used; if a variable is used as an array (a[ 0 ] = 0 ), it is an array; the same variable name can not be later used as a scalar. Problem: it is not always possible to tell the type of a binding: If you insert something into an array / hash, then later access to this entry is untyped and must be checked at run time;
 
-* Variable type: do not have to define the type of a variable; it will become obvious from how the variable is later used; if a variable is used as an array (a[ 0 ] = 0 ), it is an array; the same variable name can not be later used as a scalar. Problem: it is not always possible to tell the type of a binding: If you insert something into an array / hash, then later access to this entry is untyped and must be checked at run time;
+General principle: If you can infer the type of something during parsing/compilation then do so, if you can't then defer type check to run time ('somewhat' dynamically typed)
 
-* We can't do eval or create any bindings other than by declaring that binding explicitly in the code. Also variable binding is created either by assignment or by parameter declaration. 
-
-* General principle: If you can infer the type of something during parsing/compilation then do so, if you can't then defer type check to run time ('somewhat' dynamically typed)
-
-* More on type system: There are different approaches
+(R6) More on type system: There are different approaches
   	- Everything is a reference (Smalltalk, Lisp)
 	- There are primitive types and object references (Java, Scala)
 	- There are primitive types, object references and object values (C,C++).
 What is the most appropriate thing to do here?
 Primitive types and references: The problem here is that assignment of numbers is a special case; either the number object has to be cloned explicitly (choice A), or the cloning of number object is done 'under the hood' (choice B); or you have a different operator for copying an object by value and by reference a = 12 / b = [ 1, 2, 4 ] would be copy by value  (deep copy, if the array contains other arrays and hashes, then these will be copied too); and  a <= 10 / b <= [ 1, 2, 3 ] . I think that this is a clearer approach. There is no operator to dereference a reference;   
 
-* Functions have prototypes, but the type of the parameters is not defined in the prototype. All values are passed by reference (The reason for this decision is to avoid confusion)
+(R7) Functions have prototypes, but the type of the parameters is not defined in the prototype. All values are passed by reference (The reason for this decision is to avoid confusion)
 
-* Check function prototype on call: If function is called directly then check number of parameters and if their types match (for example check if scalar is not passed instead of an array); If type is difficult to establish (function reference stored in hash) then defer check to run time.
+(R8) Check function prototype on call: If function is called directly then check number of parameters and if their types match (for example check if scalar is not passed instead of an array); If type is difficult to establish (function reference stored in hash) then defer check to run time; the type of a parameter is determined by how it is used (very simplistic form of type inference)
 
-* functions are 'first class' - meaning that we have anonymous functions, and 
+(R9) functions are 'first class' - meaning that we have anonymous functions, and 
 functions can be returned as return values, etc. 
 
-* To be handy we have a built in regular expressions  (syntax like perl) or multi line strings (syntax like in python).  Also one needs array slices in order to return multiple variables from functions.
+* Operators must either enforce the type of the arguments or it must convert types explicitly; for example the expression <string> + <integer> either disallows such a combination; or it performs implicit conversion of <integer> to <string> and is interpreted as string concatenation; or it tries to interpret <string> as an <integer>; I think the implicit conversion business is too wishy-washy. An operator is supposed to have a meaning, that is now subject to some strange interpretation. So here we stick with Perl like convention;
+There are numeric comparison operators: <>  , == ,  > , <  , >= , <=
+There are string comparison operators:  ne , eq , gt , lt , le , ge
+Numeric operators  + , - , * , /
+Special string concatenation operator .. Here however a numeric value will be turned to string value implicitly.
 
-* Reflection, will be done as a library, so no need for special syntactic constructs here.
+(R10) The Haskell programming language has a nice feature that if-then-else statement always requires an else clause - this forces the programmer to consider the what else scenario; however this nice feature contradicts with requirement of non-anal-retentiveness; so it is not accepted.
 
-* Co-routines / will have generator functions with yield; *must have for nice iteration *;
+(R11) To be handy we have a built in regular expressions  (syntax like perl) or multi line strings.  Also one needs array slices in order to return multiple variables from functions.
+
+(R12) Reflection, will be done as a library, so no need for special syntactic constructs here.
+
+(R13) Co-routines / will have generator functions with yield; *must have for nice iteration *;
+
+(R14)  Things to cut: exceptions, namespaces, classes (also cuts Generic types, so the innovation of doing without classes :really makes things much more feasible); no macros / no meta programming at all; No blocks as function closures (this feature might add to more concise code, but is very confusing - is it a statement? Is it a function? ) ; no syntax that does many things at once - like for statements in C; No eval feature (no way to interpret a string a as a program). 
+
+(R15) String literals; there are many possible choices here "this document":http://en.wikipedia.org/wiki/String_literal explains the many notations for a string literal  ;
+ 
+One question is why are there separate notations for strings that span one line and string that span multiple lines? One explanation is that strings that span multiple lines were introduced later as an added construct; I think it would be nice to have the same notation for both types of string.
+
+One choice is to have The traditional delimiter for " as delimiter for start of multiple line string; and to adapt the PERL qq$aaa$ notation for different choice of delimiter character; 
+
+Also very useful if not essential feature is to have "Variable interpolation":http://en.wikipedia.org/wiki/Variable_interpolation#Interpolation ; Of course it is limiting to only quote single variables, so Ruby can insert expressions into a string ; the Perl template system "Text::Template":http://search.cpan.org/~mjd/Text-Template-1.45/lib/Text/Template.pm has the interesting notation of putting a block into a template string; that is very cute, now it also needs a way to change the notation of start-of-block, end-of-block delimiters; so lets try to put that into the syntax.
+
+The general form of this syntax is qqq( <delimiter of start of code> , <delimiter of end of code>  ) <character that denotes the end of string >  
+Example:
+qqq(${,})# this is quoted string ${ a + b } no need for escape sequences at all #
+
+So this string construct does not need any escape characters at all ! So it will not have them. (of course it is a headache to parse all this ;-)  
+
+h4. The fun of language design 
+This is a digression; maybe I am wrong in many points here, but what is most fun about language design is that the designer can take arbitrary decisions at time; well there are tradeoffs to make ;-) One can tell by looking at most programming languages;
 
 
 
