@@ -20,8 +20,12 @@
  * of this bitmap can be done in separate step from usage, therefore parsing
  * function will not create character bitmap over and over again.
  *
- * I don't know if this is very usefull, a character class bitmap takes 32 bytes, which is two cache lines.
+ * I don't know if this is very usefull, in terms of peformance: a character class bitmap takes 32 bytes, which is two cache lines.
  * So two cache lines have to be moved in order to use this stuff.
+ *
+ * There are situations when a class like this is much better than strtk; when parsing a string in loop; then again within the loop
+ * you want to parse each token with strtk - you can't; you can with this class; Also you do not have to copy the input string; this
+ * one does not modify the input string.
  *
  * @{
  */
@@ -109,7 +113,7 @@ M_INLINE char * STRTK_ntok(STRTK *tok, const char *hay, size_t nsize, char **end
  * @brief tokenize a string . the character class is interpreted as set of white spaces.
  * @return pointer to the start of token, end_tok returns position right after the token.
  */
-M_INLINE char * STRTK_tok(STRTK *tok, const char *hay, char **end_tok )
+M_INLINE char * STRTK_tok(STRTK *tok, const char *hay, const char **end_tok )
 {
    uint8_t *cpos;
    char *start_tok;

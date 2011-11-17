@@ -58,7 +58,14 @@ M_INLINE void DBUF_free(DBUF *buf) {
 /**
  * @brief add stuff to a buffer
  */
-int DBUF_add(  DBUF* buf, void *data, size_t data_size );
+int DBUF_add(  DBUF* buf, const void *data, size_t data_size );
+
+M_INLINE int DBUF_add_null(  DBUF* buf )
+{
+  char n = 0;
+  return DBUF_add( buf, &n, 1 );
+}
+
 
 
 M_INLINE  void * DBUF_buffer( DBUF *buf )
