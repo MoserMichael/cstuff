@@ -108,16 +108,22 @@ There are therefore the following requirements for  a string notation.
 
 Escape sequences can be avoided, if the definition of  the HERE document contains a definition of the end of string delimiter; 
 
+<notextile>
 <<@@>>aaa bbb ccc @@
 
-<<@@>> - this construct is similar to HERE document; it says that @@ is the end of string delimiter; Unlike HERE document this delimiter can appear anywhere in the string, it is not limited to be at the start of a new line.
+<<@@>>  </notextile> - this construct is similar to HERE document; it says that <notextile>@@</notextile> is the end of string delimiter; Unlike HERE document this delimiter can appear anywhere in the string, it is not limited to be at the start of a new line.
 
+<notextile>
 <<@@>>aaa #{ a + b } cc @@
-
+</notextile>
 Here the string #{ a + b } contains the expression a+ b; this expression will be evaluated and the result is inserted into the string. By default delimiter #{ means start of embedded code section; } will close this code section. The delimiter #{ not create too many clashes, so this seems to be a good default value. 
 
 Now the question is how to customize the start, end of embedded code markers; it could e as follows
+
+<notextile>
 << @@ [[ ]] >> aaa [[ a + b ]] ccc @@
+</notextile>
+
 If the definition of a HERE document contains three strings then the first one is the delimiter of start of embedded expression, the second one is delimiter for end of embedded expression and the last string is the end of string delimiter. 
 
 One further rule is that the definition of a token has to be on the same line; <<AAA>> so AAA cannot include newline characters.
