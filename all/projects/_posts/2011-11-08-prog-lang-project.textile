@@ -12,16 +12,15 @@ First the name; It will be the 'Pooh programming language' ; I think that if the
 
 h3. General Terms / General requirements
 
+This section defines the design goals / requirements for the Pooh programming language.
 
-(GR1) This section defines the design goals / requirements for the Pooh programming language.
-
-(GR2) Language must serve an educational purpose / be suited for the purpose of introducing kids to programming; It is not a functional programming language; one has assignments. It is not object oriented (no class concept with inheritance and virtual functions), instead it will have closures.
+(GR1) Language must serve an educational purpose / be suited for the purpose of introducing kids to programming; It is not a functional programming language; that means that its has assignments. It is not object oriented (no class concept with inheritance and virtual functions), instead it will have closures.
 
 (GR3) The syntax may not force the user to perform anal retentive repetitive tasks over and over again ; For example it may not require the user to put in semicolon delimiter between statements - that's an  evil; or it may not require the user to declare variables / types of variables.
 
 (GR4) The syntax must take the 'there is one way to do a thing' approach; It is not possible to do the PERL philosophy of 'there is more than one way to do a thing.
 
-(GR5) Be fun to use. It is very difficult to quantify this or to give a definition for this concept, but we will try. 
+(GR5) Be fun to use. It is very difficult to quantify this or to give a definition for this concept, but we will try: 
 
 (GR6) Encourage data driven programming / it must be possible to declare complex lists / hashes in code / Nesting of hashes and lists;
 
@@ -47,12 +46,9 @@ Examples
 
 h3. Defining the details of the Pooh language
 
-(R1) Language must be _somewhat_ dynamically typed; A variable is defined 
-by assigning a value to a name; if identifier on the left hand side is not defined, it is hereby defined as a variable.
-If the assignment is in a function, and variable is not yet defined, then the variable scope is in the function; if the assignment is a global scope, then the variable will be a global variable.
+(R1) Language must be _somewhat_ dynamically typed; A variable is defined by assigning a value to a name; if identifier on the left hand side is not defined, it is hereby defined as a variable. If the assignment is in a function, and variable is not yet defined, then the variable scope is in the function; if the assignment is a global scope, then the variable will be a global variable.
  
-(R2) We can't do eval or create any bindings other than by declaring that binding explicitly in 
-the code. Also variable binding is created either by assignment or by parameter 
+(R2) We can't do eval or create any bindings other than by declaring that binding explicitly in the code. Also variable binding is created either by assignment or by parameter 
 declaration. 
 
 (R3) One may not reference a variable that is not defined - this will be an error. (like STRICT mode in Perl - this will be the only available option). 
@@ -102,22 +98,37 @@ Special string concatenation operator .. Here however a numeric value will be tu
 
 (R14)  Things to cut: exceptions, namespaces, classes (also cuts Generic types, so the innovation of doing without classes :really makes things much more feasible); no macros / no meta programming at all; No blocks as function closures (this feature might add to more concise code, but is very confusing - is it a statement? Is it a function? ) ; no syntax that does many things at once - like for statements in C; No eval feature (no way to interpret a string a as a program). 
 
-(R15) String literals; there are many possible choices here "this document":http://en.wikipedia.org/wiki/String_literal explains the many notations for a string literal  ;
+(R15) String literals; there are many possible choices "article on string literals ":http://en.wikipedia.org/wiki/String_literal explains the many notations for a string literal  "here documents - multiple line strings":http://en.wikipedia.org/wiki/Here_document explains more about strings that span multiple lines; Perl achieves a great degree of expressiveness at the cost of introducing multiple kinds of string literals. I guess it is a bit complicated to memorize so many notations, especially if one is new to programming. 
  
-One question is why are there separate notations for strings that span one line and string that span multiple lines? One explanation is that strings that span multiple lines were introduced later as an added construct; I think it would be nice to have the same notation for both types of string.
+There are therefore the following requirements for  a string notation. 
+* There should be one string literal notation.
+* it does not need and does not have any escape sequences
+* it must express multiple line strings, sort of like "Here documents"
+* must allow for embedding of code into the string; the result of evaluating the code will be inserted into the string.
 
-One choice is to have The traditional delimiter for " as delimiter for start of multiple line string; and to adapt the PERL qq$aaa$ notation for different choice of delimiter character; 
+Escape sequences can be avoided, if the definition of  the HERE document contains a definition of the end of string delimiter; 
 
-Also very useful if not essential feature is to have "Variable interpolation":http://en.wikipedia.org/wiki/Variable_interpolation#Interpolation ; Of course it is limiting to only quote single variables, so Ruby can insert expressions into a string ; the Perl template system "Text::Template":http://search.cpan.org/~mjd/Text-Template-1.45/lib/Text/Template.pm has the interesting notation of putting a block into a template string; that is very cute, now it also needs a way to change the notation of start-of-block, end-of-block delimiters; so lets try to put that into the syntax.
+<<@@>>aaa bbb ccc @@
 
-The general form of this syntax is qqq( <delimiter of start of code> , <delimiter of end of code>  ) <character that denotes the end of string >  
-Example:
-qqq(${,})# this is quoted string ${ a + b } no need for escape sequences at all #
+<<@@>> - this construct is similar to HERE document; it says that @@ is the end of string delimiter; Unlike HERE document this delimiter can appear anywhere in the string, it is not limited to be at the start of a new line.
 
-So this string construct does not need any escape characters at all ! So it will not have them. (of course it is a headache to parse all this ;-)  
+<<@@>>aaa #{ a + b } cc @@
 
-h4. The fun of language design 
+Here the string #{ a + b } contains the expression a+ b; this expression will be evaluated and the result is inserted into the string. By default delimiter #{ means start of embedded code section; } will close this code section. The delimiter #{ not create too many clashes, so this seems to be a good default value. 
+
+Now the question is how to customize the start, end of embedded code markers; it could e as follows
+<< @@ [[ ]] >> aaa [[ a + b ]] ccc @@
+If the definition of a HERE document contains three strings then the first one is the delimiter of start of embedded expression, the second one is delimiter for end of embedded expression and the last string is the end of string delimiter. 
+
+One further rule is that the definition of a token has to be on the same line; <<AAA>> so AAA cannot include newline characters.
+
+This is a powerful construct, so it is therefore a bit complicated; however I think that on a global level it is less complex to have one string literal notation with variations, instead of five different string notations like in Perl (maybe there are more of them, I counted five of them though).  
+
+h4. The fun of language design
+ 
 This is a digression; maybe I am wrong in many points here, but what is most fun about language design is that the designer can take arbitrary decisions at time; well there are tradeoffs to make ;-) One can tell by looking at most programming languages;
+
+Also research in computer languages provides the field with a playground where one can dare to make things differently. Lets hope it works out. 
 
 
 
