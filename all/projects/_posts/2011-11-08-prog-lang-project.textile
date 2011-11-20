@@ -125,9 +125,9 @@ Now the question is how to customize the start, end of embedded code markers; it
 << ## [[ ]] >> aaa [[ a + b ]] ccc ##
 </notextile>
 
-If the definition of a HERE document contains three strings then the first one is the delimiter of start of embedded expression, the second one is delimiter for end of embedded expression and the last string is the end of string delimiter. 
+If the definition of a HERE document contains three strings then the first one is the end of string delimiter ( ## ) , the second one is the delimiter of start of embedded expression ( [[ ) ; the third one is the delimiter for end of embedded expression ( ]] ). 
 
-One further rule is that the definition of a token has to be on the same line; <notextile> <<AAA>>  </notextile> so AAA cannot include newline characters.
+One further rule is that the definition of a token has to be on the same line; <notextile> << AAA >>  </notextile> so AAA cannot include newline characters.
 
 This is a powerful construct, so it is therefore a bit complicated; however I think that on a global level it is less complex to have one string literal notation with variations, instead of five different string notations like in Perl (maybe there are more of them, I counted five of them though).  
 
