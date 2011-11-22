@@ -50,7 +50,7 @@ M_INLINE void STRTK_add_char( STRTK *tok, uint8_t ch )
  * @brief macro checks if character is part of character class
  */
 #define STRTK_IS_CHAR( tok, ch ) \
-   ( (tok)->pattern[ (ch) >> 3 ] && (1 << ((ch) & 7))  )
+   ( (tok)->pattern[ (ch) >> 3 ] & (1 << ((ch) & 7))  )
 
 /**
  * @brief Returns token where all characters belong to argument character class.
@@ -132,6 +132,27 @@ M_INLINE char * STRTK_tok(STRTK *tok, const char *hay, const char **end_tok )
    }
    return start_tok;
 }
+
+/**
+ * @brief string tokenizer function that modifies the input string - like strtok
+ */
+M_INLINE char * STRTK_tok_mod(STRTK *tok, const char *hay, char **next )
+{
+  char *ret;
+  const char *pnext;
+
+  ret = STRTK_tok( tok, hay, &pnext  );
+
+  if (*pnext != 0) {
+     * ( (char *) pnext ) = '\0';
+     *next = (char *) pnext + 1;
+  } else {
+     *next = (char *) pnext;
+  }
+  return ret;
+}
+  
+
 
 /**
  * @}

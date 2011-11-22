@@ -23,45 +23,46 @@ void STRTK_span_test()
 void STRTK_tok_test()
 {
   STRTK tok;
-  char *next,*res;
+  const char *next;
+  char *res;
 
   STRTK_init( &tok, TKPATTERN );
 
   
   res = STRTK_tok( &tok, strdup(TKSTRING), &next );
-  *next = '\0';
+  * ((char * ) next) = '\0';
   VASSERT( strcmp(  "The", res ) == 0);
  
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  * ((char * ) next) = '\0';
   VASSERT( strcmp(  "quick", res ) == 0);
  
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  * ((char * ) next) = '\0';
   VASSERT( strcmp(  "brown", res ) == 0);
   
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  * ((char * ) next) = '\0';
   VASSERT( strcmp(  "fox", res ) == 0);
  
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  * ((char * ) next) = '\0';
   VASSERT( strcmp(  "jumped", res ) == 0);
   
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  * ((char * ) next) = '\0';
   VASSERT( strcmp(  "over", res ) == 0);
 
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  *  ((char * ) next) = '\0';
   VASSERT( strcmp(  "the", res ) == 0);
   
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  *  ((char * ) next) = '\0';
   VASSERT( strcmp(  "lazy", res ) == 0);
 
   res = STRTK_tok( &tok, next+1, &next );
-  *next = '\0';
+  *  ((char * ) next) = '\0';
   VASSERT( strcmp(  "dog", res ) == 0);
    
 }
