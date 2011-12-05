@@ -78,7 +78,7 @@ Primitive types and references: The problem here is that assignment of numbers i
 (R7) Functions have prototypes, but the type of the parameters is not defined in the prototype. All values are passed by reference (The reason for this decision is to avoid confusion)
 
 (R8) Check function prototype on call: If function is called directly then check number of parameters and if their types match (for example check if scalar is not passed instead of an array); If type is difficult to establish (function reference stored in hash) then defer check to run time; the type of a parameter is determined by how it is used (very simplistic form of type inference)
-
+  	
 (R9) functions are 'first class' - meaning that we have anonymous functions, and 
 functions can be returned as return values, etc. 
 
@@ -90,15 +90,17 @@ Special string concatenation operator .. Here however a numeric value will be tu
 
 (R10) The Haskell programming language has a nice feature that if-then-else statement always requires an else clause - this forces the programmer to consider the what else scenario; however this nice feature contradicts with requirement of non-anal-retentiveness; so it is not accepted.
 
-(R11) To be handy we have a built in regular expressions  (syntax like perl) or multi line strings.  Also one needs array slices in order to return multiple variables from functions.
+(R11) Reflection, will be done as a library, so no need for special syntactic constructs here.
 
-(R12) Reflection, will be done as a library, so no need for special syntactic constructs here.
+(R12) Co-routines / will have generator functions with yield; *must have for nice iteration *;
 
-(R13) Co-routines / will have generator functions with yield; *must have for nice iteration *;
+(R13)  Things to cut: exceptions, namespaces, classes (also cuts Generic types, so the innovation of doing without classes :really makes things much more feasible); no macros / no meta programming at all; No blocks as function closures (this feature might add to more concise code, but is very confusing - is it a statement? Is it a function? ) ; no syntax that does many things at once - like for statements in C; No eval feature (no way to interpret a string a as a program). 
 
-(R14)  Things to cut: exceptions, namespaces, classes (also cuts Generic types, so the innovation of doing without classes :really makes things much more feasible); no macros / no meta programming at all; No blocks as function closures (this feature might add to more concise code, but is very confusing - is it a statement? Is it a function? ) ; no syntax that does many things at once - like for statements in C; No eval feature (no way to interpret a string a as a program). 
+(R14) To be handy we have a built in regular expressions
 
-(R15) String literals; there are many possible choices "article on string literals ":http://en.wikipedia.org/wiki/String_literal explains the many notations for a string literal  "here documents - multiple line strings":http://en.wikipedia.org/wiki/Here_document explains more about strings that span multiple lines; Perl achieves a great degree of expressiveness at the cost of introducing multiple kinds of string literals. I guess it is a bit complicated to memorize so many notations, especially if one is new to programming. 
+(R15)  Also one needs array slices in order to return multiple variables from functions.
+
+(R16) String literals; there are many possible choices "article on string literals ":http://en.wikipedia.org/wiki/String_literal explains the many notations for a string literal  "here documents - multiple line strings":http://en.wikipedia.org/wiki/Here_document explains more about strings that span multiple lines; Perl achieves a great degree of expressiveness at the cost of introducing multiple kinds of string literals. I guess it is a bit complicated to memorize so many notations, especially if one is new to programming. 
  
 There are therefore the following requirements for  a string notation. 
 * There should be one string literal notation.
@@ -109,27 +111,34 @@ There are therefore the following requirements for  a string notation.
 Escape sequences can be avoided, if the definition of  the HERE document contains a definition of the end of string delimiter; 
 
 <notextile>
-<<##>>aaa bbb ccc ##
+@#@aaa bbb ccc #
 
-<<##>>  </notextile>  this construct is similar to HERE document; it says that <notextile> ##     
- </notextile> is the end of string delimiter; Unlike HERE document this delimiter can appear anywhere in the string, it is not limited to be at the start of a new line.
+@#@ </notextile>  this construct is similar to HERE document; it says that the string #  is interpreted as the end of string delimiter; Unlike HERE document this delimiter can appear anywhere in the string, it is not limited to be at the start of a new line.
+
+@##@aaa bbb ccc ## 
+The end of string delimiter can a multi character string (without @ characters).
 
 <notextile>
-<<##>>aaa #{ a + b } cc ##
+@"@ #{ a + b } cc "
 </notextile>
 Here the string #{ a + b } contains the expression a+ b; this expression will be evaluated and the result is inserted into the string. By default delimiter #{ means start of embedded code section; } will close this code section. The delimiter #{ not create too many clashes, so this seems to be a good default value. 
 
 Now the question is how to customize the start, end of embedded code markers; it could e as follows
 
 <notextile>
-<< ## [[ ]] >> aaa [[ a + b ]] ccc ##
+@ ## [[ ]] @ aaa [[ a + b ]] ccc ##
 </notextile>
 
 If the definition of a HERE document contains three strings then the first one is the end of string delimiter ( ## ) , the second one is the delimiter of start of embedded expression ( [[ ) ; the third one is the delimiter for end of embedded expression ( ]] ). 
 
-One further rule is that the definition of a token has to be on the same line; <notextile> << AAA >>  </notextile> so AAA cannot include newline characters.
+One further rule is that the definition of a token has to be on the same line; <notextile> @ AAA @  </notextile> so AAA cannot include newline characters.
 
 This is a powerful construct, so it is therefore a bit complicated; however I think that on a global level it is less complex to have one string literal notation with variations, instead of five different string notations like in Perl (maybe there are more of them, I counted five of them though).  
+
+(R17) There are function prototypes, therefore have to decide what to do with the problem of function overloading; - can there be two different functions with the same name that take a different set of arguments ?
+ 
+I think function overloading can be skipped due to the simplicity requirement.  
+Also scripting languages or loosely typed programming languages in general do not have this feature / even Ruby doesn't have it.
 
 h4. The fun of language design
  
