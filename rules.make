@@ -79,6 +79,8 @@ clean:OP:=clean
 cleanall:OP:=cleanall
 test:OP:=test
 install:OP:=install
+ctags:OP:=ctags
+
 
 #-
 # Include platform specific override script (file must not exist, is optional)
@@ -510,3 +512,11 @@ build_post_subdirs : $(addsuffix _build_post_subdirs_dir, $(POSTBUILD_SUBDIRS))
 cleanall :
 	rm -rf $(BIN_ROOT_DIR)
 
+
+.PHONY: ctags
+ctags : build_pre_subdirs build_post_subdirs   
+ifeq "$(realpath $(PWD))" "$(realpath $(ROOT_DIR))"
+	    ctags --file-scope=no -R $(realpath $(ROOT_DIR))
+else
+	    ctags *
+endif
