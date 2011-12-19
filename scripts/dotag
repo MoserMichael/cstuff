@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+# run from project root directory in order to build tag database that works
+# with omnicpp; 
+#  - the main directory will have tags with all exported symbols
+#  - all directories with sources will have a local tag file with all symbols.
+
+$OMNICPP_OPTS="--c++-kinds=+p --fields=+iaS --extra=+q";
+
+
+system("set -x; ctags --file-scope=no -R $OMNICPP_OPTS .");
+
+@dirs = split(" ", `find  -type d ` );
+
+#die join(":",@dirs);
+
+for $d (@dirs) { 
+  $has_sources = 0;
+  system("ls $d/*.c >/dev/null 2>&1");
+  if ($? == 0) {
+    $has_sources = 1;
+  }
+  system("ls $d/*.h >/dev/null 2>&1");
+  if ($? == 0) {
+    $has_sources = 1;
+  }
+
+  if ($has_sources) {
+    system("set -x ; cd $d ; ctags $OMNICPP_OPTS ."); 
+  }
+}
