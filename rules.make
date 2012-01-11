@@ -513,10 +513,12 @@ cleanall :
 	rm -rf $(BIN_ROOT_DIR)
 
 
+OMNICPP_OPTS=--c++-kinds=+p --fields=+iaS --extra=+q
+
 .PHONY: ctags
 ctags : build_pre_subdirs build_post_subdirs   
 ifeq "$(realpath $(PWD))" "$(realpath $(ROOT_DIR))"
-	    ctags --file-scope=no -R $(realpath $(ROOT_DIR))
+	    ctags --file-scope=no -R $(OMNICPP_OPTS) $(realpath $(ROOT_DIR))
 else
-	    ctags *
+	    ctags $(OMNICPP_OPTS) *
 endif
