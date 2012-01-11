@@ -11,6 +11,7 @@
 
 #define _MEMBEROF(ptr,offset)			(((uint8_t *) ptr) - offset)
 
+#define _OFFSETOF( ptr, strct, membrr )  (strct *) _MEMBEROF( ptr, offsetof( strct, membrr ) )
 
 #define M_INLINE  static inline
 #define M_UNUSED(x) (void) (x)
