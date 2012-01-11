@@ -14,9 +14,11 @@
 
 
 /* global used throughout lexer and parser */
-PARSECONTEXT *parse_context;
+//PARSECONTEXT *parse_context;
 
+#ifndef IS_REENTRANT
 YYLTYPE yyloc;
+#endif
 
 /*
  * extended structure for location info, 
@@ -48,6 +50,10 @@ YYLTYPE yyloc;
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 #define YYERROR_VERBOSE
+
+#ifdef TRACE_PARSER
+#define YYDEBUG 1
+#endif
 
 #include "pars.txt"
 
@@ -177,17 +183,16 @@ char *translate_token(const char *msg) {
  */
 char *translate_message(const char *msg)
 {
-    const char *pos, *npos, *tok;
-    char *news;
+    const char *pos, *tok;
+    char *news, *npos;
     STRTK stok;
     DBUF dbuf;
 
     STRTK_init( &stok, " \t" );
     DBUF_init( &dbuf, 10 );
 
-    for( pos = msg, tok = STRTK_tok( &stok, pos, &npos ); tok != 0; pos = npos, tok = STRTK_tok( &stok, pos, &npos ) ) { 
-     
-       * ( (char *) npos ) = '\0';
+    for( pos = msg, tok = STRTK_tok_mod( &stok, pos, &npos ); 
+	    tok != 0; pos = npos, tok = STRTK_tok_mod( &stok, pos, &npos ) ) { 
 
        news = 0;
        if (strncmp( tok, S_TOKEN_STRART, S_TOKEN_START_LEN ) == 0) {
@@ -199,7 +204,7 @@ char *translate_message(const char *msg)
         DBUF_add( &dbuf, " ", 1 );
       }
 
-       * ( (char *) npos ) = ' ';
+      pos = npos;
     }
     DBUF_add_null( &dbuf );
     
@@ -217,11 +222,15 @@ char *translate_message(const char *msg)
  
   Return Code/Output - none
  */
-void do_yyerror (YYLTYPE *loc, const char  *format, ...)
+void do_yyerror (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format, ...)
 {
   char msg[ERROR_MSG_LEN];
   int len;
   va_list ap;
+
+  if (! parse_context->report_errors ) {
+    return;
+  }
 
   va_start(ap, format);
   len = 
@@ -237,10 +246,14 @@ void do_yyerror (YYLTYPE *loc, const char  *format, ...)
   msg[len] = '\0';
 
   parse_context->my_yy_is_error = 1;
-  fprintf (stderr, "\n%s(%d): Error: %s\n", LEXER_get_file_name( loc->file_id ), loc->first_line, msg);
+  fprintf (stderr, "\n%s(%d): Error: %s\n", 
+	LEXER_get_file_name( &parse_context->lexctx , loc->file_id ), 
+	loc->first_line, 
+	msg);
 
   
-  fancy_error_report( loc, LEXER_get_file_name(loc->file_id) );
+  fancy_error_report( loc, 
+	LEXER_get_file_name( &parse_context->lexctx, loc->file_id) );
 }
 
 
@@ -253,14 +266,12 @@ void do_yyerror (YYLTYPE *loc, const char  *format, ...)
 			  
   Return Code/Output - none
  */
-void yyerror (char const *msg)
+void yyerror (YYLTYPE *loc, PARSECONTEXT *parse_context, char const *msg)
 {
   char *nmsg;
-  YYLTYPE *ltp;
 
   nmsg = translate_message( msg );
-  ltp = &yyloc;
-  do_yyerror( ltp, "%s", nmsg );
+  do_yyerror( loc, parse_context, "%s", nmsg );
   free( nmsg );
 }
 
@@ -277,40 +288,56 @@ void yyerror (char const *msg)
 					   
 
  */
-int PARSER_run(struct tagAST_BASE **root)
+
+int PARSER_run(PARSECONTEXT *ctx, struct tagAST_BASE **rval  )
 {
 	int ret = 0;
 
-#if 0
+#ifdef TRACE_PARSER
 	yydebug = 1;
 #endif
-	ret = yyparse();
 
-	return parse_context->my_yy_is_error;
+	ret = yyparse( ctx );
+	if (ret) {
+
+#ifdef TRACE_PARSER
+	  fprintf( stderr, "---yyparer failed; returns %d\n", ret );
+#endif
+	  return ret;
+	}
+
+#ifdef TRACE_PARSER
+	fprintf( stderr, "---yyparse ok\n" );
+#endif
+
+
+	*rval = ctx->my_ast_root;
+	return ctx->my_yy_is_error; 
 }
 
 
 
-int PARSER_init()
+PARSECONTEXT * PARSER_init()
 {
-  parse_context = (PARSECONTEXT *) malloc(sizeof( PARSECONTEXT) );
-  if (!parse_context) { 
-    return -1;
-  }
-  parse_context->my_yy_is_error = 0;
-  parse_context->my_ast_root = 0;
+  PARSECONTEXT *ret;
 
-  if (LEXER_init()) {
-    return -1;
+
+  ret = (PARSECONTEXT *) malloc( sizeof( PARSECONTEXT ) );
+  if (!ret) {
+    return 0;
   }
-  return 0;
+
+  if (PARSECONTEXT_init( ret )) { 
+    return 0;
+  }
+
+  return ret;
 
 }
 
-int PARSER_free()
+int PARSER_free(PARSECONTEXT *ctx)
 {
-
-  if (LEXER_free()) {
+  if (LEXER_free( &ctx->lexctx )) {
     return -1;
   }
   return 0;
