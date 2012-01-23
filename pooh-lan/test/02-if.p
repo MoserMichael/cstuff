@@ -10,13 +10,13 @@ sub show( a )
   end
 
   if a == 1 
-    print("one")
+    print(@"@one")
   elsif a == 2
-    print("two") 
+    print(@"@two") 
   elsif a == 3
-    print("three") 
+    print(@"@three") 
   else
-    print("another value")
+    print(@"@another value")
   end
 
 end

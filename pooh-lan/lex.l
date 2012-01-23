@@ -4,21 +4,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "parsectx.h"
 %}
 
-%option  noyywrap
+%option  noyywrap reentrant bison-bridge bison-locations
+
 
 %x	 comment
 
 INT_CONST	[0-9]+
-ID			[a-zA-Z][a-zA-Z0-9_]*
+ID		[a-zA-Z#][a-zA-Z0-9_]*
 DOUBLE		[0-9]+"."[0-9]+
 
 %%
 
 
-":"		{ MY_YY_RETURN(TK_COLON); }
+%{
+#ifdef IS_REENTRANT
+    LEXCONTEXT *lex_context = (LEXCONTEXT *) yyextra;
+ 
+    if (! yyg->yylloc_r ) {
+      yyensure_buffer_stack (yyscanner);
+      YYLTYPE_init( yylloc_param );
+      if (lex_context->set_init_location) {
+	*yylloc_param = lex_context->init_location;
+      } 
+      yyg->yylloc_r = yylloc_param; 
+      yylineno = 1;
+      yycolumn = 1;	
+    }	
+#else
+    LEXCONTEXT *lex_context = (LEXCONTEXT *) &parse_context->lexctx;
+#endif
+
+    if (lex_context->send_init_token) {
+      lex_context->send_init_token = 0; 
+      MY_YY_RETURN(lex_context->init_token_value);
+    }
+%}
+
 
 ","		{ MY_YY_RETURN(TK_COMMA); }
 
@@ -81,6 +105,9 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "."     { MY_YY_RETURN(TK_OK_DOT); }
 
+"_"     { MY_YY_RETURN(TK_UNDERSCORE); }
+
+
 "=~"	{ MY_YY_RETURN(TK_OP_STR_REGEXMATCH); }
 
 "+"		{ MY_YY_RETURN(TK_OP_NUM_ADD); }
@@ -93,10 +120,17 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "/"		{ MY_YY_RETURN(TK_OP_NUM_DIV); }
 
-"++"	{ MY_YY_RETURN(TK_OP_NUM_AUTOINCR); }
+"!"	{ MY_YY_RETURN(TK_OP_LOGICAL_NEGATE); }
+ 
+"not"	{ MY_YY_RETURN(TK_OP_LOGICAL_NEGATE); }
+ 
+"&&"	{ MY_YY_RETURN(TK_OP_LOGICAL_AND); } 
 
-"--"	{ MY_YY_RETURN(TK_OP_NUM_AUTODECR); }
+"and"	{ MY_YY_RETURN(TK_OP_LOGICAL_AND); } 
 
+"||"	{ MY_YY_RETURN(TK_OP_LOGICAL_OR); }
+
+"or"	{ MY_YY_RETURN(TK_OP_LOGICAL_OR); }
 
 "=>"		{ MY_YY_RETURN(TK_HASH_IT); }  
 
@@ -113,96 +147,51 @@ DOUBLE		[0-9]+"."[0-9]+
 "do"	{ MY_YY_RETURN(TK_DO); }
 
 {ID}	{ 
-			  yylval.string_value = strdup(yytext); 
+			  SET_YY_STYPE( string_value, strdup(yytext) );
 			  MY_YY_RETURN(TK_IDENTIFIER); 
 		}	
 
 {INT_CONST} { 
-		yylval.long_value = atol(yytext);
+		SET_YY_STYPE(long_value, atol(yytext) );
 		MY_YY_RETURN(TK_INTEGER_CONSTANT); 
 	}
 
 {DOUBLE} {
-		yylval.double_value = atof(yytext);
+		SET_YY_STYPE(double_value, atof(yytext) );
 		MY_YY_RETURN(TK_DOUBLE_CONSTANT);
 	}
 
+"@" {
+		int rt;
+
+		rt = parse_string( lex_context ) ; 
+
+		if (rt < 0) {
+		  MY_YY_RETURN(TK_ERROR);
+		}
+	        if (rt == 0) {
+		  MY_YY_RETURN(TK_STRING_CONSTANT);  
+		}
+		MY_YY_RETURN(TK_MULTI_PART_STRING_CONSTANT);  
+ }
+
 "\"" {
-		int c;
-		
-
-		DBUF_reset( &parse_context->token_buf );
-		
-		
-		while ( (c = MY_YY_input()) != '"' && c != EOF) {
-			if (c == '\\') {
-			   c = MY_YY_input();
-			   if (c==EOF) {
-				 break;
-			   }
-			   if (c=='\n') {
-				 continue;
-			   }
-				switch(c) {
-			     case 'n': 
-				   c = '\n';
-				   break;
-				 case 't':
-				   c = '\t';
-				   break;
-				 case 'v':
-				   c = '\v';
-				   break;
-				 case 'b':
-				   c = '\r';
-				   break;
-				 case 'r':
-				   c = '\r';
-				   break;
-				 case 'f':
-				   c = '\f';
-				   break;
-				 case 'a':
-				   c = '\a';
-				   break;
-				}			   			   			   
-			} else {
-			if (c == '\n') {
-			   /*TODO: write where string constant started. */			  
-			   yyerror( "string constant is not closed until the end of file" );
-			   return TK_ERROR;
-			}
-			}
-			// add c to returned input
-			DBUF_add(  &parse_context->token_buf, &c, sizeof(char) );
-		}
+	       MY_YY_RETURN( parse_string_oneline( lex_context ) ); 
+     }
 			
-		if (c == '"') {
-
-		  DBUF_add_null( &parse_context->token_buf );
-
-		  yylval.string_value = strdup( (char *) parse_context->token_buf.buf );
-		  return TK_STRING_CONSTANT;
-		}
-
-		return TK_ERROR;
-	}
-
-
-
 
 			
 "/*" {
 		int c;
 
-		while ( (c = MY_YY_input()) != EOF )  {
+		while ( (c =  MY_YY_INPUT) != EOF )  {
 			if (c == '\\') {
-			  c = MY_YY_input();
+			  c =  MY_YY_INPUT;
 			  if (c == EOF) {
 				break;
 			  }
 			} else if ( c == '*' ) {
-			  c = MY_YY_input();	
+			  c =  MY_YY_INPUT;	
 			  if (c == EOF) {
 				break;
 			  }
@@ -213,7 +202,8 @@ DOUBLE		[0-9]+"."[0-9]+
 		 }
 		 if ( c == EOF ) {
 			  /*TODO: write where comment started. */			  
-			  yyerror( "comment is not closed until the end of file" );
+    			  
+			  do_yyerror( yylloc_param, (PARSECONTEXT *) yyextra , "comment is not closed until the end of file" );
 			  return TK_ERROR;                 
 		 }
 	 }
@@ -232,7 +222,8 @@ DOUBLE		[0-9]+"."[0-9]+
 	}	 
 
 <<EOF>> {
-			if (LEXER_close_file()) {
+			if (LEXER_close_file( lex_context )) {
 				yyterminate();
 			}
-		}
+	}
+

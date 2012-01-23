@@ -160,11 +160,11 @@ int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
 {
   switch( expr->exp_type ) {
    case S_EXPR_BINARY:
-     CHECK_expression( expr->val.expr.expr_left, ctx );
-     CHECK_expression( expr->val.expr.expr_right, ctx );
-     break;
+     return AST_EXPRESSION_binary_op_check_types( ctx, expr, );
+   
    case S_EXPR_UNARY:
-     CHECK_expression( expr->val.unary.expr, ctx );
+     return AST_EXPRESSION_unary_op_check_types( ctx, expr );
+     CHECK_expression( expr->val.unary.expr, ctx );a
      break;
    case S_EXPR_FUNCALL:
      //CHECK_fun_call( expr->val.fcall, ctx );

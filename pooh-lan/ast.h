@@ -6,12 +6,15 @@
 #include <cutils/dring.h>
 #include <cutils/array.h>
 #include <cutils/dlist.h>
+#include <cutils/tree.h>
 #include "yystype.h"
-#include "lexer.h"
+#include "parsectx.h"
 #include <stdlib.h>
 
 
-extern YYLTYPE yyloc;
+/***************************************************/
+
+
 
 typedef enum 
 {
@@ -61,10 +64,10 @@ typedef struct tagAST_BASE {
 }	AST_BASE;
 
 
-M_INLINE void AST_BASE_init(AST_BASE *base, S_TYPE type, YYLTYPE location)
+M_INLINE void AST_BASE_init(AST_BASE *base, S_TYPE type, YYLTYPE *location)
 {
 	base->type = type;
-	base->location = location;
+	base->location = *location;
 	base->parent = 0;
 	DRING_init( &base->entry );
 }
@@ -90,7 +93,7 @@ typedef struct tagAST_BASE_LIST {
 
 } AST_BASE_LIST;
 
-M_INLINE  AST_BASE_LIST * AST_BASE_LIST_init( )
+M_INLINE  AST_BASE_LIST * AST_BASE_LIST_init( YYLTYPE *location )
 {
   AST_BASE_LIST *scl;
 
@@ -98,7 +101,7 @@ M_INLINE  AST_BASE_LIST * AST_BASE_LIST_init( )
   if (!scl) {
     return 0;
   }
-  AST_BASE_init( &scl->base, S_AST_LIST, yyloc );
+  AST_BASE_init( &scl->base, S_AST_LIST, location );
   DRING_init( &scl->statements );
   return scl;
 }
@@ -120,7 +123,7 @@ typedef struct tagAST_VECTOR {
 } AST_VECTOR;
 
 
-M_INLINE AST_VECTOR * AST_VECTOR_init( )
+M_INLINE AST_VECTOR * AST_VECTOR_init( YYLTYPE *location )
 {
  AST_VECTOR *scl;
 
@@ -129,7 +132,7 @@ M_INLINE AST_VECTOR * AST_VECTOR_init( )
    return 0;
  }
  
- AST_BASE_init( &scl->base, S_AST_VECTOR, yyloc );
+ AST_BASE_init( &scl->base, S_AST_VECTOR, location );
 
  if (ARRAY_init( &scl->refs, sizeof( void * ), 10 )) {
    free(scl);
@@ -174,9 +177,11 @@ typedef enum tagS_EXPR_TYPE {
 
   S_EXPR_ARRAY_INDEX,
 
-  S_EXPR_LIST_VALUES,
+  S_EXPR_LIST_VALUES, // array constuctor
 
-  S_EXPR_HASH_VALUES,
+  S_EXPR_HASH_VALUES, // hash constructor
+
+  S_EXPR_PLACEHOLDER,
 
   S_EXPR_ERROR,  // one of the types in an expression evaluated to an error, don't propagate the error further
 
@@ -201,7 +206,23 @@ typedef enum {
 
 } AST_VAR_TYPE;
 
+M_INLINE int is_numeric_type( AST_VAR_TYPE ty )
+{
+  return ty == S_VAR_INT || ty == S_VAR_DOUBLE;
+}
 
+M_INLINE int is_numeric_or_string_type( AST_VAR_TYPE ty )
+{
+  return ty == S_VAR_INT || ty == S_VAR_DOUBLE || ty == S_VAR_STRING;
+}
+
+typedef union {
+  long   long_value;
+
+  double double_value;
+		
+  char   *string_value;
+} Simple_value_type;
 
 typedef struct tagAST_EXPRESSION {
   AST_BASE base;
@@ -226,13 +247,7 @@ typedef struct tagAST_EXPRESSION {
 		AST_VECTOR *indexes;
 	} ref;
 
-	union {
-	  long   long_value;
-
-	  double double_value;
-		
-	  char   *string_value;
-	} const_value;
+	Simple_value_type const_value;
 
 	AST_VECTOR *index_expressions;
 
@@ -246,7 +261,7 @@ typedef struct tagAST_EXPRESSION {
 
 } AST_EXPRESSION;
 
-M_INLINE AST_EXPRESSION *AST_EXPRESSION_init( S_EXPR_TYPE exp_type, AST_VAR_TYPE value_type )
+M_INLINE AST_EXPRESSION *AST_EXPRESSION_init( S_EXPR_TYPE exp_type, AST_VAR_TYPE value_type, YYLTYPE *location  )
 {
   AST_EXPRESSION *scl;
 
@@ -254,39 +269,37 @@ M_INLINE AST_EXPRESSION *AST_EXPRESSION_init( S_EXPR_TYPE exp_type, AST_VAR_TYPE
   if (!scl) {
     return 0;
   }
-  AST_BASE_init( &scl->base, S_EXPRESSION, yyloc );
+  AST_BASE_init( &scl->base, S_EXPRESSION, location );
   scl->exp_type = exp_type;
   scl->value_type = value_type;
 
   return scl;
 }
 
-int AST_EXPRESSION_check_types( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs );
-int AST_EXPRESSION_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs );
+M_INLINE void AST_EXPRESSION_free( AST_EXPRESSION * expr )
+{
+  free(expr );
+}
+
+int AST_EXPRESSION_unary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl );
+int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs );
+
+int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl );
+int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs );
 
 
-M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_binary( int op, AST_EXPRESSION *lhs, AST_EXPRESSION *rhs )
+M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_binary( int op, AST_EXPRESSION *lhs, AST_EXPRESSION *rhs  )
 {
   AST_EXPRESSION *scl; 
 
   assert( lhs->base.type == S_EXPRESSION );
   assert( rhs->base.type == S_EXPRESSION );
  
-  scl = AST_EXPRESSION_init( S_EXPR_BINARY, S_VAR_ANY );
+  scl = AST_EXPRESSION_init( S_EXPR_BINARY, S_VAR_ANY, &lhs->base.location );
   if (!scl) {
     return 0;
   }
 
-  if (AST_EXPRESSION_check_types( scl, op, lhs, rhs ) ) {
-     scl->exp_type = S_EXPR_ERROR;
-     return 0;
-  }
-
-  if (AST_EXPRESSION_fold_constants( scl, op, lhs, rhs ) ) {
-    scl->exp_type = S_EXPR_ERROR;
-    return 0;
-  }
- 
   scl->val.expr.op = op;
   
   lhs->base.parent = &scl->base;
@@ -295,15 +308,21 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_binary( int op, AST_EXPRESSION *lh
   rhs->base.parent = &scl->base;
   scl->val.expr.expr_right = rhs;
 
+  if (! AST_EXPRESSION_binary_fold_constants( scl, op, lhs, rhs ) ) {
+     AST_EXPRESSION_free( lhs );
+     AST_EXPRESSION_free( rhs );
+     return 0;
+  }
+
   return scl;
 }
 
 
-M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs, int prefix )
+M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs, int prefix, YYLTYPE *location  )
 {
   AST_EXPRESSION *scl; 
 
-  scl = AST_EXPRESSION_init( S_EXPR_UNARY, S_VAR_ANY );
+  scl = AST_EXPRESSION_init( S_EXPR_UNARY, S_VAR_ANY, location );
   if (!scl) {
     return 0;
   }
@@ -321,11 +340,11 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs
 }
 
 
-M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes )
+M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location  )
 {
-  AST_EXPRESSION *scl; 
+  AST_EXPRESSION *scl,*first_idx;
 
-  scl = AST_EXPRESSION_init( S_EXPR_REFERENCE, S_VAR_ANY );
+  scl = AST_EXPRESSION_init( S_EXPR_REFERENCE, S_VAR_ANY, location );
   if (!scl) {
     return 0;
   }
@@ -335,11 +354,22 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR 
   if (indexes) {
     assert( indexes->base.type == S_AST_VECTOR );
     indexes->base.parent = &scl->base;
+    
+    first_idx = (AST_EXPRESSION *) AST_VECTOR_get( indexes, 0 );   
+    if (first_idx) {
+      if (first_idx->exp_type == S_EXPR_ARRAY_INDEX) {
+	scl->value_type = S_VAR_LIST;
+      } else {
+	scl->value_type = S_VAR_HASH;
+      }
+    }
   }
   scl->val.ref.indexes = indexes;
 
   return scl;
 }
+
+AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc );
 
 /****************************************************/
 
@@ -359,7 +389,7 @@ typedef struct tagAST_ASSIGNMEN {
  
 
 M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,
-		struct tagAST_EXPRESSION *lhs, struct tagAST_EXPRESSION *rhs )
+		struct tagAST_EXPRESSION *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location  )
 {
   AST_ASSIGNMENT * scl;
 
@@ -367,7 +397,7 @@ M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,
   if (!scl) {
     return 0;
   }
-  AST_BASE_init( &scl->base, S_ASSIGNMENT, yyloc );
+  AST_BASE_init( &scl->base, S_ASSIGNMENT, location );
   
   assert(lhs->base.type == S_EXPRESSION );
   lhs->base.parent = &scl->base;
@@ -393,7 +423,7 @@ typedef struct tagAST_COND {
 } AST_COND;
 
 
-M_INLINE AST_COND * AST_COND_init( AST_EXPRESSION *expr, AST_BASE_LIST *block  )
+M_INLINE AST_COND * AST_COND_init( AST_EXPRESSION *expr, AST_BASE_LIST *block, YYLTYPE *location   )
 {
   AST_COND * scl;
 
@@ -402,7 +432,7 @@ M_INLINE AST_COND * AST_COND_init( AST_EXPRESSION *expr, AST_BASE_LIST *block  )
     return 0;
   }
 
-  AST_BASE_init( &scl->base, S_IF, yyloc );
+  AST_BASE_init( &scl->base, S_IF, location );
   
   if (expr != 0 ) { 
     assert( expr->base.type == S_EXPRESSION );
@@ -435,7 +465,7 @@ M_INLINE int AST_COND_set_else_block( AST_COND *scl, AST_BASE_LIST *block )
   
   assert( scl->base.type == S_IF );
   
-  else_cond = AST_COND_init( 0, block );
+  else_cond = AST_COND_init( 0, block, &block->base.location );
   if (!else_cond) {
     return -1;
   }
@@ -453,7 +483,7 @@ typedef struct tagAST_FOR_LOOP {
  
 } AST_FOR_LOOP;
 
-M_INLINE AST_FOR_LOOP *AST_FOR_LOOP_init( const char *loop_var, AST_EXPRESSION *loop_expr, AST_BASE_LIST *block  )
+M_INLINE AST_FOR_LOOP *AST_FOR_LOOP_init( const char *loop_var, AST_EXPRESSION *loop_expr, AST_BASE_LIST *block, YYLTYPE *location   )
 {
   AST_FOR_LOOP *scl;
 
@@ -462,7 +492,7 @@ M_INLINE AST_FOR_LOOP *AST_FOR_LOOP_init( const char *loop_var, AST_EXPRESSION *
     return 0;
   }
 
-  AST_BASE_init( &scl->base, S_WHILE, yyloc );
+  AST_BASE_init( &scl->base, S_WHILE, location );
 
   scl->loop_var = strdup( loop_var );
 
@@ -488,7 +518,7 @@ typedef struct tagAST_WHILE_LOOP {
 } AST_WHILE_LOOP;
 
 
-M_INLINE AST_WHILE_LOOP *AST_WHILE_LOOP_init(AST_EXPRESSION *expr, AST_BASE_LIST *block, int post_condition )
+M_INLINE AST_WHILE_LOOP *AST_WHILE_LOOP_init(AST_EXPRESSION *expr, AST_BASE_LIST *block, int post_condition, YYLTYPE *location  )
 {
   AST_WHILE_LOOP *scl;
 
@@ -496,7 +526,7 @@ M_INLINE AST_WHILE_LOOP *AST_WHILE_LOOP_init(AST_EXPRESSION *expr, AST_BASE_LIST
   if (!scl) {
     return 0;
   }
-  AST_BASE_init( &scl->base, S_WHILE, yyloc );
+  AST_BASE_init( &scl->base, S_WHILE, location );
 
   assert(expr->base.type == S_EXPRESSION );
   expr->base.parent = &scl->base;
@@ -511,18 +541,67 @@ M_INLINE AST_WHILE_LOOP *AST_WHILE_LOOP_init(AST_EXPRESSION *expr, AST_BASE_LIST
 }
 
 /***************************************************/
+
+typedef struct tagBINDING_DATA {
+
+  YYLTYPE def_location;  // location where binding is defined in code.
+  AST_VAR_TYPE value_type;
+
+  union {
+    long   long_value;
+
+    double double_value;
+		
+    char   *string_value;
+    
+    ARRAY   array_value;
+
+    HASH    hash_value;
+
+  } value;
+
+} BINDING_DATA;
+
+/* entry maps a binding name to a binding value; Not very space efficient in deed very space inefficient that is */
+typedef struct tagBINDING_ENTRY {
+  HASH_Entry entry;
+  const char *binding_name;
+  BINDING_DATA data;
+
+} BINDING_ENTRY;
+
+
+M_INLINE int binding_hash_compare( BINDING_ENTRY  *entry, void * key, ssize_t key_length)
+{
+  BINDING_ENTRY *lhs;	
+
+  (void) key_length;
+
+  lhs = (BINDING_ENTRY *) entry;
+
+  if (strcmp(  lhs->binding_name, key) == 0) {
+    return 0;
+  }
+  return 1;
+}
+
 typedef struct tagAST_FUNC_DECL {
 
   AST_BASE base;
+  TREENODE funcs; // all functions (by nesting of declaration)
   
   const char *f_name;
   AST_VECTOR *func_params;
   AST_BASE_LIST *func_body;
+
+  HASH scope_map_name_to_binding;
+
+
 } AST_FUNC_DECL;
 
 
 
-M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func_param )
+M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func_param, PARSECONTEXT *ctx, YYLTYPE *location  )
 {  
   AST_FUNC_DECL *scl;
 
@@ -530,7 +609,9 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   if (!scl) {
     return 0;
   }
-  AST_BASE_init( &scl->base, S_FUN_DECL, yyloc );
+  
+  AST_BASE_init( &scl->base, S_FUN_DECL, location );
+  TREE_init_root( &scl->funcs );
 
   scl->f_name = f_name ? strdup( f_name ) : 0;
   
@@ -538,21 +619,33 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   func_param->base.parent = &scl->base;
   scl->func_params = func_param;
 
+#if 0
+  if (HASH_init( &ctx->scope_map_name_to_binding, 10, 0, binding_hash_compare, 0 ) ) {
+    return -1;
+  }
+#endif
+
+  if (scl->f_name) {
+    PARSECONTEXT_add_function_def( ctx, scl ); 
+  }
   return scl;
 }
 
 
-M_INLINE void AST_FUNC_DECL_set_body( AST_FUNC_DECL *scl, AST_BASE_LIST *body )
+M_INLINE void AST_FUNC_DECL_set_body( AST_FUNC_DECL *scl, PARSECONTEXT *ctx, AST_BASE_LIST *body )
 {
     assert( body->base.type == S_AST_LIST );
     body->base.parent = &scl->base;
     scl->func_body = body;
+
+    ctx->current = _OFFSETOF( scl->funcs.parent,  AST_FUNC_DECL, funcs );
 }
 
 /***************************************************/
 typedef struct tagAST_FUNC_CALL {
   
   AST_BASE base;
+  
 
   AST_FUNC_DECL *func_decl;
   
@@ -563,7 +656,7 @@ typedef struct tagAST_FUNC_CALL {
 
 
 
-M_INLINE AST_FUNC_CALL * AST_FUNC_CALL_init(const char *f_name, AST_VECTOR *func_params )
+M_INLINE AST_FUNC_CALL * AST_FUNC_CALL_init(const char *f_name, AST_VECTOR *func_params, YYLTYPE *location  )
 {  
   AST_FUNC_CALL *scl;
 
@@ -571,7 +664,7 @@ M_INLINE AST_FUNC_CALL * AST_FUNC_CALL_init(const char *f_name, AST_VECTOR *func
   if (!scl) {
     return 0;
   }
-  AST_BASE_init( &scl->base, S_FUN_CALL, yyloc );
+  AST_BASE_init( &scl->base, S_FUN_CALL, location );
 
   scl->f_name = strdup( f_name );
   
@@ -593,7 +686,7 @@ typedef struct tagAST_RETURN {
 } AST_RETURN;
   
 
-M_INLINE AST_RETURN *AST_RETURN_init( S_TYPE type, AST_EXPRESSION *expr )
+M_INLINE AST_RETURN *AST_RETURN_init( S_TYPE type, AST_EXPRESSION *expr, YYLTYPE *location  )
 {
   AST_RETURN *ret;
 
@@ -601,7 +694,7 @@ M_INLINE AST_RETURN *AST_RETURN_init( S_TYPE type, AST_EXPRESSION *expr )
   if (!ret) {
     return 0;
   }
-  AST_BASE_init( &ret->base, type, yyloc );
+  AST_BASE_init( &ret->base, type, location );
   
   if (expr) {
     assert(expr->base.type == S_EXPRESSION );

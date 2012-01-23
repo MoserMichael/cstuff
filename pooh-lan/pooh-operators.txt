@@ -1,0 +1,74 @@
+
+
+Binary operators
+
+/Comparison/
+	  TK_OP_NUM_EQ 
+	  TK_OP_NUM_NE 
+	  TK_OP_NUM_LT 
+	  TK_OP_NUM_GT 
+	  TK_OP_NUM_LE 
+	  TK_OP_NUM_GE 
+		
+		Both operands must be numbers (either long or double)
+		Strings are _not_ automatically converted to numbers;
+		Strings, List, Hash or function argument will be ERROR.
+		Result type: integer (values zero for false, one for true)
+
+  	  TK_OP_STR_EQ 
+	  TK_OP_STR_NE 
+	  TK_OP_STR_LT 
+	  TK_OP_STR_GT 
+	  TK_OP_STR_LE 
+	  TK_OP_STR_GE    
+
+		Both operants can be either strings or numbers;
+		List, Hash or function argument will be ERROR
+		Result type: integer (values zero for false, one for true)
+
+
+/Addition/
+	  TK_OP_NUM_SUBST 
+	  TK_OP_NUM_ADD
+
+		Both operands must be numbers (either long or double)
+		Strings are _not_ automatically converted to numbers;
+		Strings, List, Hash or function argument will be ERROR.
+		Result type: if one of the arguments is double then result is double; otherwise long
+
+	  TK_OP_STR_CAT  
+
+		Both operants can be either strings or numbers;
+		List, Hash or function argument will be ERROR.
+		Result type: string
+
+/Multiplication/
+	  TK_OP_NUM_DIV 	
+	  TK_OP_NUM_MULT 
+	  TK_OP_NUM_MOD
+
+		Both operands must be numbers (either long or double)
+		Strings are _not_ automatically converted to numbers;
+		Strings, List, Hash or function argument will be ERROR.
+		Result type: if one of the arguments is double then result is double; otherwise long
+			
+Unary operators
+
+- prefix operators
+	  TK_OP_NUM_AUTOINCR 
+	  TK_OP_NUM_AUTODECR 
+	  TK_OP_NUM_ADD
+
+		operand must be number (either long or double)
+		Strings is _not_ automatically converted to numbers;
+		Strings, List, Hash or function argument will be ERROR.
+		Result type: if one of the arguments is double then result is double; otherwise long
+
+ - postfix operators
+	  TK_OP_NUM_AUTOINCR 
+	  TK_OP_NUM_AUTODECR
+
+		operand must be number (either long or double)
+		Strings is _not_ automatically converted to numbers;
+		Strings, List, Hash or function argument will be ERROR.
+		Result type: if one of the arguments is double then result is double; otherwise long

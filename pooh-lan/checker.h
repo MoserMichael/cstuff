@@ -2,6 +2,8 @@
 #define __CHECKER_H_Y_Z_
 
 
+struct tagAST_BASE_LIST;
+
 typedef struct tagCHECKERCTX {
   int is_left_hand_side;
 } CHECKERCTX;

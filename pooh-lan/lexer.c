@@ -120,7 +120,6 @@ int  MY_YY_get_next(char *buff, int max_buffer);
 #else 
 
 #define MY_YY_RETURN(x) \
-	MY_YY_begin_token( yytext ); \
 	fprintf(stdout,"\n!->Token %s(%d) (%d,%d)-(%d,%d)\n", yytext, x,  yylloc.first_line,yylloc.first_column,yylloc.last_line,yylloc.last_column ); fflush(stdout); \
 	return(x);
 
@@ -631,7 +630,6 @@ int parse_string_data( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char
   return parts;
 }
 
-
 STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end_of_expression )
 {
   STRING_PART *part; 
@@ -771,6 +769,78 @@ const char * dbuf_ends_with( DBUF *buf, const char *term_string )
   ptr_occur = (const char *) buf->buf + buf->buf_used - term_string_len; 
   return strncmp( ptr_occur, term_string, term_string_len ) == 0 ? ptr_occur : 0;
 }
+
+int parse_string_oneline( LEXCONTEXT *pc ) 
+{
+  int c;
+  STRING_PART *part;
+#ifdef IS_REENTRANT
+  yyscan_t yyscanner = pc->yyscanner;
+  struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
+#endif
+  YYLTYPE start;
+
+  start = yyloc;
+ 
+  part = STRING_PART_init( 0, &start );
+  if (!part) {
+    return TK_ERROR;
+  }
+		
+  while ( (c = MY_YY_INPUT) != '"' && c != EOF) {
+    if (c == '\\') {
+      c = MY_YY_INPUT;
+      if (c==EOF) {
+        break;
+      }
+      if (c=='\n') {
+        continue;
+      }
+      switch(c) {
+        case 'n': 
+          c = '\n';
+          break;
+        case 't':
+          c = '\t';
+          break;
+        case 'v':
+          c = '\v';
+          break;
+        case 'b': 
+          c = '\r';
+          break;
+        case 'r':
+          c = '\r';
+          break;
+        case 'f':
+          c = '\f';
+          break;
+        case 'a':
+          c = '\a';
+          break;
+      }			   			   			   
+    } else {
+      if (c == '\n') {
+        /*TODO: write where string constant started. */			  
+        yyerror( "this string constant may not span multiple lines" );
+        return TK_ERROR;
+      }
+    }
+    DBUF_add( &part->part_data, &c, sizeof(char) );
+  }
+			
+  part->loc = start;
+  part->loc.last_column = yyloc.last_column;
+
+  if (c == '"') {
+    ARRAY_push_back( &pc->string_parts, &part, sizeof(void *) );
+    return TK_STRING_CONSTANT;
+  }
+
+  return TK_ERROR;
+}
+
+
 
 
 
