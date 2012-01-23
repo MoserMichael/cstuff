@@ -282,10 +282,10 @@ M_INLINE void AST_EXPRESSION_free( AST_EXPRESSION * expr )
 }
 
 int AST_EXPRESSION_unary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl );
-int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs );
+int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl);
 
 int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl );
-int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs );
+int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl );
 
 
 M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_binary( int op, AST_EXPRESSION *lhs, AST_EXPRESSION *rhs  )
@@ -308,7 +308,7 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_binary( int op, AST_EXPRESSION *lh
   rhs->base.parent = &scl->base;
   scl->val.expr.expr_right = rhs;
 
-  if (! AST_EXPRESSION_binary_fold_constants( scl, op, lhs, rhs ) ) {
+  if (! AST_EXPRESSION_binary_fold_constants( scl ) ) {
      AST_EXPRESSION_free( lhs );
      AST_EXPRESSION_free( rhs );
      return 0;
@@ -336,6 +336,9 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs
 
   scl->val.unary.is_prefix = prefix;
 
+  if (! AST_EXPRESSION_unary_fold_constants( scl ) ) {
+     AST_EXPRESSION_free( lhs );
+  }
   return scl;
 }
 

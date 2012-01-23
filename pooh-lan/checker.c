@@ -164,8 +164,7 @@ int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
    
    case S_EXPR_UNARY:
      return AST_EXPRESSION_unary_op_check_types( ctx, expr );
-     CHECK_expression( expr->val.unary.expr, ctx );a
-     break;
+   
    case S_EXPR_FUNCALL:
      //CHECK_fun_call( expr->val.fcall, ctx );
      break;

@@ -274,14 +274,14 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
     if (is_numeric_operator( op ) ) {
        if ( lhs->value_type != S_VAR_ANY && ! is_numeric_type( lhs->value_type ) ) { 
           if (parse_context) {
-	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects integer type for left hand side", operator_name( op ) );   
+	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects integer type", operator_name( op ) );   
 	  }
           return -1;
        }
 
        if ( rhs->value_type != S_VAR_ANY && ! is_numeric_type( rhs->value_type ) ) {
           if (parse_context) {
-	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects integer type for right hand side", operator_name( op ) );   
+	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects integer type", operator_name( op ) );   
           }
 	  return -1;
        }
@@ -294,18 +294,18 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
 	 }
        }
     }
-
+    else 
     if (is_string_operator( op ) ) {
       if ( lhs->value_type != S_VAR_ANY && ! is_numeric_or_string_type( lhs->value_type ) ) {
           if (parse_context) {
-	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects integer or string type for left hand side", operator_name( op ) );   
+	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects integer or string type", operator_name( op ) );   
           }
 	  return -1;
       }
       
       if ( rhs->value_type != S_VAR_ANY && ! is_numeric_or_string_type( rhs->value_type ) ) {
           if (parse_context) {
-	    do_yyerror( &rhs->base.location, parse_context, "Operator %s expects integer or string type for left hand side", operator_name( op ) );   
+	    do_yyerror( &rhs->base.location, parse_context, "Operator %s expects integer or string type", operator_name( op ) );   
           }
 	  return -1;
       }
@@ -315,6 +315,11 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
       } else {
          scl->value_type = S_VAR_STRING;
       }
+    } else {
+      if (parse_context) {
+        do_yyerror( &scl->base.location, parse_context, "Unkown binary operator %s in expression", operator_name( op ));   
+      }
+      return -1;
     }
   
     // if division - check that divisor is not constant with value 0
@@ -350,8 +355,17 @@ char *convert_to_string(AST_VAR_TYPE ty, Simple_value_type val)
   }
 }
 
-int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs )
+int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl )
 {
+    int op;
+    AST_EXPRESSION *lhs;
+    AST_EXPRESSION *rhs;  
+    
+    
+    op = scl->val.expr.op;
+    lhs = scl->val.expr.expr_left;
+    rhs = scl->val.expr.expr_right;
+
 
     if (lhs->exp_type != S_EXPR_CONSTANT || rhs->exp_type != S_EXPR_CONSTANT) {
       return -1;
@@ -553,15 +567,60 @@ int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPR
 
 int AST_EXPRESSION_unary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl )
 {
-    TK_OP_NUM_ADD
-	| TK_OP_NUM_SUBST
-	| TK_OP_LOGICAL_NEGATE 
-	;
+    int op = scl->val.unary.op;
+    AST_EXPRESSION *arg = scl->val.unary.expr;
+
+    switch( op ) {
+      case TK_OP_NUM_ADD:
+      case TK_OP_NUM_SUBST:
+      case TK_OP_LOGICAL_NEGATE: 
+	break;	
+      default:
+        if (parse_context) {
+          do_yyerror( &scl->base.location, parse_context, "Unkown unary operator %s in expression", operator_name( op ));   
+        }
+        break;
+    }
+
+    if ( arg->value_type != S_VAR_ANY && ! is_numeric_type( arg->value_type ) ) { 
+          if (parse_context) {
+	    do_yyerror( &arg->base.location, parse_context, "Operator %s expects integer type as argumen", operator_name( op ) );   
+	  }
+          return -1;
+    }	
+    return 0;
 }
 
-int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl, int op,  AST_EXPRESSION *lhs, AST_EXPRESSION *rhs )
+int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl)
 {
+  int op = scl->val.unary.op;
+  AST_EXPRESSION *arg = scl->val.unary.expr;
+  long res_num,arg_num;
 
+
+   if (arg->exp_type != S_EXPR_CONSTANT || arg->exp_type != S_EXPR_CONSTANT) {
+      return -1;
+   }
+   if (AST_EXPRESSION_unary_op_check_types( 0, scl )) {
+     return -1;
+   }
+
+   arg_num = arg->value_type == S_VAR_DOUBLE ? arg->val.const_value.double_value : (double) arg->val.const_value.long_value;
+
+   switch( op ) {
+      case TK_OP_NUM_ADD:
+        break;
+      case TK_OP_NUM_SUBST:
+        res_num =  - arg_num;
+      case TK_OP_LOGICAL_NEGATE: 
+        res_num = arg_num != 0;
+	break;	
+    }
+    scl->exp_type = S_EXPR_CONSTANT;
+    scl->value_type = S_VAR_INT;
+    scl->val.const_value.long_value = res_num;
+    
+    return 0;
 }
 
 
