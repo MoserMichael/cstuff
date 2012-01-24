@@ -74,12 +74,12 @@ int is_scalar_var_type( AST_VAR_TYPE value_type )
    return value_type & (VAR_INT | VAR_DOUBLE | VAR_STRING ) != 0;
 }
  
-int is_numeric_var_type( AST_VAR_TYPE value_type )
+int is_not_numeric_var_type( AST_VAR_TYPE value_type )
 {
    if (value_type == VAR_ANY) {
-     return 0;
+     return 1;
    }
-   return value_type & (VAR_INT | VAR_DOUBLE ) != 0;
+   return value_type & (VAR_INT | VAR_DOUBLE ) == 0;
 }
  
 int CHECK_reference( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
@@ -216,7 +216,7 @@ int CHECK_fun_call( AST_FUNC_CALL *fcall, PARSECONTEXT *ctx )
 
   // check if number of parameters is the same as in prototype.
   if (num_call_params != num_def_params) {
-     do_yyerror( &fcall->base.location, ctx, "The function %s has %d parameters, wherease the function call specifies %d parameters",
+	 do_yyerror( &fcall->base.location, ctx, "The function %s has %d parameters, wherease the function call specifies %d parameters",
 			fcall->f_name, num_def_params,  num_call_params );
      return -1;
   }
@@ -243,12 +243,35 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
         AST_ASSIGNMENT *ass;
 
 	ass = (AST_ASSIGNMENT *) tmp;
-        CHECK_expression( ass->right_side, ctx );
+        if (!CHECK_expression( ass->right_side, ctx )) {
+	  AST_VAR_TYPE right_type =  ass->right_side->value_type; 
 
-	ctx->chkctx.is_left_hand_side = 1; 
-	CHECK_expression( ass->left_side, ctx );
-	ctx->chkctx.is_left_hand_side = 0; 
+
+	  if (ass->left_side.type == S_EXPRESSION) {
+	      AST_EXPRESSION *lhs = (AST_EXPRESSION *) ass->left_side; 
+	      
+	      if (right_type != S_VAR_ANY) {
+		if (lhs->value_type == S_VAR_HASH || lhs->value_type == S_VAR_LIST) {
+		  if (lhs->value_type != right_type) {
+		    do_yyerror( &ass->right_side.base.location, ctx,
+			"%s expected in assignment, instead there is the %s type in right hand side", 
+			  get_type_name( right_type ),
+			  get_type_name( lhs->value_type ) );
+		  }
+		  lhs->value_type = right_type;
   
+		}
+      	      }
+	  } else {
+	     if (right_type != S_VAR_ANY && right_type != S_VAR_LIST) {
+		do_yyerror( &ass->right_side.base.location, ctx,
+		    "List value expected in assignment, instead there is the %s type in right hand side", 
+		      get_type_name( cond->condition.value_type )
+	        );
+	     }
+	  }
+	}
+
 	}
         break;
       case S_IF: {
@@ -257,7 +280,7 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 
         for( cond = (AST_COND *)tmp; cond; cond = cond->elsecond ) {
 	  CHECK_expression( cond->condition,ctx );
- 	  if ( ! is_numeric_var_type( cond->condition.value_type ) ) {
+ 	  if ( is_not_numeric_var_type( cond->condition.value_type ) ) {
 	    do_yyerror( &cond->condition.base.location, ctx,
 	      "The condition of the %s clause does not evaluate to a numeric type, instead it evaluates to %s type", 
 	      first_clause ? "if" : "elsif",
@@ -286,7 +309,7 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 	wloop = (AST_WHILE_LOOP *) tmp;
 
 	CHECK_expression( wloop->condition, ctx );
-	if ( ! is_numeric_var_type( wloop->condition.value_type ) ) {
+	if ( ! is_not_numeric_var_type( wloop->condition.value_type ) ) {
 	  do_yyerror( &wloop->condition.base.location, ctx,
 	    "The condition of the while loop does not evaluate to a numeric type, instead it evaluates to %s type", 
 	    get_type_name( wloop->condition.value_type )

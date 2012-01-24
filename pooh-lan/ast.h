@@ -383,7 +383,7 @@ typedef enum {
 } ASSIGNMENT_TYPE;
 typedef struct tagAST_ASSIGNMEN {
   AST_BASE base;
-  struct tagAST_EXPRESSION *left_side;
+  struct tagAST_BASE *left_side;
   struct tagAST_EXPRESSION *right_side;
 
   ASSIGNMENT_TYPE type; 
@@ -392,7 +392,7 @@ typedef struct tagAST_ASSIGNMEN {
  
 
 M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,
-		struct tagAST_EXPRESSION *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location  )
+		struct tagAST_BASE *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location  )
 {
   AST_ASSIGNMENT * scl;
 
@@ -402,8 +402,8 @@ M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,
   }
   AST_BASE_init( &scl->base, S_ASSIGNMENT, location );
   
-  assert(lhs->base.type == S_EXPRESSION );
-  lhs->base.parent = &scl->base;
+  assert(lhs->type == S_EXPRESSION || lhs->type == S_AST_VECTOR );
+  lhs->parent = &scl->base;
   scl->left_side = lhs;
   
   assert(rhs->base.type == S_EXPRESSION );

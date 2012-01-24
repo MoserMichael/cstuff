@@ -184,7 +184,7 @@ valueDeepCopyAssignStmt : assignmentLeftHandSide TK_ASSIGN expr
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_REF_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_REF_COPY, $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
 	;
@@ -193,7 +193,7 @@ referenceCopyAssignmentStmt : assignmentLeftHandSide TK_ASSIGN_REF expr
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_DEEP_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_DEEP_COPY, $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
 	;
