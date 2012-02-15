@@ -103,7 +103,7 @@ DOUBLE		[0-9]+"."[0-9]+
 
 ".."	{ MY_YY_RETURN(TK_OP_STR_CAT); }
 
-"."     { MY_YY_RETURN(TK_OK_DOT); }
+"."     { MY_YY_RETURN(TK_OP_DOT); }
 
 "_"     { MY_YY_RETURN(TK_UNDERSCORE); }
 
@@ -142,7 +142,7 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "break" { MY_YY_RETURN(TK_BREAK); }
 
-"continue" { MY_YY_RETURN(TK_CONTINUE); }
+"next" { MY_YY_RETURN(TK_NEXT); }
 
 "do"	{ MY_YY_RETURN(TK_DO); }
 

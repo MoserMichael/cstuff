@@ -40,7 +40,7 @@ typedef enum
 
   S_YIELD,
 
-  S_CONTINUE,
+  S_NEXT,
   
   S_BREAK,
 
@@ -183,6 +183,8 @@ typedef enum tagS_EXPR_TYPE {
 
   S_EXPR_PLACEHOLDER,
 
+  S_EXPR_LAMBDA,  // unamed function
+
   S_EXPR_ERROR,  // one of the types in an expression evaluated to an error, don't propagate the error further
 
 }
@@ -245,6 +247,7 @@ typedef struct tagAST_EXPRESSION {
 	struct {
 		char  *lhs;
 		AST_VECTOR *indexes;
+		struct tagBINDING_DATA *binding;
 	} ref;
 
 	Simple_value_type const_value;
@@ -353,7 +356,8 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR 
   }
 
   scl->val.ref.lhs = strdup( name );
-  
+  scl->val.ref.binding = 0;
+
   if (indexes) {
     assert( indexes->base.type == S_AST_VECTOR );
     indexes->base.parent = &scl->base;
@@ -480,13 +484,13 @@ M_INLINE int AST_COND_set_else_block( AST_COND *scl, AST_BASE_LIST *block )
 typedef struct tagAST_FOR_LOOP {
   AST_BASE base;
   
-  const char *loop_var;
+  struct tagAST_EXPRESSION *loop_var; 
   struct tagAST_EXPRESSION *loop_expr;
   AST_BASE_LIST  *block; 
  
 } AST_FOR_LOOP;
 
-M_INLINE AST_FOR_LOOP *AST_FOR_LOOP_init( const char *loop_var, AST_EXPRESSION *loop_expr, AST_BASE_LIST *block, YYLTYPE *location   )
+M_INLINE AST_FOR_LOOP *AST_FOR_LOOP_init( AST_EXPRESSION *loop_var, AST_EXPRESSION *loop_expr, AST_BASE_LIST *block, YYLTYPE *location   )
 {
   AST_FOR_LOOP *scl;
 
@@ -497,7 +501,9 @@ M_INLINE AST_FOR_LOOP *AST_FOR_LOOP_init( const char *loop_var, AST_EXPRESSION *
 
   AST_BASE_init( &scl->base, S_WHILE, location );
 
-  scl->loop_var = strdup( loop_var );
+  assert(loop_var->base.type == S_EXPRESSION );
+  loop_var->base.parent = &scl->base;  
+  scl->loop_var = loop_var;
 
   assert(loop_expr->base.type == S_EXPRESSION );
   loop_expr->base.parent = &scl->base;
@@ -547,7 +553,6 @@ M_INLINE AST_WHILE_LOOP *AST_WHILE_LOOP_init(AST_EXPRESSION *expr, AST_BASE_LIST
 
 typedef struct tagBINDING_DATA {
 
-  YYLTYPE def_location;  // location where binding is defined in code.
   AST_VAR_TYPE value_type;
 
   union {
@@ -561,6 +566,11 @@ typedef struct tagBINDING_DATA {
 
     HASH    hash_value;
 
+    struct {
+       struct tagBINDING_DATA *this_environment;
+       struct tagAST_FUNC_DECL *fdecl;
+    }  func_value;
+
   } value;
 
 } BINDING_DATA;
@@ -569,12 +579,15 @@ typedef struct tagBINDING_DATA {
 typedef struct tagBINDING_ENTRY {
   HASH_Entry entry;
   const char *binding_name;
-  BINDING_DATA data;
+ 
+  YYLTYPE def_location;  // location where binding is defined in code.
+  AST_VAR_TYPE value_type;
+  int stack_offset;
 
 } BINDING_ENTRY;
 
 
-M_INLINE int binding_hash_compare( BINDING_ENTRY  *entry, void * key, ssize_t key_length)
+M_INLINE int binding_hash_compare( HASH_Entry  *entry, void * key, ssize_t key_length)
 {
   BINDING_ENTRY *lhs;	
 
@@ -588,6 +601,13 @@ M_INLINE int binding_hash_compare( BINDING_ENTRY  *entry, void * key, ssize_t ke
   return 1;
 }
 
+#define CHKR_RETURN_VALUE_UNKNOWN 1
+#define CHKR_WORKING  2
+#define CHKR_RETURN_VALUE_KNOWN 4
+
+#define CHKR_REPEAT_ON_FINISH 8
+#define CHKR_REPEAT_NOW 16
+
 typedef struct tagAST_FUNC_DECL {
 
   AST_BASE base;
@@ -598,7 +618,8 @@ typedef struct tagAST_FUNC_DECL {
   AST_BASE_LIST *func_body;
 
   HASH scope_map_name_to_binding;
-
+    
+  int checker_state;  
 
 } AST_FUNC_DECL;
 
@@ -622,6 +643,8 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   func_param->base.parent = &scl->base;
   scl->func_params = func_param;
 
+  scl->checker_state = 0;  
+  
 #if 0
   if (HASH_init( &ctx->scope_map_name_to_binding, 10, 0, binding_hash_compare, 0 ) ) {
     return -1;
@@ -652,14 +675,14 @@ typedef struct tagAST_FUNC_CALL {
 
   AST_FUNC_DECL *func_decl;
   
-  const char *f_name;
+  AST_EXPRESSION *f_name;
   AST_VECTOR *call_params;
 
 } AST_FUNC_CALL;
 
 
 
-M_INLINE AST_FUNC_CALL * AST_FUNC_CALL_init(const char *f_name, AST_VECTOR *func_params, YYLTYPE *location  )
+M_INLINE AST_FUNC_CALL * AST_FUNC_CALL_init( AST_EXPRESSION *f_name, AST_VECTOR *func_params, YYLTYPE *location  )
 {  
   AST_FUNC_CALL *scl;
 
@@ -669,7 +692,8 @@ M_INLINE AST_FUNC_CALL * AST_FUNC_CALL_init(const char *f_name, AST_VECTOR *func
   }
   AST_BASE_init( &scl->base, S_FUN_CALL, location );
 
-  scl->f_name = strdup( f_name );
+  assert( func_params->base.type == S_EXPRESSION );  
+  scl->f_name = f_name ;
   
   assert( func_params->base.type == S_AST_VECTOR );
   scl->call_params = func_params;
@@ -707,6 +731,25 @@ M_INLINE AST_RETURN *AST_RETURN_init( S_TYPE type, AST_EXPRESSION *expr, YYLTYPE
 
   return ret;
 }
+
+// --------------------------------------------------------------------------------------------------
+
+M_INLINE AST_EXPRESSION * AST_EXPRESSION_fcall_init( struct tagAST_FUNC_CALL *func, YYLTYPE *location  )
+{
+  AST_EXPRESSION *scl; 
+
+  scl = AST_EXPRESSION_init(  S_EXPR_FUNCALL, S_VAR_ANY, location );
+  if (!scl) {
+    return 0;
+  }
+
+  assert( func->base.type == S_FUN_CALL );
+  func->base.parent = &scl->base;
+  scl->val.fcall = func;
+
+  return scl;
+}
+
 
 
 

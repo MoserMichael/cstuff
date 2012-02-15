@@ -104,5 +104,16 @@ int PARSECONTEXT_add_function_def(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *
   return 0;
 }
 
+struct tagAST_FUNC_DECL * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const char *fname ) 
+{
+  FUNCTION_HASH_entry *entry;
+  
+  entry = (FUNCTION_HASH_entry *) HASH_find(  &ctx->map_function_defs, (void *) fname, -1 );
+  if (entry) {
+    return entry->decl;
+  }
+  return 0;
+}
+
 
 

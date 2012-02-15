@@ -3,9 +3,12 @@
 
 
 struct tagAST_BASE_LIST;
+struct tagAST_FUNC_DECL;
 
 typedef struct tagCHECKERCTX {
   int is_left_hand_side;
+  struct tagAST_FUNC_DECL *current_function;
+
 } CHECKERCTX;
 
 /**

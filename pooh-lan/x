@@ -1,0 +1,239 @@
+
+****
+* Target:    parser
+* Type:      Executable
+* Host:      os: GNU-Linux os-version: 2.6.38-8-generic architecture: i686
+* Directory: /home/mmoser/archive/cstuff_bak/script-lan
+****
+bison --warnings=error --report=all --report-file=pars.report --defines=pars.h -o pars.txt pars.y 	
+pars.y: conflicts: 3 shift/reduce
+../scripts/parse-bison-report.pl pars.report pars.txt 
+--------------------------------
+State 9 conflicts: 1 shift/reduce
+
+
+
+   38 returnStmt: TK_RETURN . expr
+   39           | TK_RETURN .  [$end, TK_INCLUDE, TK_SUB, TK_CONTINUE, TK_YIELD, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_DO, TK_IF, TK_FOR, TK_WHILE, TK_IDENTIFIER]
+   41 expr: . compExp
+   42     | . hashConstructor
+   43     | . listConstructor
+   44     | . anonymousFunction
+   45 anonymousFunction: . TK_SUB funcParamDecls stmtList TK_END
+   46 compExp: . compExp compExpOp addExp
+   47        | . addExp
+   60 addExp: . addExp addExpOp multExp
+   61       | . multExp
+   65 multExp: . multExp multExpOp unaryExp
+   66        | . unaryExp
+   70 unaryExp: . primaryExp unaryExpOpPostfix
+   71         | . unaryExpOpPrefix primaryExp
+   72         | . primaryExp
+   73 unaryExpOpPrefix: . TK_OP_NUM_AUTOINCR
+   74                 | . TK_OP_NUM_AUTODECR
+   75                 | . TK_OP_NUM_ADD
+   78 primaryExp: . varRef
+   79           | . TK_INTEGER_CONSTANT
+   80           | . TK_DOUBLE_CONSTANT
+   81           | . TK_MULTI_PART_STRING_CONSTANT
+   82           | . TK_STRING_CONSTANT
+   83           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+   84           | . functionCallStmt
+   85 varRef: . TK_IDENTIFIER collectionRefs
+   86       | . TK_IDENTIFIER
+   91 functionCallStmt: . TK_IDENTIFIER TK_PARENTHESES_OPEN functionArgList TK_PARENTHESES_CLOSE
+   95 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+   99 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+
+    TK_DOUBLE_CONSTANT             shift, and go to state 34
+    TK_MULTI_PART_STRING_CONSTANT  shift, and go to state 35
+    TK_STRING_CONSTANT             shift, and go to state 36
+    TK_INTEGER_CONSTANT            shift, and go to state 37
+    TK_OP_NUM_ADD                  shift, and go to state 38
+    TK_OP_NUM_AUTOINCR             shift, and go to state 39
+    TK_OP_NUM_AUTODECR             shift, and go to state 40
+    TK_IDENTIFIER                  shift, and go to state 14
+    TK_PARENTHESES_OPEN            shift, and go to state 41
+    TK_BRACE_OPEN                  shift, and go to state 42
+    TK_BRACKET_OPEN                shift, and go to state 43
+
+    TK_IDENTIFIER  [reduce using rule 39 (returnStmt)]
+    $default       reduce using rule 39 (returnStmt)
+
+    expr               go to state 60
+    anonymousFunction  go to state 45
+    compExp            go to state 46
+    addExp             go to state 47
+    multExp            go to state 48
+    unaryExp           go to state 49
+    unaryExpOpPrefix   go to state 50
+    primaryExp         go to state 51
+    varRef             go to state 52
+    functionCallStmt   go to state 53
+    listConstructor    go to state 54
+    hashConstructor    go to state 55
+
+    Conflict between rule 39 and token TK_SUB resolved as reduce (%left TK_SUB).
+
+
+
+
+--------------------------------
+State 115 conflicts: 1 shift/reduce
+
+
+
+    3 stmtList: stmtList . stmt
+    5 stmt: . valueDeepCopyAssignStmt
+    6     | . referenceCopyAssignmentStmt
+    7     | . includeStmt
+    8     | . functionCallStmt
+    9     | . functionDefStmt
+   10     | . ifStmt
+   11     | . forStmt
+   12     | . whileStmt
+   13     | . doWhileStmt
+   14     | . returnStmt
+   15     | . yieldStmt
+   16     | . breakStmt
+   17     | . continueStmt
+   18 forStmt: . TK_FOR TK_IDENTIFIER expr stmtList TK_END
+   19 whileStmt: . TK_WHILE expr stmtList
+   19          | TK_WHILE expr stmtList .  [$end, TK_INCLUDE, TK_SUB, TK_CONTINUE, TK_YIELD, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_DO, TK_IF, TK_FOR, TK_WHILE, TK_IDENTIFIER]
+   20 doWhileStmt: . TK_DO stmtList TK_WHILE expr
+   21 valueDeepCopyAssignStmt: . assignmentLeftHandSide TK_ASSIGN expr
+   22 referenceCopyAssignmentStmt: . assignmentLeftHandSide TK_ASSIGN_REF expr
+   23 assignmentLeftHandSide: . varRef
+   24 ifStmt: . TK_IF condClause elseClauses TK_END
+   30 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
+   31 functionDefStmt: . functionPrototypeDecl stmtList TK_END
+   32 functionPrototypeDecl: . TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
+   33                      | . TK_SUB TK_IDENTIFIER funcParamDecls
+   36 breakStmt: . TK_BREAK
+   37 continueStmt: . TK_CONTINUE
+   38 returnStmt: . TK_RETURN expr
+   39           | . TK_RETURN
+   40 yieldStmt: . TK_YIELD expr
+   85 varRef: . TK_IDENTIFIER collectionRefs
+   86       | . TK_IDENTIFIER
+   91 functionCallStmt: . TK_IDENTIFIER TK_PARENTHESES_OPEN functionArgList TK_PARENTHESES_CLOSE
+
+    TK_IDENTIFIER  shift, and go to state 14
+
+    TK_IDENTIFIER  [reduce using rule 19 (whileStmt)]
+    $default       reduce using rule 19 (whileStmt)
+
+    stmt                         go to state 71
+    forStmt                      go to state 17
+    whileStmt                    go to state 18
+    doWhileStmt                  go to state 19
+    valueDeepCopyAssignStmt      go to state 20
+    referenceCopyAssignmentStmt  go to state 21
+    assignmentLeftHandSide       go to state 22
+    ifStmt                       go to state 23
+    includeStmt                  go to state 24
+    functionDefStmt              go to state 25
+    functionPrototypeDecl        go to state 26
+    breakStmt                    go to state 27
+    continueStmt                 go to state 28
+    returnStmt                   go to state 29
+    yieldStmt                    go to state 30
+    varRef                       go to state 31
+    functionCallStmt             go to state 32
+
+    Conflict between rule 19 and token TK_INCLUDE resolved as reduce (%left TK_INCLUDE).
+    Conflict between rule 19 and token TK_SUB resolved as reduce (%left TK_SUB).
+    Conflict between rule 19 and token TK_CONTINUE resolved as reduce (%left TK_CONTINUE).
+    Conflict between rule 19 and token TK_YIELD resolved as reduce (%left TK_YIELD).
+    Conflict between rule 19 and token TK_BREAK resolved as reduce (%left TK_BREAK).
+    Conflict between rule 19 and token TK_RETURN resolved as reduce (%left TK_RETURN).
+    Conflict between rule 19 and token TK_DO resolved as reduce (%left TK_DO).
+    Conflict between rule 19 and token TK_IF resolved as reduce (%left TK_IF).
+    Conflict between rule 19 and token TK_FOR resolved as reduce (%left TK_FOR).
+    Conflict between rule 19 and token TK_WHILE resolved as reduce (%left TK_WHILE).
+
+
+
+
+--------------------------------
+State 136 conflicts: 1 shift/reduce
+
+
+
+    3 stmtList: . stmtList stmt
+    4         | . stmt
+    5 stmt: . valueDeepCopyAssignStmt
+    6     | . referenceCopyAssignmentStmt
+    7     | . includeStmt
+    8     | . functionCallStmt
+    9     | . functionDefStmt
+   10     | . ifStmt
+   11     | . forStmt
+   12     | . whileStmt
+   13     | . doWhileStmt
+   14     | . returnStmt
+   15     | . yieldStmt
+   16     | . breakStmt
+   17     | . continueStmt
+   18 forStmt: . TK_FOR TK_IDENTIFIER expr stmtList TK_END
+   19 whileStmt: . TK_WHILE expr stmtList
+   19          | TK_WHILE expr . stmtList
+   20 doWhileStmt: . TK_DO stmtList TK_WHILE expr
+   20            | TK_DO stmtList TK_WHILE expr .  [$end, TK_INCLUDE, TK_SUB, TK_CONTINUE, TK_YIELD, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_DO, TK_IF, TK_FOR, TK_WHILE, TK_IDENTIFIER]
+   21 valueDeepCopyAssignStmt: . assignmentLeftHandSide TK_ASSIGN expr
+   22 referenceCopyAssignmentStmt: . assignmentLeftHandSide TK_ASSIGN_REF expr
+   23 assignmentLeftHandSide: . varRef
+   24 ifStmt: . TK_IF condClause elseClauses TK_END
+   30 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
+   31 functionDefStmt: . functionPrototypeDecl stmtList TK_END
+   32 functionPrototypeDecl: . TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
+   33                      | . TK_SUB TK_IDENTIFIER funcParamDecls
+   36 breakStmt: . TK_BREAK
+   37 continueStmt: . TK_CONTINUE
+   38 returnStmt: . TK_RETURN expr
+   39           | . TK_RETURN
+   40 yieldStmt: . TK_YIELD expr
+   85 varRef: . TK_IDENTIFIER collectionRefs
+   86       | . TK_IDENTIFIER
+   91 functionCallStmt: . TK_IDENTIFIER TK_PARENTHESES_OPEN functionArgList TK_PARENTHESES_CLOSE
+
+    TK_IDENTIFIER  shift, and go to state 14
+
+    TK_IDENTIFIER  [reduce using rule 20 (doWhileStmt)]
+    $default       reduce using rule 20 (doWhileStmt)
+
+    stmtList                     go to state 115
+    stmt                         go to state 16
+    forStmt                      go to state 17
+    whileStmt                    go to state 18
+    doWhileStmt                  go to state 19
+    valueDeepCopyAssignStmt      go to state 20
+    referenceCopyAssignmentStmt  go to state 21
+    assignmentLeftHandSide       go to state 22
+    ifStmt                       go to state 23
+    includeStmt                  go to state 24
+    functionDefStmt              go to state 25
+    functionPrototypeDecl        go to state 26
+    breakStmt                    go to state 27
+    continueStmt                 go to state 28
+    returnStmt                   go to state 29
+    yieldStmt                    go to state 30
+    varRef                       go to state 31
+    functionCallStmt             go to state 32
+
+    Conflict between rule 20 and token TK_INCLUDE resolved as reduce (%left TK_INCLUDE).
+    Conflict between rule 20 and token TK_SUB resolved as reduce (%left TK_SUB).
+    Conflict between rule 20 and token TK_CONTINUE resolved as reduce (%left TK_CONTINUE).
+    Conflict between rule 20 and token TK_YIELD resolved as reduce (%left TK_YIELD).
+    Conflict between rule 20 and token TK_BREAK resolved as reduce (%left TK_BREAK).
+    Conflict between rule 20 and token TK_RETURN resolved as reduce (%left TK_RETURN).
+    Conflict between rule 20 and token TK_DO resolved as reduce (%left TK_DO).
+    Conflict between rule 20 and token TK_IF resolved as reduce (%left TK_IF).
+    Conflict between rule 20 and token TK_FOR resolved as reduce (%left TK_FOR).
+    Conflict between rule 20 and token TK_WHILE resolved as reduce (%left TK_WHILE).
+
+
+
+
+*** the grammar has errors. very bad ***
+make: *** [pars.txt] Error 1

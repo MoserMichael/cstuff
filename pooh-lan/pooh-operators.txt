@@ -55,20 +55,34 @@ Binary operators
 Unary operators
 
 - prefix operators
-	  TK_OP_NUM_AUTOINCR 
-	  TK_OP_NUM_AUTODECR 
 	  TK_OP_NUM_ADD
+	  TK_OP_NUM_SUB
 
 		operand must be number (either long or double)
 		Strings is _not_ automatically converted to numbers;
 		Strings, List, Hash or function argument will be ERROR.
 		Result type: if one of the arguments is double then result is double; otherwise long
 
- - postfix operators
-	  TK_OP_NUM_AUTOINCR 
-	  TK_OP_NUM_AUTODECR
 
-		operand must be number (either long or double)
-		Strings is _not_ automatically converted to numbers;
-		Strings, List, Hash or function argument will be ERROR.
-		Result type: if one of the arguments is double then result is double; otherwise long
+Assignment operator:
+    Multivalue assignment (left hand side is a list)
+	Error If right hand side is known to be any value other than list 
+
+    Single value assignmen
+	Left hand side is collection ref
+	    Currently do not check values in collections, so can be any value.
+	Left hand side is scalar
+	    Type of left hand side has to be equal to type of right hand side;
+	    (With exception of integer->long, integer,long->string conversion
+	    which is done explicitly)
+
+For loop
+    Right side evaluates to List
+	The loop is over all elements of the list, so 
+	->Left side is a single scalar ; 
+    Left side evaluates to a Hash table
+	The loop is over all name, value pairs of the hash table; so
+	->Left hand side as scalar will be a list (multi value assignment will set name value pair)
+	  Left hand side can be list constructor.
+
+

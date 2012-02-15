@@ -46,12 +46,12 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 
 %token TK_ERROR
 
-%left TK_WHILE TK_FOR TK_IF TK_DO TK_ASSIGN TK_ASSIGN_REF TK_ELSE TK_ELSIF TK_END TK_RETURN TK_YIELD TK_BREAK TK_CONTINUE TK_IDENTIFIER TK_INTEGER_CONSTANT TK_STRING_CONSTANT TK_MULTI_PART_STRING_CONSTANT TK_DOUBLE_CONSTANT TK_SUB TK_INCLUDE 
+%left TK_WHILE TK_FOR TK_IF TK_DO TK_ASSIGN TK_ASSIGN_REF TK_ELSE TK_ELSIF TK_END TK_RETURN TK_YIELD TK_BREAK TK_NEXT TK_IDENTIFIER TK_INTEGER_CONSTANT TK_STRING_CONSTANT TK_MULTI_PART_STRING_CONSTANT TK_DOUBLE_CONSTANT TK_SUB TK_INCLUDE 
 
 
 %token TK_OP_LOGICAL_AND TK_OP_LOGICAL_OR
 
-%token TK_OP_NUM_EQ TK_OP_NUM_NE TK_OP_NUM_LT TK_OP_NUM_GT TK_OP_NUM_LE TK_OP_NUM_GE TK_OK_DOT
+%token TK_OP_NUM_EQ TK_OP_NUM_NE TK_OP_NUM_LT TK_OP_NUM_GT TK_OP_NUM_LE TK_OP_NUM_GE TK_OP_DOT
 
 %token TK_OP_STR_EQ TK_OP_STR_NE TK_OP_STR_LT TK_OP_STR_GT TK_OP_STR_LE TK_OP_STR_GE
 
@@ -143,18 +143,29 @@ stmt : valueDeepCopyAssignStmt
      | returnStmt
      | yieldStmt
      | breakStmt
-     | continueStmt
+     | nextStmt
      ;     
 
 
 forStmt : TK_FOR TK_IDENTIFIER expr stmtList TK_END
 	{
 	    AST_FOR_LOOP *scl;
+	    AST_EXPRESSION *loopID;
 
-            scl = AST_FOR_LOOP_init( $<string_value>2, (AST_EXPRESSION *) $<ast>3, (AST_BASE_LIST *) $<ast>4, YYLOCPTR );
+	    loopID = AST_EXPRESSION_init_ref( $<string_value>2, 0, YYLOCPTR );
+
+            scl = AST_FOR_LOOP_init( loopID, (AST_EXPRESSION *) $<ast>3, (AST_BASE_LIST *) $<ast>4, YYLOCPTR );
 	    $<ast>$ = &scl->base;
 	}
-    ;     
+	|
+	 TK_FOR multiValueLeftHandSide expr stmtList TK_END
+  	{
+	    AST_FOR_LOOP *scl;
+
+            scl = AST_FOR_LOOP_init( (AST_EXPRESSION *) $<ast>2, (AST_EXPRESSION *) $<ast>3, (AST_BASE_LIST *) $<ast>4, YYLOCPTR );
+	    $<ast>$ = &scl->base;
+	}
+  ;     
 
 
 
@@ -165,7 +176,7 @@ whileStmt : TK_WHILE expr stmtList
             scl = AST_WHILE_LOOP_init( (AST_EXPRESSION *) $<ast>2, (AST_BASE_LIST *) $<ast>3, 0, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
-    ;
+	    ;
 
 
 doWhileStmt : TK_DO stmtList TK_WHILE expr
@@ -175,7 +186,7 @@ doWhileStmt : TK_DO stmtList TK_WHILE expr
             scl = AST_WHILE_LOOP_init( (AST_EXPRESSION *) $<ast>4, (AST_BASE_LIST *) $<ast>2, 1, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
-    ;
+	    ;
 
 
 
@@ -187,7 +198,7 @@ valueDeepCopyAssignStmt : assignmentLeftHandSide TK_ASSIGN expr
 	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_REF_COPY, $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
-	;
+	    ;
 
 referenceCopyAssignmentStmt : assignmentLeftHandSide TK_ASSIGN_REF expr
 	{
@@ -196,12 +207,21 @@ referenceCopyAssignmentStmt : assignmentLeftHandSide TK_ASSIGN_REF expr
 	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_DEEP_COPY, $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
-	;
+	    ;
+
 assignmentLeftHandSide : varRef 
-		|
-	TK_BRACKET_OPEN multiValueLeftHandSideList TK_BRACKET_CLOSE
+		|   
+	multiValueLeftHandSide
+	    ;
+
+multiValueLeftHandSide : TK_BRACKET_OPEN multiValueLeftHandSideList TK_BRACKET_CLOSE
 	{
-	    $<ast>$ = $<ast>2;
+	  AST_EXPRESSION *scl;
+	  
+	  scl = AST_EXPRESSION_init( S_EXPR_LIST_VALUES, S_VAR_LIST, YYLOCPTR   ); 
+
+	  scl->val.index_expressions = (AST_VECTOR *) $<ast>2;
+	  $<ast>$ = &scl->base;
 	}
 	    ;
 
@@ -234,7 +254,7 @@ multiValueLeftHandSideClause : varRef
 
 	  scl = AST_EXPRESSION_init( S_EXPR_PLACEHOLDER, S_VAR_ANY, YYLOCPTR  ); 
 	  $<ast>$ = &scl->base;
-	}
+	    }
 	;
 
 ifStmt  : TK_IF condClause elseClauses TK_END
@@ -368,12 +388,12 @@ breakStmt : TK_BREAK
 	}
 	;
 
-continueStmt : TK_CONTINUE
+nextStmt : TK_NEXT
 	{
 	    AST_BASE *scl;
 
 	    scl = (AST_BASE *) malloc( sizeof( AST_BASE ) );
-	    AST_BASE_init( scl, S_CONTINUE,  YYLOCPTR );
+	    AST_BASE_init( scl, S_NEXT,  YYLOCPTR );
 	    $<ast>$ = scl;
 	}
 	 ;
@@ -419,9 +439,7 @@ anonymousFunction : TK_SUB funcParamDecls stmtList TK_END
 	  fdecl = AST_FUNC_DECL_init( 0,  (AST_VECTOR *) $<ast>2, parse_context, YYLOCPTR);
 
 	  AST_FUNC_DECL_set_body( fdecl, parse_context, (AST_BASE_LIST *) $<ast>3 );
-	  scl = AST_EXPRESSION_init_ref( 0, 0, YYLOCPTR);
-
-	  scl->value_type = S_VAR_CODE;
+	  scl = AST_EXPRESSION_init( S_EXPR_LAMBDA, S_VAR_CODE, YYLOCPTR);
 	  scl->val.fdecl = fdecl;
 
 	  $<ast>$ = &scl->base;
@@ -557,7 +575,14 @@ primaryExp : varRef
 	  $<ast>$ = $<ast>2;
 	}
 	   | functionCallStmt 
-	   ;
+	{
+	  AST_EXPRESSION *scl;
+	  
+	  scl = AST_EXPRESSION_fcall_init( (AST_FUNC_CALL *) $<ast>1 , YYLOCPTR );
+
+	  $<ast>$ = scl;
+	}
+   ;
 		
 varRef : TK_IDENTIFIER collectionRefs
        	{
@@ -567,16 +592,59 @@ varRef : TK_IDENTIFIER collectionRefs
 
 	  $<ast>$ = &scl->base;
 	}	       
-          | TK_IDENTIFIER
+          | TK_IDENTIFIER varRefCont
+       	{
+	  AST_EXPRESSION *scl;
+
+	  scl = AST_EXPRESSION_init_ref( $<string_value>1, (AST_VECTOR *) $<ast>2, YYLOCPTR );
+
+	  $<ast>$ = &scl->base;
+	}	
+	  | TK_IDENTIFIER
        	{
 	  AST_EXPRESSION *scl;
 
 	  scl = AST_EXPRESSION_init_ref( $<string_value>1, 0, YYLOCPTR );
 
 	  $<ast>$ = &scl->base;
-	}	
+	}	       
 	;
 
+varRefCont : varRefCont TK_OP_DOT varRefContID
+       	{
+	  AST_VECTOR *scl;
+	  AST_VECTOR *index;
+
+	  index = AST_EXPRESSION_init( S_EXPR_HASH_INDEX, S_VAR_ANY, YYLOCPTR  ); 
+	  index->val.index_expr = (AST_EXPRESSION *) $<ast>2 ;
+	  
+	  scl = (AST_VECTOR *) $<ast>1;
+	  AST_VECTOR_add( scl, index );
+	  
+	  $<ast>$ = &scl->base;
+	}
+	| TK_OP_DOT varRefContID
+       	{
+	  AST_VECTOR *scl;
+	  AST_VECTOR *index;
+
+	  index = AST_EXPRESSION_init( S_EXPR_HASH_INDEX, S_VAR_ANY, YYLOCPTR  ); 
+	  index->val.index_expr = (AST_EXPRESSION *) $<ast>2 ;
+	  
+	  scl = AST_VECTOR_init( YYLOCPTR );
+	  AST_VECTOR_add( scl, index );
+
+	  $<ast>$ = &scl->base;
+ 	}
+		 ;  
+
+varRefContID : TK_IDENTIFIER
+	{
+	  scl = AST_EXPRESSION_init( S_EXPR_CONSTANT, S_VAR_STRING, YYLOCPTR   ); 
+	  scl->val.const_value.string_value = strdup( $<string_value>1 );
+	  $<ast>$ = &scl->base;
+	}
+		;
 
 collectionRefs : collectionRefs oneRef  
        	{
@@ -618,12 +686,12 @@ oneRef :  TK_BRACE_OPEN expr TK_BRACE_CLOSE
 
 /** function calls **/
 
-functionCallStmt : TK_IDENTIFIER  TK_PARENTHESES_OPEN functionArgList TK_PARENTHESES_CLOSE
+functionCallStmt : varRef TK_PARENTHESES_OPEN functionArgList TK_PARENTHESES_CLOSE
        	{
 	  AST_EXPRESSION *scl;
 	  AST_FUNC_CALL *fcall;
 
-	  fcall = AST_FUNC_CALL_init( $<string_value>1, (AST_VECTOR *) $<ast>3, YYLOCPTR  );
+	  fcall = AST_FUNC_CALL_init( (AST_EXPRESSION *) $<ast>1, (AST_VECTOR *) $<ast>3, YYLOCPTR  );
 
 	  scl = AST_EXPRESSION_init( S_FUN_CALL, S_VAR_ANY, YYLOCPTR  ); 
     

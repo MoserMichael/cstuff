@@ -43,6 +43,7 @@ void PARSECONTEXT_free( PARSECONTEXT *ctx );
 struct tagAST_FUNC_DECL; 
 
 int PARSECONTEXT_add_function_def( PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl ); 
+struct tagAST_FUNC_DECL * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const char *fname );
 
 //--------------------------------------------------------
 
