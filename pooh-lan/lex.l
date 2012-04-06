@@ -62,9 +62,11 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "if"	{ MY_YY_RETURN(TK_IF);	  }
 
+"elseif" { MY_YY_RETURN(TK_ELSIF); }  
+"elsif" { MY_YY_RETURN(TK_ELSIF); }  
+
 "else"	{ MY_YY_RETURN(TK_ELSE); }
 
-"elsif"	{ MY_YY_RETURN(TK_ELSIF); }  
 
 "end"	{ MY_YY_RETURN(TK_END);  }
 
@@ -77,7 +79,7 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "="		{ MY_YY_RETURN(TK_ASSIGN);    }
 
-"~="	{ MY_YY_RETURN(TK_ASSIGN_REF); }
+":="	{ MY_YY_RETURN(TK_ASSIGN_REF); }
 
 "!="	{ MY_YY_RETURN(TK_OP_NUM_NE); }
 
@@ -132,7 +134,7 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "or"	{ MY_YY_RETURN(TK_OP_LOGICAL_OR); }
 
-"=>"		{ MY_YY_RETURN(TK_HASH_IT); }  
+":"		{ MY_YY_RETURN(TK_HASH_IT); }  
 
 "return" { MY_YY_RETURN(TK_RETURN); }
 

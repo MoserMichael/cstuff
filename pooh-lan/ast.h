@@ -204,6 +204,8 @@ typedef enum {
 
   S_VAR_LIST = 32,
 
+  S_VAR_NULL = 64,
+
   S_VAR_ANY = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST,
 
 } AST_VAR_TYPE;
@@ -226,6 +228,14 @@ typedef union {
   char   *string_value;
 } Simple_value_type;
 
+typedef enum {
+ REF_SCOPE_LOCAL,
+ REF_SCOPE_CLOSURE,
+ REF_SCOPE_GLOAL = -1,
+ REF_SCOPE_THIS = -2,
+} 
+ REF_SCOPE;
+
 typedef struct tagAST_EXPRESSION {
   AST_BASE base;
 
@@ -247,7 +257,8 @@ typedef struct tagAST_EXPRESSION {
 	struct {
 		char  *lhs;
 		AST_VECTOR *indexes;
-		struct tagBINDING_DATA *binding;
+		struct tagBINDING_ENTRY *binding;
+		int scope;
 	} ref;
 
 	Simple_value_type const_value;
@@ -372,7 +383,7 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR 
     }
   }
   scl->val.ref.indexes = indexes;
-
+  scl->val.ref.scope = 0;
   return scl;
 }
 
@@ -385,9 +396,10 @@ typedef enum {
   ASSIGNMENT_REF_COPY,
 
 } ASSIGNMENT_TYPE;
+
 typedef struct tagAST_ASSIGNMEN {
   AST_BASE base;
-  struct tagAST_BASE *left_side;
+  struct tagAST_EXPRESSION *left_side;
   struct tagAST_EXPRESSION *right_side;
 
   ASSIGNMENT_TYPE type; 
@@ -396,7 +408,7 @@ typedef struct tagAST_ASSIGNMEN {
  
 
 M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,
-		struct tagAST_BASE *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location  )
+		struct tagAST_EXPRESSION *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location  )
 {
   AST_ASSIGNMENT * scl;
 
@@ -406,8 +418,8 @@ M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,
   }
   AST_BASE_init( &scl->base, S_ASSIGNMENT, location );
   
-  assert(lhs->type == S_EXPRESSION || lhs->type == S_AST_VECTOR );
-  lhs->parent = &scl->base;
+  assert(lhs->base.type == S_EXPRESSION);
+  lhs->base.parent = &scl->base;
   scl->left_side = lhs;
   
   assert(rhs->base.type == S_EXPRESSION );
@@ -499,7 +511,7 @@ M_INLINE AST_FOR_LOOP *AST_FOR_LOOP_init( AST_EXPRESSION *loop_var, AST_EXPRESSI
     return 0;
   }
 
-  AST_BASE_init( &scl->base, S_WHILE, location );
+  AST_BASE_init( &scl->base, S_FOR, location );
 
   assert(loop_var->base.type == S_EXPRESSION );
   loop_var->base.parent = &scl->base;  
@@ -551,30 +563,6 @@ M_INLINE AST_WHILE_LOOP *AST_WHILE_LOOP_init(AST_EXPRESSION *expr, AST_BASE_LIST
 
 /***************************************************/
 
-typedef struct tagBINDING_DATA {
-
-  AST_VAR_TYPE value_type;
-
-  union {
-    long   long_value;
-
-    double double_value;
-		
-    char   *string_value;
-    
-    ARRAY   array_value;
-
-    HASH    hash_value;
-
-    struct {
-       struct tagBINDING_DATA *this_environment;
-       struct tagAST_FUNC_DECL *fdecl;
-    }  func_value;
-
-  } value;
-
-} BINDING_DATA;
-
 /* entry maps a binding name to a binding value; Not very space efficient in deed very space inefficient that is */
 typedef struct tagBINDING_ENTRY {
   HASH_Entry entry;
@@ -616,10 +604,12 @@ typedef struct tagAST_FUNC_DECL {
   const char *f_name;
   AST_VECTOR *func_params;
   AST_BASE_LIST *func_body;
+  AST_VAR_TYPE return_type_value;
 
   HASH scope_map_name_to_binding;
     
   int checker_state;  
+  int last_stack_offset;
 
 } AST_FUNC_DECL;
 
@@ -643,8 +633,10 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   func_param->base.parent = &scl->base;
   scl->func_params = func_param;
 
+  scl->return_type_value = 0;
+    
   scl->checker_state = 0;  
-  
+  scl->last_stack_offset = 1; // at least one entry reserved for return value.  
 #if 0
   if (HASH_init( &ctx->scope_map_name_to_binding, 10, 0, binding_hash_compare, 0 ) ) {
     return -1;

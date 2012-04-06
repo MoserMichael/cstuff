@@ -2,16 +2,18 @@
 #include "ast.h"
 #include "parser.h"
 
+int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx );
 
 int CHECKER_init( CHECKERCTX *ctx)
 {  
   ctx->is_left_hand_side = 0; 
   ctx->current_function  = 0;
+  return 0;
 }
 
 int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx );
 
-BINDING_ENTRY * make_binding( AST_VAR_TYPE value_type, YYLTYPE *location, const char *name )
+BINDING_ENTRY * make_binding( AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, AST_FUNC_DECL *decl )
 {
    BINDING_ENTRY *binding;
 
@@ -20,57 +22,72 @@ BINDING_ENTRY * make_binding( AST_VAR_TYPE value_type, YYLTYPE *location, const 
      return 0;
    }
 
-   binding->data.def_location = *location;
-   binding->data.value_type = value_type;
+   binding->def_location = *location;
+   binding->value_type = value_type;
    binding->binding_name = name;
-
-   switch( value_type ) {
-    case S_VAR_INT:
-      binding->data.value.long_value = 0;
-      break;
-    case S_VAR_DOUBLE:
-      binding->data.value.double_value = 0;
-      break;
-    case S_VAR_STRING:
-      binding->data.value.string_value = 0;
-      break;
-    case S_VAR_CODE:
-      break;
-    case S_VAR_HASH:
-      if (HASH_init( &binding->data.value.hash_value, 10, 0, binding_hash_compare, 0 ) ) {
-        free(binding);
-        return 0;
-      }
-      break;
-    case S_VAR_LIST:
-      if (ARRAY_init( &binding->data.value.array_value, 0, sizeof( BINDING_DATA ) ) ) {
-        free(binding);
-        return 0;
-      }
-      break;
-    case S_VAR_ANY:
-      ;
-   }
+   binding->stack_offset = ++decl->last_stack_offset ;
+  
    return binding;
 }
 
-BINDING_ENTRY *lookup_binding( const char *name, AST_FUNC_DECL *decl )
-{
-   BINDING_ENTRY *entry; 
-    
-   if (name[0] != '#') {
-	 return  (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
-   } else {
-	while ( decl->funcs.parent != 0 && (decl = _OFFSETOF( decl->funcs.parent,  AST_FUNC_DECL, funcs ) ) != 0 ) {
-	  entry = (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
-          if (entry) {
-	    return entry;
+
+BINDING_ENTRY *lookup_binding( const char *name, AST_FUNC_DECL *decl, REF_SCOPE scope, int *pscope )
+{  
+   BINDING_ENTRY *rval;
+   int scope = 0;
+
+   switch( scope ) {
+     case  REF_SCOPE_LOCAL: 
+       *pscope = 0;
+       return  (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
+     case  REF_SCOPE_GLOBAL: {
+       while( decl->funcs.parent != 0 )
+       {
+	  decl = _OFFSETOF( scl->funcs.parent,  AST_FUNC_DECL, funcs );
+       }	
+       *pscope = -1;
+       return  (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
+
+    case REF_SCOPE_CLOSURE:
+       while( decl->funcs.parent != 0 ) {
+	  
+	  scope ++;
+	  decl = _OFFSETOF( scl->funcs.parent,  AST_FUNC_DECL, funcs );
+	  
+	  rval = (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
+	  if (rval) {
+	    *pscope = decl->funcs.parent != 0 ? scope : -1;
+	    return rval;
 	  }
-	}
-   }
-   return 0;
+       } 
+       return 0; 	
+    default:
+	return 0;
+    }
+
+      
 }
 
+
+const char *get_type_name( AST_VAR_TYPE value_type )
+{
+  switch( value_type )
+  {
+     case S_VAR_INT: 
+     case S_VAR_DOUBLE:  
+	return "number";
+     case S_VAR_STRING:
+	return "string";
+     case S_VAR_CODE: 
+	return "function";
+     case S_VAR_HASH: 
+	return "table";
+     case S_VAR_LIST: 
+	return "array";
+     default:
+        return "???";
+  }
+}
 
 int is_scalar_var_type( AST_VAR_TYPE value_type )
 {
@@ -93,74 +110,102 @@ int CHECK_reference( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
    const char *name = expr->val.ref.lhs;
    BINDING_ENTRY *entry;
 
-   if (expr->ref.binding != 0) {
+   if (expr->val.ref.binding != 0) {
      return 0;
    }
 
-   entry = lookup_binding( expr->val.ref.lhs, ctx->current );
-   if (!entry) {
-      if (ctx->chkctx.is_left_hand_side) { 
-         entry->ref.binding = make_binding( expr->value_type, &expr->base.location, expr->val.ref.lhs );
-	 return 0;
-      }
-      // a variable is used that is not yet defined.
-      return -1;
+   // can't find type of class members (at this stage)
+   if (strcmp(name,"this") == 0) {
+     return 0;
+   }
+
+
+   if (strcmp(name, "global") == 0) {
+     entry = lookup_binding( name, ctx->current, REF_SCOPE_GLOBAL, &expr->val.ref.scope );
+   } 
+   else if (strcmp(name, "close") == 0) {
+     // find local variable binding 
+     entry = lookup_binding( name, ctx->current, REF_SCOPE_CLOSURE, &expr->val.ref.scope );
 
    } else {
-     entry->ref.binding = entry;
+     // find local variable binding 
+     entry = lookup_binding( name, ctx->current, REF_SCOPE_LOCAL, &expr->val.ref.scope );
+   }
+   if (!entry) {
+      if (expr->val.ref.scope != 0) {
+         if (ctx->chkctx.is_left_hand_side) {
+	    do_yyerror( &fcall->base.location, ctx, "Can't define the new %s variable %s in a function",
+		      expr->val.ref.scope == -1 ? "global" : "non-local (closure)", name );
+	 } else {
+	    do_yyerror( &fcall->base.location, ctx, "Can't access undefined %s variable %s. can't reference undefined variables",
+		      expr->val.ref.scope == -1 ? "global" : "non-local (closure)", name );
+
+	 }
+	 return -1;
+      }
+      if (!ctx->chkctx.is_left_hand_side) { 
+         // variable name must be assigned a value before use.
+         do_yyerror( &fcall->base.location, ctx, "You must assign a value to variable %s before trying to use its value. can't reference undefined variables",
+			name );
+	 return -1;
+      }	 
+      expr->val.ref.binding = make_binding( expr->value_type, &expr->base.location, name, ctx->chkctx.current_function  );
+      return 0;
+   } else {
+      expr->val.ref.binding = entry;
    }
 
    if (expr->value_type == S_VAR_CODE) {
-      return 
+      return 0;
    }
    
    if (expr->value_type == S_VAR_HASH) {
      if (entry) {
-        if (entry->data.value_type  == S_VAR_ANY) {
-	  entry->data.value_type = S_VAR_HASH;
-	  entry->data.def_location = expr->base.location;
+        if (entry->value_type  == S_VAR_ANY) {
+	  entry->value_type = S_VAR_HASH;
+	  entry->def_location = expr->base.location;
 	  return 0;
 	}
-	if (entry->data.value_type != S_VAR_HASH) {
-	  do_yyerror( expr->base.location, ctx, "The variable %s is used as a table but has previously been defined as a %s at line %d column %d",
+	if (entry->value_type != S_VAR_HASH) {
+	  do_yyerror( &expr->base.location, ctx, "The variable %s is used as a table but has previously been defined as a %s at line %d column %d",
 	     expr->val.ref.lhs,
-	     get_type_name( expr->value_type ),
-	     entry->data.def_location.first_line,
-	     entry->data.def_location.first_column );
+	     get_type_name( entry->value_type ),
+	     entry->def_location.first_line,
+	     entry->def_location.first_column );
 	  return -1;
 	}
       } 
    } else if (expr->value_type == S_VAR_LIST) {
      if (entry) {
         if (entry->value_type  == S_VAR_ANY) {
-	  entry->data.value_type = S_VAR_LIST;
-	  entry->data.def_location = expr->base.location;
+	  entry->value_type = S_VAR_LIST;
+	  entry->def_location = expr->base.location;
 	  return 0;
 	}
 
 	if (entry->value_type != S_VAR_HASH) {
-	  do_yyerror( expr->base.location, ctx, "The variable %s is used as a array but has previously been defined as a %s at line %d column %d",
+	  do_yyerror( &expr->base.location, ctx, "The variable %s is used as a array but has previously been defined as a %s at line %d column %d",
 	     expr->val.ref.lhs,
-	     get_type_name( expr->data.value_type ),
-	     entry->data.def_location.first_line,
-	     entry->data.def_location.first_column );
+	     get_type_name( entry->value_type ),
+	     entry->def_location.first_line,
+	     entry->def_location.first_column );
 	  return -1;
 	}
      }    
   } else if (is_scalar_var_type( expr->value_type ) ) {
      if (entry) {
-        if (entry->data.value_type  == S_VAR_ANY) {
-	  entry->data.value_type = expr->value_type;
-	  entry->data.def_location = expr->base.location;
+        if (entry->value_type  == S_VAR_ANY) {
+	  entry->value_type = expr->value_type;
+	  entry->def_location = expr->base.location;
 	  return 0;
 	}
 
-	if (!is_scalar_var_type( entry->data.value_type ) ) {
-	  do_yyerror( expr->base.location, ctx, "The variable %s is used as scalar but has previously been defined as a %s at line %d column %d",
+	if (!is_scalar_var_type( entry->value_type ) ) {
+	  do_yyerror( &expr->base.location, ctx, "The variable %s is used as scalar but has previously been defined as a %s at line %d column %d",
 	     expr->val.ref.lhs,
-	     get_type_name( expr->data.value_type ),
-	     entry->data.def_location.first_line,
-	     entry->data.def_location.first_column );
+	     get_type_name( entry->value_type ),
+	     entry->def_location.first_line,
+	     entry->def_location.first_column );
 	  return -1;
 	}
      }
@@ -168,17 +213,19 @@ int CHECK_reference( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
   return 0;
 }
 
-int CHECK_func_call( PARSECONTEXT *ctx, AST_EXPRESSION *expr )
+int CHECK_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 {
-    AST_FUNC_CALL *fcall;
+    
     AST_FUNC_DECL *fdecl;
     AST_VECTOR *call_params;
     AST_EXPRESSION **call_expr;
     size_t i;
+    size_t num_call_params, num_def_params;
 
-    fcall = expr->val.fcall;
 
-    // check call expressions
+    //fcall = expr->val.fcall;
+
+    // check function call expressions
     call_params = fcall->call_params;
     for( i = 0; i < ARRAY_size( &call_params->refs ); i++) {
 	call_expr = (AST_EXPRESSION**) ARRAY_at( &call_params->refs, i );
@@ -188,47 +235,93 @@ int CHECK_func_call( PARSECONTEXT *ctx, AST_EXPRESSION *expr )
     if (fcall->func_decl == 0) {
       AST_EXPRESSION *fcall_lhs;
 
-      fcall_lhs = fcall->f_name;
+      fcall_lhs = fcall->f_name; // varRef
 
-      if (fcall_lhs->exp_type == S_EXPR_LAMBDA) {
+      CHECK_reference( fcall->f_name, ctx );
+
+
+      if (fcall_lhs->value_type == S_VAR_CODE) {
 	fdecl = fcall_lhs->val.fdecl;
       } else if (fcall_lhs->exp_type == S_EXPR_REFERENCE &&  fcall_lhs->val.ref.indexes == 0) {
-        // try to find function definition.
-	fdecl = PARSECONTEXT_find_function_def( ctx, fcall_lhs.val.ref.lhs );
-	if (!fdecl) {
-	    // find if this is reference to Lambda expression.
-	}
-      }
+	
+	const char *function_name = fcall_lhs->val.ref.lhs;
 
-      if (fdecl == 0) {
-	expr->value_type = S_VAR_ANY;    
-	return;
+	// if fcall_lhs is this reference, then we can't find the function. Check if this is thecase
+        // can't find type of class members (at this stage)
+	if (strcmp( function_name, "this" ) == 0) {
+	  return 0;
+	}
+
+	fdecl = PARSECONTEXT_find_function_def( ctx, function_name );
+	if (!fdecl) {
+	  do_yyerror( &fcall->base.location, ctx, "The function %s is not defined, can't call undefined functions",
+			function_name );
+	  return -1;			
+	}
       }
 
       fcall_lhs->val.fdecl = fdecl;	    
     }
 
+    num_call_params = ARRAY_size( &fcall->call_params->refs ); 
+    num_def_params = ARRAY_size( &fdecl->func_params->refs );
 
+    // check if number of parameters is the same as in prototype.
+    if (num_call_params != num_def_params) {
+	 do_yyerror( &fcall->base.location, ctx, "The function %s has %d parameters, wherease the function call has %d parameters",
+			fcall->f_name, num_def_params,  num_call_params );
+         return -1;
+    }
+
+
+    // check if parameter types agree
+    for( i = 0; i < num_call_params; i++) {
+	AST_EXPRESSION *call_p = (AST_EXPRESSION *) ARRAY_at( &fcall->call_params->refs, i );
+	AST_EXPRESSION *fdef_p = (AST_EXPRESSION *) ARRAY_at( &fdecl->func_params->refs, i );
+	
+	if (call_p->value_type != S_VAR_ANY && fdef_p->value_type != S_VAR_ANY) {
+	    int is_ok = 0;
+
+	    if (is_scalar_var_type( call_p->value_type ) && is_scalar_var_type( fdef_p->value_type )) {    
+		is_ok = 1;
+	    } else {
+		is_ok = call_p->value_type == fdef_p->value_type;
+	    }
+
+	    if (!is_ok) {
+		do_yyerror( &fcall->base.location, ctx, "The function call parameter #%d is of type %s the function parameter is of type %s",
+				    get_type_name( call_p->value_type ),
+				    get_type_name( fdef_p->value_type ) );
+        		
+	    }
+	}
+    }
+
+    return 0;
 }
 
 int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
 {
   switch( expr->exp_type ) {
    case S_EXPR_BINARY:
-     return AST_EXPRESSION_binary_op_check_types( ctx, expr, );
+     CHECK_expression( expr->val.expr.expr_left, ctx ); 
+     CHECK_expression( expr->val.expr.expr_right, ctx ); 
+       
+     return AST_EXPRESSION_binary_op_check_types( ctx, expr );
    
    case S_EXPR_UNARY:
+     CHECK_expression( expr->val.unary.expr, ctx ); 
      return AST_EXPRESSION_unary_op_check_types( ctx, expr );
    
    case S_EXPR_FUNCALL:
-     CHECK_func_call( ctx, expr );
+     CHECK_func_call( ctx,  expr->val.fcall );
      break;
 
    case S_EXPR_HASH_INDEX: {
      AST_EXPRESSION *check_expr = expr->val.index_expr; 
      CHECK_expression( check_expr, ctx );
      if (check_expr->value_type != S_VAR_ANY && ! is_numeric_or_string_type( check_expr->value_type ) ) {
-       do_yyerror( check_expr->base.location, ctx, "Index expression of table must be integer or string value, instead is %s",
+       do_yyerror( &check_expr->base.location, ctx, "Index expression of table must be integer or string value, instead is %s",
 		get_type_name( check_expr->value_type ) );
      }
      }
@@ -237,7 +330,7 @@ int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
      AST_EXPRESSION *check_expr = expr->val.index_expr; 
      CHECK_expression( check_expr, ctx );
      if (check_expr->value_type != S_VAR_ANY && ! is_numeric_type( check_expr->value_type ) ) {
-       do_yyerror( check_expr->base.location, ctx, "Index expression of table must be integer, instead is %s",
+       do_yyerror( &check_expr->base.location, ctx, "Index expression of table must be integer, instead is %s",
 		get_type_name( check_expr->value_type ) );
       }
      }
@@ -267,7 +360,7 @@ int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
 	CHECK_expression( rhs, ctx );
      	CHECK_expression( lhs, ctx );
         if (lhs->value_type != S_VAR_ANY && ! is_numeric_or_string_type( lhs->value_type ) ) {
-          do_yyerror( lhs->base.location, ctx, "Index expression of table must be integer or string, instead is %s",
+          do_yyerror( &lhs->base.location, ctx, "Index expression of table must be integer or string, instead is %s",
 		get_type_name( lhs->value_type ) );
         }
      }
@@ -282,47 +375,11 @@ int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
      break;
    case S_EXPR_PLACEHOLDER:
      break;
+   case S_EXPR_LAMBDA:
+     break;
   }   
   return 0;
 }
-
-int CHECK_fun_call( AST_FUNC_CALL *fcall, PARSECONTEXT *ctx )
-{
-  FUNCTION_HASH_entry *entry;
-  size_t num_call_params, num_def_params;
-
-  if (fcall->func_decl != 0) {
-    // already resolved.
-    return 0;
-  }
-
-
-  // check if function is defined.
-  if (fcall->f_name) {
-    entry = (FUNCTION_HASH_entry *) HASH_find( &ctx->map_function_defs, (void *) fcall->f_name, -1 );
-    if (!entry && fcall->) {
-      do_yyerror( &fcall->base.location, ctx, "The function %s is not defined, can't call an undefined function", fcall->f_name );
-      return -1;
-    }
-  }
-
-  fcall->func_decl = entry->decl;
-
-  num_call_params = ARRAY_size( &fcall->call_params->refs ); 
-  num_def_params = ARRAY_size( &entry->decl->func_params->refs );
-
-  // check if number of parameters is the same as in prototype.
-  if (num_call_params != num_def_params) {
-	 do_yyerror( &fcall->base.location, ctx, "The function %s has %d parameters, wherease the function call specifies %d parameters",
-			fcall->f_name, num_def_params,  num_call_params );
-     return -1;
-  }
-
-  // check if parameter types are compatible
-  // TODO
-
-  return 0;
-} 
 
 int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 {
@@ -336,28 +393,28 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
         AST_FUNC_DECL *prev,*fdecl;
 	
 	fdecl = (AST_FUNC_DECL *) base;
-        
-	prev = ctx->current_function;
-	ctx->current_function  = fdecl;
+	prev = ctx->chkctx.current_function;
+	ctx->chkctx.current_function  = fdecl;
 
-        ctx->current_function->var_type = 0;
 
         CHECK_function_scope( fdecl,  ctx );
 
-
-	ctx->current_function = prev;
+	ctx->chkctx.current_function = prev;
 
 	}
         break;
 
       case S_ASSIGNMENT: {
         AST_ASSIGNMENT *ass;
-	AST_EXPRESSION *lhs;
+	AST_EXPRESSION *lhs,*rhs;
 	
 
 	ass = (AST_ASSIGNMENT *) base;
         CHECK_expression( ass->right_side, ctx );
 
+        ctx->chkctx.is_left_hand_side = 1; 
+	CHECK_expression( ass->left_side, ctx );
+        ctx->chkctx.is_left_hand_side = 0; 
 	
 	lhs = (AST_EXPRESSION *) ass->left_side; 
 	rhs = (AST_EXPRESSION *) ass->right_side;
@@ -365,29 +422,22 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 	if (rhs->value_type != S_VAR_ANY) {
 
 	    if (lhs->value_type == S_VAR_HASH || lhs->value_type == S_VAR_LIST) {
-	       if (lhs->value_type != rhs->value_type) {
-		    do_yyerror( &ass->right_side.base.location, ctx,
+	        if (lhs->value_type != rhs->value_type) {
+		    do_yyerror( &ass->right_side->base.location, ctx,
 			"%s expected in assignment, instead there is the %s type in right hand side", 
-			  get_type_name( right_type ),
+			  get_type_name( rhs->value_type ),
 			  get_type_name( lhs->value_type ) );
-		  }
-		  lhs->value_type = right_type;
-  
 		}
+		lhs->value_type = rhs->value_type;
       	      }
 	  } else {
-	     if (right_type != S_VAR_ANY && right_type != S_VAR_LIST) {
-		do_yyerror( &ass->right_side.base.location, ctx,
+	     if (rhs->value_type != S_VAR_ANY && rhs->value_type != S_VAR_LIST) {
+		do_yyerror( &ass->right_side->base.location, ctx,
 		    "List value expected in assignment, instead there is the %s type in right hand side", 
-		      get_type_name( cond->condition.value_type )
+		      get_type_name( rhs->value_type )
 	        );
 	     }
 	  }
-	}
-
-        ctx->chkctx.is_left_hand_side = 1; 
-	CHECK_expression( ass->left_side, ctx );
-        ctx->chkctx.is_left_hand_side = 0; 
 	}
         break;
       case S_IF: {
@@ -396,11 +446,11 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 
         for( cond = (AST_COND *)base; cond; cond = cond->elsecond ) {
 	  CHECK_expression( cond->condition,ctx );
- 	  if ( is_not_numeric_var_type( cond->condition.value_type ) ) {
-	    do_yyerror( &cond->condition.base.location, ctx,
+ 	  if ( is_not_numeric_var_type( cond->condition->value_type ) ) {
+	    do_yyerror( &cond->condition->base.location, ctx,
 	      "The condition of the %s clause does not evaluate to a numeric type, instead it evaluates to %s type", 
 	      first_clause ? "if" : "elsif",
-	      get_type_name( cond->condition.value_type )
+	      get_type_name( cond->condition->value_type )
 	    );
 	  }
 	  first_clause = 0;
@@ -425,10 +475,10 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 	wloop = (AST_WHILE_LOOP *) base;
 
 	CHECK_expression( wloop->condition, ctx );
-	if ( ! is_not_numeric_var_type( wloop->condition.value_type ) ) {
-	  do_yyerror( &wloop->condition.base.location, ctx,
+	if ( ! is_not_numeric_var_type( wloop->condition->value_type ) ) {
+	  do_yyerror( &wloop->condition->base.location, ctx,
 	    "The condition of the while loop does not evaluate to a numeric type, instead it evaluates to %s type", 
-	    get_type_name( wloop->condition.value_type )
+	    get_type_name( wloop->condition->value_type )
 	  );
 	}
 
@@ -439,7 +489,7 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
       case S_BREAK:
       case S_NEXT: {
 	  AST_BASE *cur;
-	  int nexted_in_loop = 0;
+	  int nested_in_loop = 0;
 
 	  for( cur = base->parent; cur != 0; cur = cur->parent) {
 	    if (cur->type == S_FOR || cur->type == S_WHILE) {
@@ -453,27 +503,26 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 	  if (!nested_in_loop) {
 	   do_yyerror( &base->location, ctx,
 	    "The %s statement is not nested in a for or while loop",
-	    base->type == S_NEXT ? "next" : "break";
+	    base->type == S_NEXT ? "next" : "break"
 	   );  
 	  }
         }
 	break;
       case S_FUN_CALL: {
         AST_FUNC_CALL *fcall = (AST_FUNC_CALL *) base;
-	CHECK_fun_call(fcall, ctx);
+	CHECK_func_call(ctx, fcall);
 	}
 	break;
       case S_RETURN:
       case S_YIELD: {
         AST_RETURN *ret = (AST_RETURN *) base;
 	if (! CHECK_expression( ret->rvalue, ctx )) {
-	
-	  if (ret->rvalue.value_type != S_VAR_TYPE_ANY) {
-	    if (ctx->current_function->var_type == 0) {
-	      ctx->current_function->var_type = ret->rvalue.value_type; 
-	    } else if (ctx->current_function->var_type != ret->rvalue.value_type) {
+	  if (ret->rvalue->value_type != S_VAR_ANY) {
+	    if (ctx->chkctx.current_function->return_type_value == 0) {
+	      ctx->chkctx.current_function->return_type_value = ret->rvalue->value_type; 
+	    } else if (ctx->chkctx.current_function->return_type_value != ret->rvalue->value_type) {
 	      // second return type differs from a prior return type
-              ctx->current_function->var_type = S_VAR_TYPE_ANY;     
+              ctx->chkctx.current_function->return_type_value = S_VAR_ANY;     
 	    }
 	  }
 	}
@@ -485,6 +534,8 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
    return 0;
 }
 
+
+#if 0
 int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx )
 {
   AST_BASE_LIST *body = fdecl->func_body;
@@ -507,3 +558,6 @@ int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE_LIST *program)
   
   return CHECK_statement_list( program, pctx );
 }
+
+#endif
+

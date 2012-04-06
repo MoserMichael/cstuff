@@ -195,7 +195,7 @@ valueDeepCopyAssignStmt : assignmentLeftHandSide TK_ASSIGN expr
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_REF_COPY, $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_REF_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
 	    ;
@@ -204,7 +204,7 @@ referenceCopyAssignmentStmt : assignmentLeftHandSide TK_ASSIGN_REF expr
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_DEEP_COPY, $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_DEEP_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}
 	    ;
@@ -580,7 +580,7 @@ primaryExp : varRef
 	  
 	  scl = AST_EXPRESSION_fcall_init( (AST_FUNC_CALL *) $<ast>1 , YYLOCPTR );
 
-	  $<ast>$ = scl;
+	  $<ast>$ = &scl->base;
 	}
    ;
 		
@@ -613,26 +613,26 @@ varRef : TK_IDENTIFIER collectionRefs
 varRefCont : varRefCont TK_OP_DOT varRefContID
        	{
 	  AST_VECTOR *scl;
-	  AST_VECTOR *index;
+	  AST_EXPRESSION *index;
 
 	  index = AST_EXPRESSION_init( S_EXPR_HASH_INDEX, S_VAR_ANY, YYLOCPTR  ); 
 	  index->val.index_expr = (AST_EXPRESSION *) $<ast>2 ;
 	  
 	  scl = (AST_VECTOR *) $<ast>1;
-	  AST_VECTOR_add( scl, index );
+	  AST_VECTOR_add( scl, &index->base );
 	  
 	  $<ast>$ = &scl->base;
 	}
 	| TK_OP_DOT varRefContID
        	{
 	  AST_VECTOR *scl;
-	  AST_VECTOR *index;
+	  AST_EXPRESSION *index;
 
 	  index = AST_EXPRESSION_init( S_EXPR_HASH_INDEX, S_VAR_ANY, YYLOCPTR  ); 
 	  index->val.index_expr = (AST_EXPRESSION *) $<ast>2 ;
 	  
 	  scl = AST_VECTOR_init( YYLOCPTR );
-	  AST_VECTOR_add( scl, index );
+	  AST_VECTOR_add( scl, &index->base );
 
 	  $<ast>$ = &scl->base;
  	}
@@ -640,6 +640,8 @@ varRefCont : varRefCont TK_OP_DOT varRefContID
 
 varRefContID : TK_IDENTIFIER
 	{
+	  AST_EXPRESSION *scl;
+
 	  scl = AST_EXPRESSION_init( S_EXPR_CONSTANT, S_VAR_STRING, YYLOCPTR   ); 
 	  scl->val.const_value.string_value = strdup( $<string_value>1 );
 	  $<ast>$ = &scl->base;

@@ -8,7 +8,7 @@ TARGETS=parser
 
 parser_TYPE=exe
 
-parser_SRC=lexer.c ast.c parsectx.c checker.c parser.c main.c 
+parser_SRC=lexer.c parser.c ast.c parsectx.c checker.c eval_data.c eval.c main.c 
 
 parser_DEPENDENCIES=pars.txt lex.txt 
 
