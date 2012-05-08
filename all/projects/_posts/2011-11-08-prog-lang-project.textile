@@ -24,32 +24,35 @@ An example of such a bridge between concepts is an XML parsing tool; the "Perl m
 
 This way of looking at XML is a simplification of sorts, but it is much easier to work with the data this way rather than working with the "standard DOM API":http://www.w3.org/DOM/ ; 
 
-h3. Justification - why is a new language needed
+h3. Historical justification - why is a new language needed
 
 In the eighties computers where much simpler; the programming languages available on a home computer would be various types of Basic; Logo and Assembly for serious developers; These languages were easier to master; partly by intent of their design; partly because of the limitation of the computer platform - for example, a mini computer could not have run the whole smalltalk environment or act as a Lisp machine.
 
 Limited computers could run only simple languages - so paradoxically the barrier of entry was lower with simple machines.
 
-Also the limitations of the machine meant that one could do meaningful projects (by the standard of the day) with fewer means; When I was in High school, I got a home computer as present; now it did not have any games  on it and for me it was difficult to get them; so I learned how to do my own computer games that went quite well.
+Also the limitations of the machine meant that one could do meaningful projects (by the standard of the day) with fewer means; When I was in High school, I was given a home computer as present; now it did not have any games  on it and for me it was difficult to get them; so I learned how to do my own computer games that went quite well.
 
 What happened during later years? With the advent of Windows, schools switched to teach "basic computer literacy skills":http://en.wikipedia.org/wiki/Computer_literacy like using Word and Excel;   
 Not every household had a PC, so teaching the skill of using a word processor was regarded as a significant preparation for adult life. Also programming might have lost its importants, as some societies thought that they were entering a post industrial age where financial services were more important that productive activity, but that is a digression of sorts. 
 
-Also programming languages got more complicated; Serious langauges like C++ are notoriously hard to master; Java still is too complicated and verbose for teaching basic concepts. Scripting languages like Perl, Python and Ruby have lots of features; far too many; even Visual Basic is hard to compare with simple Basic dialects one head earlier on.
+Also programming languages got more complicated; Serious langauges like C++ are notoriously hard to master; Java still is too complicated and verbose for teaching basic concepts. Scripting languages like Perl, Python and Ruby have lots of features; far too many; even Visual Basic is hard to compare with simple Basic dialects one head earlier on. 
+
+Things lacking in old Basic dialects that where added in more powerfull scripting languages are variable scope, hashes, dynamic arrays, references, objects, regular expressions, closures. The designeers of Basic probably thought that it is essential to cut all these features out, in order to have a language that is easy to teach; I think it is still a challenge is to create a language that combines these goodies but that still remains easy to learn.
 
 There are still some relatively simple languages left - Squeak; Javascript; Logo. A problem with them is that the only practical usage of these languages is from their own environment, Logo is good for moving turtles and play with word; trie to use it for something else... 
 
+So there seems to be a place for some simple scripting language that 
+makes it easy to introduce programming
+is versatile enough to do real / interesting projects on real systems.
+
 For scripting languages its is very important te be versatile; be usable in a multitude of different situations and from varying environments. As "observed here":http://dobbse.net/thinair/2006/06/play-nice.html  
 
-<pre>
-..  Smalltalk's weakness is "at the boundaries:" when you want to try to do some typical unix system maintenance, or interfacing with underlying C libraries, or something similar. As long as you're staying within the Smalltalk environment, it completely rocks. But it's definitely painful if you try to reach outside. And it's especially painful if you want your code to work with different Smalltalks. What Perl got right was making it completely painless to integrate with its environment.
+bq.  ... Smalltalk's weakness is "at the boundaries:" when you want to try to do some typical unix system maintenance, or interfacing with underlying C libraries, or something similar. As long as you're staying within the Smalltalk environment, it completely rocks. But it's definitely painful if you try to reach outside. And it's especially painful if you want your code to work with different Smalltalks. What Perl got right was making it completely painless to integrate with its environment ? In some sense LISP wants to be on a LISP Machine and Smalltalk wants to be in its virtual machine, whereas Perl wants to go out and play with the other kids. The former languages are introverted and Perl is extroverted.
 
-In some sense LISP wants to be on a LISP Machine and Smalltalk wants to be in its virtual machine, whereas Perl wants to go out and play with the other kids. The former languages are introverted and Perl is extroverted.
-</pre>
+General purspose scripting languages have to cram in a lot of features; often design decisons are made with the purpose to simplify the runtime interpreter / execution envionment, these tradeoffs tend to be counter intuitive / hard to explain; Examples of such tradeoffs made by some languages are - function variables are by default global unless declared as of local scope; values can be used before having been assigned a value; 
+With an educational programming language one should strive to avoid such trade offs. 
 
-h4. The right way to do it
-
-
+h4. What should the final system look like
 
 The Pooh language should come with some basic interactive environment - like a REPL where one can  edit the program and try out its parts as they are written. The environment must be friendly to bottom up software construction; one should be able to start with low level functionality, try it out and then work upword and use the simple parts to construct more complicated things.
 
@@ -63,54 +66,59 @@ And so it goes that most programming languges (especially scripting languages) a
 
 h4. these are a few of my favorite things:
 
-* Bash,Scheme: script debugging with _set -x_ modes ; tracing instead of debugging.
-* Perl: Strict mode - the compiler checks that a variable/function is actually defined before using it.
+* Bash,Scheme: script debugging with _set -x_ modes ; for a small program it is easier to debug by viewing a trace of the program execution, rather than to work with a debugger.
+* Perl: Strict mode - the compiler checks that a variable/function is actually defined before using it. I think that some level of syntax checking is of benefit ; misspelled identifiers should not create runtime errors - it is easier to catch these errors during compilation.
 * Python: the for loop construct / generator functions used in for loops (yield statement) 
-* Javascript: objects system by means of cloning hashes (prototypes)
+* Javascript: objects system by means of creating hash collections (prototypes)
 * Lua: like the _syntax_ of the language - no major anoyances there.
 * Ruby: Qualified identifiers (I don't like the choice of characters for prefix, but there should be some way of saying that an identifier refers to a class member or to a global variable) ; by default a variable in a function should be of local scope - what is done most frequently should be the shortest form; other options should be more explicit.
 * Perl/Javascript/Python/Ruby/Lua: Syntax to declare a collection object and populate it with data
 * Here documents: they should be similar to how "Text::Template   
 Perl module":http://search.cpan.org/~mjd/Text-Template-1.45/lib/Text/Template.pm  defines template text. Should be possible to treat a string as a Here document (templates) 
 * C++11: The new raw string literal (R"aaaa") that manages to work without any escape characters at all !
-* Perl: The way that  "Perlfunc / Perl Functions by
-* Category":http://www.oopweb.com/Perl/Documents/PerlDoc/Volume/pod/perlfunc.html  documents standard library functionality in a way similar to the Roget's thesaurus.
+* Perl: The way that  "Perlfunc / Perl Functions by  Category":http://www.oopweb.com/Perl/Documents/PerlDoc/Volume/pod/perlfunc.html  documents standard library functionality in a way similar to the Roget's thesaurus.
 
-    
- 
 h4. Things that I particularly dislike
 
-* C style syntax;  forced use of semicolon to finish a statement ; In particular For I don't like for loop syntax that has been inherited from C. (too many functionality in one line, assignment of index, loop invariant checking and modification of loop index in one line). One could do better with foreach + generator functions.
+* Forcing to teach object orientation right from the start, just because everything is an object. I think that teaching object orientation right from the start is confusing (not just me here ).
+* C style syntax;  forced use of semicolon to finish a statement ; In particular I don't like for loop syntax that has been inherited from C. (too many functionality in one line, assignment of index, loop invariant checking and modification of loop index in one line). One could do better with foreach + generator functions.
 * Python: Spaces in syntax, just can't get used to them.
-* Javascript/Perl/Lua: the var/my keywords; assigning a variable in a function results in a new global unless you have declared the local with the var keyword; I think that this is very counter intuitive.
-* Perl: variable prefix for type of variable; the type of a variable should become evident from using it.
+* Arrays - for a beginner it is easier to have an array indexed from one onward (rather than zero); It is easier to reason about things as the first element of a sequence, etc; rather than zeroth case of prove by induction, first case of prove by induction. Basic and Lua do array indexing from one onward; Python, Perl, Javascript, C, Pascal, Algol all start with 0.
+* Javascript/Perl/Lua: the var/my keywords; assigning a variable in a function results in a new global unless you have declared the local with the var keyword; I think that this is very counter intuitive to have global scope by default.
+* Perl,Basic: variable prefix (suffix) for type of variable; the type of a variable should become evident from the way the variable is used.
 * Perl: References and explicit dereferencing of references
-* Modules and namespaces, they are necessary for building libraries, but well, could one still possibly do without them ?
-* Exception feature in scripting languages - I think the tool is too heavy for a script.
-* Operator overloading in scripting languages.
-* I don't like escape sequences in string literals
+* Modules and namespaces, they are necessary for building libraries, but well, could one still possibly do without them - for an introduction to programming that is ?
+* Exception feature in scripting languages - I think this tool is too heavy; also most scripts (and most programs) only bail out on error and do not have to do complex error recovery sequences.
+* Operator overloading in scripting languages - keeps you guessing about the meaning of an operator, does not increase readability; Javascript can do without this feature. 
 * I don't like it when there are many many ways to do a string literal; but HERE documents are great
-* Level of detail in error messages is mostly often awful. 
-* All of them: Hash tables with complex keys - keys that are not strings.
-Python solves this problem by introducing "tuples":http://docs.python.org/tutorial/datastructures.html#tuples-and-sequences  - read only sequences can be key to a hash; Yet another entity ?.
-		
-	       In Perl you can have arrays as hash keys, but if you modify the key array then it will no longer be found.
- 
-	       The best solution (for the user) would be to turn the key structure into Read-only mode; say you have an array or hash object that acts as a hash key; once this object has been used as a hash key it will turn into a 'read only object' that cannot be modified.
- 
+* I don't like escape sequences in string literals 
+* Identifier names - in many languages identifier names consist of letters, digits and underscores. I think that this is too limiting.
+* Level of detail in error messages is mostly often awful.
+* All of them: Hash tables with complex keys - keys that are not strings. Ideally a hash should be able to store any object as key; well Python solves this problem by introducing "tuples":http://docs.python.org/tutorial/datastructures.html#tuples-and-sequences  - read only sequences can be key to a hash; which results in the introduction of yet another entity. Perl does not bother with this problem - if you insert a Array as key, then it just casts its to scalar - takes the length of the array as key that is; not very intuitive either.
 
-h4. Things that I don't know how to eat\
+Entities that can be stored as keys to an array
+scalars; numbers. For a string key we have to make a new copy of the string when holding it in the hash entry.
+Sequences,vectors have to be copied by values, two vectors can be compare by comparing its elements; If the elements of an array are hash collections, then the hash collections have to be compared (ouch);
+
+Is it possible to store a hash / object as key? First of all the problem is mitigated if each element of the hash collection stores the hash value of  the key; in this case the key has to be compared only in cases when the hash value of the given key is identical with a hash value of the collection entry ; in this case one must take the ordered sequence of the hash entries keys and compare the corresponding values; The hash instance could cache the ordered sequence of its keys upon demand - if the ordered sequence of keys has been computed for this instance, and the instance has not been further modified; 
+Is all this worth the effort ?
+In a way yes; otherwise arrays as hash keys may not hold hashes; also yet another mind bending restriction is avoided as a start;  
+
+h4. Things that I don't know how to eat
+
 * Regular expressions; it seems clear that a scripting language must have some form of regular expression; all was well and clear until they invented "Perl6 rules":http://en.wikipedia.org/wiki/Perl_6_rules or Perl5 " Parse::RecDescent module":http://search.cpan.org/~dconway/Parse-RecDescent-1.966_000/lib/Parse/RecDescent.pm ; now this features seems to come from "snobol   patterns":http://www.snobol4.org/docs/burks/tutorial/ch4.htm 
 * Optional typing ; worth to bother if there is a JIT or compilation to native code.
 * Perl: ties ; most scripting languages have some way to override certain aspects.
-Perl has "ties":ties":http://perldoc.perl.org/perltie.html ;
+Perl has "ties":http://perldoc.perl.org/perltie.html ;
 Lua has "metatables":http://www.lua.org/manual/5.2/manual.html#2.4  ; 
 Python and Ruby have per class overrides, in python you do "__<specialname>__ methods":http://docs.python.org/reference/datamodel.html  ; 
 Currently Javascript does not have any of these features, and seems to do fine without them, for what it does.
 
 
- 
+ h4. Plain problems
 
+* Shells, Perl: Separate comparison operators for numeric and string values. Perl inherits separate string comparison operators from the UNIX shells. In Lua and Javascript one does not have them - here if a string is compared with a number, then the number is treated as a string;  Unfortunately it becomes much more difficult to infer the type of variables this way; 
+* Same problem goes for arithmetic operators ; what should happen when adding a string to an number;  
 
 h3. General Terms / General requirements.
 
@@ -156,9 +164,16 @@ h3. Defining the Pooh language in more detail
 
 (R1) Language must be _somewhat_ dynamically typed; A variable is defined by assigning a value to a name; if identifier on the left hand side is not defined, it is hereby defined as a local variable in the current scrope. If the assignment is in a function, and variable is not yet defined, then the variable scope is in the function; if the assignment is a global scope, then the variable will be a global variable.
  
-(R2) Variable binding is created either by assignment or by parameter declaration;  One does not need to define a variable by special syntax.
+(R2) Variable binding is created either by assignment or by parameter declaration;  One does not need to declare a variable.
 
 (R3) One may not reference a variable that is not defined - this will be an error. (like STRICT mode in Perl - this will be the only available option). 
+
+(R4) Variable names; There variable may have the following form
+* in Perl and Basic, the varialble prefix, suffix encodes the type of the variable; In Fortran the name ofthe variable implies its type. 
+* In Ruby, the prefix encodes the scope of a variable.
+* Other languages do not encode type of scope information as part of the variable name.
+
+The problem remains that 
 
 (R4) Variable scope: A variable first assigned at global scope is global, a name assigned in a function is of local scope; 
 
@@ -178,7 +193,7 @@ _Qualified identifiers_  the  syntax has some means to tell if this name is supp
 
 For example in Ruby one has the $ prefix to tell that a variable is used as a global and @ prefix to tell that a variable is used as a object member. Or in Javascript one says this.variablename that tells if one means to access a class member.
 
-I think that Qualified identifiers are better for code readability, one knows the context of a variable usage by looking at it;  also it avoids the need to declare variables befor assignment.
+I think that Qualified identifiers are better for code readability, one knows the context of a variable usage by looking at it;  also it avoids the need to declare variables before assignment.
 Qualified identifiers may be a very verbose way of expressing variable usage, but well, I it makes you more aware of what you are doing, which can be of benefit; 
 
 So for the Pooh language we will have 
@@ -188,66 +203,79 @@ So for the Pooh language we will have
 	variablename - if variablename is a local variable when used in a function; at global scope this will be a global reference. This is also the most common usage, so it has the shortest form of writing.  
 
  
-(R10) A value may have one of the following types
+(R5) A value may have one of the following types
 scalar, with numeric value type
 scalar, with string value type
-scalar, with lambda (reference to function)
+scalar, with lambda value (reference to function)
 dynamic array
 hash
 
-* Operators must either enforce the type of the arguments or it must convert types explicitly; for example the expression <string> + <integer> either disallows such a combination; or it performs implicit conversion of <integer> to <string> and is interpreted as string concatenation; or it tries to interpret <string> as an <integer>; I think the implicit conversion business is too wishy-washy. An operator is supposed to have a meaning, that is now subject to some strange interpretation. So here we stick with Perl like convention;
+(R6) Operators should strictly have one meaning; I don't like operators where the meaning depends on the type operand types.
 
 * There are numeric comparison operators: <>  , == ,  > , <  , >= , <= ; 
 Numeric operators  + , - , * , / , %
 For these operators the operands must be of numeric type; the operand may not be a hash, dynamic array or function type.
 
-* There are string comparison operators:  .. ne , eq , gt , lt , le , ge
-Special string concatenation operator ..
-For these operators the operands may be either of numeric type or of string type; a numeric value will be turned to string value implicitly. 
+* There are string comparison operators:  ne , eq , gt , lt , le , ge - here both operands must be string values.
+
+* String concatenation operator ..
+For these concatenation operator, the operands may be either of numeric type or of string type; a numeric value will be turned to string value implicitly. 
 	
-(R6) do not have to define the type of a variable; it will become obvious from how the variable is later used; if a variable is used as an array (a[ 0 ] = 0 ), then a is  an array; the same variable name can not be later used as if it were a scalar. Problem: it is not always possible to tell the type of a binding: If you insert something into an array / hash, then later access to this entry is untyped and must be checked at 
+(R7) do not have to define the type of a variable; it will become obvious from how the variable is later used; if a variable is used as an array (a[ 0 ] = 0 ), then a is  an array; the same variable name can not be later used as if it were a scalar. Problem: it is not always possible to tell the type of a binding: If you insert something into an array / hash, then later access to this entry is untyped and must be checked at 
 run time;
 
 General principle: If you can infer the type of something during parsing/compilation then do so, if you can't then defer type check to run time ('somewhat' dynamically typed)
 
-(R6) Meaning of assignment
+(R8) Semantics of values; The choices are
 
-Everything is a reference; after assignment the left hand side points to the same data as the right hand side.
-There are primitive types and object references (Java, Scala); In case that right hand side is a primitive type then assignment copies the value; if the right hand side is a reference, then the reference is copied by value and the left hand side then points to the same thing.
-There are primitive types, object references and object instances (C,C++). Assignment copies the value of primitive types and 
+* Everything is a reference; after assignment the left hand side points to the same data as the right hand side.
+* There are primitive types and object references (Java, Scala); In case that right hand side is a primitive type then assignment copies the value; if the right hand side is a reference, then the reference is copied by value and the left hand side then points to the same thing.
+* There are primitive types, object references and object instances (C,C++). Assignment copies the value of primitive types and 
 
 What is the most appropriate thing to do here?
 
-Everything is a reference - it assumes that numbers are objects like everything else; 
-Also with Basic you have this very convenient analogy of expressions to simple Algebra, which gets lost if you treat everything like a reference
+Everything is a reference - it assumes that numbers are objects like everything else; This approach is not commonly used.  Also you have this very convenient analogy of assignment and equations of simple Algebra, which gets lost if you treat everything like a reference
 
-Primitive types and references: The problem here is that assignment of numbers is a special case; either the number object has to be cloned explicitly (choice A), or the cloning of number object is done 'under the hood' (choice B); or you have a different operator for copying an object by value and by reference a = 12 / b = [ 1, 2, 4 ] would be copy by value  (deep copy, if the array contains other arrays and hashes, then these will be copied too); and  a <= 10 / b <= [ 1, 2, 3 ] . I think that this is a clearer approach. There is no operator to dereference a reference;   
+Scalars (strings and numbers) are always treated as values; Arrays and hashes are treated as references; Here the problem is that the assignment operator can eithe mean copying by value - for scalars, and copy by reference - for collections; The same assignment operator means different things, depending on the context - which is bad.
 
-(R7) Functions have prototypes; One function can have one prototype (no overloading); The prototype defines the names of the parameters, type of parameters is derived/infered from usage of parameter.
+Values and references:  a variable may be bound to the instance of a data item, or be a reference to a value. This is very flexible, but this is also a very complex concept. Here one would need a way to create a reference (\) and a way to dereference a reference - very powerful and very confusing concept.   
 
-(R7) Parameter passing:
+I would propose a different appraoch - 
+a = b. Assignment always means 'copy by value' ; for scalars a new copy is created. Copying collection (array, hashes) creates a new collection instance, now each element of the array is copied too -  if an array element is a value, a new copy is created, if the array element is a referece, then the new element will refer to the same data item.
+
+a := b - here the left hand side (variable a) would become a reference to the right hande side ( variable b ) ; if he right hand side is a reference, then the reference is copied - the left hand side will refer to the same object as the right hand side.
+
+No operator exists for dereferencing of a reference - reference and values are used in the same way.
+
+Why should this be simpler then having a reference and dereference operator ? First there are no references to reference, Also there is no operator to dereference a reference, 
+
+(R9) Functions have prototypes; One function can have one prototype (no overloading); The prototype defines the names of the parameters, type of parameters is derived/infered from usage of parameter.
+
+(R10) Parameter passing / Evaluation strategy.
  
 Possible choices
 1.all call by value
 2.all call by reference
-3.Collections are passed as reference to collection; scalars as call by value;
-Regular programming languages do choice (3); choice (2) is slow and impractical. Why not (1) ? I guess that if everything is a referene then each parameter can be a return value; so by looking at a function call you can't tell what it will change or not; by allowing call by reference you will have too many possible side effects.
-So (3) is the least worst choice. 
+3.Collections are passed as reference to collection; scalars as call by value (call by sharing)
 
-(R8) Check function prototype on call: If function is called directly then check number of parameters and if their types match (for example check if scalar is not passed instead of an array); If type is difficult to establish (function reference stored in hash) then defer check to run time; the type of a parameter is determined by how it is used (very simplistic form of type inference)
+Many programming languages (Lisp,Lua, Python, Java) do choice (3);  which is very confusing by its ambiguity, different rules apply for scalars and for collections.
+
+Call by reference is not very practical; If everything is a referene then each parameter can be a return value; so by looking at a function call you can't tell what it will change or not; by allowing call by reference you will have too many possible side effects.
+
+So Call by value (1) is the least worst choice; alas if a reference is passed, then it is passed as is. On another note this decission forces the language implementations to do reference counted strings (or copy on write strings) - otherwise a new string copy would be created whenever a string parameters is passed as argument to a function; . 
+
+(R11) Check function prototype on call: If function is called directly then check number of parameters and if their types match (for example check if scalar is not passed instead of an array); If type is difficult to establish (function reference stored in hash) then defer check to run time; the type of a parameter is determined by how it is used (very simplistic form of type inference)
   	
-(R9) functions are 'first class' - meaning that we have anonymous functions, and 
+(R12) functions are 'first class' - meaning that we have anonymous functions, and 
 functions can be returned as return values, etc. 
 
-(R10) The Haskell programming language has a nice feature that if-then-else statement always requires an else clause - this forces the programmer to consider the what else scenario; however this nice feature contradicts with requirement of non-anal-retentiveness; so it is not accepted.
+(R13) The Haskell programming language has a nice feature that if-then-else statement always requires an else clause - this forces the programmer to consider the what else scenario; however this nice feature contradicts with requirement of non-anal-retentiveness; so it is not accepted.
 
-(R11) Reflection, will be done as a library, so no need for special syntactic constructs here.
+(R14) Reflection, will be done as a library, so no need for special syntactic constructs here.
 
 (R12) Co-routines / will have generator functions with yield; *must have for nice iteration *;
 
 (R13)  Things to cut: exceptions, namespaces, classes (also cuts Generic types, so the innovation of doing without classes :really makes things much more feasible); no macros / no meta programming at all; No blocks as function closures (this feature might add to more concise code, but is very confusing - is it a statement? Is it a function? ) ; no syntax that does many things at once - like for statements in C; 
-
-(R14) To be handy we have a built in regular expressions
 
 (R15)  Also one needs array slices in order to return multiple variables from functions.
 
@@ -296,7 +324,7 @@ This is a powerful construct, so it is therefore a bit complicated; however I th
 (R17) There are function prototypes, therefore have to decide what to do with the problem of function overloading; - can there be two different functions with the same name that take a different set of arguments ?
  
 I think function overloading can be skipped due to the simplicity requirement.  
-Also scripting languages or loosely typed programming languages in general do not have this feature / even Ruby doesn't have it.
+Also scripting languages or loosely typed programming languages in general do not have this feature / even Rub y doesn't have it.
 
 
 
