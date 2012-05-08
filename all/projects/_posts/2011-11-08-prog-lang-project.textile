@@ -37,9 +37,9 @@ Not every household had a PC, so teaching the skill of using a word processor wa
 
 Also programming languages got more complicated; Serious langauges like C++ are notoriously hard to master; Java still is too complicated and verbose for teaching basic concepts. Scripting languages like Perl, Python and Ruby have lots of features; far too many; even Visual Basic is hard to compare with simple Basic dialects one head earlier on. 
 
-Things lacking in old Basic dialects that where added in more powerfull scripting languages are variable scope, hashes, dynamic arrays, references, objects, regular expressions, closures. The designeers of Basic probably thought that it is essential to cut all these features out, in order to have a language that is easy to teach; I think it is still a challenge is to create a language that combines these goodies but that still remains easy to learn.
+Things lacking in old Basic dialects that where added in more powerfull scripting languages are variable scope, hashes, dynamic arrays, references, objects, regular expressions, closures. The designers of Basic probably thought that it is essential to cut all these features out, in order to have a language that is easily taught / simple to acquire; I think it is still a challenge is to create a language that combines these goodies but that still remains simple.
 
-There are still some relatively simple languages left - Squeak; Javascript; Logo. A problem with them is that the only practical usage of these languages is from their own environment, Logo is good for moving turtles and play with word; trie to use it for something else... 
+There are still some relatively simple languages left - Squeak; Javascript; Logo. A problem with them is that the only practical usage of these languages is from their own environment, Logo is good for moving turtles and play with words; trie to use it for something else... 
 
 So there seems to be a place for some simple scripting language that 
 makes it easy to introduce programming
@@ -49,7 +49,7 @@ For scripting languages its is very important te be versatile; be usable in a mu
 
 bq.  ... Smalltalk's weakness is "at the boundaries:" when you want to try to do some typical unix system maintenance, or interfacing with underlying C libraries, or something similar. As long as you're staying within the Smalltalk environment, it completely rocks. But it's definitely painful if you try to reach outside. And it's especially painful if you want your code to work with different Smalltalks. What Perl got right was making it completely painless to integrate with its environment ? In some sense LISP wants to be on a LISP Machine and Smalltalk wants to be in its virtual machine, whereas Perl wants to go out and play with the other kids. The former languages are introverted and Perl is extroverted.
 
-General purspose scripting languages have to cram in a lot of features; often design decisons are made with the purpose to simplify the runtime interpreter / execution envionment, these tradeoffs tend to be counter intuitive / hard to explain; Examples of such tradeoffs made by some languages are - function variables are by default global unless declared as of local scope; values can be used before having been assigned a value; 
+General purpose scripting languages have to cram in a lot of features; often design decissions are made with the aim to simplify the runtime interpreter / execution envionment, these tradeoffs tend to be counter intuitive / hard to explain; Examples of such tradeoffs made by some languages are - function variables are by default global unless declared as of local scope; values can be used before having been assigned a value; 
 With an educational programming language one should strive to avoid such trade offs. 
 
 h4. What should the final system look like
@@ -81,8 +81,9 @@ Perl module":http://search.cpan.org/~mjd/Text-Template-1.45/lib/Text/Template.pm
 h4. Things that I particularly dislike
 
 * Forcing to teach object orientation right from the start, just because everything is an object. I think that teaching object orientation right from the start is confusing (not just me here ).
+* Ambiguous rules; for example call-by-sharing is ambiguous (which is used in most scripting languages); Ambiguous operators that do stuff depending on he type of operands.
 * C style syntax;  forced use of semicolon to finish a statement ; In particular I don't like for loop syntax that has been inherited from C. (too many functionality in one line, assignment of index, loop invariant checking and modification of loop index in one line). One could do better with foreach + generator functions.
-* Python: Spaces in syntax, just can't get used to them.
+* Python: indentation has special meaning, just can't get used to this.
 * Arrays - for a beginner it is easier to have an array indexed from one onward (rather than zero); It is easier to reason about things as the first element of a sequence, etc; rather than zeroth case of prove by induction, first case of prove by induction. Basic and Lua do array indexing from one onward; Python, Perl, Javascript, C, Pascal, Algol all start with 0.
 * Javascript/Perl/Lua: the var/my keywords; assigning a variable in a function results in a new global unless you have declared the local with the var keyword; I think that this is very counter intuitive to have global scope by default.
 * Perl,Basic: variable prefix (suffix) for type of variable; the type of a variable should become evident from the way the variable is used.
