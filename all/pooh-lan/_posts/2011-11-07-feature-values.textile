@@ -1,0 +1,39 @@
+---
+layout: post
+title: Values
+---
+
+h2. {{ page.title }}
+
+<p class="publish_date">7 November 2011</p>
+
+What is the most appropriate thing to do here?
+
+_+Everything is a reference+_ - it assumes that numbers are objects like everything else; This approach is not commonly used.  Also you have this very convenient analogy of assignment and equations of simple Algebra, which gets lost if you treat everything like a reference
+
+_+Scalars (strings and numbers) are always treated as values; Arrays and hashes are treated as references to objects+_; This is done by Java, Scheme, Python, Ruby. Here the problem is that the assignment operator can either mean copying by value - for scalars, and copy by reference - for collections; The same assignment operator seems to mean different things, depending on the context - which is bad. I think that partly explains why it is hard to teach pointers.
+
+_+Values and references+_  a variable may be bound to the instance of a data item, or be a reference to a value. This is very flexible, but this is also a very complex concept. This is done by C, Perl. Here one would need a way to create a reference and a way to dereference a reference - very powerful and very confusing concept.   
+
+So things must be simplified, at least for something that claims to be simple.
+
+h3. Assignment of values
+
+Many programming languages have primitive values and object references; A primitive value is a scalar  - in the context of scripting languages; all collection objects (arrays, hashes) are represented as references; The problem here is that the assignment operator is now ambiguous ; when assigning a primitive value, its value is copied; when copying an object reference, the left hand side will refer to the same object as the right hand side. Examples of such languages are Scheme, Java, Python, Ruby. Also all of them pass function parameters as 'Call by Sharing' - primitive values are passed by value, and objects are passed as object references - also ambiguous and confusing.
+
+Perl on the other hand has object references and values.  Assignment of collection creates a new object instance and copies the values. With references there are two operators involved  
+
+# Take a value and return a reference to that value
+# use a reference / de-reference . 
+
+References are very similar to pointers - very flexible concept but it is quite hard to grasp.
+
+h3. Simplified references
+
+a = b. Assignment always means 'copy by value' ; for scalars a new copy is created. Copying collection (array, hashes) creates a new collection instance, now each element of the array is copied too -  if an array element is a value, a new copy is created, if the array element is a reference, then the new element will refer to the same data item.
+
+a := b - here the left hand side (variable a) would become a reference to the right hand side ( variable b ) ; if he right hand side is a reference, then the reference is copied and the left hand side will refer to the same object as the right hand side.
+
+No operator exists for using / dereferencing of a reference - reference and values are used in the same way.
+
+

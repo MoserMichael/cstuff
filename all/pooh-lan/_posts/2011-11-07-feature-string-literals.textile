@@ -1,0 +1,68 @@
+---
+layout: post
+title:  String literals
+---
+
+h2. {{ page.title }}
+
+<p class="publish_date">7 November 2011</p>
+
+there are many possible choices here, the "wikipedia article on strings":http://en.wikipedia.org/wiki/String_literal explains the many notations for a string literal ; "here documents - multiple line strings":http://en.wikipedia.org/wiki/Here_document explains more about strings that span multiple lines; 
+
+Perl achieves a great degree of expressiveness at the cost of introducing multiple kinds of string literals. 
+Perl has
+
+* Quoted string constants
+* Literal string constants
+* HERE documents
+* Barewords count as string constants 
+* Quote operator
+
+I guess it is a bit complicated to memorize so many notations, especially if one is new to programming. 
+
+h3. Requirements for string literals 
+
+There are therefore the following requirements for  a string notation. 
+
+* One notation for string constants.
+* it should not require any escape sequences, escape sequences are a bit hard to
+* a string literal must express multiple line strings, sort of like "Here documents"
+* must allow for embedding of code into the string; the result of evaluating the code will be inserted 
+into the string.
+
+Escape sequences can be avoided, if the definition of  the HERE document contains a definition of the end of string delimiter; 
+
+h3. String literals for the Pooh language.
+A string constant can start with a single ' characters, and must end with the same character.
+
+'this is a string'
+
+'this is a string
+that spans two lines'
+
+Or it can start with multiple ' characters, and must end with the same number of characters.
+
+''this is a string too, now I can have a single ' character in the text of the string''
+
+Also one can have an expression embedded in the string
+
+'value of factorial of 10 is [ fact( 10 ) ] a big number'
+
+Here the text within the brackets [ ]  is computed, the result of this computation is inserted into the string.
+
+Now if  we have multiple ' characters for start of string delimiter, then we have multiple brackets as start of expression delimiter.
+
+''value of factorial of 10 is [[ fact( 10 ) ]] a big number'' 
+
+h3. Empty string
+
+This construct is powerful but a bit ambiguous; How do you do an empty string? 
+Now we can introduce the " - which will be an empty string.
+Or you can call a library function emptystring() which returns an empty string.
+
+h3. Requirements for println function
+
+Often one wants to print a text string followed by a new line; in Perl one does not need a separate println function - it is easy to express a string constant that has a newline at the end; in Pascal one does not have escape sequences, therefore they added the println function that writes a newline.
+
+Also you can have a libraryfunction newline(), which returns a single newline character; 
+

@@ -1,0 +1,51 @@
+---
+layout: post
+title:  OO Feature
+---
+
+h2. {{ page.title }}
+<p class="publish_date">7 November 2011</p>
+
+h3. Object oriented programming
+
+The choices here are
+
+* Class based with subtype polymorphism.
+* Prototype based 
+
+The first approach creates class types, all instances of data of a given class must in structure to their respective class type. 
+
+Prototype based objects - each object instance is constructed anew, the structure of the instance does not conform to any prescribed features.
+
+h3. More on classes
+
+Class based design acts as a schema for the actual data that a program is processing. All object instances have to fit some layout prescribed by a class instance. 
+
+I think that the class based design approach can be compared to other software development efforts that require the design of a schema. Usually such a design process involves a level of discipline that can't be expected from a person who is just learning to program. 
+
+There are many different ways as to how a given system can be partitioned into classes; these designs are also often very brittle, a small change in the requirements can lead to major redesigns of a system.
+
+Normal people (not conditioned by years of programming practice) are no good at growing / maintaining hierarchies of concept.
+
+Usually people try to avoid hierarchies in their daily life, they always try.
+Some observations that justify this statement:
+     People tend to put all their file on the desktop instead of creating hierarchies of folders.
+     Discussion boards: Once upon a time each discussion board had threaded discussions (hierarchies of message as main node- response to given message as child nodes) nowadays this format is not commonly used; it's simpler to manage for most people; I think Joel on Software said that first with regards to discussion boards. Once upon a time that was really a very novel view on things.
+
+h3. Advantages of classes
+
+The big advantage is that the compiler knows the layout of a class; so it can translate this knowledge into efficient executable code.
+
+Another advantage is that developer environments can offer documentation and auto-completion for a given type and its members. 
+
+These are of course things that are of enormous benefit to large software projects.
+
+h3. Advantages of prototype based approach
+
+The concept is much simpler to grasp, therefore better suited for an educational programming language.
+
+Many advantages of prototype based approach are listed in the paper "Self the Power of Simplicity" by David Ungar, Randal Smith.
+
+I think that process of designing a prototype based system is similar to identifying objects by applying analogy (See "Lecture by Douglas R. Hofstdadter":https://www.youtube.com/watch?feature=player_embedded&v=n8m7lFQ3njk ) ; class based approaches are similar to the attempt to creating rigid classifications, in the sense of Aristotle.
+
+

@@ -1,0 +1,46 @@
+---
+layout: post
+title: Threads
+---
+
+h2. {{ page.title }}
+
+<p class="publish_date">7 November 2011</p>
+
+
+A thread object is a kind of function references;  makethread turns a function reference into a thread function reference; 
+
+What if the function reference has captures / non local references ? One can either
+
+* disallow use of such a function reference as thread
+* moved the captured references from stack to heap, and capture variables are adjusted to the stack.
+
+When the function is called via this reference, then a new interpreter thread is created, the new thread has its own stack. Function parameters are pushed onto the new stack. The new thread stack has a reference to the function object; so that both threads (invoking and created thread) hold a reference to the function object.
+ 
+When the thread calls the yield function for the first time (or returns a value) , then the invocation of the function reference from calling thread returns the yield/return value.
+
+The calling thread can later call resume  on the function object; this will pass controll back to the thread function; resume can receive an argument, a message from calling thread to new thread; this value will be returned by the yield function, which has been called previously by the new thread. 
+A thread terminates, when it calls return ; The calling thread can check if the thread is running  by calling
+
+The function object that represents the thread will need to have a reference to the thread (in order to pass values around and resume and stuff)
+the thread has a reference to the parent thread + calling function object (in order to pass values around).  
+
+h3. Passing control to the thread	
+
+Controll passes back to thre thread if
+
+* Implicitly if generator function is called to produce a value.
+* By means of thread object; (in this case the thread can get a message from the calling thread)
+
+h3. Passing value back to creator of the thread 
+
+When a thread Yields a value, or exits, then control is passed back to the invoking thread.
+
+* On thread exit the calling function gets the Nil value; on Yield it gets a copy of the expression (if pointer to heap then reference to heap is copied).
+* The FOR loop will use the yielded value and assign it to loop invariant for use in next iteration.
+* The thread object can return the yielded value by special accessor function.
+
+h3. Yield control to arbitrary thread
+
+we don't have that here.
+
