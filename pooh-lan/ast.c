@@ -30,17 +30,19 @@ AST_BASE *compile_string( const char *string, int init_token, const char *file_n
 
 ret:
    PARSECONTEXT_free( &ctx );
-   return 0;
+   return rval;
 }
 
- 
-static AST_EXPRESSION *AST_compile_multi_part_string_impl( PARSECONTEXT *pc, size_t pos )
+static AST_EXPRESSION * AST_compile_string_part( PARSECONTEXT *pc, size_t pos )
 {
   STRING_PART **ptr, *cur;
-  AST_EXPRESSION *lhs,*rhs, *scl; 
-  AST_BASE *base;
   const char *current_file;
+  AST_BASE *base;
+  AST_EXPRESSION *ret;
 
+  if (pos >= ARRAY_size( &pc->lexctx.string_parts )) {
+    return 0;
+  }
 
   ptr = (STRING_PART **) ARRAY_at( &pc->lexctx.string_parts, pos  );
   cur = *ptr;
@@ -48,16 +50,14 @@ static AST_EXPRESSION *AST_compile_multi_part_string_impl( PARSECONTEXT *pc, siz
   current_file = LEXER_get_current_file_name( &pc->lexctx );
 
   if (cur->is_expression) {
-    base = compile_string( STRING_PART_get( cur ), TK_START_STATEMENT, current_file, &cur->loc, 0  ); 
+    base = compile_string( STRING_PART_get( cur ), TK_START_EXPRESSION,current_file, &cur->loc, 0  ); 
     if (!base) {
-      base = compile_string( STRING_PART_get( cur ), TK_START_EXPRESSION, current_file, &cur->loc, 0 );
-    }
-
-    if (base == 0) {
-      compile_string( STRING_PART_get( cur ), TK_START_STATEMENT, current_file, &cur->loc, 1  ); 
-      compile_string( STRING_PART_get( cur ), TK_START_EXPRESSION, current_file, &cur->loc, 1 );
-      return 0;
-    }
+      base = compile_string( STRING_PART_get( cur ), TK_START_STATEMENT, current_file, &cur->loc, 0 );
+      if (!base) {
+	do_yyerror( &cur->loc, pc, "Failed to parse the following string - neither statement nor expression: %s", STRING_PART_get( cur ) );   
+	return 0;
+      }
+    } 
     
     if (base->type != S_EXPRESSION) {
       AST_FUNC_DECL *fdecl;
@@ -72,42 +72,50 @@ static AST_EXPRESSION *AST_compile_multi_part_string_impl( PARSECONTEXT *pc, siz
       // make a function call
       fparams = AST_VECTOR_init( &cur->loc );
       fcall = AST_FUNC_CALL_init( 0, fparams, &cur->loc );
-      fcall->func_decl = fdecl;
+      fcall->func_decl = (AST_BASE *) fdecl;
 
       // make a function call expression
-      rhs  = AST_EXPRESSION_init( S_FUN_CALL, S_VAR_ANY, &cur->loc  ); 
-      rhs->val.fcall = fcall;
+      ret = AST_EXPRESSION_init( S_FUN_CALL, S_VAR_ANY, &cur->loc  ); 
+      ret->val.fcall = fcall;
     
     } else {
-      rhs = (AST_EXPRESSION *) base;
+      ret = (AST_EXPRESSION *) base;
     }
  
   } else {
-    rhs = AST_EXPRESSION_init( S_EXPR_CONSTANT, S_VAR_STRING, &cur->loc ); 
-    rhs->val.const_value.string_value = strdup( STRING_PART_get( cur ) );
+    ret = AST_EXPRESSION_init( S_EXPR_CONSTANT, S_VAR_STRING, &cur->loc ); 
+    ret->val.const_value.string_value = strdup( STRING_PART_get( cur ) );
   }
-
-  lhs = pos > 0 ? AST_compile_multi_part_string_impl( pc, pos - 1 ) : 0;
-  if (!lhs) {
-    return rhs;
-  }
-  scl = AST_EXPRESSION_init_binary( TK_OP_STR_CAT, lhs, rhs );
-  scl->value_type = S_VAR_STRING;  
-  return scl;
-
-  
+  return ret;
 }
 
-AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc)
+ 
+AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc )
 {
-  size_t nparts = ARRAY_size( &pc->lexctx.string_parts );
-  if (!nparts) {
-    assert(0);
-    return 0;
-  }
-  return AST_compile_multi_part_string_impl( pc, nparts - 1 ); 
-}
+  AST_EXPRESSION *lhs,*rhs; 
+  size_t pos;
 
+  lhs = 0;
+  pos = 0;
+
+  while( 1 ) {
+    if (lhs == 0) {
+      lhs = AST_compile_string_part( pc, pos ++ );
+      if (!lhs) {
+        return 0;
+      }
+    }
+    rhs = AST_compile_string_part( pc, pos ++ );
+    if (!rhs) {
+      break;
+    }
+
+    lhs = AST_EXPRESSION_init_binary( TK_OP_STR_CAT, lhs, rhs );
+    lhs->value_type = S_VAR_STRING;  
+  }
+
+  return lhs;
+}
 
 int is_result_type_int( int op )
 {
@@ -621,6 +629,82 @@ int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl)
     scl->val.const_value.long_value = res_num;
     
     return 0;
+}
+
+const char *get_type_name( AST_VAR_TYPE value_type )
+{
+  switch( value_type )
+  {
+     case S_VAR_INT: 
+     case S_VAR_DOUBLE:  
+	return "number";
+     case S_VAR_STRING:
+	return "string";
+     case S_VAR_CODE: 
+	return "function";
+     case S_VAR_HASH: 
+	return "table";
+     case S_VAR_LIST: 
+	return "array";
+     case S_VAR_NULL:
+	return "Null";
+     default:
+	assert(0);
+        return "???";
+  }
+}
+
+const char *get_op_name( int op )
+{
+  switch(op) {
+    case TK_OP_NUM_SUBST:
+	return "-";
+    case TK_OP_NUM_ADD:
+	return "+";
+    case TK_OP_NUM_DIV:
+	return "/";
+    case TK_OP_NUM_MULT:
+	return "*";
+    case TK_OP_NUM_MOD:
+	return "%";
+    case TK_OP_NUM_LT: 
+	return "<";
+    case TK_OP_NUM_GT: 
+	return ">";
+    case TK_OP_NUM_EQ: 
+	return "==";
+    case TK_OP_NUM_NE: 
+	return "!=";
+     case TK_OP_NUM_LE: 
+	return "<=";
+    case TK_OP_NUM_GE:
+	return ">=";
+    case TK_OP_STR_EQ:
+	return "eq";
+    case TK_OP_STR_NE: 
+	return "ne";
+    case TK_OP_STR_LT: 
+	return "lt";
+    case TK_OP_STR_GT: 
+	return "gt";
+    case TK_OP_STR_LE: 
+	return "le";
+    case TK_OP_STR_GE:
+	return "ge";
+    case TK_OP_STR_CAT:
+	return "..";
+    case TK_OP_LOGICAL_AND:
+        return "and";
+    case TK_OP_LOGICAL_OR:
+        return "or";
+    case TK_OP_LOGICAL_NEGATE:
+        return "not";
+    case TK_HASH_IT:
+        return "cons";
+    default:
+	assert(0);
+        return "<unkown>";
+  }
 }
 
 

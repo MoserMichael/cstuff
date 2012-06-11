@@ -13,7 +13,7 @@ struct tagAST_FUNC_DECL;
 //--------------------------------------------------------
 typedef struct tagFUNCTION_HASH_entry {
   HASH_Entry entry;
-  struct tagAST_FUNC_DECL *decl; 
+  struct tagAST_XFUNC_DECL *decl; 
 } FUNCTION_HASH_entry;
 
 //--------------------------------------------------------
@@ -34,6 +34,8 @@ typedef struct tagPARSECONTEXT {
  
   HASH map_function_defs; // maps function name to function definition. (AST_FUNC_DECL *)
 
+  int stmt_not_closed;
+
 } PARSECONTEXT;
 
 int  PARSECONTEXT_init( PARSECONTEXT *ctx );
@@ -41,13 +43,15 @@ void PARSECONTEXT_free( PARSECONTEXT *ctx );
 
 
 struct tagAST_FUNC_DECL; 
+struct tagAST_XFUNC_DECL; 
 
-int PARSECONTEXT_add_function_def( PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl ); 
-struct tagAST_FUNC_DECL * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const char *fname );
+int PARSECONTEXT_add_function_def2(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl );
+int PARSECONTEXT_add_function_def( PARSECONTEXT *ctx, struct tagAST_XFUNC_DECL *decl ); 
+struct tagAST_BASE * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const char *fname );
 
 //--------------------------------------------------------
 
-int parse_string( LEXCONTEXT *pc );
+int parse_string( LEXCONTEXT *pc , char start_char );
 int parse_string_oneline( LEXCONTEXT *pc );
 
 #endif

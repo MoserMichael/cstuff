@@ -30,20 +30,18 @@ BINDING_ENTRY * make_binding( AST_VAR_TYPE value_type, YYLTYPE *location, const 
    return binding;
 }
 
-
 BINDING_ENTRY *lookup_binding( const char *name, AST_FUNC_DECL *decl, REF_SCOPE scope, int *pscope )
 {  
    BINDING_ENTRY *rval;
-   int scope = 0;
 
    switch( scope ) {
      case  REF_SCOPE_LOCAL: 
        *pscope = 0;
        return  (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
-     case  REF_SCOPE_GLOBAL: {
+     case  REF_SCOPE_GLOBAL: 
        while( decl->funcs.parent != 0 )
        {
-	  decl = _OFFSETOF( scl->funcs.parent,  AST_FUNC_DECL, funcs );
+	  decl = _OFFSETOF( decl->funcs.parent,  AST_FUNC_DECL, funcs );
        }	
        *pscope = -1;
        return  (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
@@ -52,7 +50,7 @@ BINDING_ENTRY *lookup_binding( const char *name, AST_FUNC_DECL *decl, REF_SCOPE 
        while( decl->funcs.parent != 0 ) {
 	  
 	  scope ++;
-	  decl = _OFFSETOF( scl->funcs.parent,  AST_FUNC_DECL, funcs );
+	  decl = _OFFSETOF( decl->funcs.parent,  AST_FUNC_DECL, funcs );
 	  
 	  rval = (BINDING_ENTRY *)  HASH_find( &decl->scope_map_name_to_binding, (void *) name, -1);
 	  if (rval) {
@@ -66,27 +64,6 @@ BINDING_ENTRY *lookup_binding( const char *name, AST_FUNC_DECL *decl, REF_SCOPE 
     }
 
       
-}
-
-
-const char *get_type_name( AST_VAR_TYPE value_type )
-{
-  switch( value_type )
-  {
-     case S_VAR_INT: 
-     case S_VAR_DOUBLE:  
-	return "number";
-     case S_VAR_STRING:
-	return "string";
-     case S_VAR_CODE: 
-	return "function";
-     case S_VAR_HASH: 
-	return "table";
-     case S_VAR_LIST: 
-	return "array";
-     default:
-        return "???";
-  }
 }
 
 int is_scalar_var_type( AST_VAR_TYPE value_type )
@@ -134,10 +111,10 @@ int CHECK_reference( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
    if (!entry) {
       if (expr->val.ref.scope != 0) {
          if (ctx->chkctx.is_left_hand_side) {
-	    do_yyerror( &fcall->base.location, ctx, "Can't define the new %s variable %s in a function",
+	    do_yyerror( &expr->base.location, ctx, "Can't define the new %s variable %s in a function",
 		      expr->val.ref.scope == -1 ? "global" : "non-local (closure)", name );
 	 } else {
-	    do_yyerror( &fcall->base.location, ctx, "Can't access undefined %s variable %s. can't reference undefined variables",
+	    do_yyerror( &expr->base.location, ctx, "Can't access undefined %s variable %s. can't reference undefined variables",
 		      expr->val.ref.scope == -1 ? "global" : "non-local (closure)", name );
 
 	 }
@@ -145,7 +122,7 @@ int CHECK_reference( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
       }
       if (!ctx->chkctx.is_left_hand_side) { 
          // variable name must be assigned a value before use.
-         do_yyerror( &fcall->base.location, ctx, "You must assign a value to variable %s before trying to use its value. can't reference undefined variables",
+         do_yyerror( &expr->base.location, ctx, "You must assign a value to variable %s before trying to use its value. can't reference undefined variables",
 			name );
 	 return -1;
       }	 
@@ -216,7 +193,9 @@ int CHECK_reference( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
 int CHECK_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 {
     
-    AST_FUNC_DECL *fdecl;
+    AST_BASE *fdecl;
+    AST_FUNC_DECL *ffdecl;
+    AST_XFUNC_DECL *fxdecl;
     AST_VECTOR *call_params;
     AST_EXPRESSION **call_expr;
     size_t i;
@@ -263,21 +242,33 @@ int CHECK_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
       fcall_lhs->val.fdecl = fdecl;	    
     }
 
+    if (fdecl->type == S_FUN_DECL ) {
+     
+      ffdecl = (AST_FUNC_DECL *) fdecl;
+      fxdecl = 0;
+
+    } else {
+      assert( fdecl->type == S_XFUN_DECL );
+
+      fxdecl = (AST_XFUNC_DECL *) fdecl; 
+      ffdecl = 0;
+    }
+   
     num_call_params = ARRAY_size( &fcall->call_params->refs ); 
-    num_def_params = ARRAY_size( &fdecl->func_params->refs );
+    num_def_params = ffdecl ? ARRAY_size( &ffdecl->func_params->refs ) : fxdecl->nparams;
 
     // check if number of parameters is the same as in prototype.
     if (num_call_params != num_def_params) {
 	 do_yyerror( &fcall->base.location, ctx, "The function %s has %d parameters, wherease the function call has %d parameters",
 			fcall->f_name, num_def_params,  num_call_params );
          return -1;
-    }
+      }
 
 
-    // check if parameter types agree
-    for( i = 0; i < num_call_params; i++) {
+      // check if parameter types agree
+      for( i = 0; i < num_call_params; i++) {
 	AST_EXPRESSION *call_p = (AST_EXPRESSION *) ARRAY_at( &fcall->call_params->refs, i );
-	AST_EXPRESSION *fdef_p = (AST_EXPRESSION *) ARRAY_at( &fdecl->func_params->refs, i );
+	AST_EXPRESSION *fdef_p = (AST_EXPRESSION *) ARRAY_at( &ffdecl->func_params->refs, i );
 	
 	if (call_p->value_type != S_VAR_ANY && fdef_p->value_type != S_VAR_ANY) {
 	    int is_ok = 0;
@@ -295,8 +286,7 @@ int CHECK_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
         		
 	    }
 	}
-    }
-
+      }
     return 0;
 }
 
@@ -513,8 +503,7 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 	CHECK_func_call(ctx, fcall);
 	}
 	break;
-      case S_RETURN:
-      case S_YIELD: {
+      case S_RETURN: {
         AST_RETURN *ret = (AST_RETURN *) base;
 	if (! CHECK_expression( ret->rvalue, ctx )) {
 	  if (ret->rvalue->value_type != S_VAR_ANY) {
@@ -534,8 +523,6 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
    return 0;
 }
 
-
-#if 0
 int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx )
 {
   AST_BASE_LIST *body = fdecl->func_body;
@@ -543,9 +530,9 @@ int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx )
   size_t i;
 
   ctx->chkctx.is_left_hand_side = 1; 
-  for( i = 0; i < ARRAY_size( fdecl->func_params.refs ); i++ ) {
-    expr = (AST_EXPRESSION *) AST_VECTOR_get( &fdecl->func_params, i );
-    CHECK_expression( ass->left_side, 1 );
+  for( i = 0; i < ARRAY_size( &fdecl->func_params->refs ); i++ ) {
+    expr = (AST_EXPRESSION *) AST_VECTOR_get( fdecl->func_params, i );
+    CHECK_expression( expr, ctx );
   }
   ctx->chkctx.is_left_hand_side = 0; 
   
@@ -554,10 +541,8 @@ int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx )
 
 int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE_LIST *program)
 {
-  PARSECTX *pctx = _OFFSETOF( ctx, PARSECTX, chkctx );
+  PARSECONTEXT *pctx = _OFFSETOF( ctx, PARSECONTEXT, chkctx );
   
   return CHECK_statement_list( program, pctx );
 }
-
-#endif
 

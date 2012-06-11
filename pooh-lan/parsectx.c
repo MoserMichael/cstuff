@@ -14,7 +14,7 @@ static int hash_compare(HASH_Entry *entry, void * key, ssize_t key_length)
 
   lhs = (FUNCTION_HASH_entry *) entry;
 
-  if (strcmp(lhs->decl->f_name,key) == 0) {
+  if (strcmp( ((AST_FUNC_DECL *) lhs->decl)->f_name,key) == 0) {
     return 0;
   }
   return 1;
@@ -67,6 +67,7 @@ int PARSECONTEXT_init(PARSECONTEXT *ctx)
   ctx->my_yy_is_error = 0;
   ctx->my_ast_root = 0; 
   ctx->report_errors = 1;
+  ctx->stmt_not_closed = 0;
 
   YYLTYPE_init( &stam );   
   ctx->root_ctx = AST_FUNC_DECL_init( 0, 0, 0, &stam );
@@ -80,13 +81,28 @@ void PARSECONTEXT_free( PARSECONTEXT *ctx )
   LEXER_free( &ctx->lexctx );
 }
 
-int PARSECONTEXT_add_function_def(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl )
+int PARSECONTEXT_add_function_def2(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl )
+{
+  if ( ! PARSECONTEXT_add_function_def( ctx, (AST_XFUNC_DECL *) decl ) ) {
+    TREE_insert_child( &ctx->current->funcs, &decl->funcs, TREE_INSERT_LAST, 0 );
+    ctx->current  = decl;
+    return 0;
+  }
+  return -1;
+}
+
+int PARSECONTEXT_add_function_def(  PARSECONTEXT *ctx, struct tagAST_XFUNC_DECL  *decl )
 {
   FUNCTION_HASH_entry *entry;
+  AST_FUNC_DECL *fdecl;
+
+  assert( decl->base.type == S_FUN_DECL || decl->base.type == S_XFUN_DECL );
   
-  entry = (FUNCTION_HASH_entry *) HASH_find(  &ctx->map_function_defs, (void *) decl->f_name, -1 );
+  fdecl = (AST_FUNC_DECL *) decl;
+  entry = (FUNCTION_HASH_entry *) HASH_find(  &ctx->map_function_defs, (void *) fdecl->f_name, -1 );
   if (entry) {
-    do_yyerror ( &decl->base.location,  ctx, "The function has been defined twice. first definiton at line %d column %d", entry->decl->base.location.first_line, entry->decl->base.location.first_column);
+    do_yyerror ( &decl->base.location, ctx, "The function has been defined twice. first definiton at line %d column %d", 
+		    fdecl->base.location.first_line, fdecl->base.location.first_column);
     return -1;
   }
 
@@ -94,23 +110,24 @@ int PARSECONTEXT_add_function_def(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *
   if (!entry) {
     return -1;
   }
+  
+  entry->decl = decl;
+//entry->name = fdecl->f_name;
 
-  if (HASH_insert( &ctx->map_function_defs, &entry->entry, (void *) decl->f_name, (ssize_t) -1  )) {
+  if (HASH_insert( &ctx->map_function_defs, &entry->entry, (void *) fdecl->f_name, (ssize_t) -1  )) {
     return -1;
   }
 
-  TREE_insert_child( &ctx->current->funcs, &decl->funcs, TREE_INSERT_LAST, 0 );
-  ctx->current  = decl;
   return 0;
 }
 
-struct tagAST_FUNC_DECL * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const char *fname ) 
+struct tagAST_BASE * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const char *fname ) 
 {
   FUNCTION_HASH_entry *entry;
   
   entry = (FUNCTION_HASH_entry *) HASH_find(  &ctx->map_function_defs, (void *) fname, -1 );
   if (entry) {
-    return entry->decl;
+    return (AST_BASE *) entry->decl;
   }
   return 0;
 }

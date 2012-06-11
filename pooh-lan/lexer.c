@@ -46,16 +46,10 @@
   } while( 0 );
 
   #define MY_YY_NEWLINES do {  \
-    yylloc_param->first_column = yylloc_param->last_column = 1; \
-    yylineno += yyleng; \
-    yylloc_param->first_line = yylloc_param->last_line = yylineno; \
   } while(0);
 
 
   #define MY_YY_NEWLINE do {  \
-    yylloc_param->first_column = yylloc_param->last_column = 1; \
-    yylineno += 1; \
-    yylloc_param->first_line = yylloc_param->last_line = yylineno; \
   } while(0);
 
  
@@ -112,15 +106,22 @@ int  MY_YY_get_next(char *buff, int max_buffer);
 	  - copy position of current token in bison global yyloc (required for position tracking)
 */
 
+#undef  TRACE_TOKENIZER
 #ifndef TRACE_TOKENIZER
 
 #define MY_YY_RETURN(x) \
+	struct yyguts_t *yyg = (struct yyguts_t *) yyscanner; \
+	yycolumn += yyleng; \
 	return(x);
 
 #else 
 
+
 #define MY_YY_RETURN(x) \
-	fprintf(stdout,"\n!->Token %s(%d) (%d,%d)-(%d,%d)\n", yytext, x,  yylloc.first_line,yylloc.first_column,yylloc.last_line,yylloc.last_column ); fflush(stdout); \
+	struct yyguts_t *yyg = (struct yyguts_t *) yyscanner; \
+	yycolumn += yyleng; \
+	fprintf(stdout,"\n->Token %s(%d) (%d,%d)-(%d,%d)\n", yytext, x,  yylloc->first_line, yylloc->first_column, yylloc->last_line, yylloc->last_column ); \
+	fflush(stdout); \
 	return(x);
 
 #endif
@@ -162,7 +163,7 @@ void yyerror (char const *);
 #ifdef IS_REENTRANT 
 int MY_YY_input(  yyscan_t yyscanner )  
 #else 
-nt MY_YY_input( )
+int MY_YY_input( )
 #endif
 {
   int c;
@@ -184,8 +185,6 @@ nt MY_YY_input( )
 }
 
 
-
-
 /* ****************************************************** 
 		nested file support (include directives)
  * ****************************************************** */
@@ -201,15 +200,11 @@ typedef struct tagMY_YY_BUFFER_STATE {
 
 
 
-static int is_file_already_opened( LEXCONTEXT *pc, const char *file_name);
-static char *copy_file_name(const char *file_name);
-                
-
 
 int LEXER_init( LEXCONTEXT *pc )
+
 {
 #ifdef IS_REENTRANT
-	
 	if (yylex_init( &pc->yyscanner ) ) {
 	  return -1;
 	}
@@ -217,6 +212,8 @@ int LEXER_init( LEXCONTEXT *pc )
 
 //	yyscanner = pc->yyscanner;
 //	yyget_lloc( yyscanner )->file_id = 0;
+	
+
 #else	
 	yyloc.file_id = 0;
 	POSITION_RESET_ON_NEW_FILE;
@@ -236,6 +233,14 @@ int LEXER_init( LEXCONTEXT *pc )
 	return 0;
 }
 
+
+static int is_file_already_opened( LEXCONTEXT *pc, const char *file_name);
+static char *copy_file_name(const char *file_name);
+                
+
+
+int LEXER_init( LEXCONTEXT *pc );
+
 int LEXER_free( LEXCONTEXT *pc )
 {
 	LEXER_clean_string_parts( pc );
@@ -250,10 +255,16 @@ int LEXER_free( LEXCONTEXT *pc )
 
 YYLTYPE LEXER_get_location( LEXCONTEXT *pc )
 {
+   
 #ifdef IS_REENTRANT
+    YYLTYPE rt;
     yyscan_t yyscanner = pc->yyscanner;  
     struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
-    return *yyg->yylloc_r;
+    rt.file_id = 0;
+    rt.first_line = rt.last_line = yylineno;
+    rt.first_column = rt.last_column = yycolumn;
+//  return *yyg->yylloc_r;
+    return rt;
 #else
     M_UNUSED( pc );
     return yyloc;
@@ -311,11 +322,8 @@ int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value 
     
     ARRAY_push_back( &pc->nested_buffers, & state, sizeof(MY_YY_BUFFER_STATE) );
 #endif
-
-    if (init_token_value != -1) {
-      pc->send_init_token = 1;
-      pc->init_token_value = init_token_value;
-    }
+ 
+    LEXER_set_next_token( pc, init_token_value );
 
     BEGIN(INITIAL);
 
@@ -327,11 +335,17 @@ int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )
 	MY_YY_BUFFER_STATE state;
 	char *scopy;
 	FILE *fp;
+        STRING_PART **cur;
+
 #ifdef IS_REENTRANT
 	yyscan_t yyscanner = pc->yyscanner;  
         struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
 #endif
 
+	if ( file_name == 0) {
+	  cur = (STRING_PART **) ARRAY_at( &pc->string_parts, 0 );
+	  file_name = STRING_PART_get(*cur);
+	}
 
 	pc->open_count++;
 
@@ -448,6 +462,13 @@ void LEXER_set_file_name( LEXCONTEXT *pc, const char *file_name )
 	ARRAY_push_back( &pc->file_name_table, (void *) &file_name , sizeof(char *) );
 }
 
+void  LEXER_set_next_token( LEXCONTEXT *pc, int init_token_value )
+{
+    if (init_token_value != -1) {
+      pc->send_init_token = 1;
+      pc->init_token_value = init_token_value;
+    }
+}
 
 
 
@@ -498,39 +519,59 @@ void LEXER_clean_string_parts( LEXCONTEXT *ctx)
 
 //------------------------------------------------------------------------
 
-int do_parse_string( LEXCONTEXT *pc, DBUF *parent );
-int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char **token_delimiter, char **start_of_expression, char **end_of_expression );
+int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char );
+int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char start_char, char **token_delimiter, char **start_of_expression, char **end_of_expression );
 int parse_string_data( LEXCONTEXT *pc, DBUF *parent,  char *token_delimiter, char *start_of_expression, char *end_of_expression  );
 STRING_PART * parse_string_sequence( LEXCONTEXT *pc, DBUF *parent,  const char *string_term, const char *start_of_expression, int *has_follow_up );
 STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end_of_expression );
 const char * dbuf_ends_with( DBUF *buf, const char *term_string );
+void print_string( LEXCONTEXT *pc );
 
-
-int parse_string( LEXCONTEXT *pc )
+int parse_string(  LEXCONTEXT *pc, char start_char )
 {
-  return do_parse_string( pc, 0 );
+  int rt;
+
+  rt = do_parse_string( pc, 0, start_char );
+  print_string( pc );
+  
+  return rt;
 }
 
-int do_parse_string( LEXCONTEXT *pc, DBUF *parent )
+
+void print_string( LEXCONTEXT *pc )
+{ 
+  size_t i;
+  STRING_PART *cur,**tmp;
+
+  for( i = 0; i < ARRAY_size(&pc->string_parts ) ; i++ ) {
+
+      tmp = (STRING_PART **) ARRAY_at( &pc->string_parts, i );
+      cur = *tmp;
+#if 0      
+      fprintf(stderr,"\t\tis_exp %d (%d,%d-%d,%d) >>%s<<\n",
+		    cur->is_expression,
+		    cur->loc.first_line, cur->loc.first_column, cur->loc.last_line, cur->loc.last_column,
+		    (char *) cur->part_data.buf );
+#endif                    
+  }
+
+}
+
+int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char )
 {
   DBUF header;
   char *token_delimiter, *start_of_expression = 0, *end_of_expression = 0;
 
   DBUF_init( &header, 0 );
 
-  if (parse_string_header( pc, parent, &header, &token_delimiter, &start_of_expression, &end_of_expression )) {
+  if (parse_string_header( pc, parent, &header, start_char, &token_delimiter, &start_of_expression, &end_of_expression )) {
     return -1;
-  }
-
-  if (!start_of_expression || !end_of_expression) {
-    start_of_expression = "#{";
-    end_of_expression = "}";
   }
 
   return parse_string_data( pc, parent, token_delimiter, start_of_expression, end_of_expression );
  
 }
-int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char **token_delimiter, char **start_of_expression, char **end_of_expression ) 
+int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char start_char, char **token_delimiter, char **start_of_expression, char **end_of_expression ) 
 {
   int c;
 #ifdef IS_REENTRANT
@@ -538,68 +579,56 @@ int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char **token_d
   struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
 #endif	
   YYLTYPE strdefloc = yyloc;
-  YYLTYPE prev = yyloc;
-  char *cur,*next,*stok;
 
   DBUF_init(buf,0);
+  DBUF_add( buf, &start_char, sizeof(char) );
+   
+  while ( 1 ) {
+    c =  MY_YY_INPUT;
+    if (c == -1) {
+      do_yyerror( &strdefloc, (PARSECONTEXT *) pc, "Wrong string, starting at");
+      return -1;	
+    }
+    if (c != start_char) {
+      unput(c);
+      yycolumn -- ;
+      break;
+    }
 
-  while ( (c =  MY_YY_INPUT) != -1 ) {
     if (parent) {
       DBUF_add( parent, &c, sizeof(char) );
     }
-    
     DBUF_add( buf, &c, sizeof(char) );
-    if (c == '\n') {
-      strdefloc.last_line = prev.last_line;
-      strdefloc.last_column = prev.last_column;
-      do_yyerror( &strdefloc, (PARSECONTEXT *) pc, "The string header must be closed with @ on the same line");
-      return -1;
-    }
-    
-    if ( (cur = (char *) dbuf_ends_with( buf, "@")) != 0 ) {
-      STRTK tok;
-      
-      *cur = '\0';
-      cur = (char *) buf->buf;
-      
-      STRTK_init( &tok, " \t" );
-      stok = STRTK_tok_mod( &tok, cur, &next );
-      
-      if (!stok) {
-	 do_yyerror( &strdefloc, (PARSECONTEXT *) pc, "The string header header does define the end of string delimiter");
-	 return -1;
-      }
-      *token_delimiter = stok;
-
-      cur = next;
-      stok = STRTK_tok_mod( &tok, cur, &next );
-      *start_of_expression = stok;
-
-      cur = next;
-      stok = STRTK_tok_mod( &tok, cur, &next );
-      *end_of_expression = stok;
-      
-      return 0;    
-    }
-    prev = yyloc;
   }
-  return -1;
-}
+  DBUF_add_null( buf );
+
+  *token_delimiter = (char *) buf->buf;
+  *start_of_expression = strdup( *token_delimiter );
+  memset( *start_of_expression, '[', strlen( *token_delimiter ) );
+  *end_of_expression = strdup( *token_delimiter );
+  memset( *end_of_expression, ']', strlen( *token_delimiter ) );
+
+  return 0;
+} 
 
 int parse_string_data( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char *start_of_expression, char *end_of_expression  )
 {
   int has_follow_up = 1;
   int parts = 0;
   STRING_PART *cur;
-
+#ifdef IS_REENTRANT
+  yyscan_t yyscanner = pc->yyscanner;
+  struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
+#endif	
+ 
   while(1) {
     cur = parse_string_sequence( pc, parent, token_delimiter, start_of_expression, &has_follow_up );
     if ( !cur ) {
       return -1;
     }
     
-    fprintf(stderr,"[^^^ %s ^^^]\n", (char *) cur->part_data.buf );
- 
+    cur->loc.last_line  =  yylineno;
+    cur->loc.last_column = yycolumn;
     if (!parent) {
       ARRAY_push_back( &pc->string_parts, &cur, sizeof(void *) );
     } else {
@@ -616,8 +645,8 @@ int parse_string_data( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char
       return -1;
     }
 
-    fprintf(stderr,"^^^ %s ^^^\n", (char *) cur->part_data.buf );
-    
+    cur->loc.last_line  =  yylineno;
+    cur->loc.last_column = yycolumn;
     if (!parent) {
       ARRAY_push_back( &pc->string_parts, &cur, sizeof(void *) );
     } else {
@@ -634,25 +663,14 @@ STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end
 {
   STRING_PART *part; 
   int c;
-  int bracket_count = 0;
-  int bracket_type_open = 0, bracket_type_close;    
   YYLTYPE start;
   char *eof;
 #ifdef IS_REENTRANT
   yyscan_t yyscanner = pc->yyscanner;
   struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
 #endif	
+  int countb = 0;
 
-  if (strcmp( end_of_expression, ")" ) == 0) {
-    bracket_type_open = '(';
-    bracket_type_close = ')';
-  }
- 
-  if (strcmp( end_of_expression, "}" ) == 0) {
-    bracket_type_open = '{';
-    bracket_type_close = '}';
-  }
-  
   start = yyloc;
   part = STRING_PART_init( 1, &start );
   if (!part) {
@@ -667,23 +685,19 @@ STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end
     
     DBUF_add(  &part->part_data, &c, sizeof(char) );
     
-    eof = (char *) dbuf_ends_with( &part->part_data, "@" );  
-    if ( eof ) {
-	do_parse_string( pc, &part->part_data );
+    if (c == '[') {
+      countb ++;
+      continue;
+    }
+    if (c == ']') {
+      if (countb > 0) {
+        countb --;
+        continue;
+      }
     }
 
-    if (bracket_type_open) {
-	if (c == bracket_type_open) {
-	  bracket_count ++;
-	}
-	
-	if (c == bracket_type_close) {
-	  bracket_count --;
-	}
-
-	if (bracket_count != -1) {
-	  continue;
-	}
+    if (c == '\'' || c == '"') {
+	do_parse_string( pc, &part->part_data, c );
     }
 
     eof = (char *) dbuf_ends_with( &part->part_data, end_of_expression );  
@@ -693,6 +707,12 @@ STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end
     }
   }
 
+  if (c == -1) {
+     do_yyerror ( &start, (PARSECONTEXT *) pc,  "The string constant is not closed, it goes on and on until the end of the file" );
+     return  0;
+  }
+
+ 
   return part;
 }
 
@@ -743,7 +763,7 @@ STRING_PART * parse_string_sequence( LEXCONTEXT *pc, DBUF *parent, const char *s
   }
 
   if (c == -1 ) {
-     do_yyerror ( &start, (PARSECONTEXT *) pc,  "The string constant has not been terminated, it continues untill the end of the file" );
+     do_yyerror ( &start, (PARSECONTEXT *) pc,  "The string constant is not closed, it goes on and on until the end of the file" );
      return 0;
   }
 
@@ -770,6 +790,7 @@ const char * dbuf_ends_with( DBUF *buf, const char *term_string )
   return strncmp( ptr_occur, term_string, term_string_len ) == 0 ? ptr_occur : 0;
 }
 
+#if 0
 int parse_string_oneline( LEXCONTEXT *pc ) 
 {
   int c;
@@ -839,7 +860,7 @@ int parse_string_oneline( LEXCONTEXT *pc )
 
   return TK_ERROR;
 }
-
+#endif
 
 
 

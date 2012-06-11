@@ -20,10 +20,6 @@
 YYLTYPE yyloc;
 #endif
 
-/*
- * extended structure for location info, 
- * we have to redefine the macro that sets location info for one non terminal
- */
 #define YYLLOC_DEFAULT(Current, Rhs, N)                                      \
          do                                                                  \
            if (N)                                                            \
@@ -43,7 +39,6 @@ YYLTYPE yyloc;
                  YYRHSLOC(Rhs, 0).last_column;                               \
              }                                                               \
          while (0)
-
 
 /* include bison generated code */
 
@@ -86,15 +81,15 @@ static void fancy_error(const char *line, int line_num, int column_start, int co
 	     fprintf(stderr,".");
 	   }
 	}
-	fprintf(stderr , "\n%s\n        |" , line);
+	fprintf(stderr , "\n        |%s\n        |" , line);
 	
-	for(pos = 0; pos < (column_start-1); pos++) {
+	for(pos = 0; pos < column_start; pos++) {
 		fprintf(stderr,".");
 	}
 
 	do {
 		fprintf(stderr,"^");
-	} while( ++pos < column_end);
+	} while( ++pos <= column_end);
 
 	fprintf(stderr,"\n");
 }
@@ -227,6 +222,48 @@ void do_yyerror (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format,
   char msg[ERROR_MSG_LEN];
   int len;
   va_list ap;
+  YYLTYPE local_loc;
+	
+  if (! parse_context->report_errors ) {
+    return;
+  }
+
+
+  if (!loc) {
+    local_loc = LEXER_get_location( & parse_context->lexctx ); 
+    loc = &local_loc;
+  }
+
+
+  va_start(ap, format);
+  len = 
+#ifdef WIN32  
+	_vsnprintf
+#else
+	vsnprintf
+#endif
+	
+	(msg, sizeof(msg) - 1, format, ap);
+  va_end(ap);
+
+  msg[len] = '\0';
+
+  parse_context->my_yy_is_error = 1;
+  fprintf (stderr, "\n%s(%d): Error: %s\n", 
+	LEXER_get_file_name( &parse_context->lexctx , loc->file_id ), 
+	loc->first_line, 
+	msg);
+
+  
+  fancy_error_report( loc, 
+	LEXER_get_file_name( &parse_context->lexctx, loc->file_id) );
+}
+
+void do_yywarning (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format, ...)
+{
+  char msg[ERROR_MSG_LEN];
+  int len;
+  va_list ap;
 
   if (! parse_context->report_errors ) {
     return;
@@ -246,7 +283,7 @@ void do_yyerror (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format,
   msg[len] = '\0';
 
   parse_context->my_yy_is_error = 1;
-  fprintf (stderr, "\n%s(%d): Error: %s\n", 
+  fprintf (stderr, "\n%s(%d): Warning: %s\n", 
 	LEXER_get_file_name( &parse_context->lexctx , loc->file_id ), 
 	loc->first_line, 
 	msg);

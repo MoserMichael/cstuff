@@ -1,0 +1,18 @@
+fail compare
+------------
+
+test-error/03-err-empty-construct.p(4): Warning: empty body of condition statement
+      4 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |else
+        |^^^^
+
+test-error/03-err-empty-construct.p(5): Warning: empty body of condition statement
+      5 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |end
+        |^^^
+
+test-error/03-err-empty-construct.p(8): Warning: empty body of while statement
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |end
+        |^^^
+Parsing failed

@@ -1,0 +1,13 @@
+fail compare
+------------
+
+test-error/05-err-noend2.p(8): Error: if statement not closed with end keyword
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |  if msg  == 0
+        |..^^
+
+test-error/05-err-noend2.p(3): Error: function definition not closed with end keyword
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |sub function( msg )
+        |^^^^^^^^^^^^^^^^^^^
+Parsing failed

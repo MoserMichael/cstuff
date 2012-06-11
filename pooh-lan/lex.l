@@ -13,8 +13,10 @@
 %x	 comment
 
 INT_CONST	[0-9]+
-ID		[a-zA-Z#][a-zA-Z0-9_]*
+ID		[a-zA-Z][a-zA-Z0-9_]*
+PARAM		"~"[a-zA-Z#][a-zA-Z0-9_]*
 DOUBLE		[0-9]+"."[0-9]+
+
 
 %%
 
@@ -30,33 +32,34 @@ DOUBLE		[0-9]+"."[0-9]+
 	*yylloc_param = lex_context->init_location;
       } 
       yyg->yylloc_r = yylloc_param; 
-      yylineno = 1;
-      yycolumn = 1;	
+      //yylineno = 1;
+      //yycolumn = 1;	
     }	
 #else
     LEXCONTEXT *lex_context = (LEXCONTEXT *) &parse_context->lexctx;
 #endif
 
     if (lex_context->send_init_token) {
+
       lex_context->send_init_token = 0; 
       MY_YY_RETURN(lex_context->init_token_value);
     }
 %}
 
 
-","		{ MY_YY_RETURN(TK_COMMA); }
+","	{ MY_YY_RETURN(TK_COMMA); }
 
-"("		{ MY_YY_RETURN(TK_PARENTHESES_OPEN); }
+"("	{ MY_YY_RETURN(TK_PARENTHESES_OPEN); }
 
-")"		{ MY_YY_RETURN(TK_PARENTHESES_CLOSE); }
+")"	{ MY_YY_RETURN(TK_PARENTHESES_CLOSE); }
 
-"{"		{ MY_YY_RETURN(TK_BRACE_OPEN); }
+"{"	{ MY_YY_RETURN(TK_BRACE_OPEN); }
 
-"}"		{ MY_YY_RETURN(TK_BRACE_CLOSE); }
+"}"	{ MY_YY_RETURN(TK_BRACE_CLOSE); }
 
-"["		{ MY_YY_RETURN(TK_BRACKET_OPEN); }
+"["	{ MY_YY_RETURN(TK_BRACKET_OPEN); }
 
-"]"		{ MY_YY_RETURN(TK_BRACKET_CLOSE); }
+"]"	{ MY_YY_RETURN(TK_BRACKET_CLOSE); }
 
 "for"	{ MY_YY_RETURN(TK_FOR);	  }
 
@@ -74,10 +77,9 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "include" { MY_YY_RETURN(TK_INCLUDE); }
 
-
 "=="	{ MY_YY_RETURN(TK_OP_NUM_EQ); }
 
-"="		{ MY_YY_RETURN(TK_ASSIGN);    }
+"="	{ MY_YY_RETURN(TK_ASSIGN);    }
 
 ":="	{ MY_YY_RETURN(TK_ASSIGN_REF); }
 
@@ -87,9 +89,9 @@ DOUBLE		[0-9]+"."[0-9]+
 
 ">="	{ MY_YY_RETURN(TK_OP_NUM_GE); }
 
-"<"		{ MY_YY_RETURN(TK_OP_NUM_LT); }
+"<"	{ MY_YY_RETURN(TK_OP_NUM_LT); }
 
-">"		{ MY_YY_RETURN(TK_OP_NUM_GT); } 
+">"	{ MY_YY_RETURN(TK_OP_NUM_GT); } 
 
 "eq"	{ MY_YY_RETURN(TK_OP_STR_EQ); }
 
@@ -103,6 +105,8 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "ge"	{ MY_YY_RETURN(TK_OP_STR_GE); }
 
+"..."	{ MY_YY_RETURN(TK_THREE_DOTS); }
+
 ".."	{ MY_YY_RETURN(TK_OP_STR_CAT); }
 
 "."     { MY_YY_RETURN(TK_OP_DOT); }
@@ -112,15 +116,15 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "=~"	{ MY_YY_RETURN(TK_OP_STR_REGEXMATCH); }
 
-"+"		{ MY_YY_RETURN(TK_OP_NUM_ADD); }
+"+"	{ MY_YY_RETURN(TK_OP_NUM_ADD); }
 
-"-"		{ MY_YY_RETURN(TK_OP_NUM_SUBST); }
+"-"	{ MY_YY_RETURN(TK_OP_NUM_SUBST); }
 
-"*"		{ MY_YY_RETURN(TK_OP_NUM_MULT); }
+"*"	{ MY_YY_RETURN(TK_OP_NUM_MULT); }
 
-"%"		{ MY_YY_RETURN(TK_OP_NUM_MOD); }  
+"%"	{ MY_YY_RETURN(TK_OP_NUM_MOD); }  
 
-"/"		{ MY_YY_RETURN(TK_OP_NUM_DIV); }
+"/"	{ MY_YY_RETURN(TK_OP_NUM_DIV); }
 
 "!"	{ MY_YY_RETURN(TK_OP_LOGICAL_NEGATE); }
  
@@ -130,6 +134,7 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "and"	{ MY_YY_RETURN(TK_OP_LOGICAL_AND); } 
 
+
 "||"	{ MY_YY_RETURN(TK_OP_LOGICAL_OR); }
 
 "or"	{ MY_YY_RETURN(TK_OP_LOGICAL_OR); }
@@ -138,20 +143,42 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "return" { MY_YY_RETURN(TK_RETURN); }
 
-"yield" { MY_YY_RETURN(TK_YIELD); }
-
 "while" { MY_YY_RETURN(TK_WHILE); }
 
 "break" { MY_YY_RETURN(TK_BREAK); }
 
 "next" { MY_YY_RETURN(TK_NEXT); }
 
-"do"	{ MY_YY_RETURN(TK_DO); }
+"loop"	{ MY_YY_RETURN(TK_LOOP); }
+
+"byref" { MY_YY_RETURN(TK_BYREF); }
+
+"nill"  { MY_YY_RETURN(TK_NIL); }
+"Nill"  { MY_YY_RETURN(TK_NIL); }
+
+"false" { MY_YY_RETURN(TK_FALSE); }
+"False" { MY_YY_RETURN(TK_FALSE); }
+
+"true"  { MY_YY_RETURN(TK_TRUE); }
+"True"  { MY_YY_RETURN(TK_TRUE); }
+ 
+ 
+"optional" { MY_YY_RETURN(TK_OPTIONAL); }
 
 {ID}	{ 
-			  SET_YY_STYPE( string_value, strdup(yytext) );
-			  MY_YY_RETURN(TK_IDENTIFIER); 
-		}	
+	  SET_YY_STYPE( string_value, strdup(yytext) );
+	  MY_YY_RETURN(TK_IDENTIFIER); 
+	}
+
+{PARAM}	{ 
+	  char *label = strdup(yytext);
+
+	  label += 1;
+
+	  SET_YY_STYPE( string_value, label );
+	  MY_YY_RETURN(TK_PARAMETER_LABEL);
+	}	
+
 
 {INT_CONST} { 
 		SET_YY_STYPE(long_value, atol(yytext) );
@@ -163,65 +190,46 @@ DOUBLE		[0-9]+"."[0-9]+
 		MY_YY_RETURN(TK_DOUBLE_CONSTANT);
 	}
 
-"@" {
+"\""   { MY_YY_RETURN(TK_EMPTY_STRING); }
+
+"'" {
 		int rt;
 
-		rt = parse_string( lex_context ) ; 
+		rt = parse_string( lex_context, '\'' ) ; 
 
-		if (rt < 0) {
+		if (rt <= 0) {
 		  MY_YY_RETURN(TK_ERROR);
 		}
-	        if (rt == 0) {
+	        if (rt == 1) {
 		  MY_YY_RETURN(TK_STRING_CONSTANT);  
 		}
 		MY_YY_RETURN(TK_MULTI_PART_STRING_CONSTANT);  
  }
 
-"\"" {
-	       MY_YY_RETURN( parse_string_oneline( lex_context ) ); 
-     }
-			
 
 			
-"/*" {
-		int c;
+"#" {
 
-		while ( (c =  MY_YY_INPUT) != EOF )  {
-			if (c == '\\') {
-			  c =  MY_YY_INPUT;
-			  if (c == EOF) {
-				break;
-			  }
-			} else if ( c == '*' ) {
-			  c =  MY_YY_INPUT;	
-			  if (c == EOF) {
-				break;
-			  }
-			  if ( c == '/' )
-				break;    /* found the end */
-			  }
-           
-		 }
-		 if ( c == EOF ) {
-			  /*TODO: write where comment started. */			  
-    			  
-			  do_yyerror( yylloc_param, (PARSECONTEXT *) yyextra , "comment is not closed until the end of file" );
-			  return TK_ERROR;                 
-		 }
-	 }
+	int c;
+	while ( (c =  MY_YY_INPUT) != EOF )  {
+	
+	    if (c ==  '\n' ) {
+		break;
+	    } 
+	}
+	//fprintf(stderr,"*** comment ***\n");
+    }
 
 
-"//"[^\n]*\n  {   /* eat up single line comments */
-			MY_YY_NEWLINE;
-		}
 
-
-[ \t]+	
-
-
-[\n]+	{
-			MY_YY_NEWLINES;
+[\n]	{
+            ++ yylineno;
+	    yycolumn = 0;	
+	  //fprintf(stderr,"NEWLINE %d\n", yylineno );
 	}	 
+
+[ \t]+  { yycolumn += yyleng; }	
+
 
 <<EOF>> {
 			if (LEXER_close_file( lex_context )) {

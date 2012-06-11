@@ -1,18 +1,18 @@
 
+# recursive function call
+
 sub fact( n )
-  if n > 0
-    return 1 * fact(n)
-  else
+  if n > 1
+    return n * fact( ~n n - 1 )
+  else 
     return 1
   end
 end
 
 for i [ 1, 5, 15 ]
-   print ( @"@Factorial of " .. i .. @"@ = " .. fact(i) .. @"@
-" )
+   println ( ~msg 'Factorial of [ i ]  = [ fact( ~n i ) ] ' )
 end
 
 for i [ 1, 5, 15 ]
-  print ( @"@Factorial of #{i} = #{ fact(i) }  
-" )
+  println ( ~msg 'Factorial of ' ..  i .. '  =  ' .. fact( ~n i )  )
 end

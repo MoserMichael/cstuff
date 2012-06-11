@@ -1,0 +1,13 @@
+fail compare
+------------
+
+test-error/01-err-funcparam3.p(7): Error: syntax error, unexpected end, expecting parentheses open 
+      7 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |end
+        |^^^
+
+test-error/01-err-funcparam3.p(7): Error: In a function definition the ( sign should be right after the function name
+      7 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |end
+        |^^^
+Parsing failed

@@ -1,0 +1,33 @@
+fail compare
+------------
+
+test-error/01-err-funcparam.p(3): Error: syntax error, unexpected identifier, expecting parentheses close or parameter label 
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |prinln(   aaa )
+        |..........^^^
+
+test-error/01-err-funcparam.p(3): Error: Missing parameter label in function call (should start with ~)
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |prinln(   aaa )
+        |..........^^^
+
+test-error/01-err-funcparam.p(3): Error: Missing parameter label in function call (should start with ~)
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |prinln(   aaa )
+        |..........^^^
+
+test-error/01-err-funcparam.p(5): Error: syntax error, unexpected string constant, expecting parentheses close or parameter label 
+      5 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |println( 'forgot the parameter name' )
+        |.........^
+
+test-error/01-err-funcparam.p(5): Error: Missing parameter label in function call (should start with ~)
+      5 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |println( 'forgot the parameter name' )
+        |.........^
+
+test-error/01-err-funcparam.p(5): Error: Missing parameter label in function call (should start with ~)
+      5 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |println( 'forgot the parameter name' )
+        |.........^
+Parsing failed

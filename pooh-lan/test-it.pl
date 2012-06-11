@@ -4,26 +4,46 @@
 use strict;
 
 
-my (@tests, $test, $test_tool, $tnames );
+my ($f, @tests, $TEST_TOOL);
 
-@tests = list_parts( $ARGV[0] );
-$test_tool = $ARGV[1];
+$TEST_TOOL = $ENV{ 'TEST_TOOL' };
+if ($TEST_TOOL ne "") {
+  $TEST_TOOL = "$TEST_TOOL ";
+}
+$TEST_TOOL = $ARGV[0];
+
+shift(@ARGV);
 
 
-$tnames = join(" ",@tests);
+for $f (@ARGV) {
+  last if ($f eq ".");
+  run_test_in_dir( $f );
+}
 
-print <<EOF
+
+sub run_test_in_dir
+{ 
+  my ($dir, $test, $tnames  );
+
+  $dir = shift;
+
+  @tests = list_parts( $dir );
+
+  $tnames = join(" ",@tests);
+
+
+  print <<EOF
 
 ==================
 Running tests
-  - Using: $test_tool
+  - Directory: $dir
   - Tests: $tnames 
 ==================
 
 EOF
 ;
-test_it( $ARGV[1] );
-
+  test_it();
+}
 
 sub show_result
 {
@@ -37,13 +57,17 @@ sub show_result
 
 sub test_it
 {
-  my $ttol = shift;
-  my $failed = 0;
+  my ($failed, $test, $skipline); 
+  
+  $failed = 0;
 
   for $test (@tests) {
     print "Testing $test ... ";
     
-    system("$ttol $test >${test}.out 2>&1");
+   #system("$ttol $test >${test}.out 2>&1");
+    print "\n>>$TEST_TOOL $test<<\n";
+    system("$TEST_TOOL $test >${test}.out 2>&1");
+
 
     my $res = $?;
 
@@ -53,19 +77,19 @@ sub test_it
         	
     if ($tspec[0] eq "ok") {
 	if (scalar($res) != 0) {
-	   print "Failed !\n\tactual exit status $res expected to be zero\n";
+	   print "Test Failed !\n\tactual exit status $res expected to be zero\n";
            $failed ++;
  	   next;
 	}
     } 
     if ($tspec[0] eq "fail") {
 	if (scalar($res) == 0) {
-	   print "Failed !\n\texit status is 0 expected to be not zero.\n";
+	   print "Test Failed !\n\texit status is 0 expected to be not zero.\n";
            $failed ++;
 	   next;
 	}
     }
-    print "ok\n";
+    print "Test ok\n";
 
     if ($tspec[1] ne "ignore") {
 
@@ -74,12 +98,14 @@ sub test_it
       my $text = join("",@lines);
       close(OUTFILE);
 
+      $skipline = <SPECFILE>;
+
       my @slines = <SPECFILE>;
       my $stext = join("",@slines);
       close(SPECFILE);
 	
       if ($stext ne $text) {
-	print "FAILED\n\tActual output differs from expected\n";
+	print "Test FAILED\n\tActual output differs from expected\n";
         $failed ++;
       }
     }
@@ -106,7 +132,7 @@ sub get_test_spec
    
    open(SPECFILE,$tspecfile) || die "Can'topen $tspecfile";
    $first_line=<SPECFILE>;
-   
+       
 
    return split(" ",$first_line);
 }

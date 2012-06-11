@@ -1,26 +1,24 @@
 
 
-a = 1 + 2 * 4 / 3
+a = 1
 
-print( a )
+b := a
 
-b = []
+println ( ~msg 'a is reference to b ' .. a .. ' ' .. b  )
 
-d = {}
+a = 10
+
+println ( ~msg 'both values changed ' .. a .. ' ' .. b  )
 
 
-c = { @"@1"  => @"@a",
-      @"@12" => @"@b",
-      @"@13" => @"@c", 
-      @"@14" => @"@d",
-      @"@15" => @"@e"
-    }
+b = a
 
-print ( @"@ #{ c{ @"@1" } }  #{ c{ @"@2" } } #{ c{ @"@3" } }  #{ c{ @"@4" }  } ")
+println ( ~msg 'a is copy of b ' .. a .. ' '  .. b  )
 
-d = { @"@1" => [ 0, 1, 2 ],
-      @"@2" => [ 1, 2, 3 ],   
-      @"@3" => [ 2, 3, 4 ],   
-      @"@4" => [ 3, 4, 5 ],   
-      @"@5" => [ 5, 6, 7 ]
-    }
+a = 20
+
+print ( ~msg 'both are different ' .. a .. ' ' .. b )
+
+
+
+

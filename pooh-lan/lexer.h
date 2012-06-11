@@ -7,7 +7,7 @@
 //--------------------------------------------------------
 
 /* if defined then the parser writes lots of traces to stderr */
-#define TRACE_PARSER
+//#define TRACE_PARSER
 
 
 /* if defined then we are working with reentrant parser */
@@ -39,6 +39,8 @@ M_INLINE void YYLTYPE_init( YYLTYPE *location )
   location->first_line = location->first_column =
   location->last_line = location->last_column = 1;
 }
+
+#define DEFINE_NULL_YYLTYPE { 0, 0, 0, 0, 0 }
 
 //--------------------------------------------------------
 
@@ -87,7 +89,7 @@ int LEXER_free(LEXCONTEXT *pc);
 
 int LEXER_open_string(LEXCONTEXT *pc, const char *string, int init_token_value   );
 
-int LEXER_scan_file(LEXCONTEXT *pc, const char *file_name   );
+int LEXER_scan_file(LEXCONTEXT *pc, const char *file_name  );
 
 const char *LEXER_get_file_name(LEXCONTEXT *pc, int file_index);
 
@@ -100,7 +102,8 @@ void LEXER_set_location( LEXCONTEXT *ctx, YYLTYPE *location );
 
 void LEXER_set_file_name( LEXCONTEXT *ctx, const char *file_name );
 
-
 YYLTYPE LEXER_get_location( LEXCONTEXT *ctx );
+
+void  LEXER_set_next_token( LEXCONTEXT *pc, int init_token_value );
 
 #endif
