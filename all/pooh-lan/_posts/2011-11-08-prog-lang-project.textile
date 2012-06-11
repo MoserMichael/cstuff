@@ -143,7 +143,7 @@ I think that C and languages with a syntax similar to C are too terse and crypti
 overloading, no macros (never), No advanced looping construct that does assign an initial value to index, check the exit condition on index and pass to next iteration in one line (like for in C); 
 
 (GR4) There is some support for object orientation; Object orientation via prototypes (like javascript / Self) is supported; one can have objects by means of closures.
-Please see "oo feature":2011-11-07-feature-oo.htm	
+Please see "oo feature":../07/feature-oo.html	
 
 (GR5) Be fun to use. It is very difficult to quantify this or to give a definition for this concept, but we will try: 
 1.Encourage data driven programming / it must be possible to declare complex lists / hashes in code / Nesting of hashes and lists;
@@ -174,7 +174,7 @@ hash
 
 (R3) The following situations should result in compilation error  - use of parameter that has  not been defined  (variables are declared by assigning a value to a name) ; call of function that has not been declared; passing a parameter that is not used by a function. These checks will will be similar to STRICT mode in Perl - these checks are mandatory and cannot be turned off. 
 
-(see more in "type checking feature":2011-11-07-feature-typecheck.htm
+(see more in "type checking feature":../07/feature-typecheck.html
 
 (R4) do not have to define the type of a variable; it will become obvious from how the variable is later used; if a variable is used as an array (a[ 0 ] = 0 ), then a is  an array; the same variable name can not be later used as if it were a scalar. Problem: it is not always possible to tell the type of a binding: If you insert something into an array / hash, then later access to this entry is untyped and must be checked at 
 run time;
@@ -183,15 +183,15 @@ General principle: If you can infer the type of something during parsing/compila
 
 (R5) Semantics of values; 
 
-Please see "values feature":2011-11-07-feature-values.htm for a detailed discussion of the topic.
+Please see "values feature":../07/feature-values.html for a detailed discussion of the topic.
 
 (R6) Functions have prototypes; One function can have one prototype (no overloading); The prototype defines the names of the parameters, type of parameters is derived/infered from usage of parameter.
 
-Please see "function feature":2011-11-07-feature-functions.htm 
+Please see "function feature":../07/feature-functions.html
 
 (R7) Parameter passing / Evaluation strategy.
 
-Please see "function feature":2011-11-07-feature-functions.htm 
+Please see "function feature":../07/feature-functions.html 
 
 (R11) Check function prototype on call: If function is called directly then check number of parameters and if their types match (for example check if scalar is not passed instead of an array); If type is difficult to establish (function reference stored in hash) then defer check to run time; the type of a parameter is determined by how it is used (very simplistic form of type inference)
 
@@ -209,14 +209,14 @@ For these concatenation operator, the operands may any typ; a numeric value will
 (R14) Reflection, will be done as a library, so no need for special syntactic constructs here.
 
 (R12) Co-routines / will have generator functions with yield; *must have for nice iteration *;
-"more on threads":2011-11-07-feature-threads.htm 
+"more on threads":../07/feature-threads.html 
 
 (R13)  Things to cut: exceptions, namespaces, classes (also cuts Generic types, so the innovation of doing without classes :really makes things much more feasible); no macros / no meta programming at all; No blocks as function closures (this feature might add to more concise code, but is very confusing - is it a statement? Is it a function? ) ; no syntax that does many things at once - like for statements in C; 
 
 (R15)  Also one needs array slices in order to return multiple variables from functions.
 
 (R16) String literals; 
-Please see "string literals":2011-11-07-feature-string-literals.htm 
+Please see "string literals":../07/feature-string-literals.html 
 
 
 

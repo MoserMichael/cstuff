@@ -28,6 +28,8 @@ sync
 up all/blog/_posts blog
 up all/projects/_posts projects
 up all/ramblings/_posts ramble
+up all/pooh-lan/_posts pooh-lan
+
 
 git commit -a -m "Update site"
 git push origin gh-pages
