@@ -47,7 +47,7 @@ is versatile enough to do real / interesting projects on real systems.
 
 For scripting languages its is very important te be versatile; be usable in a multitude of different situations and from varying environments. As "observed here":http://dobbse.net/thinair/2006/06/play-nice.html  
 
-bq.  ... Smalltalk's weakness is "at the boundaries:" when you want to try to do some typical unix system maintenance, or interfacing with underlying C libraries, or something similar. As long as you're staying within the Smalltalk environment, it completely rocks. But it's definitely painful if you try to reach outside. And it's especially painful if you want your code to work with different Smalltalks. What Perl got right was making it completely painless to integrate with its environment ? In some sense LISP wants to be on a LISP Machine and Smalltalk wants to be in its virtual machine, whereas Perl wants to go out and play with the other kids. The former languages are introverted and Perl is extroverted.
+bq.  ... Smalltalk's weakness is "at the boundaries:" when you want to try to do some typical unix system maintenance, or interfacing with underlying C libraries, or something similar. As long as you're staying within the Smalltalk environment, it completely rocks. But it's definitely painful if you try to reach outside. And it's especially painful if you want your code to work with different Smalltalks. What Perl got right was making it completely painless to integrate with its environment  -  In some sense LISP wants to be on a LISP Machine and Smalltalk wants to be in its virtual machine, whereas Perl wants to go out and play with the other kids. The former languages are introverted and Perl is extroverted.
 
 General purpose scripting languages have to cram in a lot of features; often design decissions are made with the aim to simplify the runtime interpreter / execution envionment, these tradeoffs tend to be counter intuitive / hard to explain; Examples of such tradeoffs made by some languages are - function variables are by default global unless declared as of local scope; values can be used before having been assigned a value; 
 With an educational programming language one should strive to avoid such trade offs. 
@@ -102,15 +102,7 @@ h4. Things that I particularly dislike
 * I don't like escape sequences in string literals 
 * Identifier names - in many languages identifier names consist of letters, digits and underscores. I think that this is too limiting.
 * Level of detail in error messages is mostly often awful.
-* All of them: Hash tables with complex keys - keys that are not strings. Ideally a hash should be able to store any object as key; well Python solves this problem by introducing "tuples":http://docs.python.org/tutorial/datastructures.html#tuples-and-sequences  - read only sequences can be key to a hash; which results in the introduction of yet another entity. Perl does not bother with this problem - if you insert a Array as key, then it just casts its to scalar - takes the length of the array as key that is; not very intuitive either.
-
-Entities that can be stored as keys to an array
-scalars; numbers. For a string key we have to make a new copy of the string when holding it in the hash entry.
-Sequences,vectors have to be copied by values, two vectors can be compare by comparing its elements; If the elements of an array are hash collections, then the hash collections have to be compared (ouch);
-
-Is it possible to store a hash / object as key? First of all the problem is mitigated if each element of the hash collection stores the hash value of  the key; in this case the key has to be compared only in cases when the hash value of the given key is identical with a hash value of the collection entry ; in this case one must take the ordered sequence of the hash entries keys and compare the corresponding values; The hash instance could cache the ordered sequence of its keys upon demand - if the ordered sequence of keys has been computed for this instance, and the instance has not been further modified; 
-Is all this worth the effort ?
-In a way yes; otherwise arrays as hash keys may not hold hashes; also yet another mind bending restriction is avoided as a start;  
+* All of them: Hash tables with complex keys - keys that are not strings. Ideally a hash should be able to store any object as key; well Python solves this problem by introducing "tuples":http://docs.python.org/tutorial/datastructures.html#tuples-and-sequences  - read only sequences can be key to a hash; which results in the introduction of yet another entity. Perl does not bother with this problem - if you insert a Array as key, then it just casts its to scalar - takes the length of the array as key that is; not very intuitive either. I think one could do better than that.
 
 h4. Things that I don't know how to eat
 
@@ -132,7 +124,7 @@ h3. General Terms / General requirements.
 This section spells out the general requirements for the Pooh programming language in more detail.
 
 (GR1) Language must serve an educational purpose / be suited for the purpose of introducing kids to 
-programming; it is a procedural and imperative language; that means that its has functions and and assignments operator. 
+programming; it is a procedural language; that means that its has assignments. 
 
 
 (GR2) The syntax may not force the user to perform repetitive tasks over and over again ; For example it may not require the user to put in semicolon delimiter between statements - that's an  evil; or it should not require the user to declare variables / types of variables.
@@ -216,8 +208,10 @@ For these concatenation operator, the operands may any typ; a numeric value will
 (R15)  Also one needs array slices in order to return multiple variables from functions.
 
 (R16) String literals; 
-Please see "string literals":../07/feature-string-literals.html	 
+Please see "string literals":../07/feature-string-literals.html 
 
+(R17) Keys to hash tables
+Please see "complex hash keys"../07/feature-complex-hash-keys.html
 
 
 
