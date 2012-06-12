@@ -132,7 +132,7 @@ h3. General Terms / General requirements.
 This section spells out the general requirements for the Pooh programming language in more detail.
 
 (GR1) Language must serve an educational purpose / be suited for the purpose of introducing kids to 
-programming; it is a procedural language; that means that its has assignments. 
+programming; it is a procedural and imperative language; that means that its has functions and and assignments operator. 
 
 
 (GR2) The syntax may not force the user to perform repetitive tasks over and over again ; For example it may not require the user to put in semicolon delimiter between statements - that's an  evil; or it should not require the user to declare variables / types of variables.
@@ -216,7 +216,7 @@ For these concatenation operator, the operands may any typ; a numeric value will
 (R15)  Also one needs array slices in order to return multiple variables from functions.
 
 (R16) String literals; 
-Please see "string literals":../07/feature-string-literals.html 
+Please see "string literals":../07/feature-string-literals.html	 
 
 
 

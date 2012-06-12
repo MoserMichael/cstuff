@@ -31,5 +31,5 @@ up all/ramblings/_posts ramble
 up all/pooh-lan/_posts pooh-lan
 
 
-git commit -a -m "Update site"
-git push origin gh-pages
+#git commit -a -m "Update site"
+#git push origin gh-pages
