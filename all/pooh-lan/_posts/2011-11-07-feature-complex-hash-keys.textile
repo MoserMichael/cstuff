@@ -12,8 +12,9 @@ h3. what others do
 Hash tables with complex keys - keys that are not strings. Ideally a hash should be able to store any object as key; well Python solves this problem by introducing "tuples":http://docs.python.org/tutorial/datastructures.html#tuples-and-sequences  - read only sequences can be key to a hash; which results in the introduction of yet another entity. Perl does not bother with this problem - if you insert a Array as key, then it just casts its to scalar - takes the length of the array as key that is; not very intuitive either.
 
 Entities that can be stored as keys to an array
-scalars; numbers. For a string key we have to make a new copy of the string when holding it in the hash entry.
-Sequences,vectors have to be copied by values, two vectors can be compare by comparing its elements; If the elements of an array are hash collections, then the hash collections have to be compared (ouch);
+
+* scalars; numbers. For a string key we have to make a new copy of the string when holding it in the hash entry.
+* Sequences,vectors have to be copied by values, two vectors can be compare by comparing its elements; If the elements of an array are hash collections, then the hash collections have to be compared (ouch);
 
 h3. the problem
 
@@ -22,25 +23,25 @@ what to do if a hash table is inserted as key, or indirectly, if a hash table is
 h3. it can be done
 
 to compute the hash key;
-for scalars as keys: compute the hash key
-for arrays as keys: compute the hash value of each element and combine them in sequence
-for hash tables as keys: create a sorted ordering of the keys, compute the hash value of each element and combine them in the order of the sorted keys.
+* for scalars as keys: compute the hash key
+* for arrays as keys: compute the hash value of each element and combine them in sequence
+* for hash tables as keys: create a sorted ordering of the keys, compute the hash value of each element and combine them in the order of the sorted keys.
 
 How to sort an arbitrary set of values:
-all values of the same type are compared with entries of their own kind (integers with integers, strings with strings, arrays with arrays, hashes with hashes)
+* all values of the same type are compared with entries of their own kind (integers with integers, strings with strings, arrays with arrays, hashes with hashes)
 
 comparing two arrays
-two arrays are equal if both have the same number of elements, and all elements are equal.
-Array a is smaller than array b 
-if a has less elements than b
-if an element a[i] is less then element b
+* two arrays are equal if both have the same number of elements, and all elements are equal.
+* Array a is smaller than array b 
+* if a has less elements than b
+* if an element a[i] is less then element b
 comparison of hashes.
-If hash a has less keys then hash b then a is smaller than b
-if both hashes have same number or keys, sort the keys; 
-compare keys after sorting if a.key[i] < b.key[i] then a is smaller then b
-.if a.key[i] == b.key[i] then compare  v1 = a.lookup( a.key[i] ) and v2 = b.lookup( b.key[i] )
-if v1 < v2 then a is smaller then b.
-if all are equal then both hash instances are equal.
+* If hash a has less keys then hash b then a is smaller than b
+* if both hashes have same number or keys, sort the keys; 
+* compare keys after sorting if a.key[i] < b.key[i] then a is smaller then b
+* if a.key[i] == b.key[i] then compare  v1 = a.lookup( a.key[i] ) and v2 = b.lookup( b.key[i] )
+* if v1 < v2 then a is smaller then b.
+* if all are equal then both hash instances are equal.
 
 h3. is it all really that bad?
 
