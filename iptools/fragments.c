@@ -31,7 +31,7 @@ typedef struct tagIP_PACKET_INFO {
 
 } IP_PACKET_INFO;
 
-static int hash_compare(HASH_Entry *entry, void * key, ssize_t key_length)
+static int hash_compare(HASH_Entry *entry, const void * key, ssize_t key_length)
 {
   (void) key_length;
   IP_PACKET_INFO *info = (IP_PACKET_INFO *) entry;

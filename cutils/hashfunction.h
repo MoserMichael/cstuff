@@ -30,7 +30,7 @@ typedef uint32_t HASH_VALUE;
 
  * @return hash value
  */
-HASH_VALUE	HASHFUNCTION_PJW(void * keydata, ssize_t key_length);
+HASH_VALUE	HASHFUNCTION_PJW(const void * keydata, ssize_t key_length);
 
 
 
@@ -51,7 +51,7 @@ HASH_VALUE	HASHFUNCTION_PJW(void * keydata, ssize_t key_length);
 
  * @return hash value
  */
-HASH_VALUE HASHFUNCTION_rotating(void * keydata, ssize_t key_length);
+HASH_VALUE HASHFUNCTION_rotating(const void * keydata, ssize_t key_length);
 
 /**
  * @brief Shift and XOR
@@ -70,7 +70,7 @@ HASH_VALUE HASHFUNCTION_rotating(void * keydata, ssize_t key_length);
 
  * @return hash value
  */
-HASH_VALUE HASHFUNCTION_shift_and_xor(void * keydata, ssize_t key_length);
+HASH_VALUE HASHFUNCTION_shift_and_xor(const void * keydata, ssize_t key_length);
 
 /**
  * @brief Bernstein hash 
@@ -93,7 +93,7 @@ HASH_VALUE HASHFUNCTION_shift_and_xor(void * keydata, ssize_t key_length);
 
  * @return hash value
  */
-HASH_VALUE HASHFUNCTION_shift_and_xor(void * keydata, ssize_t key_length);
+HASH_VALUE HASHFUNCTION_shift_and_xor(const void * keydata, ssize_t key_length);
 
 /**
  * @brief Fowler/Noll/Vo hash  
@@ -109,7 +109,7 @@ HASH_VALUE HASHFUNCTION_shift_and_xor(void * keydata, ssize_t key_length);
 
  * @return hash value
  */
-HASH_VALUE HASHFUNCTION_Fowler_Noll_Vo(void * keydata, ssize_t key_length);
+HASH_VALUE HASHFUNCTION_Fowler_Noll_Vo(const void * keydata, ssize_t key_length);
 
 #if 0
 /**
@@ -126,7 +126,7 @@ HASH_VALUE HASHFUNCTION_Fowler_Noll_Vo(void * keydata, ssize_t key_length);
 
  * @return hash value
  */
-M_INLINE HASHFUNCTION_Julienne_Walker (void * keydata, ssize_t key_length)
+M_INLINE HASHFUNCTION_Julienne_Walker (const void * keydata, ssize_t key_length)
 {
   HASH_VALUE hash = 16777551;;
   unsigned char * key = (unsigned char *) keydata;
@@ -162,7 +162,7 @@ M_INLINE HASHFUNCTION_Julienne_Walker (void * keydata, ssize_t key_length)
 
  * @return hash value
  */
-HASH_VALUE HASHFUNCTION_Bob_Jenkins_one_at_a_time(void * keydata, ssize_t key_length);
+HASH_VALUE HASHFUNCTION_Bob_Jenkins_one_at_a_time(const void * keydata, ssize_t key_length);
 
 /**
  * @brief ELF hash  
@@ -177,7 +177,7 @@ HASH_VALUE HASHFUNCTION_Bob_Jenkins_one_at_a_time(void * keydata, ssize_t key_le
 
  * @return hash value
  */
-HASH_VALUE HASHFUNCTION_ELF(void * keydata, ssize_t key_length);
+HASH_VALUE HASHFUNCTION_ELF(const void * keydata, ssize_t key_length);
 
 
 /**
@@ -194,7 +194,7 @@ HASH_VALUE HASHFUNCTION_ELF(void * keydata, ssize_t key_length);
 
  * @return hash value
  */
-HASH_VALUE HASHFUNCTION_Bob_Jenkins(void * keydata, ssize_t length);
+HASH_VALUE HASHFUNCTION_Bob_Jenkins(const void * keydata, ssize_t length);
 
 
 
@@ -207,7 +207,7 @@ HASH_VALUE HASHFUNCTION_Bob_Jenkins(void * keydata, ssize_t length);
  * @param key_length	(in) the size of key data. If value is VHASH_STRING then keydata is treated as null terminated string.
  * @return hash value
  */
-HASH_VALUE	HASHFUNCTION_sample_hash_func(void * keydata, ssize_t key_length);
+HASH_VALUE	HASHFUNCTION_sample_hash_func(const void * keydata, ssize_t key_length);
 
 
  

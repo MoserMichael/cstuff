@@ -112,7 +112,13 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 prog : 
 	TK_START_STATEMENT stmtList	
      	    {
-		parse_context->my_ast_root = $<ast>2;
+	       AST_FUNC_DECL *scl;
+
+	       // global scope is a function (so that it has context for looking up globals and function names.)
+	       scl = AST_FUNC_DECL_init( 0, 0, parse_context, YYLOCPTR );
+	       AST_FUNC_DECL_set_body( scl, parse_context, (AST_BASE_LIST *) $<ast>2 );
+
+	       parse_context->my_ast_root = &scl->base;
 	    }
 	    |
 	TK_START_EXPRESSION expr 
@@ -592,6 +598,8 @@ functionDefStmt  :  functionPrototypeDecl stmtInnerList TK_END
 	}
 
 	;
+
+	
 
 functionPrototypeDecl : TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE 
 	{

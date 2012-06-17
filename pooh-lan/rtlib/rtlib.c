@@ -636,6 +636,13 @@ void VALHASH_check_ref( VALHASH *hash )
 
 /* ==================================================================================== */
 
+int  VALSTRING_append( VALSTRING *to, VALSTRING *from )
+{
+  VALSTRING_set_capacity( to, to->length + from->length ); 
+  memcpy( to->string + to->length, from->string, from->length ); 
+  to->length += from->length;
+  return 0;
+}
 
 void VALSTRING_set_capacity( VALSTRING *to, size_t capacity )
 {
@@ -1369,7 +1376,7 @@ void BINDING_DATA_MEM_free( BINDING_DATA *pdata )
 
 
 /* ==================================================================================== */
-static int check_loop_cmp( HASH_Entry *entry, void *key, ssize_t key_len)
+static int check_loop_cmp( HASH_Entry *entry, const void *key, ssize_t key_len)
 {
    PRINT_CHECK_LOOP *lhs = (PRINT_CHECK_LOOP *) entry;
    
@@ -1381,7 +1388,7 @@ static int check_loop_cmp( HASH_Entry *entry, void *key, ssize_t key_len)
    return 1;
 }
 
-static uint32_t check_loop_hash( void *key, ssize_t klen)
+static uint32_t check_loop_hash( const void *key, ssize_t klen)
 {
   (void) klen;
   return (uint32_t) key;
@@ -1682,6 +1689,33 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
      // ??
      //fprintf("%s:%d %s\n",  LEXER_get_file_name( LEXCONTEXT *pc, location->file_id), location->first_line,  activation_record->value.func_activation_record.fdecl->fname );
   }
+  return 0;
+}
+
+int EVAL_THREAD_yield_value( EVAL_THREAD *thread, BINDING_DATA *data, BINDING_DATA **msg_val )
+{
+  (void) thread;
+  (void) data;
+  (void) msg_val;
+
+  return 0;
+}
+
+int EVAL_THREAD_activate( EVAL_THREAD *thread, BINDING_DATA *msg, BINDING_DATA **msg_val )
+{
+  (void) thread;
+  (void) msg;
+  (void) msg_val;
+
+  return 0;
+}
+
+
+// returns 1 if this frame is a top level frame.
+int EVAL_THREAD_is_top_level_frame( EVAL_THREAD *thread )
+{
+  (void) thread;
+
   return 0;
 }
 

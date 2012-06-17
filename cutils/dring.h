@@ -487,13 +487,23 @@ M_INLINE void DRING_reverse( DRING *lst )
 M_INLINE int DRING_check(DRING *header)
 {
 	DRING *cur,*next;
+        size_t sz = 0;
 
 	DRING_FOREACH( cur, header ) {
-
+		if (!cur) {
+		    return 0;
+		}
 		next = cur->next;
 		if (!next || next->prev != cur) {		
 			return 0;
 		}
+		sz += 1;
+	}
+
+	if (sz == 0) {
+	    if (header->next != header->prev || header->next != header) {
+	      return 0;
+	    }
 	}
 	return 1;
 }

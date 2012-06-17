@@ -1,21 +1,25 @@
 TOPDIR=..
 
 
-TARGETS=parser
-   
 # ---------------------------------------
 
+PREBUILD_SUBDIRS=rtlib
+
+# ---------------------------------------
+
+TARGETS=parser
+   
 
 parser_TYPE=exe
 
-parser_SRC=lexer.c parser.c ast.c parsectx.c checker.c eval_data.c eval.c main.c 
+parser_SRC=lexer.c parser.c ast.c parsectx.c printast.c checker.c main.c 
 
 parser_DEPENDENCIES=pars.txt lex.txt 
 
-parser_LIBS=cutils butils
+parser_LIBS=cutils butils m rtlib
 
 
-parser_POSTBUILD=./test-it.pl test 
+parser_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/parser test test-error .
 
 
 # ---------------------------------------

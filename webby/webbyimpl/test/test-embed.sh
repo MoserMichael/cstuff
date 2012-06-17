@@ -4,7 +4,7 @@ set -x
 set -e
 
 #prefix=rungdb
-prefix="valgrind --leak-check=yes"
+#prefix="valgrind --leak-check=yes"
 #--max-stackframe=1169834492" 
 
 test_prog=$1

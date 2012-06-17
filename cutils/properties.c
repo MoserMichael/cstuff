@@ -17,7 +17,7 @@ static int load_properties(PROPERTIES *props, const char *file_name);
 static int readLine(FILE *fp, DBUF *lineBuff, char *inBuf, int *inOff, int *inLimit);
 static int loadConvert ( DBUF *ret, const char * in, int off, int len);
 
-static int props_compare_key(HASH_Entry *entry, void * key, ssize_t key_length)
+static int props_compare_key(HASH_Entry *entry, const void * key, ssize_t key_length)
 {
   NAMEVALUE_HASH_ENTRY *pe = (NAMEVALUE_HASH_ENTRY *) entry;
 

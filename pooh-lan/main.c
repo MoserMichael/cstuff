@@ -5,16 +5,32 @@
 #include <stdio.h>
 #include <unistd.h>
 
+extern AST_XFUNC_DECL xlib[];
+
+
 void dump_ast( const char *file_path, AST_BASE *base, int idx );
 void  delete_temp_results(const char *file_path);
 
+
+int loadRTLIB( PARSECONTEXT *ctx )
+{ 
+  size_t i;
+
+  for(i=0; xlib[i].f_name != 0 ; i++ )
+  {
+    PARSECONTEXT_add_function_def(  ctx, &xlib[i] );
+  }
+  return 0;
+}
+
 int run(const char *file_path)
 {
-
   PARSECONTEXT *ctx;
   AST_BASE *rval;
  
   ctx = PARSER_init();
+
+  loadRTLIB( ctx );
 
   if (LEXER_scan_file( &ctx->lexctx, file_path)) {
     fprintf(stderr,"Can't open file %s\n", file_path);
@@ -26,10 +42,18 @@ int run(const char *file_path)
     goto err;
   }
  
-  if (ctx->my_ast_root) { 
-    dump_ast( file_path, ctx->my_ast_root, 1 );
+  if (!ctx->my_ast_root) { 
+    goto ok;
   }
 
+  dump_ast( file_path, ctx->my_ast_root, 1 );
+
+  if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
+    fprintf(stderr,"Type checking failed\n");
+    goto err;
+  }
+
+ok:
   PARSER_free(ctx);
   return 0;
   

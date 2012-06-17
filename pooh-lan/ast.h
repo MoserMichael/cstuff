@@ -394,7 +394,6 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs
   return scl;
 }
 
-
 M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location  )
 {
   AST_EXPRESSION *scl,*first_idx;
@@ -634,6 +633,8 @@ typedef struct tagAST_XFUNC_PARAM_DECL {
 } AST_XFUNC_PARAM_DECL;
 
 /***************************************************/
+#define MAX_XFUNC_PARAM 10
+
 typedef struct tagAST_XFUNC_DECL {
   AST_BASE base;
  
@@ -643,7 +644,7 @@ typedef struct tagAST_XFUNC_DECL {
   AST_VAR_TYPE return_type_value;
 
   size_t nparams;
-  AST_XFUNC_PARAM_DECL params[ 10 ]; 
+  AST_XFUNC_PARAM_DECL params[ MAX_XFUNC_PARAM ]; 
 
 } AST_XFUNC_DECL;
 
@@ -781,7 +782,7 @@ typedef struct tagAST_FUNC_DECL {
    AST_BASE_LIST *func_body;
  
   TREENODE funcs; // all functions (by nesting of declaration)
-  HASH scope_map_name_to_binding;
+  HASH scope_map_name_to_binding; 
     
   int checker_state;  
   int last_stack_offset;
@@ -824,7 +825,7 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   scl->checker_state = 0;  
   scl->last_stack_offset = 1; // at least one entry reserved for return value.  
 
-  if (scl->f_name) {
+  if (ctx != 0) {
     PARSECONTEXT_add_function_def2( ctx, scl ); 
   }
   return scl;

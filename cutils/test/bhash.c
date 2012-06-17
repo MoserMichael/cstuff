@@ -13,7 +13,7 @@ typedef struct tagSTR2INT
 }
 	STR2INT;
 
-static int hash_compare(HASH_Entry *entry, void * key, ssize_t key_length)
+static int hash_compare(HASH_Entry *entry, const void * key, ssize_t key_length)
 {
 	STR2INT *lhs;
 

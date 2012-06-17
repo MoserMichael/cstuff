@@ -6,7 +6,7 @@
 
 int MY_YY_input();
 
-static int hash_compare(HASH_Entry *entry, void * key, ssize_t key_length)
+static int hash_compare(HASH_Entry *entry, const void * key, ssize_t key_length)
 {
   FUNCTION_HASH_entry *lhs;	
 
@@ -81,17 +81,17 @@ void PARSECONTEXT_free( PARSECONTEXT *ctx )
   LEXER_free( &ctx->lexctx );
 }
 
-int PARSECONTEXT_add_function_def2(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl )
+void PARSECONTEXT_add_function_def2(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl )
 {
-  if ( ! PARSECONTEXT_add_function_def( ctx, (AST_XFUNC_DECL *) decl ) ) {
-    TREE_insert_child( &ctx->current->funcs, &decl->funcs, TREE_INSERT_LAST, 0 );
-    ctx->current  = decl;
-    return 0;
+  if ( decl->f_name) {
+    PARSECONTEXT_add_function_def( ctx, (AST_XFUNC_DECL *) decl );
   }
-  return -1;
+
+  TREE_insert_child( &ctx->current->funcs, &decl->funcs, TREE_INSERT_LAST, 0 );
+  ctx->current  = decl;
 }
 
-int PARSECONTEXT_add_function_def(  PARSECONTEXT *ctx, struct tagAST_XFUNC_DECL  *decl )
+void PARSECONTEXT_add_function_def(  PARSECONTEXT *ctx, struct tagAST_XFUNC_DECL  *decl )
 {
   FUNCTION_HASH_entry *entry;
   AST_FUNC_DECL *fdecl;
@@ -101,24 +101,28 @@ int PARSECONTEXT_add_function_def(  PARSECONTEXT *ctx, struct tagAST_XFUNC_DECL 
   fdecl = (AST_FUNC_DECL *) decl;
   entry = (FUNCTION_HASH_entry *) HASH_find(  &ctx->map_function_defs, (void *) fdecl->f_name, -1 );
   if (entry) {
-    do_yyerror ( &decl->base.location, ctx, "The function has been defined twice. first definiton at line %d column %d", 
-		    fdecl->base.location.first_line, fdecl->base.location.first_column);
-    return -1;
+    do_yyerror( &decl->base.location, ctx, "The function %s has been defined twice. ",
+		    fdecl->f_name );
+
+    if (entry->decl->base.type == S_FUN_DECL) {		    
+      do_yyerror( &entry->decl->base.location, ctx  , "First definition of function %s was here" );
+    }  
+    return ;
   }
 
   entry = (FUNCTION_HASH_entry *) malloc( sizeof( FUNCTION_HASH_entry ) );
   if (!entry) {
-    return -1;
+    return ;
   }
   
   entry->decl = decl;
 //entry->name = fdecl->f_name;
 
   if (HASH_insert( &ctx->map_function_defs, &entry->entry, (void *) fdecl->f_name, (ssize_t) -1  )) {
-    return -1;
+    return ;
   }
 
-  return 0;
+  return ;
 }
 
 struct tagAST_BASE * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const char *fname ) 

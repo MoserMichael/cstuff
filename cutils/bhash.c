@@ -99,7 +99,7 @@ HASH_Entry *HASH_find_in_bucket(
 					SRING		*abucket, 
 					HASH_VALUE   	 hash, 
 					HASH_COMPARE_KEY compare_key,
-					void		*key, 
+					const void	*key, 
 					ssize_t		 key_size )
 {
 	SRING	*pos;
@@ -116,7 +116,7 @@ HASH_Entry *HASH_find_in_bucket(
  	return 0;
 }
 
-HASH_Entry *HASH_find( HASH *phash, void *key, ssize_t key_size )
+HASH_Entry *HASH_find( HASH *phash, const void *key, ssize_t key_size )
 {
 	HASH_VALUE hash = phash->hash_func( key, key_size );
 	int		bucket =   ADJUST_HASH(hash, phash->buckets_size);

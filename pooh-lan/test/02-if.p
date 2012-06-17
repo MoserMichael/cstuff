@@ -38,4 +38,4 @@ end
 show( ~arg 1 )
 show( ~arg 2 )
 show( ~arg 3 )
-show( ~a 1 ~arg 4 )
+show( ~arg 4 )

@@ -28,13 +28,13 @@ typedef struct  {
 /**
  * compute hash value
  */ 
-typedef HASH_VALUE	(*HASH_FUNCTION) 	(void *data, ssize_t length);
+typedef HASH_VALUE	(*HASH_FUNCTION) 	(const void *data, ssize_t length);
 
 
 /**
  * Compare argument key with hash key embedded in entry.
  */
-typedef int     	(*HASH_COMPARE_KEY)	(HASH_Entry *, void *key, ssize_t key_size);
+typedef int     	(*HASH_COMPARE_KEY)	(HASH_Entry *, const void *key, ssize_t key_size);
 
 /** 
  * Visit a hash entry.
@@ -144,7 +144,7 @@ M_INLINE size_t HASH_size( HASH *hash)
  
  * @return pointer to entry if found; NULL if not found
  */
-HASH_Entry *HASH_find( HASH *phash, void *key, ssize_t key_size );
+HASH_Entry *HASH_find( HASH *phash, const void *key, ssize_t key_size );
 
 
 /**

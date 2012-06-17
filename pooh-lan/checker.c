@@ -2,17 +2,6 @@
 #include "ast.h"
 #include "parser.h"
 
-int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx );
-
-int CHECKER_init( CHECKERCTX *ctx)
-{  
-  ctx->is_left_hand_side = 0; 
-  ctx->current_function  = 0;
-  return 0;
-}
-
-int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx );
-
 BINDING_ENTRY * make_binding( AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, AST_FUNC_DECL *decl )
 {
    BINDING_ENTRY *binding;
@@ -29,6 +18,19 @@ BINDING_ENTRY * make_binding( AST_VAR_TYPE value_type, YYLTYPE *location, const 
   
    return binding;
 }
+
+BINDING_ENTRY *find_binding( AST_FUNC_DECL *fdecl, const char *name )
+{
+  return  (BINDING_ENTRY *)  HASH_find( &fdecl->scope_map_name_to_binding, (void *) name, -1);
+}
+
+#if 0
+
+int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx );
+int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx );
+
+
+int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx );
 
 BINDING_ENTRY *lookup_binding( const char *name, AST_FUNC_DECL *decl, REF_SCOPE scope, int *pscope )
 {  
@@ -371,14 +373,9 @@ int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
   return 0;
 }
 
-int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
+int CHECK_statement( AST_BASE *base, PARSECONTEXT *ctx )
 {
-  DRING *tmp;
-  AST_BASE *base;
-
-  DRING_FOREACH( tmp, &body->statements )
-    base = _OFFSETOF( tmp, AST_BASE, entry );
-    switch(base->type) {
+   switch(base->type) {
       case S_FUN_DECL: {
         AST_FUNC_DECL *prev,*fdecl;
 	
@@ -523,6 +520,18 @@ int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
    return 0;
 }
 
+int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )
+{
+  DRING *tmp;
+  AST_BASE *base;
+
+  DRING_FOREACH( tmp, &body->statements ) {
+    base = _OFFSETOF( tmp, AST_BASE, entry );
+    CHECK_statement( base, ctx );
+  }
+  return 0;
+}
+
 int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx )
 {
   AST_BASE_LIST *body = fdecl->func_body;
@@ -538,11 +547,470 @@ int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx )
   
   return CHECK_statement_list( body, ctx );
 }
+#endif
 
-int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE_LIST *program)
+typedef struct tagFUNCTION_ENTRY {
+  HASH_Entry entry;
+  AST_FUNC_DECL *fdecl;
+
+} FUNCTION_ENTRY;
+
+
+
+M_INLINE int function_hash_compare( HASH_Entry  *entry, void * key, ssize_t key_length)
 {
-  PARSECONTEXT *pctx = _OFFSETOF( ctx, PARSECONTEXT, chkctx );
-  
-  return CHECK_statement_list( program, pctx );
+  FUNCTION_ENTRY *lhs;	
+
+  (void) key_length;
+
+  lhs = (FUNCTION_ENTRY *) entry;
+
+  if (strcmp( lhs->fdecl->f_name, key) == 0) {
+    return 0;
+  }
+  return 1;
 }
 
+#if 0
+AST_FUNC_DECL * CHECKER_find_function( CHECKERCTX *ctx, const char *name )
+{
+   FUNCTION_ENTRY *entry = HASH_find( &ctx->scope_map_name_to_function, name, (size_t) -1);  
+   if (!entry) {
+     return 0;
+   }
+   return entry->fdecl;
+}
+
+int CHECKER_add_function( CHECKERCTX *ctx,  FUNC_DECL *decl )
+{
+  FUNCTION_ENTRY *func;
+  
+  func = (FUNCTION_ENTRY *) malloc( sizeof( FUNCTION_ENTRY ) );
+  if (!func) {
+    return -1;
+  }
+  func->fdecl = decl;
+
+  return HASH_insert( &ctx->scope_map_name_to_function, &func->entry, name, (size_t) -1);
+}
+ 
+int CHECKER_define_function( CHECKERCTX *ctx, AST_FUNC_DECL *fdecl )
+{
+  AST_FUNC_DECL *fcheck;
+	  
+  fcheck = CHECKER_find_function( ctx, fdecl->f_name );
+  if (fcheck) {
+    do_yyerror( &fdecl->base.location, "Function %s is defined twice", fdecl->f_name );
+    do_yyerror( &fcheck->base.location, "First definition of %s is here", fdecl->f_name );
+    return -1;
+  }
+  if (CHECKER_add_function( ctx, fdec )) {
+    do_yyerror( &fcheck->base.location, "Internal error: can't add function declaration" );
+    return -1;
+  }
+  return 0;
+}
+#endif
+
+
+int CHECKER_init( CHECKERCTX *ctx)
+{  
+  ctx->is_left_hand_side = 0; 
+  ctx->current_function  = 0;
+
+#if 0
+  if (HASH_init( &ctx-> scope_map_name_to_function, 10, 0, function_hash_compare, 0 )) {
+    return -1;
+  }
+#endif  
+  return 0;
+}
+
+void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base );
+
+AST_FUNC_CALL_PARAM *CHECKER_find_param_by_label( AST_VECTOR *vect, const char *param_name )
+{
+    size_t i;
+    AST_FUNC_CALL_PARAM *param;
+    
+    for( i = 0; i < AST_VECTOR_size( vect ); i++ )
+    {
+	param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( vect, i );
+	if (strcmp( param->label_name, param_name ) == 0) {
+	    return param;
+	}
+    }
+    return 0;
+}
+
+AST_EXPRESSION *CHECKER_find_param_by_label2( AST_VECTOR *vect, const char *param_name )
+{
+    size_t i;
+    AST_EXPRESSION *param;
+    
+    for( i = 0; i < AST_VECTOR_size( vect ); i++ )
+    {
+	param = (AST_EXPRESSION *) AST_VECTOR_get( vect, i );
+	if (strcmp( param->val.ref.lhs, param_name ) == 0) {
+	    return param;
+	}
+    }
+    return 0;
+}
+
+AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , const char *param_name )
+{
+    size_t i;
+    AST_XFUNC_PARAM_DECL *param;
+    
+    for( i = 0; i < MAX_XFUNC_PARAM; i++ ) {
+	param = &xfunc->params[ i ];
+
+	if (!param->param_name) {
+	  break;
+	}
+	if (strcmp( param->param_name, param_name ) == 0) {
+	    return param;
+	}
+    }
+    return 0;
+}
+
+
+int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
+{
+    AST_EXPRESSION *f_name;
+    const char *func_name;
+    AST_BASE *func_def; 
+    size_t i;
+    AST_FUNC_CALL_PARAM *param;
+    f_name =  fcall->f_name;
+
+    CHECKER_pass( ctx, (AST_BASE *) fcall->f_name );
+    //fprintf( out, " , " );
+    CHECKER_pass( ctx, (AST_BASE *) fcall->call_params );
+
+    if ( f_name->exp_type != S_EXPR_REFERENCE )
+    {
+       // function that returns function value - can't check during compilation / type checking.
+       return 0;
+    }
+
+    func_name = f_name->val.ref.lhs;  
+
+    func_def = PARSECONTEXT_find_function_def( ctx, func_name ); 
+    if (!func_def) {
+      do_yyerror( &fcall->base.location, ctx, "The function %s is not defined, can't call a function that is not defined", func_name );
+      return -1;
+    }
+
+    fcall->func_decl = func_def;
+
+    if (func_def->type == S_FUN_DECL) {
+       AST_FUNC_DECL *fdecl = (AST_FUNC_DECL *) func_def;
+       AST_EXPRESSION *parame;
+
+       for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
+	 param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
+	 if (CHECKER_find_param_by_label2( fdecl->func_params, param->label_name ) == 0) {
+           do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s", fdecl->f_name, param->label_name );
+	 }
+       }	 
+       for( i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
+	 parame = (AST_EXPRESSION *) AST_VECTOR_get( fdecl->func_params, i );
+	 if (CHECKER_find_param_by_label( fcall->call_params, parame->val.ref.lhs ) == 0) {
+           do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the mandatory parameter ~%s", parame->val.ref.lhs );
+	 }
+       }	 
+    } else {
+       AST_XFUNC_DECL *xfunc = (AST_XFUNC_DECL *) func_def;
+       AST_XFUNC_PARAM_DECL *xparam;
+       
+       for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
+	 param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
+  	
+	 if (CHECKER_xfind_param_by_label( xfunc, param->label_name ) == 0) {
+           do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s",  xfunc->f_name, param->label_name );
+	 }
+       }
+     
+       for( i = 0; i < MAX_XFUNC_PARAM; i++ ) {
+ 	 xparam = &xfunc->params[ i ];
+	 if (!xparam->param_name) {
+	   break;
+	 }
+	 if (CHECKER_find_param_by_label( fcall->call_params, xparam->param_name ) == 0) {
+	       do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the mandatory parameter ~%s", xparam->param_name );
+	 }
+       }
+    }
+    
+    return 0;
+}
+
+
+
+void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
+{
+  size_t i;
+
+  assert(base );
+
+  ////fprintf( out, "{%d,%d-%d,%d} ", base->location.first_line, base->location.first_column, base->location.last_line, base->location.last_column );
+  ////fprintf( out, "(" );
+  
+  switch( base->type ) {
+  case S_EXPRESSION:
+    //CHECKER_pass_expr( out, (AST_EXPRESSION *) base );
+    break;
+
+  case S_AST_LIST: {
+    AST_BASE_LIST *scl  = (AST_BASE_LIST *) base;
+    DRING *cur;
+
+    ////fprintf( out, "stmt-list" );
+
+    DRING_FOREACH( cur, &scl->statements ) {
+	////fprintf(out, " , " );
+	CHECKER_pass( ctx,  _OFFSETOF( cur, AST_BASE, entry ) );
+    }
+    }
+    break;
+
+  case S_AST_VECTOR: {
+    AST_VECTOR *vect = (AST_VECTOR *)base;
+
+    ////fprintf( out, "stmt-vector" );
+
+    for( i = 0; i < AST_VECTOR_size( vect ); i++) {
+	////fprintf(out, " , " );
+	CHECKER_pass( ctx, AST_VECTOR_get( vect, i ));
+    }
+    }
+    break;
+  
+  case S_ASSIGNMENT:
+  {
+    AST_ASSIGNMENT *scl = (AST_ASSIGNMENT *) base;
+    ////fprintf( out, "%s , ", scl->type == ASSIGNMENT_DEEP_COPY ? "assign-copy" : "assign-ref" );
+    CHECKER_pass( ctx, (AST_BASE *) scl->left_side );
+    ////fprintf( out, " , ");
+    CHECKER_pass( ctx, (AST_BASE *) scl->right_side );
+    //newline = 1;
+    }
+    break;
+  
+  case S_IF: {
+    AST_COND *cond = (AST_COND *) base;
+
+    if (cond->condition) {  
+      ////fprintf( out, "cond-IF , " );
+      CHECKER_pass( ctx, (AST_BASE *) cond->condition );
+      ////fprintf( out, " , " );
+      CHECKER_pass( ctx, (AST_BASE *) cond->block );
+      ////fprintf( out, " , " );
+   } else {
+      //assert( cond->block );
+      CHECKER_pass( ctx, (AST_BASE *) cond->block );
+      //assert( cond->elsecond == 0 ); 
+   }
+   if (cond->elsecond ) {
+      ////fprintf( out , "else , " );
+      CHECKER_pass( ctx, (AST_BASE *) cond->elsecond  );
+    } 
+    //newline = 1;
+    }
+    break;
+ 
+  case S_WHILE: {
+    AST_WHILE_LOOP *scl = (AST_WHILE_LOOP *) base;
+#if 0
+    const char *lp = 0;
+
+    switch( scl->type ) {
+       case  LOOP_POSTCOND_WHILE:
+         lp = "loop-precondition-while";
+         break;
+       case LOOP_PRECOND_WHILE:
+         lp = "loop-postcondition-while";
+         break;
+       case LOOP_INFINITE:
+         lp = "loop-inifinite";
+         break;
+    }
+    //fprintf( out, "%s , ", lp);
+#endif
+
+    if (scl->condition) {
+      CHECKER_pass( ctx, (AST_BASE *) scl->condition );
+      //fprintf( out, " , ");
+    }
+
+    CHECKER_pass( ctx, (AST_BASE *) scl->block );
+    }
+    break;
+
+  case S_FOR:  {
+    AST_FOR_LOOP *scl = (AST_FOR_LOOP *) base;
+    //fprintf(out,"for , ");
+    CHECKER_pass( ctx, (AST_BASE *) scl->loop_var );
+    //fprintf( out, " , ");
+    CHECKER_pass( ctx, (AST_BASE *) scl->loop_expr );
+    //fprintf( out, " , ");
+    CHECKER_pass( ctx, (AST_BASE *) scl->block );
+    }
+    break;
+  
+  case S_FUN_CALL_PARAM: {
+    AST_FUNC_CALL_PARAM *scl = (AST_FUNC_CALL_PARAM *) base;
+    //fprintf( out, "func-param, %s , ", scl->label_name );
+    CHECKER_pass( ctx, (AST_BASE *) scl->expr );
+    }
+    break;
+
+  case S_FUN_CALL: {
+    AST_FUNC_CALL *scl = (AST_FUNC_CALL *) base;
+    //fprintf( out, "fun-call, " );
+    
+    CHECKER_check_func_call( ctx, scl );
+    }
+    break;
+
+  case S_FUN_DECL: {
+    AST_FUNC_DECL *scl = (AST_FUNC_DECL *) base;
+    //fprintf( out, "fun-decl , %s , ", scl->f_name );
+    if (scl->func_params != 0) {
+      CHECKER_pass ( ctx, (AST_BASE *) scl->func_params );
+      //fprintf( out, " ,\n" );
+    }
+    CHECKER_pass ( ctx, (AST_BASE *) scl->func_body );
+    }
+    break;
+  
+  case S_XFUN_DECL: {
+    AST_XFUNC_DECL *scl = (AST_XFUNC_DECL *) base;
+
+    //fprintf( out, "xfun-decl , %s , " , scl->f_name );
+
+    for(i = 0; i < scl->nparams; i++) {
+	//fprintf(out, "( func-param , %s ) ", scl->params[ i ] . param_name );
+    }
+    }
+    break;
+  
+  case S_RETURN: {
+    AST_RETURN *scl = (AST_RETURN *) base;
+    //fprintf( out, "return" );
+    if (scl->rvalue) {
+      //fprintf( out, " , " );
+      CHECKER_pass( ctx, (AST_BASE *) scl->rvalue );
+    }
+    }
+    break;
+
+  case S_NEXT:
+    ////fprintf( out, "next");
+    break;
+  
+  case S_BREAK:
+    ////fprintf( out, "break" );
+    break;
+
+  //default:
+    //fflush(out);
+    //assert(0);
+  }
+  
+  ////fprintf( out, ")" );
+  //if (newline) {
+  //  //fprintf( out, "\n" );
+  //}
+   
+}
+
+int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE *program)
+{
+  PARSECONTEXT *pctx = _OFFSETOF( ctx, PARSECONTEXT, chkctx );
+  AST_FUNC_DECL *fdecl = (AST_FUNC_DECL *) program;
+
+  assert(program->type == S_FUN_DECL); 
+
+  pctx->chkctx.global_scope = fdecl;
+
+  CHECKER_pass( pctx, &fdecl->func_body->base );
+
+//CHECK_first_pass( ctx, (AST_BASE_LIST *) program );
+  return pctx->my_yy_is_error;
+}
+
+#if 0    
+void CHECK_first_pass( CHECKERCTX *ctx, AST_BASE_LIST *slist );
+{
+  DRING *tmp;
+  AST_BASE *base;
+
+  DRING_FOREACH( tmp, &body->statements ) {
+    base = _OFFSETOF( tmp, AST_BASE, entry );
+  
+    switch( base->type ) 
+    {
+      case S_ASSIGNMENT:
+	{
+	}
+	break;
+      case S_IF:
+        { 
+	   AST_COND *cond = (AST_COND *) base;
+	   for(;;) {
+	     if (cond->block) {
+	       if (CHECK_first_pass( ctx, &cond->block )) {
+	         return -1;
+	       }
+	     }
+	     if (cond->elsecond == 0) {
+	       break;
+	     }
+	     cond = cond->elsecond;
+	   }
+	}
+	break;
+      case S_WHILE:
+        {
+	   AST_WHILE_LOOP *scl = (AST_WHILE_LOOP *) base;
+	   if (scl->block) {
+	     CHECK_first_pass( ctx, scl->block);
+	   }
+	}
+	break;
+      case S_FOR:
+	{
+	   AST_FOR_LOOP *scl = (AST_FOR_LOOP *) base;
+	   if (scl->block) {
+	     CHECK_first_pass( ctx, scl->block);
+	   }
+	}
+	break;
+ 
+      case S_FUNC_DECL:
+        {
+	  AST_FUNC_DECL *fdecl = (AST_FUNC_DECL *) base;
+	  AST_FUNC_DECL *fcheck;
+	  
+	  fcheck = CHECKER_find_function( ctx, fdecl->f_name );
+	  if (fcheck) {
+	    do_yyerror( &fdecl->base.location, "Function %s is defined twice", fdecl->f_name );
+	    do_yyerror( &fcheck->base.location, "First definition of %s is here", fdecl->f_name );
+	    return -1;
+	  }
+          if (CHECKER_add_function( ctx, fdec )) {
+	    do_yyerror( &fcheck->base.location, "Internal error: can't add function declaration" );
+	    return -1;
+	  }
+	}
+        break;
+      default:
+
+  }
+  return 0;
+}
+#endif     

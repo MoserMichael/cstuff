@@ -1,14 +1,18 @@
 #ifndef __CHECKER_H_Y_Z_
 #define __CHECKER_H_Y_Z_
 
+#include <cutils/bhash.h>
 
-struct tagAST_BASE_LIST;
+struct tagAST_BASE;
 struct tagAST_FUNC_DECL;
+
 
 typedef struct tagCHECKERCTX {
   int is_left_hand_side;
-  struct tagAST_FUNC_DECL *current_function;
 
+  struct tagAST_FUNC_DECL *global_scope, *current_function;
+//HASH scope_map_name_to_function; 
+ 
 } CHECKERCTX;
 
 /**
@@ -25,7 +29,7 @@ typedef struct tagCHECKERCTX {
 
 int CHECKER_init( CHECKERCTX *ctx);
 
-int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE_LIST *program);
+int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE *program);
 
 #endif
 

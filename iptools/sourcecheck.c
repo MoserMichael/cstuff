@@ -21,7 +21,7 @@ typedef struct tagSOURCEPORTCHECK
 }
 	SOURCEPORTCHECK;
 
-static int hash_compare(HASH_Entry *entry, void * key, ssize_t key_length)
+static int hash_compare(HASH_Entry *entry, const void * key, ssize_t key_length)
 {
 	SOURCEPORTCHECK *lhs;
 

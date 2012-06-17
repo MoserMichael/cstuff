@@ -4,7 +4,7 @@
 
 
 
-HASH_VALUE	HASHFUNCTION_sample_hash_func(void * keydata, ssize_t key_length)
+HASH_VALUE	HASHFUNCTION_sample_hash_func(const void * keydata, ssize_t key_length)
 {
 	unsigned char * key = (unsigned char *) keydata;
 	HASH_VALUE hash_val = 0;
@@ -27,7 +27,7 @@ HASH_VALUE	HASHFUNCTION_sample_hash_func(void * keydata, ssize_t key_length)
 
 }
 
-HASH_VALUE	HASHFUNCTION_PJW(void * keydata, ssize_t key_length)
+HASH_VALUE	HASHFUNCTION_PJW(const void * keydata, ssize_t key_length)
 {
 	unsigned char * key = (unsigned char *) keydata;
 	HASH_VALUE g = 0, hash_val = 0;
@@ -59,7 +59,7 @@ HASH_VALUE	HASHFUNCTION_PJW(void * keydata, ssize_t key_length)
 	}
 }
 
-HASH_VALUE HASHFUNCTION_rotating(void * keydata, ssize_t key_length)
+HASH_VALUE HASHFUNCTION_rotating(const void * keydata, ssize_t key_length)
 {
   HASH_VALUE hash;
   unsigned char * key = (unsigned char *) keydata;
@@ -80,7 +80,7 @@ HASH_VALUE HASHFUNCTION_rotating(void * keydata, ssize_t key_length)
   }
 }
 
-HASH_VALUE HASHFUNCTION_shift_and_xor(void * keydata, ssize_t key_length)
+HASH_VALUE HASHFUNCTION_shift_and_xor(const void * keydata, ssize_t key_length)
 {
   HASH_VALUE hash;
   unsigned char * key = (unsigned char *) keydata;
@@ -102,7 +102,7 @@ HASH_VALUE HASHFUNCTION_shift_and_xor(void * keydata, ssize_t key_length)
 }
 
 
-HASH_VALUE HASHFUNCTION_Fowler_Noll_Vo(void * keydata, ssize_t key_length)
+HASH_VALUE HASHFUNCTION_Fowler_Noll_Vo(const void * keydata, ssize_t key_length)
 {
   HASH_VALUE hash = 2166136261U;
   unsigned char * key = (unsigned char *) keydata;
@@ -123,7 +123,7 @@ HASH_VALUE HASHFUNCTION_Fowler_Noll_Vo(void * keydata, ssize_t key_length)
   }
 }
 
-HASH_VALUE HASHFUNCTION_Bob_Jenkins_one_at_a_time(void * keydata, ssize_t key_length)
+HASH_VALUE HASHFUNCTION_Bob_Jenkins_one_at_a_time(const void * keydata, ssize_t key_length)
 {
   HASH_VALUE h = 2166136261U;
   unsigned char * key = (unsigned char *) keydata;
@@ -161,7 +161,7 @@ HASH_VALUE HASHFUNCTION_Bob_Jenkins_one_at_a_time(void * keydata, ssize_t key_le
   }
 }
 
-HASH_VALUE HASHFUNCTION_ELF(void * keydata, ssize_t key_length)
+HASH_VALUE HASHFUNCTION_ELF(const void * keydata, ssize_t key_length)
 {
   HASH_VALUE h = 2166136261U,g;
   unsigned char * key = (unsigned char *) keydata;
@@ -217,9 +217,9 @@ HASH_VALUE HASHFUNCTION_ELF(void * keydata, ssize_t key_length)
  
 #define BJ_INIT_VAL 2166136261U
 
-HASH_VALUE HASHFUNCTION_Bob_Jenkins(void * keydata, ssize_t length)
+HASH_VALUE HASHFUNCTION_Bob_Jenkins(const void * keydata, ssize_t length)
 {
-    unsigned char *k = keydata;
+    unsigned char *k =  (unsigned char *) keydata;
     unsigned a, b;
     unsigned c = BJ_INIT_VAL;
     unsigned len = length;

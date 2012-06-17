@@ -21,7 +21,7 @@ static int QUERYSTRING_add(QUERYSTRING *query, char *name, char *value )
   return HASH_insert( &query->name_to_value, &entry->entry, entry->name, -1 );
 }
 
-static int compare_entry(HASH_Entry *entry, void *key, ssize_t key_size)
+static int compare_entry(HASH_Entry *entry, const void *key, ssize_t key_size)
 {
   M_UNUSED(key_size);
   return strcmp( ((HASHNAMEVALUE *) entry)->name, key);

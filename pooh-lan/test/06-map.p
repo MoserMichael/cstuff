@@ -33,7 +33,7 @@ sub squarebyref ( arg byref )
 end
 
 
-sub mapinplace( map , fnc )
+sub mapinplace( map , func )
   
   # another feature of for statement:
   # the index variable holds a reference to the collection entry (if iterating over a collection) 

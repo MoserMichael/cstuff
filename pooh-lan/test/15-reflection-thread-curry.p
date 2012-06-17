@@ -39,7 +39,7 @@ end
 # the thread is represented as thread curry - the thread call arguments have been stored in thread curry.
 # when the curry is called, the intended thread is called;
 
-sub map( threadcurry, func )
+sub map2array( threadcurry, func )
  value = threadcurry( ~method 'apply' )
  ret = []
 
@@ -117,7 +117,7 @@ end
 # produce the sum of the squares of numbers in range from 1 to 100
 # here the map step produces an array; reduce step iterates over array
 
-r = reduce( ~arg map( ~arg threadcurry( ~func range ~first 1 ~second 100 )  ~func square ) ~func sum ~initval 0 )
+r = reduce( ~arg map2array( ~arg threadcurry( ~func range ~first 1 ~second 100 )  ~func square ) ~func sum ~initval 0 )
 println( ~msg 'sum of squares ' .. r )
 
 # produce the sum of the squares of numbers in range from 1 to 100

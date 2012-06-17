@@ -153,7 +153,7 @@ typedef struct tagHEADER_HASH_ACTION {
 
 #define MAX_HTTP_TOKEN_SIZE 120
 
-static int hash_compare(HASH_Entry *entry, void * key, ssize_t key_length)
+static int hash_compare(HASH_Entry *entry, const void * key, ssize_t key_length)
 {
   HEADER_HASH_ACTION *lhs;
 

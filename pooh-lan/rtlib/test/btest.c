@@ -392,7 +392,7 @@ void XCALL_test()
   BINDING_DATA *arg,*rval;
   double rdval;
   long rnval;
-  AST_XFUNC_DECL x_add_decl = DEFINE_XFUNC2( "x_add", x_add, S_VAR_DOUBLE, S_VAR_INT|S_VAR_DOUBLE , S_VAR_INT|S_VAR_DOUBLE );
+  AST_XFUNC_DECL x_add_decl = DEFINE_XFUNC2( "x_add", x_add, S_VAR_DOUBLE, "a", S_VAR_INT|S_VAR_DOUBLE , "b", S_VAR_INT|S_VAR_DOUBLE );
   
 
   VASSERT( EVAL_CONTEXT_init( &context ) == 0 );
@@ -429,13 +429,16 @@ void XCALL_test()
   EVAL_CONTEXT_free( &context );
 }
 
+#if 0
 void x_fib( XCALL_DATA *xcall );
 
-AST_XFUNC_DECL x_fib_decl = DEFINE_XFUNC1( "x_fact", x_fib, S_VAR_INT, "from", S_VAR_INT|S_VAR_DOUBLE, "to", S_VAR_INT|S_VAR_DOUBLE);
+
+AST_XFUNC_DECL x_fib_decl = DEFINE_XFUNC2( "x_fact", x_fib, S_VAR_INT, "from", S_VAR_INT|S_VAR_DOUBLE, "to", S_VAR_INT|S_VAR_DOUBLE);
+
 
 void x_fib( XCALL_DATA *xcall )
 {
-   long fromval, toval, n1, n2;
+   long fromval, toval, n1, n2, i, next;
    BINDING_DATA tmp;
 
    BINDING_DATA_get_int( XCALL_param( xcall, 0 ) , &fromval );
@@ -505,3 +508,4 @@ void THREAD_test()
  
   EVAL_CONTEXT_free( &context );
 }
+#endif
