@@ -182,6 +182,12 @@ M_INLINE size_t AST_VECTOR_size( AST_VECTOR *scl )
   return ARRAY_size( &scl->refs );
 }
 
+M_INLINE void AST_VECTOR_free( AST_VECTOR *scl )
+{
+  ARRAY_free( &scl->refs );
+  free(scl);
+}
+
 /***************************************************/
 
 typedef enum tagS_EXPR_TYPE {
@@ -214,6 +220,8 @@ typedef enum tagS_EXPR_TYPE {
   S_EXPR_TYPE;
 
 typedef enum {
+
+  S_VAR_UNKNOWN = 0,
    
   S_VAR_INT = 1,
 
@@ -649,6 +657,17 @@ typedef struct tagAST_XFUNC_DECL {
 } AST_XFUNC_DECL;
 
 
+#define DEFINE_XFUNC0( name, impl_func, return_value_type ) \
+{ \
+    { S_XFUN_DECL, DEFINE_NULL_YYLTYPE , 0, {  0, 0 } }, \
+    name, \
+    impl_func, \
+    return_value_type, \
+    0, \
+    { \
+    } \
+}
+
 #define DEFINE_XFUNC1( name, impl_func, return_value_type, param_name1, param_type1 ) \
 { \
     { S_XFUN_DECL, DEFINE_NULL_YYLTYPE , 0, {  0, 0 } }, \
@@ -750,7 +769,7 @@ typedef struct tagBINDING_ENTRY {
 } BINDING_ENTRY;
 
 
-M_INLINE int binding_hash_compare( HASH_Entry  *entry, void * key, ssize_t key_length)
+M_INLINE int binding_hash_compare( HASH_Entry  *entry, const void * key, ssize_t key_length)
 {
   BINDING_ENTRY *lhs;	
 
@@ -828,6 +847,9 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   if (ctx != 0) {
     PARSECONTEXT_add_function_def2( ctx, scl ); 
   }
+
+  HASH_init( &scl->scope_map_name_to_binding, 10, 0, binding_hash_compare, 0 );
+
   return scl;
 }
 

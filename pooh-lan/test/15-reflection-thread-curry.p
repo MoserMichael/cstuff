@@ -17,18 +17,18 @@ sub threadcurry( ... )
 
    func = params[0]{'valueref'}
 
-   shift( ~array param)
+   shift( ~array params)
 
    return sub ( method )
      if method eq 'apply'
-        makethread( ~thread func)
+        makethread( ~thread outer . func)
 
         # perform the call
-        return applyfunc( ~func func  ~params params)
+        return applyfunc( ~func outer . func  ~params outer . params)
      elsif method eq 'resume'
-        return resume( ~func func)
+        return resume( ~func outer . func)
      elsif method eq 'isactive'
-        return isactive( ~thread func )
+        return isactive( ~thread outer . func )
      end
    end
 end
@@ -43,7 +43,7 @@ sub map2array( threadcurry, func )
  value = threadcurry( ~method 'apply' )
  ret = []
 
- while value != Nil
+     while value != Nill
    
    push( ~array ret ~top func( ~arg value ) )
 
@@ -60,7 +60,7 @@ sub mapthread( threadcurry, func )
 
  value = threadcurry( ~method 'apply' )
 
- while value != Nil
+ while value != Nill
    
    yield( ~message func( ~arg value ) )
 
@@ -75,7 +75,7 @@ sub reduce_thread( threadcurry, func, initval )
  value = threadcurry( ~method 'apply' )
  
  s = initval
- while value != Nil
+ while value != Nill
    
    s = func( ~first s ~second value )
 

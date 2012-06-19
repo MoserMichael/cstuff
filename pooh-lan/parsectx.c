@@ -70,9 +70,10 @@ int PARSECONTEXT_init(PARSECONTEXT *ctx)
   ctx->stmt_not_closed = 0;
 
   YYLTYPE_init( &stam );   
+  
   ctx->root_ctx = AST_FUNC_DECL_init( 0, 0, 0, &stam );
   ctx->current = ctx->root_ctx;
- 
+
   return 0;
 }
 

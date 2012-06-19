@@ -115,7 +115,7 @@ prog :
 	       AST_FUNC_DECL *scl;
 
 	       // global scope is a function (so that it has context for looking up globals and function names.)
-	       scl = AST_FUNC_DECL_init( 0, 0, parse_context, YYLOCPTR );
+	       scl = parse_context->root_ctx;
 	       AST_FUNC_DECL_set_body( scl, parse_context, (AST_BASE_LIST *) $<ast>2 );
 
 	       parse_context->my_ast_root = &scl->base;

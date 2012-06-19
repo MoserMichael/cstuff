@@ -37,6 +37,9 @@ void AST_print_expr( FILE *out, AST_EXPRESSION *expr)
 	case S_VAR_STRING:
 	    fprintf( out, "\"%s\"", expr->val.const_value.string_value );
 	    break;
+	case S_VAR_NULL:
+	    fprintf( out, "Null" );
+	    break;
 	default:
 	    assert(0);
       }

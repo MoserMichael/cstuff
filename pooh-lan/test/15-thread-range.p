@@ -31,8 +31,8 @@ val = th( ~from 1 ~to 10)
  
 loop
  
-  # the return value is Nil if the thread just stops, or does not return a valid value.
-  if val != Nil
+  # the return value is Nill if the thread just stops, or does not return a valid value.
+  if val != Nill
     println( ~msg 'thread returned val' )
   end
 

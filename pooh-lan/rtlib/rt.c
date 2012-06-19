@@ -1,8 +1,65 @@
 #include "rtlib.h"
 #include <math.h>
 
+/* --------------- function for reflection --------------------------- */
+
+static void x_functionparameters( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
+static void x_functionreturntype( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
+static void x_applyfunc( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
+static void x_isarray( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
+static void x_isfunction( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
+static void x_istable( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
+static void x_isstring( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
+static void x_isnumber( XCALL_DATA *xcall )
+{
+ (void) xcall;
+}
+
 
 /* --------------- function for more than one type ------------------- */
+
+static void x_exit( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg;
+  VALSTRING *sdata;
+
+  arg = XCALL_param(xcall, 0 ); 
+  if (! IS_NULL(arg)) {
+     sdata = &arg->b.value.string_value;
+     fprintf( stderr, "%.*s", sdata->length, sdata->string );
+  }
+  exit(0);
+}
+
+
 static void x_size( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
@@ -192,6 +249,33 @@ static void x_push( XCALL_DATA *xcall )
 }
 
 static void x_pop( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg, *tmp;
+  VALARRAY *arr;
+  
+  arg = XCALL_param(xcall, 0 ); 
+  arr = &arg->b.value.array_value;
+
+  if (arr->size == 0) {
+    EVAL_CONTEXT_runtime_error( xcall->thread->context , "Can't 'pop' value off an empty stack. " );
+  }
+
+  tmp = VALARRAY_get( arr, arr->size - 1 );  
+  BINDING_DATA_copy( XCALL_rvalue( xcall ), tmp, CP_REF );
+}
+
+static void x_shift( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg;
+  VALARRAY *arr;
+
+  arg = XCALL_param(xcall, 0 ); 
+  arr = &arg->b.value.array_value;
+
+  VALARRAY_set( arr, VALARRAY_size( arr ), XCALL_param(xcall, 1 ), CP_REF );
+}
+
+static void x_unshift( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg, *tmp;
   VALARRAY *arr;
@@ -478,7 +562,7 @@ static void mid_imp( XCALL_DATA *xcall, STR_ACTION act)
   }
 
   arg = XCALL_rvalue( xcall ); 
-  BINDING_DATA_init( arg, S_VAR_LIST );
+  BINDING_DATA_init( arg, S_VAR_STRING );
   rval = &arg->b.value.string_value;
 
   switch(act) {
@@ -509,6 +593,7 @@ static void x_right( XCALL_DATA *xcall )
 {
   mid_imp( xcall, STR_RIGHT );
 }
+
 static void x_print_imp( BINDING_DATA *data )
 {
   VALSTRING *sdata;
@@ -550,6 +635,14 @@ static void x_println( XCALL_DATA *xcall )
   fprintf( stdout, "\n" );
 }
 
+
+static void x_emptystring( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg;
+  
+  arg = XCALL_rvalue( xcall ); 
+  BINDING_DATA_init( arg, S_VAR_STRING );
+}
 
 
 
@@ -700,19 +793,35 @@ static void x_abs( XCALL_DATA *xcall )
 }
 
 /* -------------- the library ------------------------- */
-
-
 AST_XFUNC_DECL xlib[] = {
 
-//to add: exit( ~msg ) shift ( ~array ) , unshift( ~array, ~start)  functionparameters ( [ ~function ] ) applyfunc( ~func ~params  )  emptystring() - returns empty string.
+//TO DO implement x_shift, x_unshift,
+//TO DO implement,  shift ( ~array ) , unshift( ~array, ~start)  functionparameters ( [ ~function ] ) applyfunc( ~func ~params  ) 
+
+/* Reflection */
+  DEFINE_XFUNC1( "functionparameters",    x_functionparameters,   S_VAR_LIST, "function", S_VAR_CODE | S_VAR_PARAM_OPTIONAL ),
+  DEFINE_XFUNC1( "functionreturntype",    x_functionreturntype,   S_VAR_LIST, "function", S_VAR_CODE | S_VAR_PARAM_OPTIONAL ),
+  DEFINE_XFUNC2( "applyfunc",    x_applyfunc,   S_VAR_ANY, "function", S_VAR_CODE, "params", S_VAR_LIST  ),
  
+  DEFINE_XFUNC1( "isarray",      x_isarray,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "isfunction",   x_isfunction,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "istable",      x_istable,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "isstring",     x_isstring,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "isnumber",     x_isnumber,   S_VAR_INT, "value", S_VAR_ANY  ),
+
+
+
+
+
+
 /* Miscellaneous functions ;  more than one argument type */
   DEFINE_XFUNC1( "size",    x_size,	    S_VAR_INT,	"arg", S_VAR_STRING | S_VAR_LIST | S_VAR_HASH ),
   DEFINE_XFUNC1( "defined", x_defined,	    S_VAR_INT,	"arg", S_VAR_ANY ),  
   DEFINE_XFUNC1( "dump",    x_dump,	    0,		"arg", S_VAR_ANY ),  
   DEFINE_XFUNC1( "trace",   x_trace,	    0,		 "onoff", S_VAR_INT ),  
   DEFINE_XFUNC1( "type",    x_typeof,	    S_VAR_STRING, "arg", S_VAR_ANY ),  
-   
+  DEFINE_XFUNC1( "exit",    x_exit,         0,          "msg", S_VAR_STRING | S_VAR_PARAM_OPTIONAL ), 
+
 /* threads */
   DEFINE_XFUNC1( "makethread",  x_make_thread,	S_VAR_CODE, "thread", S_VAR_CODE ),  
   DEFINE_XFUNC1( "yield",	x_yield,	S_VAR_ANY, "message", S_VAR_ANY | S_VAR_PARAM_OPTIONAL ),  
@@ -724,6 +833,8 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC3( "range",   x_range,	S_VAR_LIST,	"from", S_VAR_INT | S_VAR_DOUBLE, "to", S_VAR_INT | S_VAR_DOUBLE, "step", S_VAR_INT | S_VAR_DOUBLE | S_VAR_PARAM_OPTIONAL ),
   DEFINE_XFUNC2( "push",    x_push,	0,		"array",  S_VAR_LIST,  "top",  S_VAR_ANY ),
   DEFINE_XFUNC1( "pop",	    x_pop,	S_VAR_ANY,	"array", S_VAR_LIST ),
+  DEFINE_XFUNC2( "shift",   x_shift,	0,		"array",  S_VAR_LIST,  "top",  S_VAR_ANY ),
+  DEFINE_XFUNC1( "unshift", x_unshift,	S_VAR_ANY,	"array", S_VAR_LIST ),
   DEFINE_XFUNC2( "join",    x_join,	S_VAR_STRING,	"separator", S_VAR_STRING,  "array", S_VAR_LIST ),
   DEFINE_XFUNC1( "reverse", x_reverse,	0,		"array" , S_VAR_LIST | S_VAR_PARAM_OPTIONAL ),
 
@@ -749,7 +860,8 @@ AST_XFUNC_DECL xlib[] = {
 
   DEFINE_XFUNC1( "print",  x_print, S_VAR_STRING, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
   DEFINE_XFUNC1( "println",  x_println, S_VAR_STRING, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
-    
+  DEFINE_XFUNC0( "emptystring",  x_emptystring, S_VAR_STRING ),
+     
 
 /* numeric functions */
   DEFINE_XFUNC1( "srand",   x_srand, 0,  "seed", S_VAR_INT | S_VAR_DOUBLE ),

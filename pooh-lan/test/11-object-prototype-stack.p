@@ -8,7 +8,7 @@ sub makestack()
  # data members are also table entries; it is good practice to declare data members in the hash.
 
  return { 
-          stack : {},
+          'stack' : {},
           
 
           # when a function is inserted into a collection (hash or vector) then a function object is created.
@@ -26,7 +26,7 @@ sub makestack()
 
                 if size( ~arg this.stack ) == 0
                      println( ~msg 'Error: empty stack' )
-                         return Nil
+                         return Nill
                   else 
                      println( ~msg 'pop: has [ size( ~arg this.stack ) ] elements' )
                      return pop ( ~array this.data )
@@ -45,6 +45,6 @@ stack.push( ~top 2 )
 stack.push( ~top 3 )
 
 
-for i range( ~first 1 ~last 4 )
+for i range( ~from 1 ~to 4 )
   println ( ~msg 'pop: result is [ stack.pop() ]' )
 end

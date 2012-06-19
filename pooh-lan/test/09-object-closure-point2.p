@@ -28,13 +28,13 @@ sub makepoint( x, y )
 
   dofactory = sub( method ) 
       if method == 'move'
-        return domove
+        return outer . domove
       elsif method == 'print'
-        return doprint
+        return outer . doprint
       elsif method == 'x-pos'
-        return dogetx
+        return outer . dogetx
       elsif method == 'y-pos'
-        return dogety
+        return outer . dogety
       end
   end
 
@@ -49,7 +49,7 @@ end
 
 
 # make point object
-point = makppoint( ~x 42 ~y 10 )
+point = makepoint( ~x 42 ~y 10 )
 
 # show position of point
 point( ~method 'print') () 

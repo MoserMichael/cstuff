@@ -28,10 +28,8 @@ typedef struct tagPARSECONTEXT {
   int my_yy_is_error;
   
   struct tagAST_BASE * my_ast_root;
-
-  struct tagAST_FUNC_DECL *root_ctx;
-  struct tagAST_FUNC_DECL *current;  
- 
+  struct tagAST_FUNC_DECL *current,*root_ctx;
+  
   HASH map_function_defs; // maps function name to function definition. (AST_FUNC_DECL *)
 
   int stmt_not_closed;

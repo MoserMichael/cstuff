@@ -18,11 +18,11 @@ sub makecurry( ... )
 
    func = params[0]{'valueref'}
 
-   shift( ~array param)
+   shift( ~array params)
 
    return sub ()
-      makethread( ~thread func)
-      return applyfunc( ~func func ~params params)
+      makethread( ~thread outer . func)
+      return applyfunc( ~func outer . func ~params outer . params)
    end
 end
 

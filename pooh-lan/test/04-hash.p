@@ -12,7 +12,7 @@ days = {
 
 
 for k keys( ~table days ) 
-  println( ~msg 'short names for days of week' .. k .. ' long names ' .. days{ l } )
+  println( ~msg 'short names for days of week' .. k .. ' long names ' .. days{ k } )
 end
 
 for k values( ~table days ) 

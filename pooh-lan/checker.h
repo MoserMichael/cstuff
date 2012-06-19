@@ -8,11 +8,12 @@ struct tagAST_FUNC_DECL;
 
 
 typedef struct tagCHECKERCTX {
+  struct tagAST_FUNC_DECL *current_function;
+  struct tagAST_VECTOR *func_decls;
+  
+  int is_root_func;
+  int is_function_name;
   int is_left_hand_side;
-
-  struct tagAST_FUNC_DECL *global_scope, *current_function;
-//HASH scope_map_name_to_function; 
- 
 } CHECKERCTX;
 
 /**
