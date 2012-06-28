@@ -27,13 +27,13 @@ sub makepoint( x, y )
          end
 
   dofactory = sub( method ) 
-      if method == 'move'
+      if method eq 'move'
         return outer . domove
-      elsif method == 'print'
+      elsif method eq 'print'
         return outer . doprint
-      elsif method == 'x-pos'
+      elsif method eq 'x-pos'
         return outer . dogetx
-      elsif method == 'y-pos'
+      elsif method eq 'y-pos'
         return outer . dogety
       end
   end

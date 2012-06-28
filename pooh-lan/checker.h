@@ -10,7 +10,8 @@ struct tagAST_FUNC_DECL;
 typedef struct tagCHECKERCTX {
   struct tagAST_FUNC_DECL *current_function;
   struct tagAST_VECTOR *func_decls;
-  
+ 
+  int pass;
   int is_root_func;
   int is_function_name;
   int is_left_hand_side;

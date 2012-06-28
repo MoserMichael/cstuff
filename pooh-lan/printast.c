@@ -74,11 +74,15 @@ void AST_print_expr( FILE *out, AST_EXPRESSION *expr)
       fprintf( out, "_" );
       break;
 
-    case S_EXPR_LAMBDA:
+    case  S_EXPR_LAMBDA:
       fprintf(out, "anonymous-func , " ); 
       AST_print( out, (AST_BASE *) expr->val.fdecl );
       break;
 
+    case S_EXPR_LAMBDA_RESOLVED: // ref to named function after lookup (avoid recursion trick)
+      fprintf(out, "ref-to-named-function , %s", ((AST_FUNC_DECL *) expr->val.fdecl)->f_name );
+      break;
+    
     case S_EXPR_ERROR:
       fprintf(out, "error-expression , " ); 
       break;

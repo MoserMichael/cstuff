@@ -214,6 +214,8 @@ typedef enum tagS_EXPR_TYPE {
 
   S_EXPR_LAMBDA,  // unamed function
 
+  S_EXPR_LAMBDA_RESOLVED, // ref to named function after lookup (same as S_EXPR_LAMBA, but avoids recursion trick)
+
   S_EXPR_ERROR,  // one of the types in an expression evaluated to an error, don't propagate the error further
 
 }
@@ -238,7 +240,12 @@ typedef enum {
   S_VAR_NULL = 64,
 
   S_VAR_ANY = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST,
-
+  
+  S_VAR_ALL_TYPES = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST | S_VAR_NULL,
+ 
+  S_VAR_SCALAR = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING,
+  
+  S_VAR_NUMBER = S_VAR_INT | S_VAR_DOUBLE,
 
   S_VAR_CODE_THREAD = 0x100, // modifier on S_VAR_CODE - this function will run in its own interpreter thread.
   S_VAR_PARAM_BYREF = 0x200, // parameter passed 'by reference'
@@ -256,12 +263,12 @@ const char *get_op_name( int op );
 
 M_INLINE int is_numeric_type( AST_VAR_TYPE ty )
 {
-  return ty == S_VAR_INT || ty == S_VAR_DOUBLE;
+  return ty & S_VAR_INT || ty & S_VAR_DOUBLE;
 }
 
 M_INLINE int is_numeric_or_string_type( AST_VAR_TYPE ty )
 {
-  return ty == S_VAR_INT || ty == S_VAR_DOUBLE || ty == S_VAR_STRING;
+  return ty & S_VAR_INT || ty & S_VAR_DOUBLE || ty & S_VAR_STRING;
 }
 
 typedef union {
@@ -404,7 +411,7 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs
 
 M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location  )
 {
-  AST_EXPRESSION *scl,*first_idx;
+  AST_EXPRESSION *scl;
 
   scl = AST_EXPRESSION_init( S_EXPR_REFERENCE, S_VAR_ANY, location );
   if (!scl) {
@@ -414,10 +421,14 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR 
   scl->val.ref.lhs = strdup( name );
   scl->val.ref.binding = 0;
 
+  scl->value_type = S_VAR_ANY;
+
+
   if (indexes) {
     assert( indexes->base.type == S_AST_VECTOR );
     indexes->base.parent = &scl->base;
     
+#if 0    
     first_idx = (AST_EXPRESSION *) AST_VECTOR_get( indexes, 0 );   
     if (first_idx) {
       if (first_idx->exp_type == S_EXPR_ARRAY_INDEX) {
@@ -426,6 +437,7 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR 
 	scl->value_type = S_VAR_HASH;
       }
     }
+#endif    
   }
   scl->val.ref.indexes = indexes;
   scl->val.ref.scope = 0;
@@ -764,7 +776,10 @@ typedef struct tagBINDING_ENTRY {
  
   YYLTYPE def_location;  // location where binding is defined in code.
   AST_VAR_TYPE value_type;
+  int has_value;  
+  
   int stack_offset;
+
 
 } BINDING_ENTRY;
 
@@ -798,7 +813,8 @@ typedef struct tagAST_FUNC_DECL {
   AST_VECTOR *func_params;
   AST_VAR_TYPE return_type_value;
 
-   AST_BASE_LIST *func_body;
+  AST_BASE_LIST *func_body;
+  int var_arguments;
  
   TREENODE funcs; // all functions (by nesting of declaration)
   HASH scope_map_name_to_binding; 
@@ -826,6 +842,7 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
      scl->f_name = 0;
      scl->func_params = 0;
   }
+  scl->var_arguments = 0;
 
   if (func_param != 0) {
      assert( func_param->base.type == S_AST_VECTOR );
@@ -977,6 +994,10 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_fcall_init( struct tagAST_FUNC_CALL *fu
 }
 
 
+M_INLINE AST_VAR_TYPE AST_EXPRESSION_type( AST_EXPRESSION *expr )
+{
+  return expr->value_type & S_VAR_ALL_TYPES;
+}
 
 
 #endif

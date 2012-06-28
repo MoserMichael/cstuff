@@ -282,7 +282,7 @@ void LEXER_set_location( LEXCONTEXT *pc, YYLTYPE *location )
 #endif
 }
 
-int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value  )
+int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value, YYLTYPE *location  )
 {
     FILE *fp;
     int len;
@@ -307,10 +307,19 @@ int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value 
 	
     /* switch lex context buffers */
 #ifdef IS_REENTRANT
-    yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE, yyscanner ) ,yyscanner );
+    struct yy_buffer_state * bstate =  yy_create_buffer( yyin, YY_BUF_SIZE, yyscanner ); 
+   
+    bstate->yy_bs_lineno =  location->first_line;
+    bstate->yy_bs_column =  location->first_column;
+    
+    yy_switch_to_buffer( bstate ,yyscanner );
 #else
     yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-#endif
+#endif 
+
+    // set current location 
+    //yyset_lloc (YYLTYPE * yylloc_param , yyscan_t yyscanner)
+
 
 #if 0
 #ifdef IS_REENTRANT
@@ -532,12 +541,13 @@ int parse_string(  LEXCONTEXT *pc, char start_char )
   int rt;
 
   rt = do_parse_string( pc, 0, start_char );
+#if 0  
   print_string( pc );
-  
+#endif  
   return rt;
 }
 
-
+#if 0
 void print_string( LEXCONTEXT *pc )
 { 
   size_t i;
@@ -547,15 +557,14 @@ void print_string( LEXCONTEXT *pc )
 
       tmp = (STRING_PART **) ARRAY_at( &pc->string_parts, i );
       cur = *tmp;
-#if 0      
       fprintf(stderr,"\t\tis_exp %d (%d,%d-%d,%d) >>%s<<\n",
 		    cur->is_expression,
 		    cur->loc.first_line, cur->loc.first_column, cur->loc.last_line, cur->loc.last_column,
 		    (char *) cur->part_data.buf );
-#endif                    
   }
 
 }
+#endif
 
 int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char )
 {
@@ -591,7 +600,7 @@ int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char start_cha
     }
     if (c != start_char) {
       unput(c);
-      yycolumn -- ;
+      //yycolumn -- ;
       break;
     }
 
@@ -671,7 +680,11 @@ STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end
 #endif	
   int countb = 0;
 
-  start = yyloc;
+//start = yyloc;
+  start.file_id = yyloc.file_id;
+  start.first_line = yylineno;
+  start.first_column = yycolumn;
+
   part = STRING_PART_init( 1, &start );
   if (!part) {
     return 0;
@@ -729,7 +742,10 @@ STRING_PART * parse_string_sequence( LEXCONTEXT *pc, DBUF *parent, const char *s
 
   *has_follow_up = 0;
   
-  start = yyloc;
+  start.file_id = yyloc.file_id;
+  start.first_line = yylineno;
+  start.first_column = yycolumn;
+
  
   part = STRING_PART_init( 0, &start );
   if (!part) {
@@ -770,8 +786,8 @@ STRING_PART * parse_string_sequence( LEXCONTEXT *pc, DBUF *parent, const char *s
 ret:
   
   part->loc = start;
-  part->loc.last_line = yyloc.last_line;
-  part->loc.last_column = yyloc.last_column;
+  part->loc.last_line = yylineno; //yyloc.last_line;
+  part->loc.last_column = yycolumn; //yyloc.last_column;
 
   return part;
 }

@@ -410,7 +410,7 @@ M_INLINE int BINDING_DATA_get_double( BINDING_DATA *data, double *val )
   return 0;
 }
 
-M_INLINE void BINDING_DATA_set_double( BINDING_DATA *data, long val )
+M_INLINE void BINDING_DATA_set_double( BINDING_DATA *data, double val )
 { 
   if (IS_REF( data ) ) {
     data = BINDING_DATA_follow_ref( data );

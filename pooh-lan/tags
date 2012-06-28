@@ -5,9 +5,9 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 -warnings	Makefile	/^		bison --warnings=error --report=all --report-file=pars.report --defines=pars.h -o $@ $< 	$/;"	m
-ASSIGNMENT_DEEP_COPY	ast.h	/^  ASSIGNMENT_DEEP_COPY,$/;"	e	enum:__anon9
-ASSIGNMENT_REF_COPY	ast.h	/^  ASSIGNMENT_REF_COPY,$/;"	e	enum:__anon9
-ASSIGNMENT_TYPE	ast.h	/^} ASSIGNMENT_TYPE;$/;"	t	typeref:enum:__anon9
+ASSIGNMENT_DEEP_COPY	ast.h	/^  ASSIGNMENT_DEEP_COPY,$/;"	e	enum:__anon10
+ASSIGNMENT_REF_COPY	ast.h	/^  ASSIGNMENT_REF_COPY,$/;"	e	enum:__anon10
+ASSIGNMENT_TYPE	ast.h	/^} ASSIGNMENT_TYPE;$/;"	t	typeref:enum:__anon10
 AST_ASSIGNMENT	ast.h	/^} AST_ASSIGNMENT;$/;"	t	typeref:struct:tagAST_ASSIGNMEN
 AST_ASSIGNMENT_init	ast.h	/^M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,$/;"	f	signature:( ASSIGNMENT_TYPE type, struct tagAST_EXPRESSION *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location )
 AST_BASE	ast.h	/^}	AST_BASE;$/;"	t	typeref:struct:tagAST_BASE
@@ -33,6 +33,7 @@ AST_EXPRESSION_init	ast.h	/^M_INLINE AST_EXPRESSION *AST_EXPRESSION_init( S_EXPR
 AST_EXPRESSION_init_binary	ast.h	/^M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_binary( int op, AST_EXPRESSION *lhs, AST_EXPRESSION *rhs  )$/;"	f	signature:( int op, AST_EXPRESSION *lhs, AST_EXPRESSION *rhs )
 AST_EXPRESSION_init_ref	ast.h	/^M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location  )$/;"	f	signature:( const char *name, AST_VECTOR *indexes, YYLTYPE *location )
 AST_EXPRESSION_init_unary	ast.h	/^M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs, int prefix, YYLTYPE *location  )$/;"	f	signature:( int op, AST_EXPRESSION *lhs, int prefix, YYLTYPE *location )
+AST_EXPRESSION_type	ast.h	/^M_INLINE AST_VAR_TYPE AST_EXPRESSION_type( AST_EXPRESSION *expr )$/;"	f	signature:( AST_EXPRESSION *expr )
 AST_EXPRESSION_unary_fold_constants	ast.c	/^int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl)$/;"	f	signature:( AST_EXPRESSION *scl)
 AST_EXPRESSION_unary_fold_constants	ast.h	/^int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl);$/;"	p	signature:( AST_EXPRESSION *scl)
 AST_EXPRESSION_unary_op_check_types	ast.c	/^int AST_EXPRESSION_unary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl )$/;"	f	signature:( PARSECONTEXT *parse_context, AST_EXPRESSION *scl )
@@ -48,9 +49,10 @@ AST_FUNC_DECL_init	ast.h	/^M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const cha
 AST_FUNC_DECL_set_body	ast.h	/^M_INLINE void AST_FUNC_DECL_set_body( AST_FUNC_DECL *scl, PARSECONTEXT *ctx, AST_BASE_LIST *body )$/;"	f	signature:( AST_FUNC_DECL *scl, PARSECONTEXT *ctx, AST_BASE_LIST *body )
 AST_RETURN	ast.h	/^} AST_RETURN;$/;"	t	typeref:struct:tagAST_RETURN
 AST_RETURN_init	ast.h	/^M_INLINE AST_RETURN *AST_RETURN_init( S_TYPE type, AST_EXPRESSION *expr, YYLTYPE *location  )$/;"	f	signature:( S_TYPE type, AST_EXPRESSION *expr, YYLTYPE *location )
-AST_VAR_TYPE	ast.h	/^} AST_VAR_TYPE;$/;"	t	typeref:enum:__anon2
+AST_VAR_TYPE	ast.h	/^} AST_VAR_TYPE;$/;"	t	typeref:enum:__anon3
 AST_VECTOR	ast.h	/^} AST_VECTOR;$/;"	t	typeref:struct:tagAST_VECTOR
 AST_VECTOR_add	ast.h	/^M_INLINE int AST_VECTOR_add( AST_VECTOR *scl, AST_BASE *add)$/;"	f	signature:( AST_VECTOR *scl, AST_BASE *add)
+AST_VECTOR_free	ast.h	/^M_INLINE void AST_VECTOR_free( AST_VECTOR *scl )$/;"	f	signature:( AST_VECTOR *scl )
 AST_VECTOR_get	ast.h	/^M_INLINE AST_BASE * AST_VECTOR_get( AST_VECTOR *scl, size_t idx )$/;"	f	signature:( AST_VECTOR *scl, size_t idx )
 AST_VECTOR_init	ast.h	/^M_INLINE AST_VECTOR * AST_VECTOR_init( YYLTYPE *location )$/;"	f	signature:( YYLTYPE *location )
 AST_VECTOR_size	ast.h	/^M_INLINE size_t AST_VECTOR_size( AST_VECTOR *scl )$/;"	f	signature:( AST_VECTOR *scl )
@@ -66,42 +68,33 @@ AST_print	printast.h	/^void AST_print( FILE *out, AST_BASE *base );$/;"	p	signat
 AST_print_expr	printast.c	/^void AST_print_expr( FILE *out, AST_EXPRESSION *expr)$/;"	f	signature:( FILE *out, AST_EXPRESSION *expr)
 BINDING_ENTRY	ast.h	/^} BINDING_ENTRY;$/;"	t	typeref:struct:tagBINDING_ENTRY
 CHECKERCTX	checker.h	/^} CHECKERCTX;$/;"	t	typeref:struct:tagCHECKERCTX
-CHECKER_add_function	checker.c	/^int CHECKER_add_function( CHECKERCTX *ctx,  FUNC_DECL *decl )$/;"	f	signature:( CHECKERCTX *ctx, FUNC_DECL *decl )
 CHECKER_check_func_call	checker.c	/^int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )$/;"	f	signature:( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
-CHECKER_define_function	checker.c	/^int CHECKER_define_function( CHECKERCTX *ctx, AST_FUNC_DECL *fdecl )$/;"	f	signature:( CHECKERCTX *ctx, AST_FUNC_DECL *fdecl )
 CHECKER_expr	checker.c	/^void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)$/;"	f	signature:( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
-CHECKER_find_function	checker.c	/^AST_FUNC_DECL * CHECKER_find_function( CHECKERCTX *ctx, const char *name )$/;"	f	signature:( CHECKERCTX *ctx, const char *name )
 CHECKER_find_param_by_label	checker.c	/^AST_FUNC_CALL_PARAM *CHECKER_find_param_by_label( AST_VECTOR *vect, const char *param_name )$/;"	f	signature:( AST_VECTOR *vect, const char *param_name )
 CHECKER_find_param_by_label2	checker.c	/^AST_EXPRESSION *CHECKER_find_param_by_label2( AST_VECTOR *vect, const char *param_name )$/;"	f	signature:( AST_VECTOR *vect, const char *param_name )
 CHECKER_func_decls	checker.c	/^void CHECKER_func_decls( PARSECONTEXT *ctx, AST_VECTOR *func_decls )$/;"	f	signature:( PARSECONTEXT *ctx, AST_VECTOR *func_decls )
+CHECKER_func_decls	checker.c	/^void CHECKER_func_decls( PARSECONTEXT *ctx, AST_VECTOR *func_decls );$/;"	p	file:	signature:( PARSECONTEXT *ctx, AST_VECTOR *func_decls )
 CHECKER_init	checker.c	/^int CHECKER_init( CHECKERCTX *ctx)$/;"	f	signature:( CHECKERCTX *ctx)
 CHECKER_init	checker.h	/^int CHECKER_init( CHECKERCTX *ctx);$/;"	p	signature:( CHECKERCTX *ctx)
 CHECKER_pass	checker.c	/^void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )$/;"	f	signature:( PARSECONTEXT *ctx, AST_BASE *base )
 CHECKER_pass	checker.c	/^void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base );$/;"	p	file:	signature:( PARSECONTEXT *ctx, AST_BASE *base )
+CHECKER_run	checker.c	/^int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE *program)$/;"	f	signature:( CHECKERCTX *ctx, struct tagAST_BASE *program)
 CHECKER_run	checker.h	/^int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE *program);$/;"	p	signature:( CHECKERCTX *ctx, struct tagAST_BASE *program)
 CHECKER_xfind_param_by_label	checker.c	/^AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , const char *param_name )$/;"	f	signature:( AST_XFUNC_DECL *xfunc , const char *param_name )
-CHECK_expression	checker.c	/^int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx )$/;"	f	signature:( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
-CHECK_expression	checker.c	/^int CHECK_expression( AST_EXPRESSION *expr, PARSECONTEXT *ctx );$/;"	p	file:	signature:( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
-CHECK_func_call	checker.c	/^int CHECK_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )$/;"	f	signature:( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
-CHECK_function_scope	checker.c	/^int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx )$/;"	f	signature:( AST_FUNC_DECL *fdecl, PARSECONTEXT *ctx )
-CHECK_function_scope	checker.c	/^int CHECK_function_scope( AST_FUNC_DECL *fdecl,  PARSECONTEXT *ctx );$/;"	p	file:	signature:( AST_FUNC_DECL *fdecl, PARSECONTEXT *ctx )
-CHECK_reference	checker.c	/^int CHECK_reference( AST_EXPRESSION *expr, PARSECONTEXT *ctx )$/;"	f	signature:( AST_EXPRESSION *expr, PARSECONTEXT *ctx )
-CHECK_statement	checker.c	/^int CHECK_statement( AST_BASE *base, PARSECONTEXT *ctx )$/;"	f	signature:( AST_BASE *base, PARSECONTEXT *ctx )
-CHECK_statement_list	checker.c	/^int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx )$/;"	f	signature:( AST_BASE_LIST *body, PARSECONTEXT *ctx )
-CHECK_statement_list	checker.c	/^int CHECK_statement_list( AST_BASE_LIST *body, PARSECONTEXT *ctx );$/;"	p	file:	signature:( AST_BASE_LIST *body, PARSECONTEXT *ctx )
 CHEKCER_func_decl	checker.c	/^void CHEKCER_func_decl( PARSECONTEXT *ctx, AST_FUNC_DECL *scl )$/;"	f	signature:( PARSECONTEXT *ctx, AST_FUNC_DECL *scl )
-CHKR_REPEAT_NOW	ast.h	774;"	d
-CHKR_REPEAT_ON_FINISH	ast.h	773;"	d
-CHKR_RETURN_VALUE_KNOWN	ast.h	771;"	d
-CHKR_RETURN_VALUE_UNKNOWN	ast.h	769;"	d
-CHKR_WORKING	ast.h	770;"	d
+CHKR_REPEAT_NOW	ast.h	804;"	d
+CHKR_REPEAT_ON_FINISH	ast.h	803;"	d
+CHKR_RETURN_VALUE_KNOWN	ast.h	801;"	d
+CHKR_RETURN_VALUE_UNKNOWN	ast.h	799;"	d
+CHKR_WORKING	ast.h	800;"	d
 DEFINE_NULL_YYLTYPE	lexer.h	43;"	d
-DEFINE_XFUNC1	ast.h	654;"	d
-DEFINE_XFUNC2	ast.h	666;"	d
-DEFINE_XFUNC3	ast.h	679;"	d
-DEFINE_XFUNC4	ast.h	693;"	d
-DEFINE_XFUNC5	ast.h	708;"	d
-DEFINE_XFUNC6	ast.h	724;"	d
+DEFINE_XFUNC0	ast.h	670;"	d
+DEFINE_XFUNC1	ast.h	681;"	d
+DEFINE_XFUNC2	ast.h	693;"	d
+DEFINE_XFUNC3	ast.h	706;"	d
+DEFINE_XFUNC4	ast.h	720;"	d
+DEFINE_XFUNC5	ast.h	735;"	d
+DEFINE_XFUNC6	ast.h	751;"	d
 ECHO	lexer.c	136;"	d	file:
 ERROR_MSG_LEN	parser.c	13;"	d	file:
 FUNCTION_ENTRY	checker.c	/^} FUNCTION_ENTRY;$/;"	t	typeref:struct:tagFUNCTION_ENTRY	file:
@@ -124,8 +117,8 @@ LEXER_get_location	lexer.h	/^YYLTYPE LEXER_get_location( LEXCONTEXT *ctx );$/;"	
 LEXER_init	lexer.c	/^int LEXER_init( LEXCONTEXT *pc )$/;"	f	signature:( LEXCONTEXT *pc )
 LEXER_init	lexer.c	/^int LEXER_init( LEXCONTEXT *pc );$/;"	p	file:	signature:( LEXCONTEXT *pc )
 LEXER_init	lexer.h	/^int LEXER_init(LEXCONTEXT *pc);$/;"	p	signature:(LEXCONTEXT *pc)
-LEXER_open_string	lexer.c	/^int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value  )$/;"	f	signature:( LEXCONTEXT *pc, const char *string, int init_token_value )
-LEXER_open_string	lexer.h	/^int LEXER_open_string(LEXCONTEXT *pc, const char *string, int init_token_value   );$/;"	p	signature:(LEXCONTEXT *pc, const char *string, int init_token_value )
+LEXER_open_string	lexer.c	/^int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value, YYLTYPE *location  )$/;"	f	signature:( LEXCONTEXT *pc, const char *string, int init_token_value, YYLTYPE *location )
+LEXER_open_string	lexer.h	/^int LEXER_open_string(LEXCONTEXT *pc, const char *string, int init_token_value, YYLTYPE *location );$/;"	p	signature:(LEXCONTEXT *pc, const char *string, int init_token_value, YYLTYPE *location )
 LEXER_scan_file	lexer.c	/^int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )$/;"	f	signature:( LEXCONTEXT *pc, const char *file_name )
 LEXER_scan_file	lexer.h	/^int LEXER_scan_file(LEXCONTEXT *pc, const char *file_name  );$/;"	p	signature:(LEXCONTEXT *pc, const char *file_name )
 LEXER_set_file_name	lexer.c	/^void LEXER_set_file_name( LEXCONTEXT *pc, const char *file_name )$/;"	f	signature:( LEXCONTEXT *pc, const char *file_name )
@@ -134,12 +127,12 @@ LEXER_set_location	lexer.c	/^void LEXER_set_location( LEXCONTEXT *pc, YYLTYPE *l
 LEXER_set_location	lexer.h	/^void LEXER_set_location( LEXCONTEXT *ctx, YYLTYPE *location );$/;"	p	signature:( LEXCONTEXT *ctx, YYLTYPE *location )
 LEXER_set_next_token	lexer.c	/^void  LEXER_set_next_token( LEXCONTEXT *pc, int init_token_value )$/;"	f	signature:( LEXCONTEXT *pc, int init_token_value )
 LEXER_set_next_token	lexer.h	/^void  LEXER_set_next_token( LEXCONTEXT *pc, int init_token_value );$/;"	p	signature:( LEXCONTEXT *pc, int init_token_value )
-LOOP_INFINITE	ast.h	/^  LOOP_INFINITE$/;"	e	enum:__anon10
-LOOP_POSTCOND_WHILE	ast.h	/^  LOOP_POSTCOND_WHILE,$/;"	e	enum:__anon10
-LOOP_PRECOND_WHILE	ast.h	/^  LOOP_PRECOND_WHILE,$/;"	e	enum:__anon10
-LOOP_TYPE	ast.h	/^} LOOP_TYPE;$/;"	t	typeref:enum:__anon10
+LOOP_INFINITE	ast.h	/^  LOOP_INFINITE$/;"	e	enum:__anon11
+LOOP_POSTCOND_WHILE	ast.h	/^  LOOP_POSTCOND_WHILE,$/;"	e	enum:__anon11
+LOOP_PRECOND_WHILE	ast.h	/^  LOOP_PRECOND_WHILE,$/;"	e	enum:__anon11
+LOOP_TYPE	ast.h	/^} LOOP_TYPE;$/;"	t	typeref:enum:__anon11
 MAX_INCLUDE_DEPTH	lexer.c	199;"	d	file:
-MAX_XFUNC_PARAM	ast.h	638;"	d
+MAX_XFUNC_PARAM	ast.h	654;"	d
 MY_YY_BUFFER_STATE	lexer.c	/^} MY_YY_BUFFER_STATE;$/;"	t	typeref:struct:tagMY_YY_BUFFER_STATE	file:
 MY_YY_INPUT	lexer.c	32;"	d	file:
 MY_YY_INPUT	lexer.c	60;"	d	file:
@@ -174,11 +167,11 @@ PARSER_run	parser.h	/^int PARSER_run(PARSECONTEXT *ctx, struct tagAST_BASE **rva
 POSITION_RESET_ON_NEW_FILE	lexer.c	34;"	d	file:
 POSITION_RESET_ON_NEW_FILE	lexer.c	68;"	d	file:
 PREBUILD_SUBDIRS	Makefile	/^PREBUILD_SUBDIRS=rtlib$/;"	m
-REF_SCOPE	ast.h	/^ REF_SCOPE;$/;"	t	typeref:enum:__anon4
-REF_SCOPE_CLOSURE	ast.h	/^ REF_SCOPE_CLOSURE,$/;"	e	enum:__anon4
-REF_SCOPE_GLOBAL	ast.h	/^ REF_SCOPE_GLOBAL = -1,$/;"	e	enum:__anon4
-REF_SCOPE_LOCAL	ast.h	/^ REF_SCOPE_LOCAL,$/;"	e	enum:__anon4
-REF_SCOPE_THIS	ast.h	/^ REF_SCOPE_THIS = -2,$/;"	e	enum:__anon4
+REF_SCOPE	ast.h	/^ REF_SCOPE;$/;"	t	typeref:enum:__anon5
+REF_SCOPE_CLOSURE	ast.h	/^ REF_SCOPE_CLOSURE,$/;"	e	enum:__anon5
+REF_SCOPE_GLOBAL	ast.h	/^ REF_SCOPE_GLOBAL = -1,$/;"	e	enum:__anon5
+REF_SCOPE_LOCAL	ast.h	/^ REF_SCOPE_LOCAL,$/;"	e	enum:__anon5
+REF_SCOPE_THIS	ast.h	/^ REF_SCOPE_THIS = -2,$/;"	e	enum:__anon5
 SET_YY_STYPE	lexer.c	28;"	d	file:
 SET_YY_STYPE	lexer.c	57;"	d	file:
 STRING_PART	lexer.h	/^} STRING_PART;$/;"	t	typeref:struct:tagSTRING_PART
@@ -187,11 +180,11 @@ STRING_PART_free	parsectx.c	/^void STRING_PART_free( STRING_PART *part  )$/;"	f	
 STRING_PART_get	lexer.h	/^M_INLINE const char * STRING_PART_get( STRING_PART *part )$/;"	f	signature:( STRING_PART *part )
 STRING_PART_init	lexer.h	/^STRING_PART *STRING_PART_init( int is_expression , YYLTYPE *location );$/;"	p	signature:( int is_expression , YYLTYPE *location )
 STRING_PART_init	parsectx.c	/^STRING_PART *STRING_PART_init( int is_expression, YYLTYPE *location  )$/;"	f	signature:( int is_expression, YYLTYPE *location )
-S_ASSIGNMENT	ast.h	/^  S_ASSIGNMENT,$/;"	e	enum:__anon1
-S_AST_LIST	ast.h	/^  S_AST_LIST,$/;"	e	enum:__anon1
-S_AST_VECTOR	ast.h	/^  S_AST_VECTOR,$/;"	e	enum:__anon1
-S_BREAK	ast.h	/^  S_BREAK,$/;"	e	enum:__anon1
-S_EXPRESSION	ast.h	/^  S_EXPRESSION,$/;"	e	enum:__anon1
+S_ASSIGNMENT	ast.h	/^  S_ASSIGNMENT,$/;"	e	enum:__anon2
+S_AST_LIST	ast.h	/^  S_AST_LIST,$/;"	e	enum:__anon2
+S_AST_VECTOR	ast.h	/^  S_AST_VECTOR,$/;"	e	enum:__anon2
+S_BREAK	ast.h	/^  S_BREAK,$/;"	e	enum:__anon2
+S_EXPRESSION	ast.h	/^  S_EXPRESSION,$/;"	e	enum:__anon2
 S_EXPR_ARRAY_INDEX	ast.h	/^  S_EXPR_ARRAY_INDEX,$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_BINARY	ast.h	/^  S_EXPR_BINARY,$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_CONSTANT	ast.h	/^  S_EXPR_CONSTANT,$/;"	e	enum:tagS_EXPR_TYPE
@@ -200,37 +193,40 @@ S_EXPR_FUNCALL	ast.h	/^  S_EXPR_FUNCALL,$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_HASH_INDEX	ast.h	/^  S_EXPR_HASH_INDEX,$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_HASH_VALUES	ast.h	/^  S_EXPR_HASH_VALUES, \/\/ hash constructor$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_LAMBDA	ast.h	/^  S_EXPR_LAMBDA,  \/\/ unamed function$/;"	e	enum:tagS_EXPR_TYPE
+S_EXPR_LAMBDA_RESOLVED	ast.h	/^  S_EXPR_LAMBDA_RESOLVED, \/\/ ref to named function after lookup (same as S_EXPR_LAMBA, but avoids recursion trick)$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_LIST_VALUES	ast.h	/^  S_EXPR_LIST_VALUES, \/\/ array constuctor$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_PLACEHOLDER	ast.h	/^  S_EXPR_PLACEHOLDER,$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_REFERENCE	ast.h	/^  S_EXPR_REFERENCE,$/;"	e	enum:tagS_EXPR_TYPE
 S_EXPR_TYPE	ast.h	/^  S_EXPR_TYPE;$/;"	t	typeref:enum:tagS_EXPR_TYPE
 S_EXPR_UNARY	ast.h	/^  S_EXPR_UNARY,$/;"	e	enum:tagS_EXPR_TYPE
-S_FOR	ast.h	/^  S_FOR,$/;"	e	enum:__anon1
-S_FUN_CALL	ast.h	/^  S_FUN_CALL,$/;"	e	enum:__anon1
-S_FUN_CALL_PARAM	ast.h	/^  S_FUN_CALL_PARAM,$/;"	e	enum:__anon1
-S_FUN_DECL	ast.h	/^  S_FUN_DECL,$/;"	e	enum:__anon1
-S_IF	ast.h	/^  S_IF,$/;"	e	enum:__anon1
-S_NEXT	ast.h	/^  S_NEXT,$/;"	e	enum:__anon1
-S_RETURN	ast.h	/^  S_RETURN, $/;"	e	enum:__anon1
+S_FOR	ast.h	/^  S_FOR,$/;"	e	enum:__anon2
+S_FUN_CALL	ast.h	/^  S_FUN_CALL,$/;"	e	enum:__anon2
+S_FUN_CALL_PARAM	ast.h	/^  S_FUN_CALL_PARAM,$/;"	e	enum:__anon2
+S_FUN_DECL	ast.h	/^  S_FUN_DECL,$/;"	e	enum:__anon2
+S_IF	ast.h	/^  S_IF,$/;"	e	enum:__anon2
+S_NEXT	ast.h	/^  S_NEXT,$/;"	e	enum:__anon2
+S_RETURN	ast.h	/^  S_RETURN, $/;"	e	enum:__anon2
 S_TOKEN_START_LEN	parser.c	145;"	d	file:
 S_TOKEN_STRART	parser.c	144;"	d	file:
-S_TYPE	ast.h	/^  S_TYPE;$/;"	t	typeref:enum:__anon1
-S_VAR_ANY	ast.h	/^  S_VAR_ANY = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST,$/;"	e	enum:__anon2
-S_VAR_CODE	ast.h	/^  S_VAR_CODE = 8,$/;"	e	enum:__anon2
-S_VAR_CODE_THREAD	ast.h	/^  S_VAR_CODE_THREAD = 0x100, \/\/ modifier on S_VAR_CODE - this function will run in its own interpreter thread.$/;"	e	enum:__anon2
-S_VAR_DOUBLE	ast.h	/^  S_VAR_DOUBLE = 2,$/;"	e	enum:__anon2
-S_VAR_HASH	ast.h	/^  S_VAR_HASH = 16,$/;"	e	enum:__anon2
-S_VAR_INT	ast.h	/^  S_VAR_INT = 1,$/;"	e	enum:__anon2
-S_VAR_LIST	ast.h	/^  S_VAR_LIST = 32,$/;"	e	enum:__anon2
-S_VAR_MASK	ast.h	249;"	d
-S_VAR_NULL	ast.h	/^  S_VAR_NULL = 64,$/;"	e	enum:__anon2
-S_VAR_PARAM_BYREF	ast.h	/^  S_VAR_PARAM_BYREF = 0x200, \/\/ parameter passed 'by reference'$/;"	e	enum:__anon2
-S_VAR_PARAM_OPTIONAL	ast.h	/^  S_VAR_PARAM_OPTIONAL = 0x400 \/\/ parameter is optional.$/;"	e	enum:__anon2
-S_VAR_STRING	ast.h	/^  S_VAR_STRING = 4,$/;"	e	enum:__anon2
-S_VAR_UNKNOWN	ast.h	/^  S_VAR_UNKNOWN = 0,$/;"	e	enum:__anon2
-S_WHILE	ast.h	/^  S_WHILE,$/;"	e	enum:__anon1
-S_XFUN_DECL	ast.h	/^  S_XFUN_DECL,$/;"	e	enum:__anon1
-Simple_value_type	ast.h	/^} Simple_value_type;$/;"	t	typeref:union:__anon3
+S_TYPE	ast.h	/^  S_TYPE;$/;"	t	typeref:enum:__anon2
+S_VAR_ANY	ast.h	/^  S_VAR_ANY = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST,$/;"	e	enum:__anon3
+S_VAR_CODE	ast.h	/^  S_VAR_CODE = 8,$/;"	e	enum:__anon3
+S_VAR_CODE_THREAD	ast.h	/^  S_VAR_CODE_THREAD = 0x100, \/\/ modifier on S_VAR_CODE - this function will run in its own interpreter thread.$/;"	e	enum:__anon3
+S_VAR_DOUBLE	ast.h	/^  S_VAR_DOUBLE = 2,$/;"	e	enum:__anon3
+S_VAR_HASH	ast.h	/^  S_VAR_HASH = 16,$/;"	e	enum:__anon3
+S_VAR_INT	ast.h	/^  S_VAR_INT = 1,$/;"	e	enum:__anon3
+S_VAR_LIST	ast.h	/^  S_VAR_LIST = 32,$/;"	e	enum:__anon3
+S_VAR_MASK	ast.h	260;"	d
+S_VAR_NULL	ast.h	/^  S_VAR_NULL = 64,$/;"	e	enum:__anon3
+S_VAR_NUMBER	ast.h	/^  S_VAR_NUMBER = S_VAR_INT | S_VAR_DOUBLE,$/;"	e	enum:__anon3
+S_VAR_PARAM_BYREF	ast.h	/^  S_VAR_PARAM_BYREF = 0x200, \/\/ parameter passed 'by reference'$/;"	e	enum:__anon3
+S_VAR_PARAM_OPTIONAL	ast.h	/^  S_VAR_PARAM_OPTIONAL = 0x400 \/\/ parameter is optional.$/;"	e	enum:__anon3
+S_VAR_SCALAR	ast.h	/^  S_VAR_SCALAR = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING,$/;"	e	enum:__anon3
+S_VAR_STRING	ast.h	/^  S_VAR_STRING = 4,$/;"	e	enum:__anon3
+S_VAR_UNKNOWN	ast.h	/^  S_VAR_UNKNOWN = 0,$/;"	e	enum:__anon3
+S_WHILE	ast.h	/^  S_WHILE,$/;"	e	enum:__anon2
+S_XFUN_DECL	ast.h	/^  S_XFUN_DECL,$/;"	e	enum:__anon2
+Simple_value_type	ast.h	/^} Simple_value_type;$/;"	t	typeref:union:__anon4
 TARGETS	Makefile	/^TARGETS=parser$/;"	m
 TK_ARR_DEF	pars.h	/^     TK_ARR_DEF = 307,$/;"	e	enum:yytokentype
 TK_ASSIGN	pars.h	/^     TK_ASSIGN = 277,$/;"	e	enum:yytokentype
@@ -303,6 +299,7 @@ TK_VAR_UNDEF	pars.h	/^     TK_VAR_UNDEF = 306,$/;"	e	enum:yytokentype
 TK_WHILE	pars.h	/^     TK_WHILE = 281,$/;"	e	enum:yytokentype
 TOPDIR	Makefile	/^TOPDIR=..$/;"	m
 TRACE_TOKENIZER	lexer.c	109;"	d	file:
+TypeMasks	ast.c	/^} TypeMasks[] = {$/;"	v	typeref:struct:__anon1
 XMETHOD_CALL	ast.h	/^typedef void (*XMETHOD_CALL) ( struct tagXCALL_DATA *xcall );$/;"	t
 YYDEBUG	parser.c	50;"	d	file:
 YYERROR_VERBOSE	parser.c	47;"	d	file:
@@ -324,7 +321,7 @@ YYLTYPE_IS_DECLARED	lexer.h	23;"	d
 YYLTYPE_IS_DECLARED	pars.h	133;"	d
 YYLTYPE_IS_TRIVIAL	pars.h	134;"	d
 YYLTYPE_init	lexer.h	/^M_INLINE void YYLTYPE_init( YYLTYPE *location )$/;"	f	signature:( YYLTYPE *location )
-YYSTYPE	yystype.h	/^} YYSTYPE;$/;"	t	typeref:union:__anon11
+YYSTYPE	yystype.h	/^} YYSTYPE;$/;"	t	typeref:union:__anon12
 YYSTYPE_IS_DECLARED	pars.h	119;"	d
 YYSTYPE_IS_DECLARED	yystype.h	5;"	d
 YYTOKENTYPE	pars.h	38;"	d
@@ -339,22 +336,26 @@ _YYSTYPE_H_	yystype.h	2;"	d
 __CHECKER_H_Y_Z_	checker.h	2;"	d
 __PARSE_CTX_H_Y__	parsectx.h	2;"	d
 __PRINTAST_H_	printast.h	2;"	d
-__anon11::ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon11	typeref:struct:__anon11::tagAST_BASE	access:public
-__anon11::double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon11	access:public
-__anon11::int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon11	access:public
-__anon11::long_value	yystype.h	/^	long	long_value;$/;"	m	union:__anon11	access:public
-__anon11::string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon11	access:public
-__anon3::double_value	ast.h	/^  double double_value;$/;"	m	union:__anon3	access:public
-__anon3::long_value	ast.h	/^  long   long_value;$/;"	m	union:__anon3	access:public
-__anon3::string_value	ast.h	/^  char   *string_value;$/;"	m	union:__anon3	access:public
+__anon12::ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon12	typeref:struct:__anon12::tagAST_BASE	access:public
+__anon12::double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon12	access:public
+__anon12::int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon12	access:public
+__anon12::long_value	yystype.h	/^	long	long_value;$/;"	m	union:__anon12	access:public
+__anon12::string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon12	access:public
+__anon1::mask	ast.c	/^  unsigned  int mask;$/;"	m	struct:__anon1	file:	access:public
+__anon1::name	ast.c	/^  const char *name;$/;"	m	struct:__anon1	file:	access:public
+__anon4::double_value	ast.h	/^  double double_value;$/;"	m	union:__anon4	access:public
+__anon4::long_value	ast.h	/^  long   long_value;$/;"	m	union:__anon4	access:public
+__anon4::string_value	ast.h	/^  char   *string_value;$/;"	m	union:__anon4	access:public
 __lexer_xx_yy__	lexer.h	2;"	d
 addExp	pars.y	/^addExp  : addExp addExpOp multExp$/;"	l
 addExp	scr.y	/^addExp  : addExp addExpOp multExp$/;"	l
 addExpOp	pars.y	/^addExpOp : TK_OP_NUM_SUBST { $<int_value>$ = TK_OP_NUM_SUBST; }  $/;"	l
 addExpOp	scr.y	/^addExpOp : TK_OP_NUM_SUBST $/;"	l
 anonymousFunction	pars.y	/^anonymousFunction : TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END$/;"	l
+assign_value	ast.c	/^void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location );$/;"	p	file:	signature:( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location )
+assign_value	checker.c	/^void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location )$/;"	f	signature:( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location )
 assignmentLeftHandSide	pars.y	/^assignmentLeftHandSide : varRef $/;"	l
-ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon11	typeref:struct:__anon11::tagAST_BASE	access:public
+ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon12	typeref:struct:__anon12::tagAST_BASE	access:public
 base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_ASSIGNMEN	access:public
 base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_BASE_LIST	access:public
 base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_COND	access:public
@@ -367,14 +368,16 @@ base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_RETURN	access:public
 base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_VECTOR	access:public
 base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_WHILE_LOOP	access:public
 base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_XFUNC_DECL	access:public
-binding	ast.h	/^		struct tagBINDING_ENTRY *binding;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	typeref:struct:tagAST_EXPRESSION::__anon5::__anon8::tagBINDING_ENTRY	access:public
-binding_hash_compare	ast.h	/^M_INLINE int binding_hash_compare( HASH_Entry  *entry, void * key, ssize_t key_length)$/;"	f	signature:( HASH_Entry *entry, void * key, ssize_t key_length)
+binding	ast.h	/^		struct tagBINDING_ENTRY *binding;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	typeref:struct:tagAST_EXPRESSION::__anon6::__anon9::tagBINDING_ENTRY	access:public
+binding_hash_compare	ast.h	/^M_INLINE int binding_hash_compare( HASH_Entry  *entry, const void * key, ssize_t key_length)$/;"	f	signature:( HASH_Entry *entry, const void * key, ssize_t key_length)
 binding_name	ast.h	/^  const char *binding_name;$/;"	m	struct:tagBINDING_ENTRY	access:public
 block	ast.h	/^  AST_BASE_LIST  *block; $/;"	m	struct:tagAST_FOR_LOOP	access:public
 block	ast.h	/^  AST_BASE_LIST *block; $/;"	m	struct:tagAST_WHILE_LOOP	access:public
 block	ast.h	/^  AST_BASE_LIST *block;$/;"	m	struct:tagAST_COND	access:public
 breakStmt	pars.y	/^breakStmt : TK_BREAK$/;"	l
 call_params	ast.h	/^  AST_VECTOR *call_params;$/;"	m	struct:tagAST_FUNC_CALL	access:public
+can_assign	checker.c	/^int can_assign( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offending_type)$/;"	f	signature:( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offending_type)
+can_assign	checker.c	/^int can_assign( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offending_type);$/;"	p	file:	signature:( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offending_type)
 checker_state	ast.h	/^  int checker_state;  $/;"	m	struct:tagAST_FUNC_DECL	access:public
 chkctx	parsectx.h	/^  CHECKERCTX chkctx;$/;"	m	struct:tagPARSECONTEXT	access:public
 compExp	pars.y	/^compExp : compExp compExpOp addExp$/;"	l
@@ -386,10 +389,11 @@ condClause	pars.y	/^condClause  : expr conditionContent 	$/;"	l
 condition	ast.h	/^  AST_EXPRESSION *condition;$/;"	m	struct:tagAST_COND	access:public
 condition	ast.h	/^  struct tagAST_EXPRESSION *condition;$/;"	m	struct:tagAST_WHILE_LOOP	typeref:struct:tagAST_WHILE_LOOP::tagAST_EXPRESSION	access:public
 conditionContent	pars.y	/^conditionContent : stmtInnerList$/;"	l
-const_value	ast.h	/^	Simple_value_type const_value;$/;"	m	union:tagAST_EXPRESSION::__anon5	access:public
+const_value	ast.h	/^	Simple_value_type const_value;$/;"	m	union:tagAST_EXPRESSION::__anon6	access:public
 convert_to_string	ast.c	/^char *convert_to_string(AST_VAR_TYPE ty, Simple_value_type val)$/;"	f	signature:(AST_VAR_TYPE ty, Simple_value_type val)
 copy_file_name	lexer.c	/^static char *copy_file_name(const char *file_name)$/;"	f	file:	signature:(const char *file_name)
 copy_file_name	lexer.c	/^static char *copy_file_name(const char *file_name);$/;"	p	file:	signature:(const char *file_name)
+current	parsectx.h	/^  struct tagAST_FUNC_DECL *current,*root_ctx;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::tagAST_FUNC_DECL	access:public
 current_function	checker.h	/^  struct tagAST_FUNC_DECL *current_function;$/;"	m	struct:tagCHECKERCTX	typeref:struct:tagCHECKERCTX::tagAST_FUNC_DECL	access:public
 dbuf_ends_with	lexer.c	/^const char * dbuf_ends_with( DBUF *buf, const char *term_string )$/;"	f	signature:( DBUF *buf, const char *term_string )
 dbuf_ends_with	lexer.c	/^const char * dbuf_ends_with( DBUF *buf, const char *term_string );$/;"	p	file:	signature:( DBUF *buf, const char *term_string )
@@ -404,8 +408,8 @@ do_yyerror	parser.c	/^void do_yyerror (YYLTYPE *loc, PARSECONTEXT *parse_context
 do_yyerror	parser.h	/^void do_yyerror (YYLTYPE *loc,  PARSECONTEXT *parse_context, const char  *format, ...);$/;"	p	signature:(YYLTYPE *loc, PARSECONTEXT *parse_context, const char *format, ...)
 do_yywarning	parser.c	/^void do_yywarning (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format, ...)$/;"	f	signature:(YYLTYPE *loc, PARSECONTEXT *parse_context, const char *format, ...)
 do_yywarning	parser.h	/^void do_yywarning (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format, ...);$/;"	p	signature:(YYLTYPE *loc, PARSECONTEXT *parse_context, const char *format, ...)
-double_value	ast.h	/^  double double_value;$/;"	m	union:__anon3	access:public
-double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon11	access:public
+double_value	ast.h	/^  double double_value;$/;"	m	union:__anon4	access:public
+double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon12	access:public
 dump_ast	main.c	/^void dump_ast( const char *file_path, AST_BASE *base, int idx )$/;"	f	signature:( const char *file_path, AST_BASE *base, int idx )
 dump_ast	main.c	/^void dump_ast( const char *file_path, AST_BASE *base, int idx );$/;"	p	file:	signature:( const char *file_path, AST_BASE *base, int idx )
 elseClauses	pars.y	/^elseClauses : elsifClause TK_ELSE  conditionContent$/;"	l
@@ -416,21 +420,21 @@ entry	ast.h	/^  HASH_Entry entry;$/;"	m	struct:tagBINDING_ENTRY	access:public
 entry	checker.c	/^  HASH_Entry entry;$/;"	m	struct:tagFUNCTION_ENTRY	file:	access:public
 entry	parsectx.h	/^  HASH_Entry entry;$/;"	m	struct:tagFUNCTION_HASH_entry	access:public
 exp_type	ast.h	/^  S_EXPR_TYPE exp_type;$/;"	m	struct:tagAST_EXPRESSION	access:public
-expr	ast.h	/^		struct tagAST_EXPRESSION *expr;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon7	typeref:struct:tagAST_EXPRESSION::__anon5::__anon7::tagAST_EXPRESSION	access:public
-expr	ast.h	/^	} expr;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::__anon6	access:public
+expr	ast.h	/^		struct tagAST_EXPRESSION *expr;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon8	typeref:struct:tagAST_EXPRESSION::__anon6::__anon8::tagAST_EXPRESSION	access:public
+expr	ast.h	/^	} expr;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon7	access:public
 expr	ast.h	/^  AST_EXPRESSION *expr;$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
 expr	pars.y	/^expr : logicalExp$/;"	l
 expr	scr.y	/^expr : compExp$/;"	l
-expr_left	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon6	typeref:struct:tagAST_EXPRESSION::__anon5::__anon6::tagAST_EXPRESSION	access:public
-expr_right	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon6	typeref:struct:tagAST_EXPRESSION::__anon5::__anon6::	access:public
+expr_left	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon7	typeref:struct:tagAST_EXPRESSION::__anon6::__anon7::tagAST_EXPRESSION	access:public
+expr_right	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon7	typeref:struct:tagAST_EXPRESSION::__anon6::__anon7::	access:public
 expressionList	pars.y	/^expressionList : expressionList TK_COMMA expr$/;"	l
 f_name	ast.h	/^  AST_EXPRESSION *f_name;$/;"	m	struct:tagAST_FUNC_CALL	access:public
 f_name	ast.h	/^  const char *f_name;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 f_name	ast.h	/^  const char *f_name;$/;"	m	struct:tagAST_XFUNC_DECL	access:public
 fancy_error	parser.c	/^static void fancy_error(const char *line, int line_num, int column_start, int column_end )$/;"	f	file:	signature:(const char *line, int line_num, int column_start, int column_end )
 fancy_error_report	parser.c	/^static int fancy_error_report(YYLTYPE *location, const char *file)$/;"	f	file:	signature:(YYLTYPE *location, const char *file)
-fcall	ast.h	/^	struct tagAST_FUNC_CALL *fcall;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::tagAST_FUNC_CALL	access:public
-fdecl	ast.h	/^	struct tagAST_BASE *fdecl; \/\/ lambda value. (reference to either AST_XFUNC_DECL or AST_FUNC_DECL$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::tagAST_BASE	access:public
+fcall	ast.h	/^	struct tagAST_FUNC_CALL *fcall;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::tagAST_FUNC_CALL	access:public
+fdecl	ast.h	/^	struct tagAST_BASE *fdecl; \/\/ lambda value. (reference to either AST_XFUNC_DECL or AST_FUNC_DECL$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::tagAST_BASE	access:public
 fdecl	checker.c	/^  AST_FUNC_DECL *fdecl;$/;"	m	struct:tagFUNCTION_ENTRY	file:	access:public
 file_id	lexer.c	/^	int	file_id;$/;"	m	struct:tagMY_YY_BUFFER_STATE	file:	access:public
 file_id	lexer.h	/^	int file_id;	\/\/ offset of file entry object (what is the file that parsed this one here)$/;"	m	struct:YYLTYPE	access:public
@@ -441,12 +445,12 @@ first_column	pars.h	/^  int first_column;$/;"	m	struct:YYLTYPE	access:public
 first_line	lexer.h	/^	int first_line;$/;"	m	struct:YYLTYPE	access:public
 first_line	pars.h	/^  int first_line;$/;"	m	struct:YYLTYPE	access:public
 forStmt	pars.y	/^forStmt : TK_FOR TK_IDENTIFIER expr stmtInnerList TK_END$/;"	l
-funcPDecl	pars.y	/^funcPDecl : funcParamDecls | TK_THREE_DOTS { $<ast>$ = 0; }            $/;"	l
-funcParamDecl	pars.y	/^funcParamDecl : TK_IDENTIFIER optParamSpec {$/;"	l
+funcPDecl	pars.y	/^funcPDecl : funcParamDecls $/;"	l
+funcParamDecl	pars.y	/^funcParamDecl : TK_IDENTIFIER optParamSpecs2 {$/;"	l
 funcParamDecls	pars.y	/^funcParamDecls : funcParamDecls  TK_COMMA funcParamDecl $/;"	l
-func_body	ast.h	/^   AST_BASE_LIST *func_body;$/;"	m	struct:tagAST_FUNC_DECL	access:public
+func_body	ast.h	/^  AST_BASE_LIST *func_body;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 func_decl	ast.h	/^  AST_BASE *func_decl; \/\/ either AST_XFUNC_DECL or AST_FUNC_DECL$/;"	m	struct:tagAST_FUNC_CALL	access:public
-func_decls	checker.h	/^  AST_VECTOR *func_decls;$/;"	m	struct:tagCHECKERCTX	access:public
+func_decls	checker.h	/^  struct tagAST_VECTOR *func_decls;$/;"	m	struct:tagCHECKERCTX	typeref:struct:tagCHECKERCTX::tagAST_VECTOR	access:public
 func_params	ast.h	/^  AST_VECTOR *func_params;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 funcs	ast.h	/^  TREENODE funcs; \/\/ all functions (by nesting of declaration)$/;"	m	struct:tagAST_FUNC_DECL	access:public
 functionArgList	pars.y	/^functionArgList  : functionArgList functionParam 	$/;"	l
@@ -458,34 +462,42 @@ functionDefStmt	pars.y	/^functionDefStmt  :  functionPrototypeDecl stmtInnerList
 functionParam	pars.y	/^functionParam : TK_PARAMETER_LABEL expr$/;"	l
 functionPrototypeDecl	pars.y	/^functionPrototypeDecl : TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE $/;"	l
 function_hash_compare	checker.c	/^M_INLINE int function_hash_compare( HASH_Entry  *entry, void * key, ssize_t key_length)$/;"	f	signature:( HASH_Entry *entry, void * key, ssize_t key_length)
+get_first_index	checker.c	/^AST_EXPRESSION *get_first_index( AST_EXPRESSION *expr   )$/;"	f	signature:( AST_EXPRESSION *expr )
+get_func_name	checker.c	/^const char *get_func_name( AST_BASE *func_def)$/;"	f	signature:( AST_BASE *func_def)
 get_op_name	ast.c	/^const char *get_op_name( int op )$/;"	f	signature:( int op )
 get_op_name	ast.h	/^const char *get_op_name( int op );$/;"	p	signature:( int op )
 get_test_spec	test-it.pl	/^sub get_test_spec$/;"	s
 get_type_name	ast.c	/^const char *get_type_name( AST_VAR_TYPE value_type )$/;"	f	signature:( AST_VAR_TYPE value_type )
 get_type_name	ast.h	/^const char *get_type_name( AST_VAR_TYPE value_type );$/;"	p	signature:( AST_VAR_TYPE value_type )
-get_var_name	checker.c	/^const char *get_var_name( AST_EXPRESSION *expr )$/;"	f	signature:( AST_EXPRESSION *expr )
+get_var_name	checker.c	/^const char *get_var_name( AST_EXPRESSION *expr, REF_SCOPE *scope   )$/;"	f	signature:( AST_EXPRESSION *expr, REF_SCOPE *scope )
+has_value	ast.h	/^  int has_value;  $/;"	m	struct:tagBINDING_ENTRY	access:public
 hashClause	pars.y	/^hashClause : expr TK_HASH_IT expr$/;"	l
 hashClauseList	pars.y	/^hashClauseList : hashClauseList TK_COMMA hashClause$/;"	l
 hashConstructor	pars.y	/^hashConstructor : TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE$/;"	l
 hash_compare	parsectx.c	/^static int hash_compare(HASH_Entry *entry, const void * key, ssize_t key_length)$/;"	f	file:	signature:(HASH_Entry *entry, const void * key, ssize_t key_length)
 ifStmt	pars.y	/^ifStmt  : TK_IF condClause elseClauses TK_END$/;"	l
 includeStmt	pars.y	/^includeStmt : TK_INCLUDE TK_STRING_CONSTANT$/;"	l
-index_expr	ast.h	/^        struct tagAST_EXPRESSION *index_expr;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::tagAST_EXPRESSION	access:public
-index_expressions	ast.h	/^	AST_VECTOR *index_expressions;$/;"	m	union:tagAST_EXPRESSION::__anon5	access:public
-indexes	ast.h	/^		AST_VECTOR *indexes;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
+index_expr	ast.h	/^        struct tagAST_EXPRESSION *index_expr;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::tagAST_EXPRESSION	access:public
+index_expressions	ast.h	/^	AST_VECTOR *index_expressions;$/;"	m	union:tagAST_EXPRESSION::__anon6	access:public
+indexes	ast.h	/^		AST_VECTOR *indexes;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
 init_location	lexer.h	/^  YYLTYPE init_location;$/;"	m	struct:tagLEXCONTEXT	access:public
 init_token_value	lexer.h	/^  int init_token_value;$/;"	m	struct:tagLEXCONTEXT	access:public
-int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon11	access:public
+int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon12	access:public
 is_comparison_operator	ast.c	/^int is_comparison_operator( int op )$/;"	f	signature:( int op )
 is_expression	lexer.h	/^  int is_expression;$/;"	m	struct:tagSTRING_PART	access:public
 is_file_already_opened	lexer.c	/^static int is_file_already_opened( LEXCONTEXT *pc, const char *file_name);$/;"	p	file:	signature:( LEXCONTEXT *pc, const char *file_name)
 is_file_already_opened	lexer.c	/^static int is_file_already_opened(LEXCONTEXT *pc, const char *file_name)$/;"	f	file:	signature:(LEXCONTEXT *pc, const char *file_name)
+is_function_name	checker.h	/^  int is_function_name;$/;"	m	struct:tagCHECKERCTX	access:public
+is_indexed_ref	ast.c	/^int is_indexed_ref( AST_EXPRESSION *expr );$/;"	p	file:	signature:( AST_EXPRESSION *expr )
+is_indexed_ref	checker.c	/^int is_indexed_ref( AST_EXPRESSION *expr )$/;"	f	signature:( AST_EXPRESSION *expr )
 is_left_hand_side	checker.h	/^  int is_left_hand_side;$/;"	m	struct:tagCHECKERCTX	access:public
-is_not_numeric_var_type	checker.c	/^int is_not_numeric_var_type( AST_VAR_TYPE value_type )$/;"	f	signature:( AST_VAR_TYPE value_type )
+is_narrower_type	ast.c	/^int is_narrower_type( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type  );$/;"	p	file:	signature:( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type )
+is_narrower_type	checker.c	/^int is_narrower_type( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type  )$/;"	f	signature:( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type )
 is_numeric_operator	ast.c	/^int is_numeric_operator( int op )$/;"	f	signature:( int op )
 is_numeric_or_string_type	ast.h	/^M_INLINE int is_numeric_or_string_type( AST_VAR_TYPE ty )$/;"	f	signature:( AST_VAR_TYPE ty )
 is_numeric_type	ast.h	/^M_INLINE int is_numeric_type( AST_VAR_TYPE ty )$/;"	f	signature:( AST_VAR_TYPE ty )
-is_prefix	ast.h	/^		int    is_prefix;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon7	access:public
+is_numeric_var_type	checker.c	/^int is_numeric_var_type( AST_VAR_TYPE value_type )$/;"	f	signature:( AST_VAR_TYPE value_type )
+is_prefix	ast.h	/^		int    is_prefix;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon8	access:public
 is_result_type_int	ast.c	/^int is_result_type_int( int op )$/;"	f	signature:( int op )
 is_root_func	checker.h	/^  int is_root_func;$/;"	m	struct:tagCHECKERCTX	access:public
 is_scalar_var_type	checker.c	/^int is_scalar_var_type( AST_VAR_TYPE value_type )$/;"	f	signature:( AST_VAR_TYPE value_type )
@@ -498,7 +510,7 @@ last_line	pars.h	/^  int last_line;$/;"	m	struct:YYLTYPE	access:public
 last_stack_offset	ast.h	/^  int last_stack_offset;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 left_side	ast.h	/^  struct tagAST_EXPRESSION *left_side;$/;"	m	struct:tagAST_ASSIGNMEN	typeref:struct:tagAST_ASSIGNMEN::tagAST_EXPRESSION	access:public
 lexctx	parsectx.h	/^  LEXCONTEXT lexctx;$/;"	m	struct:tagPARSECONTEXT	access:public
-lhs	ast.h	/^		char  *lhs;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
+lhs	ast.h	/^		char  *lhs;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
 listConstructor	pars.y	/^listConstructor : TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE   $/;"	l
 list_parts	test-it.pl	/^sub list_parts$/;"	s
 loadRTLIB	main.c	/^int loadRTLIB( PARSECONTEXT *ctx )$/;"	f	signature:( PARSECONTEXT *ctx )
@@ -506,16 +518,17 @@ loc	lexer.h	/^  YYLTYPE loc;  $/;"	m	struct:tagSTRING_PART	access:public
 location	ast.h	/^	YYLTYPE   location; $/;"	m	struct:tagAST_BASE	access:public
 logExpOp	pars.y	/^logExpOp : TK_OP_LOGICAL_AND { $<int_value>$ = TK_OP_LOGICAL_AND; }  $/;"	l
 logicalExp	pars.y	/^logicalExp : logicalExp logExpOp compExp$/;"	l
-long_value	ast.h	/^  long   long_value;$/;"	m	union:__anon3	access:public
-long_value	yystype.h	/^	long	long_value;$/;"	m	union:__anon11	access:public
+long_value	ast.h	/^  long   long_value;$/;"	m	union:__anon4	access:public
+long_value	yystype.h	/^	long	long_value;$/;"	m	union:__anon12	access:public
 lookup_binding	checker.c	/^BINDING_ENTRY *lookup_binding( PARSECONTEXT *ctx, const char *name,  REF_SCOPE scope, int *rscope )$/;"	f	signature:( PARSECONTEXT *ctx, const char *name, REF_SCOPE scope, int *rscope )
 loopStmt	pars.y	/^loopStmt : TK_LOOP stmtInnerList TK_END$/;"	l
 loop_expr	ast.h	/^  struct tagAST_EXPRESSION *loop_expr;$/;"	m	struct:tagAST_FOR_LOOP	typeref:struct:tagAST_FOR_LOOP::tagAST_EXPRESSION	access:public
 loop_var	ast.h	/^  struct tagAST_EXPRESSION *loop_var; $/;"	m	struct:tagAST_FOR_LOOP	typeref:struct:tagAST_FOR_LOOP::tagAST_EXPRESSION	access:public
 main	main.c	/^int main(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
-make_binding	checker.c	/^BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name )$/;"	f	signature:( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name )
+make_binding	checker.c	/^BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, int has_value )$/;"	f	signature:( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, int has_value )
 make_path	main.c	/^char *make_path( const char *file_path, const char *pattern, int idx)$/;"	f	signature:( const char *file_path, const char *pattern, int idx)
 map_function_defs	parsectx.h	/^  HASH map_function_defs; \/\/ maps function name to function definition. (AST_FUNC_DECL *)$/;"	m	struct:tagPARSECONTEXT	access:public
+mask	ast.c	/^  unsigned  int mask;$/;"	m	struct:__anon1	file:	access:public
 multExp	pars.y	/^multExp : multExp multExpOp unaryExp$/;"	l
 multExp	scr.y	/^multExp : multExp multExpOp  unaryExp$/;"	l
 multExpOp	pars.y	/^multExpOp : TK_OP_NUM_DIV   { $<int_value>$ = TK_OP_NUM_DIV; } $/;"	l
@@ -525,16 +538,17 @@ multiValueLeftHandSideClause	pars.y	/^multiValueLeftHandSideClause : varRef$/;"	
 multiValueLeftHandSideList	pars.y	/^multiValueLeftHandSideList :  multiValueLeftHandSideList TK_COMMA multiValueLeftHandSideClause$/;"	l
 my_ast_root	parsectx.h	/^  struct tagAST_BASE * my_ast_root;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::tagAST_BASE	access:public
 my_yy_is_error	parsectx.h	/^  int my_yy_is_error;$/;"	m	struct:tagPARSECONTEXT	access:public
+name	ast.c	/^  const char *name;$/;"	m	struct:__anon1	file:	access:public
 nested_buffers	lexer.h	/^  ARRAY nested_buffers; \/\/ stack of included files.$/;"	m	struct:tagLEXCONTEXT	access:public
 nextStmt	pars.y	/^nextStmt : TK_NEXT$/;"	l
 nparams	ast.h	/^  size_t nparams;$/;"	m	struct:tagAST_XFUNC_DECL	access:public
-op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon6	access:public
-op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon7	access:public
+op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon7	access:public
+op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon8	access:public
 open_count	lexer.h	/^  int   open_count;$/;"	m	struct:tagLEXCONTEXT	access:public
 operator_name	ast.c	/^const char *operator_name( int op )$/;"	f	signature:( int op )
-optParamSpec	pars.y	/^optParamSpec : optParamSpecBYREF optParamSpecOPTIONAL$/;"	l
-optParamSpecBYREF	pars.y	/^optParamSpecBYREF : TK_BYREF$/;"	l
-optParamSpecOPTIONAL	pars.y	/^optParamSpecOPTIONAL : TK_OPTIONAL$/;"	l
+optParamSpec	pars.y	/^optParamSpec : TK_BYREF$/;"	l
+optParamSpecs	pars.y	/^optParamSpecs : optParamSpecs optParamSpec$/;"	l
+optParamSpecs2	pars.y	/^optParamSpecs2 : optParamSpecs$/;"	l
 param_name	ast.h	/^    const char *param_name;$/;"	m	struct:tagAST_XFUNC_PARAM_DECL	access:public
 params	ast.h	/^  AST_XFUNC_PARAM_DECL params[ MAX_XFUNC_PARAM ]; $/;"	m	struct:tagAST_XFUNC_DECL	access:public
 parent	ast.h	/^	struct tagAST_BASE *parent;$/;"	m	struct:tagAST_BASE	typeref:struct:tagAST_BASE::tagAST_BASE	access:public
@@ -555,13 +569,13 @@ parser_POSTBUILD	Makefile	/^parser_POSTBUILD=.\/test-it.pl $(BIN_ROOT_DIR)\/bin\
 parser_SRC	Makefile	/^parser_SRC=lexer.c parser.c ast.c parsectx.c printast.c checker.c main.c $/;"	m
 parser_TYPE	Makefile	/^parser_TYPE=exe$/;"	m
 part_data	lexer.h	/^  DBUF part_data;$/;"	m	struct:tagSTRING_PART	access:public
+pass	checker.h	/^  int pass;$/;"	m	struct:tagCHECKERCTX	access:public
 pos	lexer.c	/^	YYLTYPE pos;$/;"	m	struct:tagMY_YY_BUFFER_STATE	file:	access:public
 primaryExp	pars.y	/^primaryExp : varRef$/;"	l
 primaryExp	scr.y	/^primaryExp : varRef$/;"	l
-print_string	lexer.c	/^void print_string( LEXCONTEXT *pc )$/;"	f	signature:( LEXCONTEXT *pc )
 print_string	lexer.c	/^void print_string( LEXCONTEXT *pc );$/;"	p	file:	signature:( LEXCONTEXT *pc )
 prog	pars.y	/^prog : $/;"	l
-ref	ast.h	/^	} ref;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
+ref	ast.h	/^	} ref;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
 referenceCopyAssignmentStmt	pars.y	/^referenceCopyAssignmentStmt : assignmentLeftHandSide TK_ASSIGN_REF  expr$/;"	l
 refs	ast.h	/^  ARRAY refs;$/;"	m	struct:tagAST_VECTOR	access:public
 report_errors	parsectx.h	/^  int report_errors;$/;"	m	struct:tagPARSECONTEXT	access:public
@@ -569,10 +583,11 @@ returnStmt	pars.y	/^returnStmt : TK_RETURN expr$/;"	l
 return_type_value	ast.h	/^  AST_VAR_TYPE return_type_value;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 return_type_value	ast.h	/^  AST_VAR_TYPE return_type_value;$/;"	m	struct:tagAST_XFUNC_DECL	access:public
 right_side	ast.h	/^  struct tagAST_EXPRESSION *right_side;$/;"	m	struct:tagAST_ASSIGNMEN	typeref:struct:tagAST_ASSIGNMEN::tagAST_EXPRESSION	access:public
+root_ctx	parsectx.h	/^  struct tagAST_FUNC_DECL *current,*root_ctx;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::	access:public
 run	main.c	/^int run(const char *file_path)$/;"	f	signature:(const char *file_path)
 run_test_in_dir	test-it.pl	/^sub run_test_in_dir$/;"	s
 rvalue	ast.h	/^  AST_EXPRESSION *rvalue;$/;"	m	struct:tagAST_RETURN	access:public
-scope	ast.h	/^		int scope;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
+scope	ast.h	/^		int scope;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
 scope_map_name_to_binding	ast.h	/^  HASH scope_map_name_to_binding; $/;"	m	struct:tagAST_FUNC_DECL	access:public
 send_init_token	lexer.h	/^  int send_init_token;  \/\/ force lex to emit an init token.$/;"	m	struct:tagLEXCONTEXT	access:public
 set_init_location	lexer.h	/^  int set_init_location; \/\/ if set then lex will pick up init_location during first call.$/;"	m	struct:tagLEXCONTEXT	access:public
@@ -586,8 +601,8 @@ stmtInnerList	pars.y	/^stmtInnerList : stmtInnerList stmtInner$/;"	l
 stmtList	pars.y	/^stmtList : stmtList stmt	$/;"	l
 stmt_not_closed	parsectx.h	/^  int stmt_not_closed;$/;"	m	struct:tagPARSECONTEXT	access:public
 string_parts	lexer.h	/^  ARRAY string_parts;   \/\/ multipart strings.$/;"	m	struct:tagLEXCONTEXT	access:public
-string_value	ast.h	/^  char   *string_value;$/;"	m	union:__anon3	access:public
-string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon11	access:public
+string_value	ast.h	/^  char   *string_value;$/;"	m	union:__anon4	access:public
+string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon12	access:public
 tagAST_ASSIGNMEN	ast.h	/^typedef struct tagAST_ASSIGNMEN {$/;"	s
 tagAST_ASSIGNMEN::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_ASSIGNMEN	access:public
 tagAST_ASSIGNMEN::left_side	ast.h	/^  struct tagAST_EXPRESSION *left_side;$/;"	m	struct:tagAST_ASSIGNMEN	typeref:struct:tagAST_ASSIGNMEN::tagAST_EXPRESSION	access:public
@@ -607,27 +622,27 @@ tagAST_COND::block	ast.h	/^  AST_BASE_LIST *block;$/;"	m	struct:tagAST_COND	acce
 tagAST_COND::condition	ast.h	/^  AST_EXPRESSION *condition;$/;"	m	struct:tagAST_COND	access:public
 tagAST_COND::elsecond	ast.h	/^  struct tagAST_COND *elsecond;$/;"	m	struct:tagAST_COND	typeref:struct:tagAST_COND::tagAST_COND	access:public
 tagAST_EXPRESSION	ast.h	/^typedef struct tagAST_EXPRESSION {$/;"	s
-tagAST_EXPRESSION::__anon5::__anon6::expr_left	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon6	typeref:struct:tagAST_EXPRESSION::__anon5::__anon6::tagAST_EXPRESSION	access:public
-tagAST_EXPRESSION::__anon5::__anon6::expr_right	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon6	typeref:struct:tagAST_EXPRESSION::__anon5::__anon6::	access:public
-tagAST_EXPRESSION::__anon5::__anon6::op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon6	access:public
-tagAST_EXPRESSION::__anon5::__anon7::expr	ast.h	/^		struct tagAST_EXPRESSION *expr;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon7	typeref:struct:tagAST_EXPRESSION::__anon5::__anon7::tagAST_EXPRESSION	access:public
-tagAST_EXPRESSION::__anon5::__anon7::is_prefix	ast.h	/^		int    is_prefix;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon7	access:public
-tagAST_EXPRESSION::__anon5::__anon7::op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon7	access:public
-tagAST_EXPRESSION::__anon5::__anon8::binding	ast.h	/^		struct tagBINDING_ENTRY *binding;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	typeref:struct:tagAST_EXPRESSION::__anon5::__anon8::tagBINDING_ENTRY	access:public
-tagAST_EXPRESSION::__anon5::__anon8::indexes	ast.h	/^		AST_VECTOR *indexes;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
-tagAST_EXPRESSION::__anon5::__anon8::lhs	ast.h	/^		char  *lhs;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
-tagAST_EXPRESSION::__anon5::__anon8::scope	ast.h	/^		int scope;$/;"	m	struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
-tagAST_EXPRESSION::__anon5::const_value	ast.h	/^	Simple_value_type const_value;$/;"	m	union:tagAST_EXPRESSION::__anon5	access:public
-tagAST_EXPRESSION::__anon5::expr	ast.h	/^	} expr;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::__anon6	access:public
-tagAST_EXPRESSION::__anon5::fcall	ast.h	/^	struct tagAST_FUNC_CALL *fcall;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::tagAST_FUNC_CALL	access:public
-tagAST_EXPRESSION::__anon5::fdecl	ast.h	/^	struct tagAST_BASE *fdecl; \/\/ lambda value. (reference to either AST_XFUNC_DECL or AST_FUNC_DECL$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::tagAST_BASE	access:public
-tagAST_EXPRESSION::__anon5::index_expr	ast.h	/^        struct tagAST_EXPRESSION *index_expr;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::tagAST_EXPRESSION	access:public
-tagAST_EXPRESSION::__anon5::index_expressions	ast.h	/^	AST_VECTOR *index_expressions;$/;"	m	union:tagAST_EXPRESSION::__anon5	access:public
-tagAST_EXPRESSION::__anon5::ref	ast.h	/^	} ref;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::__anon8	access:public
-tagAST_EXPRESSION::__anon5::unary	ast.h	/^	} unary;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::__anon7	access:public
+tagAST_EXPRESSION::__anon6::__anon7::expr_left	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon7	typeref:struct:tagAST_EXPRESSION::__anon6::__anon7::tagAST_EXPRESSION	access:public
+tagAST_EXPRESSION::__anon6::__anon7::expr_right	ast.h	/^		struct tagAST_EXPRESSION *expr_left, *expr_right;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon7	typeref:struct:tagAST_EXPRESSION::__anon6::__anon7::	access:public
+tagAST_EXPRESSION::__anon6::__anon7::op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon7	access:public
+tagAST_EXPRESSION::__anon6::__anon8::expr	ast.h	/^		struct tagAST_EXPRESSION *expr;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon8	typeref:struct:tagAST_EXPRESSION::__anon6::__anon8::tagAST_EXPRESSION	access:public
+tagAST_EXPRESSION::__anon6::__anon8::is_prefix	ast.h	/^		int    is_prefix;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon8	access:public
+tagAST_EXPRESSION::__anon6::__anon8::op	ast.h	/^		int    op;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon8	access:public
+tagAST_EXPRESSION::__anon6::__anon9::binding	ast.h	/^		struct tagBINDING_ENTRY *binding;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	typeref:struct:tagAST_EXPRESSION::__anon6::__anon9::tagBINDING_ENTRY	access:public
+tagAST_EXPRESSION::__anon6::__anon9::indexes	ast.h	/^		AST_VECTOR *indexes;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
+tagAST_EXPRESSION::__anon6::__anon9::lhs	ast.h	/^		char  *lhs;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
+tagAST_EXPRESSION::__anon6::__anon9::scope	ast.h	/^		int scope;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
+tagAST_EXPRESSION::__anon6::const_value	ast.h	/^	Simple_value_type const_value;$/;"	m	union:tagAST_EXPRESSION::__anon6	access:public
+tagAST_EXPRESSION::__anon6::expr	ast.h	/^	} expr;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon7	access:public
+tagAST_EXPRESSION::__anon6::fcall	ast.h	/^	struct tagAST_FUNC_CALL *fcall;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::tagAST_FUNC_CALL	access:public
+tagAST_EXPRESSION::__anon6::fdecl	ast.h	/^	struct tagAST_BASE *fdecl; \/\/ lambda value. (reference to either AST_XFUNC_DECL or AST_FUNC_DECL$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::tagAST_BASE	access:public
+tagAST_EXPRESSION::__anon6::index_expr	ast.h	/^        struct tagAST_EXPRESSION *index_expr;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::tagAST_EXPRESSION	access:public
+tagAST_EXPRESSION::__anon6::index_expressions	ast.h	/^	AST_VECTOR *index_expressions;$/;"	m	union:tagAST_EXPRESSION::__anon6	access:public
+tagAST_EXPRESSION::__anon6::ref	ast.h	/^	} ref;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
+tagAST_EXPRESSION::__anon6::unary	ast.h	/^	} unary;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon8	access:public
 tagAST_EXPRESSION::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_EXPRESSION	access:public
 tagAST_EXPRESSION::exp_type	ast.h	/^  S_EXPR_TYPE exp_type;$/;"	m	struct:tagAST_EXPRESSION	access:public
-tagAST_EXPRESSION::val	ast.h	/^  } val;$/;"	m	struct:tagAST_EXPRESSION	typeref:union:tagAST_EXPRESSION::__anon5	access:public
+tagAST_EXPRESSION::val	ast.h	/^  } val;$/;"	m	struct:tagAST_EXPRESSION	typeref:union:tagAST_EXPRESSION::__anon6	access:public
 tagAST_EXPRESSION::value_type	ast.h	/^  AST_VAR_TYPE value_type;$/;"	m	struct:tagAST_EXPRESSION	access:public
 tagAST_FOR_LOOP	ast.h	/^typedef struct tagAST_FOR_LOOP {$/;"	s
 tagAST_FOR_LOOP::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_FOR_LOOP	access:public
@@ -647,12 +662,13 @@ tagAST_FUNC_DECL	ast.h	/^typedef struct tagAST_FUNC_DECL {$/;"	s
 tagAST_FUNC_DECL::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::checker_state	ast.h	/^  int checker_state;  $/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::f_name	ast.h	/^  const char *f_name;$/;"	m	struct:tagAST_FUNC_DECL	access:public
-tagAST_FUNC_DECL::func_body	ast.h	/^   AST_BASE_LIST *func_body;$/;"	m	struct:tagAST_FUNC_DECL	access:public
+tagAST_FUNC_DECL::func_body	ast.h	/^  AST_BASE_LIST *func_body;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::func_params	ast.h	/^  AST_VECTOR *func_params;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::funcs	ast.h	/^  TREENODE funcs; \/\/ all functions (by nesting of declaration)$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::last_stack_offset	ast.h	/^  int last_stack_offset;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::return_type_value	ast.h	/^  AST_VAR_TYPE return_type_value;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::scope_map_name_to_binding	ast.h	/^  HASH scope_map_name_to_binding; $/;"	m	struct:tagAST_FUNC_DECL	access:public
+tagAST_FUNC_DECL::var_arguments	ast.h	/^  int var_arguments;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_RETURN	ast.h	/^typedef struct tagAST_RETURN {$/;"	s
 tagAST_RETURN::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_RETURN	access:public
 tagAST_RETURN::rvalue	ast.h	/^  AST_EXPRESSION *rvalue;$/;"	m	struct:tagAST_RETURN	access:public
@@ -678,13 +694,16 @@ tagBINDING_ENTRY	ast.h	/^typedef struct tagBINDING_ENTRY {$/;"	s
 tagBINDING_ENTRY::binding_name	ast.h	/^  const char *binding_name;$/;"	m	struct:tagBINDING_ENTRY	access:public
 tagBINDING_ENTRY::def_location	ast.h	/^  YYLTYPE def_location;  \/\/ location where binding is defined in code.$/;"	m	struct:tagBINDING_ENTRY	access:public
 tagBINDING_ENTRY::entry	ast.h	/^  HASH_Entry entry;$/;"	m	struct:tagBINDING_ENTRY	access:public
+tagBINDING_ENTRY::has_value	ast.h	/^  int has_value;  $/;"	m	struct:tagBINDING_ENTRY	access:public
 tagBINDING_ENTRY::stack_offset	ast.h	/^  int stack_offset;$/;"	m	struct:tagBINDING_ENTRY	access:public
 tagBINDING_ENTRY::value_type	ast.h	/^  AST_VAR_TYPE value_type;$/;"	m	struct:tagBINDING_ENTRY	access:public
 tagCHECKERCTX	checker.h	/^typedef struct tagCHECKERCTX {$/;"	s
 tagCHECKERCTX::current_function	checker.h	/^  struct tagAST_FUNC_DECL *current_function;$/;"	m	struct:tagCHECKERCTX	typeref:struct:tagCHECKERCTX::tagAST_FUNC_DECL	access:public
-tagCHECKERCTX::func_decls	checker.h	/^  AST_VECTOR *func_decls;$/;"	m	struct:tagCHECKERCTX	access:public
+tagCHECKERCTX::func_decls	checker.h	/^  struct tagAST_VECTOR *func_decls;$/;"	m	struct:tagCHECKERCTX	typeref:struct:tagCHECKERCTX::tagAST_VECTOR	access:public
+tagCHECKERCTX::is_function_name	checker.h	/^  int is_function_name;$/;"	m	struct:tagCHECKERCTX	access:public
 tagCHECKERCTX::is_left_hand_side	checker.h	/^  int is_left_hand_side;$/;"	m	struct:tagCHECKERCTX	access:public
 tagCHECKERCTX::is_root_func	checker.h	/^  int is_root_func;$/;"	m	struct:tagCHECKERCTX	access:public
+tagCHECKERCTX::pass	checker.h	/^  int pass;$/;"	m	struct:tagCHECKERCTX	access:public
 tagFUNCTION_ENTRY	checker.c	/^typedef struct tagFUNCTION_ENTRY {$/;"	s	file:
 tagFUNCTION_ENTRY::entry	checker.c	/^  HASH_Entry entry;$/;"	m	struct:tagFUNCTION_ENTRY	file:	access:public
 tagFUNCTION_ENTRY::fdecl	checker.c	/^  AST_FUNC_DECL *fdecl;$/;"	m	struct:tagFUNCTION_ENTRY	file:	access:public
@@ -707,11 +726,13 @@ tagMY_YY_BUFFER_STATE::pos	lexer.c	/^	YYLTYPE pos;$/;"	m	struct:tagMY_YY_BUFFER_
 tagMY_YY_BUFFER_STATE::state	lexer.c	/^	YY_BUFFER_STATE state;$/;"	m	struct:tagMY_YY_BUFFER_STATE	file:	access:public
 tagPARSECONTEXT	parsectx.h	/^typedef struct tagPARSECONTEXT {$/;"	s
 tagPARSECONTEXT::chkctx	parsectx.h	/^  CHECKERCTX chkctx;$/;"	m	struct:tagPARSECONTEXT	access:public
+tagPARSECONTEXT::current	parsectx.h	/^  struct tagAST_FUNC_DECL *current,*root_ctx;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::tagAST_FUNC_DECL	access:public
 tagPARSECONTEXT::lexctx	parsectx.h	/^  LEXCONTEXT lexctx;$/;"	m	struct:tagPARSECONTEXT	access:public
 tagPARSECONTEXT::map_function_defs	parsectx.h	/^  HASH map_function_defs; \/\/ maps function name to function definition. (AST_FUNC_DECL *)$/;"	m	struct:tagPARSECONTEXT	access:public
 tagPARSECONTEXT::my_ast_root	parsectx.h	/^  struct tagAST_BASE * my_ast_root;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::tagAST_BASE	access:public
 tagPARSECONTEXT::my_yy_is_error	parsectx.h	/^  int my_yy_is_error;$/;"	m	struct:tagPARSECONTEXT	access:public
 tagPARSECONTEXT::report_errors	parsectx.h	/^  int report_errors;$/;"	m	struct:tagPARSECONTEXT	access:public
+tagPARSECONTEXT::root_ctx	parsectx.h	/^  struct tagAST_FUNC_DECL *current,*root_ctx;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::	access:public
 tagPARSECONTEXT::stmt_not_closed	parsectx.h	/^  int stmt_not_closed;$/;"	m	struct:tagPARSECONTEXT	access:public
 tagSTRING_PART	lexer.h	/^typedef struct tagSTRING_PART {$/;"	s
 tagSTRING_PART::is_expression	lexer.h	/^  int is_expression;$/;"	m	struct:tagSTRING_PART	access:public
@@ -724,13 +745,13 @@ translate_token	parser.c	/^char *translate_token(const char *msg) {$/;"	f	signat
 type	ast.h	/^	S_TYPE    type;$/;"	m	struct:tagAST_BASE	access:public
 type	ast.h	/^  ASSIGNMENT_TYPE type; $/;"	m	struct:tagAST_ASSIGNMEN	access:public
 type	ast.h	/^  LOOP_TYPE type;$/;"	m	struct:tagAST_WHILE_LOOP	access:public
-unary	ast.h	/^	} unary;$/;"	m	union:tagAST_EXPRESSION::__anon5	typeref:struct:tagAST_EXPRESSION::__anon5::__anon7	access:public
+unary	ast.h	/^	} unary;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon8	access:public
 unaryExp	pars.y	/^unaryExp :$/;"	l
 unaryExp	scr.y	/^unaryExp :$/;"	l
 unaryExpOpPostfix	scr.y	/^unaryExpOpPostfix : TK_OP_NUM_AUTOINCR $/;"	l
 unaryExpOpPrefix	pars.y	/^unaryExpOpPrefix : TK_OP_NUM_ADD { $<int_value>$ = TK_OP_NUM_ADD; } $/;"	l
 unaryExpOpPrefix	scr.y	/^unaryExpOpPrefix : TK_OP_NUM_AUTOINCR $/;"	l
-val	ast.h	/^  } val;$/;"	m	struct:tagAST_EXPRESSION	typeref:union:tagAST_EXPRESSION::__anon5	access:public
+val	ast.h	/^  } val;$/;"	m	struct:tagAST_EXPRESSION	typeref:union:tagAST_EXPRESSION::__anon6	access:public
 valueDeepCopyAssignStmt	pars.y	/^valueDeepCopyAssignStmt : assignmentLeftHandSide TK_ASSIGN expr$/;"	l
 value_type	ast.h	/^  AST_VAR_TYPE value_type;$/;"	m	struct:tagAST_EXPRESSION	access:public
 value_type	ast.h	/^  AST_VAR_TYPE value_type;$/;"	m	struct:tagBINDING_ENTRY	access:public
@@ -738,6 +759,7 @@ varIndex	pars.y	/^varIndex : 	    $/;"	l
 varIndexes	pars.y	/^varIndexes : varIndexes varIndex $/;"	l
 varRef	pars.y	/^varRef : TK_IDENTIFIER varIndexes$/;"	l
 varRef	scr.y	/^varRef : TK_ID$/;"	l
+var_arguments	ast.h	/^  int var_arguments;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 var_type	ast.h	/^    AST_VAR_TYPE var_type;$/;"	m	struct:tagAST_XFUNC_PARAM_DECL	access:public
 whileStmt	pars.y	/^whileStmt : TK_WHILE expr stmtInnerList TK_END$/;"	l
 xcall	ast.h	/^  XMETHOD_CALL xcall;$/;"	m	struct:tagAST_XFUNC_DECL	access:public

@@ -87,7 +87,7 @@ int LEXER_init(LEXCONTEXT *pc);
 
 int LEXER_free(LEXCONTEXT *pc);
 
-int LEXER_open_string(LEXCONTEXT *pc, const char *string, int init_token_value   );
+int LEXER_open_string(LEXCONTEXT *pc, const char *string, int init_token_value, YYLTYPE *location );
 
 int LEXER_scan_file(LEXCONTEXT *pc, const char *file_name  );
 

@@ -605,8 +605,13 @@ functionPrototypeDecl : TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PA
 	{
 	  AST_FUNC_DECL *scl;
 	  
-	  scl = AST_FUNC_DECL_init( $<string_value>2,  (AST_VECTOR *) $<ast>4, parse_context, YYLOCPTR );
-	  $<ast>$ = &scl->base;
+          if ($<ast>4 == (AST_BASE *) -1) {
+	    scl = AST_FUNC_DECL_init( $<string_value>2, 0, parse_context, YYLOCPTR );
+	    scl->var_arguments = 1;
+         } else {
+	    scl = AST_FUNC_DECL_init( $<string_value>2, (AST_VECTOR *) $<ast>4, parse_context, YYLOCPTR );
+          }
+          $<ast>$ = &scl->base;
 	}
 		| TK_SUB TK_IDENTIFIER error 
 	{
@@ -615,7 +620,13 @@ functionPrototypeDecl : TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PA
         }
 		;
 
-funcPDecl : funcParamDecls | TK_THREE_DOTS { $<ast>$ = 0; }            
+funcPDecl : funcParamDecls 
+        | 
+            TK_THREE_DOTS 
+        { 
+            $<ast>$ = (AST_BASE *) -1; 
+        }
+            ;
 
 
 funcParamDecls : funcParamDecls  TK_COMMA funcParamDecl 
@@ -650,41 +661,50 @@ funcParamDecls : funcParamDecls  TK_COMMA funcParamDecl
 	}
 	;
 
-funcParamDecl : TK_IDENTIFIER optParamSpec {
+funcParamDecl : TK_IDENTIFIER optParamSpecs2 {
 	  AST_EXPRESSION *expr;
 
 	  expr = AST_EXPRESSION_init_ref( $<string_value>1, 0, YYLOCPTR );
+          
+          //expr->var_type |= $<int_value>2;
 
 	  $<ast>$ = &expr->base;
 	}
 	;
 
-optParamSpec : optParamSpecBYREF optParamSpecOPTIONAL
+optParamSpecs2 : optParamSpecs
+        {
+            $<int_value>$ = $<int_value>1;
+        }
+            |
+        {
+            $<int_value>$ = 0;
+        }
+        ;
+
+
+optParamSpecs : optParamSpecs optParamSpec
 	    {
 		$<int_value>$ = $<int_value>1 | $<int_value>2;
 	    }
+        |
+            optParamSpec
+            {
+                $<int_value>$ = $<int_value>1;
+            }
 	;
 
-optParamSpecBYREF : TK_BYREF
+optParamSpec : TK_BYREF
 	    {
 		$<int_value>$ = S_VAR_PARAM_BYREF;
 	    }
-	|
-	    {
-		$<int_value>$ = 0;
-	    }
-	;
-
-optParamSpecOPTIONAL : TK_OPTIONAL
+        | TK_OPTIONAL
 	    {
 		$<int_value>$ = S_VAR_PARAM_OPTIONAL;
 	    }
-|
-	    {
-		$<int_value>$ = 0;
-	    }
-	;
-	
+         ;
+
+
 breakStmt : TK_BREAK
 	{
 	    AST_BASE *scl;

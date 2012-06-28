@@ -84,7 +84,7 @@ void  delete_temp_results(const char *file_path)
 
   path = make_path( file_path, ".ast.", 1 );
   if (path) {
-    unlink( path );
+    //unlink( path );
   }
 }
 

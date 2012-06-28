@@ -16,7 +16,7 @@ sub makestack( )
    # now all this is not very educational per see ;-( but its a good test case to look if closures are working.
 
    return sub ( method )
-     if method == 'pop'
+     if method eq 'pop'
        return sub ()
                   if size( ~arg outer.stack ) == 0
                      println( ~msg 'Error: empty stack' )
@@ -26,7 +26,7 @@ sub makestack( )
                      return pop ( ~array outer.stack )
                   end
               end
-     elsif method == 'push'
+     elsif method eq 'push'
        return sub ( top )
                   push( ~array outer . stack ~top top )
                   println( ~msg 'push: has [ size( ~arg outer.stack ) ] elements' )

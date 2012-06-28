@@ -1,5 +1,7 @@
 #include "rtlib.h"
 #include <math.h>
+#include <limits.h>
+#include <values.h>
 
 /* --------------- function for reflection --------------------------- */
 
@@ -264,7 +266,7 @@ static void x_pop( XCALL_DATA *xcall )
   BINDING_DATA_copy( XCALL_rvalue( xcall ), tmp, CP_REF );
 }
 
-static void x_shift( XCALL_DATA *xcall )
+static void x_unshift( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
   VALARRAY *arr;
@@ -275,7 +277,7 @@ static void x_shift( XCALL_DATA *xcall )
   VALARRAY_set( arr, VALARRAY_size( arr ), XCALL_param(xcall, 1 ), CP_REF );
 }
 
-static void x_unshift( XCALL_DATA *xcall )
+static void x_shift( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg, *tmp;
   VALARRAY *arr;
@@ -747,6 +749,7 @@ static void x_atan( XCALL_DATA *xcall )
   BINDING_DATA_set_double( XCALL_rvalue( xcall ), res );
 }
 
+
 static void x_pow( XCALL_DATA *xcall )
 {
   double arg,arg2,res;
@@ -792,6 +795,27 @@ static void x_abs( XCALL_DATA *xcall )
   }
 }
 
+static void x_maxfloat( XCALL_DATA *xcall )
+{ 
+   BINDING_DATA_set_double( XCALL_rvalue( xcall ), MAXDOUBLE );
+}
+
+
+static void x_minfloat( XCALL_DATA *xcall )
+{ 
+   BINDING_DATA_set_double( XCALL_rvalue( xcall ), MINDOUBLE );
+}
+
+static void x_maxint( XCALL_DATA *xcall )
+{ 
+   BINDING_DATA_set_int( XCALL_rvalue( xcall ), LONG_MAX );
+}
+
+static void x_minint( XCALL_DATA *xcall )
+{ 
+   BINDING_DATA_set_int( XCALL_rvalue( xcall ),  LONG_MIN );
+}
+
 /* -------------- the library ------------------------- */
 AST_XFUNC_DECL xlib[] = {
 
@@ -833,8 +857,8 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC3( "range",   x_range,	S_VAR_LIST,	"from", S_VAR_INT | S_VAR_DOUBLE, "to", S_VAR_INT | S_VAR_DOUBLE, "step", S_VAR_INT | S_VAR_DOUBLE | S_VAR_PARAM_OPTIONAL ),
   DEFINE_XFUNC2( "push",    x_push,	0,		"array",  S_VAR_LIST,  "top",  S_VAR_ANY ),
   DEFINE_XFUNC1( "pop",	    x_pop,	S_VAR_ANY,	"array", S_VAR_LIST ),
-  DEFINE_XFUNC2( "shift",   x_shift,	0,		"array",  S_VAR_LIST,  "top",  S_VAR_ANY ),
-  DEFINE_XFUNC1( "unshift", x_unshift,	S_VAR_ANY,	"array", S_VAR_LIST ),
+  DEFINE_XFUNC2( "unshift",x_unshift,	0,		"array",  S_VAR_LIST,  "top",  S_VAR_ANY ),
+  DEFINE_XFUNC1( "shift",   x_shift,	S_VAR_ANY,	"array", S_VAR_LIST ),
   DEFINE_XFUNC2( "join",    x_join,	S_VAR_STRING,	"separator", S_VAR_STRING,  "array", S_VAR_LIST ),
   DEFINE_XFUNC1( "reverse", x_reverse,	0,		"array" , S_VAR_LIST | S_VAR_PARAM_OPTIONAL ),
 
@@ -865,7 +889,7 @@ AST_XFUNC_DECL xlib[] = {
 
 /* numeric functions */
   DEFINE_XFUNC1( "srand",   x_srand, 0,  "seed", S_VAR_INT | S_VAR_DOUBLE ),
-  DEFINE_XFUNC1( "rand",    x_rand, 0,  "max", S_VAR_INT | S_VAR_DOUBLE | S_VAR_PARAM_OPTIONAL  ),
+  DEFINE_XFUNC1( "rand",    x_rand, S_VAR_DOUBLE,  "max", S_VAR_INT | S_VAR_DOUBLE | S_VAR_PARAM_OPTIONAL  ),
   DEFINE_XFUNC1( "abs",     x_abs, S_VAR_INT | S_VAR_DOUBLE,  "num", S_VAR_INT | S_VAR_DOUBLE ),
   DEFINE_XFUNC1( "sqr",     x_sqrt, S_VAR_DOUBLE,  "num",  S_VAR_INT | S_VAR_DOUBLE ),
   DEFINE_XFUNC2( "pow",     x_pow, S_VAR_DOUBLE,  "num", S_VAR_INT | S_VAR_DOUBLE, "power", S_VAR_INT | S_VAR_DOUBLE ),
@@ -877,6 +901,10 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC1( "tan",     x_tan, S_VAR_DOUBLE,  "num", S_VAR_INT | S_VAR_DOUBLE ),
   DEFINE_XFUNC1( "atan",    x_atan, S_VAR_DOUBLE, "num", S_VAR_INT | S_VAR_DOUBLE ),
 
+  DEFINE_XFUNC0( "maxfloat",  x_maxfloat, S_VAR_DOUBLE ),
+  DEFINE_XFUNC0( "minfloat",  x_minfloat, S_VAR_DOUBLE ),
+  DEFINE_XFUNC0( "maxint",    x_maxint, S_VAR_INT ),
+  DEFINE_XFUNC0( "minint",    x_minint, S_VAR_INT ),
 
 /* eof */
   DEFINE_XFUNC1( 0, 0, 0, "", 0 )

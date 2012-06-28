@@ -13,22 +13,22 @@ sub makepoint( x, y )
 
   # return factory method that returns object methods  - both factory and object methods get capture of the object state 
   return sub( method ) 
-      if method == 'move'
+      if method eq 'move'
         return sub( dx, dy )
-            outer.x = outer.x + dx
-            outer.y = outer.y + dy
+            outer . x = outer . x + dx
+            outer . y = outer . y + dy
           end
-      elsif method == 'print'
+      elsif method eq 'print'
         return sub()
            println( ~msg 'position x = [ outer.x ] y = [  outer.y ]' )
           end
-      elsif method == 'x-pos'
+      elsif method eq 'x-pos'
          return sub()
             return outer.x
          end
-      elsif method == 'y-pos'
+      elsif method eq 'y-pos'
          return sub()
-             return outer.y
+             return outer . y
          end
       end
   end

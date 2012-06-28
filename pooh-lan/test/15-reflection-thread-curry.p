@@ -97,10 +97,10 @@ end
 
 sub reduce( arg , func , initval )
   if isfunction( ~value arg )
-    reduce_thread( ~threadcurry arg ~func func ~initval initval ) 
+    return reduce_thread( ~threadcurry arg ~func func ~initval initval ) 
   end
   if isarray( ~value arg )
-    reduce_vector( ~vector arg ~func func ~initval initval )
+    return reduce_vector( ~vector arg ~func func ~initval initval )
   end
 end
 

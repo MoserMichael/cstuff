@@ -201,9 +201,9 @@ DOUBLE		[0-9]+"."[0-9]+
 		  MY_YY_RETURN(TK_ERROR);
 		}
 	        if (rt == 1) {
-		  MY_YY_RETURN(TK_STRING_CONSTANT);  
+	 	  return TK_STRING_CONSTANT;
 		}
-		MY_YY_RETURN(TK_MULTI_PART_STRING_CONSTANT);  
+	        return TK_MULTI_PART_STRING_CONSTANT;  
  }
 
 

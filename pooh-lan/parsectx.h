@@ -26,7 +26,7 @@ typedef struct tagPARSECONTEXT {
   /*  *** error status *** */
   int report_errors;
   int my_yy_is_error;
-  
+
   struct tagAST_BASE * my_ast_root;
   struct tagAST_FUNC_DECL *current,*root_ctx;
   

@@ -114,152 +114,153 @@ Grammar
    74               | funcParamDecl
    75               | /* empty */
 
-   76 funcParamDecl: TK_IDENTIFIER optParamSpec
+   76 funcParamDecl: TK_IDENTIFIER optParamSpecs2
 
-   77 optParamSpec: optParamSpecBYREF optParamSpecOPTIONAL
+   77 optParamSpecs2: optParamSpecs
+   78               | /* empty */
 
-   78 optParamSpecBYREF: TK_BYREF
-   79                  | /* empty */
+   79 optParamSpecs: optParamSpecs optParamSpec
+   80              | optParamSpec
 
-   80 optParamSpecOPTIONAL: TK_OPTIONAL
-   81                     | /* empty */
+   81 optParamSpec: TK_BYREF
+   82             | TK_OPTIONAL
 
-   82 breakStmt: TK_BREAK
+   83 breakStmt: TK_BREAK
 
-   83 nextStmt: TK_NEXT
+   84 nextStmt: TK_NEXT
 
-   84 returnStmt: TK_RETURN expr
-   85           | TK_RETURN
+   85 returnStmt: TK_RETURN expr
+   86           | TK_RETURN
 
-   86 expr: logicalExp
-   87     | hashConstructor
-   88     | listConstructor
-   89     | anonymousFunction
+   87 expr: logicalExp
+   88     | hashConstructor
+   89     | listConstructor
+   90     | anonymousFunction
 
-   90 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   91 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
 
-   92 logicalExp: logicalExp logExpOp compExp
-   93           | compExp
+   93 logicalExp: logicalExp logExpOp compExp
+   94           | compExp
 
-   94 logExpOp: TK_OP_LOGICAL_AND
-   95         | TK_OP_LOGICAL_OR
+   95 logExpOp: TK_OP_LOGICAL_AND
+   96         | TK_OP_LOGICAL_OR
 
-   96 compExp: compExp compExpOp addExp
-   97        | addExp
+   97 compExp: compExp compExpOp addExp
+   98        | addExp
 
-   98 compExpOp: TK_OP_NUM_EQ
-   99          | TK_OP_NUM_NE
-  100          | TK_OP_NUM_LT
-  101          | TK_OP_NUM_GT
-  102          | TK_OP_NUM_LE
-  103          | TK_OP_NUM_GE
-  104          | TK_OP_STR_EQ
-  105          | TK_OP_STR_NE
-  106          | TK_OP_STR_LT
-  107          | TK_OP_STR_GT
-  108          | TK_OP_STR_LE
-  109          | TK_OP_STR_GE
+   99 compExpOp: TK_OP_NUM_EQ
+  100          | TK_OP_NUM_NE
+  101          | TK_OP_NUM_LT
+  102          | TK_OP_NUM_GT
+  103          | TK_OP_NUM_LE
+  104          | TK_OP_NUM_GE
+  105          | TK_OP_STR_EQ
+  106          | TK_OP_STR_NE
+  107          | TK_OP_STR_LT
+  108          | TK_OP_STR_GT
+  109          | TK_OP_STR_LE
+  110          | TK_OP_STR_GE
 
-  110 addExp: addExp addExpOp multExp
-  111       | multExp
+  111 addExp: addExp addExpOp multExp
+  112       | multExp
 
-  112 addExpOp: TK_OP_NUM_SUBST
-  113         | TK_OP_STR_CAT
-  114         | TK_OP_NUM_ADD
+  113 addExpOp: TK_OP_NUM_SUBST
+  114         | TK_OP_STR_CAT
+  115         | TK_OP_NUM_ADD
 
-  115 multExp: multExp multExpOp unaryExp
-  116        | unaryExp
+  116 multExp: multExp multExpOp unaryExp
+  117        | unaryExp
 
-  117 multExpOp: TK_OP_NUM_DIV
-  118          | TK_OP_NUM_MULT
-  119          | TK_OP_NUM_MOD
+  118 multExpOp: TK_OP_NUM_DIV
+  119          | TK_OP_NUM_MULT
+  120          | TK_OP_NUM_MOD
 
-  120 unaryExp: unaryExpOpPrefix primaryExp
-  121         | primaryExp
+  121 unaryExp: unaryExpOpPrefix primaryExp
+  122         | primaryExp
 
-  122 unaryExpOpPrefix: TK_OP_NUM_ADD
-  123                 | TK_OP_NUM_SUBST
-  124                 | TK_OP_LOGICAL_NEGATE
+  123 unaryExpOpPrefix: TK_OP_NUM_ADD
+  124                 | TK_OP_NUM_SUBST
+  125                 | TK_OP_LOGICAL_NEGATE
 
-  125 primaryExp: varRef
-  126           | TK_INTEGER_CONSTANT
-  127           | TK_DOUBLE_CONSTANT
-  128           | TK_MULTI_PART_STRING_CONSTANT
-  129           | TK_STRING_CONSTANT
-  130           | TK_NIL
-  131           | TK_FALSE
-  132           | TK_TRUE
-  133           | TK_EMPTY_STRING
-  134           | TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | functionCallExpr
-  136           | TK_PARENTHESES_OPEN expr error
+  126 primaryExp: varRef
+  127           | TK_INTEGER_CONSTANT
+  128           | TK_DOUBLE_CONSTANT
+  129           | TK_MULTI_PART_STRING_CONSTANT
+  130           | TK_STRING_CONSTANT
+  131           | TK_NIL
+  132           | TK_FALSE
+  133           | TK_TRUE
+  134           | TK_EMPTY_STRING
+  135           | TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | functionCallExpr
+  137           | TK_PARENTHESES_OPEN expr error
 
-  137 functionCallExpr: functionCallStmt
+  138 functionCallExpr: functionCallStmt
 
-  138 varRef: TK_IDENTIFIER varIndexes
-  139       | TK_IDENTIFIER
+  139 varRef: TK_IDENTIFIER varIndexes
+  140       | TK_IDENTIFIER
 
-  140 varIndexes: varIndexes varIndex
-  141           | varIndex
+  141 varIndexes: varIndexes varIndex
+  142           | varIndex
 
-  142 varIndex: TK_BRACE_OPEN expr TK_BRACE_CLOSE
-  143         | TK_BRACE_OPEN expr error
-  144         | TK_BRACKET_OPEN expr TK_BRACKET_CLOSE
-  145         | TK_BRACKET_OPEN expr error
-  146         | TK_OP_DOT TK_IDENTIFIER
-  147         | TK_OP_DOT error
+  143 varIndex: TK_BRACE_OPEN expr TK_BRACE_CLOSE
+  144         | TK_BRACE_OPEN expr error
+  145         | TK_BRACKET_OPEN expr TK_BRACKET_CLOSE
+  146         | TK_BRACKET_OPEN expr error
+  147         | TK_OP_DOT TK_IDENTIFIER
+  148         | TK_OP_DOT error
 
-  148 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  149 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
 
-  149 functionCallLhs: varRef
-  150                | functionCallExpr
+  150 functionCallLhs: varRef
+  151                | functionCallExpr
 
-  151 functionArgs: functionArgList
-  152             | /* empty */
+  152 functionArgs: functionArgList
+  153             | /* empty */
 
-  153 functionArgList: functionArgList functionParam
-  154                | functionParam
+  154 functionArgList: functionArgList functionParam
+  155                | functionParam
 
-  155 functionParam: TK_PARAMETER_LABEL expr
-  156              | error
-  157              | TK_PARAMETER_LABEL error
+  156 functionParam: TK_PARAMETER_LABEL expr
+  157              | error
+  158              | TK_PARAMETER_LABEL error
 
-  158 listConstructor: TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  159 listConstructor: TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
 
-  159 expressionList: expressionList TK_COMMA expr
-  160               | expr
-  161               | /* empty */
+  160 expressionList: expressionList TK_COMMA expr
+  161               | expr
+  162               | /* empty */
 
-  162 hashConstructor: TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+  163 hashConstructor: TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
-  163 hashClauseList: hashClauseList TK_COMMA hashClause
-  164               | hashClause
-  165               | /* empty */
+  164 hashClauseList: hashClauseList TK_COMMA hashClause
+  165               | hashClause
+  166               | /* empty */
 
-  166 hashClause: expr TK_HASH_IT expr
+  167 hashClause: expr TK_HASH_IT expr
 
 
 Terminals, with rules where they appear
 
 "end of file" (0) 0 35
-error (256) 47 49 53 70 136 143 145 147 156 157
+error (256) 47 49 53 70 137 144 146 148 157 158
 TK_ERROR (258)
 TK_INCLUDE (259) 66
-TK_SUB (260) 34 69 70 90 91
-TK_EMPTY_STRING (261) 133
-TK_TRUE (262) 132
-TK_FALSE (263) 131
-TK_NIL (264) 130
-TK_DOUBLE_CONSTANT (265) 127
-TK_MULTI_PART_STRING_CONSTANT (266) 128
-TK_STRING_CONSTANT (267) 66 129
-TK_INTEGER_CONSTANT (268) 126
-TK_IDENTIFIER (269) 36 39 69 70 76 138 139 146
-TK_NEXT (270) 83
-TK_BREAK (271) 82
-TK_RETURN (272) 84 85
-TK_END (273) 19 36 37 38 39 40 41 44 45 58 67 68 90 91
+TK_SUB (260) 34 69 70 91 92
+TK_EMPTY_STRING (261) 134
+TK_TRUE (262) 133
+TK_FALSE (263) 132
+TK_NIL (264) 131
+TK_DOUBLE_CONSTANT (265) 128
+TK_MULTI_PART_STRING_CONSTANT (266) 129
+TK_STRING_CONSTANT (267) 66 130
+TK_INTEGER_CONSTANT (268) 127
+TK_IDENTIFIER (269) 36 39 69 70 76 139 140 147
+TK_NEXT (270) 84
+TK_BREAK (271) 83
+TK_RETURN (272) 85 86
+TK_END (273) 19 36 37 38 39 40 41 44 45 58 67 68 91 92
 TK_ELSIF (274) 61
 TK_ELSE (275) 59
 TK_ASSIGN_REF (276) 48 49
@@ -268,29 +269,29 @@ TK_LOOP (278) 42 43 44 45
 TK_IF (279) 58
 TK_FOR (280) 36 37 38 39
 TK_WHILE (281) 40 41 42 43
-TK_OP_LOGICAL_AND (282) 94
-TK_OP_LOGICAL_OR (283) 95
-TK_OP_NUM_EQ (284) 98
-TK_OP_NUM_NE (285) 99
-TK_OP_NUM_LT (286) 100
-TK_OP_NUM_GT (287) 101
-TK_OP_NUM_LE (288) 102
-TK_OP_NUM_GE (289) 103
-TK_OP_DOT (290) 146 147
-TK_OP_STR_EQ (291) 104
-TK_OP_STR_NE (292) 105
-TK_OP_STR_LT (293) 106
-TK_OP_STR_GT (294) 107
-TK_OP_STR_LE (295) 108
-TK_OP_STR_GE (296) 109
-TK_OP_STR_CAT (297) 113
-TK_HASH_IT (298) 166
-TK_OP_NUM_ADD (299) 114 122
-TK_OP_NUM_SUBST (300) 112 123
-TK_OP_NUM_DIV (301) 117
-TK_OP_NUM_MULT (302) 118
-TK_OP_NUM_MOD (303) 119
-TK_OP_LOGICAL_NEGATE (304) 124
+TK_OP_LOGICAL_AND (282) 95
+TK_OP_LOGICAL_OR (283) 96
+TK_OP_NUM_EQ (284) 99
+TK_OP_NUM_NE (285) 100
+TK_OP_NUM_LT (286) 101
+TK_OP_NUM_GT (287) 102
+TK_OP_NUM_LE (288) 103
+TK_OP_NUM_GE (289) 104
+TK_OP_DOT (290) 147 148
+TK_OP_STR_EQ (291) 105
+TK_OP_STR_NE (292) 106
+TK_OP_STR_LT (293) 107
+TK_OP_STR_GT (294) 108
+TK_OP_STR_LE (295) 109
+TK_OP_STR_GE (296) 110
+TK_OP_STR_CAT (297) 114
+TK_HASH_IT (298) 167
+TK_OP_NUM_ADD (299) 115 123
+TK_OP_NUM_SUBST (300) 113 124
+TK_OP_NUM_DIV (301) 118
+TK_OP_NUM_MULT (302) 119
+TK_OP_NUM_MOD (303) 120
+TK_OP_LOGICAL_NEGATE (304) 125
 TK_VAR_DEF (305)
 TK_VAR_UNDEF (306)
 TK_ARR_DEF (307)
@@ -298,20 +299,20 @@ TK_CODEREF_DEF (308)
 TK_OP_STR_REGEXMATCH (309)
 TK_COLON (310)
 TK_SEMICOLON (311)
-TK_COMMA (312) 54 73 159 163
-TK_PARENTHESES_OPEN (313) 69 90 91 134 136 148
-TK_PARENTHESES_CLOSE (314) 69 90 91 134 148
-TK_BRACE_OPEN (315) 142 143 162
-TK_BRACE_CLOSE (316) 142 162
-TK_BYREF (317) 78
-TK_OPTIONAL (318) 80
+TK_COMMA (312) 54 73 160 164
+TK_PARENTHESES_OPEN (313) 69 91 92 135 137 149
+TK_PARENTHESES_CLOSE (314) 69 91 92 135 149
+TK_BRACE_OPEN (315) 143 144 163
+TK_BRACE_CLOSE (316) 143 163
+TK_BYREF (317) 81
+TK_OPTIONAL (318) 82
 TK_THREE_DOTS (319) 72
 TK_UNDERSCORE (320) 57
-TK_BRACKET_CLOSE (321) 52 144 158
-TK_BRACKET_OPEN (322) 52 53 144 145 158
+TK_BRACKET_CLOSE (321) 52 145 159
+TK_BRACKET_OPEN (322) 52 53 145 146 159
 TK_START_STATEMENT (323) 1 3
 TK_START_EXPRESSION (324) 2
-TK_PARAMETER_LABEL (325) 155 157
+TK_PARAMETER_LABEL (325) 156 158
 
 
 Nonterminals, with rules where they appear
@@ -325,7 +326,7 @@ stmtList (73)
 stmt (74)
     on left: 6 7 8 9 10 11 12 13 14 15 16 17 18 19, on right: 4 5
 stmtInnerList (75)
-    on left: 20 21, on right: 20 36 37 40 42 44 64 67 90
+    on left: 20 21, on right: 20 36 37 40 42 44 64 67 91
 stmtInner (76)
     on left: 22 23 24 25 26 27 28 29 30 31 32 33 34 35, on right: 20
     21
@@ -368,78 +369,78 @@ functionPrototypeDecl (94)
 funcPDecl (95)
     on left: 71 72, on right: 69
 funcParamDecls (96)
-    on left: 73 74 75, on right: 71 73 90 91
+    on left: 73 74 75, on right: 71 73 91 92
 funcParamDecl (97)
     on left: 76, on right: 73 74
-optParamSpec (98)
-    on left: 77, on right: 76
-optParamSpecBYREF (99)
-    on left: 78 79, on right: 77
-optParamSpecOPTIONAL (100)
-    on left: 80 81, on right: 77
+optParamSpecs2 (98)
+    on left: 77 78, on right: 76
+optParamSpecs (99)
+    on left: 79 80, on right: 77 79
+optParamSpec (100)
+    on left: 81 82, on right: 79 80
 breakStmt (101)
-    on left: 82, on right: 17 32
+    on left: 83, on right: 17 32
 nextStmt (102)
-    on left: 83, on right: 18 33
+    on left: 84, on right: 18 33
 returnStmt (103)
-    on left: 84 85, on right: 16 31
+    on left: 85 86, on right: 16 31
 expr (104)
-    on left: 86 87 88 89, on right: 2 36 37 38 39 40 41 42 43 46 48
-    63 84 134 136 142 143 144 145 155 159 160 166
+    on left: 87 88 89 90, on right: 2 36 37 38 39 40 41 42 43 46 48
+    63 85 135 137 143 144 145 146 156 160 161 167
 anonymousFunction (105)
-    on left: 90 91, on right: 89
+    on left: 91 92, on right: 90
 logicalExp (106)
-    on left: 92 93, on right: 86 92
+    on left: 93 94, on right: 87 93
 logExpOp (107)
-    on left: 94 95, on right: 92
+    on left: 95 96, on right: 93
 compExp (108)
-    on left: 96 97, on right: 92 93 96
+    on left: 97 98, on right: 93 94 97
 compExpOp (109)
-    on left: 98 99 100 101 102 103 104 105 106 107 108 109, on right:
-    96
+    on left: 99 100 101 102 103 104 105 106 107 108 109 110, on right:
+    97
 addExp (110)
-    on left: 110 111, on right: 96 97 110
+    on left: 111 112, on right: 97 98 111
 addExpOp (111)
-    on left: 112 113 114, on right: 110
+    on left: 113 114 115, on right: 111
 multExp (112)
-    on left: 115 116, on right: 110 111 115
+    on left: 116 117, on right: 111 112 116
 multExpOp (113)
-    on left: 117 118 119, on right: 115
+    on left: 118 119 120, on right: 116
 unaryExp (114)
-    on left: 120 121, on right: 115 116
+    on left: 121 122, on right: 116 117
 unaryExpOpPrefix (115)
-    on left: 122 123 124, on right: 120
+    on left: 123 124 125, on right: 121
 primaryExp (116)
-    on left: 125 126 127 128 129 130 131 132 133 134 135 136, on right:
-    120 121
+    on left: 126 127 128 129 130 131 132 133 134 135 136 137, on right:
+    121 122
 functionCallExpr (117)
-    on left: 137, on right: 135 150
+    on left: 138, on right: 136 151
 varRef (118)
-    on left: 138 139, on right: 50 56 125 149
+    on left: 139 140, on right: 50 56 126 150
 varIndexes (119)
-    on left: 140 141, on right: 138 140
+    on left: 141 142, on right: 139 141
 varIndex (120)
-    on left: 142 143 144 145 146 147, on right: 140 141
+    on left: 143 144 145 146 147 148, on right: 141 142
 functionCallStmt (121)
-    on left: 148, on right: 9 25 137
+    on left: 149, on right: 9 25 138
 functionCallLhs (122)
-    on left: 149 150, on right: 148
+    on left: 150 151, on right: 149
 functionArgs (123)
-    on left: 151 152, on right: 148
+    on left: 152 153, on right: 149
 functionArgList (124)
-    on left: 153 154, on right: 151 153
+    on left: 154 155, on right: 152 154
 functionParam (125)
-    on left: 155 156 157, on right: 153 154
+    on left: 156 157 158, on right: 154 155
 listConstructor (126)
-    on left: 158, on right: 88
+    on left: 159, on right: 89
 expressionList (127)
-    on left: 159 160 161, on right: 158 159
+    on left: 160 161 162, on right: 159 160
 hashConstructor (128)
-    on left: 162, on right: 87
+    on left: 163, on right: 88
 hashClauseList (129)
-    on left: 163 164 165, on right: 162 163
+    on left: 164 165 166, on right: 163 164
 hashClause (130)
-    on left: 166, on right: 163 164
+    on left: 167, on right: 164 165
 
 
 state 0
@@ -499,16 +500,16 @@ state 1
    68                | . functionPrototypeDecl TK_END
    69 functionPrototypeDecl: . TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE
    70                      | . TK_SUB TK_IDENTIFIER error
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     TK_INCLUDE       shift, and go to state 4
     TK_SUB           shift, and go to state 5
@@ -551,45 +552,45 @@ state 1
 state 2
 
     2 prog: TK_START_EXPRESSION . expr
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -649,86 +650,86 @@ state 5
 
 state 6
 
-  138 varRef: TK_IDENTIFIER . varIndexes
-  139       | TK_IDENTIFIER .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_ASSIGN_REF, TK_ASSIGN, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_PARAMETER_LABEL]
-  140 varIndexes: . varIndexes varIndex
-  141           | . varIndex
-  142 varIndex: . TK_BRACE_OPEN expr TK_BRACE_CLOSE
-  143         | . TK_BRACE_OPEN expr error
-  144         | . TK_BRACKET_OPEN expr TK_BRACKET_CLOSE
-  145         | . TK_BRACKET_OPEN expr error
-  146         | . TK_OP_DOT TK_IDENTIFIER
-  147         | . TK_OP_DOT error
+  139 varRef: TK_IDENTIFIER . varIndexes
+  140       | TK_IDENTIFIER .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_ASSIGN_REF, TK_ASSIGN, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_PARAMETER_LABEL]
+  141 varIndexes: . varIndexes varIndex
+  142           | . varIndex
+  143 varIndex: . TK_BRACE_OPEN expr TK_BRACE_CLOSE
+  144         | . TK_BRACE_OPEN expr error
+  145         | . TK_BRACKET_OPEN expr TK_BRACKET_CLOSE
+  146         | . TK_BRACKET_OPEN expr error
+  147         | . TK_OP_DOT TK_IDENTIFIER
+  148         | . TK_OP_DOT error
 
     TK_OP_DOT        shift, and go to state 69
     TK_BRACE_OPEN    shift, and go to state 70
     TK_BRACKET_OPEN  shift, and go to state 71
 
-    $default  reduce using rule 139 (varRef)
+    $default  reduce using rule 140 (varRef)
 
     varIndexes  go to state 72
     varIndex    go to state 73
 
-    Conflict between rule 139 and token TK_BRACKET_OPEN resolved as shift (TK_IDENTIFIER < TK_BRACKET_OPEN).
+    Conflict between rule 140 and token TK_BRACKET_OPEN resolved as shift (TK_IDENTIFIER < TK_BRACKET_OPEN).
 
 
 state 7
 
-   83 nextStmt: TK_NEXT .
+   84 nextStmt: TK_NEXT .
 
-    $default  reduce using rule 83 (nextStmt)
+    $default  reduce using rule 84 (nextStmt)
 
 
 state 8
 
-   82 breakStmt: TK_BREAK .
+   83 breakStmt: TK_BREAK .
 
-    $default  reduce using rule 82 (breakStmt)
+    $default  reduce using rule 83 (breakStmt)
 
 
 state 9
 
-   84 returnStmt: TK_RETURN . expr
-   85           | TK_RETURN .  ["end of file", TK_INCLUDE, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE]
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   85 returnStmt: TK_RETURN . expr
+   86           | TK_RETURN .  ["end of file", TK_INCLUDE, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE]
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -747,7 +748,7 @@ state 9
     TK_BRACE_OPEN                  shift, and go to state 50
     TK_BRACKET_OPEN                shift, and go to state 51
 
-    $default  reduce using rule 85 (returnStmt)
+    $default  reduce using rule 86 (returnStmt)
 
     expr               go to state 74
     anonymousFunction  go to state 53
@@ -765,9 +766,9 @@ state 9
     listConstructor    go to state 64
     hashConstructor    go to state 65
 
-    Conflict between rule 85 and token TK_SUB resolved as shift (%right TK_SUB).
-    Conflict between rule 85 and token TK_IDENTIFIER resolved as shift (%right TK_IDENTIFIER).
-    Conflict between rule 85 and token TK_BRACKET_OPEN resolved as shift (TK_RETURN < TK_BRACKET_OPEN).
+    Conflict between rule 86 and token TK_SUB resolved as shift (%right TK_SUB).
+    Conflict between rule 86 and token TK_IDENTIFIER resolved as shift (%right TK_IDENTIFIER).
+    Conflict between rule 86 and token TK_BRACKET_OPEN resolved as shift (TK_RETURN < TK_BRACKET_OPEN).
 
 
 state 10
@@ -819,16 +820,16 @@ state 11
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -869,45 +870,45 @@ state 12
 
    58 ifStmt: TK_IF . condClause elseClauses TK_END
    63 condClause: . expr conditionContent
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -963,45 +964,45 @@ state 14
 
    40 whileStmt: TK_WHILE . expr stmtInnerList TK_END
    41          | TK_WHILE . expr TK_END
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -1045,8 +1046,8 @@ state 15
    55                           | . multiValueLeftHandSideClause
    56 multiValueLeftHandSideClause: . varRef
    57                             | . TK_UNDERSCORE
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
 
     TK_IDENTIFIER  shift, and go to state 6
     TK_UNDERSCORE  shift, and go to state 98
@@ -1098,16 +1099,16 @@ state 16
    68                | . functionPrototypeDecl TK_END
    69 functionPrototypeDecl: . TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE
    70                      | . TK_SUB TK_IDENTIFIER error
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     TK_INCLUDE       shift, and go to state 4
     TK_SUB           shift, and go to state 5
@@ -1274,16 +1275,16 @@ state 29
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
    67 functionDefStmt: functionPrototypeDecl . stmtInnerList TK_END
    68                | functionPrototypeDecl . TK_END
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -1343,164 +1344,164 @@ state 32
 
 state 33
 
-  150 functionCallLhs: functionCallExpr .
+  151 functionCallLhs: functionCallExpr .
 
-    $default  reduce using rule 150 (functionCallLhs)
+    $default  reduce using rule 151 (functionCallLhs)
 
 
 state 34
 
    50 assignmentLeftHandSide: varRef .  [TK_ASSIGN_REF, TK_ASSIGN]
-  149 functionCallLhs: varRef .  [TK_PARENTHESES_OPEN]
+  150 functionCallLhs: varRef .  [TK_PARENTHESES_OPEN]
 
-    TK_PARENTHESES_OPEN  reduce using rule 149 (functionCallLhs)
+    TK_PARENTHESES_OPEN  reduce using rule 150 (functionCallLhs)
     $default             reduce using rule 50 (assignmentLeftHandSide)
 
 
 state 35
 
     9 stmt: functionCallStmt .  ["end of file", TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_BRACKET_OPEN]
-  137 functionCallExpr: functionCallStmt .  [TK_PARENTHESES_OPEN]
+  138 functionCallExpr: functionCallStmt .  [TK_PARENTHESES_OPEN]
 
-    TK_PARENTHESES_OPEN  reduce using rule 137 (functionCallExpr)
+    TK_PARENTHESES_OPEN  reduce using rule 138 (functionCallExpr)
     $default             reduce using rule 9 (stmt)
 
 
 state 36
 
-  148 functionCallStmt: functionCallLhs . TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  149 functionCallStmt: functionCallLhs . TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
 
     TK_PARENTHESES_OPEN  shift, and go to state 107
 
 
 state 37
 
-   90 anonymousFunction: TK_SUB . TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | TK_SUB . TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   91 anonymousFunction: TK_SUB . TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | TK_SUB . TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
 
     TK_PARENTHESES_OPEN  shift, and go to state 108
 
 
 state 38
 
-  133 primaryExp: TK_EMPTY_STRING .
+  134 primaryExp: TK_EMPTY_STRING .
 
-    $default  reduce using rule 133 (primaryExp)
+    $default  reduce using rule 134 (primaryExp)
 
 
 state 39
 
-  132 primaryExp: TK_TRUE .
+  133 primaryExp: TK_TRUE .
 
-    $default  reduce using rule 132 (primaryExp)
+    $default  reduce using rule 133 (primaryExp)
 
 
 state 40
 
-  131 primaryExp: TK_FALSE .
+  132 primaryExp: TK_FALSE .
 
-    $default  reduce using rule 131 (primaryExp)
+    $default  reduce using rule 132 (primaryExp)
 
 
 state 41
 
-  130 primaryExp: TK_NIL .
+  131 primaryExp: TK_NIL .
 
-    $default  reduce using rule 130 (primaryExp)
+    $default  reduce using rule 131 (primaryExp)
 
 
 state 42
 
-  127 primaryExp: TK_DOUBLE_CONSTANT .
-
-    $default  reduce using rule 127 (primaryExp)
-
-
-state 43
-
-  128 primaryExp: TK_MULTI_PART_STRING_CONSTANT .
+  128 primaryExp: TK_DOUBLE_CONSTANT .
 
     $default  reduce using rule 128 (primaryExp)
 
 
-state 44
+state 43
 
-  129 primaryExp: TK_STRING_CONSTANT .
+  129 primaryExp: TK_MULTI_PART_STRING_CONSTANT .
 
     $default  reduce using rule 129 (primaryExp)
 
 
+state 44
+
+  130 primaryExp: TK_STRING_CONSTANT .
+
+    $default  reduce using rule 130 (primaryExp)
+
+
 state 45
 
-  126 primaryExp: TK_INTEGER_CONSTANT .
+  127 primaryExp: TK_INTEGER_CONSTANT .
 
-    $default  reduce using rule 126 (primaryExp)
+    $default  reduce using rule 127 (primaryExp)
 
 
 state 46
 
-  122 unaryExpOpPrefix: TK_OP_NUM_ADD .
-
-    $default  reduce using rule 122 (unaryExpOpPrefix)
-
-
-state 47
-
-  123 unaryExpOpPrefix: TK_OP_NUM_SUBST .
+  123 unaryExpOpPrefix: TK_OP_NUM_ADD .
 
     $default  reduce using rule 123 (unaryExpOpPrefix)
 
 
-state 48
+state 47
 
-  124 unaryExpOpPrefix: TK_OP_LOGICAL_NEGATE .
+  124 unaryExpOpPrefix: TK_OP_NUM_SUBST .
 
     $default  reduce using rule 124 (unaryExpOpPrefix)
 
 
+state 48
+
+  125 unaryExpOpPrefix: TK_OP_LOGICAL_NEGATE .
+
+    $default  reduce using rule 125 (unaryExpOpPrefix)
+
+
 state 49
 
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  134           | TK_PARENTHESES_OPEN . expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  136           | TK_PARENTHESES_OPEN . expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  135           | TK_PARENTHESES_OPEN . expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  137           | TK_PARENTHESES_OPEN . expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -1538,50 +1539,50 @@ state 49
 
 state 50
 
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  162                | TK_BRACE_OPEN . hashClauseList TK_BRACE_CLOSE
-  163 hashClauseList: . hashClauseList TK_COMMA hashClause
-  164               | . hashClause
-  165               | .  [TK_COMMA, TK_BRACE_CLOSE]
-  166 hashClause: . expr TK_HASH_IT expr
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+  163                | TK_BRACE_OPEN . hashClauseList TK_BRACE_CLOSE
+  164 hashClauseList: . hashClauseList TK_COMMA hashClause
+  165               | . hashClause
+  166               | .  [TK_COMMA, TK_BRACE_CLOSE]
+  167 hashClause: . expr TK_HASH_IT expr
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -1600,7 +1601,7 @@ state 50
     TK_BRACE_OPEN                  shift, and go to state 50
     TK_BRACKET_OPEN                shift, and go to state 51
 
-    $default  reduce using rule 165 (hashClauseList)
+    $default  reduce using rule 166 (hashClauseList)
 
     expr               go to state 110
     anonymousFunction  go to state 53
@@ -1623,49 +1624,49 @@ state 50
 
 state 51
 
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  158                | TK_BRACKET_OPEN . expressionList TK_BRACKET_CLOSE
-  159 expressionList: . expressionList TK_COMMA expr
-  160               | . expr
-  161               | .  [TK_COMMA, TK_BRACKET_CLOSE]
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  159                | TK_BRACKET_OPEN . expressionList TK_BRACKET_CLOSE
+  160 expressionList: . expressionList TK_COMMA expr
+  161               | . expr
+  162               | .  [TK_COMMA, TK_BRACKET_CLOSE]
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -1684,7 +1685,7 @@ state 51
     TK_BRACE_OPEN                  shift, and go to state 50
     TK_BRACKET_OPEN                shift, and go to state 51
 
-    $default  reduce using rule 161 (expressionList)
+    $default  reduce using rule 162 (expressionList)
 
     expr               go to state 113
     anonymousFunction  go to state 53
@@ -1713,42 +1714,42 @@ state 52
 
 state 53
 
-   89 expr: anonymousFunction .
+   90 expr: anonymousFunction .
 
-    $default  reduce using rule 89 (expr)
+    $default  reduce using rule 90 (expr)
 
 
 state 54
 
-   86 expr: logicalExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-   92 logicalExp: logicalExp . logExpOp compExp
-   94 logExpOp: . TK_OP_LOGICAL_AND
-   95         | . TK_OP_LOGICAL_OR
+   87 expr: logicalExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+   93 logicalExp: logicalExp . logExpOp compExp
+   95 logExpOp: . TK_OP_LOGICAL_AND
+   96         | . TK_OP_LOGICAL_OR
 
     TK_OP_LOGICAL_AND  shift, and go to state 115
     TK_OP_LOGICAL_OR   shift, and go to state 116
 
-    $default  reduce using rule 86 (expr)
+    $default  reduce using rule 87 (expr)
 
     logExpOp  go to state 117
 
 
 state 55
 
-   93 logicalExp: compExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-   96 compExp: compExp . compExpOp addExp
-   98 compExpOp: . TK_OP_NUM_EQ
-   99          | . TK_OP_NUM_NE
-  100          | . TK_OP_NUM_LT
-  101          | . TK_OP_NUM_GT
-  102          | . TK_OP_NUM_LE
-  103          | . TK_OP_NUM_GE
-  104          | . TK_OP_STR_EQ
-  105          | . TK_OP_STR_NE
-  106          | . TK_OP_STR_LT
-  107          | . TK_OP_STR_GT
-  108          | . TK_OP_STR_LE
-  109          | . TK_OP_STR_GE
+   94 logicalExp: compExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+   97 compExp: compExp . compExpOp addExp
+   99 compExpOp: . TK_OP_NUM_EQ
+  100          | . TK_OP_NUM_NE
+  101          | . TK_OP_NUM_LT
+  102          | . TK_OP_NUM_GT
+  103          | . TK_OP_NUM_LE
+  104          | . TK_OP_NUM_GE
+  105          | . TK_OP_STR_EQ
+  106          | . TK_OP_STR_NE
+  107          | . TK_OP_STR_LT
+  108          | . TK_OP_STR_GT
+  109          | . TK_OP_STR_LE
+  110          | . TK_OP_STR_GE
 
     TK_OP_NUM_EQ  shift, and go to state 118
     TK_OP_NUM_NE  shift, and go to state 119
@@ -1763,73 +1764,73 @@ state 55
     TK_OP_STR_LE  shift, and go to state 128
     TK_OP_STR_GE  shift, and go to state 129
 
-    $default  reduce using rule 93 (logicalExp)
+    $default  reduce using rule 94 (logicalExp)
 
     compExpOp  go to state 130
 
 
 state 56
 
-   97 compExp: addExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-  110 addExp: addExp . addExpOp multExp
-  112 addExpOp: . TK_OP_NUM_SUBST
-  113         | . TK_OP_STR_CAT
-  114         | . TK_OP_NUM_ADD
+   98 compExp: addExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+  111 addExp: addExp . addExpOp multExp
+  113 addExpOp: . TK_OP_NUM_SUBST
+  114         | . TK_OP_STR_CAT
+  115         | . TK_OP_NUM_ADD
 
     TK_OP_STR_CAT    shift, and go to state 131
     TK_OP_NUM_ADD    shift, and go to state 132
     TK_OP_NUM_SUBST  shift, and go to state 133
 
-    $default  reduce using rule 97 (compExp)
+    $default  reduce using rule 98 (compExp)
 
     addExpOp  go to state 134
 
 
 state 57
 
-  111 addExp: multExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-  115 multExp: multExp . multExpOp unaryExp
-  117 multExpOp: . TK_OP_NUM_DIV
-  118          | . TK_OP_NUM_MULT
-  119          | . TK_OP_NUM_MOD
+  112 addExp: multExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+  116 multExp: multExp . multExpOp unaryExp
+  118 multExpOp: . TK_OP_NUM_DIV
+  119          | . TK_OP_NUM_MULT
+  120          | . TK_OP_NUM_MOD
 
     TK_OP_NUM_DIV   shift, and go to state 135
     TK_OP_NUM_MULT  shift, and go to state 136
     TK_OP_NUM_MOD   shift, and go to state 137
 
-    $default  reduce using rule 111 (addExp)
+    $default  reduce using rule 112 (addExp)
 
     multExpOp  go to state 138
 
 
 state 58
 
-  116 multExp: unaryExp .
+  117 multExp: unaryExp .
 
-    $default  reduce using rule 116 (multExp)
+    $default  reduce using rule 117 (multExp)
 
 
 state 59
 
-  120 unaryExp: unaryExpOpPrefix . primaryExp
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+  121 unaryExp: unaryExpOpPrefix . primaryExp
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     TK_EMPTY_STRING                shift, and go to state 38
     TK_TRUE                        shift, and go to state 39
@@ -1851,48 +1852,48 @@ state 59
 
 state 60
 
-  121 unaryExp: primaryExp .
+  122 unaryExp: primaryExp .
 
-    $default  reduce using rule 121 (unaryExp)
+    $default  reduce using rule 122 (unaryExp)
 
 
 state 61
 
-  135 primaryExp: functionCallExpr .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-  150 functionCallLhs: functionCallExpr .  [TK_PARENTHESES_OPEN]
+  136 primaryExp: functionCallExpr .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+  151 functionCallLhs: functionCallExpr .  [TK_PARENTHESES_OPEN]
 
-    TK_PARENTHESES_OPEN  reduce using rule 150 (functionCallLhs)
-    $default             reduce using rule 135 (primaryExp)
+    TK_PARENTHESES_OPEN  reduce using rule 151 (functionCallLhs)
+    $default             reduce using rule 136 (primaryExp)
 
 
 state 62
 
-  125 primaryExp: varRef .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-  149 functionCallLhs: varRef .  [TK_PARENTHESES_OPEN]
+  126 primaryExp: varRef .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+  150 functionCallLhs: varRef .  [TK_PARENTHESES_OPEN]
 
-    TK_PARENTHESES_OPEN  reduce using rule 149 (functionCallLhs)
-    $default             reduce using rule 125 (primaryExp)
+    TK_PARENTHESES_OPEN  reduce using rule 150 (functionCallLhs)
+    $default             reduce using rule 126 (primaryExp)
 
 
 state 63
 
-  137 functionCallExpr: functionCallStmt .
+  138 functionCallExpr: functionCallStmt .
 
-    $default  reduce using rule 137 (functionCallExpr)
+    $default  reduce using rule 138 (functionCallExpr)
 
 
 state 64
 
-   88 expr: listConstructor .
+   89 expr: listConstructor .
 
-    $default  reduce using rule 88 (expr)
+    $default  reduce using rule 89 (expr)
 
 
 state 65
 
-   87 expr: hashConstructor .
+   88 expr: hashConstructor .
 
-    $default  reduce using rule 87 (expr)
+    $default  reduce using rule 88 (expr)
 
 
 state 66
@@ -1920,8 +1921,8 @@ state 68
 
 state 69
 
-  146 varIndex: TK_OP_DOT . TK_IDENTIFIER
-  147         | TK_OP_DOT . error
+  147 varIndex: TK_OP_DOT . TK_IDENTIFIER
+  148         | TK_OP_DOT . error
 
     error          shift, and go to state 142
     TK_IDENTIFIER  shift, and go to state 143
@@ -1929,47 +1930,47 @@ state 69
 
 state 70
 
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  142 varIndex: TK_BRACE_OPEN . expr TK_BRACE_CLOSE
-  143         | TK_BRACE_OPEN . expr error
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  143 varIndex: TK_BRACE_OPEN . expr TK_BRACE_CLOSE
+  144         | TK_BRACE_OPEN . expr error
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -2007,47 +2008,47 @@ state 70
 
 state 71
 
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  144 varIndex: TK_BRACKET_OPEN . expr TK_BRACKET_CLOSE
-  145         | TK_BRACKET_OPEN . expr error
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  145 varIndex: TK_BRACKET_OPEN . expr TK_BRACKET_CLOSE
+  146         | TK_BRACKET_OPEN . expr error
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -2085,38 +2086,38 @@ state 71
 
 state 72
 
-  138 varRef: TK_IDENTIFIER varIndexes .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_ASSIGN_REF, TK_ASSIGN, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_PARAMETER_LABEL]
-  140 varIndexes: varIndexes . varIndex
-  142 varIndex: . TK_BRACE_OPEN expr TK_BRACE_CLOSE
-  143         | . TK_BRACE_OPEN expr error
-  144         | . TK_BRACKET_OPEN expr TK_BRACKET_CLOSE
-  145         | . TK_BRACKET_OPEN expr error
-  146         | . TK_OP_DOT TK_IDENTIFIER
-  147         | . TK_OP_DOT error
+  139 varRef: TK_IDENTIFIER varIndexes .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_ASSIGN_REF, TK_ASSIGN, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_PARAMETER_LABEL]
+  141 varIndexes: varIndexes . varIndex
+  143 varIndex: . TK_BRACE_OPEN expr TK_BRACE_CLOSE
+  144         | . TK_BRACE_OPEN expr error
+  145         | . TK_BRACKET_OPEN expr TK_BRACKET_CLOSE
+  146         | . TK_BRACKET_OPEN expr error
+  147         | . TK_OP_DOT TK_IDENTIFIER
+  148         | . TK_OP_DOT error
 
     TK_OP_DOT        shift, and go to state 69
     TK_BRACE_OPEN    shift, and go to state 70
     TK_BRACKET_OPEN  shift, and go to state 71
 
-    $default  reduce using rule 138 (varRef)
+    $default  reduce using rule 139 (varRef)
 
     varIndex  go to state 146
 
-    Conflict between rule 138 and token TK_BRACKET_OPEN resolved as shift (TK_IDENTIFIER < TK_BRACKET_OPEN).
+    Conflict between rule 139 and token TK_BRACKET_OPEN resolved as shift (TK_IDENTIFIER < TK_BRACKET_OPEN).
 
 
 state 73
 
-  141 varIndexes: varIndex .
+  142 varIndexes: varIndex .
 
-    $default  reduce using rule 141 (varIndexes)
+    $default  reduce using rule 142 (varIndexes)
 
 
 state 74
 
-   84 returnStmt: TK_RETURN expr .
+   85 returnStmt: TK_RETURN expr .
 
-    $default  reduce using rule 84 (returnStmt)
+    $default  reduce using rule 85 (returnStmt)
 
 
 state 75
@@ -2145,45 +2146,45 @@ state 78
    40 whileStmt: TK_WHILE . expr stmtInnerList TK_END
    41          | TK_WHILE . expr TK_END
    43 doWhileStmt: TK_LOOP TK_WHILE . expr
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -2258,16 +2259,16 @@ state 79
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -2390,9 +2391,9 @@ state 91
 state 92
 
    25 stmtInner: functionCallStmt .  ["end of file", TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_BRACKET_OPEN]
-  137 functionCallExpr: functionCallStmt .  [TK_PARENTHESES_OPEN]
+  138 functionCallExpr: functionCallStmt .  [TK_PARENTHESES_OPEN]
 
-    TK_PARENTHESES_OPEN  reduce using rule 137 (functionCallExpr)
+    TK_PARENTHESES_OPEN  reduce using rule 138 (functionCallExpr)
     $default             reduce using rule 25 (stmtInner)
 
 
@@ -2451,16 +2452,16 @@ state 94
    64 conditionContent: . stmtInnerList
    65                 | .  [TK_END, TK_ELSIF, TK_ELSE]
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -2503,45 +2504,45 @@ state 95
 
    36 forStmt: TK_FOR TK_IDENTIFIER . expr stmtInnerList TK_END
    39        | TK_FOR TK_IDENTIFIER . expr TK_END
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -2581,45 +2582,45 @@ state 96
 
    37 forStmt: TK_FOR multiValueLeftHandSide . expr stmtInnerList TK_END
    38        | TK_FOR multiValueLeftHandSide . expr TK_END
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -2695,16 +2696,16 @@ state 97
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -2784,45 +2785,45 @@ state 103
 
    48 referenceCopyAssignmentStmt: assignmentLeftHandSide TK_ASSIGN_REF . expr
    49                            | assignmentLeftHandSide TK_ASSIGN_REF . error
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     error                          shift, and go to state 162
     TK_SUB                         shift, and go to state 37
@@ -2863,45 +2864,45 @@ state 104
 
    46 valueDeepCopyAssignStmt: assignmentLeftHandSide TK_ASSIGN . expr
    47                        | assignmentLeftHandSide TK_ASSIGN . error
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     error                          shift, and go to state 164
     TK_SUB                         shift, and go to state 37
@@ -2983,16 +2984,16 @@ state 106
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
    67 functionDefStmt: functionPrototypeDecl stmtInnerList . TK_END
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -3030,19 +3031,19 @@ state 106
 
 state 107
 
-  148 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN . functionArgs TK_PARENTHESES_CLOSE
-  151 functionArgs: . functionArgList
-  152             | .  [TK_PARENTHESES_CLOSE]
-  153 functionArgList: . functionArgList functionParam
-  154                | . functionParam
-  155 functionParam: . TK_PARAMETER_LABEL expr
-  156              | . error
-  157              | . TK_PARAMETER_LABEL error
+  149 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN . functionArgs TK_PARENTHESES_CLOSE
+  152 functionArgs: . functionArgList
+  153             | .  [TK_PARENTHESES_CLOSE]
+  154 functionArgList: . functionArgList functionParam
+  155                | . functionParam
+  156 functionParam: . TK_PARAMETER_LABEL expr
+  157              | . error
+  158              | . TK_PARAMETER_LABEL error
 
     error               shift, and go to state 167
     TK_PARAMETER_LABEL  shift, and go to state 168
 
-    TK_PARENTHESES_CLOSE  reduce using rule 152 (functionArgs)
+    TK_PARENTHESES_CLOSE  reduce using rule 153 (functionArgs)
 
     functionArgs     go to state 169
     functionArgList  go to state 170
@@ -3054,9 +3055,9 @@ state 108
    73 funcParamDecls: . funcParamDecls TK_COMMA funcParamDecl
    74               | . funcParamDecl
    75               | .  [TK_COMMA, TK_PARENTHESES_CLOSE]
-   76 funcParamDecl: . TK_IDENTIFIER optParamSpec
-   90 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN . funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | TK_SUB TK_PARENTHESES_OPEN . funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   76 funcParamDecl: . TK_IDENTIFIER optParamSpecs2
+   91 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN . funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | TK_SUB TK_PARENTHESES_OPEN . funcParamDecls TK_PARENTHESES_CLOSE TK_END
 
     TK_IDENTIFIER  shift, and go to state 172
 
@@ -3068,8 +3069,8 @@ state 108
 
 state 109
 
-  134 primaryExp: TK_PARENTHESES_OPEN expr . TK_PARENTHESES_CLOSE
-  136           | TK_PARENTHESES_OPEN expr . error
+  135 primaryExp: TK_PARENTHESES_OPEN expr . TK_PARENTHESES_CLOSE
+  137           | TK_PARENTHESES_OPEN expr . error
 
     error                 shift, and go to state 175
     TK_PARENTHESES_CLOSE  shift, and go to state 176
@@ -3077,15 +3078,15 @@ state 109
 
 state 110
 
-  166 hashClause: expr . TK_HASH_IT expr
+  167 hashClause: expr . TK_HASH_IT expr
 
     TK_HASH_IT  shift, and go to state 177
 
 
 state 111
 
-  162 hashConstructor: TK_BRACE_OPEN hashClauseList . TK_BRACE_CLOSE
-  163 hashClauseList: hashClauseList . TK_COMMA hashClause
+  163 hashConstructor: TK_BRACE_OPEN hashClauseList . TK_BRACE_CLOSE
+  164 hashClauseList: hashClauseList . TK_COMMA hashClause
 
     TK_COMMA        shift, and go to state 178
     TK_BRACE_CLOSE  shift, and go to state 179
@@ -3093,22 +3094,22 @@ state 111
 
 state 112
 
-  164 hashClauseList: hashClause .
+  165 hashClauseList: hashClause .
 
-    $default  reduce using rule 164 (hashClauseList)
+    $default  reduce using rule 165 (hashClauseList)
 
 
 state 113
 
-  160 expressionList: expr .
+  161 expressionList: expr .
 
-    $default  reduce using rule 160 (expressionList)
+    $default  reduce using rule 161 (expressionList)
 
 
 state 114
 
-  158 listConstructor: TK_BRACKET_OPEN expressionList . TK_BRACKET_CLOSE
-  159 expressionList: expressionList . TK_COMMA expr
+  159 listConstructor: TK_BRACKET_OPEN expressionList . TK_BRACKET_CLOSE
+  160 expressionList: expressionList . TK_COMMA expr
 
     TK_COMMA          shift, and go to state 180
     TK_BRACKET_CLOSE  shift, and go to state 181
@@ -3116,50 +3117,50 @@ state 114
 
 state 115
 
-   94 logExpOp: TK_OP_LOGICAL_AND .
-
-    $default  reduce using rule 94 (logExpOp)
-
-
-state 116
-
-   95 logExpOp: TK_OP_LOGICAL_OR .
+   95 logExpOp: TK_OP_LOGICAL_AND .
 
     $default  reduce using rule 95 (logExpOp)
 
 
+state 116
+
+   96 logExpOp: TK_OP_LOGICAL_OR .
+
+    $default  reduce using rule 96 (logExpOp)
+
+
 state 117
 
-   92 logicalExp: logicalExp logExpOp . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   93 logicalExp: logicalExp logExpOp . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     TK_EMPTY_STRING                shift, and go to state 38
     TK_TRUE                        shift, and go to state 39
@@ -3189,118 +3190,118 @@ state 117
 
 state 118
 
-   98 compExpOp: TK_OP_NUM_EQ .
-
-    $default  reduce using rule 98 (compExpOp)
-
-
-state 119
-
-   99 compExpOp: TK_OP_NUM_NE .
+   99 compExpOp: TK_OP_NUM_EQ .
 
     $default  reduce using rule 99 (compExpOp)
 
 
-state 120
+state 119
 
-  100 compExpOp: TK_OP_NUM_LT .
+  100 compExpOp: TK_OP_NUM_NE .
 
     $default  reduce using rule 100 (compExpOp)
 
 
-state 121
+state 120
 
-  101 compExpOp: TK_OP_NUM_GT .
+  101 compExpOp: TK_OP_NUM_LT .
 
     $default  reduce using rule 101 (compExpOp)
 
 
-state 122
+state 121
 
-  102 compExpOp: TK_OP_NUM_LE .
+  102 compExpOp: TK_OP_NUM_GT .
 
     $default  reduce using rule 102 (compExpOp)
 
 
-state 123
+state 122
 
-  103 compExpOp: TK_OP_NUM_GE .
+  103 compExpOp: TK_OP_NUM_LE .
 
     $default  reduce using rule 103 (compExpOp)
 
 
-state 124
+state 123
 
-  104 compExpOp: TK_OP_STR_EQ .
+  104 compExpOp: TK_OP_NUM_GE .
 
     $default  reduce using rule 104 (compExpOp)
 
 
-state 125
+state 124
 
-  105 compExpOp: TK_OP_STR_NE .
+  105 compExpOp: TK_OP_STR_EQ .
 
     $default  reduce using rule 105 (compExpOp)
 
 
-state 126
+state 125
 
-  106 compExpOp: TK_OP_STR_LT .
+  106 compExpOp: TK_OP_STR_NE .
 
     $default  reduce using rule 106 (compExpOp)
 
 
-state 127
+state 126
 
-  107 compExpOp: TK_OP_STR_GT .
+  107 compExpOp: TK_OP_STR_LT .
 
     $default  reduce using rule 107 (compExpOp)
 
 
-state 128
+state 127
 
-  108 compExpOp: TK_OP_STR_LE .
+  108 compExpOp: TK_OP_STR_GT .
 
     $default  reduce using rule 108 (compExpOp)
 
 
-state 129
+state 128
 
-  109 compExpOp: TK_OP_STR_GE .
+  109 compExpOp: TK_OP_STR_LE .
 
     $default  reduce using rule 109 (compExpOp)
 
 
+state 129
+
+  110 compExpOp: TK_OP_STR_GE .
+
+    $default  reduce using rule 110 (compExpOp)
+
+
 state 130
 
-   96 compExp: compExp compExpOp . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   97 compExp: compExp compExpOp . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     TK_EMPTY_STRING                shift, and go to state 38
     TK_TRUE                        shift, and go to state 39
@@ -3329,53 +3330,53 @@ state 130
 
 state 131
 
-  113 addExpOp: TK_OP_STR_CAT .
-
-    $default  reduce using rule 113 (addExpOp)
-
-
-state 132
-
-  114 addExpOp: TK_OP_NUM_ADD .
+  114 addExpOp: TK_OP_STR_CAT .
 
     $default  reduce using rule 114 (addExpOp)
 
 
+state 132
+
+  115 addExpOp: TK_OP_NUM_ADD .
+
+    $default  reduce using rule 115 (addExpOp)
+
+
 state 133
 
-  112 addExpOp: TK_OP_NUM_SUBST .
+  113 addExpOp: TK_OP_NUM_SUBST .
 
-    $default  reduce using rule 112 (addExpOp)
+    $default  reduce using rule 113 (addExpOp)
 
 
 state 134
 
-  110 addExp: addExp addExpOp . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+  111 addExp: addExp addExpOp . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     TK_EMPTY_STRING                shift, and go to state 38
     TK_TRUE                        shift, and go to state 39
@@ -3403,51 +3404,51 @@ state 134
 
 state 135
 
-  117 multExpOp: TK_OP_NUM_DIV .
-
-    $default  reduce using rule 117 (multExpOp)
-
-
-state 136
-
-  118 multExpOp: TK_OP_NUM_MULT .
+  118 multExpOp: TK_OP_NUM_DIV .
 
     $default  reduce using rule 118 (multExpOp)
 
 
-state 137
+state 136
 
-  119 multExpOp: TK_OP_NUM_MOD .
+  119 multExpOp: TK_OP_NUM_MULT .
 
     $default  reduce using rule 119 (multExpOp)
 
 
+state 137
+
+  120 multExpOp: TK_OP_NUM_MOD .
+
+    $default  reduce using rule 120 (multExpOp)
+
+
 state 138
 
-  115 multExp: multExp multExpOp . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+  116 multExp: multExp multExpOp . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     TK_EMPTY_STRING                shift, and go to state 38
     TK_TRUE                        shift, and go to state 39
@@ -3474,9 +3475,9 @@ state 138
 
 state 139
 
-  120 unaryExp: unaryExpOpPrefix primaryExp .
+  121 unaryExp: unaryExpOpPrefix primaryExp .
 
-    $default  reduce using rule 120 (unaryExp)
+    $default  reduce using rule 121 (unaryExp)
 
 
 state 140
@@ -3494,7 +3495,7 @@ state 141
    73 funcParamDecls: . funcParamDecls TK_COMMA funcParamDecl
    74               | . funcParamDecl
    75               | .  [TK_COMMA, TK_PARENTHESES_CLOSE]
-   76 funcParamDecl: . TK_IDENTIFIER optParamSpec
+   76 funcParamDecl: . TK_IDENTIFIER optParamSpecs2
 
     TK_IDENTIFIER  shift, and go to state 172
     TK_THREE_DOTS  shift, and go to state 186
@@ -3508,22 +3509,22 @@ state 141
 
 state 142
 
-  147 varIndex: TK_OP_DOT error .
+  148 varIndex: TK_OP_DOT error .
 
-    $default  reduce using rule 147 (varIndex)
+    $default  reduce using rule 148 (varIndex)
 
 
 state 143
 
-  146 varIndex: TK_OP_DOT TK_IDENTIFIER .
+  147 varIndex: TK_OP_DOT TK_IDENTIFIER .
 
-    $default  reduce using rule 146 (varIndex)
+    $default  reduce using rule 147 (varIndex)
 
 
 state 144
 
-  142 varIndex: TK_BRACE_OPEN expr . TK_BRACE_CLOSE
-  143         | TK_BRACE_OPEN expr . error
+  143 varIndex: TK_BRACE_OPEN expr . TK_BRACE_CLOSE
+  144         | TK_BRACE_OPEN expr . error
 
     error           shift, and go to state 189
     TK_BRACE_CLOSE  shift, and go to state 190
@@ -3531,8 +3532,8 @@ state 144
 
 state 145
 
-  144 varIndex: TK_BRACKET_OPEN expr . TK_BRACKET_CLOSE
-  145         | TK_BRACKET_OPEN expr . error
+  145 varIndex: TK_BRACKET_OPEN expr . TK_BRACKET_CLOSE
+  146         | TK_BRACKET_OPEN expr . error
 
     error             shift, and go to state 191
     TK_BRACKET_CLOSE  shift, and go to state 192
@@ -3540,9 +3541,9 @@ state 145
 
 state 146
 
-  140 varIndexes: varIndexes varIndex .
+  141 varIndexes: varIndexes varIndex .
 
-    $default  reduce using rule 140 (varIndexes)
+    $default  reduce using rule 141 (varIndexes)
 
 
 state 147
@@ -3586,16 +3587,16 @@ state 147
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -3660,45 +3661,45 @@ state 149
    40 whileStmt: TK_WHILE . expr stmtInnerList TK_END
    41          | TK_WHILE . expr TK_END
    42 doWhileStmt: TK_LOOP stmtInnerList TK_WHILE . expr
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -3798,16 +3799,16 @@ state 153
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    64 conditionContent: stmtInnerList .  [TK_END, TK_ELSIF, TK_ELSE]
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -3891,16 +3892,16 @@ state 155
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -3977,16 +3978,16 @@ state 156
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -4068,16 +4069,16 @@ state 158
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -4125,8 +4126,8 @@ state 160
    54 multiValueLeftHandSideList: multiValueLeftHandSideList TK_COMMA . multiValueLeftHandSideClause
    56 multiValueLeftHandSideClause: . varRef
    57                             | . TK_UNDERSCORE
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
 
     TK_IDENTIFIER  shift, and go to state 6
     TK_UNDERSCORE  shift, and go to state 98
@@ -4179,54 +4180,54 @@ state 166
 
 state 167
 
-  156 functionParam: error .
+  157 functionParam: error .
 
-    $default  reduce using rule 156 (functionParam)
+    $default  reduce using rule 157 (functionParam)
 
 
 state 168
 
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  155 functionParam: TK_PARAMETER_LABEL . expr
-  157              | TK_PARAMETER_LABEL . error
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  156 functionParam: TK_PARAMETER_LABEL . expr
+  158              | TK_PARAMETER_LABEL . error
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     error                          shift, and go to state 203
     TK_SUB                         shift, and go to state 37
@@ -4265,57 +4266,62 @@ state 168
 
 state 169
 
-  148 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs . TK_PARENTHESES_CLOSE
+  149 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs . TK_PARENTHESES_CLOSE
 
     TK_PARENTHESES_CLOSE  shift, and go to state 205
 
 
 state 170
 
-  151 functionArgs: functionArgList .  [TK_PARENTHESES_CLOSE]
-  153 functionArgList: functionArgList . functionParam
-  155 functionParam: . TK_PARAMETER_LABEL expr
-  156              | . error
-  157              | . TK_PARAMETER_LABEL error
+  152 functionArgs: functionArgList .  [TK_PARENTHESES_CLOSE]
+  154 functionArgList: functionArgList . functionParam
+  156 functionParam: . TK_PARAMETER_LABEL expr
+  157              | . error
+  158              | . TK_PARAMETER_LABEL error
 
     error               shift, and go to state 167
     TK_PARAMETER_LABEL  shift, and go to state 168
 
-    TK_PARENTHESES_CLOSE  reduce using rule 151 (functionArgs)
+    TK_PARENTHESES_CLOSE  reduce using rule 152 (functionArgs)
 
     functionParam  go to state 206
 
 
 state 171
 
-  154 functionArgList: functionParam .
+  155 functionArgList: functionParam .
 
-    $default  reduce using rule 154 (functionArgList)
+    $default  reduce using rule 155 (functionArgList)
 
 
 state 172
 
-   76 funcParamDecl: TK_IDENTIFIER . optParamSpec
-   77 optParamSpec: . optParamSpecBYREF optParamSpecOPTIONAL
-   78 optParamSpecBYREF: . TK_BYREF
-   79                  | .  [TK_COMMA, TK_PARENTHESES_CLOSE, TK_OPTIONAL]
+   76 funcParamDecl: TK_IDENTIFIER . optParamSpecs2
+   77 optParamSpecs2: . optParamSpecs
+   78               | .  [TK_COMMA, TK_PARENTHESES_CLOSE]
+   79 optParamSpecs: . optParamSpecs optParamSpec
+   80              | . optParamSpec
+   81 optParamSpec: . TK_BYREF
+   82             | . TK_OPTIONAL
 
-    TK_BYREF  shift, and go to state 207
+    TK_BYREF     shift, and go to state 207
+    TK_OPTIONAL  shift, and go to state 208
 
-    $default  reduce using rule 79 (optParamSpecBYREF)
+    $default  reduce using rule 78 (optParamSpecs2)
 
-    optParamSpec       go to state 208
-    optParamSpecBYREF  go to state 209
+    optParamSpecs2  go to state 209
+    optParamSpecs   go to state 210
+    optParamSpec    go to state 211
 
 
 state 173
 
    73 funcParamDecls: funcParamDecls . TK_COMMA funcParamDecl
-   90 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls . TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | TK_SUB TK_PARENTHESES_OPEN funcParamDecls . TK_PARENTHESES_CLOSE TK_END
+   91 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls . TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | TK_SUB TK_PARENTHESES_OPEN funcParamDecls . TK_PARENTHESES_CLOSE TK_END
 
-    TK_COMMA              shift, and go to state 210
-    TK_PARENTHESES_CLOSE  shift, and go to state 211
+    TK_COMMA              shift, and go to state 212
+    TK_PARENTHESES_CLOSE  shift, and go to state 213
 
 
 state 174
@@ -4327,223 +4333,60 @@ state 174
 
 state 175
 
-  136 primaryExp: TK_PARENTHESES_OPEN expr error .
+  137 primaryExp: TK_PARENTHESES_OPEN expr error .
 
-    $default  reduce using rule 136 (primaryExp)
+    $default  reduce using rule 137 (primaryExp)
 
 
 state 176
 
-  134 primaryExp: TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE .
+  135 primaryExp: TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE .
 
-    $default  reduce using rule 134 (primaryExp)
+    $default  reduce using rule 135 (primaryExp)
 
 
 state 177
 
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  166 hashClause: expr TK_HASH_IT . expr
-
-    TK_SUB                         shift, and go to state 37
-    TK_EMPTY_STRING                shift, and go to state 38
-    TK_TRUE                        shift, and go to state 39
-    TK_FALSE                       shift, and go to state 40
-    TK_NIL                         shift, and go to state 41
-    TK_DOUBLE_CONSTANT             shift, and go to state 42
-    TK_MULTI_PART_STRING_CONSTANT  shift, and go to state 43
-    TK_STRING_CONSTANT             shift, and go to state 44
-    TK_INTEGER_CONSTANT            shift, and go to state 45
-    TK_IDENTIFIER                  shift, and go to state 6
-    TK_OP_NUM_ADD                  shift, and go to state 46
-    TK_OP_NUM_SUBST                shift, and go to state 47
-    TK_OP_LOGICAL_NEGATE           shift, and go to state 48
-    TK_PARENTHESES_OPEN            shift, and go to state 49
-    TK_BRACE_OPEN                  shift, and go to state 50
-    TK_BRACKET_OPEN                shift, and go to state 51
-
-    expr               go to state 212
-    anonymousFunction  go to state 53
-    logicalExp         go to state 54
-    compExp            go to state 55
-    addExp             go to state 56
-    multExp            go to state 57
-    unaryExp           go to state 58
-    unaryExpOpPrefix   go to state 59
-    primaryExp         go to state 60
-    functionCallExpr   go to state 61
-    varRef             go to state 62
-    functionCallStmt   go to state 63
-    functionCallLhs    go to state 36
-    listConstructor    go to state 64
-    hashConstructor    go to state 65
-
-
-state 178
-
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  163 hashClauseList: hashClauseList TK_COMMA . hashClause
-  166 hashClause: . expr TK_HASH_IT expr
-
-    TK_SUB                         shift, and go to state 37
-    TK_EMPTY_STRING                shift, and go to state 38
-    TK_TRUE                        shift, and go to state 39
-    TK_FALSE                       shift, and go to state 40
-    TK_NIL                         shift, and go to state 41
-    TK_DOUBLE_CONSTANT             shift, and go to state 42
-    TK_MULTI_PART_STRING_CONSTANT  shift, and go to state 43
-    TK_STRING_CONSTANT             shift, and go to state 44
-    TK_INTEGER_CONSTANT            shift, and go to state 45
-    TK_IDENTIFIER                  shift, and go to state 6
-    TK_OP_NUM_ADD                  shift, and go to state 46
-    TK_OP_NUM_SUBST                shift, and go to state 47
-    TK_OP_LOGICAL_NEGATE           shift, and go to state 48
-    TK_PARENTHESES_OPEN            shift, and go to state 49
-    TK_BRACE_OPEN                  shift, and go to state 50
-    TK_BRACKET_OPEN                shift, and go to state 51
-
-    expr               go to state 110
-    anonymousFunction  go to state 53
-    logicalExp         go to state 54
-    compExp            go to state 55
-    addExp             go to state 56
-    multExp            go to state 57
-    unaryExp           go to state 58
-    unaryExpOpPrefix   go to state 59
-    primaryExp         go to state 60
-    functionCallExpr   go to state 61
-    varRef             go to state 62
-    functionCallStmt   go to state 63
-    functionCallLhs    go to state 36
-    listConstructor    go to state 64
-    hashConstructor    go to state 65
-    hashClause         go to state 213
-
-
-state 179
-
-  162 hashConstructor: TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE .
-
-    $default  reduce using rule 162 (hashConstructor)
-
-
-state 180
-
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  159 expressionList: expressionList TK_COMMA . expr
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+  167 hashClause: expr TK_HASH_IT . expr
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -4579,29 +4422,192 @@ state 180
     hashConstructor    go to state 65
 
 
+state 178
+
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+  164 hashClauseList: hashClauseList TK_COMMA . hashClause
+  167 hashClause: . expr TK_HASH_IT expr
+
+    TK_SUB                         shift, and go to state 37
+    TK_EMPTY_STRING                shift, and go to state 38
+    TK_TRUE                        shift, and go to state 39
+    TK_FALSE                       shift, and go to state 40
+    TK_NIL                         shift, and go to state 41
+    TK_DOUBLE_CONSTANT             shift, and go to state 42
+    TK_MULTI_PART_STRING_CONSTANT  shift, and go to state 43
+    TK_STRING_CONSTANT             shift, and go to state 44
+    TK_INTEGER_CONSTANT            shift, and go to state 45
+    TK_IDENTIFIER                  shift, and go to state 6
+    TK_OP_NUM_ADD                  shift, and go to state 46
+    TK_OP_NUM_SUBST                shift, and go to state 47
+    TK_OP_LOGICAL_NEGATE           shift, and go to state 48
+    TK_PARENTHESES_OPEN            shift, and go to state 49
+    TK_BRACE_OPEN                  shift, and go to state 50
+    TK_BRACKET_OPEN                shift, and go to state 51
+
+    expr               go to state 110
+    anonymousFunction  go to state 53
+    logicalExp         go to state 54
+    compExp            go to state 55
+    addExp             go to state 56
+    multExp            go to state 57
+    unaryExp           go to state 58
+    unaryExpOpPrefix   go to state 59
+    primaryExp         go to state 60
+    functionCallExpr   go to state 61
+    varRef             go to state 62
+    functionCallStmt   go to state 63
+    functionCallLhs    go to state 36
+    listConstructor    go to state 64
+    hashConstructor    go to state 65
+    hashClause         go to state 215
+
+
+state 179
+
+  163 hashConstructor: TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE .
+
+    $default  reduce using rule 163 (hashConstructor)
+
+
+state 180
+
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  160 expressionList: expressionList TK_COMMA . expr
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+
+    TK_SUB                         shift, and go to state 37
+    TK_EMPTY_STRING                shift, and go to state 38
+    TK_TRUE                        shift, and go to state 39
+    TK_FALSE                       shift, and go to state 40
+    TK_NIL                         shift, and go to state 41
+    TK_DOUBLE_CONSTANT             shift, and go to state 42
+    TK_MULTI_PART_STRING_CONSTANT  shift, and go to state 43
+    TK_STRING_CONSTANT             shift, and go to state 44
+    TK_INTEGER_CONSTANT            shift, and go to state 45
+    TK_IDENTIFIER                  shift, and go to state 6
+    TK_OP_NUM_ADD                  shift, and go to state 46
+    TK_OP_NUM_SUBST                shift, and go to state 47
+    TK_OP_LOGICAL_NEGATE           shift, and go to state 48
+    TK_PARENTHESES_OPEN            shift, and go to state 49
+    TK_BRACE_OPEN                  shift, and go to state 50
+    TK_BRACKET_OPEN                shift, and go to state 51
+
+    expr               go to state 216
+    anonymousFunction  go to state 53
+    logicalExp         go to state 54
+    compExp            go to state 55
+    addExp             go to state 56
+    multExp            go to state 57
+    unaryExp           go to state 58
+    unaryExpOpPrefix   go to state 59
+    primaryExp         go to state 60
+    functionCallExpr   go to state 61
+    varRef             go to state 62
+    functionCallStmt   go to state 63
+    functionCallLhs    go to state 36
+    listConstructor    go to state 64
+    hashConstructor    go to state 65
+
+
 state 181
 
-  158 listConstructor: TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE .
+  159 listConstructor: TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE .
 
-    $default  reduce using rule 158 (listConstructor)
+    $default  reduce using rule 159 (listConstructor)
 
 
 state 182
 
-   92 logicalExp: logicalExp logExpOp compExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-   96 compExp: compExp . compExpOp addExp
-   98 compExpOp: . TK_OP_NUM_EQ
-   99          | . TK_OP_NUM_NE
-  100          | . TK_OP_NUM_LT
-  101          | . TK_OP_NUM_GT
-  102          | . TK_OP_NUM_LE
-  103          | . TK_OP_NUM_GE
-  104          | . TK_OP_STR_EQ
-  105          | . TK_OP_STR_NE
-  106          | . TK_OP_STR_LT
-  107          | . TK_OP_STR_GT
-  108          | . TK_OP_STR_LE
-  109          | . TK_OP_STR_GE
+   93 logicalExp: logicalExp logExpOp compExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+   97 compExp: compExp . compExpOp addExp
+   99 compExpOp: . TK_OP_NUM_EQ
+  100          | . TK_OP_NUM_NE
+  101          | . TK_OP_NUM_LT
+  102          | . TK_OP_NUM_GT
+  103          | . TK_OP_NUM_LE
+  104          | . TK_OP_NUM_GE
+  105          | . TK_OP_STR_EQ
+  106          | . TK_OP_STR_NE
+  107          | . TK_OP_STR_LT
+  108          | . TK_OP_STR_GT
+  109          | . TK_OP_STR_LE
+  110          | . TK_OP_STR_GE
 
     TK_OP_NUM_EQ  shift, and go to state 118
     TK_OP_NUM_NE  shift, and go to state 119
@@ -4616,50 +4622,50 @@ state 182
     TK_OP_STR_LE  shift, and go to state 128
     TK_OP_STR_GE  shift, and go to state 129
 
-    $default  reduce using rule 92 (logicalExp)
+    $default  reduce using rule 93 (logicalExp)
 
     compExpOp  go to state 130
 
 
 state 183
 
-   96 compExp: compExp compExpOp addExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-  110 addExp: addExp . addExpOp multExp
-  112 addExpOp: . TK_OP_NUM_SUBST
-  113         | . TK_OP_STR_CAT
-  114         | . TK_OP_NUM_ADD
+   97 compExp: compExp compExpOp addExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_HASH_IT, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+  111 addExp: addExp . addExpOp multExp
+  113 addExpOp: . TK_OP_NUM_SUBST
+  114         | . TK_OP_STR_CAT
+  115         | . TK_OP_NUM_ADD
 
     TK_OP_STR_CAT    shift, and go to state 131
     TK_OP_NUM_ADD    shift, and go to state 132
     TK_OP_NUM_SUBST  shift, and go to state 133
 
-    $default  reduce using rule 96 (compExp)
+    $default  reduce using rule 97 (compExp)
 
     addExpOp  go to state 134
 
 
 state 184
 
-  110 addExp: addExp addExpOp multExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-  115 multExp: multExp . multExpOp unaryExp
-  117 multExpOp: . TK_OP_NUM_DIV
-  118          | . TK_OP_NUM_MULT
-  119          | . TK_OP_NUM_MOD
+  111 addExp: addExp addExpOp multExp .  ["end of file", error, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_HASH_IT, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
+  116 multExp: multExp . multExpOp unaryExp
+  118 multExpOp: . TK_OP_NUM_DIV
+  119          | . TK_OP_NUM_MULT
+  120          | . TK_OP_NUM_MOD
 
     TK_OP_NUM_DIV   shift, and go to state 135
     TK_OP_NUM_MULT  shift, and go to state 136
     TK_OP_NUM_MOD   shift, and go to state 137
 
-    $default  reduce using rule 110 (addExp)
+    $default  reduce using rule 111 (addExp)
 
     multExpOp  go to state 138
 
 
 state 185
 
-  115 multExp: multExp multExpOp unaryExp .
+  116 multExp: multExp multExpOp unaryExp .
 
-    $default  reduce using rule 115 (multExp)
+    $default  reduce using rule 116 (multExp)
 
 
 state 186
@@ -4673,7 +4679,7 @@ state 187
 
    69 functionPrototypeDecl: TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl . TK_PARENTHESES_CLOSE
 
-    TK_PARENTHESES_CLOSE  shift, and go to state 215
+    TK_PARENTHESES_CLOSE  shift, and go to state 217
 
 
 state 188
@@ -4681,37 +4687,37 @@ state 188
    71 funcPDecl: funcParamDecls .  [TK_PARENTHESES_CLOSE]
    73 funcParamDecls: funcParamDecls . TK_COMMA funcParamDecl
 
-    TK_COMMA  shift, and go to state 210
+    TK_COMMA  shift, and go to state 212
 
     $default  reduce using rule 71 (funcPDecl)
 
 
 state 189
 
-  143 varIndex: TK_BRACE_OPEN expr error .
+  144 varIndex: TK_BRACE_OPEN expr error .
 
-    $default  reduce using rule 143 (varIndex)
+    $default  reduce using rule 144 (varIndex)
 
 
 state 190
 
-  142 varIndex: TK_BRACE_OPEN expr TK_BRACE_CLOSE .
+  143 varIndex: TK_BRACE_OPEN expr TK_BRACE_CLOSE .
 
-    $default  reduce using rule 142 (varIndex)
+    $default  reduce using rule 143 (varIndex)
 
 
 state 191
 
-  145 varIndex: TK_BRACKET_OPEN expr error .
+  146 varIndex: TK_BRACKET_OPEN expr error .
 
-    $default  reduce using rule 145 (varIndex)
+    $default  reduce using rule 146 (varIndex)
 
 
 state 192
 
-  144 varIndex: TK_BRACKET_OPEN expr TK_BRACKET_CLOSE .
+  145 varIndex: TK_BRACKET_OPEN expr TK_BRACKET_CLOSE .
 
-    $default  reduce using rule 144 (varIndex)
+    $default  reduce using rule 145 (varIndex)
 
 
 state 193
@@ -4755,16 +4761,16 @@ state 193
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -4828,45 +4834,45 @@ state 195
 
    61 elsifClause: elsifClause TK_ELSIF . condClause
    63 condClause: . expr conditionContent
-   86 expr: . logicalExp
-   87     | . hashConstructor
-   88     | . listConstructor
-   89     | . anonymousFunction
-   90 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
-   91                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
-   92 logicalExp: . logicalExp logExpOp compExp
-   93           | . compExp
-   96 compExp: . compExp compExpOp addExp
-   97        | . addExp
-  110 addExp: . addExp addExpOp multExp
-  111       | . multExp
-  115 multExp: . multExp multExpOp unaryExp
-  116        | . unaryExp
-  120 unaryExp: . unaryExpOpPrefix primaryExp
-  121         | . primaryExp
-  122 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  123                 | . TK_OP_NUM_SUBST
-  124                 | . TK_OP_LOGICAL_NEGATE
-  125 primaryExp: . varRef
-  126           | . TK_INTEGER_CONSTANT
-  127           | . TK_DOUBLE_CONSTANT
-  128           | . TK_MULTI_PART_STRING_CONSTANT
-  129           | . TK_STRING_CONSTANT
-  130           | . TK_NIL
-  131           | . TK_FALSE
-  132           | . TK_TRUE
-  133           | . TK_EMPTY_STRING
-  134           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  135           | . functionCallExpr
-  136           | . TK_PARENTHESES_OPEN expr error
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
-  158 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  162 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
+   87 expr: . logicalExp
+   88     | . hashConstructor
+   89     | . listConstructor
+   90     | . anonymousFunction
+   91 anonymousFunction: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+   92                  | . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+   93 logicalExp: . logicalExp logExpOp compExp
+   94           | . compExp
+   97 compExp: . compExp compExpOp addExp
+   98        | . addExp
+  111 addExp: . addExp addExpOp multExp
+  112       | . multExp
+  116 multExp: . multExp multExpOp unaryExp
+  117        | . unaryExp
+  121 unaryExp: . unaryExpOpPrefix primaryExp
+  122         | . primaryExp
+  123 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  124                 | . TK_OP_NUM_SUBST
+  125                 | . TK_OP_LOGICAL_NEGATE
+  126 primaryExp: . varRef
+  127           | . TK_INTEGER_CONSTANT
+  128           | . TK_DOUBLE_CONSTANT
+  129           | . TK_MULTI_PART_STRING_CONSTANT
+  130           | . TK_STRING_CONSTANT
+  131           | . TK_NIL
+  132           | . TK_FALSE
+  133           | . TK_TRUE
+  134           | . TK_EMPTY_STRING
+  135           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  136           | . functionCallExpr
+  137           | . TK_PARENTHESES_OPEN expr error
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
+  159 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  163 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     TK_SUB                         shift, and go to state 37
     TK_EMPTY_STRING                shift, and go to state 38
@@ -4885,7 +4891,7 @@ state 195
     TK_BRACE_OPEN                  shift, and go to state 50
     TK_BRACKET_OPEN                shift, and go to state 51
 
-    condClause         go to state 216
+    condClause         go to state 218
     expr               go to state 94
     anonymousFunction  go to state 53
     logicalExp         go to state 54
@@ -4944,16 +4950,16 @@ state 196
    64 conditionContent: . stmtInnerList
    65                 | .  [TK_END]
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -4981,7 +4987,7 @@ state 196
     assignmentLeftHandSide       go to state 24
     multiValueLeftHandSide       go to state 25
     ifStmt                       go to state 87
-    conditionContent             go to state 217
+    conditionContent             go to state 219
     includeStmt                  go to state 88
     breakStmt                    go to state 89
     nextStmt                     go to state 90
@@ -5037,16 +5043,16 @@ state 198
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -5055,7 +5061,7 @@ state 198
     TK_NEXT          shift, and go to state 7
     TK_BREAK         shift, and go to state 8
     TK_RETURN        shift, and go to state 9
-    TK_END           shift, and go to state 218
+    TK_END           shift, and go to state 220
     TK_LOOP          shift, and go to state 11
     TK_IF            shift, and go to state 12
     TK_FOR           shift, and go to state 13
@@ -5127,16 +5133,16 @@ state 200
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -5145,7 +5151,7 @@ state 200
     TK_NEXT          shift, and go to state 7
     TK_BREAK         shift, and go to state 8
     TK_RETURN        shift, and go to state 9
-    TK_END           shift, and go to state 219
+    TK_END           shift, and go to state 221
     TK_LOOP          shift, and go to state 11
     TK_IF            shift, and go to state 12
     TK_FOR           shift, and go to state 13
@@ -5188,70 +5194,86 @@ state 202
 
 state 203
 
-  157 functionParam: TK_PARAMETER_LABEL error .
+  158 functionParam: TK_PARAMETER_LABEL error .
 
-    $default  reduce using rule 157 (functionParam)
+    $default  reduce using rule 158 (functionParam)
 
 
 state 204
 
-  155 functionParam: TK_PARAMETER_LABEL expr .
+  156 functionParam: TK_PARAMETER_LABEL expr .
 
-    $default  reduce using rule 155 (functionParam)
+    $default  reduce using rule 156 (functionParam)
 
 
 state 205
 
-  148 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE .
+  149 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE .
 
-    $default  reduce using rule 148 (functionCallStmt)
+    $default  reduce using rule 149 (functionCallStmt)
 
 
 state 206
 
-  153 functionArgList: functionArgList functionParam .
+  154 functionArgList: functionArgList functionParam .
 
-    $default  reduce using rule 153 (functionArgList)
+    $default  reduce using rule 154 (functionArgList)
 
 
 state 207
 
-   78 optParamSpecBYREF: TK_BYREF .
+   81 optParamSpec: TK_BYREF .
 
-    $default  reduce using rule 78 (optParamSpecBYREF)
+    $default  reduce using rule 81 (optParamSpec)
 
 
 state 208
 
-   76 funcParamDecl: TK_IDENTIFIER optParamSpec .
+   82 optParamSpec: TK_OPTIONAL .
 
-    $default  reduce using rule 76 (funcParamDecl)
+    $default  reduce using rule 82 (optParamSpec)
 
 
 state 209
 
-   77 optParamSpec: optParamSpecBYREF . optParamSpecOPTIONAL
-   80 optParamSpecOPTIONAL: . TK_OPTIONAL
-   81                     | .  [TK_COMMA, TK_PARENTHESES_CLOSE]
+   76 funcParamDecl: TK_IDENTIFIER optParamSpecs2 .
 
-    TK_OPTIONAL  shift, and go to state 220
-
-    $default  reduce using rule 81 (optParamSpecOPTIONAL)
-
-    optParamSpecOPTIONAL  go to state 221
+    $default  reduce using rule 76 (funcParamDecl)
 
 
 state 210
 
-   73 funcParamDecls: funcParamDecls TK_COMMA . funcParamDecl
-   76 funcParamDecl: . TK_IDENTIFIER optParamSpec
+   77 optParamSpecs2: optParamSpecs .  [TK_COMMA, TK_PARENTHESES_CLOSE]
+   79 optParamSpecs: optParamSpecs . optParamSpec
+   81 optParamSpec: . TK_BYREF
+   82             | . TK_OPTIONAL
 
-    TK_IDENTIFIER  shift, and go to state 172
+    TK_BYREF     shift, and go to state 207
+    TK_OPTIONAL  shift, and go to state 208
 
-    funcParamDecl  go to state 222
+    $default  reduce using rule 77 (optParamSpecs2)
+
+    optParamSpec  go to state 222
 
 
 state 211
+
+   80 optParamSpecs: optParamSpec .
+
+    $default  reduce using rule 80 (optParamSpecs)
+
+
+state 212
+
+   73 funcParamDecls: funcParamDecls TK_COMMA . funcParamDecl
+   76 funcParamDecl: . TK_IDENTIFIER optParamSpecs2
+
+    TK_IDENTIFIER  shift, and go to state 172
+
+    funcParamDecl  go to state 223
+
+
+state 213
 
    20 stmtInnerList: . stmtInnerList stmtInner
    21              | . stmtInner
@@ -5289,18 +5311,18 @@ state 211
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-   90 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE . stmtInnerList TK_END
-   91                  | TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE . TK_END
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+   91 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE . stmtInnerList TK_END
+   92                  | TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE . TK_END
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -5309,14 +5331,14 @@ state 211
     TK_NEXT          shift, and go to state 7
     TK_BREAK         shift, and go to state 8
     TK_RETURN        shift, and go to state 9
-    TK_END           shift, and go to state 223
+    TK_END           shift, and go to state 224
     TK_LOOP          shift, and go to state 11
     TK_IF            shift, and go to state 12
     TK_FOR           shift, and go to state 13
     TK_WHILE         shift, and go to state 14
     TK_BRACKET_OPEN  shift, and go to state 15
 
-    stmtInnerList                go to state 224
+    stmtInnerList                go to state 225
     stmtInner                    go to state 80
     forStmt                      go to state 81
     whileStmt                    go to state 82
@@ -5337,91 +5359,84 @@ state 211
     functionCallLhs              go to state 36
 
 
-state 212
-
-  166 hashClause: expr TK_HASH_IT expr .
-
-    $default  reduce using rule 166 (hashClause)
-
-
-state 213
-
-  163 hashClauseList: hashClauseList TK_COMMA hashClause .
-
-    $default  reduce using rule 163 (hashClauseList)
-
-
 state 214
 
-  159 expressionList: expressionList TK_COMMA expr .
+  167 hashClause: expr TK_HASH_IT expr .
 
-    $default  reduce using rule 159 (expressionList)
+    $default  reduce using rule 167 (hashClause)
 
 
 state 215
+
+  164 hashClauseList: hashClauseList TK_COMMA hashClause .
+
+    $default  reduce using rule 164 (hashClauseList)
+
+
+state 216
+
+  160 expressionList: expressionList TK_COMMA expr .
+
+    $default  reduce using rule 160 (expressionList)
+
+
+state 217
 
    69 functionPrototypeDecl: TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE .
 
     $default  reduce using rule 69 (functionPrototypeDecl)
 
 
-state 216
+state 218
 
    61 elsifClause: elsifClause TK_ELSIF condClause .
 
     $default  reduce using rule 61 (elsifClause)
 
 
-state 217
+state 219
 
    59 elseClauses: elsifClause TK_ELSE conditionContent .
 
     $default  reduce using rule 59 (elseClauses)
 
 
-state 218
+state 220
 
    36 forStmt: TK_FOR TK_IDENTIFIER expr stmtInnerList TK_END .
 
     $default  reduce using rule 36 (forStmt)
 
 
-state 219
+state 221
 
    37 forStmt: TK_FOR multiValueLeftHandSide expr stmtInnerList TK_END .
 
     $default  reduce using rule 37 (forStmt)
 
 
-state 220
-
-   80 optParamSpecOPTIONAL: TK_OPTIONAL .
-
-    $default  reduce using rule 80 (optParamSpecOPTIONAL)
-
-
-state 221
-
-   77 optParamSpec: optParamSpecBYREF optParamSpecOPTIONAL .
-
-    $default  reduce using rule 77 (optParamSpec)
-
-
 state 222
+
+   79 optParamSpecs: optParamSpecs optParamSpec .
+
+    $default  reduce using rule 79 (optParamSpecs)
+
+
+state 223
 
    73 funcParamDecls: funcParamDecls TK_COMMA funcParamDecl .
 
     $default  reduce using rule 73 (funcParamDecls)
 
 
-state 223
-
-   91 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END .
-
-    $default  reduce using rule 91 (anonymousFunction)
-
-
 state 224
+
+   92 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END .
+
+    $default  reduce using rule 92 (anonymousFunction)
+
+
+state 225
 
    20 stmtInnerList: stmtInnerList . stmtInner
    22 stmtInner: . valueDeepCopyAssignStmt
@@ -5458,17 +5473,17 @@ state 224
    53                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
    58 ifStmt: . TK_IF condClause elseClauses TK_END
    66 includeStmt: . TK_INCLUDE TK_STRING_CONSTANT
-   82 breakStmt: . TK_BREAK
-   83 nextStmt: . TK_NEXT
-   84 returnStmt: . TK_RETURN expr
-   85           | . TK_RETURN
-   90 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList . TK_END
-  137 functionCallExpr: . functionCallStmt
-  138 varRef: . TK_IDENTIFIER varIndexes
-  139       | . TK_IDENTIFIER
-  148 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  149 functionCallLhs: . varRef
-  150                | . functionCallExpr
+   83 breakStmt: . TK_BREAK
+   84 nextStmt: . TK_NEXT
+   85 returnStmt: . TK_RETURN expr
+   86           | . TK_RETURN
+   91 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList . TK_END
+  138 functionCallExpr: . functionCallStmt
+  139 varRef: . TK_IDENTIFIER varIndexes
+  140       | . TK_IDENTIFIER
+  149 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  150 functionCallLhs: . varRef
+  151                | . functionCallExpr
 
     "end of file"    shift, and go to state 75
     TK_INCLUDE       shift, and go to state 4
@@ -5477,7 +5492,7 @@ state 224
     TK_NEXT          shift, and go to state 7
     TK_BREAK         shift, and go to state 8
     TK_RETURN        shift, and go to state 9
-    TK_END           shift, and go to state 225
+    TK_END           shift, and go to state 226
     TK_LOOP          shift, and go to state 11
     TK_IF            shift, and go to state 12
     TK_FOR           shift, and go to state 13
@@ -5504,8 +5519,8 @@ state 224
     functionCallLhs              go to state 36
 
 
-state 225
+state 226
 
-   90 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END .
+   91 anonymousFunction: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END .
 
-    $default  reduce using rule 90 (anonymousFunction)
+    $default  reduce using rule 91 (anonymousFunction)
