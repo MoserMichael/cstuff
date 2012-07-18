@@ -362,7 +362,9 @@ PARSECONTEXT * PARSER_init()
   ret = (PARSECONTEXT *) malloc( sizeof( PARSECONTEXT ) );
   if (!ret) {
     return 0;
-  }
+  } 
+
+  memset( ret, 0, sizeof( PARSECONTEXT ) );
 
   if (PARSECONTEXT_init( ret )) { 
     return 0;

@@ -35,10 +35,6 @@ void *HEAP_alloc( size_t size );
 void HEAP_realloc( void **ptr, size_t size );
 
 /* ==================================================================================== */
-typedef enum {
-  CP_REF,
-  CP_VALUE,
-} CP_KIND;
 
 
 /* ==================================================================================== */
@@ -179,6 +175,7 @@ void VALSTRING_set( VALSTRING *string, const char  *ptr, size_t length);
 void VALSTRING_free( VALSTRING *string );
 int  VALSTRING_copy( VALSTRING *to, VALSTRING *from );
 int  VALSTRING_append( VALSTRING *to, VALSTRING *from );
+int  VALSTRING_appends( VALSTRING *to, const char *from );
 int  VALSTRING_find( VALSTRING *hay, VALSTRING *needle );
 int  VALSTRING_substr( VALSTRING *to, VALSTRING *from, size_t offset, size_t length);
 int  VALSTRING_cmp( VALSTRING *argA, VALSTRING *argB);
@@ -211,7 +208,10 @@ M_INLINE int CAPTURE_IS_ON_HEAP( VALFUNCTION_CAPTURE *cap )
 typedef struct tagVALFUNCTION {
   union tagBINDING_DATA *this_environment;
   struct tagAST_BASE *fdecl;
-  ARRAY  captures; 
+  ARRAY  captures; // non local variable references.
+  ARRAY  nested_closures;
+  
+
 } VALFUNCTION;
 
 // init function object without captures.
@@ -221,10 +221,14 @@ M_INLINE void VALFUNCTION_init( VALFUNCTION *func )
   func->this_environment = 0;
 
   ARRAY_init( &func->captures, sizeof( VALFUNCTION_CAPTURE ), 0 );
+  ARRAY_init( &func->nested_closures, sizeof( void * /*BINDING_DATA * */), 0 );
 }
 
 // init function object - must be known up front what number of captures are present in funcion.
-void VALFUNCTION_init_cap( VALFUNCTION *func, size_t num_captures );
+void VALFUNCTION_init_cap( VALFUNCTION *fnc, size_t num_captures );
+void VALFUNCTION_init_outer_refs( struct tagEVAL_THREAD *thread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl );
+void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl );
+
 
 // Make a capture ; if binding is on stack then forward reference is created.
 void VALFUNCTION_make_capture( VALFUNCTION *func, union tagBINDING_DATA *data, int data_entry );
@@ -250,10 +254,10 @@ int VALFUNCTION_mark_as_thread( VALFUNCTION *func );
 /* ==================================================================================== */
 typedef struct tagVALACTIVATION {
    struct tagAST_BASE *fdecl; // how this function looks like in AST.
-   size_t function_frame_start; // index of return value for this thread.
+   size_t function_frame_start; // index of return value for this function call
    struct tagAST_BASE *ret_instr; // return address; after returning to function resume with this instruction.
    struct tagVALFUNCTION *function_object; // pointer to function object (if available). 
-   struct tagVALACTIVATION *parent_function; // - this value is overlayed with container field in BINDING_DATA structure.
+   size_t parent_function; 
 } VALACTIVATION;
 
 /* ==================================================================================== */
@@ -323,8 +327,14 @@ void BINDING_DATA_init( BINDING_DATA *binding, AST_VAR_TYPE value_type);
 // show value of a data binding; formatting details are in global context.
 void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level );
 
-// copy binding value from to binding value to  - either by value or by reference (copy_by_value)
+// co show value of a data binding; formatting details are in global context.
+void BINDING_DATA_prints( DBUF *out, BINDING_DATA *data , int level );
+
+//copy binding value from to binding value to  - either by value or by reference (copy_by_value)
 void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from , CP_KIND copy_by_value  );
+
+// move value around
+void BINDING_DATA_move( BINDING_DATA *to, BINDING_DATA *from);
 
 // return value from a function ret_slot - return value slot ; rvalue - value to return.
 void BINDING_DATA_return_value( BINDING_DATA *ret_slot, BINDING_DATA *rvalue );
@@ -421,6 +431,18 @@ M_INLINE void BINDING_DATA_set_double( BINDING_DATA *data, double val )
   data->b.value.double_value = val;
 }
 
+M_INLINE int BINDING_DATA_is_zero( BINDING_DATA *data )
+{
+  if (IS_REF( data ) ) {
+    data = BINDING_DATA_follow_ref( data );
+  }
+  assert( data->b.value_type & (S_VAR_INT | S_VAR_DOUBLE ));
+  if ( data->b.value_type & S_VAR_DOUBLE) {
+    return data->b.value.double_value == 0;
+  }
+  return data->b.value.long_value == 0;
+}
+
 M_INLINE VALARRAY *BINDING_DATA_get_arr( BINDING_DATA *data )
 {
   if (IS_REF( data )) {
@@ -498,10 +520,9 @@ typedef struct tagEVAL_THREAD {
   struct tagAST_BASE *instr; // current instruction in current function
 
   struct tagEVAL_CONTEXT *context;
-  VALACTIVATION *current_activation_record; // pointer to current activation record of current function. 
+  size_t current_activation_record; // pointer to current activation record of current function. 
  
   DRING threads;
-  int trace_on;
   TSTATE tstate;
 
   HASH  print_check_ref_loops;	// set for checking loops during printing of container.
@@ -519,25 +540,62 @@ void EVAL_THREAD_free(EVAL_THREAD *thread);
 // get the binding that is at the top of the stack.
 BINDING_DATA *EVAL_THREAD_get_stack_top( EVAL_THREAD *thread );
 
+M_INLINE size_t EVAL_THREAD_get_stack_top_pos( EVAL_THREAD *thread ) {
+  return  ARRAY_size( & thread->binding_data_stack ) - 1;
+
+}
+
+
+BINDING_DATA *EVAL_THREAD_pop_stack( EVAL_THREAD *thread );
+
+M_INLINE void EVAL_THREAD_discard_pop_stack( EVAL_THREAD *thread )
+{
+  BINDING_DATA *r;
+  
+  r = EVAL_THREAD_pop_stack( thread );
+  BINDING_DATA_free( r );
+}
+
+
+BINDING_DATA *EVAL_THREAD_push_stack( EVAL_THREAD *thread , AST_VAR_TYPE value_type );
+
+void EVAL_THREAD_push_stack2( EVAL_THREAD *thread, BINDING_DATA *entry);
+
+M_INLINE BINDING_DATA *EVAL_THREAD_stack_offset( EVAL_THREAD *thread, size_t pos )
+{
+   if (pos > ARRAY_size( &thread->binding_data_stack )) {
+      assert(0);
+   }
+   BINDING_DATA *data = (BINDING_DATA *) ARRAY_at( &thread->binding_data_stack, pos ); //ARRAY_size( &thread->binding_data_stack ) - 1 - stack_offset );
+   assert( data != 0);
+   return data;
+}
+
+
+
 // get binding indexed from the start of the current frame onward. (stack_offset == 0 - return address. )
 BINDING_DATA *EVAL_THREAD_stack_frame_offset( EVAL_THREAD *thread, size_t stack_offset );
 
-// allocates new binding on stack 
-BINDING_DATA *EVAL_THREAD_stack_alloc( EVAL_THREAD *thread, AST_VAR_TYPE vtype );
+// sets binding inex from start of current frame onward.
+void EVAL_THREAD_set_stack_frame_offset( EVAL_THREAD *thread, size_t stack_offset, BINDING_DATA *data );
+
 
 // prepare call; make sure the stack has enough room for call; reserve a slot for return value.
-void EVAL_THREAD_prepare_xcall( EVAL_THREAD *thread, AST_XFUNC_DECL *decl );
+size_t EVAL_THREAD_prepare_xcall( EVAL_THREAD *thread, AST_XFUNC_DECL *decl );
 
 // prepare call; make sure the stack has enough room for call; reserve a slot for return value.
-void EVAL_THREAD_prepare_call( EVAL_THREAD *thread, AST_FUNC_DECL *decl );
+size_t EVAL_THREAD_prepare_call( EVAL_THREAD *thread, AST_FUNC_DECL *decl );
+
+BINDING_DATA *EVAL_THREAD_parameter( EVAL_THREAD *thread, size_t frame_start, size_t param_num, AST_VAR_TYPE type );
+BINDING_DATA *EVAL_THREAD_parameter_ref( EVAL_THREAD *thread, size_t frame_start, size_t param_num );
 
 // precondition: call prepared and arguments have been pushed to the stack, make function call.
-void EVAL_THREAD_call_xfunc( EVAL_THREAD *thread, AST_XFUNC_DECL *decl );
+void EVAL_THREAD_call_xfunc( EVAL_THREAD *thread, size_t frame_start, AST_XFUNC_DECL *decl );
 
 // make a new frame
 // precondition: call prepared and arguments have been pushed to the stack. 
 // postcondition: local variable are set to NULL, activation record on the stack.
-void EVAL_THREAD_call_func( EVAL_THREAD *thread, AST_FUNC_DECL *decl, VALFUNCTION *function );
+void EVAL_THREAD_call_func( EVAL_THREAD *thread, size_t frame_start, AST_FUNC_DECL *decl, VALFUNCTION *function );
 
 // finish function call, return to calling frame. returns -1 if top of stack reached.
 int EVAL_THREAD_pop_frame ( EVAL_THREAD *thread );
@@ -580,7 +638,7 @@ M_INLINE BINDING_DATA *XCALL_param( XCALL_DATA *xcall, size_t num_param )
    if (num_param >= xcall->num_arguments) {
      return 0;
    }
-   return ((BINDING_DATA *) xcall->thread->binding_data_stack.buffer) +  xcall->frame_offset + 1 + num_param;
+   return ((BINDING_DATA *) xcall->thread->binding_data_stack.buffer) +  xcall->frame_offset + num_param + 2;
 }  
 
 M_INLINE size_t XCALL_nparams( XCALL_DATA *xcall)

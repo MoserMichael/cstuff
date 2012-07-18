@@ -4,11 +4,7 @@
 
 int can_assign( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offending_type);
 
-int is_numeric_var_type( AST_VAR_TYPE value_type )
-{
-   return value_type & (S_VAR_INT | S_VAR_DOUBLE );
-}
- 
+
 BINDING_ENTRY *find_binding( AST_FUNC_DECL *fdecl, const char *name )
 {
   //fprintf( stderr, ">>lookup %s %p\n", name, fdecl );
@@ -34,7 +30,7 @@ BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYP
    binding->has_value = has_value;
    binding->binding_name = name;
    binding->stack_offset = ++decl->last_stack_offset ;
- 
+
    //fprintf( stderr,">>add %s %p\n", name, decl );
 
    if (HASH_insert( &decl->scope_map_name_to_binding, &binding->entry, (void *)  name, -1  )) {
@@ -91,14 +87,7 @@ BINDING_ENTRY *lookup_binding( PARSECONTEXT *ctx, const char *name,  REF_SCOPE s
     }
 }
 
-int is_scalar_var_type( AST_VAR_TYPE value_type )
-{
-   if (( value_type  & S_VAR_ANY) == S_VAR_ANY ) {
-     return 0;
-   }
-   return value_type & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING );
-}
- 
+
 
 typedef struct tagFUNCTION_ENTRY {
   HASH_Entry entry;
@@ -224,6 +213,10 @@ void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *locati
 {
     BINDING_ENTRY *binding;
 
+    if (lhs->exp_type == S_EXPR_CONSTANT) {
+      return;
+    }
+
     binding = lhs->val.ref.binding;
     if (binding) { // assigning values to a parameter (for the first time).
 	binding->value_type = value_type;
@@ -274,10 +267,10 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
         if (func_def) {
            // the expression is turned into a function reference,
 	   if (expr->exp_type == S_EXPR_REFERENCE) {
-             expr->exp_type = S_EXPR_LAMBDA_RESOLVED;
+             expr->exp_type = S_EXPR_LAMBDA_RESOLVED_REF;
              expr->value_type = S_VAR_CODE;
-             free(expr->val.ref.lhs );
-	     expr->val.ref.lhs = 0;
+           //free(expr->val.ref.lhs );
+	   //expr->val.ref.lhs = 0;
              expr->val.fdecl = func_def;
 	   }
            return ;
@@ -347,6 +340,8 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	    do_yyerror( &expr->base.location, ctx, "Closure variable %s is used without having been assigned a value", name );
  	    return;
 	  }
+	  assert( ctx->chkctx.current_function );
+	  AST_VECTOR_add( &ctx->chkctx.current_function->outer_refs, &expr->base );
 	  break;
 	case REF_SCOPE_LOCAL: {
           AST_VAR_TYPE binding_type = S_VAR_ANY;
@@ -422,6 +417,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
       if (func->f_name->exp_type != S_EXPR_LAMBDA && func->f_name->exp_type != S_EXPR_LAMBDA_RESOLVED ) {
         return;
       }
+      
       fdecl = func->func_decl = func->f_name->val.fdecl;
       if (!fdecl) {
         return;
@@ -494,7 +490,8 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
       break;
     
     case S_EXPR_LAMBDA_RESOLVED:  
-      break;
+    case S_EXPR_LAMBDA_RESOLVED_REF:  
+       break;
     case S_EXPR_ERROR:
       //fprintf(out, "error-expression , " ); 
       break;
@@ -560,15 +557,108 @@ AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , cons
     return 0;
 }
 
+int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL *fcall, AST_BASE *func_def )
+{
+    size_t i;
+    AST_FUNC_CALL_PARAM *param;
+    AST_EXPRESSION *param_expr;
+    int rt = 0;
+
+    if (func_def->type == S_FUN_DECL) {
+       AST_FUNC_DECL *fdecl = (AST_FUNC_DECL *) func_def;
+       AST_EXPRESSION *parame;
+       AST_EXPRESSION *fparam;
+
+       // variable argument function accepts any arguments.
+       if (fdecl->var_arguments) {
+         return 0;
+       }
+       if (pass == 0) { // ctx->chkctx.pass == 0) {
+        if (fcall->call_params != 0)
+	 for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
+	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
+	   if (CHECKER_find_param_by_label2( fdecl->func_params, param->label_name ) == 0) {
+             do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s", fdecl->f_name, param->label_name );
+	     rt = -1;
+	   }
+	   param->param_num = i;
+         }	
+        if (fdecl->func_params)
+         for( i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
+	   parame = (AST_EXPRESSION *) AST_VECTOR_get( fdecl->func_params, i );
+	   if (CHECKER_find_param_by_label( fcall->call_params, parame->val.ref.lhs ) == 0) {
+             do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the mandatory parameter ~%s", parame->val.ref.lhs );
+	     rt = -1;
+	   }
+         }
+       } else { // pass 1
+        if (fcall->call_params)
+	 for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
+	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
+           param_expr = param->expr;
+           fparam = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name );
+            
+           if ( fparam &&  can_assign( param_expr->value_type, fparam->value_type & S_VAR_ALL_TYPES , 0)) {
+             do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s but defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( fparam->value_type ) );
+	     rt = -1;
+           } 
+           assign_value( param_expr, fparam->value_type, &param->base.location );
+         }
+       }
+     } else { // xfunc
+       AST_XFUNC_DECL *xfunc = (AST_XFUNC_DECL *) func_def;
+       AST_XFUNC_PARAM_DECL *xparam;
+        
+       if (pass == 0) { //if (ctx->chkctx.pass == 0) {
+      
+         if (fcall->call_params) 
+          for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
+	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
+  	
+	   xparam = CHECKER_xfind_param_by_label( xfunc, param->label_name ); 
+	   if (xparam == 0  ) {
+             do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s",  xfunc->f_name, param->label_name );
+	     rt = -1;
+	   }
+	   param->param_num = i;
+          }
+     
+         for( i = 0; i < MAX_XFUNC_PARAM; i++ ) {
+ 	   xparam = &xfunc->params[ i ];
+	   if (!xparam->param_name) {
+	     break;
+	   } 
+	 
+	   if (CHECKER_find_param_by_label( fcall->call_params, xparam->param_name ) == 0 && (xparam->var_type & S_VAR_PARAM_OPTIONAL) == 0 ) {
+	     do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the required parameter ~%s", xparam->param_name );
+	     rt = -1;
+	   }
+         }
+       } else {
+         if (fcall->call_params) 
+          for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
+	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
+           param_expr = param->expr;
+	   xparam = CHECKER_xfind_param_by_label( xfunc, param->label_name ); 
+	
+	   if (xparam &&  can_assign( param_expr->value_type, xparam->var_type & S_VAR_ALL_TYPES,  0)) {
+	     do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s fined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( xparam->var_type ) );
+	     rt = -1;
+	   }
+ 
+           assign_value( param_expr, xparam->var_type, &param_expr->base.location );
+	 }
+       }
+    }
+    return rt;
+}
+
 int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 {
     AST_EXPRESSION *f_name;
     const char *func_name;
     AST_BASE *func_def = 0; 
-    size_t i;
-    AST_FUNC_CALL_PARAM *param;
-    AST_EXPRESSION *param_expr;
-    
+   
     f_name =  fcall->f_name;
 
     ctx->chkctx.is_function_name = 1;
@@ -577,26 +667,26 @@ int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
      
     CHECKER_pass( ctx, (AST_BASE *) fcall->call_params );
 
-    if (f_name->exp_type == S_EXPR_LAMBDA || f_name->exp_type == S_EXPR_LAMBDA_RESOLVED) {
+    if (f_name->exp_type == S_EXPR_LAMBDA || f_name->exp_type == S_EXPR_LAMBDA_RESOLVED || f_name->exp_type == S_EXPR_LAMBDA_RESOLVED_REF ) {
       func_def = f_name->val.fdecl;
     }
+
+
+    if (f_name->exp_type == S_EXPR_LAMBDA_RESOLVED_REF) {
+      f_name->exp_type = S_EXPR_LAMBDA_RESOLVED; // now we know it is part of function call. 
+    }
+
+
     if (!func_def) {
       return 0;
     }
     func_name =  ((AST_FUNC_DECL *) func_def)->f_name;
-
-#if 0
-    func_name = f_name->val.ref.lhs;  
-
-    func_def = PARSECONTEXT_find_function_def( ctx, func_name ); 
-    if (!func_def) {
-      do_yyerror( &fcall->base.location, ctx, "the function %s is not defined, can't call a function that is not defined", func_name );
-      return -1;
-    }
-#endif
-
+    
     fcall->func_decl = func_def;
 
+    CHECKER_check_func_call_params( ctx, ctx->chkctx.pass, fcall, func_def );
+
+#if 0
     if (func_def->type == S_FUN_DECL) {
        AST_FUNC_DECL *fdecl = (AST_FUNC_DECL *) func_def;
        AST_EXPRESSION *parame;
@@ -613,6 +703,7 @@ int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 	   if (CHECKER_find_param_by_label2( fdecl->func_params, param->label_name ) == 0) {
              do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s", fdecl->f_name, param->label_name );
 	   }
+	   param->param_num = i;
          }	
         if (fdecl->func_params)
          for( i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
@@ -648,6 +739,7 @@ int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 	   if (xparam == 0  ) {
              do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s",  xfunc->f_name, param->label_name );
 	   }
+	   param->param_num = i;
           }
      
          for( i = 0; i < MAX_XFUNC_PARAM; i++ ) {
@@ -675,7 +767,7 @@ int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 	 }
        }
     }
-    
+#endif    
     return 0;
 }
 
@@ -753,7 +845,7 @@ int can_assign( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offe
    if ((lhs_type & rhs_type) != 0) {
      return 0;
    }
-   if (is_numeric_var_type( lhs_type) & is_numeric_var_type( rhs_type ) ) {
+   if (is_numeric_type( lhs_type) && is_numeric_type( rhs_type ) ) {
      return 0;
    }
 

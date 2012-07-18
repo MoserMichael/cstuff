@@ -391,14 +391,14 @@ valueDeepCopyAssignStmt : assignmentLeftHandSide TK_ASSIGN expr
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_DEEP_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( CP_VALUE, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}  |
 	    assignmentLeftHandSide TK_ASSIGN error
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_DEEP_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) 0, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( CP_VALUE, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) 0, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 
 
@@ -410,14 +410,14 @@ referenceCopyAssignmentStmt : assignmentLeftHandSide TK_ASSIGN_REF  expr
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_REF_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( CP_REF, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 	}  | 
 	    assignmentLeftHandSide TK_ASSIGN_REF  error
 	{
 	    AST_ASSIGNMENT *scl;
 
-	    scl = AST_ASSIGNMENT_init( ASSIGNMENT_REF_COPY, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
+	    scl = AST_ASSIGNMENT_init( CP_REF, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 
 	    do_yyerror( & @2, parse_context,  "in assignment; right hand side (value of assignment) is wrong" );
@@ -507,11 +507,13 @@ ifStmt  : TK_IF condClause elseClauses TK_END
 	}	;
 
 elseClauses : elsifClause TK_ELSE  conditionContent
-	{
-	    $<ast>$ = (AST_BASE *) AST_COND_set_else_block( (AST_COND *) $<ast>1, (AST_BASE_LIST *) $<ast>3 );
-
+	{  
+	    if ($<ast>1 != 0) {
+	      $<ast>$ = (AST_BASE *) AST_COND_set_else_block( (AST_COND *) $<ast>1, (AST_BASE_LIST *) $<ast>3 );
+            } else {
+	      $<ast>$ = (AST_BASE *) AST_COND_init( 0, (AST_BASE_LIST *) $<ast>3, YYLOCPTR );
+	    }
 	    AST_BASE_set_location( $<ast>$, YYLOCPTR );  
-
 	}
 	    | elsifClause 
 	    ;

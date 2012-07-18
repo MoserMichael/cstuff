@@ -251,7 +251,7 @@ M_INLINE int ARRAY_stack_top( ARRAY *arr, void *ptr, size_t elmsize )
 			return -1;
 		}
 
-		memcpy( ptr, arr->buffer + arr->elmcount * arr->elmsize, elmsize);
+		memcpy( ptr, arr->buffer + ((arr->elmcount - 1) * arr->elmsize), elmsize);
 	}
 	return 0;
 }

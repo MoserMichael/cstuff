@@ -121,7 +121,29 @@ AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc )
   return lhs;
 }
 
-int is_result_type_int( int op )
+int is_operator_boolean( int op )
+{
+  return op == TK_OP_LOGICAL_AND || TK_OP_LOGICAL_OR;
+ 
+}
+int is_operator_with_boolean_result( int op )
+{
+  switch(op) {
+    case TK_OP_NUM_LT: 
+    case TK_OP_NUM_GT: 
+    case TK_OP_NUM_LE: 
+    case TK_OP_NUM_GE:
+    case TK_OP_STR_EQ:
+    case TK_OP_STR_NE: 
+    case TK_OP_LOGICAL_AND:
+    case TK_OP_LOGICAL_OR:
+       return 1;
+    default:
+      return 0;
+  }
+}
+
+int is_operator_with_number_args( int op )
 {
   switch(op) {
     case TK_OP_NUM_SUBST:
@@ -129,19 +151,15 @@ int is_result_type_int( int op )
     case TK_OP_NUM_DIV:
     case TK_OP_NUM_MULT:
     case TK_OP_NUM_MOD:
-    
     case TK_OP_NUM_LT: 
     case TK_OP_NUM_GT: 
     case TK_OP_NUM_LE: 
     case TK_OP_NUM_GE:
-    
     case TK_OP_STR_EQ:
     case TK_OP_STR_NE: 
-    case TK_OP_STR_LT: 
-    case TK_OP_STR_GT: 
-    case TK_OP_STR_LE: 
-    case TK_OP_STR_GE:    
-      return 1;
+    case TK_OP_LOGICAL_AND:
+    case TK_OP_LOGICAL_OR:
+           return 1;
     default:
       return 0;
   }

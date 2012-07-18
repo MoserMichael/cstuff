@@ -2,6 +2,7 @@
 #include "parser.h"
 #include "ast.h"
 #include "printast.h"
+#include <eval.h>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -22,6 +23,24 @@ int loadRTLIB( PARSECONTEXT *ctx )
   }
   return 0;
 }
+
+#if 1 
+int eval( PARSECONTEXT *ctx )
+{
+  EVAL_CTX ectx;
+
+  if ( !EVAL_init( &ectx, ctx )) {
+    if (EVAL_run( &ectx, ctx->my_ast_root )) {
+      return -1;
+    } 
+  } else {
+    fprintf( stderr, "Can't initialize interpreter\n");
+    return -1;
+  }
+  EVAL_free( &ectx );
+  return 0;
+}
+#endif
 
 int run(const char *file_path)
 {
@@ -46,12 +65,23 @@ int run(const char *file_path)
     goto ok;
   }
 
+  // dump ast before checker.
   dump_ast( file_path, ctx->my_ast_root, 1 );
 
   if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
     fprintf(stderr,"Type checking failed\n");
     goto err;
   }
+  
+  // dump ast after checker
+  dump_ast( file_path, ctx->my_ast_root, 2 );
+
+
+#if 1
+  if (eval( ctx )) {
+    goto err;
+  }
+#endif
 
 ok:
   PARSER_free(ctx);

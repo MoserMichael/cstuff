@@ -80,10 +80,14 @@ void AST_print_expr( FILE *out, AST_EXPRESSION *expr)
       break;
 
     case S_EXPR_LAMBDA_RESOLVED: // ref to named function after lookup (avoid recursion trick)
-      fprintf(out, "ref-to-named-function , %s", ((AST_FUNC_DECL *) expr->val.fdecl)->f_name );
+      fprintf(out, "ref-to-named-function-part-of-fcall , %s", ((AST_FUNC_DECL *) expr->val.fdecl)->f_name );
       break;
     
-    case S_EXPR_ERROR:
+    case S_EXPR_LAMBDA_RESOLVED_REF: // ref to named function after lookup (avoid recursion trick)
+      fprintf(out, "ref-to-named-function-not-part-of-fcall , %s", ((AST_FUNC_DECL *) expr->val.fdecl)->f_name );
+      break;
+
+     case S_EXPR_ERROR:
       fprintf(out, "error-expression , " ); 
       break;
 
@@ -138,7 +142,7 @@ void AST_print( FILE *out, AST_BASE *base )
   case S_ASSIGNMENT:
   {
     AST_ASSIGNMENT *scl = (AST_ASSIGNMENT *) base;
-    fprintf( out, "%s , ", scl->type == ASSIGNMENT_DEEP_COPY ? "assign-copy" : "assign-ref" );
+    fprintf( out, "%s , ", scl->type == CP_VALUE ? "assign-copy" : "assign-ref" );
     AST_print( out, (AST_BASE *) scl->left_side );
     fprintf( out, " , ");
     AST_print( out, (AST_BASE *) scl->right_side );
@@ -156,6 +160,20 @@ void AST_print( FILE *out, AST_BASE *base )
       AST_print( out, (AST_BASE *) cond->block );
       fprintf( out, " , " );
    } else {
+      assert( cond->block == 0 );
+      assert( cond->elsecond != 0 ); 
+      
+      fprintf( out , "else , " );
+      AST_print( out, (AST_BASE *) cond->elsecond  );
+    }
+#if 0
+    if (cond->condition) {  
+      fprintf( out, "cond-IF , " );
+      AST_print( out, (AST_BASE *) cond->condition );
+      fprintf( out, " , " );
+      AST_print( out, (AST_BASE *) cond->block );
+      fprintf( out, " , " );
+   } else {
       assert( cond->block );
       AST_print( out, (AST_BASE *) cond->block );
       assert( cond->elsecond == 0 ); 
@@ -163,7 +181,8 @@ void AST_print( FILE *out, AST_BASE *base )
    if (cond->elsecond ) {
       fprintf( out , "else , " );
       AST_print( out, (AST_BASE *) cond->elsecond  );
-    } 
+    }
+#endif    
     newline = 1;
     }
     break;

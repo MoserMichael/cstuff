@@ -137,7 +137,6 @@ typedef struct tagAST_VECTOR {
 
 } AST_VECTOR;
 
-
 M_INLINE AST_VECTOR * AST_VECTOR_init( YYLTYPE *location )
 {
  AST_VECTOR *scl;
@@ -155,6 +154,18 @@ M_INLINE AST_VECTOR * AST_VECTOR_init( YYLTYPE *location )
  }
  return scl;
 }
+
+M_INLINE int AST_VECTOR_init2( AST_VECTOR *scl, YYLTYPE *location )
+{
+ AST_BASE_init( &scl->base, S_AST_VECTOR, location );
+
+ if (ARRAY_init( &scl->refs, sizeof( void * ), 10 )) {
+   return -1;
+ }
+ return 0;
+}
+
+
 
 M_INLINE int AST_VECTOR_add( AST_VECTOR *scl, AST_BASE *add)
 {
@@ -214,7 +225,9 @@ typedef enum tagS_EXPR_TYPE {
 
   S_EXPR_LAMBDA,  // unamed function
 
-  S_EXPR_LAMBDA_RESOLVED, // ref to named function after lookup (same as S_EXPR_LAMBA, but avoids recursion trick)
+  S_EXPR_LAMBDA_RESOLVED, // ref to named function after lookup, as part of function call (same as S_EXPR_LAMBA, but avoids recursion trick)
+
+  S_EXPR_LAMBDA_RESOLVED_REF, // ref to named function after lookup, but not as part of function call (same as S_EXPR_LAMBA, but avoids recursion trick)
 
   S_EXPR_ERROR,  // one of the types in an expression evaluated to an error, don't propagate the error further
 
@@ -263,13 +276,30 @@ const char *get_op_name( int op );
 
 M_INLINE int is_numeric_type( AST_VAR_TYPE ty )
 {
-  return ty & S_VAR_INT || ty & S_VAR_DOUBLE;
+  return ty & (S_VAR_INT | S_VAR_DOUBLE );
 }
+
+M_INLINE int is_scalar_var_type( AST_VAR_TYPE value_type )
+{
+   if (( value_type  & S_VAR_ANY) == S_VAR_ANY ) {
+     return 0;
+   }
+   return value_type & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING );
+}
+ 
 
 M_INLINE int is_numeric_or_string_type( AST_VAR_TYPE ty )
 {
-  return ty & S_VAR_INT || ty & S_VAR_DOUBLE || ty & S_VAR_STRING;
+  return ty & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING);
 }
+
+M_INLINE int is_collection( AST_VAR_TYPE ty )
+{
+  return ty & (S_VAR_HASH | S_VAR_LIST);
+}
+
+int is_operator_with_number_args( int op );
+int is_operator_with_boolean_result( int op );
 
 typedef union {
   long   long_value;
@@ -306,10 +336,10 @@ typedef struct tagAST_EXPRESSION {
 	} unary;
 
 	struct {
-		char  *lhs;
 		AST_VECTOR *indexes;
 		struct tagBINDING_ENTRY *binding;
 		int scope;
+		char  *lhs;
 	} ref;
 
 	Simple_value_type const_value;
@@ -448,23 +478,22 @@ AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc );
 
 /****************************************************/
 
-typedef enum { 
-  ASSIGNMENT_DEEP_COPY,
-  ASSIGNMENT_REF_COPY,
-
-} ASSIGNMENT_TYPE;
+typedef enum {
+  CP_REF,
+  CP_VALUE,
+} CP_KIND;
 
 typedef struct tagAST_ASSIGNMEN {
   AST_BASE base;
   struct tagAST_EXPRESSION *left_side;
   struct tagAST_EXPRESSION *right_side;
 
-  ASSIGNMENT_TYPE type; 
+  CP_KIND type; 
 
 } AST_ASSIGNMENT;
  
 
-M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( ASSIGNMENT_TYPE type,
+M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( CP_KIND type,
 		struct tagAST_EXPRESSION *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location  )
 {
   AST_ASSIGNMENT * scl;
@@ -780,7 +809,6 @@ typedef struct tagBINDING_ENTRY {
   
   int stack_offset;
 
-
 } BINDING_ENTRY;
 
 
@@ -818,7 +846,9 @@ typedef struct tagAST_FUNC_DECL {
  
   TREENODE funcs; // all functions (by nesting of declaration)
   HASH scope_map_name_to_binding; 
-    
+  
+  AST_VECTOR outer_refs; // all non local references (closures)
+
   int checker_state;  
   int last_stack_offset;
 
@@ -829,12 +859,16 @@ typedef struct tagAST_FUNC_DECL {
 M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func_param, PARSECONTEXT *ctx, YYLTYPE *location  )
 {  
   AST_FUNC_DECL *scl;
+  YYLTYPE stam  = DEFINE_NULL_YYLTYPE;
 
   scl = (AST_FUNC_DECL *) malloc( sizeof( AST_FUNC_DECL ) );
   if (!scl) {
     return 0;
   }
 
+  if (AST_VECTOR_init2( &scl->outer_refs, &stam ) ) {
+    return 0;
+  }
 
   if (f_name) {
     scl->f_name =  strdup( f_name );
@@ -886,6 +920,7 @@ typedef struct tagAST_FUNC_CALL_PARAM {
   
   AST_EXPRESSION *expr;
   const char *label_name;
+  size_t param_num; // this is the nth parameter (as declare in function declaration)
 
 } AST_FUNC_CALL_PARAM;
 
@@ -904,7 +939,7 @@ M_INLINE AST_FUNC_CALL_PARAM * AST_FUNC_CALL_PARAM_init( AST_EXPRESSION *expr, c
   scl->expr = expr;
 
   scl->label_name = strdup( label_name );
-
+  scl->param_num = (size_t) -1;
   return scl;
 }
 

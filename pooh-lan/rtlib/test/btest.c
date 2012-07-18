@@ -358,6 +358,7 @@ void x_fact( XCALL_DATA *xcall )
 {
   long narg, rnval;
   BINDING_DATA *arg,*rval;
+  size_t frame_start;
 
   VASSERT(  XCALL_nparams( xcall ) == 1 );
   VASSERT( ! BINDING_DATA_get_int( XCALL_param(xcall, 0 ), &narg ) );
@@ -365,21 +366,18 @@ void x_fact( XCALL_DATA *xcall )
   if (narg == 0) {
     EVAL_THREAD_print_stack_trace( stderr, xcall->thread );
     BINDING_DATA_set_int( XCALL_rvalue(xcall), 1);
-
     return;
   }
 
-  EVAL_THREAD_prepare_xcall( xcall->thread, &x_fact_decl );
+  frame_start = EVAL_THREAD_prepare_xcall( xcall->thread, &x_fact_decl );
  
-  arg = EVAL_THREAD_stack_alloc( xcall->thread, S_VAR_INT );
+  arg =	EVAL_THREAD_parameter( xcall->thread, frame_start, 0, S_VAR_INT );
   BINDING_DATA_set_int( arg, narg - 1);
   
-  EVAL_THREAD_call_xfunc( xcall->thread, &x_fact_decl );
+  EVAL_THREAD_call_xfunc( xcall->thread, frame_start, &x_fact_decl );
  
   rval = EVAL_THREAD_get_stack_top( xcall->thread );
-
   VASSERT( ! BINDING_DATA_get_int(rval , &rnval ) );
-
   BINDING_DATA_set_int( XCALL_rvalue(xcall), rnval * narg );
 
 
@@ -390,6 +388,7 @@ void XCALL_test()
   EVAL_CONTEXT context;
   EVAL_THREAD  *thread;
   BINDING_DATA *arg,*rval;
+  size_t frame_start;
   double rdval;
   long rnval;
   AST_XFUNC_DECL x_add_decl = DEFINE_XFUNC2( "x_add", x_add, S_VAR_DOUBLE, "a", S_VAR_INT|S_VAR_DOUBLE , "b", S_VAR_INT|S_VAR_DOUBLE );
@@ -401,13 +400,15 @@ void XCALL_test()
   START_INVOKE_RTLIB( &context, test_error_action );
 
   // call x_add
-  EVAL_THREAD_prepare_xcall( thread, &x_add_decl );
+  frame_start = EVAL_THREAD_prepare_xcall( thread, &x_add_decl );
   
-  arg = EVAL_THREAD_stack_alloc( thread, S_VAR_INT );
+  arg =	EVAL_THREAD_parameter( thread, frame_start, 0, S_VAR_INT );
   BINDING_DATA_set_int( arg, 2 );
-  arg = EVAL_THREAD_stack_alloc( thread, S_VAR_DOUBLE );
+  
+  arg = EVAL_THREAD_parameter( thread, frame_start, 1, S_VAR_DOUBLE );
   BINDING_DATA_set_double( arg, 2);
-  EVAL_THREAD_call_xfunc( thread, &x_add_decl );
+  
+  EVAL_THREAD_call_xfunc( thread, frame_start, &x_add_decl );
   
   rval = EVAL_THREAD_get_stack_top( thread );
   VASSERT( ! BINDING_DATA_get_double( rval, &rdval ) );
@@ -415,12 +416,12 @@ void XCALL_test()
 
 
   // call x_fact
-  EVAL_THREAD_prepare_xcall( thread, &x_fact_decl );
+  frame_start = EVAL_THREAD_prepare_xcall( thread, &x_fact_decl );
   
-  arg = EVAL_THREAD_stack_alloc( thread, S_VAR_INT );
+  arg =	EVAL_THREAD_parameter( thread, frame_start, 0, S_VAR_INT );
   BINDING_DATA_set_int( arg, 10 );
   
-  EVAL_THREAD_call_xfunc( thread, &x_fact_decl );
+  EVAL_THREAD_call_xfunc( thread, frame_start, &x_fact_decl );
    
   rval = EVAL_THREAD_get_stack_top( thread );
   VASSERT( ! BINDING_DATA_get_int( rval, &rnval ) );

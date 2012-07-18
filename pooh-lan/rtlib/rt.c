@@ -1,46 +1,46 @@
-#include "rtlib.h"
-#include <math.h>
-#include <limits.h>
-#include <values.h>
+    #include "rtlib.h"
+    #include <math.h>
+    #include <limits.h>
+    #include <values.h>
 
-/* --------------- function for reflection --------------------------- */
+    /* --------------- function for reflection --------------------------- */
 
-static void x_functionparameters( XCALL_DATA *xcall )
-{
- (void) xcall;
-}
+    static void x_functionparameters( XCALL_DATA *xcall )
+    {
+     (void) xcall;
+    }
 
-static void x_functionreturntype( XCALL_DATA *xcall )
-{
- (void) xcall;
-}
+    static void x_functionreturntype( XCALL_DATA *xcall )
+    {
+     (void) xcall;
+    }
 
-static void x_applyfunc( XCALL_DATA *xcall )
-{
- (void) xcall;
-}
+    static void x_applyfunc( XCALL_DATA *xcall )
+    {
+     (void) xcall;
+    }
 
-static void x_isarray( XCALL_DATA *xcall )
-{
- (void) xcall;
-}
+    static void x_isarray( XCALL_DATA *xcall )
+    {
+     (void) xcall;
+    }
 
-static void x_isfunction( XCALL_DATA *xcall )
-{
- (void) xcall;
-}
+    static void x_isfunction( XCALL_DATA *xcall )
+    {
+     (void) xcall;
+    }
 
-static void x_istable( XCALL_DATA *xcall )
-{
- (void) xcall;
-}
+    static void x_istable( XCALL_DATA *xcall )
+    {
+     (void) xcall;
+    }
 
-static void x_isstring( XCALL_DATA *xcall )
-{
- (void) xcall;
-}
+    static void x_isstring( XCALL_DATA *xcall )
+    {
+     (void) xcall;
+    }
 
-static void x_isnumber( XCALL_DATA *xcall )
+    static void x_isnumber( XCALL_DATA *xcall )
 {
  (void) xcall;
 }
@@ -105,7 +105,7 @@ static void x_trace( XCALL_DATA *xcall )
   
   arg = XCALL_param(xcall, 0 ); 
   BINDING_DATA_get_int( arg, (long *) &trace );
-  xcall->thread->trace_on = trace;
+//xcall->thread->trace_on = trace;
 }
 
 static void x_typeof( XCALL_DATA *xcall )
@@ -602,7 +602,8 @@ static void x_print_imp( BINDING_DATA *data )
   VALARRAY *arr;
   size_t i;
 
- 
+  data = BINDING_DATA_follow_ref( data );
+
   switch( data->b.value_type ) {
      case S_VAR_INT:
        fprintf( stdout, "%ld", data->b.value.long_value );

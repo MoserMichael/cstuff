@@ -486,6 +486,7 @@ int VALHASH_find( VALHASH *hash, union tagBINDING_DATA *key, union tagBINDING_DA
 	  }
 	}
    }
+   *rval = 0;
    return -1;
 }
      
@@ -644,6 +645,16 @@ int  VALSTRING_append( VALSTRING *to, VALSTRING *from )
   return 0;
 }
 
+int  VALSTRING_appends( VALSTRING *to, const char *from )
+{
+  size_t from_len = strlen( from );
+  VALSTRING_set_capacity( to, to->length + from_len ); 
+  memcpy( to->string + to->length, from, from_len ); 
+  to->length += from_len;
+  return 0;
+}
+
+
 void VALSTRING_set_capacity( VALSTRING *to, size_t capacity )
 {
   if (to->capacity < capacity) {
@@ -776,6 +787,53 @@ void VALFUNCTION_init_cap( VALFUNCTION *func, size_t num_captures )
     }
   } 
 }
+
+void VALFUNCTION_init_outer_refs( struct tagEVAL_THREAD *cthread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl )
+{
+  AST_VECTOR *refs;
+  VALFUNCTION_CAPTURE *cap_entry;
+  size_t i, num_outer_refs;
+  BINDING_DATA *data;
+  BINDING_ENTRY *entry;
+  AST_EXPRESSION *expr;
+
+  refs = &fdecl->outer_refs;
+  num_outer_refs = AST_VECTOR_size( refs );
+  VALFUNCTION_init_cap( fnc, num_outer_refs );
+
+  for( i = 0; i < num_outer_refs; i++ ) {
+    expr = (AST_EXPRESSION *) AST_VECTOR_get( refs, i );
+  
+    cap_entry  = (VALFUNCTION_CAPTURE *) ARRAY_at( &fnc->captures, i );
+
+    entry = expr->val.ref.binding;
+    assert( entry );
+    data = EVAL_THREAD_stack_frame_offset( cthread, entry->stack_offset ); 
+    assert( data );
+
+    VALFUNCTION_make_capture( fnc, data, 0 /* ??? ddd */  );
+  }
+}
+
+
+// create function object for each level of closures / walk tree of functions
+void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl )
+{
+    TREENODE *node;
+    BINDING_DATA *nested;   
+    
+    VALFUNCTION_init_outer_refs( cthread, fnc, fdecl );
+
+    for( node = TREE_first_child( &fdecl->funcs ); (node = TREE_right_sibling( node )) != 0;  ) {
+	
+        nested = BINDING_DATA_MEM_new( S_VAR_CODE ); 
+	fdecl = _OFFSETOF(  nested,  AST_FUNC_DECL, funcs );
+	VALFUNCTION_init_outer_ref_tree( cthread, &nested->b.value.func_value, fdecl );
+
+	ARRAY_push_back( &fnc->nested_closures, &nested, sizeof(BINDING_DATA *) );
+    }
+}
+
 
 void make_capture( VALFUNCTION_CAPTURE *pentry, union tagBINDING_DATA *data, int data_entry )
 {
@@ -1335,7 +1393,7 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
 	VALARRAY_print( out, &data->b.value.array_value, level + 1  );
 	break;
     case S_VAR_NULL:
-        fprintf( out, "Undefined" );
+        fprintf( out, "Nill" );
         break;
     default:
 	assert(0);
@@ -1345,6 +1403,31 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
   if (free_check_loops) {
     EVAL_THREAD_clear_check_ref( g_cur_thread );
   }
+}
+
+
+static ssize_t dbuf_cookie_write( void *cookie, const char *buf, size_t size )
+{
+  DBUF *out = (DBUF *) cookie;
+
+  DBUF_add(  out, buf, size );
+  return size;
+}
+
+void BINDING_DATA_prints( DBUF *out, BINDING_DATA *data , int level )
+{
+  _IO_cookie_io_functions_t impl;
+  FILE *fp;
+  
+  memset( &impl, 0, sizeof( _IO_cookie_io_functions_t ) );
+
+  impl.write = dbuf_cookie_write;
+
+  fp = fopencookie( out, "w", impl );
+  BINDING_DATA_print( fp, data, level );
+  fclose(fp);
+  
+//DBUF_add_null( out );
 }
 
 
@@ -1406,7 +1489,6 @@ int EVAL_THREAD_init(EVAL_THREAD *thread, EVAL_CONTEXT *context )
   
    thread->tstate = TSTATE_IDLE;
    DRING_push_back( &context->threads, &thread->threads );
-   thread->trace_on = 0;
  
    if (HASH_init( &thread->print_check_ref_loops, 10, 0, check_loop_cmp, check_loop_hash )) {
      return -1;
@@ -1414,9 +1496,11 @@ int EVAL_THREAD_init(EVAL_THREAD *thread, EVAL_CONTEXT *context )
    activation_record =  (VALACTIVATION *) thread->binding_data_stack.buffer;
    memset( activation_record, 0, sizeof( VALACTIVATION ));
    activation_record->function_frame_start = 1;
-   thread->current_activation_record = activation_record;
+   activation_record->parent_function = (size_t) -1;
+   thread->current_activation_record = 0;
    thread->current_function_frame_start = 1;
    thread->binding_data_stack.elmcount = 1;
+   thread->instr = 0;
    return 0;
 }
 
@@ -1481,87 +1565,118 @@ void EVAL_THREAD_reserve_stack( EVAL_THREAD *thread, size_t frame_size )
   }
 }
 
-BINDING_DATA *EVAL_THREAD_stack_alloc( EVAL_THREAD *thread , AST_VAR_TYPE vtype)
-{
-  BINDING_DATA *binding;
-
-  if (thread->binding_data_stack.elmcount == thread->binding_data_stack.elmmaxcount) {
-     EVAL_THREAD_reserve_stack( thread, ARRAY_size( & thread->binding_data_stack ) + 10 );
-  }
-  binding = ((BINDING_DATA *) thread->binding_data_stack.buffer) + thread->binding_data_stack.elmcount ++;
-  BINDING_DATA_init( binding, vtype );
-  return binding;
-}
-
-void EVAL_THREAD_make_activation_record( EVAL_THREAD *thread, AST_BASE *fdecl, VALFUNCTION *function, size_t function_frame_start, size_t activation_record_offset )
+void EVAL_THREAD_make_activation_record( EVAL_THREAD *thread, AST_BASE *fdecl, VALFUNCTION *function, size_t function_frame_start )
 {
   VALACTIVATION *activation_record;
 
-  activation_record =  (VALACTIVATION *) ( ((BINDING_DATA *) thread->binding_data_stack.buffer) +   activation_record_offset );
+  activation_record =  (VALACTIVATION *) ( ((BINDING_DATA *) thread->binding_data_stack.buffer) + function_frame_start + 1);
   activation_record->fdecl = fdecl;
   activation_record->function_object = function;
   activation_record->parent_function = thread->current_activation_record;
   activation_record->function_frame_start = function_frame_start;
   activation_record->ret_instr = thread->instr;
 
-  thread->current_activation_record = activation_record;
+  thread->current_activation_record = function_frame_start + 1;
 }
 
-void EVAL_THREAD_prepare_xcall( EVAL_THREAD *thread, AST_XFUNC_DECL *decl )
+size_t EVAL_THREAD_prepare_xcall( EVAL_THREAD *thread, AST_XFUNC_DECL *decl )
 {
   size_t nsize;
+  size_t i;
 
-  EVAL_THREAD_reserve_stack( thread, FRAME_START_SIZE + decl->nparams );
+  // make room for this function call
+   EVAL_THREAD_reserve_stack( thread, FRAME_START_SIZE + decl->nparams );
  
   nsize = ARRAY_size( &thread->binding_data_stack );
+  
+  // allocate stack slot for return value.
   BINDING_DATA_init( ((BINDING_DATA *) thread->binding_data_stack.buffer) + nsize , S_VAR_NULL );
 
-  thread->binding_data_stack.elmcount += 1;
+  // set all arguments to NULL.
+  for(i = 0; i < decl->nparams; i++ ) {
+    BINDING_DATA_init( ((BINDING_DATA *) thread->binding_data_stack.buffer) + nsize + FRAME_START_SIZE + i , S_VAR_NULL );
+  }
+  thread->binding_data_stack.elmcount += FRAME_START_SIZE + decl->nparams;
+
+  return nsize;
 }
 
-void EVAL_THREAD_prepare_call( EVAL_THREAD *thread, AST_FUNC_DECL *decl )
+size_t EVAL_THREAD_prepare_call( EVAL_THREAD *thread, AST_FUNC_DECL *decl )
 {
-  size_t frame_size = FRAME_START_SIZE + AST_VECTOR_size( decl->func_params ) + HASH_size( &decl->scope_map_name_to_binding );
-  size_t nsize;
+  size_t nsize, nparams = AST_VECTOR_size( decl->func_params ) ;
+  size_t frame_size = FRAME_START_SIZE + nparams + HASH_size( &decl->scope_map_name_to_binding );
+ size_t i;
 
+
+  // make room for this function call
   EVAL_THREAD_reserve_stack( thread, frame_size );
 
   nsize = ARRAY_size( &thread->binding_data_stack );
-  BINDING_DATA_init( ((BINDING_DATA *) thread->binding_data_stack.buffer) + nsize , S_VAR_NULL );
 
-  thread->binding_data_stack.elmcount += 1;
+  // allocate stack slot for return value.
+  BINDING_DATA_init( ((BINDING_DATA *) thread->binding_data_stack.buffer) + nsize , S_VAR_NULL );
+ 
+  // set all arguments to NULL.
+  for(i = 0; i < nparams; i++ ) {
+    BINDING_DATA_init( ((BINDING_DATA *) thread->binding_data_stack.buffer) + nsize + FRAME_START_SIZE + i , S_VAR_NULL );
+  }
+  thread->binding_data_stack.elmcount += FRAME_START_SIZE + nparams;
+
+  return nsize;
+}
+
+BINDING_DATA *EVAL_THREAD_parameter( EVAL_THREAD *thread, size_t frame_start, size_t param_num, AST_VAR_TYPE type )
+{ 
+  BINDING_DATA *rval;
+  size_t idx = frame_start + param_num + FRAME_START_SIZE;
+  rval = ((BINDING_DATA *) thread->binding_data_stack.buffer) + idx;
+  BINDING_DATA_init( rval, type );
+  return rval;
+}
+
+BINDING_DATA *EVAL_THREAD_parameter_ref( EVAL_THREAD *thread, size_t frame_start, size_t param_num )
+{ 
+  BINDING_DATA *rval;
+  size_t idx = frame_start + param_num + FRAME_START_SIZE;
+  rval = ((BINDING_DATA *) thread->binding_data_stack.buffer) + idx;
+  return rval;
 }
 
 
-void EVAL_THREAD_call_func( EVAL_THREAD *thread, AST_FUNC_DECL *decl, VALFUNCTION *function )
+void EVAL_THREAD_call_func( EVAL_THREAD *thread, size_t frame_start, AST_FUNC_DECL *decl, VALFUNCTION *function )
 {
-  size_t  i, nsize, ncount, frame_start;
+  size_t  i, nsize, ncount;
 
   nsize = ARRAY_size( &thread->binding_data_stack );
-  frame_start  = nsize - 1 - AST_VECTOR_size( decl->func_params ) ;
+  assert( nsize == frame_start + FRAME_START_SIZE + AST_VECTOR_size( decl->func_params ) );
+
+
+  // make activation record.
+  EVAL_THREAD_make_activation_record( thread, &decl->base, function, frame_start );
   
+
   // init local variables.
   ncount = HASH_size( &decl->scope_map_name_to_binding );
   for( i = 0; i < ncount; i++) {
     BINDING_DATA_init( ((BINDING_DATA *) thread->binding_data_stack.buffer) + nsize + i + 1 , S_VAR_NULL );
   }
 
-  // make activation record.
-  EVAL_THREAD_make_activation_record( thread, &decl->base, function, frame_start,  nsize );
- 
   thread->current_function_frame_start = frame_start;
   thread->binding_data_stack.elmcount += ncount + 1; 
 
 }
 
 
-void EVAL_THREAD_call_xfunc( EVAL_THREAD *thread, AST_XFUNC_DECL *decl )
+void EVAL_THREAD_call_xfunc( EVAL_THREAD *thread, size_t frame_start, AST_XFUNC_DECL *decl )
 {
-   size_t nsize, frame_start;
+   size_t nsize;
    XCALL_DATA xdata;
+   
    nsize = ARRAY_size( &thread->binding_data_stack );
-   frame_start = nsize - decl->nparams - 1;
-   EVAL_THREAD_make_activation_record( thread, &decl->base, 0, frame_start , nsize );
+   assert( nsize == frame_start + FRAME_START_SIZE + decl->nparams );
+
+
+   EVAL_THREAD_make_activation_record( thread, &decl->base, 0, frame_start );
    
    thread->current_function_frame_start = frame_start;
    thread->binding_data_stack.elmcount += 1;
@@ -1580,10 +1695,11 @@ void EVAL_THREAD_call_xfunc( EVAL_THREAD *thread, AST_XFUNC_DECL *decl )
 int EVAL_THREAD_pop_frame ( EVAL_THREAD *thread )
 {
   size_t i, nsize, top;
-  VALACTIVATION *activation_record, *parent_activation_record;
+  VALACTIVATION *activation_record,*pframe;
+  size_t parent_activation_record;
   BINDING_DATA *data;
 
-  activation_record = thread->current_activation_record;
+  activation_record = (VALACTIVATION *) EVAL_THREAD_stack_offset( thread, thread->current_activation_record );
   if (!activation_record) {
     return -1;
   }
@@ -1591,21 +1707,22 @@ int EVAL_THREAD_pop_frame ( EVAL_THREAD *thread )
   nsize = ARRAY_size( &thread->binding_data_stack );
   top = thread->current_function_frame_start;  
   // clear all arguments + local variables.
-  for( i = top + 1; i < nsize ; i++ ) {
+  for( i = top + 2; i < nsize ; i++ ) {
      data = ((BINDING_DATA *) thread->binding_data_stack.buffer) + i; 
-     if (data != (BINDING_DATA *) activation_record ) {
-       BINDING_DATA_free( data ); 
-     }
+     BINDING_DATA_free( data ); 
   }
   
   parent_activation_record = activation_record->parent_function;
-  if (!parent_activation_record) {
+  if (parent_activation_record == (size_t) -1) {
     return 1;
   }
   thread->current_activation_record = parent_activation_record;
-  thread->instr = parent_activation_record->ret_instr;
+
+  pframe = (VALACTIVATION *) EVAL_THREAD_stack_offset( thread, parent_activation_record );
+ 
+  thread->instr = pframe->ret_instr;
   thread->binding_data_stack.elmcount = top + 1;
-  thread->current_function_frame_start = parent_activation_record->function_frame_start;
+  thread->current_function_frame_start = pframe->function_frame_start;
  
   return 0;
 }
@@ -1630,10 +1747,37 @@ BINDING_DATA *EVAL_THREAD_stack_frame_offset( EVAL_THREAD *thread, size_t stack_
    if (thread->current_function_frame_start == (size_t) -1 || pos > ARRAY_size( &thread->binding_data_stack )) {
       assert(0);
    }
-   BINDING_DATA *data = (BINDING_DATA *) ARRAY_at( &thread->binding_data_stack, ARRAY_size( &thread->binding_data_stack ) - 1 - stack_offset );
+   BINDING_DATA *data = (BINDING_DATA *) ARRAY_at( &thread->binding_data_stack, pos ); //ARRAY_size( &thread->binding_data_stack ) - 1 - stack_offset );
    assert( data != 0);
    return data;
 }
+
+BINDING_DATA *EVAL_THREAD_pop_stack( EVAL_THREAD *thread )
+{
+  size_t nsize;
+  BINDING_DATA *rvalue;
+ 
+  nsize = ARRAY_size( &thread->binding_data_stack );
+  rvalue = ((BINDING_DATA *) thread->binding_data_stack.buffer) + nsize - 1;
+  thread->binding_data_stack.elmcount -= 1;
+
+  return rvalue;
+}
+
+BINDING_DATA *EVAL_THREAD_push_stack( EVAL_THREAD *thread , AST_VAR_TYPE vtype)
+{
+  BINDING_DATA *binding;
+
+  if (thread->binding_data_stack.elmcount == thread->binding_data_stack.elmmaxcount) {
+  // EVAL_THREAD_reserve_stack( thread, ARRAY_size( & thread->binding_data_stack ) + 10 );
+     EVAL_THREAD_reserve_stack( thread, 50 );
+   }
+  binding = ((BINDING_DATA *) thread->binding_data_stack.buffer) + thread->binding_data_stack.elmcount ++;
+  BINDING_DATA_init( binding, vtype );
+  return binding;
+}
+
+
 
 int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
 {
@@ -1647,9 +1791,9 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
   int frame;
   size_t i;
 
-  for( frame = 1 , arecord = thread->current_activation_record; 
+  for( frame = 1 , arecord = (VALACTIVATION *) EVAL_THREAD_stack_offset( thread, thread->current_activation_record); 
        arecord->parent_function != 0; 
-       arecord = arecord->parent_function, ++frame )
+       arecord = (VALACTIVATION *) EVAL_THREAD_stack_offset( thread, arecord->parent_function), ++frame )
   {
      fdcl = arecord->fdecl;
      if (fdcl->type == S_XFUN_DECL) {
@@ -1661,8 +1805,9 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
 	    if (i) {
 	       fprintf( out, " , " );
 	    }
-	    binding =  ((BINDING_DATA *) thread->binding_data_stack.buffer) + arecord->function_frame_start + i + 1;
-		BINDING_DATA_print( out, binding, 0);
+	    fprintf( out, "~%s ", xfdecl->params[ i ].param_name );
+	    binding =  ((BINDING_DATA *) thread->binding_data_stack.buffer) + arecord->function_frame_start + i + 2;
+	    BINDING_DATA_print( out, binding, 0);
 	 }
   
      } else {
@@ -1675,12 +1820,12 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
 	 
 	 for (i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
 	   expr = (AST_EXPRESSION *) AST_VECTOR_get( fdecl->func_params, i );
-	   binding = ((BINDING_DATA *) thread->binding_data_stack.buffer) + arecord->function_frame_start + i + 1;
+	   binding = ((BINDING_DATA *) thread->binding_data_stack.buffer) + arecord->function_frame_start + i + 2;
 	 
 	   if (i) {
 	      fprintf( out, " , " );
            }
-	   fprintf( out, "%s = ", expr->val.ref.lhs );
+	   fprintf( out, "~%s ", expr->val.ref.lhs );
 	   BINDING_DATA_print( out, binding, 0);
 	 }
      }
