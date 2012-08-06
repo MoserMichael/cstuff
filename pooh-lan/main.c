@@ -46,7 +46,8 @@ int run(const char *file_path)
 {
   PARSECONTEXT *ctx;
   AST_BASE *rval;
- 
+  int is_verbose = getenv("TEST_VERBOSE") != 0;
+
   ctx = PARSER_init();
 
   loadRTLIB( ctx );
@@ -66,7 +67,9 @@ int run(const char *file_path)
   }
 
   // dump ast before checker.
-  dump_ast( file_path, ctx->my_ast_root, 1 );
+  if (is_verbose) {
+    dump_ast( file_path, ctx->my_ast_root, 1 );
+  }
 
   if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
     fprintf(stderr,"Type checking failed\n");
@@ -74,8 +77,9 @@ int run(const char *file_path)
   }
   
   // dump ast after checker
-  dump_ast( file_path, ctx->my_ast_root, 2 );
-
+  if (is_verbose) {
+    dump_ast( file_path, ctx->my_ast_root, 2 );
+  }
 
 #if 1
   if (eval( ctx )) {

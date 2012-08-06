@@ -133,6 +133,8 @@ int is_operator_with_boolean_result( int op )
     case TK_OP_NUM_GT: 
     case TK_OP_NUM_LE: 
     case TK_OP_NUM_GE:
+    case TK_OP_NUM_EQ:
+    case TK_OP_NUM_NE:
     case TK_OP_STR_EQ:
     case TK_OP_STR_NE: 
     case TK_OP_LOGICAL_AND:
@@ -155,6 +157,8 @@ int is_operator_with_number_args( int op )
     case TK_OP_NUM_GT: 
     case TK_OP_NUM_LE: 
     case TK_OP_NUM_GE:
+    case TK_OP_NUM_EQ:
+    case TK_OP_NUM_NE:
     case TK_OP_STR_EQ:
     case TK_OP_STR_NE: 
     case TK_OP_LOGICAL_AND:
@@ -310,7 +314,7 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
     lhs_type = AST_EXPRESSION_type( lhs );
     rhs_type = AST_EXPRESSION_type( rhs );
     
-    if (is_numeric_operator( op ) ) {
+    if (is_numeric_operator( op ) ) {	    // operator returns a number as value, and expects numeric arguments.
 
       // expception: one can compare anything with Null
       if (op == TK_OP_NUM_NE || op == TK_OP_NUM_EQ) {
@@ -319,17 +323,19 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
 	}
       }
    
-      if ( lhs_type != S_VAR_ANY && ! is_numeric_type( lhs_type ) ) { 
- 
+     //if ( lhs_type != S_VAR_ANY && ! is_numeric_type( lhs_type ) ) { 
+       if ( ! is_numeric_type( lhs_type ) ) { 
+
 	  if (parse_context) {
-	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects integer type, instead got %s", operator_name( op ), get_type_name( lhs_type ) );   
+	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects number argument , instead got %s", operator_name( op ), get_type_name( lhs_type ) );   
 	  }
           return -1;
        }
 
-       if ( rhs_type != S_VAR_ANY && ! is_numeric_type( rhs_type ) ) {
+     //if ( rhs_type != S_VAR_ANY && ! is_numeric_type( rhs_type ) ) {
+       if ( ! is_numeric_type( rhs_type ) ) {
           if (parse_context) {
-	    do_yyerror( &rhs->base.location, parse_context, "Operator %s expects integer type, instead got %s", operator_name( op ), get_type_name( rhs_type )  );   
+	    do_yyerror( &rhs->base.location, parse_context, "Operator %s expects number argument instead got %s", operator_name( op ), get_type_name( rhs_type )  );   
           }
 	  return -1;
        }
@@ -346,13 +352,13 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
         
        // arguments.
        if (lhs->exp_type  == S_EXPR_REFERENCE && ! is_indexed_ref(lhs)) {
-         if (is_narrower_type( lhs_type, S_VAR_NUMBER )) {
+         if ( rhs_type == S_VAR_ANY ) { //is_narrower_type( lhs_type, S_VAR_NUMBER )) {
            assign_value( lhs, S_VAR_NUMBER, &lhs->base.location );
          }
        }
  
        if (rhs->exp_type == S_EXPR_REFERENCE && ! is_indexed_ref(rhs)) {
-         if (is_narrower_type( rhs_type, S_VAR_NUMBER )) {
+         if ( rhs_type == S_VAR_ANY ) { //is_narrower_type( rhs_type, S_VAR_NUMBER )) {
            assign_value( rhs, S_VAR_NUMBER, &rhs->base.location );
          }
        }

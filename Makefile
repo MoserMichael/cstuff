@@ -1,7 +1,7 @@
 
 TOPDIR?=.
 
-PREBUILD_SUBDIRS=make-system-test vtest cutils butils nutils tutils stack corothread evcorothread hutils webby
+PREBUILD_SUBDIRS=vtest cutils butils pooh-lan
 
 include $(TOPDIR)/rules.make
 

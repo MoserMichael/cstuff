@@ -3,6 +3,7 @@
 #include <pooh-lan/pars.h>
 #include <pooh-lan/rtlib/rtlib.h>
 #include <eval.h>
+#include <stdarg.h>
 
 
 int can_assign( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offending_type);
@@ -94,15 +95,17 @@ void EVAL_TRACE_ENTRY_free( EVAL_TRACE_ENTRY *entry )
 // ========================================================================================
 
 int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx)
-{ 
-  if (EVAL_CONTEXT_init( &out->context )) {
+{
+  size_t num_globals = ((AST_FUNC_DECL *) ctx->my_ast_root)->last_stack_offset + 1;
+  if (EVAL_CONTEXT_init( &out->context, num_globals )) {
     return -1;
   }
   ARRAY_init( &out->trace_buffer_entries, sizeof( void * ), 0);
   out->loop_exit = LOOP_NO_BREAK; 
   TRACE_OUT_init( &out->trace_out, stderr );
 
-  out->trace_on = 1;
+  out->context.trace_on= 1;
+
   out->last_freed = out->top_trace = 0;
   out->ctx = ctx;
   return 0;
@@ -161,6 +164,26 @@ void EVAL_CTX_free_trace( EVAL_CTX *ctx, EVAL_CTX_FREE_ACTION show )
 
 // ========================================================================================
 
+void EVAL_error( EVAL_CTX *out, AST_BASE *ast, const char *format, ... )
+{
+  char msg[RUNTIME_ERROR_MSG_LEN];
+  int len;
+  va_list ap;
+  EVAL_THREAD *cthread;
+
+  va_start(ap, format);
+  len = vsnprintf( msg, sizeof(msg) - 1, format, ap );
+
+  if (ast == 0) {
+     cthread = out->context.current_thread;
+     ast = cthread->instr;
+  }
+
+  do_yyerror ( &ast->location, out->ctx, "%s", msg);
+
+  EVAL_CONTEXT_runtime_error( &out->context, 0 );
+}
+
 BINDING_DATA * EVAL_int_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDING_DATA *rhs )
 {
   long rval,lval,ret;
@@ -173,24 +196,27 @@ BINDING_DATA * EVAL_int_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDIN
 
   
   switch( op ) {
+
     case TK_OP_NUM_SUBST:
       ret = lval - rval;
       break;
     case TK_OP_NUM_ADD:
       ret = lval + rval;
       break;
-    case TK_OP_NUM_DIV:
+    case TK_OP_NUM_DIV: {
       if (rval == 0) {
-	 EVAL_CONTEXT_runtime_error( &out->context , "can't divide by zero" );
+	 EVAL_error( out , 0,  "can't divide by zero" );
       }
-      ret = lval / rval;
+      retval = EVAL_THREAD_push_stack( cthread, S_VAR_DOUBLE );  
+      retval->b.value.double_value = (double) lval / rval;
+      }
       break;
     case TK_OP_NUM_MULT:
       ret = lval * rval;
       break;
     case TK_OP_NUM_MOD:
       if (rval == 0) {
-	 EVAL_CONTEXT_runtime_error( &out->context , "can't divide by zero" );
+	 EVAL_error( out , 0 , "can't divide by zero" );
       }
       ret = lval % rval;
       break;
@@ -219,24 +245,64 @@ BINDING_DATA * EVAL_int_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDIN
   EVAL_THREAD_discard_pop_stack( cthread );
   EVAL_THREAD_discard_pop_stack( cthread );
 
-  retval = EVAL_THREAD_push_stack( cthread, S_VAR_NULL );  
-  BINDING_DATA_init(retval, S_VAR_INT );
+  retval = EVAL_THREAD_push_stack( cthread, S_VAR_INT );  
   retval->b.value.long_value = ret;
 
   return retval;
 }
 
+BINDING_DATA * EVAL_cmp_null( EVAL_CTX *out, int op, BINDING_DATA *rhs )
+{
+    BINDING_DATA *retval;
+    EVAL_THREAD *cthread;
+    int rvalt;
+ 	
+    cthread = out->context.current_thread;
+ 
+    switch(op)
+    { 
+      case TK_OP_NUM_EQ:
+	 rvalt = (rhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL;
+	 break;
+       case TK_OP_NUM_NE:
+       	 rvalt = (rhs->b.value_type & S_VAR_ALL_TYPES) != S_VAR_NULL;
+	 break;
+       default:
+         assert(0);
+         break;
+    }	
+
+    EVAL_THREAD_discard_pop_stack( cthread );
+    EVAL_THREAD_discard_pop_stack( cthread );
+    
+    retval = EVAL_THREAD_push_stack( cthread, S_VAR_INT );  
+    retval->b.value.long_value =  rvalt;
+    return retval;
+}
+
 BINDING_DATA * EVAL_double_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDING_DATA *rhs )
 {
-  double rval,lval,ret;
+  double rval = 0,lval = 0 ,ret;
   BINDING_DATA *retval;
   EVAL_THREAD *cthread;
- 
+  int rvalt;
+ 	
   cthread = out->context.current_thread;
+ 	
+  if (op == TK_OP_NUM_EQ || op ==TK_OP_NUM_NE) {
+    if ((lhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL) {
+     return EVAL_cmp_null(  out, op, rhs );
+    }
+  
+    if ((rhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL) {
+      return EVAL_cmp_null(  out, op, lhs );
+    }
+  }
+  
   BINDING_DATA_get_double( lhs, &lval );
   BINDING_DATA_get_double( rhs, &rval );
   
- 
+  rvalt = 1;
   switch( op ) {
     case TK_OP_NUM_SUBST:
       ret = lval - rval;
@@ -246,7 +312,7 @@ BINDING_DATA * EVAL_double_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BIN
       break;
     case TK_OP_NUM_DIV:
       if (rval == 0) {
-	 EVAL_CONTEXT_runtime_error( &out->context , "can't divide by zero" );
+	 EVAL_error( out , 0,  "can't divide by zero" );
       }
       ret = lval / rval;
       break;
@@ -255,27 +321,33 @@ BINDING_DATA * EVAL_double_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BIN
       break;
     case TK_OP_NUM_MOD:
       if (rval == 0) {
-	 EVAL_CONTEXT_runtime_error( &out->context , "can't divide by zero" );
+	 EVAL_error( out , 0 , "can't divide by zero" );
       }
       ret = (long) lval % (long) rval;
       break;
     case TK_OP_NUM_LT: 
       ret = lval < rval;
+      rvalt = 0;
       break;
     case TK_OP_NUM_GT: 
       ret = lval > rval;
+      rvalt = 0;
       break;
     case TK_OP_NUM_LE: 
       ret = lval <= rval;
+      rvalt = 0;
       break;
     case TK_OP_NUM_GE:
       ret = lval >= rval;
+      rvalt = 0;
       break;
     case TK_OP_NUM_EQ: 
       ret = lval == rval;
+      rvalt = 0;
       break;
     case TK_OP_NUM_NE: 
       ret = lval != rval;
+      rvalt = 0;
       break;
     default:  
       assert(0);
@@ -284,10 +356,14 @@ BINDING_DATA * EVAL_double_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BIN
   EVAL_THREAD_discard_pop_stack( cthread );
   EVAL_THREAD_discard_pop_stack( cthread );
 
-  retval = EVAL_THREAD_push_stack( cthread, S_VAR_NULL );  
-  BINDING_DATA_init(retval, S_VAR_DOUBLE );
-  retval->b.value.double_value = rval;
-
+  if (rvalt) {
+    retval = EVAL_THREAD_push_stack( cthread, S_VAR_DOUBLE );   
+    retval->b.value.double_value = ret;
+  } else {
+    retval = EVAL_THREAD_push_stack( cthread, S_VAR_INT );   
+    retval->b.value.long_value = (long) ret;
+  }
+  
   return retval;
 }
 
@@ -357,52 +433,6 @@ BINDING_DATA *  EVAL_boolean_op( EVAL_CTX *out,  AST_EXPRESSION *expr )
   ret = EVAL_THREAD_push_stack( cthread, S_VAR_INT );  
   ret->b.value.long_value = nval != 0 ? 1 : 0;
   return ret;
-#if 0
-  EVAL_THREAD *cthread;
-  double  nval;
-  int  shortcircuit = 0;
-  EVAL_TRACE_ENTRY *tracer = 0;
-  const char *msg;
-
-  cthread = out->context.current_thread;
-  tracer = out->top_trace;
-  BINDING_DATA_get_double( lhs, &nval );
-  
-  if (is_left) {
-
-    if ( op == TK_OP_LOGICAL_AND && nval == 0) {
-	ret = EVAL_THREAD_push_stack( cthread, S_VAR_INT );  
-        ret->b.value.long_value = 0;
-        shortcircuit = -1;
-    }
-
-    if (op == TK_OP_LOGICAL_OR && nval != 0) {
-	// short circuit or
-	ret = EVAL_THREAD_push_stack( cthread, S_VAR_INT );  
-        ret->b.value.long_value = 1;
-	shortcircuit = 1;
-     }	
-     
-     if (shortcircuit) {
-         if (tracer) {
-	     if (op == TK_OP_LOGICAL_OR) {
-	       msg = " or _ ):";
-	     } else {
-	       msg = " and _ ):";
-	     }
-	     DBUF_add(  &tracer->text, msg , strlen(msg) );
-	     tracer_add_boolean_value( tracer,  shortcircuit > 0 );
-	 }
-	 return 0;
-     }
-  } else { /// right hand sie
-
-     BINDING_DATA_init( ret, S_VAR_INT );
-     ret->b.value.long_value = nval != 0;
-
-  }
-  return -1;
-#endif  
 }  
 
 BINDING_DATA *EVAL_string_op( int op, EVAL_THREAD *cthread, BINDING_DATA *lhs, BINDING_DATA *rhs )
@@ -411,6 +441,17 @@ BINDING_DATA *EVAL_string_op( int op, EVAL_THREAD *cthread, BINDING_DATA *lhs, B
   int rn;
   DBUF tmpl, tmpr;
   
+   if ((lhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL) {
+    retval = EVAL_THREAD_push_stack( cthread, S_VAR_INT );  
+    retval->b.value.long_value =  (rhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL;
+    return retval;
+  }
+  
+  if ((rhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL) {
+    retval = EVAL_THREAD_push_stack( cthread, S_VAR_INT );  
+    retval->b.value.long_value =  (lhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL;
+    return retval;
+  }
   
   //assert( is_string_op( op )); 
   
@@ -492,7 +533,7 @@ BINDING_DATA *EVAL_string_op( int op, EVAL_THREAD *cthread, BINDING_DATA *lhs, B
 	    rn = rn <= 0;
 	    break;
 	case TK_OP_STR_GE:
-	    rn = rn >= 0;
+		rn = rn >= 0;
 	    break;
 	default:
 	    assert(0);
@@ -530,13 +571,17 @@ BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDIN
     VALFUNCTION *val_func;
     int scope;
 
+
+#if 0
     scope = expr->val.ref.scope;
+#endif    
     bentry = expr->val.ref.binding;
-    
+    scope = bentry->scope;
+
     if (scope == REF_SCOPE_GLOBAL) {
       ARRAY *glob;
    
-      assert( strcmp(expr->val.ref.lhs, "this") == 0 ); // no data, so this must be 'this'.
+      assert( strcmp(expr->val.ref.lhs, "this") != 0 ); // no data, so this must be 'this'.
       
       glob =  &out->context.bindings_global;	
       if (new_value) {
@@ -545,10 +590,11 @@ BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDIN
 	BINDING_DATA_copy( data, new_value, copy_type );
       } else {
         data = (BINDING_DATA *) ARRAY_at( glob, bentry->stack_offset ); 
-
+#if 0
 	if ((data->b.value_type & (S_VAR_HASH | S_VAR_LIST)) == 0) {
           EVAL_CONTEXT_runtime_error( &out->context , "Internal error: this must be array or hash, instead got %s", get_type_name( data->b.value_type ) );
 	}
+#endif        
     	return data;
       }
       return data;
@@ -561,13 +607,17 @@ BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDIN
 
     val_func = activation_rec->function_object;
  
+#if 0
     switch( expr->val.ref.scope ) {
+#else
+    switch( scope ) {
+#endif
     case REF_SCOPE_THIS:
       if (new_value != 0) {
-        EVAL_CONTEXT_runtime_error( &out->context , "Can' assign value to this." );
+        EVAL_error( out,  0, "Can' assign value to this." );
       } else {
         if (!val_func->this_environment) {
-          EVAL_CONTEXT_runtime_error( &out->context , "not called via this." );
+          EVAL_error( out,  0,  "not called via this." );
 	}
 	data = val_func->this_environment;
       }
@@ -599,7 +649,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr, BINDING_DATA *new_valu
   entry = expr->val.ref.binding;
   cthread = out->context.current_thread;
   
-  if (out->trace_on) {
+  if (EVAL_trace_on(out) ) {
       tracer =  out->top_trace;
   }
  
@@ -611,93 +661,114 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr, BINDING_DATA *new_valu
 
 
   if (expr->val.ref.indexes == 0) { // no array indexes.
-     data = EVAL_reference_scalar( out, expr, new_value, copy_type);
+     if (new_value == 0) {
+       EVAL_THREAD_push_stack( cthread, S_VAR_NULL );
+       data = EVAL_reference_scalar( out, expr, 0, copy_type);
+
+       // copy to stack what is easy to copy, put in ref otherwise.
+       BINDING_DATA_copy( EVAL_THREAD_get_stack_top( cthread ), data, data->b.value_type & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_NULL) ? CP_VALUE : CP_REF ); // copy_type ); 
+       if (tracer) { 
+ 	DBUF_add(  &tracer->text, ":", 1 );
+	BINDING_DATA_prints( &tracer->text, data, 0 );
+       }	
+     } else {
+       EVAL_reference_scalar( out, expr, new_value, copy_type);
+     } 
   } else {
+     AST_VECTOR *vect = expr->val.ref.indexes;
+     AST_EXPRESSION *index_expr,*follow_index_expr;
+     BINDING_DATA *index_data, *next_data;
+     size_t i;
+     double nval;
+     AST_VAR_TYPE collection_type;
 
-      AST_VECTOR *vect = expr->val.ref.indexes;
-      AST_EXPRESSION *index_expr,*follow_index_expr;
-      BINDING_DATA *index_data, *next_data;
-      size_t i;
-      double nval;
+     EVAL_THREAD_push_stack( cthread, S_VAR_NULL );
+     data = EVAL_reference_scalar( out, expr, 0, copy_type);
+     BINDING_DATA_copy( EVAL_THREAD_get_stack_top( cthread ), data, CP_REF ); 
+     data = BINDING_DATA_follow_ref( data );
+     collection_type = data->b.value_type;
 
-      data = EVAL_reference_scalar( out, expr, 0, copy_type);
-      
-
-      for( i = AST_VECTOR_size( vect ); i > 0 ; i -- ) {
+     for( i = AST_VECTOR_size( vect ); ;) {
         index_expr = (AST_EXPRESSION *) AST_VECTOR_get( vect , i - 1 );
 	follow_index_expr = i > 1 ? (AST_EXPRESSION *) AST_VECTOR_get( vect, i - 2 ) : 0;
 
-
-#if 0
-	// check type of inex expression, 
+	// check that collection type is what is expected by the type of index expression.
         if (index_expr->exp_type == S_EXPR_HASH_INDEX) {
-	   if (data->b.value_type  != S_VAR_HASH) {
-	     EVAL_CONTEXT_runtime_error( &out->context , "Expects table value for %s, instead got %s ", expr->val.ref.lhs, get_type_name( data->b.value_type ) );
+	   if (collection_type != S_VAR_HASH) {
+	     EVAL_error( out , &expr->base,  "Expects table value for %s ", expr->val.ref.lhs, get_type_name( data->b.value_type ) );
 	   }
 	} else if (index_expr->exp_type == S_EXPR_ARRAY_INDEX) {
        	   if (data->b.value_type  != S_VAR_LIST) {
-	     EVAL_CONTEXT_runtime_error( &out->context , "Expects array value for %s, instead got %s ", expr->val.ref.lhs, get_type_name( data->b.value_type ) );
+	     EVAL_error( out, &expr->base, "Expects array value for %s ", expr->val.ref.lhs, get_type_name( data->b.value_type ) );
 	   }
 	} else {
 	  assert(0);
 	}
-#endif	
 
+	// evaluate the inex expression.
 	EVAL_do_expr( out, index_expr );
 	index_data = EVAL_THREAD_pop_stack( cthread );
 
+        // for array collection - check that the index is a number (must).
 	if (index_expr->exp_type == S_EXPR_ARRAY_INDEX) {
 	  if (! is_numeric_type( index_data->b.value_type ) ) {
-	    EVAL_CONTEXT_runtime_error( &out->context , "Expects number as array index for %s instead got %s", expr->val.ref.lhs, get_type_name( data->b.value_type ) );
+	    EVAL_error( out, &expr->base, "Expects number as array index for %s instead got %s", expr->val.ref.lhs, get_type_name( data->b.value_type ) );
 	  }
 	}
- 
-	if ( i == 1 && new_value ) {
-	    // assign
-            if (index_expr->exp_type == S_EXPR_HASH_INDEX) {
+
+        // perform the collection lookup
+  	data = index_data - 1; 
+        data = BINDING_DATA_follow_ref( data );
+	    
+	// if last index and function is used in assingnment - insert value into collection
+	if ( follow_index_expr == 0 && new_value) {
+	    if (index_expr->exp_type == S_EXPR_HASH_INDEX) {  // insert into hash 
 	    	VALHASH_set( &data->b.value.hash_value, index_data, new_value, CP_REF );	
-	    } else {
+            } else {					      // insert into vector
 	        BINDING_DATA_get_double( index_data, &nval );
 	        VALARRAY_set( &data->b.value.array_value, (long) nval - 1 , new_value, CP_REF );
 	    }
-	} else {
+            EVAL_THREAD_pop_stack( cthread );
+
+	} else { // not the last index - lookup collection value. 
 
             if (index_expr->exp_type == S_EXPR_HASH_INDEX) {
 	      VALHASH_find( &data->b.value.hash_value , index_data, &next_data );
-	      if (next_data == 0 && follow_index_expr != 0) {
-	        next_data = create_follow_data( follow_index_expr->exp_type );
-	    	VALHASH_set( &data->b.value.hash_value, index_data, next_data, copy_type );	
+	      if (follow_index_expr != 0) {
+	        if (next_data == 0) {  
+	          next_data = create_follow_data( follow_index_expr->exp_type );
+	      	  VALHASH_set( &data->b.value.hash_value, index_data, next_data, copy_type );	
+		}  
 	      }
 	    } else {
 	      BINDING_DATA_get_double( index_data, &nval );
-	      next_data = VALARRAY_get( &data->b.value.array_value, (long) nval );
-	      if (next_data == 0 && follow_index_expr != 0) {
-	        next_data = create_follow_data( follow_index_expr->exp_type );
-	        VALARRAY_set( &data->b.value.array_value, (long) nval - 1, next_data, copy_type );
+	      next_data = VALARRAY_get( &data->b.value.array_value, (long) nval - 1 );
+	      if (follow_index_expr != 0) {
+	        if (next_data == 0) {
+	          next_data = create_follow_data( follow_index_expr->exp_type );
+	  	  VALARRAY_set( &data->b.value.array_value, (long) nval - 1, next_data, copy_type );
+	        }
 	      }
-	    } // end else  (array)
-	    data = next_data;
-	} // end else (lookup value)
+	    }
+
+    
+	    if (next_data != 0) {
+              BINDING_DATA_copy( EVAL_THREAD_get_stack_top( cthread ), next_data, CP_REF ); 
+            } else {
+              next_data = EVAL_THREAD_get_stack_top( cthread );
+	      BINDING_DATA_init( next_data, S_VAR_NULL ); 
+	    }
+	}
+
+	if (follow_index_expr == 0) 
+	      break;
+
+	i -=1;
+	next_data = BINDING_DATA_follow_ref( next_data );
+	collection_type = next_data->b.value_type;
      } // end for (indexes)
   } // end else (collection)
   
-  if ( new_value == 0 ) {
-    BINDING_DATA_copy( EVAL_THREAD_get_stack_top( cthread ), data, copy_type ); 
-    if (tracer) { 
-	DBUF_add(  &tracer->text, ":", 1 );
-	BINDING_DATA_prints( &tracer->text, data, 0 );
-    }
-  } else {
-    assert(data);
-    BINDING_DATA_copy( data, new_value, is_numeric_type( data->b.value_type ) ? CP_VALUE : CP_REF ); 
-#if 0  
-    if (tracer) { 
-	DBUF_add(  &tracer->text, ":", 1 );
-	BINDING_DATA_prints( &tracer->text, data, 0 );
-    }
-#endif
-  }
-
 }
 
 void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
@@ -709,7 +780,7 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
   size_t i;
 
   cthread = out->context.current_thread;
-  if (out->trace_on) {
+  if (EVAL_trace_on(out)) {
       tracer =  out->top_trace;
       assert( tracer );
   }
@@ -738,8 +809,9 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
         if (is_op_num) {
 	
 	  lhs = EVAL_THREAD_get_stack_top( cthread );
-	  if ( !is_scalar_var_type( lhs->b.value_type )) {
-	    EVAL_CONTEXT_runtime_error( &out->context , "Operator %s expects number as left hand side, instead got %s", get_op_name( op ), get_type_name( lhs->b.value_type ) );
+	  lhs = BINDING_DATA_follow_ref( lhs );
+	  if ( !is_scalar_var_or_null_type( lhs->b.value_type )) {
+	    EVAL_error( out, &expr->base , "Operator %s expects number as left hand side, instead got %s", get_op_name( op ), get_type_name( lhs->b.value_type ) );
 	  }
 
           if (tracer)  {
@@ -749,12 +821,12 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
 	    DBUF_add(  &tracer->text, " ", 1  );
           }
 
-	   EVAL_do_expr( out, expr->val.expr.expr_right );
+	  EVAL_do_expr( out, expr->val.expr.expr_right );
 	  rhs = EVAL_THREAD_get_stack_top( cthread );
 	  rhs = BINDING_DATA_follow_ref( rhs );
   
-	  if ( ! is_scalar_var_type( rhs->b.value_type )) {
-       	    EVAL_CONTEXT_runtime_error( &out->context , "Operator %s expects number as left hand side, instead got %s", get_op_name( op ), get_type_name( rhs->b.value_type ) );
+	  if ( ! is_scalar_var_or_null_type( rhs->b.value_type )) {
+       	    EVAL_error( out , &expr->base  , "Operator %s expects number as left hand side, instead got %s", get_op_name( op ), get_type_name( rhs->b.value_type ) );
           }
 
 
@@ -855,7 +927,6 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
       break;
 
     case S_EXPR_REFERENCE: {
-      EVAL_THREAD_push_stack( cthread, S_VAR_NULL );
       EVAL_reference( out, expr, 0, CP_VALUE );
       }
       break;
@@ -866,41 +937,17 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
       switch( expr->value_type ) {
         case S_VAR_INT:
 	    ret->b.value.long_value = expr->val.const_value.long_value;
-#if 0	    
-	    if (tracer) {
-	      sprintf(tmp,"%ld" , expr->val.const_value.long_value);
-	      DBUF_add(  &tracer->text, tmp, strlen(tmp) );
-	    }
-#endif	    
 	    break;
 	case S_VAR_DOUBLE:
 	    ret->b.value.double_value = expr->val.const_value.double_value;
-#if 0	    
-	    if (tracer) {
-	      sprintf(tmp,"%f" , expr->val.const_value.double_value);
-	      DBUF_add(  &tracer->text, tmp, strlen(tmp) );
-	    }
-#endif	    
 	    break;
 	case S_VAR_STRING: {
 	    const char *str = expr->val.const_value.string_value;
 	    size_t nstr = strlen( str );
 	    VALSTRING_set( &ret->b.value.string_value, str, nstr );
-#if 0	    
-	    if (tracer) {
-	      DBUF_add(  &tracer->text, "\"", 1 );
-	      DBUF_add(  &tracer->text, str, nstr );
-	      DBUF_add(  &tracer->text, "\"", 1 );
-	    }
-#endif	    
 	    }
 	    break;
 	case S_VAR_NULL:
-#if 0	
-	    if (tracer) {
-	      DBUF_add(  &tracer->text, "Null", 4 );
-	    }  
-#endif	    
 	    break;
 	default:
 	    assert(0);
@@ -937,59 +984,71 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
   
     case S_EXPR_LIST_VALUES: {
       AST_VECTOR *vect;
+      VALARRAY rval;
 
       if (tracer)  {
         DBUF_add(  &tracer->text, "[ ", 2 );
       }
+    
+      VALARRAY_init( &rval );
 
-      ret = EVAL_THREAD_push_stack( cthread, S_VAR_LIST );
       vect = expr->val.index_expressions;
-      
       for( i = 0; i < AST_VECTOR_size( vect ); i++ ) {
 	 expr = (AST_EXPRESSION *) AST_VECTOR_get( vect, i );
     
 	 if (tracer && i > 0) {
 	    DBUF_add(  &tracer->text, " , ", 3 );
 	 }
-         EVAL_do_expr( out, expr->val.index_expr );
+         EVAL_do_expr( out, expr );
          rhs = EVAL_THREAD_pop_stack( cthread );
 
-	 VALARRAY_set( &ret->b.value.array_value, i + 1, rhs, CP_REF );
+	 VALARRAY_set( &rval,  i, rhs, CP_REF );
+	 BINDING_DATA_free( rhs );
       }
-      
+
+      ret = EVAL_THREAD_push_stack( cthread, S_VAR_LIST );
+      memcpy( &ret->b.value.array_value, &rval, sizeof( VALARRAY ) );
+
       if (tracer)  {
-        DBUF_add(  &tracer->text, "[ ", 2 );
+        DBUF_add(  &tracer->text, "] ", 2 );
       }
       }
       break;
  
     case S_EXPR_HASH_VALUES: {
       AST_VECTOR *vect;
+      VALHASH rval;
 
       if (tracer)  {
         DBUF_add(  &tracer->text, "{ ", 2 );
       }
   
-      ret = EVAL_THREAD_push_stack( cthread, S_VAR_HASH );
+      VALHASH_init( &rval );
+
       vect = expr->val.index_expressions;
-      
       for( i = 0; i < AST_VECTOR_size( vect ); i++ ) {
 	 expr = (AST_EXPRESSION *) AST_VECTOR_get( vect, i );
 	 if (tracer && i > 0) {
 	    DBUF_add(  &tracer->text, " , ", 3 );
 	 }
 	 EVAL_do_expr( out, expr->val.expr.expr_left );
-         lhs = EVAL_THREAD_pop_stack( cthread );
 	 
-	 if (tracer && i > 0) {
+	 if (tracer) {
 	    DBUF_add(  &tracer->text, " : ", 3 );
 	 }
 
 	 EVAL_do_expr( out,  expr->val.expr.expr_right );
          rhs = EVAL_THREAD_pop_stack( cthread );
-
-	 VALHASH_set( &ret->b.value.hash_value, lhs, rhs, CP_REF );
+         lhs = rhs - 1;
+	 
+	 VALHASH_set( &rval, lhs , rhs, CP_REF );
+         BINDING_DATA_free( rhs );
+         BINDING_DATA_free( lhs );
       }
+
+      ret = EVAL_THREAD_push_stack( cthread, S_VAR_HASH );
+      memcpy(  &ret->b.value.hash_value, &rval, sizeof(VALHASH)); 
+
       if (tracer)  {
         DBUF_add(  &tracer->text, " }", 2 );
       }
@@ -1045,6 +1104,7 @@ void EVAL_do_function_param( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL
 	  DBUF_add(  &tracer->text, " ", 1 );
 	}
 
+//	EVAL_reference( out, param->expr, 0, CP_VALUE );
 	EVAL_do_expr( out,  param->expr );
 
 	BINDING_DATA_move( EVAL_THREAD_parameter_ref( cthread, frame_start, param->param_num ), EVAL_THREAD_pop_stack( cthread ) );
@@ -1064,7 +1124,7 @@ void EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
 
     cthread = out->context.current_thread;
   
-  
+
  
     tracer = out->top_trace;
  
@@ -1074,8 +1134,10 @@ void EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
       EVAL_do_expr( out, f_name );
       data = EVAL_THREAD_pop_stack( cthread );
       
+      data = BINDING_DATA_follow_ref( data );
+ 
       if (data->b.value_type != S_VAR_CODE) {
-	EVAL_CONTEXT_runtime_error( &out->context , "Expression must return function type, instead got %s", get_type_name( data->b.value_type ) );
+	EVAL_error( out, &f_name->base , "Expression must return function type, instead got %s", get_type_name( data->b.value_type ) );
       }
       valfunc = &data->b.value.func_value;
       fdecl = valfunc->fdecl;
@@ -1083,7 +1145,7 @@ void EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
       // check that all parameters are supplied.
       if (CHECKER_check_func_call_params( out->ctx, 0, scl, fdecl ) ||
           CHECKER_check_func_call_params( out->ctx, 0, scl, fdecl ) ) {
-	EVAL_CONTEXT_runtime_error( &out->context , "Internal error in function call" );
+	EVAL_error( out, &scl->base,  "Internal error in function call" );
       }
     
     } else {
@@ -1092,8 +1154,6 @@ void EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
       if (tracer) {
         DBUF_add(  &tracer->text, f_name->val.ref.lhs, strlen( f_name->val.ref.lhs) );
       }
-
- 
     }	
      
     if (tracer) {
@@ -1121,6 +1181,8 @@ void EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
       // do the function body.
       cthread->instr = (AST_BASE *) ffdecl->func_body;
       EVAL_do( out );
+
+      out->loop_exit = 0;
   
       if (tracer) {
         TRACE_set( &out->trace_out, prev );
@@ -1204,8 +1266,9 @@ void EVAL_do(  EVAL_CTX *out )
     EVAL_TRACE_ENTRY *trace_lhs;
     AST_EXPRESSION *lhs;
     AST_VAR_TYPE offending_type;
+    BINDING_DATA *dref;
 
-    if (out->trace_on) {
+    if (EVAL_trace_on(out)) {
       trace = EVAL_CTX_new_trace( out, &scl->base);
 
       DBUF_add( &trace->text,"... = ", 6);
@@ -1221,9 +1284,10 @@ void EVAL_do(  EVAL_CTX *out )
     lhs = (AST_EXPRESSION *) scl->left_side; 
     if (lhs->exp_type != S_EXPR_LIST_VALUES) { // not multi value left hand side
        assert( lhs->exp_type ==  S_EXPR_REFERENCE );
- 
-       if (can_assign( AST_EXPRESSION_type( lhs ), data->b.value_type, &offending_type)) {
-	     EVAL_CONTEXT_runtime_error( &out->context , "Can't assign the %s value to %s", get_type_name( offending_type ), lhs->val.ref.lhs);
+
+       dref = BINDING_DATA_follow_ref( data );     
+       if (can_assign( AST_EXPRESSION_type( lhs ), dref->b.value_type, &offending_type)) {
+	     EVAL_error( out , &lhs->base, "Can't assign the %s value to %s", get_type_name( dref->b.value_type ), lhs->val.ref.lhs);
        }
 
        if (trace) {
@@ -1254,11 +1318,11 @@ void EVAL_do(  EVAL_CTX *out )
 
 
        if (data->b.value_type != S_VAR_LIST) {
-	 EVAL_CONTEXT_runtime_error( &out->context , "expects list to be returned, instead got %s", get_type_name( data->b.value_type ) );
+	 EVAL_error( out , &scl->left_side->base,  "expects list to be returned, instead got %s", get_type_name( data->b.value_type ) );
        }
 
 
-       if (out->trace_on) {
+       if (EVAL_trace_on(out)) {
          // show current assignment 
 	 trace_lhs = EVAL_CTX_new_trace( out, &scl->base);
          DBUF_add(  &trace_lhs->text, "[ ", 2 ); 
@@ -1269,7 +1333,7 @@ void EVAL_do(  EVAL_CTX *out )
 	 lhs = (AST_EXPRESSION *) AST_VECTOR_get( values, i );
 	 binding_rhs = VALARRAY_get( &data->b.value.array_value, i );
        
-         if (out->trace_on) {
+         if (EVAL_trace_on(out)) {
            DBUF_add(  &trace_lhs->text, " , ", 3 ); 
          }
 
@@ -1280,20 +1344,20 @@ void EVAL_do(  EVAL_CTX *out )
 	   EVAL_reference( out, lhs, binding_rhs, scl->type );
  	   
 
-	   if (out->trace_on) {
+	   if (EVAL_trace_on(out)) {
              DBUF_add(  &trace_lhs->text, lhs->val.ref.lhs, strlen(lhs->val.ref.lhs) );
              DBUF_add(  &trace_lhs->text, ":", 1 );
              BINDING_DATA_prints( &trace_lhs->text, binding_rhs, 0 ); 
 	   }
 
 	 } else {
-	   if (out->trace_on) {
+	   if (EVAL_trace_on(out)) {
 	     DBUF_add(  &trace_lhs->text, "_", 1 ); 
            }
 	 }
        }
        
-       if (out->trace_on) {
+       if (EVAL_trace_on(out)) {
          DBUF_add(  &trace_lhs->text, "] ", 2 ); 
        }
     } 
@@ -1301,12 +1365,13 @@ void EVAL_do(  EVAL_CTX *out )
     break;
   
   case S_IF: {
-    AST_COND *cond;
+    AST_COND *cond,*last_cond;
     int is_first = 1;
    
     for( cond = (AST_COND *) base; cond; cond = cond->elsecond ) {
+      last_cond = cond;
       if (cond->condition) {  
-	if (out->trace_on) {
+	if (EVAL_trace_on(out)) {
           trace = EVAL_CTX_new_trace( out, &cond->base);
 	  if (is_first) {
 	    DBUF_add( &trace->text,"if ", 3);
@@ -1324,7 +1389,7 @@ void EVAL_do(  EVAL_CTX *out )
     
         data = EVAL_THREAD_pop_stack( cthread );
         if (! is_numeric_type( data->b.value_type ) ) {
-          EVAL_CONTEXT_runtime_error( &out->context , "Condition expects numeric type" );
+          EVAL_error( out , &cond->base,  "Condition requires numeric expression" );
         }
         if (BINDING_DATA_is_zero( data ) ) {
           continue;
@@ -1344,7 +1409,7 @@ void EVAL_do(  EVAL_CTX *out )
       } else {
        	assert( cond->block );
  
-	if (out->trace_on) {
+	if (EVAL_trace_on(out)) {
 	  TRACE_println( &out->trace_out, cond->base.location.first_line ,  "else", 4 );
 	  old_level = TRACE_inc( &out->trace_out );
 	}
@@ -1352,7 +1417,7 @@ void EVAL_do(  EVAL_CTX *out )
 	cthread->instr = (AST_BASE *) cond->block;  
         EVAL_do( out );
         
-        if (out->trace_on) {
+        if (EVAL_trace_on(out)) {
 	  TRACE_set( &out->trace_out, old_level );
 	}
       }
@@ -1360,17 +1425,18 @@ void EVAL_do(  EVAL_CTX *out )
         break;
       }
     }
-    if (out->trace_on) {
-      TRACE_println( &out->trace_out, cond->base.location.last_line ,  "end # if", 8  );
+    if (EVAL_trace_on(out)) {
+      TRACE_println( &out->trace_out, last_cond->base.location.last_line ,  "end # if", 8  );
     }
     }
     break;
  
   case S_WHILE: {
     AST_WHILE_LOOP *scl = (AST_WHILE_LOOP *) base;
+    int do_loop;
 
-    for(out->loop_exit = LOOP_NO_BREAK ; ;) {
-      if (out->trace_on) {
+    for(out->loop_exit = LOOP_NO_BREAK, do_loop = 1; ;) {
+      if (EVAL_trace_on(out)) {
 	 switch( scl->type ) {
           case LOOP_PRECOND_WHILE:
             trace = EVAL_CTX_new_trace( out, &scl->base);
@@ -1390,14 +1456,14 @@ void EVAL_do(  EVAL_CTX *out )
         }
         data = EVAL_THREAD_pop_stack( cthread );
         if (! is_numeric_type( data->b.value_type ) ) {
-          EVAL_CONTEXT_runtime_error( &out->context , "Condition of loop expects numeric type" );
+          EVAL_error( out , &scl->condition->base,  "Condition requires numeric expression" );
         }
         if (BINDING_DATA_is_zero( data ) ) {
           break;
 	}
       }
 
-      if (out->trace_on) {
+      if (EVAL_trace_on(out)) {
         old_level = TRACE_inc( &out->trace_out );
       }
 
@@ -1405,7 +1471,7 @@ void EVAL_do(  EVAL_CTX *out )
       EVAL_do( out );
       out->context.current_thread->instr = base;
 
-      if (out->trace_on) {
+      if (EVAL_trace_on(out)) {
         TRACE_set( &out->trace_out, old_level );
       }
 
@@ -1413,24 +1479,30 @@ void EVAL_do(  EVAL_CTX *out )
         switch( out->loop_exit) {
          case LOOP_BREAK: 
 	  out->loop_exit = LOOP_NO_BREAK;
+	  do_loop = 0;
 	  break;
          case LOOP_CONTINUE:
-          if (out->trace_on) {
+          if (EVAL_trace_on(out)) {
             TRACE_println( &out->trace_out, base->location.first_line ,  "next", 4  );
           }
  	  out->loop_exit = LOOP_NO_BREAK;
 	  break;
 	 case EXIT_FUNCTION:
+	  do_loop = 0;
 	  return;
 	 default:
 	  ;
         }
       }
 
+      if (!do_loop) {
+        break;
+      }
+
       switch(scl->type) {
       
       case LOOP_POSTCOND_WHILE: {
-        if (out->trace_on) {
+        if (EVAL_trace_on(out)) {
           trace = EVAL_CTX_new_trace( out, &scl->base);
 	  DBUF_add( &trace->text,"while ", 6);
 	}
@@ -1440,7 +1512,7 @@ void EVAL_do(  EVAL_CTX *out )
         }
         data = EVAL_THREAD_pop_stack( cthread );
         if (! is_numeric_type( data->b.value_type ) ) {
-          EVAL_CONTEXT_runtime_error( &out->context , "Condition of loop expects numeric type" );
+          EVAL_error( out , &scl->condition->base,  "Condition requires numeric expression" );
         }
         if ((data->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL ) {
 	  break;
@@ -1448,12 +1520,12 @@ void EVAL_do(  EVAL_CTX *out )
       }
       break;
       default:
-	  if (out->trace_on) {
+	  if (EVAL_trace_on(out)) {
 	    TRACE_println( &out->trace_out, base->location.last_line ,  "end", 3  );
 	  }
       }
     }
-    if (out->trace_on) {
+    if (EVAL_trace_on(out)) {
       TRACE_println( &out->trace_out, base->location.last_line ,  "end # finish loop", 17  );
     }
 
@@ -1476,7 +1548,7 @@ void EVAL_do(  EVAL_CTX *out )
   case S_FUN_CALL: {
     AST_FUNC_CALL *scl = (AST_FUNC_CALL *) base;
     
-    if (out->trace_on) {
+    if (EVAL_trace_on(out)) {
       trace = EVAL_CTX_new_trace( out, &scl->base);
     }
 
@@ -1495,7 +1567,7 @@ void EVAL_do(  EVAL_CTX *out )
     BINDING_DATA *rval, *top;
 	
 	
-    if (out->trace_on) {
+    if (EVAL_trace_on(out)) {
       trace = EVAL_CTX_new_trace( out, &scl->base);
       DBUF_add( &trace->text,"return ", 7);
     }  
@@ -1505,6 +1577,10 @@ void EVAL_do(  EVAL_CTX *out )
       
       // move the return value (top) to slot for function return value.
       rval = EVAL_THREAD_get_stack_top( cthread ); 
+      if (rval->b.value_flags_ref == S_VAR_REF_STACK2STACK ) {
+	rval = BINDING_DATA_follow_ref( rval );
+      }
+
       top = EVAL_THREAD_stack_frame_offset( cthread, 0); 
       BINDING_DATA_move( top,  rval ); 
       	
@@ -1524,14 +1600,14 @@ void EVAL_do(  EVAL_CTX *out )
     break;
 
   case S_NEXT:
-    if (out->trace_on) {
+    if (EVAL_trace_on(out)) {
       TRACE_println( &out->trace_out, base->location.last_line ,  "next", 4  );
     }
     out->loop_exit = LOOP_CONTINUE;
     break;
   
   case S_BREAK:
-    if (out->trace_on) {
+    if (EVAL_trace_on(out)) {
       TRACE_println( &out->trace_out, base->location.last_line ,  "break", 5  );
     }
     out->loop_exit = LOOP_BREAK;

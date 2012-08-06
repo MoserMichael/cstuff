@@ -16,9 +16,9 @@ parser_SRC=lexer.c parser.c ast.c parsectx.c printast.c checker.c main.c  eval.c
 
 parser_DEPENDENCIES=pars.txt lex.txt 
 
-parser_LIBS=cutils butils m rtlib eval
+parser_LIBS=cutils butils m rtlib 
 
-parser_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/parser test test-error .
+parser_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/parser test-error test .
 
 
 # ---------------------------------------

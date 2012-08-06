@@ -24,14 +24,19 @@ typedef struct tagEVAL_CTX {
   EVAL_CTX_BREAK_ACTION loop_exit;
 
   TRACE_OUT trace_out;
-  int trace_on;
   struct tagEVAL_TRACE_ENTRY *last_freed,*top_trace;
   PARSECONTEXT *ctx; // for error messages only
 } EVAL_CTX;
 
+
 int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx);
 int EVAL_run(  EVAL_CTX *out, AST_BASE *base );
 int EVAL_free( EVAL_CTX *out );
+
+M_INLINE int EVAL_trace_on( EVAL_CTX *ctx )
+{
+  return ctx->context.trace_on;
+}
 
 #endif
 

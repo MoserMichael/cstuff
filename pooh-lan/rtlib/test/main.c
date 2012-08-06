@@ -5,12 +5,14 @@
 #include <string.h>
 #include <stdlib.h>
 
+void BASIC_hash_test();
 void BASIC_gc_test();
 void PRINT_VALUE_test();
 void XCALL_test();
 void THREAD_test();
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
+	VTEST_TESTN( BASIC_hash_test )
 	VTEST_TESTN( BASIC_gc_test )
 	VTEST_TESTN( PRINT_VALUE_test ) 
 	VTEST_TESTN( XCALL_test )

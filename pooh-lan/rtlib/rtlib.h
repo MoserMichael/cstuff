@@ -15,6 +15,9 @@
 #include <pooh-lan/ast.h>
 
 /* ==================================================================================== */
+#define RUNTIME_ERROR_MSG_LEN 1024
+
+/* ==================================================================================== */
 struct tagVALARRAY;
 struct tagVALHASH; 
 struct tagVALHASHPOS;
@@ -41,8 +44,8 @@ void HEAP_realloc( void **ptr, size_t size );
 
 // dynamic array value as part of runtime
 typedef struct tagVALARRAY {
-  union tagBINDING_DATA *data; // includes back pointer to collection, so that reference to element results in reference to the collection.
-  size_t size; // number of non null        
+  union tagBINDING_DATA **data;
+  size_t size;	    // number of entries (maximum index)
   size_t capacity; // size can grow up to capacity - without reallocating the array. 
 
 } VALARRAY;
@@ -90,6 +93,9 @@ void VALARRAY_print( FILE *out, VALARRAY *data, int level );
 
 
 /* ==================================================================================== */
+
+#define HASH_INIT_SIZE 20
+
 
 // hash value as part of runtime
 typedef struct tagVALHASH {
@@ -253,11 +259,11 @@ int VALFUNCTION_mark_as_thread( VALFUNCTION *func );
 
 /* ==================================================================================== */
 typedef struct tagVALACTIVATION {
-   struct tagAST_BASE *fdecl; // how this function looks like in AST.
-   size_t function_frame_start; // index of return value for this function call
-   struct tagAST_BASE *ret_instr; // return address; after returning to function resume with this instruction.
-   struct tagVALFUNCTION *function_object; // pointer to function object (if available). 
-   size_t parent_function; 
+  struct tagAST_BASE *fdecl; // how this function looks like in AST.
+  size_t function_frame_start; // index of return value for this function call
+  struct tagAST_BASE *ret_instr; // return address; after returning to function resume with this instruction.
+  struct tagVALFUNCTION *function_object; // pointer to function object (if available). 
+  size_t parent_function; 
 } VALACTIVATION;
 
 /* ==================================================================================== */
@@ -266,25 +272,33 @@ typedef struct tagVALACTIVATION {
 #define S_VAR_REF_HEAP			0x01	// reference to heap value
 #define S_VAR_REF_STACK2STACK		0x02	// reference on stack to stack value (offset to stack location relative to start of stack)
 #define S_VAR_REF_HEAP2STACK		0x04	// reference on heap to stack value (treat like special case of capture)
-#define S_VAR_CAPTURE_REF		0x08    // refers to a captured value. (index into function objects' array of captured values)
+#define S_VAR_REF_GLOB                  0x08    // reference to global
+#define S_VAR_CAPTURE_REF		0x10    // refers to a captured value. (index into function objects' array of captured values)
 
-#define S_VAR_COLL_ENTRY	        0x10    // collection entry.
-#define S_VAR_HEAP_VALUE		0x20	// heap entry.
+/* ----------- */
 
-#define S_VAR_ARG_COW_REF		0x40    // function argument - copy on write ref; new copy of argument will be created when it is modified.
-						// used with S_VAR_REF_STACK2STACK
+#define S_VAR_HEAP_VALUE		0x01	// heap entry.
+#define S_VAR_GLOB_VALUE		0x02    // global entry.
+
+ 		
+//#define S_VAR_ARG_COW_REF		0x40    // function argument - copy on write ref; new copy of argument will be created when it is modified.
+//						// used with S_VAR_REF_STACK2STACK
 		
-#define S_VAR_HEAP_GC_MARK		0x100	// heap location has been marked.
-#define S_VAR_HASH_HAS_SORTED_VALUES	0x200	// hash has sorted values
-#define S_VAR_PRINT_CHECK_LOOPS		0x400
+#define S_VAR_HEAP_GC_MARK		0x10	// heap location has been marked.
+#define S_VAR_HASH_HAS_SORTED_VALUES	0x20	// hash has sorted values
+#define S_VAR_PRINT_CHECK_LOOPS		0x40
 
 // if any of these bits are set then it is not a stack entry.
-#define S_MASK_NSTACK			0x3F
+//#define S_MASK_NSTACK			( S_VAR_REF_HEAP |  S_VAR_REF_STACK2STACK |  S_VAR_REF_HEAP2STACK | S_VAR_REF_GLOB | S_VAR_CAPTURE_REF | S_VAR_COLL_ENTRY | S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )  
+//#define S_MASK_NSTACK			( S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )  
 
+//#define S_MASK_ENTRY			( S_VAR_COLL_ENTRY | S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )
+#define S_MASK_ENTRY			( S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )
 
 typedef struct tagBINDING_DATA_VALUE {
-       short value_type;  // AST_VAR_TYPE  
-       short value_flags;
+       short value_type;  
+       unsigned char value_flags_ref;
+       unsigned char value_flags_val;
 
        union {
 
@@ -310,7 +324,7 @@ typedef struct tagBINDING_DATA_VALUE {
 
 	} value;
     
-        void *container; // if value is in container then garbage collection mark stage has to mark the collection 'in use' if an item in the collection is 'in use'
+        void *backlink; //container;
 
 } BINDING_DATA_VALUE;
 
@@ -354,13 +368,23 @@ BINDING_DATA *BINDING_DATA_follow_ref( BINDING_DATA *binding );
 // returns TRUE if binding is stack value.
 M_INLINE int IS_STACK_VALUE( BINDING_DATA *binding )    
 {
-  return ( binding->b.value_flags & S_MASK_NSTACK )  == 0;
+  return ( binding->b.value_flags_val & S_MASK_ENTRY )  == 0;
+}
+
+M_INLINE int IS_HEAP_VALUE( BINDING_DATA *binding )    
+{
+  return binding->b.value_flags_val & S_VAR_HEAP_VALUE;
+}
+
+M_INLINE int IS_GLOBAL_VALUE( BINDING_DATA *binding )
+{
+  return binding->b.value_flags_val & S_VAR_GLOB_VALUE ;
 }
 
 // returns TRUE if binding is a reference
 M_INLINE int IS_REF( BINDING_DATA *binding )
 {
-    return binding->b.value_flags & ( S_VAR_REF_HEAP | S_VAR_REF_STACK2STACK | S_VAR_REF_HEAP2STACK | S_VAR_CAPTURE_REF ); 
+    return (binding->b.value_flags_ref & ( S_VAR_REF_HEAP | S_VAR_REF_STACK2STACK | S_VAR_REF_HEAP2STACK | S_VAR_REF_GLOB | S_VAR_CAPTURE_REF )) != 0; 
 }
 
 // returns TRUE if binding is null value.
@@ -380,6 +404,13 @@ M_INLINE int BINDING_DATA_get_int( BINDING_DATA *data, long *val )
   if (IS_REF( data ) ) {
     data = BINDING_DATA_follow_ref( data );
   }
+
+  if ((data->b.value_type & S_VAR_NULL) != 0) {
+    *val = 0;
+    return 0;
+  }
+
+  
   if ((data->b.value_type & (S_VAR_DOUBLE | S_VAR_INT)) == 0) {
     *val = 0;
     return -1;
@@ -408,10 +439,17 @@ M_INLINE int BINDING_DATA_get_double( BINDING_DATA *data, double *val )
   if (IS_REF( data ) ) {
     data = BINDING_DATA_follow_ref( data );
   }
+ 
+  if ((data->b.value_type & S_VAR_NULL) != 0) {
+    *val = 0;
+    return 0;
+  }
+
   if ((data->b.value_type & (S_VAR_DOUBLE | S_VAR_INT)) == 0) {
     *val = 0;
     return -1;
   }
+
   if (data->b.value_type & S_VAR_DOUBLE) {
     *val = data->b.value.double_value;
     return 0;
@@ -443,12 +481,25 @@ M_INLINE int BINDING_DATA_is_zero( BINDING_DATA *data )
   return data->b.value.long_value == 0;
 }
 
+
+M_INLINE VALFUNCTION  *BINDING_DATA_get_fun( BINDING_DATA *data )
+{
+  if (IS_REF( data )) {
+    data = BINDING_DATA_follow_ref( data );
+  }
+  if ((data->b.value_type & S_VAR_CODE) == 0) {
+    return 0;
+  }
+  return &data->b.value.func_value;
+}
+
+
 M_INLINE VALARRAY *BINDING_DATA_get_arr( BINDING_DATA *data )
 {
   if (IS_REF( data )) {
     data = BINDING_DATA_follow_ref( data );
   }
-  if ((data->b.value_flags & S_VAR_LIST) == 0) {
+  if ((data->b.value_type & S_VAR_LIST) == 0) {
     return 0;
   }
   return &data->b.value.array_value;
@@ -459,7 +510,7 @@ M_INLINE VALHASH *BINDING_DATA_get_hash( BINDING_DATA *data )
   if (IS_REF( data )) {
     data = BINDING_DATA_follow_ref( data );
   }
-  if ((data->b.value_flags & S_VAR_HASH) == 0) {
+  if ((data->b.value_type & S_VAR_HASH) == 0) {
     return 0;
   }
   return &data->b.value.hash_value;
@@ -470,7 +521,7 @@ M_INLINE VALSTRING *BINDING_DATA_get_string( BINDING_DATA *data )
   if (IS_REF( data )) {
     data = BINDING_DATA_follow_ref( data );
   }
-  if ((data->b.value_flags & S_VAR_STRING) == 0) {
+  if ((data->b.value_type & S_VAR_STRING) == 0) {
     return 0;
   }
   return &data->b.value.string_value;
@@ -654,13 +705,14 @@ typedef struct tagEVAL_CONTEXT {
   EVAL_THREAD main;  // the main thread
   EVAL_THREAD *current_thread; // current thread
   ARRAY bindings_global; // all global bindings (indexed array)
+  int trace_on;
 
   jmp_buf jmpbuf; // runtime errors - if runtime error it bails out to mark.
   int  is_jmpbuf_set;
 
 } EVAL_CONTEXT;
 
-int  EVAL_CONTEXT_init( EVAL_CONTEXT *context );
+int  EVAL_CONTEXT_init( EVAL_CONTEXT *context, size_t num_globals );
 void EVAL_CONTEXT_free( EVAL_CONTEXT *context );
 void EVAL_CONTEXT_start( EVAL_CONTEXT *context );
 void EVAL_CONTEXT_gc( EVAL_CONTEXT *context );

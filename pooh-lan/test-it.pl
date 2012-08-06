@@ -4,7 +4,7 @@
 use strict;
 
 
-my ($f, @tests, $TEST_TOOL);
+my ($f, @tests, $TEST_TOOL,@TEST_ERRORS);
 
 $TEST_TOOL = $ENV{ 'TEST_TOOL' };
 if ($TEST_TOOL ne "") {
@@ -19,6 +19,40 @@ for $f (@ARGV) {
   last if ($f eq ".");
   run_test_in_dir( $f );
 }
+show_test_errors();
+
+
+sub show_test_errors
+{
+  my $f;
+  if (scalar(@TEST_ERRORS) != 0) {
+print <<EOF
+--------------------
+ERRORS ERRORS ERRORS
+--------------------
+EOF
+;
+    for $f (@TEST_ERRORS) {
+	print "\t$f\n";
+    }
+  }
+}
+
+sub addFailed
+{ 
+  my $test = shift;
+  push(@TEST_ERRORS,$test);
+}
+
+sub clean_test_results
+{
+  my ($dir);
+
+  $dir = shift;
+
+  system("rm -f *.ast *.ast1 *.sout *.serr");
+}
+ 
 
 
 sub run_test_in_dir
@@ -26,7 +60,8 @@ sub run_test_in_dir
   my ($dir, $test, $tnames  );
 
   $dir = shift;
-
+  
+  clean_test_results( $dir );
   @tests = list_parts( $dir );
 
   $tnames = join(" ",@tests);
@@ -50,14 +85,14 @@ sub show_result
   my $test = shift;
   
   print "\n---Test: ${test} (status: $?)---\n"; 
-  system("cat ${test}.out");
+  system("cat ${test}.serr");
   print "---Eof Test---\n"; 
 }
 
 
 sub test_it
 {
-  my ($failed, $test, $skipline); 
+  my ($failed, $test, $skipline,$diff); 
   
   $failed = 0;
 
@@ -66,7 +101,7 @@ sub test_it
     
    #system("$ttol $test >${test}.out 2>&1");
     print "\n>>$TEST_TOOL $test<<\n";
-    system("$TEST_TOOL $test >${test}.out 2>&1");
+    system("$TEST_TOOL $test >${test}.sout 2>${test}.serr");
 
 
     my $res = $?;
@@ -79,13 +114,15 @@ sub test_it
 	if (scalar($res) != 0) {
 	   print "Test Failed !\n\tactual exit status $res expected to be zero\n";
            $failed ++;
- 	   next;
+	   addFailed( ${test} );
+	   next;
 	}
     } 
     if ($tspec[0] eq "fail") {
 	if (scalar($res) == 0) {
 	   print "Test Failed !\n\texit status is 0 expected to be not zero.\n";
            $failed ++;
+	   addFailed( ${test} );
 	   next;
 	}
     }
@@ -93,21 +130,24 @@ sub test_it
 
     if ($tspec[1] ne "ignore") {
 
-      open(OUTFILE,"${test}.out");
-      my @lines=<OUTFILE>;
-      my $text = join("",@lines);
-      close(OUTFILE);
-
-      $skipline = <SPECFILE>;
-
-      my @slines = <SPECFILE>;
-      my $stext = join("",@slines);
-      close(SPECFILE);
-	
-      if ($stext ne $text) {
-	print "Test FAILED\n\tActual output differs from expected\n";
-        $failed ++;
+      if (-f "${test}.sout.expected") {
+        $diff=`diff ${test}.sout ${test}.sout.expected`;
+ 
+        if ($? != 0) {
+	  print "Test FAILED\n\tActual STDOUT output differs from expected\n";
+          $failed ++;
+	  addFailed( ${test} );
+        }
       }
+
+      if (-f "${test}.serr.expected") {
+        $diff=`diff ${test}.serr ${test}.serr.expected`;
+        if ($? != 0) {
+	  print "Test FAILED\n\tActual STDERR output differs from expected\n";
+          $failed ++;
+       	  addFailed( ${test} );
+	}
+      }	
     }
   }
 }

@@ -55,7 +55,7 @@ static void x_exit( XCALL_DATA *xcall )
 
   arg = XCALL_param(xcall, 0 ); 
   if (! IS_NULL(arg)) {
-     sdata = &arg->b.value.string_value;
+     sdata = BINDING_DATA_get_string( arg );
      fprintf( stderr, "%.*s", sdata->length, sdata->string );
   }
   exit(0);
@@ -68,6 +68,8 @@ static void x_size( XCALL_DATA *xcall )
   size_t rt;
   
   arg = XCALL_param(xcall, 0 ); 
+
+  arg = BINDING_DATA_follow_ref( arg );  
   
   if (arg->b.value_type & S_VAR_STRING) {
     rt = VALSTRING_size( &arg->b.value.string_value );
@@ -87,6 +89,7 @@ static void x_defined( XCALL_DATA *xcall )
   BINDING_DATA *arg;
   
   arg = XCALL_param(xcall, 0 ); 
+  arg = BINDING_DATA_follow_ref( arg );  
   BINDING_DATA_set_int( XCALL_rvalue(xcall), ! IS_NULL( arg ) );
 }
 
@@ -95,6 +98,7 @@ static void x_dump( XCALL_DATA *xcall )
   BINDING_DATA *arg;
   
   arg = XCALL_param(xcall, 0 ); 
+  arg = BINDING_DATA_follow_ref( arg );  
   BINDING_DATA_print( stderr, arg , 0 );
 }
 
@@ -105,15 +109,22 @@ static void x_trace( XCALL_DATA *xcall )
   
   arg = XCALL_param(xcall, 0 ); 
   BINDING_DATA_get_int( arg, (long *) &trace );
-//xcall->thread->trace_on = trace;
+  xcall->thread->context->trace_on = trace;
 }
 
+static void x_showstack( XCALL_DATA *xcall )
+{
+  EVAL_THREAD_print_stack_trace( stderr, xcall->thread );
+}
+ 
 static void x_typeof( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
   const char *tname;
   
   arg = XCALL_param(xcall, 0 ); 
+  arg = BINDING_DATA_follow_ref( arg );  
+  
   switch( arg->b.value_type ) {
     case S_VAR_INT:
     case S_VAR_DOUBLE:
@@ -149,7 +160,9 @@ static void x_make_thread( XCALL_DATA *xcall )
   BINDING_DATA *arg;
 //  VALFUNCTION *func;
 
-  arg = XCALL_param(xcall, 0 ); 
+  arg = XCALL_param(xcall, 0 );
+  arg = BINDING_DATA_follow_ref( arg );  
+ 
 #if 0
  func = &arg->b.value.func_value;
 
@@ -241,13 +254,15 @@ static void x_range( XCALL_DATA *xcall )
 
 static void x_push( XCALL_DATA *xcall )
 {
-  BINDING_DATA *arg;
+  BINDING_DATA *arg, *elm;
   VALARRAY *arr;
 
   arg = XCALL_param(xcall, 0 ); 
-  arr = &arg->b.value.array_value;
+  arr = BINDING_DATA_get_arr( arg );
 
-  VALARRAY_set( arr, VALARRAY_size( arr ), XCALL_param(xcall, 1 ), CP_REF );
+  elm = XCALL_param( xcall, 1);
+
+  VALARRAY_set( arr, VALARRAY_size( arr ), elm, CP_REF );
 }
 
 static void x_pop( XCALL_DATA *xcall )
@@ -256,7 +271,8 @@ static void x_pop( XCALL_DATA *xcall )
   VALARRAY *arr;
   
   arg = XCALL_param(xcall, 0 ); 
-  arr = &arg->b.value.array_value;
+  arr = BINDING_DATA_get_arr( arg );
+
 
   if (arr->size == 0) {
     EVAL_CONTEXT_runtime_error( xcall->thread->context , "Can't 'pop' value off an empty stack. " );
@@ -272,7 +288,8 @@ static void x_unshift( XCALL_DATA *xcall )
   VALARRAY *arr;
 
   arg = XCALL_param(xcall, 0 ); 
-  arr = &arg->b.value.array_value;
+  arr = BINDING_DATA_get_arr( arg );
+
 
   VALARRAY_set( arr, VALARRAY_size( arr ), XCALL_param(xcall, 1 ), CP_REF );
 }
@@ -283,7 +300,8 @@ static void x_shift( XCALL_DATA *xcall )
   VALARRAY *arr;
   
   arg = XCALL_param(xcall, 0 ); 
-  arr = &arg->b.value.array_value;
+  arr = BINDING_DATA_get_arr( arg );
+
 
   if (arr->size == 0) {
     EVAL_CONTEXT_runtime_error( xcall->thread->context , "Can't 'pop' value off an empty stack. " );
@@ -302,10 +320,11 @@ static void x_join( XCALL_DATA *xcall )
   char stmp[ 64 ];
 
   arg = XCALL_param( xcall, 0 ); 
-  sdelim = &arg->b.value.string_value;
+  sdelim = BINDING_DATA_get_string( arg );
 
   arg = XCALL_param( xcall, 1 ); 
-  arr = &arg->b.value.array_value;
+  arr = BINDING_DATA_get_arr( arg );
+
 
   arg = XCALL_rvalue( xcall ); 
   BINDING_DATA_init( arg, S_VAR_STRING );
@@ -357,17 +376,17 @@ static void x_reverse( XCALL_DATA *xcall )
   size_t i, n;
 
   arg = XCALL_param(xcall, 0 ); 
-  arr = &arg->b.value.array_value;
+  arr = BINDING_DATA_get_arr( arg );
 
   n = arr->size >> 1;
 
   for( i = 0; i < n; i++ ) {
     memcpy( &tmp, &arr->data[ i ], sizeof( BINDING_DATA ) );
     memcpy( &arr->data[ i ], &arr->data[ arr->size - i ], sizeof( BINDING_DATA ) );
-    arr->data[ i ].b.container = arg;
+//  arr->data[ i ].b.container = arg;
 
     memcpy( &arr->data[ arr->size - i ] , &tmp , sizeof( BINDING_DATA ) );
-    arr->data[ arr->size - i ].b.container = arg;
+//  arr->data[ arr->size - i ].b.container = arg;
   }
 }
 
@@ -380,10 +399,10 @@ static void x_map( XCALL_DATA *xcall )
   VALFUNCTION *func;
   
   arg = XCALL_param(xcall, 0 ); 
-  arr = &arg->b.value.array_value;
+  arr = BINDING_DATA_get_arr( arg );
 
   arg = XCALL_param(xcall, 1 );
-  func = &arg->b.value.func_value;
+  func = BINDING_DATA_get_fun( arg );
 
   // check that function argument prototype can be used.
 }
@@ -418,10 +437,11 @@ static void x_exists ( XCALL_DATA *xcall )
   int rt;
 
   arg = XCALL_param( xcall, 0 ); 
-  hash = &arg->b.value.hash_value;
+  hash = BINDING_DATA_get_hash( arg );
 
   key = XCALL_param( xcall, 0 ); 
-
+  key = BINDING_DATA_follow_ref( key );
+  
   rt = VALHASH_find( hash, key, &rval )  == 0;
 
   BINDING_DATA_set_int( XCALL_rvalue(xcall), rt );
@@ -444,12 +464,14 @@ static void keyvals( XCALL_DATA *xcall, HGET_ACTION act)
   VALHASHPOS pos;
   BINDING_DATA *key,*value, *rval;
   size_t idx = 0;
+#if 0 
   int top =  EVAL_THREAD_is_top_level_frame( xcall->thread );
-   
+#endif   
   
   arg = XCALL_param( xcall, 0 ); 
-  hash = &arg->b.value.hash_value;
+  hash = BINDING_DATA_get_hash( arg );
   
+#if 0  
   if (top) {
     VALHASHPOS_init( &pos );
     while( VALHASH_iterate( hash, &key, &value, &pos ) ) {
@@ -471,6 +493,7 @@ static void keyvals( XCALL_DATA *xcall, HGET_ACTION act)
       }
     }
   } else {
+#endif  
     rval = XCALL_rvalue( xcall ); 
     BINDING_DATA_init( rval, S_VAR_LIST );
     rarr = &rval->b.value.array_value;
@@ -479,7 +502,7 @@ static void keyvals( XCALL_DATA *xcall, HGET_ACTION act)
     while( VALHASH_iterate( hash, &key, &value, &pos ) ) {
      switch( act ) {
        case HGET_KEYS:
-         VALARRAY_set( rarr, idx++, key, CP_REF );
+         VALARRAY_set( rarr, idx++, key, CP_VALUE ); // hash keys in array may not me modified by reference, so copy them by value.
          break;
        case HGET_VALUES:
          VALARRAY_set( rarr, idx++, value, CP_REF );
@@ -494,7 +517,9 @@ static void keyvals( XCALL_DATA *xcall, HGET_ACTION act)
          break;
       }
     }
+#if 0    
   }
+#endif  
 }
 
 
@@ -545,7 +570,7 @@ static void mid_imp( XCALL_DATA *xcall, STR_ACTION act)
   size_t n1,n2;
 
   arg = XCALL_param( xcall, 0 ); 
-  sval =  &arg->b.value.string_value;
+  sval = BINDING_DATA_get_string( arg );
 
   arg = XCALL_param( xcall, 0 );
   BINDING_DATA_get_int( arg, (long *) &n1 );
@@ -630,12 +655,21 @@ static void x_print_imp( BINDING_DATA *data )
 static void x_print( XCALL_DATA *xcall )
 {
   x_print_imp( XCALL_param( xcall, 0 ) );
+  
+  if (xcall->thread->context->trace_on) {
+    fflush( stdout );
+    fprintf( stderr, "\n" ); // to allign the next trace line.
+  }
 }
 
 static void x_println( XCALL_DATA *xcall )
 {
   x_print_imp( XCALL_param( xcall, 0 ) );
   fprintf( stdout, "\n" );
+
+  if (xcall->thread->context->trace_on) {
+    fflush( stdout );
+  }
 }
 
 
@@ -676,7 +710,7 @@ static void x_rand( XCALL_DATA *xcall )
 }
 
 
- static void x_sqrt( XCALL_DATA *xcall )
+static void x_sqrt( XCALL_DATA *xcall )
 { 
   double arg, res;
 
@@ -780,6 +814,8 @@ static void x_abs( XCALL_DATA *xcall )
   long larg;
 
   arg = XCALL_param( xcall, 0 );
+  arg = BINDING_DATA_follow_ref( arg );
+  
   if (arg->b.value_type & S_VAR_INT) {
     larg = arg->b.value.long_value;  
     if (larg < 0) {
@@ -823,61 +859,23 @@ AST_XFUNC_DECL xlib[] = {
 //TO DO implement x_shift, x_unshift,
 //TO DO implement,  shift ( ~array ) , unshift( ~array, ~start)  functionparameters ( [ ~function ] ) applyfunc( ~func ~params  ) 
 
-/* Reflection */
-  DEFINE_XFUNC1( "functionparameters",    x_functionparameters,   S_VAR_LIST, "function", S_VAR_CODE | S_VAR_PARAM_OPTIONAL ),
-  DEFINE_XFUNC1( "functionreturntype",    x_functionreturntype,   S_VAR_LIST, "function", S_VAR_CODE | S_VAR_PARAM_OPTIONAL ),
-  DEFINE_XFUNC2( "applyfunc",    x_applyfunc,   S_VAR_ANY, "function", S_VAR_CODE, "params", S_VAR_LIST  ),
- 
-  DEFINE_XFUNC1( "isarray",      x_isarray,   S_VAR_INT, "value", S_VAR_ANY  ),
-  DEFINE_XFUNC1( "isfunction",   x_isfunction,   S_VAR_INT, "value", S_VAR_ANY  ),
-  DEFINE_XFUNC1( "istable",      x_istable,   S_VAR_INT, "value", S_VAR_ANY  ),
-  DEFINE_XFUNC1( "isstring",     x_isstring,   S_VAR_INT, "value", S_VAR_ANY  ),
-  DEFINE_XFUNC1( "isnumber",     x_isnumber,   S_VAR_INT, "value", S_VAR_ANY  ),
-
-
-
-
-
-
-/* Miscellaneous functions ;  more than one argument type */
-  DEFINE_XFUNC1( "size",    x_size,	    S_VAR_INT,	"arg", S_VAR_STRING | S_VAR_LIST | S_VAR_HASH ),
-  DEFINE_XFUNC1( "defined", x_defined,	    S_VAR_INT,	"arg", S_VAR_ANY ),  
-  DEFINE_XFUNC1( "dump",    x_dump,	    0,		"arg", S_VAR_ANY ),  
-  DEFINE_XFUNC1( "trace",   x_trace,	    0,		 "onoff", S_VAR_INT ),  
-  DEFINE_XFUNC1( "type",    x_typeof,	    S_VAR_STRING, "arg", S_VAR_ANY ),  
-  DEFINE_XFUNC1( "exit",    x_exit,         0,          "msg", S_VAR_STRING | S_VAR_PARAM_OPTIONAL ), 
-
-/* threads */
-  DEFINE_XFUNC1( "makethread",  x_make_thread,	S_VAR_CODE, "thread", S_VAR_CODE ),  
-  DEFINE_XFUNC1( "yield",	x_yield,	S_VAR_ANY, "message", S_VAR_ANY | S_VAR_PARAM_OPTIONAL ),  
-  DEFINE_XFUNC2( "resume",	x_resume,	S_VAR_ANY, "thread", S_VAR_CODE, "message", S_VAR_ANY | S_VAR_PARAM_OPTIONAL ),  
-  DEFINE_XFUNC1( "isactive",	x_isactive,	S_VAR_INT, "thread", S_VAR_CODE ),  
-  DEFINE_XFUNC1( "stopthread",	x_stopthread,	S_VAR_INT, "thread", S_VAR_CODE ),  
-         
-/* arrays */  
-  DEFINE_XFUNC3( "range",   x_range,	S_VAR_LIST,	"from", S_VAR_INT | S_VAR_DOUBLE, "to", S_VAR_INT | S_VAR_DOUBLE, "step", S_VAR_INT | S_VAR_DOUBLE | S_VAR_PARAM_OPTIONAL ),
-  DEFINE_XFUNC2( "push",    x_push,	0,		"array",  S_VAR_LIST,  "top",  S_VAR_ANY ),
-  DEFINE_XFUNC1( "pop",	    x_pop,	S_VAR_ANY,	"array", S_VAR_LIST ),
-  DEFINE_XFUNC2( "unshift",x_unshift,	0,		"array",  S_VAR_LIST,  "top",  S_VAR_ANY ),
-  DEFINE_XFUNC1( "shift",   x_shift,	S_VAR_ANY,	"array", S_VAR_LIST ),
-  DEFINE_XFUNC2( "join",    x_join,	S_VAR_STRING,	"separator", S_VAR_STRING,  "array", S_VAR_LIST ),
-  DEFINE_XFUNC1( "reverse", x_reverse,	0,		"array" , S_VAR_LIST | S_VAR_PARAM_OPTIONAL ),
-
-/* higher order functions */
-  DEFINE_XFUNC2( "map",	    x_map,	0,		"array", S_VAR_LIST | S_VAR_PARAM_OPTIONAL, "func",  S_VAR_CODE ),
-  DEFINE_XFUNC2( "copymap", x_copymap,	S_VAR_LIST,	"array", S_VAR_LIST, "func", S_VAR_CODE ),
-  DEFINE_XFUNC2( "filter",  x_filter,	S_VAR_LIST,	"array", S_VAR_LIST, "func",  S_VAR_CODE ),
-  DEFINE_XFUNC2( "foldleft", x_foldl,	S_VAR_ANY,	"array", S_VAR_LIST, "func", S_VAR_CODE ),
-  DEFINE_XFUNC2( "foldright",x_foldr,	S_VAR_ANY,	"array", S_VAR_LIST, "func", S_VAR_CODE ),
-
 /* hashes */
   DEFINE_XFUNC1( "keys",   x_keys,	S_VAR_LIST, "table", S_VAR_HASH ),
   DEFINE_XFUNC1( "values", x_values,	S_VAR_LIST, "table", S_VAR_HASH ),
   DEFINE_XFUNC1( "each",   x_each,	S_VAR_LIST, "table", S_VAR_HASH ),
   DEFINE_XFUNC2( "exists", x_exists,	S_VAR_INT,  "table", S_VAR_HASH, "key", S_VAR_ANY ),
   DEFINE_XFUNC2( "exist",  x_exists,	S_VAR_INT,  "table", S_VAR_HASH, "key", S_VAR_ANY ),
-  DEFINE_XFUNC2( "erase",  x_erase,	0,	    "table", S_VAR_HASH, "key", S_VAR_ANY ),
-     
+  DEFINE_XFUNC2( "erase",  x_erase,	0,	    "table", S_VAR_HASH | S_VAR_PARAM_BYREF, "key", S_VAR_ANY ),
+
+/* arrays */  
+  DEFINE_XFUNC3( "range",   x_range,	S_VAR_LIST,	"from", S_VAR_INT | S_VAR_DOUBLE, "to", S_VAR_INT | S_VAR_DOUBLE, "step", S_VAR_INT | S_VAR_DOUBLE | S_VAR_PARAM_OPTIONAL ),
+  DEFINE_XFUNC2( "push",    x_push,	0,		"array", S_VAR_LIST | S_VAR_PARAM_BYREF,  "top",  S_VAR_ANY ),
+  DEFINE_XFUNC1( "pop",	    x_pop,	S_VAR_ANY,	"array", S_VAR_LIST | S_VAR_PARAM_BYREF ),
+  DEFINE_XFUNC2( "unshift",x_unshift,	0,		"array", S_VAR_LIST | S_VAR_PARAM_BYREF ,  "top",  S_VAR_ANY ),
+  DEFINE_XFUNC1( "shift",   x_shift,	S_VAR_ANY,	"array", S_VAR_LIST | S_VAR_PARAM_BYREF ),
+  DEFINE_XFUNC1( "reverse", x_reverse,	0,		"array", S_VAR_LIST | S_VAR_PARAM_BYREF ),
+  DEFINE_XFUNC2( "join",    x_join,	S_VAR_STRING,	"separator", S_VAR_STRING,  "array", S_VAR_LIST ),
+
 /* strings */
   DEFINE_XFUNC3( "mid",	   x_mid, S_VAR_STRING, "string", S_VAR_STRING, "offset", S_VAR_INT, "length", S_VAR_INT ),
   DEFINE_XFUNC2( "left",   x_left, S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
@@ -907,6 +905,44 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC0( "maxint",    x_maxint, S_VAR_INT ),
   DEFINE_XFUNC0( "minint",    x_minint, S_VAR_INT ),
 
+
+/* Miscellaneous functions ;  more than one argument type */
+  DEFINE_XFUNC1( "size",    x_size,	    S_VAR_INT,	"arg", S_VAR_STRING | S_VAR_LIST | S_VAR_HASH ),
+  DEFINE_XFUNC1( "defined", x_defined,	    S_VAR_INT,	"arg", S_VAR_ANY ),  
+  DEFINE_XFUNC1( "dump",    x_dump,	    0,		"arg", S_VAR_ANY ),  
+  DEFINE_XFUNC1( "trace",   x_trace,	    0,		 "onoff", S_VAR_INT ),
+  DEFINE_XFUNC0( "showstack",  x_showstack,  0 ),
+
+
+  DEFINE_XFUNC1( "type",    x_typeof,	    S_VAR_STRING, "arg", S_VAR_ANY ),  
+  DEFINE_XFUNC1( "exit",    x_exit,         0,          "msg", S_VAR_STRING | S_VAR_PARAM_OPTIONAL ), 
+
+/* Reflection */
+  DEFINE_XFUNC1( "functionparameters",    x_functionparameters,   S_VAR_LIST, "function", S_VAR_CODE | S_VAR_PARAM_OPTIONAL ),
+  DEFINE_XFUNC1( "functionreturntype",    x_functionreturntype,   S_VAR_LIST, "function", S_VAR_CODE | S_VAR_PARAM_OPTIONAL ),
+  DEFINE_XFUNC2( "applyfunc",    x_applyfunc,   S_VAR_ANY, "function", S_VAR_CODE, "params", S_VAR_LIST  ),
+ 
+  DEFINE_XFUNC1( "isarray",      x_isarray,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "isfunction",   x_isfunction,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "istable",      x_istable,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "isstring",     x_isstring,   S_VAR_INT, "value", S_VAR_ANY  ),
+  DEFINE_XFUNC1( "isnumber",     x_isnumber,   S_VAR_INT, "value", S_VAR_ANY  ),
+
+/* threads */
+  DEFINE_XFUNC1( "makethread",  x_make_thread,	S_VAR_CODE, "thread", S_VAR_CODE ),  
+  DEFINE_XFUNC1( "yield",	x_yield,	S_VAR_ANY, "message", S_VAR_ANY | S_VAR_PARAM_OPTIONAL ),  
+  DEFINE_XFUNC2( "resume",	x_resume,	S_VAR_ANY, "thread", S_VAR_CODE, "message", S_VAR_ANY | S_VAR_PARAM_OPTIONAL ),  
+  DEFINE_XFUNC1( "isactive",	x_isactive,	S_VAR_INT, "thread", S_VAR_CODE ),  
+  DEFINE_XFUNC1( "stopthread",	x_stopthread,	S_VAR_INT, "thread", S_VAR_CODE ),  
+         
+/* higher order functions */
+  DEFINE_XFUNC2( "map",	    x_map,	0,		"array", S_VAR_LIST | S_VAR_PARAM_OPTIONAL, "func",  S_VAR_CODE ),
+  DEFINE_XFUNC2( "copymap", x_copymap,	S_VAR_LIST,	"array", S_VAR_LIST, "func", S_VAR_CODE ),
+  DEFINE_XFUNC2( "filter",  x_filter,	S_VAR_LIST,	"array", S_VAR_LIST, "func",  S_VAR_CODE ),
+  DEFINE_XFUNC2( "foldleft", x_foldl,	S_VAR_ANY,	"array", S_VAR_LIST, "func", S_VAR_CODE ),
+  DEFINE_XFUNC2( "foldright",x_foldr,	S_VAR_ANY,	"array", S_VAR_LIST, "func", S_VAR_CODE ),
+
+    
 /* eof */
   DEFINE_XFUNC1( 0, 0, 0, "", 0 )
 };

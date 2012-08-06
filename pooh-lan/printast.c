@@ -142,7 +142,18 @@ void AST_print( FILE *out, AST_BASE *base )
   case S_ASSIGNMENT:
   {
     AST_ASSIGNMENT *scl = (AST_ASSIGNMENT *) base;
-    fprintf( out, "%s , ", scl->type == CP_VALUE ? "assign-copy" : "assign-ref" );
+  
+    switch( scl->type ) {
+      case CP_VALUE:
+        fprintf( out, "%s , ", "assign-copy");
+        break;
+      case CP_REF:
+        fprintf( out, "%s , ", "assign-ref");
+        break;
+      case CP_MOVE:
+        fprintf( out, "%s , ", "assign-move");
+        break;
+    }
     AST_print( out, (AST_BASE *) scl->left_side );
     fprintf( out, " , ");
     AST_print( out, (AST_BASE *) scl->right_side );

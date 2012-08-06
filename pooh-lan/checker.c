@@ -12,13 +12,19 @@ BINDING_ENTRY *find_binding( AST_FUNC_DECL *fdecl, const char *name )
   return  (BINDING_ENTRY *)  HASH_find( &fdecl->scope_map_name_to_binding, (void *) name, -1);
 }
 
-BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, int has_value )
+BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, int has_value, REF_SCOPE scope  )
 {
    BINDING_ENTRY *binding;
    AST_FUNC_DECL *decl;
+   int add_offset = 0;
 
    assert( ctx->chkctx.current_function != 0 );
    decl = ctx->chkctx.current_function;
+
+   if (scope == REF_SCOPE_LOCAL && decl->base.parent == 0) {
+     scope = REF_SCOPE_GLOBAL;
+     add_offset = 1; // global heap - start of heap has some fixed values (const NULL, etc )
+   }
 
    binding = (BINDING_ENTRY *) malloc( sizeof( BINDING_ENTRY ) );
    if (!binding) {
@@ -29,7 +35,8 @@ BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYP
    binding->value_type = value_type;
    binding->has_value = has_value;
    binding->binding_name = name;
-   binding->stack_offset = ++decl->last_stack_offset ;
+   binding->stack_offset = add_offset + ( ++decl->last_stack_offset );
+   binding->scope = scope;
 
    //fprintf( stderr,">>add %s %p\n", name, decl );
 
@@ -180,6 +187,10 @@ int is_indexed_ref( AST_EXPRESSION *expr )
   AST_VECTOR *indexes;
   size_t nidx;
 
+  if (expr->exp_type != S_EXPR_REFERENCE) {
+    return 0; 
+  }
+
   nidx = 0;
   if (strcmp(expr->val.ref.lhs,"this") == 0 ||
       strcmp(expr->val.ref.lhs,"global") == 0 ||
@@ -216,6 +227,10 @@ void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *locati
     if (lhs->exp_type == S_EXPR_CONSTANT) {
       return;
     }
+
+    if ( is_indexed_ref( lhs ) && AST_EXPRESSION_type( lhs ) == S_VAR_ANY ) {
+      return;
+    }  
 
     binding = lhs->val.ref.binding;
     if (binding) { // assigning values to a parameter (for the first time).
@@ -289,6 +304,34 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	AST_EXPRESSION *first_index =  get_first_index( expr );
 	int is_error = 0;
 	
+
+	if (first_index != 0 ) {
+	   
+	    if (first_index->exp_type == S_EXPR_ARRAY_INDEX) {	    // variable used as array
+	      if (binding->value_type == S_VAR_ANY) {		    //   if bining can have any value then ...
+	        binding->value_type = S_VAR_LIST;		    //     this is first usage. define binding as array
+		expr->value_type = S_VAR_ANY;			    //   an expression can any value (result of array lookup)
+	      } else						    //     has already been used as something
+	      if ((binding->value_type & S_VAR_LIST) == 0) {	    //       check if current usage is consistent with what we know
+	        is_error = 1;
+	      }
+	    } else if (first_index->exp_type == S_EXPR_HASH_INDEX) {   // variable used as table
+	      if  (binding->value_type == S_VAR_ANY) {		    //   if binding can have any value then ...
+		binding->value_type = S_VAR_HASH;	            //     this is first usage. define binding as hash.
+		expr->value_type = S_VAR_ANY;			    // an exoression can have any value (result of hash lookup)
+	      } else						    //   hash already been used as something
+	      if  ((binding->value_type & S_VAR_HASH) == 0) {	    //     check if current usage is consisten with what we know
+	        is_error = 2;
+	      }	
+	    }	
+	} else {						    // variable is used as scalar
+	    if (binding->value_type != S_VAR_ANY) {		    //   if variable is already used as something.
+	      expr->value_type = binding->value_type;		    //     expression type is according to variable type.
+	    }
+	}
+
+
+#if 0	
 	if ( is_scalar_var_type( binding->value_type ) ) {
 	   if (first_index != 0) {
 	      is_error = 1;
@@ -313,7 +356,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	      expr->value_type = S_VAR_ANY;
 	  }
         }
-	
+#endif	
 	if (is_error) {
 	    do_yyerror( &expr->base.location, ctx, "Variable %s is defined as %s, but used as %s", 
 		    name,
@@ -370,7 +413,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 		binding_type = S_VAR_ANY;
 	      }
 
-	      binding =  make_binding(  ctx, binding_type, &expr->base.location, expr->val.ref.lhs, 1  );
+	      binding =  make_binding(  ctx, binding_type, &expr->base.location, expr->val.ref.lhs, 1, REF_SCOPE_LOCAL  );
       	      scope = 0;
             } else {
 	      do_yyerror( &expr->base.location, ctx, "local variable %s is used without having been assigned a value", expr->val.ref.lhs );
@@ -399,7 +442,9 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	  break;
       }
       expr->val.ref.binding = binding;
+#if 0      
       expr->val.ref.scope = scope;
+#endif      
       }
       break;
 
@@ -438,7 +483,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	    do_yyerror( &expr->base.location, ctx, "Function %s does not return a value, but is used as %s", get_func_name(fdecl), get_type_name( expr->value_type ) );
 	    is_error = 1;
 	} else if (can_assign( expr->value_type, func_type, &offending_type)) {
-	    do_yyerror( &expr->base.location, ctx, "Function %s can't be use as %s", get_func_name(fdecl), get_type_name( expr->value_type ));
+	    do_yyerror( &expr->base.location, ctx, "Function %s returns %s but is used as %s", get_func_name(fdecl), get_type_name( func_type ), get_type_name( expr->value_type ));
 	    is_error = 1;
 	}
 
@@ -582,27 +627,39 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 	     rt = -1;
 	   }
 	   param->param_num = i;
-         }	
+	}	
         if (fdecl->func_params)
          for( i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
 	   parame = (AST_EXPRESSION *) AST_VECTOR_get( fdecl->func_params, i );
-	   if (CHECKER_find_param_by_label( fcall->call_params, parame->val.ref.lhs ) == 0) {
-             do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the mandatory parameter ~%s", parame->val.ref.lhs );
+	   if (CHECKER_find_param_by_label( fcall->call_params, parame->val.ref.lhs ) == 0 && (parame->value_type  & S_VAR_PARAM_OPTIONAL) == 0 ) {
+             do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the required parameter ~%s", parame->val.ref.lhs );
 	     rt = -1;
 	   }
+	   param->param_spec = parame->value_type & S_VAR_OPT_PARAM_MASK;  
          }
        } else { // pass 1
         if (fcall->call_params)
 	 for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
+	   AST_VAR_TYPE var_type;
 	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
            param_expr = param->expr;
            fparam = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name );
+
+	   if (fparam->val.ref.binding) {
+	      BINDING_ENTRY *entry = fparam->val.ref.binding;
+
+	      if (entry->has_value) {
+	        var_type = entry->value_type;
+	      }	
+	   } else {
+	     var_type = fparam->value_type;
+	   }
             
-           if ( fparam &&  can_assign( param_expr->value_type, fparam->value_type & S_VAR_ALL_TYPES , 0)) {
+           if ( fparam &&  can_assign( param_expr->value_type, var_type & S_VAR_ALL_TYPES , 0)) {
              do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s but defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( fparam->value_type ) );
 	     rt = -1;
            } 
-           assign_value( param_expr, fparam->value_type, &param->base.location );
+    	   assign_value( param_expr, fparam->value_type, &param->base.location );
          }
        }
      } else { // xfunc
@@ -633,6 +690,7 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 	     do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the required parameter ~%s", xparam->param_name );
 	     rt = -1;
 	   }
+	   param->param_spec = xparam->var_type & S_VAR_OPT_PARAM_MASK;  
          }
        } else {
          if (fcall->call_params) 
@@ -642,7 +700,7 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 	   xparam = CHECKER_xfind_param_by_label( xfunc, param->label_name ); 
 	
 	   if (xparam &&  can_assign( param_expr->value_type, xparam->var_type & S_VAR_ALL_TYPES,  0)) {
-	     do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s fined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( xparam->var_type ) );
+	     do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( xparam->var_type ) );
 	     rt = -1;
 	   }
  
@@ -797,7 +855,7 @@ void CHEKCER_func_decl( PARSECONTEXT *ctx, AST_FUNC_DECL *scl )
     // create bindings for parameters (of unknown type so far).
     for( i = 0 ; i < AST_VECTOR_size( scl->func_params ); i ++ ) {
       param = (AST_EXPRESSION *) AST_VECTOR_get( scl->func_params, i );
-      binding =  make_binding(  ctx, S_VAR_UNKNOWN, &param->base.location, param->val.ref.lhs, 0 );
+      binding =  make_binding(  ctx, S_VAR_UNKNOWN, &param->base.location, param->val.ref.lhs, 0, REF_SCOPE_LOCAL );
       param->val.ref.binding = binding;
     }
   }
@@ -873,6 +931,20 @@ int is_narrower_type( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type  )
    return 1;
 }
 
+int can_assign_const_value( AST_EXPRESSION * lhs, AST_EXPRESSION * rhs )
+{
+    BINDING_ENTRY *binding;
+
+    assert( lhs->exp_type ==  S_EXPR_REFERENCE );
+
+    if (rhs->exp_type !=  S_EXPR_CONSTANT && rhs->exp_type != S_EXPR_LIST_VALUES && rhs->exp_type != S_EXPR_HASH_VALUES) {
+      return 0;
+    }
+
+    binding = lhs->val.ref.binding;
+    return binding && binding->value_type == S_VAR_ANY && is_indexed_ref( lhs ) == 0; 
+}      
+
 
 void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
 {
@@ -916,12 +988,24 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
     
     lhs = (AST_EXPRESSION *) scl->left_side; 
     rhs = (AST_EXPRESSION *) scl->right_side;
+
+    // assignment of array constructor
+    if (rhs->exp_type == S_EXPR_HASH_VALUES || rhs->exp_type == S_EXPR_LIST_VALUES ) {
+        // .. and this is not multi value assignment
+        if (lhs->exp_type != S_EXPR_LIST_VALUES) {
+           // means that constructe value of collection will be copied as is into left hand side
+           scl->type = CP_MOVE; 
+        }   
+    }
  
     if (lhs->exp_type != S_EXPR_LIST_VALUES) { // not multi value left hand side
 
         assert( lhs->exp_type ==  S_EXPR_REFERENCE );
 
-	if (can_assign( AST_EXPRESSION_type( lhs ) , AST_EXPRESSION_type( rhs ), &offending_type ) ) {
+	if (
+            can_assign( AST_EXPRESSION_type( lhs ) , AST_EXPRESSION_type( rhs ), &offending_type ) &&
+              !can_assign_const_value( lhs, rhs ) 
+            ) {
 	  do_yyerror( &lhs->base.location, ctx, "Can't assign the %s value to %s ", get_type_name( offending_type ), lhs->val.ref.lhs);
 	
           binding = lhs->val.ref.binding;
@@ -932,7 +1016,7 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
 	} 
 
 	// if type of right hand side is narrower than left hand side -> lhs get type of rhs
-	if (! is_indexed_ref( lhs ) && ( AST_EXPRESSION_type( rhs ) == S_VAR_ANY || is_narrower_type( AST_EXPRESSION_type( lhs) , AST_EXPRESSION_type( rhs ) ))) {
+	if (is_narrower_type( AST_EXPRESSION_type( lhs) , AST_EXPRESSION_type( rhs ) ) ) {
 	    assign_value( lhs, AST_EXPRESSION_type( rhs ), &scl->base.location );
 	}
     }

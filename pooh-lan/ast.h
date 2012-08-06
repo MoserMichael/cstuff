@@ -266,6 +266,8 @@ typedef enum {
 
 } AST_VAR_TYPE;
 
+#define S_VAR_OPT_PARAM_MASK ( S_VAR_CODE_THREAD | S_VAR_PARAM_BYREF | S_VAR_PARAM_OPTIONAL )
+
 
 // return name of type.
 const char *get_type_name( AST_VAR_TYPE value_type );
@@ -287,7 +289,14 @@ M_INLINE int is_scalar_var_type( AST_VAR_TYPE value_type )
    return value_type & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING );
 }
  
-
+M_INLINE int is_scalar_var_or_null_type( AST_VAR_TYPE value_type )
+{
+   if (( value_type  & S_VAR_ANY) == S_VAR_ANY ) {
+     return 0;
+   }
+   return value_type & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_NULL );
+}
+ 
 M_INLINE int is_numeric_or_string_type( AST_VAR_TYPE ty )
 {
   return ty & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING);
@@ -338,7 +347,9 @@ typedef struct tagAST_EXPRESSION {
 	struct {
 		AST_VECTOR *indexes;
 		struct tagBINDING_ENTRY *binding;
+#if 0                
 		int scope;
+#endif                
 		char  *lhs;
 	} ref;
 
@@ -470,7 +481,9 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR 
 #endif    
   }
   scl->val.ref.indexes = indexes;
+#if 0  
   scl->val.ref.scope = 0;
+#endif  
   return scl;
 }
 
@@ -479,8 +492,9 @@ AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc );
 /****************************************************/
 
 typedef enum {
-  CP_REF,
-  CP_VALUE,
+  CP_REF,     // copy by reference
+  CP_VALUE,   // copy by value	
+  CP_MOVE,    // move right hand size to left hand size (special case if right hand size is constructor of array or hash).
 } CP_KIND;
 
 typedef struct tagAST_ASSIGNMEN {
@@ -808,6 +822,9 @@ typedef struct tagBINDING_ENTRY {
   int has_value;  
   
   int stack_offset;
+#if  1
+  REF_SCOPE scope;
+#endif  
 
 } BINDING_ENTRY;
 
@@ -865,6 +882,7 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   if (!scl) {
     return 0;
   }
+  memset( scl, 0, sizeof(AST_FUNC_DECL) );
 
   if (AST_VECTOR_init2( &scl->outer_refs, &stam ) ) {
     return 0;
@@ -921,7 +939,7 @@ typedef struct tagAST_FUNC_CALL_PARAM {
   AST_EXPRESSION *expr;
   const char *label_name;
   size_t param_num; // this is the nth parameter (as declare in function declaration)
-
+  int	 param_spec;
 } AST_FUNC_CALL_PARAM;
 
 M_INLINE AST_FUNC_CALL_PARAM * AST_FUNC_CALL_PARAM_init( AST_EXPRESSION *expr, const char *label_name, YYLTYPE *location  )
@@ -937,6 +955,7 @@ M_INLINE AST_FUNC_CALL_PARAM * AST_FUNC_CALL_PARAM_init( AST_EXPRESSION *expr, c
   assert( expr->base.type == S_EXPRESSION );  
   expr->base.parent = &scl->base;
   scl->expr = expr;
+  scl->param_spec = 0; 
 
   scl->label_name = strdup( label_name );
   scl->param_num = (size_t) -1;

@@ -56,6 +56,76 @@ void test_error_action( EVAL_CONTEXT *ctx )
   VASSERT( 0 );
 }
 
+extern AST_XFUNC_DECL xlib[];
+
+long sums( long from , long to)
+{
+   return (from + to) * (to - from + 1) / 2; 
+}
+
+void BASIC_hash_test()
+{
+  EVAL_CONTEXT context;
+  BINDING_DATA *hash,*key,*value, *values, *arg;
+  VALHASH *phash;
+  VALARRAY *arr;
+  size_t frame_start;
+  long sum;
+  size_t i;
+
+  VASSERT( EVAL_CONTEXT_init( &context, 0 ) == 0 );
+
+  START_INVOKE_RTLIB( &context, test_error_action );
+
+  // *** make a hash (force resize of hash)
+
+  hash = BINDING_DATA_MEM_new( S_VAR_HASH );
+  
+  for( i=0; i < (2*HASH_INIT_SIZE); i++ ) {
+
+    key = BINDING_DATA_MEM_new( S_VAR_INT );
+    value = BINDING_DATA_MEM_new( S_VAR_INT );
+    
+    BINDING_DATA_set_int( key, i + 1 );
+    BINDING_DATA_set_int( value, i + 1 );
+    
+    phash = BINDING_DATA_get_hash( hash );
+    VALHASH_set( phash, key, value, CP_REF );
+  }
+
+  VASSERT( VALHASH_size( phash ) == (2 * HASH_INIT_SIZE) );
+  VASSERT( phash->numbuckets == 64 );
+  
+  // *** extract keys of hash (call library function that does that.
+
+  frame_start = EVAL_THREAD_prepare_xcall( &context.main, &xlib[ 0 ] );
+  
+  arg =	EVAL_THREAD_parameter( &context.main, frame_start, 0, S_VAR_NULL );
+  BINDING_DATA_copy( arg, hash, CP_REF );
+  
+  EVAL_THREAD_call_xfunc( &context.main, frame_start, &xlib[ 0 ] ); // don't breathe - indexes in xlib can cagne.
+  values = EVAL_THREAD_get_stack_top( &context.main );
+ 
+  // ****  compute sum of keys; must add up.
+
+  arr = BINDING_DATA_get_arr( values );
+
+  VASSERT( arr != 0 );
+  VASSERT( VALARRAY_size( arr ) == (2 * HASH_INIT_SIZE) );
+
+  for(i = 0, sum = 0 ; i < VALARRAY_size( arr ); i++) {
+    key = VALARRAY_get( arr, i );
+    VASSERT( key->b.value_type == S_VAR_INT );
+
+    sum += key->b.value.long_value;
+  }
+  VASSERT( sum == sums(1, 2 * HASH_INIT_SIZE ) );
+  
+  BINDING_DATA_free( hash );
+  EVAL_CONTEXT_free( &context );
+}
+
+
 void BASIC_gc_test()
 {
   EVAL_CONTEXT context;
@@ -64,7 +134,7 @@ void BASIC_gc_test()
   size_t i;
   size_t before_gc, after_gc;
  
-  VASSERT( EVAL_CONTEXT_init( &context ) == 0 );
+  VASSERT( EVAL_CONTEXT_init( &context, 0 ) == 0 );
 
   VASSERT( EVAL_THREAD_init( &thread, &context ) == 0 );
 
@@ -84,7 +154,6 @@ void BASIC_gc_test()
 
   // stack slot point to cycle start.
   BINDING_DATA_copy( EVAL_THREAD_stack_frame_offset( &context.main, 0 ) , pa1, CP_REF );
-
 
   // do non garbage array
   pa1 = EVAL_THREAD_stack_frame_offset( &context.main, 1 );
@@ -123,7 +192,7 @@ void PRINT_VALUE_test()
   BINDING_DATA *pa1, *pa2, *pa3, tmp_a, tmp_b, tmp_c;
   size_t i, j, next_stack = 0;
   char stmp[ 30 ];
-  VASSERT( EVAL_CONTEXT_init( &context ) == 0 );
+  VASSERT( EVAL_CONTEXT_init( &context, 0 ) == 0 );
 
   VASSERT( EVAL_THREAD_init( &thread, &context ) == 0 );
 
@@ -394,7 +463,7 @@ void XCALL_test()
   AST_XFUNC_DECL x_add_decl = DEFINE_XFUNC2( "x_add", x_add, S_VAR_DOUBLE, "a", S_VAR_INT|S_VAR_DOUBLE , "b", S_VAR_INT|S_VAR_DOUBLE );
   
 
-  VASSERT( EVAL_CONTEXT_init( &context ) == 0 );
+  VASSERT( EVAL_CONTEXT_init( &context, 0 ) == 0 );
   thread = &context.main;
 
   START_INVOKE_RTLIB( &context, test_error_action );

@@ -21,6 +21,8 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
   #define YYLOCPTR &yyloc
 #endif
 
+#define LOC_COMPACT( yyloc ) { yyloc.first_line = yyloc.last_line; yyloc.first_column = yyloc.last_column; }
+
 
 %} 
 
@@ -668,7 +670,7 @@ funcParamDecl : TK_IDENTIFIER optParamSpecs2 {
 
 	  expr = AST_EXPRESSION_init_ref( $<string_value>1, 0, YYLOCPTR );
           
-          //expr->var_type |= $<int_value>2;
+          expr->value_type |= $<int_value>2;
 
 	  $<ast>$ = &expr->base;
 	}
@@ -1187,6 +1189,15 @@ expressionList : expressionList TK_COMMA expr
 
 	  $<ast>$ = &sval->base;
 	}
+
+                | expressionList error
+        {
+	     LOC_COMPACT( yyloc )
+       	     do_yyerror( &yyloc, parse_context,  "Error in array constructor. Must have , between elements" );
+             $<ast>$ = 0;	
+	     return -1;
+         }
+
 	       |    
 	{
 	  AST_VECTOR *sval;
@@ -1234,6 +1245,17 @@ hashClauseList : hashClauseList TK_COMMA hashClause
 
 	  $<ast>$ = &sval->base;
 	}
+
+                | hashClauseList error
+        {
+		
+	     LOC_COMPACT( yyloc )
+       	     do_yyerror( &yyloc, parse_context,  "Error in table constructor. Must have , between elements" );
+             $<ast>$ = $<ast>1;	
+	     return -1;
+        }
+
+        
 	       |
 	{
 	  AST_VECTOR *sval;
@@ -1254,6 +1276,15 @@ hashClause : expr TK_HASH_IT expr
 
 	  $<ast>$ = &scl->base;
 	}	
+            |
+
+          expr error
+  
+        {
+       	     do_yyerror( &@2, parse_context,  "Error in table constructor. must have : between key and value " );
+             $<ast>$ = $<ast>1;	
+        }
+
 	   ;
 
 %%
