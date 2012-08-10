@@ -70,6 +70,15 @@ void HEAP_free( void *ptr )
 
 /* ==================================================================================== */
 
+static BINDING_DATA *STATIC_NULL;
+
+union tagBINDING_DATA *get_CONST_NULL()
+{
+  return STATIC_NULL;
+}
+
+/* ==================================================================================== */
+
 void VALARRAY_set_capacity( VALARRAY *arr, size_t capacity )
 {
   if (arr->capacity < capacity ) {
@@ -121,8 +130,6 @@ void VALARRAY_free( VALARRAY *arr )
   HEAP_free( arr->data );    
 }
 
-static BINDING_DATA *STATIC_NULL;
-
 union tagBINDING_DATA *VALARRAY_get( VALARRAY *arr, size_t idx )
 {
   BINDING_DATA *rval;
@@ -139,6 +146,27 @@ union tagBINDING_DATA *VALARRAY_get( VALARRAY *arr, size_t idx )
   return rval;
 }
 
+union tagBINDING_DATA *VALARRAY_get_n( VALARRAY *arr, size_t idx )
+{
+  BINDING_DATA *rval;
+
+  if (idx >= arr->size) {
+    return 0;
+  }
+  rval = arr->data[ idx ];
+  if (rval == 0) {
+    return 0;
+  }
+  return rval;
+}
+
+
+void set_outer_ref( BINDING_DATA *mem, void *arr, AST_VAR_TYPE ty )
+{
+  assert( mem->b.value_type ==  S_VAR_CODE );
+  mem->b.value.func_value.this_environment = (BINDING_DATA *) _OFFSETOF( arr, BINDING_DATA_VALUE, value );
+  assert( mem->b.value.func_value.this_environment->b.value_type == (short) ty );
+}
 
 void VALARRAY_set( VALARRAY *arr, size_t idx, union tagBINDING_DATA *mem,  CP_KIND copy_value)
 {
@@ -159,7 +187,15 @@ void VALARRAY_set( VALARRAY *arr, size_t idx, union tagBINDING_DATA *mem,  CP_KI
 
    data = BINDING_DATA_MEM_new( S_VAR_NULL );
    arr->data[ idx ] = data;   
-   BINDING_DATA_copy( data, mem, copy_value );
+   
+   if (data->b.value_type != S_VAR_CODE) {
+     BINDING_DATA_copy( data, mem, copy_value );
+   } else {
+     BINDING_DATA_copy( data, mem, CP_VALUE );
+     set_outer_ref( data, arr, S_VAR_LIST );
+   } 
+   
+   assert( ( data->b.value_flags_val & S_VAR_HEAP_VALUE ) != 0);
 // data->b.container = _OFFSETOF(arr, BINDING_DATA_VALUE, value );
 // data->b.value_flags |= S_VAR_COLL_ENTRY;	 
 
@@ -382,6 +418,7 @@ int VALHASH_set( VALHASH *hash, union tagBINDING_DATA *key, union tagBINDING_DAT
 {
   size_t threshold,idx;
   HASH_VALUE_ENTRY *entry;
+  BINDING_DATA *pvalue;
   SRING *bucket;
   int rt;
 
@@ -406,10 +443,16 @@ int VALHASH_set( VALHASH *hash, union tagBINDING_DATA *key, union tagBINDING_DAT
   }
 
   entry->key = BINDING_DATA_MEM_new( S_VAR_NULL );
-  entry->value = BINDING_DATA_MEM_new( S_VAR_NULL );
+  pvalue = entry->value = BINDING_DATA_MEM_new( S_VAR_NULL ); 
  
   BINDING_DATA_copy( entry->key, key, CP_VALUE ); //  table must have a copy of the key, so that it can't be modified by references while it is in the table.
-  BINDING_DATA_copy( entry->value, value, copy_by_value );
+  
+  if (value->b.value_type != S_VAR_CODE) {
+    BINDING_DATA_copy( pvalue, value, copy_by_value );
+  } else {
+    BINDING_DATA_copy( pvalue, value, CP_VALUE );
+    set_outer_ref( pvalue, hash, S_VAR_HASH );
+  } 
 
 //entry->key.b.container = _OFFSETOF(hash, BINDING_DATA_VALUE, value );
 //entry->key.b.value_flags |= S_VAR_COLL_ENTRY;	 
@@ -772,6 +815,15 @@ size_t VALSTRING_hash( VALSTRING *string )
 
 /* ==================================================================================== */
 
+
+void VALFUNCTION_copy( VALFUNCTION *to, VALFUNCTION *from )
+{
+
+  memset( to, 0, sizeof( VALFUNCTION ) );
+  to->fdecl = from->fdecl;
+  to->this_environment = from->this_environment;
+}
+
 int VALFUNCTION_capture_equal( ARRAY *cmpa, ARRAY *cmpb )
 {
     VALFUNCTION_CAPTURE *ca,*cb;
@@ -947,7 +999,7 @@ void  VALFUNCTION_print( FILE *out, VALFUNCTION *func )
 
      fdecl = (AST_FUNC_DECL *) func->fdecl;
 
-     fprintf( out, "%s(", fdecl->f_name );
+     fprintf( out, "sub %s(", fdecl->f_name != 0 ? fdecl->f_name : "" );
 
      for( i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
        if (i > 0) {
@@ -1029,7 +1081,7 @@ BINDING_DATA *BINDING_DATA_follow_ref(  BINDING_DATA *arg )
 	binding = ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer) + pos;
       } else if (value_flags & S_VAR_REF_GLOB) { 
      	pos = binding->b.value.stack2stack_ref;
-	assert( pos < ARRAY_size( &g_cur_thread->binding_data_stack ) );
+	assert( pos < ARRAY_size( &g_context->bindings_global ) );
 	binding = ((BINDING_DATA *) g_context->bindings_global.buffer) + pos;
       } else if (value_flags & S_VAR_CAPTURE_REF) {
         arecord = ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer) + g_cur_thread->current_function_frame_start + 1;
@@ -1148,14 +1200,14 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
       to->b.value.long_value = from->b.value.long_value;
       break;
     case S_VAR_DOUBLE:
-      to->b.value.double_value = to->b.value.double_value;
+      to->b.value.double_value = from->b.value.double_value;
       break;
     case S_VAR_STRING:
       VALSTRING_init( &to->b.value.string_value );
       VALSTRING_copy( &to->b.value.string_value, &from->b.value.string_value );
       break;
     case S_VAR_CODE:
-      // Can funtion object be copied at all ?
+      VALFUNCTION_copy( &to->b.value.func_value, &from->b.value.func_value  );
       break;
     case S_VAR_HASH:
       VALHASH_init( &to->b.value.hash_value );
@@ -1456,7 +1508,7 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
         fprintf( out, "%ld", data->b.value.long_value );
 	break;
     case S_VAR_DOUBLE:
-        fprintf( out, "%f", data->b.value.double_value );
+        fprintf( out, "%e", data->b.value.double_value );
 	break;
     case S_VAR_STRING:
         VALSTRING_print( out, &data->b.value.string_value  );
@@ -1579,8 +1631,12 @@ int EVAL_THREAD_init(EVAL_THREAD *thread, EVAL_CONTEXT *context )
 #if 1
    EVAL_THREAD_push_stack( thread , S_VAR_NULL );
 
-   activation_record =  (VALACTIVATION *) EVAL_THREAD_push_stack( thread , S_VAR_NULL );;
+   //activation_record = (VALACTIVATION *)  
+   EVAL_THREAD_push_stack( thread , S_VAR_NULL );;
    EVAL_THREAD_push_stack( thread , S_VAR_NULL );
+
+
+   activation_record =  (VALACTIVATION *) thread->binding_data_stack.buffer;
 
    memset( activation_record, 0, sizeof( VALACTIVATION ));
    activation_record->function_frame_start = 0;
@@ -1902,11 +1958,16 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
   int frame;
   size_t i;
 
+  EVAL_CONTEXT *ctx = thread->context;
+  SHOW_SOURCE_LINE show_lines = ctx->show_source_line; 
+
+
   for( frame = 1 , arecord = (VALACTIVATION *) EVAL_THREAD_stack_offset( thread, thread->current_activation_record); 
-       arecord->parent_function != 0; 
+       arecord->parent_function != (size_t) -1; 
        arecord = (VALACTIVATION *) EVAL_THREAD_stack_offset( thread, arecord->parent_function), ++frame )
   {
      fdcl = arecord->fdecl;
+
      if (fdcl->type == S_XFUN_DECL) {
 	 xfdecl = (AST_XFUNC_DECL *) fdcl;
  
@@ -1942,7 +2003,43 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
      }
      fprintf( out, ")\n");
 
-     // ??
+     if (fdcl->type == S_FUN_DECL) {
+	// show locals.
+        fdecl = (AST_FUNC_DECL *) fdcl;
+
+	if (HASH_size( &fdecl->scope_map_name_to_binding ) > AST_VECTOR_size( fdecl->func_params) ) {
+	    HASH_Entry *cur;
+
+	    fprintf( out, "\tLocals:\n" );
+	    HASH_FOREACH(cur, &fdecl->scope_map_name_to_binding) 	  
+		BINDING_ENTRY *entry = (BINDING_ENTRY *) cur;
+
+
+		if ((size_t) (entry->stack_offset - 2) >= AST_VECTOR_size( fdecl->func_params) ) {
+
+	 	  BINDING_DATA  *value = ((BINDING_DATA *) thread->binding_data_stack.buffer) + arecord->function_frame_start + entry->stack_offset; 
+	
+	          fprintf( out, "\t\t%s = ", entry->binding_name );
+		  BINDING_DATA_print( out, value , 0 );
+		  fprintf( out, "\n" );
+		}
+
+	    HASH_FOREACH_END 
+	}
+     }
+   
+     if ( show_lines ) {
+        if (arecord->ret_instr)
+	{
+	  show_lines( &arecord->ret_instr->location, ctx->show_source_line_ctx );
+	  fprintf(out, "\n" );
+	}  
+     }
+     
+
+     if (arecord->parent_function == (size_t) -1) {
+       break;
+     }
      //fprintf("%s:%d %s\n",  LEXER_get_file_name( LEXCONTEXT *pc, location->file_id), location->first_line,  activation_record->value.func_activation_record.fdecl->fname );
   }
   return 0;
@@ -1994,7 +2091,9 @@ int EVAL_CONTEXT_init( EVAL_CONTEXT *context, size_t num_globals )
 
   context->is_jmpbuf_set = 0;
   context->current_thread = &context->main;
- 
+  context->show_source_line = 0;
+  context->show_source_line_ctx = 0;
+
   if (EVAL_THREAD_init( &context->main, context )) {
     return -1;
   }

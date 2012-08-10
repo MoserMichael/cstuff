@@ -881,8 +881,8 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC2( "left",   x_left, S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
   DEFINE_XFUNC2( "right",  x_right, S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
 
-  DEFINE_XFUNC1( "print",  x_print, S_VAR_STRING, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
-  DEFINE_XFUNC1( "println",  x_println, S_VAR_STRING, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
+  DEFINE_XFUNC1( "print",  x_print, 0, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
+  DEFINE_XFUNC1( "println",  x_println, 0, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
   DEFINE_XFUNC0( "emptystring",  x_emptystring, S_VAR_STRING ),
      
 

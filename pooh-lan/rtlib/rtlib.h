@@ -39,6 +39,8 @@ void HEAP_realloc( void **ptr, size_t size );
 
 /* ==================================================================================== */
 
+union tagBINDING_DATA *get_CONST_NULL();
+
 
 /* ==================================================================================== */
 
@@ -70,9 +72,11 @@ void VALARRAY_free( VALARRAY *arr );
 // copy binding into array slot; here index is from 0
 void VALARRAY_set( VALARRAY *arr, size_t idx, union tagBINDING_DATA *mem, CP_KIND copy_by_value);
 
-// get array slot; returns 0 if index is out of bound; here index is from 0 
+// get array slot; returns static null binding if index is out of bound; here index is from 0 
 union tagBINDING_DATA *VALARRAY_get( VALARRAY *arr, size_t idx );
 
+// get array slot; returns 0 if index is out of bound; here index is from 0 
+union tagBINDING_DATA *VALARRAY_get_n( VALARRAY *arr, size_t idx );
 
 // compare two arrays for equality; return -1 if 'less' ; 1 if 'greater' ; 0 if 'equal'
 int VALARRAY_equal( VALARRAY *cmpa, VALARRAY *cmpb );
@@ -234,6 +238,9 @@ M_INLINE void VALFUNCTION_init( VALFUNCTION *func )
 void VALFUNCTION_init_cap( VALFUNCTION *fnc, size_t num_captures );
 void VALFUNCTION_init_outer_refs( struct tagEVAL_THREAD *thread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl );
 void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl );
+
+
+void VALFUNCTION_copy( VALFUNCTION *to, VALFUNCTION *from );
 
 
 // Make a capture ; if binding is on stack then forward reference is created.
@@ -710,6 +717,8 @@ typedef struct tagEVAL_CONTEXT {
   jmp_buf jmpbuf; // runtime errors - if runtime error it bails out to mark.
   int  is_jmpbuf_set;
 
+  SHOW_SOURCE_LINE show_source_line;
+  void *show_source_line_ctx;
 } EVAL_CONTEXT;
 
 int  EVAL_CONTEXT_init( EVAL_CONTEXT *context, size_t num_globals );

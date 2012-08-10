@@ -40,6 +40,8 @@ int  PARSECONTEXT_init( PARSECONTEXT *ctx );
 void PARSECONTEXT_free( PARSECONTEXT *ctx );
 
 
+typedef void (*SHOW_SOURCE_LINE) (YYLTYPE *loc, PARSECONTEXT *parse_context );
+
 struct tagAST_FUNC_DECL; 
 struct tagAST_XFUNC_DECL; 
 

@@ -6,6 +6,8 @@ use strict;
 
 my ($f, @tests, $TEST_TOOL,@TEST_ERRORS);
 
+$ENV{"TEST_VERBOSE"}=1;  #enable dumping of ast.
+
 $TEST_TOOL = $ENV{ 'TEST_TOOL' };
 if ($TEST_TOOL ne "") {
   $TEST_TOOL = "$TEST_TOOL ";
@@ -89,6 +91,13 @@ sub show_result
   print "---Eof Test---\n"; 
 }
 
+sub WSIGNAL
+{
+   my $stat = shift;
+
+   return ($stat & 0x7E00) / 256;
+}
+
 
 sub test_it
 {
@@ -106,6 +115,13 @@ sub test_it
 
     my $res = $?;
 
+
+    if (WSIGNAL( $res ) != 0) {
+       print "Test Failed !\n\ttest crashed. Signal  " . WSIGNAL( $res ) . "\n";
+       addFailed( "${test} - crashed. Signal " . WSIGNAL( $res )  );
+       next;
+    }
+
     show_result( $test );
 
     my @tspec = get_test_spec( $test );
@@ -114,7 +130,7 @@ sub test_it
 	if (scalar($res) != 0) {
 	   print "Test Failed !\n\tactual exit status $res expected to be zero\n";
            $failed ++;
-	   addFailed( ${test} );
+	   addFailed( "${test} - test expected to pass, but failed" );
 	   next;
 	}
     } 
@@ -122,7 +138,7 @@ sub test_it
 	if (scalar($res) == 0) {
 	   print "Test Failed !\n\texit status is 0 expected to be not zero.\n";
            $failed ++;
-	   addFailed( ${test} );
+	   addFailed( "${test} - test expected to fail, but passed" );
 	   next;
 	}
     }
@@ -137,6 +153,7 @@ sub test_it
 	  print "Test FAILED\n\tActual STDOUT output differs from expected\n";
           $failed ++;
 	  addFailed( ${test} );
+          next;
         }
       }
 

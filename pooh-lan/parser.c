@@ -66,7 +66,7 @@ YYLTYPE yyloc;
  
   Return Code/Output 
  */
-static void fancy_error(const char *line, int line_num, int column_start, int column_end )
+static void fancy_error(const char *line, int line_num, int column_start, int column_end, int show_highlight )
 {
 	int pos;
 
@@ -83,6 +83,9 @@ static void fancy_error(const char *line, int line_num, int column_start, int co
 	}
 	fprintf(stderr , "\n        |%s\n        |" , line);
 	
+
+	if ( show_highlight )
+	{
 	for(pos = 0; pos < column_start; pos++) {
 		fprintf(stderr,".");
 	}
@@ -90,8 +93,9 @@ static void fancy_error(const char *line, int line_num, int column_start, int co
 	do {
 		fprintf(stderr,"^");
 	} while( ++pos <= column_end);
-
+	
 	fprintf(stderr,"\n");
+	}
 }
  
 
@@ -106,7 +110,7 @@ static void fancy_error(const char *line, int line_num, int column_start, int co
  
   Return Code/Output - 0 - ok, -1 error
  */
-static int fancy_error_report(YYLTYPE *location, const char *file)
+static int fancy_error_report(YYLTYPE *location, const char *file, int show_highlight)
 {
 	int	 line_num = 1;
 	int	 ch;
@@ -136,10 +140,22 @@ static int fancy_error_report(YYLTYPE *location, const char *file)
 	}
 	DBUF_add_null( &buf );
 
-	fancy_error( (char *) buf.buf, location->first_line, location->first_column, location->last_column );
+	fancy_error( (char *) buf.buf, location->first_line, location->first_column, location->last_column,  show_highlight  );
 	fclose(fp);
 	return 0;
 }
+
+void SHOW_SOURCE_LINE_impl (YYLTYPE *loc, PARSECONTEXT *parse_context )
+{
+   YYLTYPE lloc = *loc;
+   while( lloc.first_line <= lloc.last_line)
+   {
+     fancy_error_report( &lloc, 
+	LEXER_get_file_name( &parse_context->lexctx, lloc.file_id ), 0 );
+     lloc.first_line ++;
+   }  
+}
+
 
 #define S_TOKEN_STRART "TK_"
 #define S_TOKEN_START_LEN 3
@@ -256,7 +272,7 @@ void do_yyerror (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format,
 
   
   fancy_error_report( loc, 
-	LEXER_get_file_name( &parse_context->lexctx, loc->file_id) );
+	LEXER_get_file_name( &parse_context->lexctx, loc->file_id), 1 );
 }
 
 void do_yywarning (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format, ...)
@@ -290,7 +306,7 @@ void do_yywarning (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *forma
 
   
   fancy_error_report( loc, 
-	LEXER_get_file_name( &parse_context->lexctx, loc->file_id) );
+	LEXER_get_file_name( &parse_context->lexctx, loc->file_id), 1 );
 }
 
 

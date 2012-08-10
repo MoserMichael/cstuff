@@ -152,7 +152,11 @@ const char *get_var_name( AST_EXPRESSION *expr, REF_SCOPE *scope   )
     return expr->val.ref.lhs;
   }
 
-  indexes = expr->val.ref.indexes;
+  indexes = expr->val.ref.indexes; 
+
+  if (*scope == REF_SCOPE_THIS && indexes == 0) {
+    return 0;
+  }
   assert( indexes != 0 );
   idx = (AST_EXPRESSION *) AST_VECTOR_get( indexes, 0 );
   assert( idx->base.type == S_EXPRESSION && idx->exp_type == S_EXPR_HASH_INDEX );
@@ -272,6 +276,10 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
       }
     
       name = get_var_name( expr, &scope_type );
+      if (name == 0) {
+	 // don't check - reference to this as is.
+	 return;
+      }
       binding = lookup_binding( ctx, name, scope_type, &scope );
 
       if (!binding) {

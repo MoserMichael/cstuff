@@ -30,6 +30,10 @@ int eval( PARSECONTEXT *ctx )
   EVAL_CTX ectx;
 
   if ( !EVAL_init( &ectx, ctx )) {
+
+    ectx.context.show_source_line =  SHOW_SOURCE_LINE_impl;
+    ectx.context.show_source_line_ctx = ctx;
+
     if (EVAL_run( &ectx, ctx->my_ast_root )) {
       return -1;
     } 
