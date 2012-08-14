@@ -939,7 +939,8 @@ typedef struct tagAST_FUNC_CALL_PARAM {
   AST_EXPRESSION *expr;
   const char *label_name;
   size_t param_num; // this is the nth parameter (as declare in function declaration)
-  int	 param_spec;
+  int	 param_spec; // param by ref ?  param optional ?
+  void  *param_decl; // declaration of parameter (differs for xmethod and method)
 } AST_FUNC_CALL_PARAM;
 
 M_INLINE AST_FUNC_CALL_PARAM * AST_FUNC_CALL_PARAM_init( AST_EXPRESSION *expr, const char *label_name, YYLTYPE *location  )
@@ -956,6 +957,7 @@ M_INLINE AST_FUNC_CALL_PARAM * AST_FUNC_CALL_PARAM_init( AST_EXPRESSION *expr, c
   expr->base.parent = &scl->base;
   scl->expr = expr;
   scl->param_spec = 0; 
+  scl->param_decl = 0;
 
   scl->label_name = strdup( label_name );
   scl->param_num = (size_t) -1;

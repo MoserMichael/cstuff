@@ -119,7 +119,7 @@ EVAL_do_expr	eval.c	/^void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)$/;
 EVAL_do_expr	eval.c	/^void EVAL_do_expr( struct tagEVAL_CTX *out, AST_EXPRESSION *expr);$/;"	p	file:	signature:( struct tagEVAL_CTX *out, AST_EXPRESSION *expr)
 EVAL_do_function	eval.c	/^int  EVAL_do_function( struct tagEVAL_CTX *out , AST_FUNC_CALL *scl );$/;"	p	file:	signature:( struct tagEVAL_CTX *out , AST_FUNC_CALL *scl )
 EVAL_do_function	eval.c	/^int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )$/;"	f	signature:( EVAL_CTX *out , AST_FUNC_CALL *scl )
-EVAL_do_function_param	eval.c	/^void EVAL_do_function_param( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL *scl, size_t frame_start )$/;"	f	signature:( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL *scl, size_t frame_start )
+EVAL_do_function_param	eval.c	/^void EVAL_do_function_param( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL *scl, size_t frame_start, int is_xfunc_decl )$/;"	f	signature:( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL *scl, size_t frame_start, int is_xfunc_decl )
 EVAL_double_num_op	eval.c	/^BINDING_DATA * EVAL_double_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDING_DATA *rhs )$/;"	f	signature:( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDING_DATA *rhs )
 EVAL_error	eval.c	/^void EVAL_error( EVAL_CTX *out, AST_BASE *ast, const char *format, ... )$/;"	f	signature:( EVAL_CTX *out, AST_BASE *ast, const char *format, ... )
 EVAL_free	eval.c	/^int EVAL_free( EVAL_CTX *out )$/;"	f	signature:( EVAL_CTX *out )
@@ -622,9 +622,10 @@ optParamSpecs	pars.y	/^optParamSpecs : optParamSpecs optParamSpec$/;"	l
 optParamSpecs2	pars.y	/^optParamSpecs2 : optParamSpecs$/;"	l
 out	eval.h	/^  FILE *out;$/;"	m	struct:tagTRACE_OUT	access:public
 outer_refs	ast.h	/^  AST_VECTOR outer_refs; \/\/ all non local references (closures)$/;"	m	struct:tagAST_FUNC_DECL	access:public
+param_decl	ast.h	/^  void  *param_decl; \/\/ declaration of parameter (differs for xmethod and method)$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
 param_name	ast.h	/^    const char *param_name;$/;"	m	struct:tagAST_XFUNC_PARAM_DECL	access:public
 param_num	ast.h	/^  size_t param_num; \/\/ this is the nth parameter (as declare in function declaration)$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
-param_spec	ast.h	/^  int	 param_spec;$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
+param_spec	ast.h	/^  int	 param_spec; \/\/ param by ref ?  param optional ?$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
 params	ast.h	/^  AST_XFUNC_PARAM_DECL params[ MAX_XFUNC_PARAM ]; $/;"	m	struct:tagAST_XFUNC_DECL	access:public
 parent	ast.h	/^	struct tagAST_BASE *parent;$/;"	m	struct:tagAST_BASE	typeref:struct:tagAST_BASE::tagAST_BASE	access:public
 parse_expression_sequence	lexer.c	/^STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end_of_expression )$/;"	f	signature:( LEXCONTEXT *pc, DBUF *parent, char *end_of_expression )
@@ -735,8 +736,9 @@ tagAST_FUNC_CALL_PARAM	ast.h	/^typedef struct tagAST_FUNC_CALL_PARAM {$/;"	s
 tagAST_FUNC_CALL_PARAM::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
 tagAST_FUNC_CALL_PARAM::expr	ast.h	/^  AST_EXPRESSION *expr;$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
 tagAST_FUNC_CALL_PARAM::label_name	ast.h	/^  const char *label_name;$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
+tagAST_FUNC_CALL_PARAM::param_decl	ast.h	/^  void  *param_decl; \/\/ declaration of parameter (differs for xmethod and method)$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
 tagAST_FUNC_CALL_PARAM::param_num	ast.h	/^  size_t param_num; \/\/ this is the nth parameter (as declare in function declaration)$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
-tagAST_FUNC_CALL_PARAM::param_spec	ast.h	/^  int	 param_spec;$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
+tagAST_FUNC_CALL_PARAM::param_spec	ast.h	/^  int	 param_spec; \/\/ param by ref ?  param optional ?$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
 tagAST_FUNC_DECL	ast.h	/^typedef struct tagAST_FUNC_DECL {$/;"	s
 tagAST_FUNC_DECL::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_FUNC_DECL	access:public
 tagAST_FUNC_DECL::checker_state	ast.h	/^  int checker_state;  $/;"	m	struct:tagAST_FUNC_DECL	access:public

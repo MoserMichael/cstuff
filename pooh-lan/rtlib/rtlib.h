@@ -281,6 +281,8 @@ typedef struct tagVALACTIVATION {
 #define S_VAR_REF_HEAP2STACK		0x04	// reference on heap to stack value (treat like special case of capture)
 #define S_VAR_REF_GLOB                  0x08    // reference to global
 #define S_VAR_CAPTURE_REF		0x10    // refers to a captured value. (index into function objects' array of captured values)
+#define S_VAR_OBJECT                	0x20    // collection that contains function object, the function object has a this pointer to containing collection.
+
 
 /* ----------- */
 

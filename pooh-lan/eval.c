@@ -470,7 +470,7 @@ BINDING_DATA *EVAL_string_op( int op, EVAL_THREAD *cthread, BINDING_DATA *lhs, B
 	VALSTRING_set( &tmpres.b.value.string_value, (const char *) tmpl.buf, tmpl.buf_used );
      }
      if ((rhs->b.value_type & S_VAR_ANY) == S_VAR_STRING) {
-	VALSTRING_appends( &tmpres.b.value.string_value, (const char *) &rhs->b.value.string_value );
+	VALSTRING_append( &tmpres.b.value.string_value,  &rhs->b.value.string_value );
      } else {
         DBUF_init( &tmpl, 0);
 	BINDING_DATA_prints( &tmpl, rhs, 0 );
@@ -1112,12 +1112,13 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr)
   }
 }
 
-void EVAL_do_function_param( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL *scl, size_t frame_start )
+void EVAL_do_function_param( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL *scl, size_t frame_start, int is_xfunc_decl )
 {
       size_t i;
       AST_FUNC_CALL_PARAM *param;  
       EVAL_TRACE_ENTRY *tracer = 0;
-  
+      BINDING_DATA *param_value,*param_value_r;
+
       tracer = out->top_trace;
 
       // *** evaluate function parameters ***
@@ -1136,7 +1137,32 @@ void EVAL_do_function_param( EVAL_CTX *out , EVAL_THREAD *cthread, AST_FUNC_CALL
 //	EVAL_reference( out, param->expr, 0, CP_VALUE );
 	EVAL_do_expr( out,  param->expr );
 
-	BINDING_DATA_move( EVAL_THREAD_parameter_ref( cthread, frame_start, param->param_num ), EVAL_THREAD_pop_stack( cthread ) );
+
+        param_value_r = EVAL_THREAD_pop_stack( cthread );  
+
+        param_value = BINDING_DATA_follow_ref( param_value_r );
+        if ( is_xfunc_decl ) {
+
+           AST_XFUNC_PARAM_DECL *xdecl = (AST_XFUNC_PARAM_DECL *) param->param_decl; 
+           if ((xdecl->var_type & S_VAR_ANY) != S_VAR_ANY &&
+               (xdecl->var_type & param_value->b.value_type) == 0 )
+           {
+              EVAL_error( out, &param->base, "Parameter ~%s expects %s type", param->label_name, get_type_name(xdecl->var_type) );
+           }
+        } else {
+           AST_EXPRESSION *paramdecl = (AST_EXPRESSION *) param->param_decl;
+           BINDING_ENTRY *bentry = paramdecl->val.ref.binding;
+           if ((bentry->value_type  & S_VAR_ANY) != S_VAR_ANY &&
+               (bentry->value_type & param_value->b.value_type) == 0 )
+           {
+              // error
+              EVAL_error( out, &param->base, "Parameter ~%s expects %s type", param->label_name, get_type_name( bentry->value_type ) );
+           }
+ 
+  
+        }
+
+	BINDING_DATA_move( EVAL_THREAD_parameter_ref( cthread, frame_start, param->param_num ), param_value_r );
       }
 }
 
@@ -1173,8 +1199,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
       fdecl = valfunc->fdecl;
 
       // check that all parameters are supplied.
-      if (CHECKER_check_func_call_params( out->ctx, 0, scl, fdecl ) ||
-          CHECKER_check_func_call_params( out->ctx, 0, scl, fdecl ) ) {
+      if (CHECKER_check_func_call_params( out->ctx, 0, scl, fdecl ) ) {
 	EVAL_error( out, &scl->base,  "Internal error in function call" );
       }
     
@@ -1197,7 +1222,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
       
       frame_start = EVAL_THREAD_prepare_call( cthread, ffdecl );
 
-      EVAL_do_function_param( out, cthread, scl, frame_start );
+      EVAL_do_function_param( out, cthread, scl, frame_start, 0 );
 
       if (tracer) {
         DBUF_add(  &tracer->text, ")", 1 );
@@ -1224,7 +1249,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl )
       
       frame_start = EVAL_THREAD_prepare_xcall( cthread, (AST_XFUNC_DECL *) fdecl );
       
-      EVAL_do_function_param( out, cthread, scl, frame_start );
+      EVAL_do_function_param( out, cthread, scl, frame_start, 1 );
       
       if (tracer) {
         DBUF_add(  &tracer->text, " )", 2 );

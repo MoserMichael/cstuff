@@ -1,4 +1,4 @@
-    #include "parsectx.h"
+#include "parsectx.h"
 #include "ast.h"
 #include "parser.h"
 
@@ -630,11 +630,15 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
         if (fcall->call_params != 0)
 	 for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
 	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
-	   if (CHECKER_find_param_by_label2( fdecl->func_params, param->label_name ) == 0) {
+	   if ((parame = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name )) == 0) {
              do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s", fdecl->f_name, param->label_name );
 	     rt = -1;
 	   }
 	   param->param_num = i;
+           param->param_decl = parame;
+           if (parame) {
+	     param->param_spec = parame->value_type & S_VAR_OPT_PARAM_MASK;  
+           }
 	}	
         if (fdecl->func_params)
          for( i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
@@ -643,7 +647,6 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
              do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the required parameter ~%s", parame->val.ref.lhs );
 	     rt = -1;
 	   }
-	   param->param_spec = parame->value_type & S_VAR_OPT_PARAM_MASK;  
          }
        } else { // pass 1
         if (fcall->call_params)
@@ -651,8 +654,8 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 	   AST_VAR_TYPE var_type;
 	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
            param_expr = param->expr;
-           fparam = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name );
-
+           //fparam = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name );
+           fparam = (AST_EXPRESSION *) param->param_decl;
 	   if (fparam->val.ref.binding) {
 	      BINDING_ENTRY *entry = fparam->val.ref.binding;
 
@@ -667,7 +670,9 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
              do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s but defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( fparam->value_type ) );
 	     rt = -1;
            } 
-    	   assign_value( param_expr, fparam->value_type, &param->base.location );
+	   if (param_expr->exp_type == S_EXPR_REFERENCE) { 
+    	     assign_value( param_expr, fparam->value_type, &param->base.location );
+	   }  
          }
        }
      } else { // xfunc
@@ -686,6 +691,10 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 	     rt = -1;
 	   }
 	   param->param_num = i;
+           param->param_decl = xparam;
+           if (xparam) {
+	     param->param_spec = xparam->var_type & S_VAR_OPT_PARAM_MASK;  
+           }  
           }
      
          for( i = 0; i < MAX_XFUNC_PARAM; i++ ) {
@@ -698,21 +707,26 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 	     do_yyerror( &fcall->call_params->base.location, ctx, "function is called without the required parameter ~%s", xparam->param_name );
 	     rt = -1;
 	   }
-	   param->param_spec = xparam->var_type & S_VAR_OPT_PARAM_MASK;  
          }
-       } else {
+       
+       } else { // pass 1
+
          if (fcall->call_params) 
           for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
 	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
            param_expr = param->expr;
-	   xparam = CHECKER_xfind_param_by_label( xfunc, param->label_name ); 
+	 //xparam = CHECKER_xfind_param_by_label( xfunc, param->label_name ); 
+           xparam = (AST_XFUNC_PARAM_DECL *) param->param_decl;
 	
 	   if (xparam &&  can_assign( param_expr->value_type, xparam->var_type & S_VAR_ALL_TYPES,  0)) {
 	     do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( xparam->var_type ) );
 	     rt = -1;
 	   }
+
+	   if (param_expr->exp_type == S_EXPR_REFERENCE) { 
  
-           assign_value( param_expr, xparam->var_type, &param_expr->base.location );
+		assign_value( param_expr, xparam->var_type, &param_expr->base.location );
+	   }
 	 }
        }
     }

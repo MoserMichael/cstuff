@@ -764,6 +764,7 @@ anonymousFunction : TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLO
 	  AST_FUNC_DECL_set_body( fdecl, parse_context, (AST_BASE_LIST *) $<ast>5 );
 	  scl = AST_EXPRESSION_init( S_EXPR_LAMBDA, S_VAR_CODE, YYLOCPTR);
 	  scl->val.fdecl =  (AST_BASE *) fdecl;
+          fdecl->base.parent = &scl->base;
 
 	  $<ast>$ = &scl->base;
 

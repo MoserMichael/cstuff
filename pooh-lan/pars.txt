@@ -577,15 +577,15 @@ static const yytype_uint16 yyrline[] =
      511,   520,   523,   534,   539,   548,   550,   561,   574,   591,
      608,   620,   627,   629,   636,   648,   659,   668,   679,   684,
      690,   695,   701,   705,   712,   722,   732,   739,   751,   752,
-     753,   754,   757,   777,   783,   790,   793,   794,   798,   805,
-     808,   809,   810,   811,   812,   813,   814,   815,   816,   817,
-     818,   819,   822,   829,   832,   833,   834,   837,   844,   847,
-     848,   849,   853,   860,   863,   864,   865,   870,   871,   880,
-     888,   893,   908,   915,   923,   931,   939,   943,   945,   955,
-     965,   974,   984,  1000,  1012,  1020,  1033,  1041,  1054,  1067,
-    1080,  1089,  1089,  1093,  1095,  1104,  1115,  1137,  1145,  1150,
-    1161,  1172,  1183,  1193,  1202,  1211,  1225,  1238,  1249,  1260,
-    1271,  1281
+     753,   754,   757,   778,   784,   791,   794,   795,   799,   806,
+     809,   810,   811,   812,   813,   814,   815,   816,   817,   818,
+     819,   820,   823,   830,   833,   834,   835,   838,   845,   848,
+     849,   850,   854,   861,   864,   865,   866,   871,   872,   881,
+     889,   894,   909,   916,   924,   932,   940,   944,   946,   956,
+     966,   975,   985,  1001,  1013,  1021,  1034,  1042,  1055,  1068,
+    1081,  1090,  1090,  1094,  1096,  1105,  1116,  1138,  1146,  1151,
+    1162,  1173,  1184,  1194,  1203,  1212,  1226,  1239,  1250,  1261,
+    1272,  1282
 };
 #endif
 
@@ -2608,6 +2608,7 @@ yyreduce:
 	  AST_FUNC_DECL_set_body( fdecl, parse_context, (AST_BASE_LIST *) (yyvsp[(5) - (6)].ast) );
 	  scl = AST_EXPRESSION_init( S_EXPR_LAMBDA, S_VAR_CODE, YYLOCPTR);
 	  scl->val.fdecl =  (AST_BASE *) fdecl;
+          fdecl->base.parent = &scl->base;
 
 	  (yyval.ast) = &scl->base;
 
@@ -2622,7 +2623,7 @@ yyreduce:
   case 93:
 
 /* Line 1455 of yacc.c  */
-#line 778 "pars.y"
+#line 779 "pars.y"
     {
 	    do_yywarning( &yylloc, parse_context,  "empty body of anonymous function (function without a name)" );
 	;}
@@ -2631,7 +2632,7 @@ yyreduce:
   case 94:
 
 /* Line 1455 of yacc.c  */
-#line 784 "pars.y"
+#line 785 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2643,21 +2644,21 @@ yyreduce:
   case 96:
 
 /* Line 1455 of yacc.c  */
-#line 793 "pars.y"
+#line 794 "pars.y"
     { (yyval.int_value) = TK_OP_LOGICAL_AND; ;}
     break;
 
   case 97:
 
 /* Line 1455 of yacc.c  */
-#line 794 "pars.y"
+#line 795 "pars.y"
     { (yyval.int_value) = TK_OP_LOGICAL_OR; ;}
     break;
 
   case 98:
 
 /* Line 1455 of yacc.c  */
-#line 799 "pars.y"
+#line 800 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2669,91 +2670,91 @@ yyreduce:
   case 100:
 
 /* Line 1455 of yacc.c  */
-#line 808 "pars.y"
+#line 809 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_EQ; ;}
     break;
 
   case 101:
 
 /* Line 1455 of yacc.c  */
-#line 809 "pars.y"
+#line 810 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_NE; ;}
     break;
 
   case 102:
 
 /* Line 1455 of yacc.c  */
-#line 810 "pars.y"
+#line 811 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_LT; ;}
     break;
 
   case 103:
 
 /* Line 1455 of yacc.c  */
-#line 811 "pars.y"
+#line 812 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_GT; ;}
     break;
 
   case 104:
 
 /* Line 1455 of yacc.c  */
-#line 812 "pars.y"
+#line 813 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_LE; ;}
     break;
 
   case 105:
 
 /* Line 1455 of yacc.c  */
-#line 813 "pars.y"
+#line 814 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_GE; ;}
     break;
 
   case 106:
 
 /* Line 1455 of yacc.c  */
-#line 814 "pars.y"
+#line 815 "pars.y"
     { (yyval.int_value) = TK_OP_STR_EQ; ;}
     break;
 
   case 107:
 
 /* Line 1455 of yacc.c  */
-#line 815 "pars.y"
+#line 816 "pars.y"
     { (yyval.int_value) = TK_OP_STR_NE; ;}
     break;
 
   case 108:
 
 /* Line 1455 of yacc.c  */
-#line 816 "pars.y"
+#line 817 "pars.y"
     { (yyval.int_value) = TK_OP_STR_LT; ;}
     break;
 
   case 109:
 
 /* Line 1455 of yacc.c  */
-#line 817 "pars.y"
+#line 818 "pars.y"
     { (yyval.int_value) = TK_OP_STR_GT; ;}
     break;
 
   case 110:
 
 /* Line 1455 of yacc.c  */
-#line 818 "pars.y"
+#line 819 "pars.y"
     { (yyval.int_value) = TK_OP_STR_LE; ;}
     break;
 
   case 111:
 
 /* Line 1455 of yacc.c  */
-#line 819 "pars.y"
+#line 820 "pars.y"
     { (yyval.int_value) = TK_OP_STR_GE; ;}
     break;
 
   case 112:
 
 /* Line 1455 of yacc.c  */
-#line 823 "pars.y"
+#line 824 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2765,28 +2766,28 @@ yyreduce:
   case 114:
 
 /* Line 1455 of yacc.c  */
-#line 832 "pars.y"
+#line 833 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_SUBST; ;}
     break;
 
   case 115:
 
 /* Line 1455 of yacc.c  */
-#line 833 "pars.y"
+#line 834 "pars.y"
     { (yyval.int_value) = TK_OP_STR_CAT; ;}
     break;
 
   case 116:
 
 /* Line 1455 of yacc.c  */
-#line 834 "pars.y"
+#line 835 "pars.y"
     { (yyval.int_value) =  TK_OP_NUM_ADD; ;}
     break;
 
   case 117:
 
 /* Line 1455 of yacc.c  */
-#line 838 "pars.y"
+#line 839 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2798,28 +2799,28 @@ yyreduce:
   case 119:
 
 /* Line 1455 of yacc.c  */
-#line 847 "pars.y"
+#line 848 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_DIV; ;}
     break;
 
   case 120:
 
 /* Line 1455 of yacc.c  */
-#line 848 "pars.y"
+#line 849 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_MULT; ;}
     break;
 
   case 121:
 
 /* Line 1455 of yacc.c  */
-#line 849 "pars.y"
+#line 850 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_MOD; ;}
     break;
 
   case 122:
 
 /* Line 1455 of yacc.c  */
-#line 854 "pars.y"
+#line 855 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2831,28 +2832,28 @@ yyreduce:
   case 124:
 
 /* Line 1455 of yacc.c  */
-#line 863 "pars.y"
+#line 864 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_ADD; ;}
     break;
 
   case 125:
 
 /* Line 1455 of yacc.c  */
-#line 864 "pars.y"
+#line 865 "pars.y"
     { (yyval.int_value) = TK_OP_NUM_SUBST; ;}
     break;
 
   case 126:
 
 /* Line 1455 of yacc.c  */
-#line 865 "pars.y"
+#line 866 "pars.y"
     { (yyval.int_value) = TK_OP_LOGICAL_NEGATE; ;}
     break;
 
   case 128:
 
 /* Line 1455 of yacc.c  */
-#line 872 "pars.y"
+#line 873 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2865,7 +2866,7 @@ yyreduce:
   case 129:
 
 /* Line 1455 of yacc.c  */
-#line 881 "pars.y"
+#line 882 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2878,7 +2879,7 @@ yyreduce:
   case 130:
 
 /* Line 1455 of yacc.c  */
-#line 889 "pars.y"
+#line 890 "pars.y"
     {
 	  (yyval.ast) = (AST_BASE *) AST_compile_multi_part_string( parse_context );
 	  LEXER_clean_string_parts( &parse_context->lexctx );
@@ -2888,7 +2889,7 @@ yyreduce:
   case 131:
 
 /* Line 1455 of yacc.c  */
-#line 894 "pars.y"
+#line 895 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 	  STRING_PART **cur;
@@ -2908,7 +2909,7 @@ yyreduce:
   case 132:
 
 /* Line 1455 of yacc.c  */
-#line 909 "pars.y"
+#line 910 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2920,7 +2921,7 @@ yyreduce:
   case 133:
 
 /* Line 1455 of yacc.c  */
-#line 916 "pars.y"
+#line 917 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2933,7 +2934,7 @@ yyreduce:
   case 134:
 
 /* Line 1455 of yacc.c  */
-#line 924 "pars.y"
+#line 925 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2946,7 +2947,7 @@ yyreduce:
   case 135:
 
 /* Line 1455 of yacc.c  */
-#line 932 "pars.y"
+#line 933 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -2959,7 +2960,7 @@ yyreduce:
   case 136:
 
 /* Line 1455 of yacc.c  */
-#line 940 "pars.y"
+#line 941 "pars.y"
     {
 	  (yyval.ast) = (yyvsp[(2) - (3)].ast);
 	;}
@@ -2968,7 +2969,7 @@ yyreduce:
   case 138:
 
 /* Line 1455 of yacc.c  */
-#line 946 "pars.y"
+#line 947 "pars.y"
     {
 	   do_yyerror( & (yylsp[(2) - (3)]), parse_context,  "Closing ) expected after expression" );
 	   (yyval.ast) = (yyvsp[(2) - (3)].ast);
@@ -2979,7 +2980,7 @@ yyreduce:
   case 139:
 
 /* Line 1455 of yacc.c  */
-#line 956 "pars.y"
+#line 957 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 	  
@@ -2992,7 +2993,7 @@ yyreduce:
   case 140:
 
 /* Line 1455 of yacc.c  */
-#line 966 "pars.y"
+#line 967 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -3005,7 +3006,7 @@ yyreduce:
   case 141:
 
 /* Line 1455 of yacc.c  */
-#line 975 "pars.y"
+#line 976 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -3018,7 +3019,7 @@ yyreduce:
   case 142:
 
 /* Line 1455 of yacc.c  */
-#line 985 "pars.y"
+#line 986 "pars.y"
     {
 	  AST_VECTOR *scl;
 
@@ -3038,7 +3039,7 @@ yyreduce:
   case 143:
 
 /* Line 1455 of yacc.c  */
-#line 1001 "pars.y"
+#line 1002 "pars.y"
     {
 	  AST_VECTOR *scl;
 
@@ -3052,7 +3053,7 @@ yyreduce:
   case 144:
 
 /* Line 1455 of yacc.c  */
-#line 1013 "pars.y"
+#line 1014 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -3065,7 +3066,7 @@ yyreduce:
   case 145:
 
 /* Line 1455 of yacc.c  */
-#line 1021 "pars.y"
+#line 1022 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -3082,7 +3083,7 @@ yyreduce:
   case 146:
 
 /* Line 1455 of yacc.c  */
-#line 1034 "pars.y"
+#line 1035 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -3095,7 +3096,7 @@ yyreduce:
   case 147:
 
 /* Line 1455 of yacc.c  */
-#line 1042 "pars.y"
+#line 1043 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -3112,7 +3113,7 @@ yyreduce:
   case 148:
 
 /* Line 1455 of yacc.c  */
-#line 1055 "pars.y"
+#line 1056 "pars.y"
     {
 	  AST_EXPRESSION *index;
 	  AST_EXPRESSION *strconst;
@@ -3130,7 +3131,7 @@ yyreduce:
   case 149:
 
 /* Line 1455 of yacc.c  */
-#line 1068 "pars.y"
+#line 1069 "pars.y"
     {
           do_yyerror( & (yylsp[(1) - (2)]), parse_context,  "Identifier expected after dot" );
 
@@ -3141,7 +3142,7 @@ yyreduce:
   case 150:
 
 /* Line 1455 of yacc.c  */
-#line 1080 "pars.y"
+#line 1081 "pars.y"
     {
 	  AST_FUNC_CALL *fcall;
 
@@ -3154,7 +3155,7 @@ yyreduce:
   case 154:
 
 /* Line 1455 of yacc.c  */
-#line 1095 "pars.y"
+#line 1096 "pars.y"
     {
 	  AST_VECTOR *scl;
 
@@ -3166,7 +3167,7 @@ yyreduce:
   case 155:
 
 /* Line 1455 of yacc.c  */
-#line 1105 "pars.y"
+#line 1106 "pars.y"
     {
 	  AST_VECTOR *scl;
           scl = (AST_VECTOR *) (yyvsp[(1) - (2)].ast);
@@ -3182,7 +3183,7 @@ yyreduce:
   case 156:
 
 /* Line 1455 of yacc.c  */
-#line 1116 "pars.y"
+#line 1117 "pars.y"
     {
 	  AST_VECTOR *scl;
 
@@ -3196,7 +3197,7 @@ yyreduce:
   case 157:
 
 /* Line 1455 of yacc.c  */
-#line 1138 "pars.y"
+#line 1139 "pars.y"
     {
 	  AST_FUNC_CALL_PARAM *param;
 
@@ -3209,7 +3210,7 @@ yyreduce:
   case 158:
 
 /* Line 1455 of yacc.c  */
-#line 1146 "pars.y"
+#line 1147 "pars.y"
     {
             do_yyerror( YYLOCPTR, parse_context,  "Missing parameter label in function call (should start with ~)" );
 	    (yyval.ast) = 0;
@@ -3219,7 +3220,7 @@ yyreduce:
   case 159:
 
 /* Line 1455 of yacc.c  */
-#line 1151 "pars.y"
+#line 1152 "pars.y"
     {
 	     do_yyerror( &(yylsp[(2) - (2)]), parse_context,  "in function parameter expression" );
              (yyval.ast) = 0;	
@@ -3229,7 +3230,7 @@ yyreduce:
   case 160:
 
 /* Line 1455 of yacc.c  */
-#line 1162 "pars.y"
+#line 1163 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 	  
@@ -3243,7 +3244,7 @@ yyreduce:
   case 161:
 
 /* Line 1455 of yacc.c  */
-#line 1173 "pars.y"
+#line 1174 "pars.y"
     {
 	  AST_VECTOR *sval;
 
@@ -3259,7 +3260,7 @@ yyreduce:
   case 162:
 
 /* Line 1455 of yacc.c  */
-#line 1184 "pars.y"
+#line 1185 "pars.y"
     {
 	  AST_VECTOR *sval;
 	  
@@ -3273,7 +3274,7 @@ yyreduce:
   case 163:
 
 /* Line 1455 of yacc.c  */
-#line 1194 "pars.y"
+#line 1195 "pars.y"
     {
 	     LOC_COMPACT( yyloc )
        	     do_yyerror( &yyloc, parse_context,  "Error in array constructor. Must have , between elements" );
@@ -3285,7 +3286,7 @@ yyreduce:
   case 164:
 
 /* Line 1455 of yacc.c  */
-#line 1202 "pars.y"
+#line 1203 "pars.y"
     {
 	  AST_VECTOR *sval;
 	  
@@ -3298,7 +3299,7 @@ yyreduce:
   case 165:
 
 /* Line 1455 of yacc.c  */
-#line 1212 "pars.y"
+#line 1213 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 	  
@@ -3313,7 +3314,7 @@ yyreduce:
   case 166:
 
 /* Line 1455 of yacc.c  */
-#line 1226 "pars.y"
+#line 1227 "pars.y"
     {
 	  AST_VECTOR *sval;
 
@@ -3331,7 +3332,7 @@ yyreduce:
   case 167:
 
 /* Line 1455 of yacc.c  */
-#line 1239 "pars.y"
+#line 1240 "pars.y"
     {
 	  AST_VECTOR *sval;
 	  
@@ -3346,7 +3347,7 @@ yyreduce:
   case 168:
 
 /* Line 1455 of yacc.c  */
-#line 1250 "pars.y"
+#line 1251 "pars.y"
     {
 		
 	     LOC_COMPACT( yyloc )
@@ -3359,7 +3360,7 @@ yyreduce:
   case 169:
 
 /* Line 1455 of yacc.c  */
-#line 1260 "pars.y"
+#line 1261 "pars.y"
     {
 	  AST_VECTOR *sval;
 	  
@@ -3372,7 +3373,7 @@ yyreduce:
   case 170:
 
 /* Line 1455 of yacc.c  */
-#line 1272 "pars.y"
+#line 1273 "pars.y"
     {
 	  AST_EXPRESSION *scl;
 
@@ -3385,7 +3386,7 @@ yyreduce:
   case 171:
 
 /* Line 1455 of yacc.c  */
-#line 1283 "pars.y"
+#line 1284 "pars.y"
     {
        	     do_yyerror( &(yylsp[(2) - (2)]), parse_context,  "Error in table constructor. must have : between key and value " );
              (yyval.ast) = (yyvsp[(1) - (2)].ast);	
@@ -3395,7 +3396,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 3399 "pars.txt"
+#line 3400 "pars.txt"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -3614,7 +3615,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 1290 "pars.y"
+#line 1291 "pars.y"
 
 	
 

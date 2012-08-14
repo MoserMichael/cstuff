@@ -305,9 +305,14 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
     op = scl->val.expr.op;
   
     // string concatenation allows for any types.
-    if (op == TK_OP_STR_CAT || op == TK_HASH_IT) {
+    if (op == TK_OP_STR_CAT ) {
+      scl->value_type = S_VAR_STRING; // always produces a string.
       return 0;
     }
+    if (op ==  TK_HASH_IT) {
+      return 0;
+    }
+
     lhs = scl->val.expr.expr_left;
     rhs = scl->val.expr.expr_right;
 
