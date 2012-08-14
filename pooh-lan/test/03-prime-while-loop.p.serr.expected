@@ -1,0 +1,10 @@
+035|... = primes( ~max 100)...
+006| mark = [ ] 
+007| ret = [ ] 
+009| n = 2
+010| while (n:2 < max:100):true
+011|  m = (2 * n:2):4
+012|  loop
+013|   if (m:4 > max:100):false
+014|   end # if
+Segmentation fault (core dumped)
