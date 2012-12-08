@@ -14,5 +14,5 @@ ARCH=`uname -m`
 
 ROOT=../../${OS_TYPE}-${OS_VERSION}-${ARCH}
 
-gcc ex4.c -o ex4 -I../.. -L${ROOT}/lib -lcorothread -lnutils -lcutils -lm
+gcc ex4.c -o ex4 -I../.. -L${ROOT}/lib -lcorothrjmp -lcutils -lbutils -lm
 
