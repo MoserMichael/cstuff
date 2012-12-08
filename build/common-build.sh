@@ -36,8 +36,8 @@ function check_make
       echo "make must be GNU Make"
   fi
 
-  local cur_major=`echo "$ver" | sed -e 's/GNU Make \([0-9]*\)\.\([0-9]*\)/\1/'`
-  local cur_minor=`echo "$ver" | sed -e 's/GNU Make \([0-9]*\)\.\([0-9]*\)/\2/'`
+  local cur_major=`echo "$ver" | sed -e 's/GNU Make \([0-9]*\)\.\([0-9]*\).*/\1/'`
+  local cur_minor=`echo "$ver" | sed -e 's/GNU Make \([0-9]*\)\.\([0-9]*\).*/\2/'`
 
   local major="3"
   local minor="81"
@@ -64,6 +64,9 @@ make_file $TARGETS
 
 cd ..
 
-make cleanall $@
-
-make test $@
+if [ "x$1" != "x" ]; then
+  make $@
+else
+  make cleanall $@
+  make test $@
+fi

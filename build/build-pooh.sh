@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-TARGETS="vtest cutils butils pooh-lan"
+TARGETS="vtest cutils butils nutils corothread pooh-lan"
 
 DIR=`dirname $0`
 
