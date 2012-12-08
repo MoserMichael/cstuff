@@ -32,6 +32,7 @@ M_INLINE int IPADDRESS_family( IPADDRESS *addr) {
   return addr->family;
 }
 
+
 /**
  * @}
  */

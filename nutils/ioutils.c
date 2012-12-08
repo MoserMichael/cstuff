@@ -11,12 +11,21 @@
 
 int disable_sigpipe()
 {
+#if 0
   //if (!has_disabled_sigpipe) {
     if (signal(SIGPIPE,SIG_IGN) == SIG_ERR) {
       return -1;
     }
   //has_disabled_sigpipe = 1;
   //}
+#endif
+  struct sigaction new_actn, old_actn;
+  
+  new_actn.sa_handler = SIG_IGN;
+  sigemptyset (&new_actn.sa_mask);
+
+  new_actn.sa_flags = 0;
+  sigaction (SIGPIPE, &new_actn, &old_actn);
 
   return 0;
 }
