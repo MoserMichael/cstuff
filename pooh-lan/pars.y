@@ -52,7 +52,7 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 
 %token TK_ERROR
 
-%right TK_WHILE TK_FOR TK_IF TK_LOOP TK_ASSIGN TK_ASSIGN_REF TK_ELSE TK_ELSIF TK_END TK_RETURN TK_BREAK TK_NEXT TK_IDENTIFIER TK_INTEGER_CONSTANT TK_STRING_CONSTANT TK_MULTI_PART_STRING_CONSTANT TK_DOUBLE_CONSTANT TK_NIL TK_FALSE TK_TRUE TK_EMPTY_STRING TK_SUB TK_INCLUDE 
+%right TK_WHILE TK_FOR TK_IF TK_LOOP TK_ASSIGN TK_ASSIGN_REF TK_ELSE TK_ELSIF TK_END TK_RETURN TK_BREAK TK_NEXT TK_IDENTIFIER TK_INTEGER_CONSTANT TK_STRING_CONSTANT TK_MULTI_PART_STRING_CONSTANT TK_DOUBLE_CONSTANT TK_NIL TK_FALSE TK_TRUE TK_EMPTY_STRING TK_SUB TK_INCLUDE TK_LOADEXTENSION 
 
 
 %token TK_OP_LOGICAL_AND TK_OP_LOGICAL_OR
@@ -63,7 +63,7 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 
 %token TK_OP_STR_CAT TK_HASH_IT
 
-%token TK_OP_NUM_ADD TK_OP_NUM_SUBST TK_OP_NUM_DIV TK_OP_NUM_MULT TK_OP_NUM_MOD  
+%token TK_OP_NUM_ADD TK_OP_NUM_SUBST TK_OP_NUM_DIV TK_OP_NUM_MULT TK_OP_NUM_MOD TK_OP_NUM_POW 
 
 %token TK_OP_LOGICAL_NEGATE 
 
@@ -139,9 +139,9 @@ stmtList : stmtList stmt
 		AST_BASE_LIST *slist;
 
 		slist = (AST_BASE_LIST *) $<ast>1;
-	        AST_BASE_LIST_add( slist, $<ast>2 );
+		AST_BASE_LIST_add( slist, $<ast>2 );
+
 	        $<ast>$ = &slist->base;
-		
 		AST_BASE_set_location( $<ast>$, YYLOCPTR );  
 	    }
 	 | stmt 
@@ -158,6 +158,7 @@ stmtList : stmtList stmt
 stmt : valueDeepCopyAssignStmt
      | referenceCopyAssignmentStmt
      | includeStmt
+     | loadExtensionStmt 
      | functionCallStmt
      | functionDefStmt
      | ifStmt			
@@ -242,7 +243,7 @@ forStmt : TK_FOR TK_IDENTIFIER expr stmtInnerList TK_END
 	    AST_FOR_LOOP *scl;
 	    AST_EXPRESSION *loopID;
 
-	    loopID = AST_EXPRESSION_init_ref( $<string_value>2, 0, YYLOCPTR );
+	    loopID = AST_EXPRESSION_init_ref( $<string_value>2, 0, YYLOCPTR, parse_context ) ;
 
             scl = AST_FOR_LOOP_init( loopID, (AST_EXPRESSION *) $<ast>3, (AST_BASE_LIST *) $<ast>4, YYLOCPTR );
 	    $<ast>$ = &scl->base;
@@ -285,7 +286,7 @@ forStmt : TK_FOR TK_IDENTIFIER expr stmtInnerList TK_END
 
 	    do_yywarning( &yylloc, parse_context,  "empty body of for statement" );
 
-	    loopID = AST_EXPRESSION_init_ref( $<string_value>2, 0, YYLOCPTR );
+	    loopID = AST_EXPRESSION_init_ref( $<string_value>2, 0, YYLOCPTR, parse_context );
 
             scl = AST_FOR_LOOP_init( loopID, (AST_EXPRESSION *) $<ast>3, (AST_BASE_LIST *) 0, YYLOCPTR );
 	    $<ast>$ = &scl->base;
@@ -404,7 +405,7 @@ valueDeepCopyAssignStmt : assignmentLeftHandSide TK_ASSIGN expr
 	    $<ast>$ = &scl->base;
 
 
-	    do_yyerror( & @2, parse_context,  "in assignment; right hand side (value of assignment) is wrong" );
+	    do_yyerror( & @3, parse_context,  "in assignment; right hand side (value of assignment) is wrong" );
 	} 	
 	;
 
@@ -422,7 +423,7 @@ referenceCopyAssignmentStmt : assignmentLeftHandSide TK_ASSIGN_REF  expr
 	    scl = AST_ASSIGNMENT_init( CP_REF, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3, YYLOCPTR  );
 	    $<ast>$ = &scl->base;
 
-	    do_yyerror( & @2, parse_context,  "in assignment; right hand side (value of assignment) is wrong" );
+	    do_yyerror( & @3, parse_context,  "in assignment; right hand side (value of assignment) is wrong" );
 	} 	
 	;
 
@@ -444,7 +445,7 @@ multiValueLeftHandSide : TK_BRACKET_OPEN multiValueLeftHandSideList TK_BRACKET_C
 	{
 	  AST_EXPRESSION *scl;
 
-	  do_yyerror( & @2, parse_context, "] expected after sequence" );
+	  do_yyerror( & @3, parse_context, "] expected after sequence" );
 	  
 	  scl = AST_EXPRESSION_init( S_EXPR_LIST_VALUES, S_VAR_LIST, YYLOCPTR   ); 
 
@@ -511,7 +512,8 @@ ifStmt  : TK_IF condClause elseClauses TK_END
 elseClauses : elsifClause TK_ELSE  conditionContent
 	{  
 	    if ($<ast>1 != 0) {
-	      $<ast>$ = (AST_BASE *) AST_COND_set_else_block( (AST_COND *) $<ast>1, (AST_BASE_LIST *) $<ast>3 );
+	      AST_COND_set_else_block( (AST_COND *) $<ast>1, (AST_BASE_LIST *) $<ast>3 );
+              $<ast>$ = (AST_BASE *) $<ast>1;
             } else {
 	      $<ast>$ = (AST_BASE *) AST_COND_init( 0, (AST_BASE_LIST *) $<ast>3, YYLOCPTR );
 	    }
@@ -520,13 +522,15 @@ elseClauses : elsifClause TK_ELSE  conditionContent
 	    | elsifClause 
 	    ;
 
-elsifClause : elsifClause TK_ELSIF condClause
+elsifClause : TK_ELSIF condClause elsifClause
 	{
-	    if ($<ast>1 == 0) {
-	      $<ast>$ = $<ast>3;
+	    if ($<ast>2 == 0) {
+	      $<ast>$ = $<ast>2;
 	    } else {
-	      AST_COND_set_else( (AST_COND *) $<ast>1, (AST_COND *) $<ast>3 );
-	      $<ast>$ = $<ast>1;
+              if ($<ast>3 != 0) {
+	        AST_COND_set_else( (AST_COND *) $<ast>2, (AST_COND *) $<ast>3 );
+	      }
+              $<ast>$ = $<ast>2;
 	    }
 	    AST_BASE_set_location( $<ast>$, YYLOCPTR );  
 	}
@@ -556,17 +560,50 @@ conditionContent : stmtInnerList
 	}
 	    ;
 		
-	                                    
+loadExtensionStmt :  TK_LOADEXTENSION TK_STRING_CONSTANT
+	{
+		STRING_PART **cur;
+		const char *sval;
+		AST_BASE *scl;
+
+		cur = (STRING_PART **) ARRAY_at( &parse_context->lexctx.string_parts, 0 );
+		sval = (const char *) (*cur)->part_data.buf;
+
+		load_extension_library( parse_context, &( @2 ) , sval );
+
+		LEXER_clean_string_parts( &parse_context->lexctx );
+
+		scl = (AST_BASE *) malloc( sizeof( AST_BASE ) );
+	        AST_BASE_init( scl, S_NULL,  YYLOCPTR  );
+	        $<ast>$ = scl;
+	}
+	    ;
 
 includeStmt : TK_INCLUDE TK_STRING_CONSTANT
 	{
-		int ret = LEXER_scan_file( &parse_context->lexctx, 0 );
-	        free( $<string_value>2 );
+		STRING_PART **cur;
+		const char *sval;
+		AST_BASE *scl;
+
+		cur = (STRING_PART **) ARRAY_at( &parse_context->lexctx.string_parts, 0 );
+		sval = (const char *) (*cur)->part_data.buf;
+
+		int ret = LEXER_scan_file( &parse_context->lexctx, sval );
 		if (ret < 0) {
-		  do_yyerror( &yylloc, parse_context,  "Can't open include file %s", $<string_value>2 );
+		  char *spath = INC_PATH_to_text( parse_context->lexctx.inc_path );
+		  do_yyerror( &(@2), parse_context,  "Can't open file %s, tried to open the file in current directory %s%s Try to specify the search path with -I <directory name> or -i <directory name> command line options.",
+			sval, 
+			spath != 0 ? "and then in each directory that is part of the search path: " : 0,
+			spath != 0 ? spath : 0 );
 		  return -1;
 		}
-		$<ast>$ = 0;
+	     
+	        scl = (AST_BASE *) malloc( sizeof( AST_BASE ) );
+	        AST_BASE_init( scl, S_NULL,  YYLOCPTR  );
+	        $<ast>$ = scl;
+
+		LEXER_clean_string_parts( &parse_context->lexctx );
+
 	}
 	;
 
@@ -619,7 +656,7 @@ functionPrototypeDecl : TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PA
 	}
 		| TK_SUB TK_IDENTIFIER error 
 	{
-	   do_yyerror( &yylloc, parse_context,  "In a function definition the ( sign should be right after the function name" );
+	   do_yyerror( &@3, parse_context,  "In a function definition the ( sign should be right after the function name" );
            return -1;
         }
 		;
@@ -668,7 +705,7 @@ funcParamDecls : funcParamDecls  TK_COMMA funcParamDecl
 funcParamDecl : TK_IDENTIFIER optParamSpecs2 {
 	  AST_EXPRESSION *expr;
 
-	  expr = AST_EXPRESSION_init_ref( $<string_value>1, 0, YYLOCPTR );
+	  expr = AST_EXPRESSION_init_ref( $<string_value>1, 0, YYLOCPTR , parse_context );
           
           expr->value_type |= $<int_value>2;
 
@@ -754,14 +791,23 @@ expr : logicalExp
      | anonymousFunction
      ;   
 
-anonymousFunction : TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE stmtInnerList TK_END
+anonymousFunctionPrototype : TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
 	{
-	  AST_EXPRESSION *scl; 
-	  AST_FUNC_DECL *fdecl;
+          AST_FUNC_DECL *fdecl;
 	  
 	  fdecl = AST_FUNC_DECL_init( 0,  (AST_VECTOR *) $<ast>3, parse_context, YYLOCPTR);
 
-	  AST_FUNC_DECL_set_body( fdecl, parse_context, (AST_BASE_LIST *) $<ast>5 );
+          $<ast>$ = &fdecl->base;
+        }
+     ;
+anonymousFunction : anonymousFunctionPrototype stmtInnerList TK_END
+	{
+          AST_FUNC_DECL *fdecl;
+	  AST_EXPRESSION *scl; 
+
+          fdecl = (AST_FUNC_DECL *) $<ast>1;
+	  
+          AST_FUNC_DECL_set_body( fdecl, parse_context, (AST_BASE_LIST *) $<ast>2 );
 	  scl = AST_EXPRESSION_init( S_EXPR_LAMBDA, S_VAR_CODE, YYLOCPTR);
 	  scl->val.fdecl =  (AST_BASE *) fdecl;
           fdecl->base.parent = &scl->base;
@@ -772,10 +818,9 @@ anonymousFunction : TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLO
 	    do_yyerror( & @1 , parse_context,  "function definition not closed with end keyword" );
 	    parse_context->stmt_not_closed = 0;
 	  }
-  
 	} 
 	    |
-	TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE TK_END
+	anonymousFunctionPrototype TK_END
 	{
 	    do_yywarning( &yylloc, parse_context,  "empty body of anonymous function (function without a name)" );
 	}
@@ -796,14 +841,14 @@ logExpOp : TK_OP_LOGICAL_AND { $<int_value>$ = TK_OP_LOGICAL_AND; }
 	 ;
 
 
-compExp : compExp compExpOp addExp
+compExp : compExp compExpOp powExp
 	{
 	  AST_EXPRESSION *scl;
 
 	  scl = AST_EXPRESSION_init_binary( $<int_value>2, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3 );
 	  $<ast>$ = &scl->base;
 	}
-	| addExp
+	| powExp
 	;
 
 compExpOp : TK_OP_NUM_EQ { $<int_value>$ = TK_OP_NUM_EQ; }  
@@ -819,6 +864,17 @@ compExpOp : TK_OP_NUM_EQ { $<int_value>$ = TK_OP_NUM_EQ; }
 	  | TK_OP_STR_LE { $<int_value>$ = TK_OP_STR_LE; }  
 	  | TK_OP_STR_GE { $<int_value>$ = TK_OP_STR_GE; }               
 	  ;
+
+powExp  : powExp TK_OP_NUM_POW addExp
+	{
+	  AST_EXPRESSION *scl;
+
+	  scl = AST_EXPRESSION_init_binary( TK_OP_NUM_POW, (AST_EXPRESSION *) $<ast>1, (AST_EXPRESSION *) $<ast>3 );
+	  $<ast>$ = &scl->base;
+	}
+	| addExp
+	;
+
 
 addExp  : addExp addExpOp multExp
 	{
@@ -967,16 +1023,16 @@ varRef : TK_IDENTIFIER varIndexes
        	{
 	  AST_EXPRESSION *scl;
 
-	  scl = AST_EXPRESSION_init_ref( $<string_value>1, (AST_VECTOR *) $<ast>2, YYLOCPTR );
-
-	  $<ast>$ = &scl->base;
+	  scl = AST_EXPRESSION_init_ref( $<string_value>1, (AST_VECTOR *) $<ast>2, YYLOCPTR, parse_context );
+	  if (scl) 
+	    $<ast>$ = &scl->base;
 	}	
 	    | 
 	TK_IDENTIFIER 	
 	{
 	  AST_EXPRESSION *scl;
 
-	  scl = AST_EXPRESSION_init_ref( $<string_value>1, 0, YYLOCPTR );
+	  scl = AST_EXPRESSION_init_ref( $<string_value>1, 0, YYLOCPTR, parse_context );
 
 	  $<ast>$ = &scl->base;
 	}

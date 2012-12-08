@@ -13,9 +13,9 @@
 %x	 comment
 
 INT_CONST	[0-9]+
-ID		[a-zA-Z][a-zA-Z0-9_]*
-PARAM		"~"[a-zA-Z#][a-zA-Z0-9_]*
-DOUBLE		[0-9]+"."[0-9]+
+ID		[a-zA-Z_][a-zA-Z0-9_]*
+PARAM		"~"[a-zA-Z_][a-zA-Z0-9_]*
+DOUBLE		[0-9]+"."[0-9]+([Ee][+-][0-9]+)?
 
 
 %%
@@ -77,6 +77,9 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "include" { MY_YY_RETURN(TK_INCLUDE); }
 
+"loadextension" { MY_YY_RETURN(TK_LOADEXTENSION); }
+ 
+
 "=="	{ MY_YY_RETURN(TK_OP_NUM_EQ); }
 
 "="	{ MY_YY_RETURN(TK_ASSIGN);    }
@@ -126,6 +129,9 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "/"	{ MY_YY_RETURN(TK_OP_NUM_DIV); }
 
+"^"	{ MY_YY_RETURN(TK_OP_NUM_POW); }
+ 
+
 "!"	{ MY_YY_RETURN(TK_OP_LOGICAL_NEGATE); }
  
 "not"	{ MY_YY_RETURN(TK_OP_LOGICAL_NEGATE); }
@@ -153,8 +159,8 @@ DOUBLE		[0-9]+"."[0-9]+
 
 "byref" { MY_YY_RETURN(TK_BYREF); }
 
-"nill"  { MY_YY_RETURN(TK_NIL); }
-"Nill"  { MY_YY_RETURN(TK_NIL); }
+"null"  { MY_YY_RETURN(TK_NIL); }
+"Null"  { MY_YY_RETURN(TK_NIL); }
 
 "false" { MY_YY_RETURN(TK_FALSE); }
 "False" { MY_YY_RETURN(TK_FALSE); }
