@@ -12,32 +12,32 @@ BINDING_ENTRY *find_binding( AST_FUNC_DECL *fdecl, const char *name )
   return  (BINDING_ENTRY *)  HASH_find( &fdecl->scope_map_name_to_binding, (void *) name, -1);
 }
 
-BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, int has_value, REF_SCOPE scope  )
+BINDING_ENTRY * make_binding2( PARSECONTEXT *ctx, AST_FUNC_DECL *decl, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, int has_value, REF_SCOPE scope  )
 {
    BINDING_ENTRY *binding;
-   AST_FUNC_DECL *decl;
    int add_offset = 0;
-
-   assert( ctx->chkctx.current_function != 0 );
-   decl = ctx->chkctx.current_function;
-
-   if (scope == REF_SCOPE_LOCAL && decl->base.parent == 0) {
-     scope = REF_SCOPE_GLOBAL;
-     add_offset = 1; // global heap - start of heap has some fixed values (const NULL, etc )
-   }
-
+ 
    binding = (BINDING_ENTRY *) malloc( sizeof( BINDING_ENTRY ) );
    if (!binding) {
      return 0;
    }
 
-   binding->def_location = *location;
+   if (scope == REF_SCOPE_GLOBAL && decl->base.parent == 0)
+	add_offset = 1; // global heap - start of heap has some fixed values (const NULL, etc )
+
+
+   if (location)
+	binding->def_location = *location;
+   else 
+        memset( &binding->def_location, 0, sizeof( YYLTYPE ) );
+   
    binding->value_type = value_type;
    binding->has_value = has_value;
    binding->binding_name = name;
    binding->stack_offset = add_offset + ( ++decl->last_stack_offset );
    binding->scope = scope;
-
+   binding->source = 0;
+   binding->scope_nesting = -1;
    //fprintf( stderr,">>add %s %p\n", name, decl );
 
    if (HASH_insert( &decl->scope_map_name_to_binding, &binding->entry, (void *)  name, -1  )) {
@@ -52,6 +52,20 @@ BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYP
    }	
 
    return binding;
+}
+
+BINDING_ENTRY * make_binding( PARSECONTEXT *ctx, AST_VAR_TYPE value_type, YYLTYPE *location, const char *name, int has_value, REF_SCOPE scope  )
+{
+   AST_FUNC_DECL *decl;
+   
+   assert( ctx->chkctx.current_function != 0 );
+   decl = ctx->chkctx.current_function;
+
+   if (scope == REF_SCOPE_LOCAL && decl->base.parent == 0) {
+     scope = REF_SCOPE_GLOBAL;
+   }
+   return make_binding2( ctx, decl, value_type, location, name, has_value, scope  );
+ 
 }
 
 BINDING_ENTRY *lookup_binding( PARSECONTEXT *ctx, const char *name,  REF_SCOPE scope, int *rscope )
@@ -75,7 +89,7 @@ BINDING_ENTRY *lookup_binding( PARSECONTEXT *ctx, const char *name,  REF_SCOPE s
        return  find_binding( decl, name );
 
     case REF_SCOPE_CLOSURE:
-       nsc = 1;
+       nsc = 0;
        while( decl->funcs.parent != 0 ) {
 	  
 	  decl = _OFFSETOF( decl->funcs.parent,  AST_FUNC_DECL, funcs );
@@ -136,6 +150,7 @@ int CHECKER_init( CHECKERCTX *ctx)
 
 void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base );
 
+#if 0
 const char *get_var_name( AST_EXPRESSION *expr, REF_SCOPE *scope   )
 {
   AST_VECTOR *indexes;
@@ -165,8 +180,9 @@ const char *get_var_name( AST_EXPRESSION *expr, REF_SCOPE *scope   )
  
   return idx->val.const_value.string_value; 
 }
+#endif
 
-
+#if  0
 AST_EXPRESSION *get_first_index( AST_EXPRESSION *expr   )
 {
   AST_VECTOR *indexes;
@@ -185,16 +201,24 @@ AST_EXPRESSION *get_first_index( AST_EXPRESSION *expr   )
   }
   return (AST_EXPRESSION *) AST_VECTOR_get( indexes, nidx );
 }
+#endif
 
 int is_indexed_ref( AST_EXPRESSION *expr )
 {
   AST_VECTOR *indexes;
+#if 0  
   size_t nidx;
+#endif
 
   if (expr->exp_type != S_EXPR_REFERENCE) {
     return 0; 
   }
-
+  
+  indexes = expr->val.ref.indexes;
+  if (!indexes ) {
+    return 0;
+  }
+ #if 0
   nidx = 0;
   if (strcmp(expr->val.ref.lhs,"this") == 0 ||
       strcmp(expr->val.ref.lhs,"global") == 0 ||
@@ -202,11 +226,9 @@ int is_indexed_ref( AST_EXPRESSION *expr )
     nidx = 1;
   }
 
-  indexes = expr->val.ref.indexes;
-  if (!indexes ) {
-    return 0;
-  }
-  return AST_VECTOR_size( indexes ) > nidx;
+ return AST_VECTOR_size( indexes ) > nidx;
+#endif  
+  return AST_VECTOR_size( indexes ) > 0;
 }
 
 const char *get_func_name( AST_BASE *func_def)
@@ -267,7 +289,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 
     case S_EXPR_REFERENCE: {
       BINDING_ENTRY *binding;
-      int scope;
+      int scope_nesting;
       REF_SCOPE scope_type; 
       const char *name;
 
@@ -275,25 +297,39 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
          CHECKER_pass( ctx, (AST_BASE *) expr->val.ref.indexes );
       }
     
+#if 0      	
       name = get_var_name( expr, &scope_type );
       if (name == 0) {
-	 // don't check - reference to this as is.
+	 // don't check - reference to this as is
 	 return;
       }
-      binding = lookup_binding( ctx, name, scope_type, &scope );
+#endif
 
-      if (!binding) {
-        AST_BASE *func_def;
+      name = expr->val.ref.lhs;
+      scope_type = expr->val.ref.scope;
 
-        // if no variable has been found - try to find a function of the given name
-        func_def = PARSECONTEXT_find_function_def( ctx, name ); 
-        if (func_def) {
+      // check if name is defined as variable, if yes return definition of variable (binding)
+      binding = lookup_binding( ctx, name, scope_type, &scope_nesting );
+
+      if (!binding )  {         
+        AST_BASE *func_def = 0;
+
+	// local scope and reference to global function have the same syntax, if not defined as local, check if this is a named function ref.
+	if ( scope_type == REF_SCOPE_LOCAL ) {  
+          func_def = PARSECONTEXT_find_function_def( ctx, name ); 
+        }
+	
+	if (func_def) {
+
+           if (ctx->chkctx.is_left_hand_side) {
+	      do_yyerror( &expr->base.location, ctx, "%s is a function name, so this name can't be assigned a value", name );
+	      return;
+	   }
+	   
            // the expression is turned into a function reference,
 	   if (expr->exp_type == S_EXPR_REFERENCE) {
              expr->exp_type = S_EXPR_LAMBDA_RESOLVED_REF;
              expr->value_type = S_VAR_CODE;
-           //free(expr->val.ref.lhs );
-	   //expr->val.ref.lhs = 0;
              expr->val.fdecl = func_def;
 	   }
            return ;
@@ -309,9 +345,14 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 
       if (binding && binding->has_value) { // variable already defined, check that usage is according to definition
 	    
+#if 0	    
 	AST_EXPRESSION *first_index =  get_first_index( expr );
+#endif	
+	AST_EXPRESSION *first_index = 0; 	
 	int is_error = 0;
 	
+	if (expr->val.ref.indexes != 0)
+	    first_index = (AST_EXPRESSION *) AST_VECTOR_get( expr->val.ref.indexes, 0 ); 
 
 	if (first_index != 0 ) {
 	   
@@ -377,6 +418,15 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	}
       }
 
+#if 0
+      if (expr->val.ref.scope == REF_SCOPE_THIS) {
+         if (strcmp( expr->val.ref.lhs, "this" ) == 0)
+           expr->value_type = S_VAR_HASH;
+	 else 
+           expr->value_type = S_VAR_ANY;
+      }
+#endif
+
       switch( scope_type ) {
         case REF_SCOPE_THIS:
 	  return;
@@ -386,13 +436,39 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	    return;
 	  }
 	  break;
-        case REF_SCOPE_CLOSURE:
+        case REF_SCOPE_CLOSURE: {
+	  ARRAY *outer_refs; 
+	  BINDING_ENTRY *entry, *new_entry;
+	  size_t i;
+	 
           if (!binding) {
 	    do_yyerror( &expr->base.location, ctx, "Closure variable %s is used without having been assigned a value", name );
  	    return;
 	  }
-	  assert( ctx->chkctx.current_function );
-	  AST_VECTOR_add( &ctx->chkctx.current_function->outer_refs, &expr->base );
+	  assert( ctx->chkctx.current_function ); 
+
+	  // find if closure hsas already been defined.
+	  outer_refs = &ctx->chkctx.current_function->outer_refs;  
+	  
+	  for( i = 0; i < ARRAY_size( outer_refs ); i++ ) {
+	    void **tmp = (void **) ARRAY_at( outer_refs, i ); 
+	    entry = (BINDING_ENTRY *) *tmp;
+	    assert( entry->scope == REF_SCOPE_CLOSURE );
+	    if (entry->source == binding) {
+	      break;
+	    }
+	  }
+	  if (i < ARRAY_size( outer_refs )) {
+            expr->val.ref.binding = entry;
+	    return;
+	  }
+	  new_entry = make_binding( ctx, binding->value_type, &expr->base.location, name, 1, REF_SCOPE_CLOSURE  );
+	  new_entry->source = binding;
+	  new_entry->stack_offset = i;
+	  new_entry->scope_nesting = scope_nesting;  
+	  
+	  ARRAY_push_back( outer_refs, &new_entry, sizeof( void * ) );
+	  }
 	  break;
 	case REF_SCOPE_LOCAL: {
           AST_VAR_TYPE binding_type = S_VAR_ANY;
@@ -422,7 +498,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	      }
 
 	      binding =  make_binding(  ctx, binding_type, &expr->base.location, expr->val.ref.lhs, 1, REF_SCOPE_LOCAL  );
-      	      scope = 0;
+      	    //scope = 0;
             } else {
 	      do_yyerror( &expr->base.location, ctx, "local variable %s is used without having been assigned a value", expr->val.ref.lhs );
 	      return;
@@ -482,6 +558,9 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
         func_type = ((AST_XFUNC_DECL *) fdecl)->return_type_value;
       }
  
+      // ugly - test is true if in expression context, but not true for FOR statements.
+      if (func->base.parent == 0 || func->base.parent->parent == 0 || func->base.parent->parent->type != S_FOR) {
+
       if (ctx->chkctx.pass == 0) {
 	expr->value_type = func_type == 0 ? S_VAR_ANY : func_type;
       } else {
@@ -491,15 +570,15 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 	    do_yyerror( &expr->base.location, ctx, "Function %s does not return a value, but is used as %s", get_func_name(fdecl), get_type_name( expr->value_type ) );
 	    is_error = 1;
 	} else if (can_assign( expr->value_type, func_type, &offending_type)) {
-	    do_yyerror( &expr->base.location, ctx, "Function %s returns %s but is used as %s", get_func_name(fdecl), get_type_name( func_type ), get_type_name( expr->value_type ));
+	    do_yyerror( &expr->base.location, ctx, "Function %s returns %s but is used as %s", get_func_name(fdecl), get_type_name( func_type ), get_type_name2( expr->value_type ));
 	    is_error = 1;
 	}
 
 	if (is_error && fdecl->type != S_XFUN_DECL)  {
 	    do_yyerror( &fdecl->location, ctx, "Function %s is defined here", get_func_name(fdecl) );
 	}
-
-      }
+	}
+       }
       }
       break;
 
@@ -556,7 +635,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 
 
 
-AST_FUNC_CALL_PARAM *CHECKER_find_param_by_label( AST_VECTOR *vect, const char *param_name )
+AST_FUNC_CALL_PARAM *CHECKER_find_param_by_label( AST_VECTOR *vect, const char *param_name)
 {
     size_t i;
     AST_FUNC_CALL_PARAM *param;
@@ -574,7 +653,7 @@ AST_FUNC_CALL_PARAM *CHECKER_find_param_by_label( AST_VECTOR *vect, const char *
     return 0;
 }
 
-AST_EXPRESSION *CHECKER_find_param_by_label2( AST_VECTOR *vect, const char *param_name )
+AST_EXPRESSION *CHECKER_find_param_by_label2( AST_VECTOR *vect, const char *param_name, size_t *num_param)
 {
     size_t i;
     AST_EXPRESSION *param;
@@ -586,13 +665,14 @@ AST_EXPRESSION *CHECKER_find_param_by_label2( AST_VECTOR *vect, const char *para
     for( i = 0; i < AST_VECTOR_size( vect ); i++ ) {
 	param = (AST_EXPRESSION *) AST_VECTOR_get( vect, i );
 	if (strcmp( param->val.ref.lhs, param_name ) == 0) {
+            *num_param = i;
 	    return param;
 	}
     }
     return 0;
 }
 
-AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , const char *param_name )
+AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , const char *param_name, size_t *num_param )
 {
     size_t i;
     AST_XFUNC_PARAM_DECL *param;
@@ -604,6 +684,7 @@ AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , cons
 	  break;
 	}
 	if (strcmp( param->param_name, param_name ) == 0) {
+            *num_param = i;
 	    return param;
 	}
     }
@@ -612,7 +693,7 @@ AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , cons
 
 int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL *fcall, AST_BASE *func_def )
 {
-    size_t i;
+    size_t i, num_param;
     AST_FUNC_CALL_PARAM *param;
     AST_EXPRESSION *param_expr;
     int rt = 0;
@@ -630,11 +711,11 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
         if (fcall->call_params != 0)
 	 for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
 	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
-	   if ((parame = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name )) == 0) {
+	   if ((parame = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name, &num_param )) == 0) {
              do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s", fdecl->f_name, param->label_name );
 	     rt = -1;
 	   }
-	   param->param_num = i;
+	   param->param_num = num_param;
            param->param_decl = parame;
            if (parame) {
 	     param->param_spec = parame->value_type & S_VAR_OPT_PARAM_MASK;  
@@ -667,7 +748,7 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 	   }
             
            if ( fparam &&  can_assign( param_expr->value_type, var_type & S_VAR_ALL_TYPES , 0)) {
-             do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s but defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( fparam->value_type ) );
+             do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s but defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name2( fparam->value_type ) );
 	     rt = -1;
            } 
 	   if (param_expr->exp_type == S_EXPR_REFERENCE) { 
@@ -685,12 +766,12 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
           for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
 	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
   	
-	   xparam = CHECKER_xfind_param_by_label( xfunc, param->label_name ); 
+	   xparam = CHECKER_xfind_param_by_label( xfunc, param->label_name, &num_param ); 
 	   if (xparam == 0  ) {
              do_yyerror( &param->base.location, ctx, "function %s does not have a parameter ~%s",  xfunc->f_name, param->label_name );
 	     rt = -1;
 	   }
-	   param->param_num = i;
+	   param->param_num = num_param;
            param->param_decl = xparam;
            if (xparam) {
 	     param->param_spec = xparam->var_type & S_VAR_OPT_PARAM_MASK;  
@@ -719,7 +800,7 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
            xparam = (AST_XFUNC_PARAM_DECL *) param->param_decl;
 	
 	   if (xparam &&  can_assign( param_expr->value_type, xparam->var_type & S_VAR_ALL_TYPES,  0)) {
-	     do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name( xparam->var_type ) );
+	     do_yyerror( &param->base.location, ctx, "parameter ~%s is called as %s but defined as %s", param->label_name, get_type_name( param_expr->value_type), get_type_name2( xparam->var_type ) );
 	     rt = -1;
 	   }
 
@@ -1011,6 +1092,7 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
     lhs = (AST_EXPRESSION *) scl->left_side; 
     rhs = (AST_EXPRESSION *) scl->right_side;
 
+#if 0
     // assignment of array constructor
     if (rhs->exp_type == S_EXPR_HASH_VALUES || rhs->exp_type == S_EXPR_LIST_VALUES ) {
         // .. and this is not multi value assignment
@@ -1019,6 +1101,7 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
            scl->type = CP_MOVE; 
         }   
     }
+#endif    
  
     if (lhs->exp_type != S_EXPR_LIST_VALUES) { // not multi value left hand side
 
@@ -1133,6 +1216,9 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
   
   case S_BREAK:
     break;
+ 
+  case S_NULL:
+    break;
 
   //default:
     //fflush(out);
@@ -1150,6 +1236,10 @@ int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE *program)
   
   ctx->func_decls = 0;
   ctx->is_root_func = 1;
+
+  // declare built in global variables.
+  make_binding2( pctx, fdecl, S_VAR_LIST, 0, "ARGV", 1, REF_SCOPE_GLOBAL  );
+  make_binding2( pctx, fdecl, S_VAR_HASH, 0, "ENV", 1, REF_SCOPE_GLOBAL  );
 
   ctx->pass = 0;
   CHECKER_pass( pctx, &fdecl->base );

@@ -6,15 +6,18 @@
 #include <stdlib.h>
 
 void STACKS_test();
-void CTHREAD_test();
+void CTHREAD_test_fib();
 void CTHREAD_test_nested();
 void VAL_test();
+void CTHREAD_test_simple();
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( VAL_test )
-//	VTEST_TESTN( STACKS_test )
-	VTEST_TESTN( CTHREAD_test )
+	VTEST_TESTN( STACKS_test )
+	VTEST_TESTN( CTHREAD_test_simple )
+	VTEST_TESTN( CTHREAD_test_fib )
         VTEST_TESTN( CTHREAD_test_nested )
+
 VTEST_END_SUITE
 
 

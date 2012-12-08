@@ -14,12 +14,15 @@
   this feature is not quire enabled by default, so here are some helpers.
  * ****************************************************************************** */
 
+#if 0
+/* doesn't work with older versions of gcc */
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wunused-function"
- 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif 
+
 #ifdef IS_REENTRANT 
   
-  #pragma GCC diagnostic ignored "-Wunused-parameter"
 
   #define YY_TYPEDEF_YY_SCANNER_T
 
@@ -141,10 +144,12 @@ void yyerror (char const *);
 #include "lex.txt"
 
 
+#if 0
+/* doesn't work with older versions of gcc */
 #pragma GCC diagnostic warning "-Wsign-compare"
 #pragma GCC diagnostic warning "-Wunused-function"
 #pragma GCC diagnostic warning "-Wunused-parameter"
-
+#endif
 
 #ifdef IS_REENTRANT 
   #define yyloc  (* yyg->yylloc_r)
@@ -201,9 +206,11 @@ typedef struct tagMY_YY_BUFFER_STATE {
 
 
 
-int LEXER_init( LEXCONTEXT *pc )
+int LEXER_init( LEXCONTEXT *pc , INC_PATH *inc_path)
 
 {
+	pc->inc_path = inc_path;
+
 #ifdef IS_REENTRANT
 	if (yylex_init( &pc->yyscanner ) ) {
 	  return -1;
@@ -238,8 +245,6 @@ static int is_file_already_opened( LEXCONTEXT *pc, const char *file_name);
 static char *copy_file_name(const char *file_name);
                 
 
-
-int LEXER_init( LEXCONTEXT *pc );
 
 int LEXER_free( LEXCONTEXT *pc )
 {
@@ -368,6 +373,15 @@ int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )
 	/* check if file can be opened before pushing include stack */
 	fp = fopen( file_name, "r" );
 	if (!fp) {
+	    char * fname = INC_PATH_resolve( pc->inc_path, file_name );
+	    if (!fname) 
+		return -1;
+	    
+	    fp = fopen( fname, "r" );
+	    
+	    free( fname );
+
+	    if (!fp)
 		return -1;
 	}
 
@@ -682,8 +696,8 @@ STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end
 
 //start = yyloc;
   start.file_id = yyloc.file_id;
-  start.first_line = yylineno;
-  start.first_column = yycolumn;
+  start.first_line = start.last_line = yylineno;
+  start.first_column = start.last_column = yycolumn;
 
   part = STRING_PART_init( 1, &start );
   if (!part) {
@@ -743,8 +757,8 @@ STRING_PART * parse_string_sequence( LEXCONTEXT *pc, DBUF *parent, const char *s
   *has_follow_up = 0;
   
   start.file_id = yyloc.file_id;
-  start.first_line = yylineno;
-  start.first_column = yycolumn;
+  start.first_line = start.last_line = yylineno;
+  start.first_column = start.last_column = yycolumn;
 
  
   part = STRING_PART_init( 0, &start );

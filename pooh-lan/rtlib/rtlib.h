@@ -11,6 +11,8 @@
 #include <cutils/array.h>
 #include <cutils/sring.h>
 #include <cutils/dring.h>
+#include <cutils/dddlist.h>
+
 
 #include <pooh-lan/ast.h>
 
@@ -71,6 +73,8 @@ void VALARRAY_free( VALARRAY *arr );
 
 // copy binding into array slot; here index is from 0
 void VALARRAY_set( VALARRAY *arr, size_t idx, union tagBINDING_DATA *mem, CP_KIND copy_by_value);
+
+union  tagBINDING_DATA  *VALARRAY_set_entry( VALARRAY *arr, size_t idx );
 
 // get array slot; returns static null binding if index is out of bound; here index is from 0 
 union tagBINDING_DATA *VALARRAY_get( VALARRAY *arr, size_t idx );
@@ -143,6 +147,8 @@ void VALHASH_free( VALHASH *hash );
 // insert new key value pair. lookup of value by key is supposed to be fast. returns 1 if existing key updated; 2 if new key inserted.
 int  VALHASH_set( VALHASH *hash, union tagBINDING_DATA *key, union tagBINDING_DATA *value , CP_KIND copy_by_value);
 
+union tagBINDING_DATA * VALHASH_set_entry( VALHASH *hash, union tagBINDING_DATA *key );
+
 // delete a key value pair identified by key. return 0 if entry has been deleted; -1 if no such entry.
 int VALHASH_delete_key( VALHASH *hash, union tagBINDING_DATA *key );
 
@@ -180,6 +186,13 @@ M_INLINE void VALSTRING_init( VALSTRING *string )
   string->capacity = 0;
 }
 
+M_INLINE void VALSTRING_set_tmp_str( VALSTRING *string, char *str, size_t length )
+{
+  string->string = str;
+  string->length = length;
+  string->capacity = length + 1;
+}
+
 void VALSTRING_set_capacity( VALSTRING *string, size_t capacity );
 void VALSTRING_set( VALSTRING *string, const char  *ptr, size_t length);
 void VALSTRING_free( VALSTRING *string );
@@ -191,6 +204,7 @@ int  VALSTRING_substr( VALSTRING *to, VALSTRING *from, size_t offset, size_t len
 int  VALSTRING_cmp( VALSTRING *argA, VALSTRING *argB);
 size_t VALSTRING_hash( VALSTRING *string );
 void VALSTRING_print( FILE *out, VALSTRING *data );
+void VALSTRING_make_null_terminated( VALSTRING *data );
 
 M_INLINE size_t VALSTRING_size( VALSTRING *arg )
 {
@@ -204,9 +218,10 @@ typedef struct tagVALFUNCTION_CAPTURE
   union {
     union tagBINDING_DATA *ref;    // if next.next ==0 then this is reference to heap location
     size_t stack_ref;		    // if next.next !=0 then this is reference to stack location
-    struct tagEVAL_THREAD *thread;
   } value;
-  SRING next;
+  struct tagEVAL_THREAD *thread;   // points to thread that owns the stack where referenced item is on (for stack2stack)
+//SRING next; 
+  DDDLIST next;
 
 } VALFUNCTION_CAPTURE;
 
@@ -216,11 +231,14 @@ M_INLINE int CAPTURE_IS_ON_HEAP( VALFUNCTION_CAPTURE *cap )
 }
 
 typedef struct tagVALFUNCTION {
-  union tagBINDING_DATA *this_environment;
-  struct tagAST_BASE *fdecl;
-  ARRAY  captures; // non local variable references.
-  ARRAY  nested_closures;
+  union tagBINDING_DATA *this_environment;  // if function is member function of object - ptr to object data
+  struct tagAST_BASE *fdecl;		    // the function declaration
+  struct tagEVAL_THREAD *thread;	    // attached co-routine.
   
+  VALFUNCTION_CAPTURE *pcaptures;	    // non local variable references.
+  union tagBINDING_DATA **pnested_closures; // nested closures.
+  uint16_t ncaptures;			    // number of non local variable references
+  uint16_t nclosures;			    // number of nested closures
 
 } VALFUNCTION;
 
@@ -230,15 +248,20 @@ M_INLINE void VALFUNCTION_init( VALFUNCTION *func )
   func->fdecl = 0;
   func->this_environment = 0;
 
+#if 0
   ARRAY_init( &func->captures, sizeof( VALFUNCTION_CAPTURE ), 0 );
   ARRAY_init( &func->nested_closures, sizeof( void * /*BINDING_DATA * */), 0 );
+#endif
+  func->pcaptures = 0;
+  func->pnested_closures = 0;
+  func->ncaptures = 0;
+  func->nclosures = 0;
 }
 
 // init function object - must be known up front what number of captures are present in funcion.
-void VALFUNCTION_init_cap( VALFUNCTION *fnc, size_t num_captures );
-void VALFUNCTION_init_outer_refs( struct tagEVAL_THREAD *thread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl );
-void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl );
-
+void VALFUNCTION_init_cap( VALFUNCTION *fnc, size_t num_captures, size_t num_nested_closures );
+void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTION *fnc, AST_FUNC_DECL *fdecl, int nesting );
+void VALFUNCTION_free( VALFUNCTION *fnc );
 
 void VALFUNCTION_copy( VALFUNCTION *to, VALFUNCTION *from );
 
@@ -249,6 +272,13 @@ void VALFUNCTION_make_capture( VALFUNCTION *func, union tagBINDING_DATA *data, i
 int  VALFUNCTION_equal( VALFUNCTION *cmpa, VALFUNCTION *cmpb);
 void VALFUNCTION_print( FILE *out, VALFUNCTION *func );
 
+typedef enum {
+  VALFUNC_SHOW_METHOD_SIG,
+  VALFUNC_HIDE_METHOD_SIG 
+} 
+  VALFUNC_PRINT_MODE;
+
+void VALFUNCTION_print_mode( VALFUNC_PRINT_MODE show_method_sig );
 
 #if 0
 // prepare call; make sure the stack has enough room for call; reserve a slot for return value.
@@ -257,14 +287,24 @@ void VALFUNCTION_prepare_call(VALFUNCTION *fcall )
 // call via function object (if function object is marked as S_VAR_CODE_THREAD then new thread is dispatched)
 void VALFUNCTION_call( VALFUNCTION *func );
 
-// call via this object will be executed in a new thread.
-int VALFUNCTION_mark_as_thread( VALFUNCTION *func );
-
 // check if thread is active.
  struct tagEVAL_THREAD *VALFUNCTION_thread( VALFUNCTION *func )
 #endif
 
+#if 0
 /* ==================================================================================== */
+typedef struct tagERRORHANDLER {
+  BINDING_DATA *trigger_condition;
+  BINDING_DATA *trap_handler; 
+} ERRORHANDLER;
+
+int ERRORHANDLER_check_invoke( ERRORHANDLER *handler, const VALSTRING *error_code );
+#endif
+
+/* ==================================================================================== */
+
+// the second slot in a function frame looks like this; chained entries form the call stack.
+
 typedef struct tagVALACTIVATION {
   struct tagAST_BASE *fdecl; // how this function looks like in AST.
   size_t function_frame_start; // index of return value for this function call
@@ -275,34 +315,44 @@ typedef struct tagVALACTIVATION {
 
 /* ==================================================================================== */
 
+typedef enum {
+  PARAM_BY_VAL, // pass param by value numbers are copied as is, by value, otherwise: copy on write for data value.
+  PARAM_BY_REF, // pass param by reference
+
+  COPY_EVAL_BY_VAL,  // assignment: evaluating right hand side  copy by value
+  COPY_EVAL_BY_REF,  // assignment: evaluating right hand side, copy by reference.
+  
+  COPY_SINGLE_ASSIGN_BY_VAL,
+  COPY_SINGLE_ASSIGN_BY_REF,
+  COPY_MULTI_ASSIGN_BY_VAL,
+  COPY_MULTI_ASSIGN_BY_REF,
+
+}
+  EVAL_REF_KIND;
+
+/* ----------- */
 
 #define S_VAR_REF_HEAP			0x01	// reference to heap value
 #define S_VAR_REF_STACK2STACK		0x02	// reference on stack to stack value (offset to stack location relative to start of stack)
 #define S_VAR_REF_HEAP2STACK		0x04	// reference on heap to stack value (treat like special case of capture)
-#define S_VAR_REF_GLOB                  0x08    // reference to global
+#define S_VAR_REF_GLOB                  0x08    // reference to glob al
 #define S_VAR_CAPTURE_REF		0x10    // refers to a captured value. (index into function objects' array of captured values)
-#define S_VAR_OBJECT                	0x20    // collection that contains function object, the function object has a this pointer to containing collection.
+#define S_VAR_OBJECT                	0x20    // collection that contains function object, the function object 
+						// has a this pointer to containing collection.
+#define REF_COPY_ON_WRITE		0x40    // 
+/* ----------- */
 
+#define S_MASK_ENTRY			( S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )
 
 /* ----------- */
 
 #define S_VAR_HEAP_VALUE		0x01	// heap entry.
 #define S_VAR_GLOB_VALUE		0x02    // global entry.
-
- 		
-//#define S_VAR_ARG_COW_REF		0x40    // function argument - copy on write ref; new copy of argument will be created when it is modified.
-//						// used with S_VAR_REF_STACK2STACK
-		
 #define S_VAR_HEAP_GC_MARK		0x10	// heap location has been marked.
 #define S_VAR_HASH_HAS_SORTED_VALUES	0x20	// hash has sorted values
 #define S_VAR_PRINT_CHECK_LOOPS		0x40
 
-// if any of these bits are set then it is not a stack entry.
-//#define S_MASK_NSTACK			( S_VAR_REF_HEAP |  S_VAR_REF_STACK2STACK |  S_VAR_REF_HEAP2STACK | S_VAR_REF_GLOB | S_VAR_CAPTURE_REF | S_VAR_COLL_ENTRY | S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )  
-//#define S_MASK_NSTACK			( S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )  
-
-//#define S_MASK_ENTRY			( S_VAR_COLL_ENTRY | S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )
-#define S_MASK_ENTRY			( S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )
+/* ----------- */
 
 typedef struct tagBINDING_DATA_VALUE {
        short value_type;  
@@ -314,10 +364,8 @@ typedef struct tagBINDING_DATA_VALUE {
 	    union tagBINDING_DATA *value_ref; // reference to binding on heap.
 
 	    size_t	stack2stack_ref; // if reference between two stack locations, then reference is via offset from start of stack.
-
-	    size_t      capture_ref;
-
-	    VALFUNCTION_CAPTURE  heap2stack_ref; // if reference between collection element to stack - then treat like capture.
+	
+	    VALFUNCTION_CAPTURE  heap2stack_ref; // if reference from heap allocated node to stack - then treat like capture.
 
 	    long	long_value;
 
@@ -333,7 +381,8 @@ typedef struct tagBINDING_DATA_VALUE {
 
 	} value;
     
-        void *backlink; //container;
+        //void *backlink; //container;
+	DDDLIST backlink;
 
 } BINDING_DATA_VALUE;
 
@@ -355,6 +404,8 @@ void BINDING_DATA_prints( DBUF *out, BINDING_DATA *data , int level );
 
 //copy binding value from to binding value to  - either by value or by reference (copy_by_value)
 void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from , CP_KIND copy_by_value  );
+
+void BINDING_DATA_copy_ext( BINDING_DATA *to, BINDING_DATA *from , EVAL_REF_KIND ty );
 
 // move value around
 void BINDING_DATA_move( BINDING_DATA *to, BINDING_DATA *from);
@@ -443,29 +494,7 @@ M_INLINE void BINDING_DATA_set_int( BINDING_DATA *data, long val )
   data->b.value.long_value = val;
 }
 
-M_INLINE int BINDING_DATA_get_double( BINDING_DATA *data, double *val )
-{
-  if (IS_REF( data ) ) {
-    data = BINDING_DATA_follow_ref( data );
-  }
- 
-  if ((data->b.value_type & S_VAR_NULL) != 0) {
-    *val = 0;
-    return 0;
-  }
-
-  if ((data->b.value_type & (S_VAR_DOUBLE | S_VAR_INT)) == 0) {
-    *val = 0;
-    return -1;
-  }
-
-  if (data->b.value_type & S_VAR_DOUBLE) {
-    *val = data->b.value.double_value;
-    return 0;
-  }
-  *val = data->b.value.long_value;
-  return 0;
-}
+int BINDING_DATA_get_double( BINDING_DATA *data, double *val );
 
 M_INLINE void BINDING_DATA_set_double( BINDING_DATA *data, double val )
 { 
@@ -547,6 +576,19 @@ M_INLINE void BINDING_DATA_set_string( BINDING_DATA *data, const char *svalue, s
   VALSTRING_set( &data->b.value.string_value, svalue, svalue_len );
 }
 
+M_INLINE void BINDING_DATA_set_tmp_string( BINDING_DATA *data, const char *svalue, size_t svalue_size)
+{
+    VALSTRING *str;
+
+    BINDING_DATA_init( data, S_VAR_STRING );
+    str = &data->b.value.string_value;
+
+    if (svalue_size == (size_t) -1) {
+	svalue_size = strlen( svalue );
+    }
+
+    VALSTRING_set_tmp_str( str, (char *) svalue, svalue_size );  
+}
 
 
 /* ==================================================================================== */
@@ -565,33 +607,59 @@ void BINDING_DATA_MEM_free( BINDING_DATA *pdata );
 
 /* ==================================================================================== */
 
+typedef struct tagDATA_REF
+{
+  BINDING_DATA *data;
+  int is_stack;
+  size_t idx;
+  struct tagEVAL_THREAD *thread;
+} DATA_REF;
 
+void DATA_REF_set( DATA_REF *ref, BINDING_DATA *data );
+BINDING_DATA *DATA_REF_get( DATA_REF *ref );
+
+/* ==================================================================================== */
+
+#if 0
 typedef enum  {
-  TSTATE_IDLE,	    // thread initialised or finished, not running.
+  TSTATE_INIT,	    // initial state, thread created, yet running.
   TSTATE_RUNNING,   // thread is running,
-  TSTATE_SUSPENDED, // thread not running, somebody else is running.
-
+  TSTATE_RUNNING_REQUEST_EXIT, // thread is running, has been resumed, so that thread can clean up and exit.
+  
+  TSTATE_WAITING,   // parent thread waits for child thread to yield/return.
+  TSTATE_SUSPENDED, // thread has called yield, wait to be resumed.
+  TSTATE_IDLE,	    // thread finished, not running.
 } TSTATE;
+#endif
 
 typedef struct tagEVAL_THREAD {
   size_t  current_function_frame_start; 
-  ARRAY binding_data_stack; // for evaluation of expressions and passing of function parameters and return values.
+  ARRAY binding_data_stack;	    // for evaluation of expressions and passing of function parameters and return values.
 
-  struct tagAST_BASE *instr; // current instruction in current function
+  struct tagAST_BASE *instr;	    // current instruction in current function
 
   struct tagEVAL_CONTEXT *context;
   size_t current_activation_record; // pointer to current activation record of current function. 
  
-  DRING threads;
-  TSTATE tstate;
+#if 0 
+  struct tagEVAL_THREAD *parent;    // the co-routine that created this co-routine.  
+  TSTATE tstate;		    // co-routine state.
+#endif
+  DRING threads;		    // co-routines started by this co-routine instance.
 
-  HASH  print_check_ref_loops;	// set for checking loops during printing of container.
-  size_t has_loops; // if currently printed structure has been found to contain loops.
+  BINDING_DATA *yield_rvalue;	    // co-routine yield value - passed from thread to caller
+  BINDING_DATA *resume_value;       // co-routine resume value - passsed from caller to thread.
+
+  int  loop_collection_cnt;	    // while checking for loops during printing of container: counter of nested collections. 
+  HASH  print_check_ref_loops;	    // set for checking loops during printing of container.
+  size_t has_loops;		    // if currently printed structure has been found to contain loops.
+
+  void  *eval_impl;		    // evaluator's implementation data (opaque)
 
 } EVAL_THREAD;
 
 // create a new thread.
-int EVAL_THREAD_init(EVAL_THREAD *thread, struct tagEVAL_CONTEXT *context );
+int EVAL_THREAD_init(EVAL_THREAD *thread, EVAL_THREAD *parent, struct tagEVAL_CONTEXT *context );
 
 // free a thread
 void EVAL_THREAD_free(EVAL_THREAD *thread);
@@ -646,11 +714,20 @@ size_t EVAL_THREAD_prepare_xcall( EVAL_THREAD *thread, AST_XFUNC_DECL *decl );
 // prepare call; make sure the stack has enough room for call; reserve a slot for return value.
 size_t EVAL_THREAD_prepare_call( EVAL_THREAD *thread, AST_FUNC_DECL *decl );
 
+
+size_t EVAL_THREAD_prepare_func_call( EVAL_THREAD *thread, VALFUNCTION *func  );
+
+BINDING_DATA * EVAL_THREAD_proceed_func_call( EVAL_THREAD *thread, size_t frame_start, VALFUNCTION *func  );
+
+
+// prepare co-routine call: create new stack and push ref to call parameters.
+EVAL_THREAD * EVAL_THREAD_prepare_coroutine( EVAL_THREAD *thread, size_t frame_start, AST_BASE *fdcl);
+
 BINDING_DATA *EVAL_THREAD_parameter( EVAL_THREAD *thread, size_t frame_start, size_t param_num, AST_VAR_TYPE type );
 BINDING_DATA *EVAL_THREAD_parameter_ref( EVAL_THREAD *thread, size_t frame_start, size_t param_num );
 
 // precondition: call prepared and arguments have been pushed to the stack, make function call.
-void EVAL_THREAD_call_xfunc( EVAL_THREAD *thread, size_t frame_start, AST_XFUNC_DECL *decl );
+void EVAL_THREAD_call_xfunc( EVAL_THREAD *thread, size_t frame_start, AST_XFUNC_DECL *decl, VALFUNCTION *function );
 
 // make a new frame
 // precondition: call prepared and arguments have been pushed to the stack. 
@@ -666,15 +743,14 @@ int EVAL_THREAD_return_value( EVAL_THREAD *thread, BINDING_DATA *data );
 // print stack backtrace.
 int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread );
 
-// yield value to calling function
-int EVAL_THREAD_yield_value( EVAL_THREAD *thread, BINDING_DATA *data, BINDING_DATA **msg_val );
+// returns 1 if this function is called as a co-routine.
+int EVAL_THREAD_is_threadmain( EVAL_THREAD *thread );
 
-// activate a suspended thread (from calling thread)
-int EVAL_THREAD_activate( EVAL_THREAD *thread, BINDING_DATA *msg, BINDING_DATA **msg_val );
+void EVAL_THREAD_set_current_thread( EVAL_THREAD *thread );
+EVAL_THREAD * EVAL_THREAD_get_current_thread();
 
 
-// returns 1 if this frame is a top level frame.
-int EVAL_THREAD_is_top_level_frame( EVAL_THREAD *thread );
+void EVAL_THREAD_copy_binding( BINDING_DATA *to, BINDING_DATA *from );
 
 /* ==================================================================================== */
 
@@ -693,6 +769,30 @@ M_INLINE BINDING_DATA *XCALL_rvalue( XCALL_DATA *xcall )
    return ((BINDING_DATA *) xcall->thread->binding_data_stack.buffer) +  xcall->frame_offset;
 }
 
+M_INLINE BINDING_DATA *XCALL_this( XCALL_DATA *xcall )
+{
+   BINDING_DATA * act, *ret;    
+   VALACTIVATION *valact; 
+   VALFUNCTION   *func;
+    
+   act = ((BINDING_DATA *) xcall->thread->binding_data_stack.buffer) +  xcall->frame_offset + 1;
+   valact = &act->activation_record;
+
+   if (!valact->function_object) {
+     return 0;
+   }
+
+   func = valact->function_object;
+   if (!func) {
+     return 0;
+   }
+
+   ret =  func->this_environment;
+   assert( ret != 0 );
+   return ret;
+}
+
+
 M_INLINE BINDING_DATA *XCALL_param( XCALL_DATA *xcall, size_t num_param )
 {
    if (num_param >= xcall->num_arguments) {
@@ -708,28 +808,60 @@ M_INLINE size_t XCALL_nparams( XCALL_DATA *xcall)
 
 /* ==================================================================================== */
 
+/** callback function set by evaluator - for management of co-routines ***/
+typedef int (*THREAD_YIELD_CB)     ( BINDING_DATA *yield_value, BINDING_DATA **resume_msg, void *eval_ctx );
+typedef int (*THREAD_RESUME_CB)    ( BINDING_DATA *function, BINDING_DATA *resume_msg, BINDING_DATA **yield_value, void *eval_ctx );
+typedef int (*THREAD_EXIT_CB)      ( void *eval_ctx );
+typedef int (*THREAD_KILL_CB)	    ( BINDING_DATA *function, void *eval_ctx );
+
+/** callback function set by evaluator - invocation of interpreter function ***/
+
+typedef void (*INVOKE_FUNCTION_CB)  ( size_t frame_start, AST_BASE *fdecl, VALFUNCTION *valfunc, void *eval_ctx  );
+
 typedef struct tagEVAL_CONTEXT {
-  DRING gc_heap;  // list of all garbage collectd heap entries
-  DRING threads; // list of all threads (interpreter threads)
-  EVAL_THREAD main;  // the main thread
-  EVAL_THREAD *current_thread; // current thread
-  ARRAY bindings_global; // all global bindings (indexed array)
+  DRING gc_heap;		      // list of all garbage collectd heap entries
+  DRING threads;		      // list of all threads (interpreter threads)
+  EVAL_THREAD main;		      // the main thread
+  EVAL_THREAD *current_thread;	      // current thread
+  ARRAY bindings_global;	      // all global bindings (indexed array)
   int trace_on;
 
-  jmp_buf jmpbuf; // runtime errors - if runtime error it bails out to mark.
+  jmp_buf jmpbuf;		      // runtime errors - if runtime error it bails out to mark.
   int  is_jmpbuf_set;
 
-  SHOW_SOURCE_LINE show_source_line;
-  void *show_source_line_ctx;
+  SHOW_SOURCE_LINE show_source_line;  // callback function - print current location in program
+  void *show_source_line_ctx;	      // context data of callback.
+
+  THREAD_YIELD_CB   thread_yield_cb;  // co-routines: yield value to calling thread
+  THREAD_RESUME_CB  thread_resume_cb; // co-routines: resume suspended thread
+  THREAD_EXIT_CB    thread_exit_cb;   // co-routines: exit current thread
+  THREAD_KILL_CB    thread_kill_cb;   // co-routines: kill a given thread
+
+  INVOKE_FUNCTION_CB invoke_function_cb; // callback: call interpreter to run a function of the script.
+  void *thread_ctx;
+
+  BINDING_DATA *env,*argv;	      // global values of environment and cmdline arguments, used to always mark these values, even if they are not used right now.
+  
+  struct tagCTHREAD *event_loop;      // event loop for socket handling. (cooperative thread);
+
 } EVAL_CONTEXT;
+
+M_INLINE int EVAL_CONTEXT_is_main_scope( EVAL_CONTEXT *context )
+{ 
+  return context->current_thread == &context->main && context->current_thread->current_function_frame_start == 2 ;
+}
+
 
 int  EVAL_CONTEXT_init( EVAL_CONTEXT *context, size_t num_globals );
 void EVAL_CONTEXT_free( EVAL_CONTEXT *context );
-void EVAL_CONTEXT_start( EVAL_CONTEXT *context );
+void EVAL_CONTEXT_start( EVAL_CONTEXT *context , char *argv[], int argc );
 void EVAL_CONTEXT_gc( EVAL_CONTEXT *context );
 void EVAL_CONTEXT_runtime_error( EVAL_CONTEXT *context, const char *format, ... );
 void EVAL_CONTEXT_print_stack_trace_all( FILE *out, EVAL_CONTEXT *context );
 
+
+
+AST_XFUNC_DECL *get_each_in_array_xfunc();
 
 #endif
 

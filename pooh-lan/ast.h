@@ -46,6 +46,7 @@ typedef enum
   
   S_BREAK,
 
+  S_NULL,
 } 
   S_TYPE;
 
@@ -176,7 +177,6 @@ M_INLINE int AST_VECTOR_add( AST_VECTOR *scl, AST_BASE *add)
   return -1;
 }
 
-
 M_INLINE AST_BASE * AST_VECTOR_get( AST_VECTOR *scl, size_t idx )
 {
   uint8_t *ret;
@@ -187,6 +187,14 @@ M_INLINE AST_BASE * AST_VECTOR_get( AST_VECTOR *scl, size_t idx )
   }
   return 0;
 }  
+
+M_INLINE AST_BASE *AST_VECTOR_shift( AST_VECTOR *scl )
+{
+  AST_BASE *ret = AST_VECTOR_get( scl, 0 );
+  ARRAY_delete_at( &scl->refs, 0 );
+  return ret;
+}
+
 
 M_INLINE size_t AST_VECTOR_size( AST_VECTOR *scl )
 {
@@ -270,7 +278,9 @@ typedef enum {
 
 
 // return name of type.
+const char *get_type_name_r( AST_VAR_TYPE value_type, char *rval );
 const char *get_type_name( AST_VAR_TYPE value_type );
+const char *get_type_name2( AST_VAR_TYPE value_type );
 const char *get_op_name( int op );
 
 
@@ -280,6 +290,12 @@ M_INLINE int is_numeric_type( AST_VAR_TYPE ty )
 {
   return ty & (S_VAR_INT | S_VAR_DOUBLE );
 }
+
+M_INLINE int is_scalar( AST_VAR_TYPE value_type )
+{
+   return value_type & (S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING );
+}
+ 
 
 M_INLINE int is_scalar_var_type( AST_VAR_TYPE value_type )
 {
@@ -347,10 +363,8 @@ typedef struct tagAST_EXPRESSION {
 	struct {
 		AST_VECTOR *indexes;
 		struct tagBINDING_ENTRY *binding;
-#if 0                
-		int scope;
-#endif                
 		char  *lhs;
+	        REF_SCOPE scope;
 	} ref;
 
 	Simple_value_type const_value;
@@ -450,43 +464,10 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs
   return scl;
 }
 
-M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location  )
-{
-  AST_EXPRESSION *scl;
-
-  scl = AST_EXPRESSION_init( S_EXPR_REFERENCE, S_VAR_ANY, location );
-  if (!scl) {
-    return 0;
-  }
-
-  scl->val.ref.lhs = strdup( name );
-  scl->val.ref.binding = 0;
-
-  scl->value_type = S_VAR_ANY;
+AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location, PARSECONTEXT *parse_context);
 
 
-  if (indexes) {
-    assert( indexes->base.type == S_AST_VECTOR );
-    indexes->base.parent = &scl->base;
-    
-#if 0    
-    first_idx = (AST_EXPRESSION *) AST_VECTOR_get( indexes, 0 );   
-    if (first_idx) {
-      if (first_idx->exp_type == S_EXPR_ARRAY_INDEX) {
-	scl->value_type = S_VAR_LIST;
-      } else {
-	scl->value_type = S_VAR_HASH;
-      }
-    }
-#endif    
-  }
-  scl->val.ref.indexes = indexes;
-#if 0  
-  scl->val.ref.scope = 0;
-#endif  
-  return scl;
-}
-
+ 
 AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc );
 
 /****************************************************/
@@ -822,9 +803,12 @@ typedef struct tagBINDING_ENTRY {
   int has_value;  
   
   int stack_offset;
-#if  1
   REF_SCOPE scope;
-#endif  
+
+  // for closure / non local references only
+  struct tagBINDING_ENTRY *source;
+  int scope_nesting;
+
 
 } BINDING_ENTRY;
 
@@ -854,20 +838,24 @@ typedef struct tagAST_FUNC_DECL {
 
   AST_BASE base;
  
-  const char *f_name;
-  AST_VECTOR *func_params;
-  AST_VAR_TYPE return_type_value;
+  const char *f_name;               // function name (0 if anonymous / lambda function)
+  AST_VECTOR *func_params;          // function parameters/
+  AST_VAR_TYPE return_type_value;   // type of return value.
 
-  AST_BASE_LIST *func_body;
+  AST_BASE_LIST *func_body;         // what the function does, when it is evaluated.
   int var_arguments;
  
-  TREENODE funcs; // all functions (by nesting of declaration)
-  HASH scope_map_name_to_binding; 
-  
-  AST_VECTOR outer_refs; // all non local references (closures)
+  TREENODE funcs;                   // all nested functioans (by nesting of declaration)
+  int num_nested_func_decl;         // number of nested function declarations.
+  int this_func_decl_index;         // if this is a nested function - this is the index of them (number of this child in parent nodes child list)
 
-  int checker_state;  
-  int last_stack_offset;
+ 
+  int last_stack_offset;            // number of local variables declared for this function.
+  HASH scope_map_name_to_binding;   // local variable names are mapped to their definitions.
+  
+  ARRAY outer_refs;                 // all non local reference / captured values of a closure)
+
+  int checker_state;            
 
 } AST_FUNC_DECL;
 
@@ -876,7 +864,6 @@ typedef struct tagAST_FUNC_DECL {
 M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func_param, PARSECONTEXT *ctx, YYLTYPE *location  )
 {  
   AST_FUNC_DECL *scl;
-  YYLTYPE stam  = DEFINE_NULL_YYLTYPE;
 
   scl = (AST_FUNC_DECL *) malloc( sizeof( AST_FUNC_DECL ) );
   if (!scl) {
@@ -884,9 +871,10 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
   }
   memset( scl, 0, sizeof(AST_FUNC_DECL) );
 
-  if (AST_VECTOR_init2( &scl->outer_refs, &stam ) ) {
-    return 0;
-  }
+  //if (AST_VECTOR_init2( &scl->outer_refs, &stam ) ) {
+  //  return 0;
+  //}
+  ARRAY_init( &scl->outer_refs, sizeof( BINDING_ENTRY * ), 0 );
 
   if (f_name) {
     scl->f_name =  strdup( f_name );
@@ -912,6 +900,8 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
    
   scl->checker_state = 0;  
   scl->last_stack_offset = 1; // at least one entry reserved for return value.  
+  scl->num_nested_func_decl = 0;
+  scl->this_func_decl_index = -1;
 
   if (ctx != 0) {
     PARSECONTEXT_add_function_def2( ctx, scl ); 

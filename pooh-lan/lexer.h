@@ -3,6 +3,7 @@
 
 #include <cutils/array.h>
 #include <cutils/dbuf.h>
+#include "inc.h"
 
 //--------------------------------------------------------
 
@@ -78,12 +79,13 @@ typedef struct tagLEXCONTEXT {
   ARRAY file_name_table; // all files that have been parsed.
   ARRAY string_parts;   // multipart strings.
   int   open_count;
+  INC_PATH *inc_path;
 
 } LEXCONTEXT;
 
 
 
-int LEXER_init(LEXCONTEXT *pc);
+int LEXER_init(LEXCONTEXT *pc, INC_PATH *inc_path);
 
 int LEXER_free(LEXCONTEXT *pc);
 

@@ -1,6 +1,36 @@
 #include "val.h"
 #include <ctype.h>
 
+#include <butils/logg.h>
+
+
+static const char *format_name( VAL_TYPE val_type )
+{
+  switch( val_type ) {
+    case VAL_TYPE_UINT8:
+	return "unsigned char";
+    case VAL_TYPE_INT8:
+	return "char";
+    case VAL_TYPE_UINT16:
+	return "unsigned short";
+    case VAL_TYPE_INT16:
+	return "short";
+    case VAL_TYPE_UINT32:
+	return "unsigned int";
+    case VAL_TYPE_INT32:
+	return "int";
+    case VAL_TYPE_UINT64:
+	return "unsigned long long";
+    case VAL_TYPE_INT64:
+	return "long";
+    case VAL_TYPE_STRING:
+	return "string";
+    case VAL_TYPE_PTR:
+	return "pointer";
+  } 
+  return "unknown type";
+}
+
 static int parse_spec( const char **pos, VAL_TYPE *type)
 {
   const char *cur = *pos;
@@ -10,7 +40,7 @@ static int parse_spec( const char **pos, VAL_TYPE *type)
     return 1;
   }
 
-  for( ; isspace(*cur) ; ++cur);
+  for( ; isspace((int) *cur) ; ++cur);
 
   if (*cur != '%') {
     return -1;
@@ -51,6 +81,8 @@ static int parse_spec( const char **pos, VAL_TYPE *type)
       case 4:
         *type = *cur == 'd' ?  VAL_TYPE_INT64 : VAL_TYPE_UINT64;  
 	goto ret;
+      default:
+	return -1;
   }
   return -1;
 
@@ -102,10 +134,10 @@ int VALUES_printv( VALUES *values, const char *format, va_list ap )
      }
      ARRAY_push_back( &values->values, &val, sizeof(val) );
   }
-  va_end( ap );
   
   if (rt == -1) {
-    return -1;
+     MLOG_ERROR( "VALUES_printv - format spec is wrong format '%s'", format );
+     return -1;
   }
   return 0; 
 }
@@ -121,10 +153,16 @@ int VALUES_scanv( VALUES *values, const char *format, va_list ap )
 
   pos = format;
   for(i = 0; i < ARRAY_size(&values->values) && (rt = parse_spec( &pos, &type )) == 0; i++ ) {
+
+     if (rt == -1) {
+       MLOG_ERROR( "VALUES_scanfv - format spec is wrong format '%s'", format );
+       return -1;
+     }
+ 
      val = VALUES_at( values, i );
 
      if (val->type != type) {
-       va_end(ap);
+       MLOG_ERROR( "VALUES_scanfv - format spec is wrong format '%s' is requested, format '%s' is available ", format_name( type ), format_name( val->type ) );
        return -1;
      }
 
@@ -161,12 +199,9 @@ int VALUES_scanv( VALUES *values, const char *format, va_list ap )
 	 break;
      }
   }
-  va_end( ap );
 
-  if (rt == -1) {
-    return -1;
-  }
   if (*pos != '\0') {
+    MLOG_ERROR( "VALUES_scanfv - less values requested than stored" );
     return -1;
   }
   return 0;

@@ -2,21 +2,32 @@ TOPDIR=..
 
 POSTBUILD_SUBDIRS=test
 
-TARGETS:=corothread corothreadsh
-
-# --- 
-
-corothread_TYPE=lib
-
-corothread_SRC_EXTENSION=c
+ifeq "$(shell uname -o)" "Cygwin"
+TARGETS=corothrjmp
+else
+TARGETS=corothructx 
+endif
 
 
 # --- 
 
-corothreadsh_TYPE=shlib
+corothructx_TYPE=lib
 
-corothreadsh_SRC_EXTENSION=c
+corothructx_SRC_EXTENSION=c
+
+corothructx_LIBS=cutils butils 
+
+corothructx_CFLAGS=-DHAS_UCONTEXT
 
 
+# --- 
+
+corothrjmp_TYPE=lib
+
+corothrjmp_SRC_EXTENSION=c
+
+corothrjmp_CFLAGS:=-DHAS_SETJMP_LONGJMP
 
 include $(TOPDIR)/rules.make
+
+

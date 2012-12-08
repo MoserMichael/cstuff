@@ -96,6 +96,8 @@ void AST_print_expr( FILE *out, AST_EXPRESSION *expr)
       assert(0);
   }
 
+  fprintf( out, " , exp-type 0x%x", expr->exp_type );
+
 }
 
 void AST_print( FILE *out, AST_BASE *base )
@@ -106,7 +108,9 @@ void AST_print( FILE *out, AST_BASE *base )
   fflush( out );
   assert(base );
 
+#if 0
   fprintf( out, "{%d,%d-%d,%d} ", base->location.first_line, base->location.first_column, base->location.last_line, base->location.last_column );
+#endif 
   fprintf( out, "(" );
   
   switch( base->type ) {
@@ -163,19 +167,23 @@ void AST_print( FILE *out, AST_BASE *base )
   
   case S_IF: {
     AST_COND *cond = (AST_COND *) base;
-
+    
     if (cond->condition) {  
       fprintf( out, "cond-IF , " );
       AST_print( out, (AST_BASE *) cond->condition );
       fprintf( out, " , " );
       AST_print( out, (AST_BASE *) cond->block );
       fprintf( out, " , " );
+
+      if (cond->elsecond) {
+	 AST_print( out, (AST_BASE *) cond->elsecond );
+      }
    } else {
-      assert( cond->block == 0 );
-      assert( cond->elsecond != 0 ); 
+      assert( cond->block != 0 );
+      assert( cond->elsecond == 0 ); 
       
       fprintf( out , "else , " );
-      AST_print( out, (AST_BASE *) cond->elsecond  );
+      AST_print( out, (AST_BASE *) cond->block  );
     }
 #if 0
     if (cond->condition) {  
@@ -296,6 +304,10 @@ void AST_print( FILE *out, AST_BASE *base )
   case S_BREAK:
     fprintf( out, "break" );
     break;
+  
+  case S_NULL:
+    break;
+
   default:
     fflush(out);
     assert(0);

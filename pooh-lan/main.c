@@ -4,11 +4,15 @@
 #include "printast.h"
 #include <eval.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
+#include <limits.h>
 
 extern AST_XFUNC_DECL xlib[];
 
 
+int eval( PARSECONTEXT *ctx, EVAL_OPTIONS *opts );
 void dump_ast( const char *file_path, AST_BASE *base, int idx );
 void  delete_temp_results(const char *file_path);
 
@@ -24,40 +28,17 @@ int loadRTLIB( PARSECONTEXT *ctx )
   return 0;
 }
 
-#if 1 
-int eval( PARSECONTEXT *ctx )
-{
-  EVAL_CTX ectx;
-
-  if ( !EVAL_init( &ectx, ctx )) {
-
-    ectx.context.show_source_line =  SHOW_SOURCE_LINE_impl;
-    ectx.context.show_source_line_ctx = ctx;
-
-    if (EVAL_run( &ectx, ctx->my_ast_root )) {
-      return -1;
-    } 
-  } else {
-    fprintf( stderr, "Can't initialize interpreter\n");
-    return -1;
-  }
-  EVAL_free( &ectx );
-  return 0;
-}
-#endif
-
-int run(const char *file_path)
+int run(EVAL_OPTIONS *opts)
 {
   PARSECONTEXT *ctx;
   AST_BASE *rval;
-  int is_verbose = getenv("TEST_VERBOSE") != 0;
 
-  ctx = PARSER_init();
+  ctx = PARSER_init( opts->inc_path );
 
   loadRTLIB( ctx );
 
-  if (LEXER_scan_file( &ctx->lexctx, file_path)) {
-    fprintf(stderr,"Can't open file %s\n", file_path);
+  if (LEXER_scan_file( &ctx->lexctx, opts->file_name)) {
+    fprintf(stderr,"Can't open file %s\n", opts->file_name);
     goto err;
   }
 
@@ -71,8 +52,8 @@ int run(const char *file_path)
   }
 
   // dump ast before checker.
-  if (is_verbose) {
-    dump_ast( file_path, ctx->my_ast_root, 1 );
+  if (opts->is_verbose) {
+    dump_ast( opts->file_name, ctx->my_ast_root, 1 );
   }
 
   if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
@@ -81,12 +62,12 @@ int run(const char *file_path)
   }
   
   // dump ast after checker
-  if (is_verbose) {
-    dump_ast( file_path, ctx->my_ast_root, 2 );
+  if (opts->is_verbose) {
+    dump_ast( opts->file_name, ctx->my_ast_root, 2 );
   }
 
 #if 1
-  if (eval( ctx )) {
+  if (eval( ctx, opts )) {
     goto err;
   }
 #endif
@@ -97,7 +78,7 @@ ok:
   
 err:
 
-  delete_temp_results(file_path);
+  delete_temp_results(opts->file_name);
   PARSER_free(ctx);
   return 1;
 }
@@ -144,13 +125,92 @@ void dump_ast( const char *file_path, AST_BASE *base, int idx )
   free(name);
 }
 
+void print_msg(const char *msg)
+{
+  if (msg) {
+    fprintf( stderr, "Error: %s\n", msg );
+  }
+
+  fprintf( stderr, "Usage: pooh [switches] <script-file>\n"
+		  " -i <directory>  prepend directory to include path\n"
+		  " -I <directory>  append directory to include path\n"
+		  " -x		    Trace execution of program\n"
+		  " -v		    print syntax tree into file. the file has the same name\n"
+		  "		    as script with extension .ast.1 .ast.2\n"
+		  " -h		    show this help message and exit\n" );
+  exit(1);	      
+}
+
+
+void init_options( EVAL_OPTIONS *opts )
+{
+  memset( opts, 0, sizeof( EVAL_OPTIONS ) );
+}
+
+void parse_cmd_line( int argc, char *argv[], EVAL_OPTIONS *opts )
+{
+  int i;
+
+  memset( opts, 0, sizeof( EVAL_OPTIONS ) ); 
+
+  opts->inc_path = INC_PATH_init( argv[0] );
+
+  for( i = 1; i < argc; i++ ) {
+     if (strcmp( argv[ i ], "-h" ) == 0) {
+        print_msg( 0 );
+     } else
+     if (strcmp( argv[ i ], "-v" ) == 0) {
+        opts->is_verbose = 1;
+     } else if (strcmp( argv[ i ], "-x" ) == 0) {
+	opts->is_trace_on = 1;
+     } else if (strcmp( argv[ i ], "-i" ) == 0 || strcmp( argv[ i ], "-I" ) == 0) {
+        struct stat statbuf;
+	char msg[ PATH_MAX * 2 ];
+
+	if ((i + 1) >= argc) {
+	    print_msg("Missing argument of -i option");	    
+	}
+	if (stat( argv[ i + 1 ], &statbuf )) {
+	    sprintf( msg, "False value of %s option, file %s is not a directory.", argv[ i ], argv[ i + 1 ] );
+	    print_msg( msg );
+	}
+	if (! S_ISDIR( statbuf.st_mode ) ) {
+	    sprintf( msg, "False value of %s option, file %s is not a directory.", argv[ i ], argv[ i + 1 ] );
+	    print_msg( msg );
+	}
+
+	if (strcmp( argv[ i ], "-i" ) == 0) 
+	    INC_PATH_add( opts->inc_path, argv[ i + 1 ], 0 );
+	else 
+	    INC_PATH_add( opts->inc_path, argv[ i + 1 ], 1 );
+
+	i += 1; // skip argument
+     } else {
+        opts->file_name = argv[ i ];
+
+        opts->argv = argv + i;
+        opts->argc = argc - i;
+	break;
+     }
+   }
+
+   if (opts->file_name == 0) {
+      print_msg( "No script file has been specified" );
+   }
+
+   if ( access( opts->file_name, R_OK ) ) {
+      print_msg( "Can't read script file / script file is missing" );
+   }
+}
+
 int main(int argc, char *argv[])
 {
-  if (argc < 2) {
-     fprintf(stderr,"Please provide file argument in comand line\n"); 
-     exit(1);
-  }
-  if (run(argv[1])) {
+  EVAL_OPTIONS opts; 
+  
+  init_options( &opts );
+  parse_cmd_line( argc, argv, &opts );
+
+  if (run( &opts )) {
     exit(1);
   }
   return 0;

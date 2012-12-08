@@ -33,10 +33,12 @@ typedef struct tagPARSECONTEXT {
   HASH map_function_defs; // maps function name to function definition. (AST_FUNC_DECL *)
 
   int stmt_not_closed;
+  
+  ARRAY extension_libs;
 
 } PARSECONTEXT;
 
-int  PARSECONTEXT_init( PARSECONTEXT *ctx );
+int  PARSECONTEXT_init( PARSECONTEXT *ctx, INC_PATH *inc_path  );
 void PARSECONTEXT_free( PARSECONTEXT *ctx );
 
 

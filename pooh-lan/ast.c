@@ -4,6 +4,87 @@
 #include "lexer.h"
 #include "parser.h"
 
+
+AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location, PARSECONTEXT *parse_context)
+{
+  AST_EXPRESSION *scl;
+  REF_SCOPE scope;
+
+  scl = AST_EXPRESSION_init( S_EXPR_REFERENCE, S_VAR_ANY, location );
+  if (!scl) {
+    return 0;
+  }
+
+  scl->val.ref.lhs = strdup( name );
+  scl->val.ref.binding = 0;
+
+  scl->value_type = S_VAR_ANY;
+ 
+  if (strcmp(name,"this") == 0) {
+    scope =  REF_SCOPE_THIS; 
+  } else if (strcmp(name,"global") == 0) {
+    scope =  REF_SCOPE_GLOBAL; 
+  } else if (strcmp(name,"outer") == 0) {
+    scope = REF_SCOPE_CLOSURE; 
+  } else {
+    scope = REF_SCOPE_LOCAL;
+  }
+  scl->val.ref.scope = scope;
+
+  if (scope == REF_SCOPE_GLOBAL || scope == REF_SCOPE_CLOSURE) {
+     if (scope == REF_SCOPE_CLOSURE && indexes == 0) {
+       do_yyerror( location, parse_context, "variable name must have the form: outer . name_of_outer_variable " );
+       return 0;
+     }
+     if (scope == REF_SCOPE_GLOBAL && indexes == 0) {
+       do_yyerror( location, parse_context, "variable name must have the form: global . name_of_outer_variable " );
+       return 0;
+     }
+
+     if (indexes) {
+	AST_EXPRESSION * index_expr = (AST_EXPRESSION *) AST_VECTOR_get( indexes, 0 );
+	assert( index_expr->base.type == S_EXPRESSION );
+	if (index_expr->exp_type == S_EXPR_HASH_INDEX &&  index_expr->val.index_expr->exp_type == S_EXPR_CONSTANT) {
+	    AST_BASE *ptr;
+
+  	    free( scl->val.ref.lhs );
+	    scl->val.ref.lhs = index_expr->val.index_expr->val.const_value.string_value;
+	    ptr = AST_VECTOR_shift( indexes );
+            if (AST_VECTOR_size( indexes ) == 0) {
+              AST_VECTOR_free( indexes );
+              indexes = 0;
+            }
+	    free(ptr);
+	} else {
+	    assert( index_expr != 0 );
+            do_yyerror( location, parse_context, "index epression not allowed on scope specifier" );
+	    return 0;
+	}
+     }
+  }
+
+  if (indexes) {
+    assert( indexes->base.type == S_AST_VECTOR );
+    indexes->base.parent = &scl->base;
+    
+#if 0    
+    first_idx = (AST_EXPRESSION *) AST_VECTOR_get( indexes, 0 );   
+    if (first_idx) {
+      if (first_idx->exp_type == S_EXPR_ARRAY_INDEX) {
+	scl->value_type = S_VAR_LIST;
+      } else {
+	scl->value_type = S_VAR_HASH;
+      }
+    }
+#endif    
+  }
+  scl->val.ref.indexes = indexes;
+#if 0  
+  scl->val.ref.scope = 0;
+#endif  
+  return scl;
+}
+ 
 void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location );
 int is_indexed_ref( AST_EXPRESSION *expr );
 int is_narrower_type( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type  );
@@ -13,7 +94,7 @@ AST_BASE *compile_string( const char *string, int init_token, const char *file_n
    PARSECONTEXT ctx;
    AST_BASE *rval = 0;
    
-   if (PARSECONTEXT_init( &ctx) ) {
+   if (PARSECONTEXT_init( &ctx, 0) ) {
      return 0;
    }
 
@@ -153,14 +234,15 @@ int is_operator_with_number_args( int op )
     case TK_OP_NUM_DIV:
     case TK_OP_NUM_MULT:
     case TK_OP_NUM_MOD:
+    case TK_OP_NUM_POW:
     case TK_OP_NUM_LT: 
     case TK_OP_NUM_GT: 
     case TK_OP_NUM_LE: 
     case TK_OP_NUM_GE:
     case TK_OP_NUM_EQ:
     case TK_OP_NUM_NE:
-    case TK_OP_STR_EQ:
-    case TK_OP_STR_NE: 
+ // case TK_OP_STR_EQ:
+ // case TK_OP_STR_NE: 
     case TK_OP_LOGICAL_AND:
     case TK_OP_LOGICAL_OR:
            return 1;
@@ -257,7 +339,9 @@ int is_numeric_operator( int op )
     case TK_OP_NUM_ADD:
     case TK_OP_NUM_DIV:
     case TK_OP_NUM_MULT:
-    case TK_OP_NUM_MOD:
+    case TK_OP_NUM_POW:
+
+   case TK_OP_NUM_MOD:
 
     case TK_OP_NUM_EQ: 
     case TK_OP_NUM_NE: 
@@ -327,7 +411,8 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
 	  return 0;
 	}
       }
-   
+ 
+#ifdef ONLY_NUMBERS_IN_ARITHMETIC_OPERATORS
      //if ( lhs_type != S_VAR_ANY && ! is_numeric_type( lhs_type ) ) { 
        if ( ! is_numeric_type( lhs_type ) ) { 
 
@@ -344,7 +429,23 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
           }
 	  return -1;
        }
+#else
+       if ( ! is_scalar( lhs_type ) ) { 
 
+	  if (parse_context) {
+	    do_yyerror( &lhs->base.location, parse_context, "Operator %s expects number or string argument , instead got %s", operator_name( op ), get_type_name( lhs_type ) );   
+	  }
+          return -1;
+       }
+
+     //if ( rhs_type != S_VAR_ANY && ! is_numeric_type( rhs_type ) ) {
+       if ( ! is_scalar( rhs_type ) ) {
+          if (parse_context) {
+	    do_yyerror( &rhs->base.location, parse_context, "Operator %s expects number or string argument instead got %s", operator_name( op ), get_type_name( rhs_type )  );   
+          }
+	  return -1;
+       }
+#endif
        if (is_comparison_operator( op ) ) {
          scl->value_type = S_VAR_INT;
        } else {
@@ -405,7 +506,7 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
 
     } else {
       if (parse_context) {
-        do_yyerror( &scl->base.location, parse_context, "Unkown binary operator %s in expression", operator_name( op ));   
+        do_yyerror( &scl->base.location, parse_context, "Unknown binary operator %s in expression", operator_name( op ));   
       }
       return -1;
     }
@@ -439,7 +540,7 @@ int AST_EXPRESSION_unary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRES
 	break;	
       default:
         if (parse_context) {
-          do_yyerror( &scl->base.location, parse_context, "Unkown unary operator %s in expression", operator_name( op ));   
+          do_yyerror( &scl->base.location, parse_context, "Unknown unary operator %s in expression", operator_name( op ));   
         }
         break;
     }
@@ -499,36 +600,9 @@ struct {
   { -1, 0 }
 };
 
-const char *get_type_name( AST_VAR_TYPE value_type )
+const char *get_type_name_r( AST_VAR_TYPE value_type, char *rval)
 {
-#if 0
-  switch( value_type )
-  {
-     case S_VAR_ANY:
-        return "any type";
-     case S_VAR_SCALAR:
-        return "scalar";
-     case S_VAR_INT: 
-     case S_VAR_DOUBLE:  
-	return "number";
-     case S_VAR_STRING:
-	return "string";
-     case S_VAR_CODE: 
-	return "function";
-     case S_VAR_HASH: 
-	return "table";
-     case S_VAR_LIST: 
-	return "array";
-     case S_VAR_NULL:
-	return "Null";
-     default:
-	assert(0);
-        return "???";
-  }
-#else
   int i = 0, vadded = 0, res;
-  static char rval[ 256 ];
-
   if (value_type == S_VAR_ANY) {
     return "any type";
   }
@@ -550,8 +624,22 @@ const char *get_type_name( AST_VAR_TYPE value_type )
     }
   }
   return rval;
-#endif
 }
+
+const char *get_type_name( AST_VAR_TYPE value_type)
+{
+  static char rval[ 256 ];
+
+  return get_type_name_r( value_type, rval );
+}
+
+const char *get_type_name2( AST_VAR_TYPE value_type)
+{
+  static char rval[ 256 ];
+
+  return get_type_name_r( value_type, rval );
+}
+
 
 const char *get_op_name( int op )
 {
@@ -566,7 +654,9 @@ const char *get_op_name( int op )
 	return "*";
     case TK_OP_NUM_MOD:
 	return "%";
-    case TK_OP_NUM_LT: 
+    case TK_OP_NUM_POW:
+	return "^";
+     case TK_OP_NUM_LT: 
 	return "<";
     case TK_OP_NUM_GT: 
 	return ">";

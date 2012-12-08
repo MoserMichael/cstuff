@@ -48,11 +48,11 @@ void STRING_PART_free( STRING_PART *part  )
 
 //------------------------------------------------------------------------
 
-int PARSECONTEXT_init(PARSECONTEXT *ctx)
+int PARSECONTEXT_init(PARSECONTEXT *ctx, INC_PATH *inc_path)
 {
   YYLTYPE stam;
 
-  if (  LEXER_init( &ctx->lexctx ) ) {
+  if (  LEXER_init( &ctx->lexctx, inc_path ) ) {
     return -1;
   }
 
@@ -73,6 +73,10 @@ int PARSECONTEXT_init(PARSECONTEXT *ctx)
   
   ctx->root_ctx = AST_FUNC_DECL_init( 0, 0, 0, &stam );
   ctx->current = ctx->root_ctx;
+ 
+  ARRAY_init( &ctx->extension_libs, sizeof(void *), 0 );
+ 
+
 
   return 0;
 }
@@ -89,6 +93,10 @@ void PARSECONTEXT_add_function_def2(  PARSECONTEXT *ctx, struct tagAST_FUNC_DECL
   }
 
   TREE_insert_child( &ctx->current->funcs, &decl->funcs, TREE_INSERT_LAST, 0 );
+
+  decl->this_func_decl_index = ctx->current->num_nested_func_decl;
+  ctx->current->num_nested_func_decl ++;
+
   ctx->current  = decl;
 }
 

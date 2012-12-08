@@ -9,7 +9,7 @@
    } else { \
     (ctx)->is_jmpbuf_set = 1; \
    } \
-   EVAL_CONTEXT_start( ctx ); \
+   EVAL_CONTEXT_start( ctx, 0, 0 ); \
  
 
 size_t count_heap_objects( EVAL_CONTEXT * ctx )
@@ -98,12 +98,12 @@ void BASIC_hash_test()
   
   // *** extract keys of hash (call library function that does that.
 
-  frame_start = EVAL_THREAD_prepare_xcall( &context.main, &xlib[ 0 ] );
+  frame_start = EVAL_THREAD_prepare_xcall( &context.main, &xlib[ 10 ] );
   
   arg =	EVAL_THREAD_parameter( &context.main, frame_start, 0, S_VAR_NULL );
   BINDING_DATA_copy( arg, hash, CP_REF );
   
-  EVAL_THREAD_call_xfunc( &context.main, frame_start, &xlib[ 0 ] ); // don't breathe - indexes in xlib can cagne.
+  EVAL_THREAD_call_xfunc( &context.main, frame_start, &xlib[ 10 ], 0 ); // don't breathe - indexes in xlib can cagne.
   values = EVAL_THREAD_get_stack_top( &context.main );
  
   // ****  compute sum of keys; must add up.
@@ -129,14 +129,14 @@ void BASIC_hash_test()
 void BASIC_gc_test()
 {
   EVAL_CONTEXT context;
-  EVAL_THREAD  thread;
+  //EVAL_THREAD  thread;
   BINDING_DATA *pa1, *pa2, tmp_a;
   size_t i;
   size_t before_gc, after_gc;
  
   VASSERT( EVAL_CONTEXT_init( &context, 0 ) == 0 );
 
-  VASSERT( EVAL_THREAD_init( &thread, &context ) == 0 );
+  //VASSERT( EVAL_THREAD_init( &thread, &context ) == 0 );
 
   START_INVOKE_RTLIB( &context, test_error_action );
 
@@ -188,13 +188,13 @@ fprintf(stderr,"\nbefore %d after %d\n", before_gc, after_gc);
 void PRINT_VALUE_test()
 {
   EVAL_CONTEXT context;
-  EVAL_THREAD  thread;
+  //EVAL_THREAD  thread;
   BINDING_DATA *pa1, *pa2, *pa3, tmp_a, tmp_b, tmp_c;
   size_t i, j, next_stack = 0;
   char stmp[ 30 ];
   VASSERT( EVAL_CONTEXT_init( &context, 0 ) == 0 );
 
-  VASSERT( EVAL_THREAD_init( &thread, &context ) == 0 );
+  //VASSERT( //EVAL_THREAD_init( &thread, &context ) == 0 );
 
   START_INVOKE_RTLIB( &context, test_error_action );
 
@@ -443,7 +443,7 @@ void x_fact( XCALL_DATA *xcall )
   arg =	EVAL_THREAD_parameter( xcall->thread, frame_start, 0, S_VAR_INT );
   BINDING_DATA_set_int( arg, narg - 1);
   
-  EVAL_THREAD_call_xfunc( xcall->thread, frame_start, &x_fact_decl );
+  EVAL_THREAD_call_xfunc( xcall->thread, frame_start, &x_fact_decl, 0 );
  
   rval = EVAL_THREAD_get_stack_top( xcall->thread );
   VASSERT( ! BINDING_DATA_get_int(rval , &rnval ) );
@@ -477,7 +477,7 @@ void XCALL_test()
   arg = EVAL_THREAD_parameter( thread, frame_start, 1, S_VAR_DOUBLE );
   BINDING_DATA_set_double( arg, 2);
   
-  EVAL_THREAD_call_xfunc( thread, frame_start, &x_add_decl );
+  EVAL_THREAD_call_xfunc( thread, frame_start, &x_add_decl, 0 );
   
   rval = EVAL_THREAD_get_stack_top( thread );
   VASSERT( ! BINDING_DATA_get_double( rval, &rdval ) );
@@ -490,7 +490,7 @@ void XCALL_test()
   arg =	EVAL_THREAD_parameter( thread, frame_start, 0, S_VAR_INT );
   BINDING_DATA_set_int( arg, 10 );
   
-  EVAL_THREAD_call_xfunc( thread, frame_start, &x_fact_decl );
+  EVAL_THREAD_call_xfunc( thread, frame_start, &x_fact_decl, 0 );
    
   rval = EVAL_THREAD_get_stack_top( thread );
   VASSERT( ! BINDING_DATA_get_int( rval, &rnval ) );

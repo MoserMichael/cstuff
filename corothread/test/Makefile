@@ -1,26 +1,29 @@
 TOPDIR=../..
 
 
-TESTS=corothreadtest  corothreadtestsh
+ifeq "$(shell uname -o)" "Cygwin"
+TESTS=corothreadjmptest  
+else
+TESTS=corothreaductxtest 
+endif
 
+#---
 
-corothreadtest_TYPE=exe
+corothreadjmptest_TYPE=exe
 
-corothreadtest_SRC_EXTENSION=c
+corothreadjmptest_SRC_EXTENSION=c
 
-corothreadtest_LIBS=corothread cutils nutils vtest pthread
+corothreadjmptest_LIBS=corothrjmp cutils butils vtest pthread
 
+#---
 
-corothreadtestsh_TYPE=exe
+corothreaductxtest_TYPE=exe
 
-corothreadtestsh_SRC_EXTENSION=c
+corothreaductxtest_SRC_EXTENSION=c
 
-corothreadtestsh_LIBS=corothreadsh cutilssh nutilssh vtest pthread
+corothreaductxtest_LIBS=corothructx cutils butils vtest pthread
 
-corothreadtestsh_CFLAGS=-I$(ROOT_DIR)/iothreads/libevent/install/include
-
-corothreadtestsh_LDFLAGS=-L$(ROOT_DIR)/iothreads/libevent/install/lib
-
+#---
 
 
 

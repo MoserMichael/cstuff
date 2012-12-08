@@ -10,7 +10,7 @@ void VAL_test()
   uint8_t n8 = 250, _n8;
   uint16_t n16 = 65000, _n16;
   int32_t  n32 = 42, _n32;
-  int64_t n64 = 0xBEEFBEEFBEEFBEEF, _n64;
+  int64_t n64 = 0xBEEFBEEFBEEFBEEFLL, _n64;
   char *sval = "aaa", *_sval;
 
   VASSERT( VALUES_init( &val ) == 0 );

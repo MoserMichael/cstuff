@@ -1,24 +1,39 @@
 TOPDIR=..
 
 
+ifeq "$(shell uname -o)" "Cygwin"
+TLIB=corothrjmp  
+else
+TLIB=corothructx 
+endif
+
+
 # ---------------------------------------
 
-PREBUILD_SUBDIRS=rtlib 
+PREBUILD_SUBDIRS=rtlib extensionlib
 
 # ---------------------------------------
 
-TARGETS=parser
+TARGETS=pooh
    
 
-parser_TYPE=exe
+pooh_TYPE=exe
 
-parser_SRC=lexer.c parser.c ast.c parsectx.c printast.c checker.c main.c  eval.c
+pooh_SRC=inc.c lexer.c parser.c ast.c parsectx.c printast.c checker.c ld.c main.c eval.c 
 
-parser_DEPENDENCIES=pars.txt lex.txt 
+pooh_DEPENDENCIES=pars.txt lex.txt 
 
-parser_LIBS=cutils butils m rtlib 
+pooh_LDFLAGS=-rdynamic
 
-parser_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/parser test-error test .
+# the generated lex/bison parser compiles with some warnings, so do not treat warnings as errors for these files.
+
+lexer.c_CFLAGS=-Wno-error
+
+parser.c_CFLAGS=-Wno-error
+
+pooh_LIBS=$(TLIB) pthread cutils butils m rtlib nutils dl
+
+pooh_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/pooh test-error test .
 
 
 # ---------------------------------------

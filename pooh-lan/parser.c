@@ -9,6 +9,9 @@
 #include "ast.h"
 #include <butils/strtk.h>
 #include <cutils/dbuf.h>
+#include "ld.h"
+#include "inc.h"
+#include <unistd.h>
 
 #define ERROR_MSG_LEN 4096
 
@@ -42,7 +45,10 @@ YYLTYPE yyloc;
 
 /* include bison generated code */
 
+#if 0
+/* doesn't work with older versions of gcc */
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 
 #define YYERROR_VERBOSE
 
@@ -370,7 +376,7 @@ int PARSER_run(PARSECONTEXT *ctx, struct tagAST_BASE **rval  )
 
 
 
-PARSECONTEXT * PARSER_init()
+PARSECONTEXT * PARSER_init( INC_PATH *inc_path )
 {
   PARSECONTEXT *ret;
 
@@ -382,7 +388,7 @@ PARSECONTEXT * PARSER_init()
 
   memset( ret, 0, sizeof( PARSECONTEXT ) );
 
-  if (PARSECONTEXT_init( ret )) { 
+  if (PARSECONTEXT_init( ret, inc_path )) { 
     return 0;
   }
 
@@ -392,8 +398,79 @@ PARSECONTEXT * PARSER_init()
 
 int PARSER_free(PARSECONTEXT *ctx)
 {
+  SHLIB **val;
+  size_t i;
+
   if (LEXER_free( &ctx->lexctx )) {
     return -1;
   }
+
+  // unload extension libraries
+  for( i = 0; i < ARRAY_size( &ctx->extension_libs ); i ++ ) {
+    val = (SHLIB ** ) ARRAY_at( &ctx->extension_libs, i );
+    SHLIB_unload( *val );
+    free( *val );
+  }
+
   return 0;
+}
+
+typedef  AST_XFUNC_DECL * (*FN_get_honey_jar_interface) ();
+
+int load_extension_library(PARSECONTEXT * ctx,  YYLTYPE *loc, const char *sval )
+{
+  char *alt_name = 0;
+  SHLIB *shlib = 0;
+  FN_get_honey_jar_interface get_iface;
+  size_t i;
+  AST_XFUNC_DECL *xlib; 
+
+  if (access( sval, R_OK )) {
+     alt_name = INC_PATH_resolve( ctx->lexctx.inc_path, sval );
+     if (!alt_name) {
+       char *spath = INC_PATH_to_text( ctx->lexctx.inc_path );
+	  do_yyerror( loc, ctx,  "Can't open file %s, tried to open the file in current directory %s%s Try to specify the search path with -I <directory name> or -i <directory name> command line options.",
+		sval, 
+		spath != 0 ? "and then in each directory that is part of the search path: " : 0,
+		spath != 0 ? spath : 0 );
+       goto err;
+     }
+     sval = alt_name;
+  }
+
+  shlib = (SHLIB *) malloc( sizeof( SHLIB ) );
+  if  (!shlib || SHLIB_load( shlib, sval )) {
+    do_yyerror( loc, ctx, "can't load the extension library %s. %s",  sval, shlib->last_error ? shlib->last_error : 0);
+    goto err;
+  }
+
+  get_iface = (FN_get_honey_jar_interface) SHLIB_get_proc_addr( shlib, "get_honey_jar_interface" );
+  if (!get_iface) {
+    do_yyerror( loc, ctx, "can't load the extension library %s. It does not have a function called get_honey_jar_interface.  %s", sval, shlib->last_error ? shlib->last_error : 0);
+    goto err;  
+  }
+
+  xlib = get_iface();
+  if (!xlib) {
+    do_yyerror( loc, ctx, "can't load the extension library %s. the get_honey_jar_interface did not return a value", sval );
+    goto err;
+  }
+
+  
+  for(i=0; xlib[i].f_name != 0 ; i++ )
+  {
+    PARSECONTEXT_add_function_def(  ctx, &xlib[i] );
+  }
+
+  ARRAY_push_back( &ctx->extension_libs, &shlib, sizeof(void *) );
+  return 0;
+
+err:
+  if (shlib) {
+    SHLIB_unload(shlib);
+    free(shlib);
+  }
+  if (alt_name) 
+    free(alt_name);
+  return 1;
 }

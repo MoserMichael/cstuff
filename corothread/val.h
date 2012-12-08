@@ -104,8 +104,8 @@ M_INLINE void VALUES_free( VALUES *val)
  * @param format - Format specifier (for details see documentation of VALUES class)
  * @param ap -
  */
-int VALUES_printv( VALUES *val, const char *format, va_list ap );
-
+int VALUES_printv( VALUES *val, const char *format, va_list ap ); // __VALIST  
+ 
 /**
  * @brief retrieve typed tuple of values; like scanf receives varying number of arguments
  * @param val -   the VALUES object that is modified 

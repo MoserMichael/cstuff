@@ -2,7 +2,6 @@
 #define __CTHREAD_H__
 
 
-#include <ucontext.h>
 #include <stdint.h>
 #include <corothread/stacks.h>
 #include <corothread/val.h>
@@ -27,29 +26,18 @@
 typedef void  (*CTHREAD_PROC) (VALUES *);
 
 typedef enum {
-  CTHREAD_STATE_INIT,
+  CTHREAD_STATE_INIT = 1,
   CTHREAD_STATE_RUNNING,
   CTHREAD_STATE_SUSPENDED,
   CTHREAD_STATE_EXIT,
 } CTHREAD_STATE;
 
 
+struct tagCTHREAD;
 
-typedef struct tagCTHREAD {
-  ucontext_t context_coroutine;
-  ucontext_t context_caller;
-  CTHREAD_STATE state;
-  uint32_t thread_id;
- 
-  int    thread_to_caller_value_set;
-  VALUES thread_to_caller_value; 
-  int    caller_to_thread_value_set;
-  VALUES caller_to_thread_value;  
-
-  CTHREAD_PROC proc;  
-  struct tagCTHREAD *prev_thread;
-  STACK_ENTRY *stack_entry;  
-} CTHREAD;
+#ifndef _CTHREAD_MAIN_
+typedef struct tagCTHREAD CTHREAD;
+#endif
 
  
 
@@ -61,71 +49,112 @@ int CTHREAD_libinit();
 /**
  * @brief initialises a new co-routine thread. 
  
- * Postcondition: The new thread is initialised and enters CTHREAD_STATE_INIT state.
+ * Postcondition: The new thread is initialised and enters INIT state.
+ * next thing to do is to start the thread (CTHREAD_start)
 
- * @param stacks the thread is obtained from the pool of stacks (argument stack).
- * @param proc The thread procecdure is argument proc.
+ * @param stacks the thread stack is obtained from the pool of stacks
+ * @param proc The thread procecdure that will be invoked when the thread is started.
+ * @return pointer to new thread on success; 0 on failure (if no stack is available or could not be created)
  */
-CTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc );
+struct tagCTHREAD * CTHREAD_init( STACKS *stacks, CTHREAD_PROC proc );
 
 /**
- * deallocates a thread 
+ * destroys the thread object. 
  *
- * Precondition: the thread must be in CTHREAD_STATE_EXIT state 
+ * Precondition: the thread must be in EXIT state; meaning the thread has called CTHREAD_exit or returned from the thread procedure. 
  */ 
-int CTHREAD_free( CTHREAD *thread );
+int CTHREAD_free( struct tagCTHREAD *thread );
 
 /**
  * @brief start a new thread - the thread procedure is invoked.
+     *
+ * Precondition: the calling thread is in RUNNING state; the argument thread is in INIT state, CTHREAD_init has been called.
+ * Action: the calling thread is in SUPENDED state; the argument thread is in RUNNING state; 
+ * Postcondition: the calling thread is in RUNNING state; the argument is either in SUSPENDED state - it called CTHREAD_yield, or in EXIT state - called CTHREAD_exit / or return from thread procedure.
  *
- * The initialised thread is started; The function returns if the running thread either exited or entered suspended state (i.e. the thread called CTHREAD_yield)
+ * @param rvalues -  optional; if not null then will receive pointer to message from the new thread, once the current thread is resumed.
+ * @param format -   format string of arguments passed to the new thread, followed by the parameters passed. If NULL then no message is passed to the new thread.
  *
- * Values passed from the thread to the caller are stored in rvalue parameter.
- * If this parameter is 0 then the return values are ignored.
- * 
- * Values passed from the caller to the thread -
- *   
- * Precondition: the thread is in either CTHREAD_STATE_INIT or CTHREAD_STATE_EXIT state.
- * Postcondition: the thread is in CTHREAD_STATE_RUNNING state.
- *
+ * @return
+ *    0 - the thread has been started, did some work while in RUNNING state, and then called CTHREAD_yield, the thread is now suspended.
+ *    1 - the thread has been started, did some work while in RUNNING state, and then called CTHREAD_exit, the thread has exited.
+ *   -1 - the thread failed to start.    
  */
-int CTHREAD_start( CTHREAD *thread, VALUES **rvalue, const char *format , ... );
-
-
-/**
- * @brief resume a suspended thread
- *
- * Resumes a suspended thread, the function will return when the resumed thread calls CTHREAD_yield or when it exits.
- *
- * Passing parameters to the thread; a variable length set of arguments can be sent to the thread, and the thread will be able to read them.
- * Parameter format is the format specifier, subsequent variable length argument values are then sent to the thread.
- *  
- * Retrieving parameters from the thread:
- * We can access values returned by the thread, once CTHREAD_resume returns. The values passed by the thread are stored in rvalue parameter.
- *
- * Precondition: the thread is in CTHREAD_STATE_SUSPENDED state
- * Postcondition: the thread is in CTHREAD_STATE_RUNNING state
-  */
-int CTHREAD_resume( CTHREAD *thread, VALUES **rvalue, const char *format, ... );
-
-
-
+int CTHREAD_start( struct tagCTHREAD *thread, VALUES **rvalue, const char *format , ... );
 
 /**
- * @brief a running thread temporarily suspends execution
+ * @brief a running thread suspends execution; controll passes to the caller of this thread.
  *
- * Precondition: the thread is in CTHREAD_STATE_RUNNING state
- * Postcondition: the thread is in CTHREAD_STATE_SUSPENDED state
- 
- 
+ * Precondition: the current thread is in  RUNNING state ; the calling thread is in SUSPENDED state 
+ * Action: the current thread is in SUSPENDED state; the calling thread is in RUNNING state.
+ * Postcondition: the current thread is in RUNNING state; the calling thread is in SUSPENDED state - it has called CTHREAD_resume; or it requests this thread to exit by having called CTHREAD_kill.
+ *
+ * @param rvalues -  optional; if not null then will receive pointer to message from the parent thread, once the current thread is resumed.
+ * @param format -   format string of message passed to the  parent thread, followed by the parameters passed. If NULL then no message is passed to the parent thread.
+ *
+ *
+ * @return
+ *    0 - the calling thread has been resumed, the calling thread has later called CTHREAD_resume
+ *
+ *    1 - the calling thread has been resumed, the calling thread has later called CTHREAD_kill in order to shut down the current thread;
+ *        the current thread must now clean up all resources it owns; the call CTHREAD_exit, or return from the thread function.
+ *
+ *   -1   the function failed to activate the calling thread.
  */
 int CTHREAD_yield(VALUES **rvalue, const char *format, ... );
 
 /**
- * @brief waits till the thread has finished 
- * Calls CTHREAD_resume repeatedly unntil the thread finishes.
+ * @brief resumes a suspended thread
+ *
+ * Resumes a suspended thread, the current thread is suspended; the argument thread will be activated and in RUNNING state;
+ * The function will return when the resumed thread calls CTHREAD_yield or when it exits (call CTHREAD_exit).
+ *
+ * Precondition: The current thread is in RUNNING state; the argument thread is in SUSPENDED state
+ * Action: the current thread is in SUSPENDED state; the argument thread is in RUNNING state
+ * Postcondition: the current thread is in RUNNING state; the argument thread is in SUSPENDed state - called CTHREAD_resume 
+ * or it is in EXIT state
+ *
+ * @param rvalues -  optional; if not null then will receive pointer to message from the argument thread, once the current thread is resumed.
+ * @param format -   format string of arguments passed to the argument thread, followed by the parameters passed. If NULL then no message is passed to the new thread.
+ *
+ * @return 
+ *    0 - the thread has been started, did some work while in RUNNING state, and then called CTHREAD_yield, the thread is now suspended.
+ *    1 - the thread has been started, did some work while in RUNNING state, and then called CTHREAD_exit, the thread has exited.
+ *   -1 - the function failed.
  */
-int CTHREAD_join( CTHREAD *thread, VALUES **rvalue );
+int CTHREAD_resume( struct tagCTHREAD *thread, VALUES **rvalue, const char *format, ... );
+
+
+
+/** 
+ * @brief kills a thread.
+ *
+ *
+ * The thread which is currently blocked in call to CTHREAD_yield will wake up, CTHREAD_yield will return -1,
+ * Upon this event the thread is expected to clean up resources that it owns and call CTHREAD_exit.
+ *
+ * Does also kill all threads started by the argument thread, 
+ *
+ * Precondition: the current thread is in RUNNING state, the argument thread is in SUSPENDED state
+ * Action: the current thread is in SUSPENDED state, the argument thread is in RUNNING state, it must now free its resources and then call CTHREAD_exit or return from the thread function.
+ * Postcondition: the current thread is in RUNNING state, the argument thread is in EXIT state
+ */
+int CTHREAD_kill(  struct tagCTHREAD *thread );
+
+/**
+ * @brief exit the current thread
+ * Exits the current thread,
+ *
+ * Precondition: the current thread is in RUNNING state; the calling thread is in SUSPENDED state
+ * Action: stops all threads that were started by the current thread.
+ * Postcondition: the current thread is in EXIT state; the calling thread is in RUNNING state. 
+ * 
+ * @return
+ *    0 - function completed
+ *   -1 - error.
+ */
+int CTHREAD_exit();
+
 
 
 /**
@@ -135,19 +164,18 @@ int CTHREAD_join( CTHREAD *thread, VALUES **rvalue );
 int CTHREAD_set_return_value( const char *format, ... );
 
 /**
- * @brief get thread id
+ * @brief get current thread id
  *
- * Precondition: the thread is in any state other than CTHREAD_STATE_INIT
+ * precondition: a thread is running.
+ * @returns current thread id ; -1 if no thread is active.
  */
 uint32_t CTHREAD_get_tid();
 
 /**
  * @brief get thread state
  */
-M_INLINE CTHREAD_STATE CTHREAD_state(CTHREAD *thread) 
-{
-  return thread->state;
-}
+CTHREAD_STATE CTHREAD_state(struct tagCTHREAD *thread);
+
 
 /**
  * @}
