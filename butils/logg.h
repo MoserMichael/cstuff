@@ -84,9 +84,6 @@ int  MLOG_alloc_option( MLOG_ALLOC option, size_t size);
 void MLOG_dump_stack_level( MLOG_LEVEL stack_dump_level );
 
 
-#ifndef NO_LOG
-
-
 extern MLOG_LEVEL m_current_log_level;
 
 /**
@@ -94,12 +91,13 @@ extern MLOG_LEVEL m_current_log_level;
  */
 int MLOG_printf( MLOG_LEVEL current, const char *file, int line,  const char *format , ... );
 
-
-
 #define MLOG_ERROR(...) do { if (m_current_log_level >= MLOG_LEVEL_ERROR) {  MLOG_printf( MLOG_LEVEL_ERROR, __FILE__, __LINE__,  __VA_ARGS__ ); } } while(0);
 
 #define MLOG_WARN(...)  do { if (m_current_log_level >= MLOG_LEVEL_WARN) {  MLOG_printf( MLOG_LEVEL_WARN, __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);
- 
+
+
+#ifndef NO_LOG
+
 #define MLOG_INFO(...)  do { if (m_current_log_level >= MLOG_LEVEL_INFO) {  MLOG_printf( MLOG_LEVEL_INFO,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);
  
 #define MLOG_DEBUG(...) do { if (m_current_log_level >= MLOG_LEVEL_DEBUG) {  MLOG_printf( MLOG_LEVEL_DEBUG,  __FILE__, __LINE__, __VA_ARGS__ ); } } while(0);
@@ -108,10 +106,6 @@ int MLOG_printf( MLOG_LEVEL current, const char *file, int line,  const char *fo
 
 #else
 
-#define MLOG_ERROR(...) 
-
-#define MLOG_WARN(...) 
- 
 #define MLOG_INFO(...)  
  
 #define MLOG_DEBUG(...) 

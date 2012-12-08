@@ -97,10 +97,14 @@ void errorp(int rval, const char *fmt, ... )
 
 void error_dump_string( const char *msg, char *buff, size_t buff_size)
 {
- #if __linux__
+#if __linux__
   void *sframes[ STACK_FRAMES + 1 ];
   int nframes, i;
+#else 
+  (void) buff;
+  (void) buff_size;
 #endif
+
 
 
   write( FD_OUT , msg , strlen( msg ) );

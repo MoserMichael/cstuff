@@ -66,7 +66,7 @@ M_INLINE int PROPERTIES_dec_##type (PROPERTIES *props, const char *name, type *r
   if (!value) { \
     return -1; \
   } \
-  for( ;isspace(*value); ++value ); \
+  for( ;isspace( (int) *value); ++value ); \
  \
   errno = 0; \
    \
@@ -76,7 +76,7 @@ M_INLINE int PROPERTIES_dec_##type (PROPERTIES *props, const char *name, type *r
     return -2; \
   } \
  \
-  if (*eptr == '\0' || isspace(*eptr)) { \
+  if (*eptr == '\0' || isspace( (int) *eptr)) { \
     *rret = ( type ) ret; \
     return 0; \
   } \
@@ -101,7 +101,7 @@ M_INLINE int PROPERTIES_hex_##type (PROPERTIES *props, const char *name, type *r
   if (!value) { \
     return -1; \
   } \
-  for( ;isspace(*value); ++value ); \
+  for( ;isspace( (int) *value); ++value ); \
  \
   errno = 0; \
    \
@@ -110,7 +110,7 @@ M_INLINE int PROPERTIES_hex_##type (PROPERTIES *props, const char *name, type *r
   if (errno) {  \
     return -2; \
   } \
-  if (*eptr == '\0' || isspace(*eptr)) { \
+  if (*eptr == '\0' || isspace( (int) *eptr)) { \
     *rret = ( type ) ret; \
     return 0; \
   } \

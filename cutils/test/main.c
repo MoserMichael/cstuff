@@ -6,6 +6,8 @@
 #include <stdlib.h>
 
 void DLIST_test();
+void DDLIST_test();
+void DDDLIST_test();
 void DRING_test();
 void SLIST_test();
 void SRING_test();
@@ -23,10 +25,12 @@ void TEST_properties_file();
 
 VTEST_DEFINE_SUITE( BASETEST, 0, 0, LASTTEST)
 	VTEST_TESTN( DLIST_test )
+	VTEST_TESTN( DDLIST_test )
+	VTEST_TESTN( DDDLIST_test )
 	VTEST_TESTN( DLISTUNR_test )
 	VTEST_TESTN( DLISTUNR_test_insert )
-	VTEST_TESTN( DRING_test )
 	VTEST_TESTN( SLIST_test )
+	VTEST_TESTN( DRING_test )
 	VTEST_TESTN( SRING_test )
 	VTEST_TESTN( HASH_test )
 	VTEST_TESTN( HEAP_test )
