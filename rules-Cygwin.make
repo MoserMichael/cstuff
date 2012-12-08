@@ -1,3 +1,5 @@
+
+IS_CYGWIN:=1
 CC:=gcc
 
 #-

@@ -109,8 +109,7 @@ gcc   	 -MM            \
          -MF $3         \
          -MP            \
          -MT $2         \
-         $(CFLAGS)      \
-         $(CPPFLAGS)    \
+         $4             \
 	 -I. -I$(ROOT_DIR) \
          $1
 
@@ -168,25 +167,24 @@ $(1)_objdir_create :
 # - define implicit rules that place targets into subdirectory per target.
 
 $$(OBJECT_DIR)/$(1)/%.o: %.c
-	$(echo "huhu $$<" )
-	$$(call make-depend,$$<,$$@,$$(subst .o,.d,$$@))
+	$$(call make-depend,$$<,$$@,$$(subst .o,.d,$$@),$$(CFLAGS) $$($(1)_CFLAGS) $$($$<_CFLAGS) $$(EXTERNAL_CFLAGS))
 ifneq "$(strip $(CPP_LISTING))" ""
-	$$(CC) $$(PREPROCESSOR_FLAG) $$(CPPFLAGS) $$(CFLAGS) $$($(1)_CFLAGS) $$(EXTERNAL_CFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).i,$$(basename $$<)) 
+	$$(CC) $$(PREPROCESSOR_FLAG)  $$(CFLAGS) $$($(1)_CFLAGS) $$($$<_CFLAGS) $$(EXTERNAL_CFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).i,$$(basename $$<)) 
 endif
-	$$(CC) $$(CPPFLAGS) $$(CFLAGS) $$($(1)_CFLAGS) $$(EXTERNAL_CFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
+	$$(CC) $$(CFLAGS) $$($(1)_CFLAGS) $$($$<_CFLAGS) $$(EXTERNAL_CFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
 ifneq "$(strip $(ASM_LISTING))" ""
-	$$(CC)  $$(ASM_LISTING_FLAG) $$(CPPFLAGS) $$(CFLAGS) $$($$<_FLAGS) $$(EXTERNAL_CFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).S,$$(basename $$<))
+	$$(CC)  $$(ASM_LISTING_FLAG)  $$(CFLAGS) $$($(1)_CFLAGS) $$($$<_CFLAGS) $$(EXTERNAL_CFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).S,$$(basename $$<))
 endif
 
 
 $$(OBJECT_DIR)/$(1)/%.o: %.cpp
-	$$(call make-depend,$$<,$$@,$$(subst .o,.d,$$@))
+	$$(call make-depend,$$<,$$@,$$(subst .o,.d,$$@),$$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$($$<_CFLAGS) $$($$<_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) )
 ifneq "$(strip $(CPP_LISTING))" ""
-	$$(CXX) $$(PREPROCESSOR_FLAG) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CXXFLAGS) $$($$<_FLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).i,$$(basename $$<))
+	$$(CXX) $$(PREPROCESSOR_FLAG) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CXXFLAGS) $$($$<_CFLAGS) $$($$<_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).i,$$(basename $$<))
 endif
-	$$(CXX) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
+	$$(CXX) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$($$<_CFLAGS) $$($$<_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c $$(OUTPUT_OPTION) -I. -I$(ROOT_DIR) $$<
 ifneq "$(strip $(ASM_LISTING))" ""
-	$$(CXX) $$(ASM_LISTING_FLAG) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).S,$$(basename $$<))
+	$$(CXX) $$(ASM_LISTING_FLAG) $$(CPPFLAGS) $$(CXXFLAGS) $$($(1)_CFLAGS) $$($(1)_CXXFLAGS) $$($$<_CFLAGS) $$($$<_CXXFLAGS) $$(EXTERNAL_CFLAGS) $$(EXTERNAL_CXXFLAGS) -c -I. -I$(ROOT_DIR) $$< -o $$(addsuffix .$(1).S,$$(basename $$<))
 endif
 
 
@@ -236,7 +234,7 @@ $(1)__clean_xxx :
 	rm -f $$(PRJ_RESULT_FILE)
 
 
-.DEFAULT: $(1)_INSTALL
+.DEFAULT: $(1)_INSTALL 
 $(1)_INSTALL:
 
 
@@ -264,7 +262,6 @@ build_xxx__$(1) : PRJ_RESULT_FILE=$(call make_shared_lib_name,$(1),$(2))
 
 build_xxx__$(1) : directory_setup $(1)_objdir_create banner_xxx_$(1)  $(call make_shared_lib_name,$(1),$(2))
 
- 
 $(call make_shared_lib_name,$(1),$(2)) : $$(objects_$(1)) 
 	$$(eval $$(call display_build_banner,$(1),$$(PRJ_TYPE_NAME),$$(CURWD)))
 	$(CC) -shared -Wl,-soname,lib$(1).so  -o $$@ $(LDFLAGS) $$(EXTERNAL_LDFLAGS) $$($(1)_LDFLAGS) $$(objects_$(1))  $$(addprefix -L,$$(DEPENDENCY_PATH)) $$(addprefix -l,$$($(1)_LIBS)) 
@@ -275,8 +272,8 @@ $(1)__clean_xxx : PRJ_RESULT_FILE=$(BIN_ROOT_DIR)/$(2)/lib$(1).so
 .PHONY: $(1)__run_xxx
 $(1)__run_xxx :
 
-.PHONY: install_target_xx__$(1)
-install_target_xx__$(1) :
+.PHONY: $(1)__install_target_xx
+$(1)__install_target_xx :
 	$$(eval $$(call install-a-file,$$(call make_shared_lib_name,$(1),$(2)),$$(PREFIX)/lib))
 	
 endef
@@ -311,8 +308,8 @@ $(1)__clean_xxx : PRJ_RESULT_FILE = $(BIN_ROOT_DIR)/$(2)/lib$(1).a
 .PHONY: $(1)__run_xxx
 $(1)__run_xxx :
 
-.PHONY: install_target_xx__$(1)
-install_target_xx__$(1) : $($(1)_INSTALL)
+.PHONY: $(1)__install_target_xx
+$(1)__install_target_xx : $($(1)_INSTALL)
 	$$(eval $$(call install-a-file,$$(BIN_ROOT_DIR)/$(2)/lib$(1).a,$$(PREFIX)/lib))
 
 endef
@@ -347,8 +344,8 @@ $(1)__clean_xxx : PRJ_RESULT_FILE=$(BIN_ROOT_DIR)/bin/$(1)
 .PHONY: $(1)__run_xxx
 $(1)__run_xxx :
 
-.PHONY: install_target_xx__$(1)
-install_target_xx__$(1) : $($(1)_INSTALL)
+.PHONY: $(1)__install_target_xx  
+$(1)__install_target_xx : $($(1)_INSTALL)
 	$$(eval $$(call install-a-file,$$(BIN_ROOT_DIR)/bin/$(1),$$(PREFIX)/bin))
 
 
@@ -403,8 +400,11 @@ endef
 
 # -- make build target --
 
+.PHONY: all_do
+all_do: build_pre_subdirs $(addprefix build_xxx__,$(TARGETS))  
+
 .PHONY: all
-all: build_pre_subdirs $(addprefix build_xxx__,$(TARGETS)) build_post_subdirs
+all: all_do build_post_subdirs
 
 ifneq "$(SHOW_RULES)" ""
 
@@ -429,8 +429,11 @@ $(foreach prog, $(TARGETS), $(if $(subst exe,,$($(prog)_TYPE)),,$(eval $(call PR
 
 # -- make main target --
 
+.PHONY: test_do
+test_do: all_do build_pre_subdirs $(addprefix build_xxx__,$(TESTS)) $(addsuffix __run_xxx,$(TESTS)) 
+
 .PHONY: test
-test: all build_pre_subdirs $(addprefix build_xxx__,$(TESTS)) $(addsuffix __run_xxx,$(TESTS)) build_post_subdirs 
+test: test_do build_post_subdirs 
 
 
 ifneq "$(SHOW_RULES)" ""
@@ -466,7 +469,10 @@ clean: build_pre_subdirs $(addsuffix __clean_xxx,$(TARGETS) $(TESTS)) build_post
 install: PREFIX?=$(INSTALL_PREFIX)
 
 .PHONY: install
-install: install_create_all_install_dirs build_pre_subdirs $(addprefix install_target_xx__,$(TARGETS)) $(addsuffix _INSTALL,$(TARGETS)) build_post_subdirs  
+install: OP=install
+
+.PHONY: install
+install: test_do install_create_all_install_dirs $(addsuffix __install_target_xx,$(TARGETS)) $(addsuffix _INSTALL,$(TARGETS)) build_post_subdirs  
 
 .PHONY: install_create_all_install_dirs
 install_create_all_install_dirs :
