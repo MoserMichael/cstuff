@@ -1,0 +1,181 @@
+003|a = [ 10 , 3 , 1 , 5 , 4 , 9 , 6 , 7 , 8 , 2] 
+006|sort( ~array a:[ -> 10, -> 3, -> 1, -> 5, -> 4, -> 9, -> 6, -> 7, -> 8, -> 2 ] ~func sub (~a , ~b) )...
+006| sub (~a , ~b)
+007|  if (a:-> 10 < b:-> 3):false
+009|  else if (a:-> 10 > b:-> 3):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 5 < b:-> 4):false
+009|  else if (a:-> 5 > b:-> 4):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 1 < b:-> 4):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 3 < b:-> 1):false
+009|  else if (a:-> 3 > b:-> 1):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 3 < b:-> 4):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 10 < b:-> 4):false
+009|  else if (a:-> 10 > b:-> 4):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 10 < b:-> 5):false
+009|  else if (a:-> 10 > b:-> 5):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 9 < b:-> 6):false
+009|  else if (a:-> 9 > b:-> 6):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 8 < b:-> 2):false
+009|  else if (a:-> 8 > b:-> 2):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 7 < b:-> 2):false
+009|  else if (a:-> 7 > b:-> 2):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 7 < b:-> 8):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 6 < b:-> 2):false
+009|  else if (a:-> 6 > b:-> 2):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 6 < b:-> 7):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 9 < b:-> 7):false
+009|  else if (a:-> 9 > b:-> 7):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 9 < b:-> 8):false
+009|  else if (a:-> 9 > b:-> 8):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 1 < b:-> 2):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 3 < b:-> 2):false
+009|  else if (a:-> 3 > b:-> 2):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 3 < b:-> 6):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 4 < b:-> 6):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 5 < b:-> 6):true
+008|   return  - 1
+008|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 10 < b:-> 6):false
+009|  else if (a:-> 10 > b:-> 6):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 10 < b:-> 7):false
+009|  else if (a:-> 10 > b:-> 7):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 10 < b:-> 8):false
+009|  else if (a:-> 10 > b:-> 8):true
+010|   return 1
+012|  end # if
+006| end
+006| sub (~a , ~b)
+007|  if (a:-> 10 < b:-> 9):false
+009|  else if (a:-> 10 > b:-> 9):true
+010|   return 1
+012|  end # if
+006| end
+006|sort( ~array a:[ -> 10, -> 3, -> 1, -> 5, -> 4, -> 9, -> 6, -> 7, -> 8, -> 2 ] ~func sub (~a , ~b) ):Nill
+018|println( ~msg 'sorted numbers' )...
+020|for v = 1
+021| println( ~msg v:1 )...
+020|end
+020|for ...
+020|for v = 2
+021| println( ~msg v:2 )...
+020|end
+020|for ...
+020|for v = 3
+021| println( ~msg v:3 )...
+020|end
+020|for ...
+020|for v = 4
+021| println( ~msg v:4 )...
+020|end
+020|for ...
+020|for v = 5
+021| println( ~msg v:5 )...
+020|end
+020|for ...
+020|for v = 6
+021| println( ~msg v:6 )...
+020|end
+020|for ...
+020|for v = 7
+021| println( ~msg v:7 )...
+020|end
+020|for ...
+020|for v = 8
+021| println( ~msg v:8 )...
+020|end
+020|for ...
+020|for v = 9
+021| println( ~msg v:9 )...
+020|end
+020|for ...
+020|for v = 10
+021| println( ~msg v:10 )...
+020|end
+020|for ...
+020|end # finish for loop

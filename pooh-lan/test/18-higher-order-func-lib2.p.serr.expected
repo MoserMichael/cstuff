@@ -1,0 +1,349 @@
+035|a = [ 1 , 2 , 3] 
+037|println( ~msg 'fold right - sum: ' .. foldlast2first( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub sum(~a , ~b) ~initval 0 )...
+013| sub sum(~a , ~b)
+014|  return (recsum( ~num a:-> 3 )...
+005|   if (num:-> 3 > 0):true
+006|    return (recsum( ~num (num:-> 3 - 1):2 )...
+005|     if (num:2 > 0):true
+006|      return (recsum( ~num (num:2 - 1):1 )...
+005|       if (num:1 > 0):true
+006|        return (recsum( ~num (num:1 - 1):0 )...
+005|         if (num:0 > 0):false
+006|         else
+008|          return 0
+008|         end # if
+006|        return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|       end # if
+006|      return (recsum( ~num (num:2 - 1):1 ):1 + num:2):3
+006|     end # if
+006|    return (recsum( ~num (num:-> 3 - 1):2 ):3 + num:-> 3):6
+006|   end # if
+014|  return (recsum( ~num a:-> 3 ):6 + recsum( ~num b:-> 0 )...
+005|   if (num:-> 0 > 0):false
+006|   else
+008|    return 0
+008|   end # if
+014|  return (recsum( ~num a:-> 3 ):6 + recsum( ~num b:-> 0 ):0):6
+013| end
+013| sub sum(~a , ~b)
+014|  return (recsum( ~num a:-> 2 )...
+005|   if (num:-> 2 > 0):true
+006|    return (recsum( ~num (num:-> 2 - 1):1 )...
+005|     if (num:1 > 0):true
+006|      return (recsum( ~num (num:1 - 1):0 )...
+005|       if (num:0 > 0):false
+006|       else
+008|        return 0
+008|       end # if
+006|      return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|     end # if
+006|    return (recsum( ~num (num:-> 2 - 1):1 ):1 + num:-> 2):3
+006|   end # if
+014|  return (recsum( ~num a:-> 2 ):3 + recsum( ~num b:-> 6 )...
+005|   if (num:-> 6 > 0):true
+006|    return (recsum( ~num (num:-> 6 - 1):5 )...
+005|     if (num:5 > 0):true
+006|      return (recsum( ~num (num:5 - 1):4 )...
+005|       if (num:4 > 0):true
+006|        return (recsum( ~num (num:4 - 1):3 )...
+005|         if (num:3 > 0):true
+006|          return (recsum( ~num (num:3 - 1):2 )...
+005|           if (num:2 > 0):true
+006|            return (recsum( ~num (num:2 - 1):1 )...
+005|             if (num:1 > 0):true
+006|              return (recsum( ~num (num:1 - 1):0 )...
+005|               if (num:0 > 0):false
+006|               else
+008|                return 0
+008|               end # if
+006|              return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|             end # if
+006|            return (recsum( ~num (num:2 - 1):1 ):1 + num:2):3
+006|           end # if
+006|          return (recsum( ~num (num:3 - 1):2 ):3 + num:3):6
+006|         end # if
+006|        return (recsum( ~num (num:4 - 1):3 ):6 + num:4):10
+006|       end # if
+006|      return (recsum( ~num (num:5 - 1):4 ):10 + num:5):15
+006|     end # if
+006|    return (recsum( ~num (num:-> 6 - 1):5 ):15 + num:-> 6):21
+006|   end # if
+014|  return (recsum( ~num a:-> 2 ):3 + recsum( ~num b:-> 6 ):21):24
+013| end
+013| sub sum(~a , ~b)
+014|  return (recsum( ~num a:-> 1 )...
+005|   if (num:-> 1 > 0):true
+006|    return (recsum( ~num (num:-> 1 - 1):0 )...
+005|     if (num:0 > 0):false
+006|     else
+008|      return 0
+008|     end # if
+006|    return (recsum( ~num (num:-> 1 - 1):0 ):0 + num:-> 1):1
+006|   end # if
+014|  return (recsum( ~num a:-> 1 ):1 + recsum( ~num b:-> 24 )...
+005|   if (num:-> 24 > 0):true
+006|    return (recsum( ~num (num:-> 24 - 1):23 )...
+005|     if (num:23 > 0):true
+006|      return (recsum( ~num (num:23 - 1):22 )...
+005|       if (num:22 > 0):true
+006|        return (recsum( ~num (num:22 - 1):21 )...
+005|         if (num:21 > 0):true
+006|          return (recsum( ~num (num:21 - 1):20 )...
+005|           if (num:20 > 0):true
+006|            return (recsum( ~num (num:20 - 1):19 )...
+005|             if (num:19 > 0):true
+006|              return (recsum( ~num (num:19 - 1):18 )...
+005|               if (num:18 > 0):true
+006|                return (recsum( ~num (num:18 - 1):17 )...
+005|                 if (num:17 > 0):true
+006|                  return (recsum( ~num (num:17 - 1):16 )...
+005|                   if (num:16 > 0):true
+006|                    return (recsum( ~num (num:16 - 1):15 )...
+005|>>                >>if (num:15 > 0):true
+006|>>                >>return (recsum( ~num (num:15 - 1):14 )...
+005|>>                >>if (num:14 > 0):true
+006|>>                >>return (recsum( ~num (num:14 - 1):13 )...
+005|>>                >>if (num:13 > 0):true
+006|>>                >>return (recsum( ~num (num:13 - 1):12 )...
+005|>>                >>if (num:12 > 0):true
+006|>>                >>return (recsum( ~num (num:12 - 1):11 )...
+005|>>                >>if (num:11 > 0):true
+006|>>                >>return (recsum( ~num (num:11 - 1):10 )...
+005|>>                >>if (num:10 > 0):true
+006|>>                >>return (recsum( ~num (num:10 - 1):9 )...
+005|>>                >>if (num:9 > 0):true
+006|>>                >>return (recsum( ~num (num:9 - 1):8 )...
+005|>>                >>if (num:8 > 0):true
+006|>>                >>return (recsum( ~num (num:8 - 1):7 )...
+005|>>                >>if (num:7 > 0):true
+006|>>                >>return (recsum( ~num (num:7 - 1):6 )...
+005|>>                >>if (num:6 > 0):true
+006|>>                >>return (recsum( ~num (num:6 - 1):5 )...
+005|>>                >>if (num:5 > 0):true
+006|>>                >>return (recsum( ~num (num:5 - 1):4 )...
+005|>>                >>if (num:4 > 0):true
+006|>>                >>return (recsum( ~num (num:4 - 1):3 )...
+005|>>                >>if (num:3 > 0):true
+006|>>                >>return (recsum( ~num (num:3 - 1):2 )...
+005|>>                >>if (num:2 > 0):true
+006|>>                >>return (recsum( ~num (num:2 - 1):1 )...
+005|>>                >>if (num:1 > 0):true
+006|>>                >>return (recsum( ~num (num:1 - 1):0 )...
+005|>>                >>if (num:0 > 0):false
+006|>>                >>else
+008|>>                >>return 0
+008|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:2 - 1):1 ):1 + num:2):3
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:3 - 1):2 ):3 + num:3):6
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:4 - 1):3 ):6 + num:4):10
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:5 - 1):4 ):10 + num:5):15
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:6 - 1):5 ):15 + num:6):21
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:7 - 1):6 ):21 + num:7):28
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:8 - 1):7 ):28 + num:8):36
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:9 - 1):8 ):36 + num:9):45
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:10 - 1):9 ):45 + num:10):55
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:11 - 1):10 ):55 + num:11):66
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:12 - 1):11 ):66 + num:12):78
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:13 - 1):12 ):78 + num:13):91
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:14 - 1):13 ):91 + num:14):105
+006|>>                >>end # if
+006|>>                >>return (recsum( ~num (num:15 - 1):14 ):105 + num:15):120
+006|>>                >>end # if
+006|                    return (recsum( ~num (num:16 - 1):15 ):120 + num:16):136
+006|                   end # if
+006|                  return (recsum( ~num (num:17 - 1):16 ):136 + num:17):153
+006|                 end # if
+006|                return (recsum( ~num (num:18 - 1):17 ):153 + num:18):171
+006|               end # if
+006|              return (recsum( ~num (num:19 - 1):18 ):171 + num:19):190
+006|             end # if
+006|            return (recsum( ~num (num:20 - 1):19 ):190 + num:20):210
+006|           end # if
+006|          return (recsum( ~num (num:21 - 1):20 ):210 + num:21):231
+006|         end # if
+006|        return (recsum( ~num (num:22 - 1):21 ):231 + num:22):253
+006|       end # if
+006|      return (recsum( ~num (num:23 - 1):22 ):253 + num:23):276
+006|     end # if
+006|    return (recsum( ~num (num:-> 24 - 1):23 ):276 + num:-> 24):300
+006|   end # if
+014|  return (recsum( ~num a:-> 1 ):1 + recsum( ~num b:-> 24 ):300):301
+013| end
+037|println( ~msg 'fold right - sum: ' .. foldlast2first( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub sum(~a , ~b) ~initval 0 ):301 )...
+038|println( ~msg 'fold left - sum: ' .. foldfirst2last( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub sum(~a , ~b) ~initval 0 )...
+013| sub sum(~a , ~b)
+014|  return (recsum( ~num a:-> 1 )...
+005|   if (num:-> 1 > 0):true
+006|    return (recsum( ~num (num:-> 1 - 1):0 )...
+005|     if (num:0 > 0):false
+006|     else
+008|      return 0
+008|     end # if
+006|    return (recsum( ~num (num:-> 1 - 1):0 ):0 + num:-> 1):1
+006|   end # if
+014|  return (recsum( ~num a:-> 1 ):1 + recsum( ~num b:-> 0 )...
+005|   if (num:-> 0 > 0):false
+006|   else
+008|    return 0
+008|   end # if
+014|  return (recsum( ~num a:-> 1 ):1 + recsum( ~num b:-> 0 ):0):1
+013| end
+013| sub sum(~a , ~b)
+014|  return (recsum( ~num a:-> 2 )...
+005|   if (num:-> 2 > 0):true
+006|    return (recsum( ~num (num:-> 2 - 1):1 )...
+005|     if (num:1 > 0):true
+006|      return (recsum( ~num (num:1 - 1):0 )...
+005|       if (num:0 > 0):false
+006|       else
+008|        return 0
+008|       end # if
+006|      return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|     end # if
+006|    return (recsum( ~num (num:-> 2 - 1):1 ):1 + num:-> 2):3
+006|   end # if
+014|  return (recsum( ~num a:-> 2 ):3 + recsum( ~num b:-> 1 )...
+005|   if (num:-> 1 > 0):true
+006|    return (recsum( ~num (num:-> 1 - 1):0 )...
+005|     if (num:0 > 0):false
+006|     else
+008|      return 0
+008|     end # if
+006|    return (recsum( ~num (num:-> 1 - 1):0 ):0 + num:-> 1):1
+006|   end # if
+014|  return (recsum( ~num a:-> 2 ):3 + recsum( ~num b:-> 1 ):1):4
+013| end
+013| sub sum(~a , ~b)
+014|  return (recsum( ~num a:-> 3 )...
+005|   if (num:-> 3 > 0):true
+006|    return (recsum( ~num (num:-> 3 - 1):2 )...
+005|     if (num:2 > 0):true
+006|      return (recsum( ~num (num:2 - 1):1 )...
+005|       if (num:1 > 0):true
+006|        return (recsum( ~num (num:1 - 1):0 )...
+005|         if (num:0 > 0):false
+006|         else
+008|          return 0
+008|         end # if
+006|        return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|       end # if
+006|      return (recsum( ~num (num:2 - 1):1 ):1 + num:2):3
+006|     end # if
+006|    return (recsum( ~num (num:-> 3 - 1):2 ):3 + num:-> 3):6
+006|   end # if
+014|  return (recsum( ~num a:-> 3 ):6 + recsum( ~num b:-> 4 )...
+005|   if (num:-> 4 > 0):true
+006|    return (recsum( ~num (num:-> 4 - 1):3 )...
+005|     if (num:3 > 0):true
+006|      return (recsum( ~num (num:3 - 1):2 )...
+005|       if (num:2 > 0):true
+006|        return (recsum( ~num (num:2 - 1):1 )...
+005|         if (num:1 > 0):true
+006|          return (recsum( ~num (num:1 - 1):0 )...
+005|           if (num:0 > 0):false
+006|           else
+008|            return 0
+008|           end # if
+006|          return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|         end # if
+006|        return (recsum( ~num (num:2 - 1):1 ):1 + num:2):3
+006|       end # if
+006|      return (recsum( ~num (num:3 - 1):2 ):3 + num:3):6
+006|     end # if
+006|    return (recsum( ~num (num:-> 4 - 1):3 ):6 + num:-> 4):10
+006|   end # if
+014|  return (recsum( ~num a:-> 3 ):6 + recsum( ~num b:-> 4 ):10):16
+013| end
+038|println( ~msg 'fold left - sum: ' .. foldfirst2last( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub sum(~a , ~b) ~initval 0 ):16 )...
+040|println( ~msg 'filter - filter odd numbers: ' .. filter( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub even(~arg) )...
+023| sub even(~arg)
+025|  return ((arg:-> 1 % 2):1 == 0):false
+023| end
+023| sub even(~arg)
+025|  return ((arg:-> 2 % 2):0 == 0):true
+023| end
+023| sub even(~arg)
+025|  return ((arg:-> 3 % 2):1 == 0):false
+023| end
+040|println( ~msg 'filter - filter odd numbers: ' .. filter( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub even(~arg) ):[ -> 2 ] )...
+042|println( ~msg '*** map - square root of numbers ***' )...
+044|... = mapcopy( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub square(~arg) )...
+028| sub square(~arg)
+029|  ... = recsum( ~num arg:-> 1 )...
+005|   if (num:-> 1 > 0):true
+006|    return (recsum( ~num (num:-> 1 - 1):0 )...
+005|     if (num:0 > 0):false
+006|     else
+008|      return 0
+008|     end # if
+006|    return (recsum( ~num (num:-> 1 - 1):0 ):0 + num:-> 1):1
+006|   end # if
+029|  arg = recsum( ~num arg:-> 1 ):1
+030|  return (arg:-> 1 * arg:-> 1):1
+028| end
+028| sub square(~arg)
+029|  ... = recsum( ~num arg:-> 2 )...
+005|   if (num:-> 2 > 0):true
+006|    return (recsum( ~num (num:-> 2 - 1):1 )...
+005|     if (num:1 > 0):true
+006|      return (recsum( ~num (num:1 - 1):0 )...
+005|       if (num:0 > 0):false
+006|       else
+008|        return 0
+008|       end # if
+006|      return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|     end # if
+006|    return (recsum( ~num (num:-> 2 - 1):1 ):1 + num:-> 2):3
+006|   end # if
+029|  arg = recsum( ~num arg:-> 2 ):3
+030|  return (arg:-> 3 * arg:-> 3):9
+028| end
+028| sub square(~arg)
+029|  ... = recsum( ~num arg:-> 3 )...
+005|   if (num:-> 3 > 0):true
+006|    return (recsum( ~num (num:-> 3 - 1):2 )...
+005|     if (num:2 > 0):true
+006|      return (recsum( ~num (num:2 - 1):1 )...
+005|       if (num:1 > 0):true
+006|        return (recsum( ~num (num:1 - 1):0 )...
+005|         if (num:0 > 0):false
+006|         else
+008|          return 0
+008|         end # if
+006|        return (recsum( ~num (num:1 - 1):0 ):0 + num:1):1
+006|       end # if
+006|      return (recsum( ~num (num:2 - 1):1 ):1 + num:2):3
+006|     end # if
+006|    return (recsum( ~num (num:-> 3 - 1):2 ):3 + num:-> 3):6
+006|   end # if
+029|  arg = recsum( ~num arg:-> 3 ):6
+030|  return (arg:-> 6 * arg:-> 6):36
+028| end
+044|sqa = mapcopy( ~array a:[ -> 1, -> 2, -> 3 ] ~func sub square(~arg) ):[ -> 1, -> 9, -> 36 ]
+046|for v = 1
+047| println( ~msg v:1 )...
+046|end
+046|for ...
+046|for v = 9
+047| println( ~msg v:9 )...
+046|end
+046|for ...
+046|for v = 36
+047| println( ~msg v:36 )...
+046|end
+046|for ...
+046|end # finish for loop

@@ -1,0 +1,36 @@
+003|arr = [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17] 
+005|i = 1
+006|while (arr[i:1]:1 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:1]:1 )...
+008| i = (i:1 + 1):2
+009|end
+006|while (arr[i:2]:2 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:2]:2 )...
+008| i = (i:2 + 1):3
+009|end
+006|while (arr[i:3]:3 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:3]:3 )...
+008| i = (i:3 + 1):4
+009|end
+006|while (arr[i:4]:5 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:4]:5 )...
+008| i = (i:4 + 1):5
+009|end
+006|while (arr[i:5]:7 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:5]:7 )...
+008| i = (i:5 + 1):6
+009|end
+006|while (arr[i:6]:11 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:6]:11 )...
+008| i = (i:6 + 1):7
+009|end
+006|while (arr[i:7]:13 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:7]:13 )...
+008| i = (i:7 + 1):8
+009|end
+006|while (arr[i:8]:17 != Nill):true
+007| println( ~msg 'prime number i ' .. arr[i:8]:17 )...
+008| i = (i:8 + 1):9
+009|end
+006|while (arr[i:9]:Nill != Nill):false
+009|end # finish loop

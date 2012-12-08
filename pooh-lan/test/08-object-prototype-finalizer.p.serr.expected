@@ -1,0 +1,5 @@
+004|a := { 'field' : 42 , 'finalizer' : sub () }
+005|sub ()
+006| println( ~msg 'finalizer is called' )...
+005|end
+013|a = {  }

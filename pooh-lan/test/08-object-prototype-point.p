@@ -1,3 +1,4 @@
+# 0bject oriented programming with prototypes: point class
 
 sub make_point( x, y )
 

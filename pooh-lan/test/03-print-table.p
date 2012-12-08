@@ -1,4 +1,4 @@
-
+# iterate over table and print out values.
 
 days =  {
           'sun'  : 'Sunday',
@@ -15,7 +15,7 @@ i = 1
 
 println( ~msg '**** value { keys  } ***' )
 
-while daykeys[ i ] != Nill
+while daykeys[ i ] != Null
     println( ~msg  days{ daykeys[ i ] }   )
     i = i + 1
 end
@@ -25,7 +25,7 @@ println( ~msg '*** value ***' )
 daykeys = values( ~table days )
 i = 1
 
-while daykeys[ i ] != Nill
+while daykeys[ i ] != Null
     println( ~msg  daykeys[ i ]    )
     i = i + 1
 end

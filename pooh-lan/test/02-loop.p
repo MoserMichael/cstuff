@@ -1,4 +1,4 @@
-
+# loops: function computes the sum of squares over integer rane. 
 
 sub squares( from, to)
   i = from

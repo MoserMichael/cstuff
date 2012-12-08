@@ -1,4 +1,4 @@
-
+# function: get factorial of a number (recursive)
 
 
 sub fact( num )

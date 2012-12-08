@@ -1,3 +1,4 @@
+# function invokes argument callback over range of numbers; prints result as ASCII graph
 
 sub myfunc( num )
   return sqr( ~num num )  + num * num

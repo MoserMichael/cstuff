@@ -1,6 +1,6 @@
+# array test: sieve of Eratosthenes gets all prime numbers
 
 
-# get all prime numbers up to max
 sub primes( max )
 
   mark = []
@@ -11,7 +11,7 @@ sub primes( max )
     m = 2 * n
     loop 
         if m > max
-            break;
+            break
         end
         mark[ m ] = 1
         m = m + n
