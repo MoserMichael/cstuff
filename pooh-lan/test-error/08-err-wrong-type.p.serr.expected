@@ -1,0 +1,36 @@
+
+test-error/08-err-wrong-type.p(11): Error: Variable arr is defined as array, but used as table
+     11 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   if arr{ 'who-now' } == 1 
+        |......^^^^^^^^^^^^^^^^
+
+test-error/08-err-wrong-type.p(7): Error: First definition of variable arr
+      7 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   arr = []
+        |...^^^^^^^^
+
+test-error/08-err-wrong-type.p(15): Error: Variable tab is defined as table, but used as array
+     15 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   if tab[ 0 ] == 1 
+        |......^^^^^^^^
+
+test-error/08-err-wrong-type.p(8): Error: First definition of variable tab
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   tab = {}
+        |...^^^^^^^^
+
+test-error/08-err-wrong-type.p(19): Error: Variable scl is defined as number, but used as table
+     19 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   if scl{ 1 } == 1
+        |......^^^^^^^^
+
+test-error/08-err-wrong-type.p(9): Error: First definition of variable scl
+      9 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   scl = 1
+        |...^^^^^^^
+
+test-error/08-err-wrong-type.p(23): Error: Operator == expects number or string argument , instead got table
+     23 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   if global . gl_table == 1
+        |......^^^^^^^^^^^^^^^^^
+Type checking failed

@@ -1,0 +1,16 @@
+
+test-error/04-err-string-empty.p(4): Error: The string constant is not closed, it goes on and on until the end of the file
+      4 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |
+        |^
+
+test-error/04-err-string-empty.p(3): Error: syntax error, unexpected error 
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |r = '
+        |....^
+
+test-error/04-err-string-empty.p(3): Error: in assignment; right hand side (value of assignment) is wrong
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |r = '
+        |....^
+Parsing failed

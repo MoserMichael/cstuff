@@ -1,0 +1,11 @@
+
+test-error/04-err-string-embedd-expr.p(3): Error: the function undef is not defined, can't call a function that is not defined
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |a = 'multiline string with wrong express [ undef() ] what now [ 2 * 'aaaa' ]
+        |...........................................^^^^^
+
+test-error/04-err-string-embedd-expr.p(4): Error: the function undef is not defined, can't call a function that is not defined
+      4 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        | another embeaded expr [ undef() ] that call undefined function. what now ? [ 'bbbbb' * 3 ] ? '
+        |.........................^^^^^
+Type checking failed

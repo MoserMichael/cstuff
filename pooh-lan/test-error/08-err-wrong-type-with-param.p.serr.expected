@@ -1,0 +1,36 @@
+
+test-error/08-err-wrong-type-with-param.p(5): Error: Operator * expects number or string argument , instead got array
+      5 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |  b = arg * 1
+        |......^^^
+
+test-error/08-err-wrong-type-with-param.p(12): Error: Can't assign the number value to arg 
+     12 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |  arg = 3
+        |..^^^
+
+test-error/08-err-wrong-type-with-param.p(10): Error: First definition of variable arg as array
+     10 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |  arg[1] = 1
+        |..^^^^^^
+
+test-error/08-err-wrong-type-with-param.p(19): Error: Can't assign the number value to arg 
+     19 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |  arg = 3
+        |..^^^
+
+test-error/08-err-wrong-type-with-param.p(17): Error: First definition of variable arg as array
+     17 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |  c = arg[2]
+        |......^^^^^^
+
+test-error/08-err-wrong-type-with-param.p(25): Error: Variable arg is defined as number, but used as table
+     25 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   arg{3} = 5
+        |...^^^^^^
+
+test-error/08-err-wrong-type-with-param.p(23): Error: First definition of variable arg
+     23 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   arg = 3
+        |...^^^^^^^
+Type checking failed

@@ -1,0 +1,26 @@
+
+test-error/04-err-string-embedded_expr2.p(3): Error: the function foo is not defined, can't call a function that is not defined
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |a = ' aaa [ foo() ] bbb [ gooo() ] aa '
+        |............^^^
+
+test-error/04-err-string-embedded_expr2.p(3): Error: the function gooo is not defined, can't call a function that is not defined
+      3 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |a = ' aaa [ foo() ] bbb [ gooo() ] aa '
+        |..........................^^^^
+
+test-error/04-err-string-embedded_expr2.p(6): Error: the function oyoyoy is not defined, can't call a function that is not defined
+      6 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |oyoyoy()
+        |^^^^^^
+
+test-error/04-err-string-embedded_expr2.p(8): Error: the function foo is not defined, can't call a function that is not defined
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |a = ' aaa [ foo() ] bbb [ gooo() ] aa '
+        |............^^^
+
+test-error/04-err-string-embedded_expr2.p(8): Error: the function gooo is not defined, can't call a function that is not defined
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |a = ' aaa [ foo() ] bbb [ gooo() ] aa '
+        |..........................^^^^
+Type checking failed

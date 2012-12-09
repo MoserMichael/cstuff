@@ -1,0 +1,16 @@
+
+test-error/10-err-array-index.p(11): Error: Array expects number as index value, instead has string
+     11 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |arr[ str ] = 1
+        |...^^^^^^^
+
+test-error/10-err-array-index.p(14): Error: Array expects number as index value, instead has array
+     14 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |arr[ karr ] = 1
+        |...^^^^^^^^
+
+test-error/10-err-array-index.p(17): Error: Array expects number as index value, instead has table
+     17 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |arr[ hash ] = 1
+        |...^^^^^^^^
+Type checking failed

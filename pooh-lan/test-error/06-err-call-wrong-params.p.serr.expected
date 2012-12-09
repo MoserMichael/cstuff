@@ -1,0 +1,16 @@
+
+test-error/06-err-call-wrong-params.p(8): Error: function foo does not have a parameter ~c
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |foo( ~c 1 )
+        |.....^^^^
+
+test-error/06-err-call-wrong-params.p(8): Error: function is called without the required parameter ~a
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |foo( ~c 1 )
+        |.....^^^^
+
+test-error/06-err-call-wrong-params.p(8): Error: function is called without the required parameter ~b
+      8 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |foo( ~c 1 )
+        |.....^^^^
+Type checking failed

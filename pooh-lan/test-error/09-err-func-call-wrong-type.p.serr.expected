@@ -1,0 +1,11 @@
+
+test-error/09-err-func-call-wrong-type.p(13): Error: parameter ~a is called as string but defined as any type
+     13 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |println( ~msg 'wrong arguments' .. triangle( ~a msg ~b arr ~c c ))
+        |.............................................^^^^^^
+
+test-error/09-err-func-call-wrong-type.p(13): Error: parameter ~b is called as array but defined as any type
+     13 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |println( ~msg 'wrong arguments' .. triangle( ~a msg ~b arr ~c c ))
+        |....................................................^^^^^^
+Type checking failed

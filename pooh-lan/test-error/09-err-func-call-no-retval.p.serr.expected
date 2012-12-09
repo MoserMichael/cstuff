@@ -1,0 +1,11 @@
+
+test-error/09-err-func-call-no-retval.p(9): Error: Function no_return_value does not return a value, but is used as any type
+      9 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |a = 2 * no_return_value()
+        |........^^^^^^^^^^^^^^^^^
+
+test-error/09-err-func-call-no-retval.p(4): Error: Function no_return_value is defined here
+      4 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |sub no_return_value()
+        |^^^^^^^^^^^^^^^^^^^^^
+Type checking failed

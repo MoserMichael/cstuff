@@ -1,0 +1,16 @@
+
+test-error/07-err-undef-var.p(5): Error: local variable undefined_local is used without having been assigned a value
+      5 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   println( ~msg undefined_local )
+        |.................^^^^^^^^^^^^^^^
+
+test-error/07-err-undef-var.p(7): Error: local variable no_such_global is used without having been assigned a value
+      7 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |   println( ~msg no_such_global )
+        |.................^^^^^^^^^^^^^^
+
+test-error/07-err-undef-var.p(11): Error: Closure variable no_capture is used without having been assigned a value
+     11 |:....+....:....+....:....+....:....+....:....+....:....+....:....+....:....+....
+        |        println( ~msg outer.no_capture )
+        |......................^^^^^^^^^^^^^^^^
+Type checking failed
