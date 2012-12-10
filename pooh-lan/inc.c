@@ -12,22 +12,30 @@
 void init_path( INC_PATH *path, const char *exe_path )
 {
   char *pname, *dname, *dname2, *lname;
+
   
   pname = get_current_process_name( exe_path );
   if (!pname)
     return;
+
   dname = FN_dir_name( pname );
   if (!dname)
     return;
+
   dname2 = FN_dir_name( dname );
+  if (!dname2)
+    return;
 
   lname = FN_make_path( dname2, "lib/pooh" );
+  if (!lname)
+     return;
+
   INC_PATH_add( path, lname, 1 );
 
   free(lname);
   free(dname);
   free(dname2);
-}
+ }
 
 
 INC_PATH *INC_PATH_init( const char *exe_path )

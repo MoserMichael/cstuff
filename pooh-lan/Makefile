@@ -23,7 +23,16 @@ pooh_SRC=inc.c lexer.c parser.c ast.c parsectx.c printast.c checker.c ld.c main.
 
 pooh_DEPENDENCIES=pars.txt lex.txt 
 
-pooh_LDFLAGS=-rdynamic
+
+ifeq "$(OS_TYPE)" ""
+OS_TYPE:=$(shell uname -o | sed -e 's\#/\#-\#g' -e 's\#(\#-\#g' -e 's\#)\#-\#g' )
+export OS_TYPE
+endif
+
+pooh_LDFLAGS-Cygwin=-Wl,--export-all-symbols
+pooh_LDFLAGS-GNU-Linux=-rdynamic
+
+pooh_LDFLAGS=$(pooh_LDFLAGS-$(OS_TYPE))
 
 # the generated lex/bison parser compiles with some warnings, so do not treat warnings as errors for these files.
 

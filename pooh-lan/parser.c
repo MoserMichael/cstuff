@@ -11,6 +11,7 @@
 #include <cutils/dbuf.h>
 #include "ld.h"
 #include "inc.h"
+#include <butils/fn.h>
 #include <unistd.h>
 
 #define ERROR_MSG_LEN 4096
@@ -187,7 +188,7 @@ char *translate_token(const char *msg) {
     for( tok = strtok( copy, "_"); tok != 0; tok = strtok( 0, "_" ) ) {
 	
 	for( ch = tok; *ch != '\0'; ch++) {
-	  *ch = tolower( * ch );
+	  *ch = tolower( (int) * ch );
 	}  
 	strcat(news, tok);  
         strcat(news," ");
@@ -417,6 +418,14 @@ int PARSER_free(PARSECONTEXT *ctx)
 
 typedef  AST_XFUNC_DECL * (*FN_get_honey_jar_interface) ();
 
+
+
+#if defined(__CYGWIN__) || defined(_WIN32)
+#define SHARED_LIBRARY_EXTENSION ".dll" 
+#else
+#define SHARED_LIBRARY_EXTENSION ".so" 
+#endif
+
 int load_extension_library(PARSECONTEXT * ctx,  YYLTYPE *loc, const char *sval )
 {
   char *alt_name = 0;
@@ -428,12 +437,22 @@ int load_extension_library(PARSECONTEXT * ctx,  YYLTYPE *loc, const char *sval )
   if (access( sval, R_OK )) {
      alt_name = INC_PATH_resolve( ctx->lexctx.inc_path, sval );
      if (!alt_name) {
-       char *spath = INC_PATH_to_text( ctx->lexctx.inc_path );
+       char *spath;
+       char *sval2 =  FN_set_extension( sval, SHARED_LIBRARY_EXTENSION );
+       if (sval2) {
+         alt_name = INC_PATH_resolve( ctx->lexctx.inc_path, sval2 );
+       }
+       free(sval2);
+  
+       if (!alt_name) {
+          spath = INC_PATH_to_text( ctx->lexctx.inc_path );
+      
 	  do_yyerror( loc, ctx,  "Can't open file %s, tried to open the file in current directory %s%s Try to specify the search path with -I <directory name> or -i <directory name> command line options.",
 		sval, 
 		spath != 0 ? "and then in each directory that is part of the search path: " : 0,
 		spath != 0 ? spath : 0 );
-       goto err;
+          goto err;
+      }
      }
      sval = alt_name;
   }

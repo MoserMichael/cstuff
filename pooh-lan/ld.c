@@ -1,6 +1,7 @@
 #include <dlfcn.h>
 #include <string.h>
-#include "ld.h"
+#include "ld.h" 
+#include <stdio.h>
 
 int SHLIB_load( SHLIB *lib, const char *name )
 {
@@ -10,7 +11,8 @@ int SHLIB_load( SHLIB *lib, const char *name )
     char *ret;
     ret = dlerror();
     if (ret)
-	lib->last_error = strdup( ret );
+     lib->last_error = strdup( ret );
+
   }
   return lib->handle == 0;
 }

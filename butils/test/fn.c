@@ -2,13 +2,16 @@
 #include <butils/fn.h>
 #include <string.h>
 #include <malloc.h>
+#include <stdio.h>
 
 void FN_test()
 {
   char *tmp;
 
   tmp = FN_normalize(".././abcd");
-  VASSERT( tmp != 0 && strchr(tmp,'.') == 0 );
+
+  VASSERT( tmp != 0 );
+  VASSERT( strchr(tmp,'.') == 0 );
   free(tmp);
  
   tmp = FN_make_path( "a/b/c", "d" );

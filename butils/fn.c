@@ -11,16 +11,28 @@
 
 char *FN_dir_name( const char *path_name  )
 {
-   size_t len;
-   char *str;
+   size_t len, slen;
+   const char *str;
    char *ret;
 
-   if (!path_name)
+   if (!path_name || (slen = strlen(path_name)) == 0)
      return 0;
-   
-   str = strrchr( path_name, SEP_CHAR );
-   if (!str)
-     return 0;
+
+   slen -= 1;
+   if (slen > 0 && path_name[ slen ] == SEP_CHAR)
+     slen -= 1;
+
+   do {
+     if (path_name[ slen ] == SEP_CHAR) {
+       break;
+     }
+     slen -= 1;
+   } while( slen != 0 ); 
+
+   if (slen == 0)
+     return 0;   
+
+   str = path_name + slen;
 
    len = (str + 1) - path_name;  
    ret = (char *) malloc( len + 1 );
@@ -39,7 +51,7 @@ char *FN_file_name( const char *path_name )
    char *str;
    char *ret;
 
-   if (!path_name)
+   if (!path_name || strlen(path_name) == 0)
      return 0;
    
    str = strrchr( path_name, SEP_CHAR );
@@ -63,9 +75,11 @@ char *FN_make_path( const char *dir_name, const char *file_name )
   size_t len,add_sep = (size_t) -1;
   char *ret;
 
-  if (!dir_name) 
+  if (!dir_name || strlen(dir_name) == 0) 
     return 0;
-  
+  if (!file_name || strlen(file_name) == 0) 
+    return 0;
+
   len = strlen(dir_name);
 
   if (dir_name[ len - 1 ] != SEP_CHAR) {
@@ -98,7 +112,7 @@ static char *FN_get_extension_imp( const char *fname_or_path )
    char *dot;
    char *sep;
 
-   if (!fname_or_path)
+   if (!fname_or_path || strlen(fname_or_path) == 0)
      return 0;
 
    dot = strrchr( fname_or_path, '.' );

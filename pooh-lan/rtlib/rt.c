@@ -2446,20 +2446,27 @@ static void x_read_lines( XCALL_DATA *xcall )
 {
   BINDING_DATA  *ret, *arg, *readbuf, *linestr, key, *func, *readres;
   VALHASH *hash;
+  VALARRAY *aret;
   VALSTRING *sep, *sreadbuf, *slinestr;
-  size_t nreadbuf, nlinestr;  
+  size_t nreadbuf, nlinestr, idx = 0;  
   VALFUNCTION  *readfun;
   long rt;
   size_t frame_start;
   char *ssep, *prev, *next, *eof;
   int incomplete_line = 0;
+  int iscoro = EVAL_THREAD_is_threadmain( xcall->thread );
+  
+  if (!iscoro) {
+    ret = XCALL_rvalue( xcall ); 
+    BINDING_DATA_init( ret, S_VAR_LIST );
+    aret = &ret->b.value.array_value;
+  }
 
-  ret = XCALL_rvalue( xcall ); 
-  BINDING_DATA_init( ret, S_VAR_LIST );
- 
+  // get file object argument.
   arg = XCALL_param( xcall, 0 ); 
   hash = BINDING_DATA_get_hash( arg );
 
+  // get line separator argument.
   arg = XCALL_param( xcall, 1 ); 
   if (!IS_NULL(arg)) {
     sep = BINDING_DATA_get_string( arg );
@@ -2479,7 +2486,7 @@ static void x_read_lines( XCALL_DATA *xcall )
     return;
   }
   
-  // temporary variables (read buffer, line buffer)
+  // create temporary variables (read buffer, line buffer)
   readbuf = EVAL_THREAD_push_stack( xcall->thread , S_VAR_STRING );
   nreadbuf = ARRAY_size( &xcall->thread->binding_data_stack ) - 1;
   VALSTRING_set_capacity( &readbuf->b.value.string_value, 1025 );
@@ -2530,7 +2537,13 @@ static void x_read_lines( XCALL_DATA *xcall )
 	 VALSTRING_set( slinestr, prev, next - prev );
        }
 
-       dothreadyield0_nomsg( linestr ); 
+       if (iscoro) 
+         dothreadyield0_nomsg( linestr ); 
+       else {
+         ret = XCALL_rvalue( xcall ); 
+         aret = &ret->b.value.array_value;
+         VALARRAY_set( aret, idx++, linestr, CP_VALUE ); // hash keys in array may not me modified by reference, so copy them by value.
+       }	     
 
        prev = next + strlen(ssep);
        if (prev >= eof) {
@@ -2555,7 +2568,15 @@ static void x_read_lines( XCALL_DATA *xcall )
 
   if (incomplete_line) {
     linestr = EVAL_THREAD_stack_offset( xcall->thread, nlinestr );
-    dothreadyield0_nomsg( linestr ); 
+
+    if (iscoro) 
+      dothreadyield0_nomsg( linestr ); 
+    else {
+      ret = XCALL_rvalue( xcall ); 
+      aret = &ret->b.value.array_value;
+      VALARRAY_set( aret, idx++, linestr, CP_VALUE ); // hash keys in array may not me modified by reference, so copy them by value.
+    }
+
   }
  
   EVAL_THREAD_discard_pop_stack( xcall->thread );
