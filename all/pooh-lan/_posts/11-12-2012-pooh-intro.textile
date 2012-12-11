@@ -6,7 +6,7 @@ title:  The Pooh programming language for kids and grown ups.
 h2. {{ page.title }}
 <p class="publish_date">15 December 2012</p>
 
-The pooh programming language is an educational programming language. I think this says that the language should help to overcome difficulties while learning it. Many other programming languages are full with tricky tricks that are there to save a few keystrokes while typing long programs or good for writing very large dinosaur programs, these aids are very powerful, but people who are not already used to thinking in complicated patterns are put off by them. Learning to program with a complicated language becomes some sort of rite for geeks, who already like complicated things; some people are like my friend Tigger who likes to bounce in his thoughts. Pooh thinks that the language that a person uses is making a person accustomed to think the way he speaks, until many people are no longer used to think in any other ways. The computer language one uses as a programmer therefore sets ones mind to thinking in geeky ways (probably only when programming?). This though is also known as the Saphir Worf hypothesis. I think that a simple, yet powerful language would help here.  
+The pooh programming language is an educational programming language. I think this says that the language should help to overcome difficulties while learning it. Many other programming languages are full with tricky tricks that are there to save a few keystrokes while typing long programs, these aids are very powerful, but people who are not already used to thinking in complicated patterns are put off by them. Learning to program with a complicated language becomes some sort of rite for geeks, who already like complicated things; some people are like Tigger who likes to bounce in his thoughts. Pooh thinks that the language that a person uses is making a person accustomed to think the way he speaks, until many people are no longer used to think in any other ways. The computer language one uses as a programmer therefore sets ones mind to thinking in geeky ways (probably only when programming?). This though is also known as the Saphir Worf hypothesis. I think that a simple, yet powerful language would help here.  
 
 h3. Availability
 
@@ -25,21 +25,21 @@ Build and install into /usr/local/ directory
 	
 <pre>
 	cd build
-	./build-pooh.sh install
+            ./build-pooh.sh install
 </pre>
 
 Build and install into /usr/alt directory
 
 <pre>
 	cd build
-	./build-pooh.sh install INSTALL_PREFIX=/usr/alt
+            ./build-pooh.sh install INSTALL_PREFIX=/usr/alt
 </pre>
 
 h3. Documentation
 
-The "Introduction to Pooh":/docs/html/pooh-lan.pdf which is not complicated. (currently still working on it :-(
-Here "Pooh library reference":/docs/html/pooh-ref.pdf which is at times short an more complicated
-Here are "Some explanations of the design decisions":/docs/html which should be interesting for people who like programming languages.
+The "Introduction to Pooh":/cstuff/docs/html/pooh/pooh-lan.pdf which is not complicated. (currently still working on it :-(
+Here "Pooh library reference":/cstuff/docs/html/pooh/pooh-ref.pdf which is at times short an more complicated
+Here are "Some explanations of the design decisions":/cstuff/docs/html/poohwhich should be interesting for people who like programming languages.
 
 h3. Features
 
@@ -85,7 +85,7 @@ the factorial of 4 is 24
 * A simplified model of references to values is supported. 
 * Does object oriented programming by "prototyping (prototype based programming)":http://en.wikipedia.org/wiki/Prototype-based_programming ) ; access to data members via _ this . _ prefix to variable names
 * the concept of "closures":http://en.wikipedia.org/wiki/Closure_(computer_science)  is supported, one can have objects via closures. Non local variables references have the * outer . * prefix.
-* the concept of "co-routines / green threads / generators":http://en.wikipedia.org/wiki/Coroutine; which are also known as Pooh routines. for loops invoke a generator thread (similar to python)
+* the concept of "co-routines / generators":http://en.wikipedia.org/wiki/Coroutine  is supported; for loops invoke a generator thread (similar to python)
 * has "higher order functions":http://en.wikipedia.org/wiki/Higher-order_function  like map/foldl/filter/sort
 * "Multiple return values":http://rosettacode.org/wiki/Return_multiple_values  / "Parallel assignement":http://en.wikipedia.org/wiki/Assignment_(computer_science)#Parallel_assignment is supported.
 * It is possible to extend the language with shared libraries written in C.
@@ -103,7 +103,7 @@ All this means pooh is not strongly typed, and also not a dynamic language. Hope
 
 h3. Tests / examples
 
-This table lists some example programs, they are also used to test the pooh language when building it.
+This table lists some example programs, they make up the test suite of the project and are run on each build.
 
 
 
