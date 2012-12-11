@@ -1,0 +1,43 @@
+<html>
+<head>Pooh program example 08-object-prototype-finalizer.p</title></head>
+<body>
+<h3>Test 08-object-prototype-finalizer.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# test where object has a finalizer - it is called when object is freed.
+
+
+a := { 'field' : 42, 
+       'finalizer' : sub ()
+                        println( ~msg 'finalizer is called' )
+                     end
+     }  
+
+
+
+# assigning a different value to a; the previous value is now freed and finalizer is called.
+a = {}
+
+
+</pre>
+
+<h4>Trace output for 08-object-prototype-finalizer.p</h4>
+
+<pre>
+004|a := { 'field' : 42 , 'finalizer' : sub () }
+005|sub ()
+006| println( ~msg 'finalizer is called' )...
+005|end
+013|a = {  }
+</pre>
+
+<h3>Standard output for 08-object-prototype-finalizer.p</h3>
+
+<pre>
+finalizer is called
+
+</pre>
+</html>
+</body>

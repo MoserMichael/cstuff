@@ -1,0 +1,130 @@
+<html>
+<head>Pooh program example 01-copy-ref.p</title></head>
+<body>
+<h3>Test 01-copy-ref.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+ff := 42 
+gg := ff
+println( ~msg ff )
+println( ~msg gg )
+ff = 43
+println( ~msg ff )
+println( ~msg gg )
+
+##############################################
+
+aaa = []
+
+aaa[ 1 ] = 42
+
+aaa[ 2 ] := aaa[ 1 ]
+
+println( ~msg aaa[ 1 ] )
+
+println( ~msg aaa[ 2 ] )
+
+aaa[ 1 ] = 43
+
+println( ~msg aaa[ 1 ] )
+
+println( ~msg aaa[ 2 ] )
+
+##############################################
+
+a = 42
+
+println( ~msg a )
+
+b := a
+
+println( ~msg b )
+
+a = 43
+
+println( ~msg a )
+println( ~msg b )
+
+##############################################
+
+aa = 'a'
+
+println( ~msg aa )
+
+bb := aa
+
+println( ~msg bb )
+
+aa = 'aa'
+
+println( ~msg aa )
+println( ~msg bb )
+
+
+
+
+
+
+
+
+</pre>
+
+<h4>Trace output for 01-copy-ref.p</h4>
+
+<pre>
+001|ff := 42
+002|gg := ff:42
+003|println( ~msg ff:42 )...
+004|println( ~msg gg:-> 42 )...
+005|ff = 43
+006|println( ~msg ff:43 )...
+007|println( ~msg gg:-> 43 )...
+011|aaa = [ ] 
+013|aaa[1]:42 = 42
+015|aaa[2]:42 := aaa[1]:42
+017|println( ~msg aaa[1]:42 )...
+019|println( ~msg aaa[2]:42 )...
+021|aaa[1]:43 = 43
+023|println( ~msg aaa[1]:43 )...
+025|println( ~msg aaa[2]:43 )...
+029|a = 42
+031|println( ~msg a:42 )...
+033|b := a:42
+035|println( ~msg b:-> 42 )...
+037|a = 43
+039|println( ~msg a:43 )...
+040|println( ~msg b:-> 43 )...
+044|aa = 'a'
+046|println( ~msg aa:'a' )...
+048|bb := aa:'a'
+050|println( ~msg bb:-> 'a' )...
+052|aa = 'aa'
+054|println( ~msg aa:'aa' )...
+055|println( ~msg bb:-> 'aa' )...
+</pre>
+
+<h3>Standard output for 01-copy-ref.p</h3>
+
+<pre>
+42
+42
+43
+43
+42
+42
+43
+43
+42
+42
+43
+43
+a
+a
+aa
+aa
+
+</pre>
+</html>
+</body>

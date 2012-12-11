@@ -1,0 +1,37 @@
+<html>
+<head>Pooh program example 04-multi-assign.p</title></head>
+<body>
+<h3>Test 04-multi-assign.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# test multi value assignment 
+
+a = 42
+b = 1
+
+[a , b ] = [b , a]
+
+print( ~msg 'a [ a ] b [ b ]' )
+
+
+</pre>
+
+<h4>Trace output for 04-multi-assign.p</h4>
+
+<pre>
+003|a = 42
+004|b = 1
+006|[ a:-> 1 , b:-> 42]  = [ b:1 , a:42] 
+008|print( ~msg 'a ' .. a:1 .. ' b ' .. b:42 .. '' )...
+
+</pre>
+
+<h3>Standard output for 04-multi-assign.p</h3>
+
+<pre>
+a 1 b 42
+</pre>
+</html>
+</body>

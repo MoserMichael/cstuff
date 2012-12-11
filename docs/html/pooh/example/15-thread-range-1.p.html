@@ -1,0 +1,187 @@
+<html>
+<head>Pooh program example 15-thread-range-1.p</title></head>
+<body>
+<h3>Test 15-thread-range-1.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# create co-routine thread via api
+
+
+# a most simple co-routine that yields all integers in range: from .. to
+
+sub myrange( from, to )
+   i = from
+   while i <= to
+
+     # yield function puts this thread to sleep and will wake up the caling thread
+     # it also returns a value to the calling thread.
+
+     threadyield0( ~yieldval i )
+
+     i = i + 1
+   end
+end
+
+
+sub testfun()
+
+  #
+  # Invoke the co-routine via the API.
+
+  th := makethread( ~func myrange )
+
+  th( ~from 1 ~to 10)
+
+  [ running, value ] = threadyieldvalue( ~thread th )
+
+  while( running != 0 )
+
+    println( ~msg 'thread returned [ value ]' )
+
+    [ running, value ] = resumethread( ~thread th )
+  end
+
+  stopthread( ~thread th )
+
+end
+
+testfun()
+
+</pre>
+
+<h4>Trace output for 15-thread-range-1.p</h4>
+
+<pre>
+042|testfun(  )...
+025| ... := makethread( ~func sub myrange(~from , ~to) )...
+025| th := makethread( ~func sub myrange(~from , ~to) ):-> sub myrange
+027| th:-> sub myrange( ~from 1 ~to 10 )...
+007|  i = from:-> 1
+008|  while (i:1 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:1 )...
+029|    ... = threadyieldvalue( ~thread th:-> sub myrange(~from , ~to) )...
+029|    [ running:1 , value:-> 1]  = threadyieldvalue( ~thread th:-> sub myrange(~from , ~to) ):->(0x8eafa48)
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:1 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:1 + 1):2
+016|  end
+008|  while (i:2 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:2 )...
+035|     [ running:1 , value:-> 2]  =threadyield0( ~yieldval i:2 ):->(0x8eafbb8)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:2 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:2 + 1):3
+016|  end
+008|  while (i:3 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:3 )...
+035|     [ running:1 , value:-> 3]  =threadyield0( ~yieldval i:3 ):->(0x8eafcb0)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:3 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:3 + 1):4
+016|  end
+008|  while (i:4 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:4 )...
+035|     [ running:1 , value:-> 4]  =threadyield0( ~yieldval i:4 ):->(0x8eafda8)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:4 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:4 + 1):5
+016|  end
+008|  while (i:5 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:5 )...
+035|     [ running:1 , value:-> 5]  =threadyield0( ~yieldval i:5 ):->(0x8eafea0)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:5 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:5 + 1):6
+016|  end
+008|  while (i:6 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:6 )...
+035|     [ running:1 , value:-> 6]  =threadyield0( ~yieldval i:6 ):->(0x8eaff98)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:6 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:6 + 1):7
+016|  end
+008|  while (i:7 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:7 )...
+035|     [ running:1 , value:-> 7]  =threadyield0( ~yieldval i:7 ):->(0x8eb0090)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:7 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:7 + 1):8
+016|  end
+008|  while (i:8 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:8 )...
+035|     [ running:1 , value:-> 8]  =threadyield0( ~yieldval i:8 ):->(0x8eb0188)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:8 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:8 + 1):9
+016|  end
+008|  while (i:9 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:9 )...
+035|     [ running:1 , value:-> 9]  =threadyield0( ~yieldval i:9 ):->(0x8eb0250)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:9 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:9 + 1):10
+016|  end
+008|  while (i:10 <= to:-> 10):true
+013|   threadyield0( ~yieldval i:10 )...
+035|     [ running:1 , value:-> 10]  =threadyield0( ~yieldval i:10 ):->(0x8eb03c0)
+036|    end
+031|    while (running:1 != 0):true
+033|     println( ~msg 'thread returned ' .. value:10 .. '' )...
+035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
+035|   ... = resumethread( ~thread th:-> sub myrange(~from , ~to) ):-> Null
+015|   i = (i:10 + 1):11
+016|  end
+008|  while (i:11 <= to:-> 10):false
+016|  end # finish loop
+035|     [ running:0 , value:Null]  =
+036|    end
+031|    while (running:0 != 0):false
+036|    end # finish loop
+038|    stopthread( ~thread th:-> sub myrange(~from , ~to) )...
+</pre>
+
+<h3>Standard output for 15-thread-range-1.p</h3>
+
+<pre>
+thread returned 1
+thread returned 2
+thread returned 3
+thread returned 4
+thread returned 5
+thread returned 6
+thread returned 7
+thread returned 8
+thread returned 9
+thread returned 10
+
+</pre>
+</html>
+</body>

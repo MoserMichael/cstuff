@@ -1,0 +1,155 @@
+<html>
+<head>Pooh program example 04-file-stat.p</title></head>
+<body>
+<h3>Test 04-file-stat.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# check properties of a file
+
+fileinfo = stat( ~filename 'aaa.aaa' )
+if size( ~arg fileinfo ) == 0
+  println( ~msg 'the file aaa.aaa does not exist' )
+end
+
+fileinfo = stat( ~filename ARGV[ 1 ] )
+
+for k keys( ~table fileinfo )
+  println( ~msg k .. ' = ' .. fileinfo{ k } )
+end
+
+testfile( ~filename ARGV[ 1 ] )
+
+sub testfile( filename )
+  println( ~msg 'file [ filename ] is [ filesize( ~filename filename ) ] bytes long' )
+
+  if canread( ~filename filename )
+    println( ~msg 'can read [ filename ]' )
+  else
+    println( ~msg ''can not read [ filename ]'' )
+  end
+  
+  if canwrite( ~filename filename )
+    println( ~msg 'can write [ filename ]' )
+  else
+    println( ~msg ''can not write [ filename ]'' )
+  end
+ 
+  if canrun( ~filename filename )
+    println( ~msg 'can run [ filename ]' )
+  else
+    println( ~msg ''can't run [ filename ]'' )
+  end
+end
+
+</pre>
+
+<h4>Trace output for 04-file-stat.p</h4>
+
+<pre>
+003|... = stat( ~filename 'aaa.aaa' )...
+003|fileinfo = stat( ~filename 'aaa.aaa' ):{  }
+004|if (size( ~arg fileinfo:{  } )...
+004|if (size( ~arg fileinfo:{  } ):0 == 0):true
+005| println( ~msg 'the file aaa.aaa does not exist' )...
+005|end # if
+008|... = stat( ~filename ARGV[1]:'test/04-file-stat.p' )...
+008|fileinfo = stat( ~filename ARGV[1]:'test/04-file-stat.p' ):{ 'ino' : 1398591, 'gid' : 1000, 'nlink' : 1, 'mode' : 33188, 'ctime' : 1355196433, 'blocks' : 8, 'blksize' : 4096, 'mtime' : 1355196433, 'dev' : 2050, 'atime' : 1355196459, 'uid' : 1000, 'size' : 856, 'rdev' : 0 }
+010|for ... keys( ~table fileinfo:{ 'ino' : 1398591, 'gid' : 1000, 'nlink' : 1, 'mode' : 33188, 'ctime' : 1355196433, 'blocks' : 8, 'blksize' : 4096, 'mtime' : 1355196433, 'dev' : 2050, 'atime' : 1355196459, 'uid' : 1000, 'size' : 856, 'rdev' : 0 } )...
+010| for k = 'ino'
+011|  println( ~msg k:'ino' .. ' = ' .. fileinfo{k:'ino'}:1398591 )...
+010| end
+010| for ...
+010| for k = 'gid'
+011|  println( ~msg k:'gid' .. ' = ' .. fileinfo{k:'gid'}:1000 )...
+010| end
+010| for ...
+010| for k = 'nlink'
+011|  println( ~msg k:'nlink' .. ' = ' .. fileinfo{k:'nlink'}:1 )...
+010| end
+010| for ...
+010| for k = 'mode'
+011|  println( ~msg k:'mode' .. ' = ' .. fileinfo{k:'mode'}:33188 )...
+010| end
+010| for ...
+010| for k = 'ctime'
+011|  println( ~msg k:'ctime' .. ' = ' .. fileinfo{k:'ctime'}:1355196433 )...
+010| end
+010| for ...
+010| for k = 'blocks'
+011|  println( ~msg k:'blocks' .. ' = ' .. fileinfo{k:'blocks'}:8 )...
+010| end
+010| for ...
+010| for k = 'blksize'
+011|  println( ~msg k:'blksize' .. ' = ' .. fileinfo{k:'blksize'}:4096 )...
+010| end
+010| for ...
+010| for k = 'mtime'
+011|  println( ~msg k:'mtime' .. ' = ' .. fileinfo{k:'mtime'}:1355196433 )...
+010| end
+010| for ...
+010| for k = 'dev'
+011|  println( ~msg k:'dev' .. ' = ' .. fileinfo{k:'dev'}:2050 )...
+010| end
+010| for ...
+010| for k = 'atime'
+011|  println( ~msg k:'atime' .. ' = ' .. fileinfo{k:'atime'}:1355196459 )...
+010| end
+010| for ...
+010| for k = 'uid'
+011|  println( ~msg k:'uid' .. ' = ' .. fileinfo{k:'uid'}:1000 )...
+010| end
+010| for ...
+010| for k = 'size'
+011|  println( ~msg k:'size' .. ' = ' .. fileinfo{k:'size'}:856 )...
+010| end
+010| for ...
+010| for k = 'rdev'
+011|  println( ~msg k:'rdev' .. ' = ' .. fileinfo{k:'rdev'}:0 )...
+010| end
+010| for ...
+010| end # finish for loop
+014| testfile( ~filename ARGV[1]:'test/04-file-stat.p' )...
+017|  println( ~msg 'file ' .. filename:-> 'test/04-file-stat.p' .. ' is ' .. filesize( ~filename filename:-> 'test/04-file-stat.p' )...
+017|  println( ~msg 'file ' .. filename:-> 'test/04-file-stat.p' .. ' is ' .. filesize( ~filename filename:-> 'test/04-file-stat.p' ):856 .. ' bytes long' )...
+019|  if canread( ~filename filename:-> 'test/04-file-stat.p' )...
+019|  if canread( ~filename filename:-> 'test/04-file-stat.p' ):1
+020|   println( ~msg 'can read ' .. filename:-> 'test/04-file-stat.p' .. '' )...
+020|  end # if
+025|  if canwrite( ~filename filename:-> 'test/04-file-stat.p' )...
+025|  if canwrite( ~filename filename:-> 'test/04-file-stat.p' ):1
+026|   println( ~msg 'can write ' .. filename:-> 'test/04-file-stat.p' .. '' )...
+026|  end # if
+031|  if canrun( ~filename filename:-> 'test/04-file-stat.p' )...
+031|  if canrun( ~filename filename:-> 'test/04-file-stat.p' ):0
+032|  else
+034|   println( ~msg 'can't run [ filename ]' )...
+034|  end # if
+</pre>
+
+<h3>Standard output for 04-file-stat.p</h3>
+
+<pre>
+the file aaa.aaa does not exist
+ino = 1398591
+gid = 1000
+nlink = 1
+mode = 33188
+ctime = 1355196433
+blocks = 8
+blksize = 4096
+mtime = 1355196433
+dev = 2050
+atime = 1355196459
+uid = 1000
+size = 856
+rdev = 0
+file test/04-file-stat.p is 856 bytes long
+can read test/04-file-stat.p
+can write test/04-file-stat.p
+can't run [ filename ]
+
+</pre>
+</html>
+</body>

@@ -1,0 +1,42 @@
+<html>
+<head>Pooh program example 03-table-any-kind-of-key.p</title></head>
+<body>
+<h3>Test 03-table-any-kind-of-key.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# table with any kind of keys
+
+a = { [1,2,3] : 'a' , [2,3,4] : 'b', [3, 4, 5] : 'c', { 'a' : [1, 2, 3], 'b' : 'c' } : 'd' }
+
+println( ~msg a{ [1, 2, 3] } )
+println( ~msg a{ [2, 3, 4] } )
+println( ~msg a{ [3, 4, 5] } )
+
+println( ~msg a{  { 'a' : [1, 2, 3], 'b' : 'c' } } )
+ 
+
+</pre>
+
+<h4>Trace output for 03-table-any-kind-of-key.p</h4>
+
+<pre>
+003|a = { [ 1 , 2 , 3]  : 'a' , [ 2 , 3 , 4]  : 'b' , [ 3 , 4 , 5]  : 'c' , { 'a' : [ 1 , 2 , 3]  , 'b' : 'c' } : 'd' }
+005|println( ~msg a{[ 1 , 2 , 3] }:'a' )...
+006|println( ~msg a{[ 2 , 3 , 4] }:'b' )...
+007|println( ~msg a{[ 3 , 4 , 5] }:'c' )...
+009|println( ~msg a{{ 'a' : [ 1 , 2 , 3]  , 'b' : 'c' }}:'d' )...
+</pre>
+
+<h3>Standard output for 03-table-any-kind-of-key.p</h3>
+
+<pre>
+a
+b
+c
+d
+
+</pre>
+</html>
+</body>

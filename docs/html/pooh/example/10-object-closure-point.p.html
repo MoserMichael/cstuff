@@ -1,0 +1,120 @@
+<html>
+<head>Pooh program example 10-object-closure-point.p</title></head>
+<body>
+<h3>Test 10-object-closure-point.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# Object oriented programming with closures: point class
+
+
+sub makepoint( x, y )
+
+  # the object state here are the constructor arguments (x, y)
+  # very similar to object by closure
+
+  # an advantage of object-by closure over object as hash (ala javascript)
+  # when you type the code, the instance method has to be defined as local of enclosing scope;
+  # so you can't misspell the member names.
+
+  # return factory method that returns object methods  - both factory and object methods get capture of the object state 
+  return sub( method ) 
+      if method eq 'move'
+         return sub( dx, dy )
+            outer . x = outer . x + dx
+            outer . y = outer . y + dy
+         end
+      elsif method eq 'print'
+         return sub()
+           println( ~msg 'position x = [ outer.x ] y = [  outer.y ]' )
+         end
+      elsif method eq 'x-pos'
+         return sub()
+            return outer.x
+         end
+      elsif method eq 'y-pos'
+         return sub()
+             return outer . y
+         end
+      end
+  end
+
+end
+
+
+# make point object
+point := makepoint( ~x 42 ~y 10 )
+
+# show position of point
+point( ~method 'print') () 
+
+point( ~method 'move') ( ~dx 10 ~dy 10 )
+
+# show position of point after having moved it.
+point( ~method 'print') () 
+
+# call accessor methods.
+println( ~msg 'horizontal postion [ point( ~method 'x-pos') () ] vertical position [ point( ~method 'y-pos') () ]' )
+
+
+
+</pre>
+
+<h4>Trace output for 10-object-closure-point.p</h4>
+
+<pre>
+039|... := makepoint( ~x 42 ~y 10 )...
+014| return sub (~method)
+039|point := makepoint( ~x 42 ~y 10 ):-> sub 
+042|point:-> sub ( ~method 'print' )...
+015| if (method:'print' eq 'move'):false
+020| else if (method:'print' eq 'print'):true
+021|  return sub ()
+031| end # if
+042|point:-> sub ( ~method 'print' ):-> sub (  )...
+022| println( ~msg 'position x = ' .. outer.x:42 .. ' y = ' .. outer.y:10 .. '' )...
+044|point:-> sub ( ~method 'move' )...
+015| if (method:'move' eq 'move'):true
+016|  return sub (~dx , ~dy)
+019| end # if
+044|point:-> sub ( ~method 'move' ):-> sub ( ~dx 10 ~dy 10 )...
+017| outer.x = (outer.x:42 + dx:10):52
+018| outer.y = (outer.y:10 + dy:10):20
+047|point:-> sub ( ~method 'print' )...
+015| if (method:'print' eq 'move'):false
+020| else if (method:'print' eq 'print'):true
+021|  return sub ()
+031| end # if
+047|point:-> sub ( ~method 'print' ):-> sub (  )...
+022| println( ~msg 'position x = ' .. outer.x:52 .. ' y = ' .. outer.y:20 .. '' )...
+050|println( ~msg 'horizontal postion ' .. point:-> sub ( ~method 'x-pos' )...
+015| if (method:'x-pos' eq 'move'):false
+020| else if (method:'x-pos' eq 'print'):false
+024| else if (method:'x-pos' eq 'x-pos'):true
+025|  return sub ()
+031| end # if
+050|println( ~msg 'horizontal postion ' .. point:-> sub ( ~method 'x-pos' ):-> sub (  )...
+026| return outer.x:52
+050|println( ~msg 'horizontal postion ' .. point:-> sub ( ~method 'x-pos' ):-> sub (  ):52 .. ' vertical position ' .. point:-> sub ( ~method 'y-pos' )...
+015| if (method:'y-pos' eq 'move'):false
+020| else if (method:'y-pos' eq 'print'):false
+024| else if (method:'y-pos' eq 'x-pos'):false
+028| else if (method:'y-pos' eq 'y-pos'):true
+029|  return sub ()
+031| end # if
+050|println( ~msg 'horizontal postion ' .. point:-> sub ( ~method 'x-pos' ):-> sub (  ):52 .. ' vertical position ' .. point:-> sub ( ~method 'y-pos' ):-> sub (  )...
+030| return outer.y:20
+050|println( ~msg 'horizontal postion ' .. point:-> sub ( ~method 'x-pos' ):-> sub (  ):52 .. ' vertical position ' .. point:-> sub ( ~method 'y-pos' ):-> sub (  ):20 .. '' )...
+</pre>
+
+<h3>Standard output for 10-object-closure-point.p</h3>
+
+<pre>
+position x = 42 y = 10
+position x = 52 y = 20
+horizontal postion 52 vertical position 20
+
+</pre>
+</html>
+</body>

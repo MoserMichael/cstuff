@@ -1,0 +1,83 @@
+<html>
+<head>Pooh program example 03-stringlib.p</title></head>
+<body>
+<h3>Test 03-stringlib.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# tests string library functions mid left right
+
+a = left( ~string 'abcdefg' ~length 3 )
+println( ~msg a )
+
+a = left( ~string 'abcdefg' ~length 200 )
+println( ~msg a )
+
+a = right( ~string 'abcdefg' ~length 3 )
+println( ~msg a )
+
+a = right( ~string 'abcdefg' ~length 200 )
+println( ~msg a )
+
+a = mid( ~string 'abcdefg' ~offset 2 ~length 3 )
+println( ~msg a ) 
+
+a = mid( ~string 'abcdefg' ~offset 2 )
+println( ~msg a )
+
+a = mid( ~string 'abcdefg' ~length 3 )
+println( ~msg a ) 
+
+a = mid( ~string 'abcdefg' ~offset -1 ~length 4 )
+println( ~msg a ) 
+
+
+
+
+</pre>
+
+<h4>Trace output for 03-stringlib.p</h4>
+
+<pre>
+003|... = left( ~string 'abcdefg' ~length 3 )...
+003|a = left( ~string 'abcdefg' ~length 3 ):'abc'
+004|println( ~msg a:'abc' )...
+006|... = left( ~string 'abcdefg' ~length 200 )...
+006|a = left( ~string 'abcdefg' ~length 200 ):'abcdef'
+007|println( ~msg a:'abcdef' )...
+009|... = right( ~string 'abcdefg' ~length 3 )...
+009|a = right( ~string 'abcdefg' ~length 3 ):'efg'
+010|println( ~msg a:'efg' )...
+012|... = right( ~string 'abcdefg' ~length 200 )...
+012|a = right( ~string 'abcdefg' ~length 200 ):'abcdefg'
+013|println( ~msg a:'abcdefg' )...
+015|... = mid( ~string 'abcdefg' ~offset 2 ~length 3 )...
+015|a = mid( ~string 'abcdefg' ~offset 2 ~length 3 ):'bcd'
+016|println( ~msg a:'bcd' )...
+018|... = mid( ~string 'abcdefg' ~offset 2 )...
+018|a = mid( ~string 'abcdefg' ~offset 2 ):'bcdefg'
+019|println( ~msg a:'bcdefg' )...
+021|... = mid( ~string 'abcdefg' ~length 3 )...
+021|a = mid( ~string 'abcdefg' ~length 3 ):'abc'
+022|println( ~msg a:'abc' )...
+024|... = mid( ~string 'abcdefg' ~offset  - 1 ~length 4 )...
+024|a = mid( ~string 'abcdefg' ~offset  - 1 ~length 4 ):'ab'
+025|println( ~msg a:'ab' )...
+</pre>
+
+<h3>Standard output for 03-stringlib.p</h3>
+
+<pre>
+abc
+abcdef
+efg
+abcdefg
+bcd
+bcdefg
+abc
+ab
+
+</pre>
+</html>
+</body>

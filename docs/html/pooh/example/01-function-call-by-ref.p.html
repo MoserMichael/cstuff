@@ -1,0 +1,57 @@
+<html>
+<head>Pooh program example 01-function-call-by-ref.p</title></head>
+<body>
+<h3>Test 01-function-call-by-ref.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+
+a = 'ccc'
+
+println( ~msg a )
+
+funbyref( ~arg a )
+
+println( ~msg a )
+
+funbyarg( ~arg a )
+
+println( ~msg a )
+
+
+sub funbyref( arg byref )
+    arg = 'aaa'
+end
+
+sub funbyarg( arg )
+    arg = 'bbb'
+end
+
+
+
+</pre>
+
+<h4>Trace output for 01-function-call-by-ref.p</h4>
+
+<pre>
+002|a = 'ccc'
+004|println( ~msg a:'ccc' )...
+006|funbyref( ~arg a:'ccc' )...
+016| arg = 'aaa'
+008|println( ~msg a:'aaa' )...
+010|funbyarg( ~arg a:'aaa' )...
+020| arg = 'bbb'
+012|println( ~msg a:'aaa' )...
+</pre>
+
+<h3>Standard output for 01-function-call-by-ref.p</h3>
+
+<pre>
+ccc
+aaa
+aaa
+
+</pre>
+</html>
+</body>

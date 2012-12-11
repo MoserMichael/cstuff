@@ -1,0 +1,151 @@
+<html>
+<head>Pooh program example 17-for-range.p</title></head>
+<body>
+<h3>Test 17-for-range.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# co-routines / generators as used with for statement
+
+sub myrange( from, to )
+   i = from
+   while i <= to
+
+     # yield function puts this thread to sleep and will wake up the caling thread
+     # it also returns a value to the calling thread.
+
+     threadyield0( ~yieldval i )
+
+     i = i + 1
+   end
+end
+
+#
+# Invoke the co-routine via the for loop syntax
+#
+
+for value myrange( ~from 1 ~to 10 )
+  println( ~msg 'thread returned [ value ]' )
+end
+
+
+</pre>
+
+<h4>Trace output for 17-for-range.p</h4>
+
+<pre>
+020|for ... myrange( ~from 1 ~to 10 )...
+004| i = from:-> 1
+005| while (i:1 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:1 )...
+020|   for value = 1
+021|    println( ~msg 'thread returned ' .. value:1 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:1 ):-> Null
+012|  i = (i:1 + 1):2
+013| end
+005| while (i:2 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:2 )...
+020|   for value = 2
+021|    println( ~msg 'thread returned ' .. value:2 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:2 ):-> Null
+012|  i = (i:2 + 1):3
+013| end
+005| while (i:3 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:3 )...
+020|   for value = 3
+021|    println( ~msg 'thread returned ' .. value:3 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:3 ):-> Null
+012|  i = (i:3 + 1):4
+013| end
+005| while (i:4 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:4 )...
+020|   for value = 4
+021|    println( ~msg 'thread returned ' .. value:4 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:4 ):-> Null
+012|  i = (i:4 + 1):5
+013| end
+005| while (i:5 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:5 )...
+020|   for value = 5
+021|    println( ~msg 'thread returned ' .. value:5 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:5 ):-> Null
+012|  i = (i:5 + 1):6
+013| end
+005| while (i:6 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:6 )...
+020|   for value = 6
+021|    println( ~msg 'thread returned ' .. value:6 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:6 ):-> Null
+012|  i = (i:6 + 1):7
+013| end
+005| while (i:7 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:7 )...
+020|   for value = 7
+021|    println( ~msg 'thread returned ' .. value:7 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:7 ):-> Null
+012|  i = (i:7 + 1):8
+013| end
+005| while (i:8 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:8 )...
+020|   for value = 8
+021|    println( ~msg 'thread returned ' .. value:8 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:8 ):-> Null
+012|  i = (i:8 + 1):9
+013| end
+005| while (i:9 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:9 )...
+020|   for value = 9
+021|    println( ~msg 'thread returned ' .. value:9 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:9 ):-> Null
+012|  i = (i:9 + 1):10
+013| end
+005| while (i:10 <= to:-> 10):true
+010|  threadyield0( ~yieldval i:10 )...
+020|   for value = 10
+021|    println( ~msg 'thread returned ' .. value:10 .. '' )...
+020|   end
+020|   for ...
+010|  threadyield0( ~yieldval i:10 ):-> Null
+012|  i = (i:10 + 1):11
+013| end
+005| while (i:11 <= to:-> 10):false
+013| end # finish loop
+020| end # finish for loop
+</pre>
+
+<h3>Standard output for 17-for-range.p</h3>
+
+<pre>
+thread returned 1
+thread returned 2
+thread returned 3
+thread returned 4
+thread returned 5
+thread returned 6
+thread returned 7
+thread returned 8
+thread returned 9
+thread returned 10
+
+</pre>
+</html>
+</body>

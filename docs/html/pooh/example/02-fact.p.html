@@ -1,0 +1,83 @@
+<html>
+<head>Pooh program example 02-fact.p</title></head>
+<body>
+<h3>Test 02-fact.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# function: get factorial of a number (recursive)
+
+
+sub fact( num )
+  if (num > 0)
+     return fact( ~num num - 1 ) * num
+  else
+     return 1
+  end
+end
+
+
+println( ~msg 'the factorial of 10 is ' .. fact( ~num 10 ) )
+
+</pre>
+
+<h4>Trace output for 02-fact.p</h4>
+
+<pre>
+013|println( ~msg 'the factorial of 10 is ' .. fact( ~num 10 )...
+005| if (num:10 > 0):true
+006|  return (fact( ~num (num:10 - 1):9 )...
+005|   if (num:9 > 0):true
+006|    return (fact( ~num (num:9 - 1):8 )...
+005|     if (num:8 > 0):true
+006|      return (fact( ~num (num:8 - 1):7 )...
+005|       if (num:7 > 0):true
+006|        return (fact( ~num (num:7 - 1):6 )...
+005|         if (num:6 > 0):true
+006|          return (fact( ~num (num:6 - 1):5 )...
+005|           if (num:5 > 0):true
+006|            return (fact( ~num (num:5 - 1):4 )...
+005|             if (num:4 > 0):true
+006|              return (fact( ~num (num:4 - 1):3 )...
+005|               if (num:3 > 0):true
+006|                return (fact( ~num (num:3 - 1):2 )...
+005|                 if (num:2 > 0):true
+006|                  return (fact( ~num (num:2 - 1):1 )...
+005|                   if (num:1 > 0):true
+006|                    return (fact( ~num (num:1 - 1):0 )...
+005|>>                >>if (num:0 > 0):false
+006|>>                >>else
+008|>>                >>return 1
+008|>>                >>end # if
+006|                    return (fact( ~num (num:1 - 1):0 ):1 * num:1):1
+006|                   end # if
+006|                  return (fact( ~num (num:2 - 1):1 ):1 * num:2):2
+006|                 end # if
+006|                return (fact( ~num (num:3 - 1):2 ):2 * num:3):6
+006|               end # if
+006|              return (fact( ~num (num:4 - 1):3 ):6 * num:4):24
+006|             end # if
+006|            return (fact( ~num (num:5 - 1):4 ):24 * num:5):120
+006|           end # if
+006|          return (fact( ~num (num:6 - 1):5 ):120 * num:6):720
+006|         end # if
+006|        return (fact( ~num (num:7 - 1):6 ):720 * num:7):5040
+006|       end # if
+006|      return (fact( ~num (num:8 - 1):7 ):5040 * num:8):40320
+006|     end # if
+006|    return (fact( ~num (num:9 - 1):8 ):40320 * num:9):362880
+006|   end # if
+006|  return (fact( ~num (num:10 - 1):9 ):362880 * num:10):3628800
+006| end # if
+013|println( ~msg 'the factorial of 10 is ' .. fact( ~num 10 ):3628800 )...
+</pre>
+
+<h3>Standard output for 02-fact.p</h3>
+
+<pre>
+the factorial of 10 is 3628800
+
+</pre>
+</html>
+</body>

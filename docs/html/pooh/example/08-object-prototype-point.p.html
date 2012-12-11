@@ -1,0 +1,85 @@
+<html>
+<head>Pooh program example 08-object-prototype-point.p</title></head>
+<body>
+<h3>Test 08-object-prototype-point.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# 0bject oriented programming with prototypes: point class
+
+sub make_point( x, y )
+
+    return { 'x_pos' : x,
+             
+             'y_pos' : y,
+             
+             'move'  : sub ( dx, dy ) 
+                            this . x_pos = this . x_pos + dx
+                            this . y_pos = this . y_pos + dy
+
+                            return this
+                       end,
+
+             'print' : sub ( )
+#                           println( ~msg 'point x-pos: [ this . x_pos ]  y-pos: [ this . y_pos ] ' )
+                            println( ~msg 'point x-pos: ' .. this . x_pos .. '  y-pos: ' ..  this . y_pos  )
+                       end,
+
+             'get_x' : sub ( )
+                            return this . x_pos
+                       end,
+
+             'get_y' : sub ( )
+                            return this . y_pos  
+                       end
+            }
+end            
+
+
+pt = make_point( ~x 10 ~y 10 )
+
+pt . print ()
+
+pt . move ( ~dx 1 ~dy -1 )
+
+pt . print ()
+
+println( ~msg 'point-accessors x = [ pt . get_x () ]  y = [ pt . get_y() ]' )
+
+             
+
+</pre>
+
+<h4>Trace output for 08-object-prototype-point.p</h4>
+
+<pre>
+032|... = make_point( ~x 10 ~y 10 )...
+005| return { 'x_pos' : x:10 , 'y_pos' : y:10 , 'move' : sub (~dx , ~dy) , 'print' : sub () , 'get_x' : sub () , 'get_y' : sub () }
+032|pt = make_point( ~x 10 ~y 10 ):{ 'move' : sub , 'get_y' : sub , 'x_pos' : -> 10, 'print' : sub , 'get_x' : sub , 'y_pos' : -> 10 }
+034|pt{'print'}:sub (  )...
+018| println( ~msg 'point x-pos: ' .. this{'x_pos'}:10 .. '  y-pos: ' .. this{'y_pos'}:10 )...
+036|pt{'move'}:sub ( ~dx 1 ~dy  - 1 )...
+010| this{'x_pos'}:11 = (this{'x_pos'}:10 + dx:1):11
+011| this{'y_pos'}:9 = (this{'y_pos'}:10 + dy:-1):9
+013| return this:{ 'move' : sub (~dx , ~dy), 'get_y' : sub (), 'x_pos' : -> 11, 'print' : sub (), 'get_x' : sub (), 'y_pos' : -> 9 }
+036|pt{'move'}:sub ( ~dx 1 ~dy  - 1 ):->(0x846edb4)
+038|pt{'print'}:sub (  )...
+018| println( ~msg 'point x-pos: ' .. this{'x_pos'}:11 .. '  y-pos: ' .. this{'y_pos'}:9 )...
+040|println( ~msg 'point-accessors x = ' .. pt{'get_x'}:sub (  )...
+022| return this{'x_pos'}:11
+040|println( ~msg 'point-accessors x = ' .. pt{'get_x'}:sub (  ):-> 11 .. '  y = ' .. pt{'get_y'}:sub (  )...
+026| return this{'y_pos'}:9
+040|println( ~msg 'point-accessors x = ' .. pt{'get_x'}:sub (  ):-> 11 .. '  y = ' .. pt{'get_y'}:sub (  ):-> 9 .. '' )...
+</pre>
+
+<h3>Standard output for 08-object-prototype-point.p</h3>
+
+<pre>
+point x-pos: 10  y-pos: 10
+point x-pos: 11  y-pos: 9
+point-accessors x = 11  y = 9
+
+</pre>
+</html>
+</body>

@@ -1,0 +1,229 @@
+<html>
+<head>Pooh program example 03-print-table2.p</title></head>
+<body>
+<h3>Test 03-print-table2.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# iterate over table and print out values.
+
+
+test()
+
+sub test()
+
+days =  {
+          'sun'  : 'Sunday',
+          'mon'  : 'Monday' ,
+          'tue'  : 'Tuesday' ,
+          'wed'  : 'Wednesday' ,
+          'thur' : 'Thursday' ,
+          'fri'  : 'Friday' ,
+          'sat'  : 'Shabbat'
+        }
+
+daykeys = keys( ~table days )
+i = 1
+
+println( ~msg '**** value { keys  } ***' )
+
+while daykeys[ i ] != Null
+    println( ~msg  days{ daykeys[ i ] }   )
+    i = i + 1
+end
+
+println( ~msg '*** value ***' )
+
+daykeys = values( ~table days )
+i = 1
+
+while daykeys[ i ] != Null
+    println( ~msg  daykeys[ i ]    )
+    i = i + 1
+end
+
+println( ~msg '*** each ***' )
+v = each(  ~table days )
+
+i = 1
+while i <= size( ~arg v )
+  e = v[ i ] 
+  println( ~msg e[ 1 ] )
+  println( ~msg e[ 2 ] )
+  i = i + 1
+end
+
+end
+
+</pre>
+
+<h4>Trace output for 03-print-table2.p</h4>
+
+<pre>
+004|test(  )...
+008| days = { 'sun' : 'Sunday' , 'mon' : 'Monday' , 'tue' : 'Tuesday' , 'wed' : 'Wednesday' , 'thur' : 'Thursday' , 'fri' : 'Friday' , 'sat' : 'Shabbat' }
+018| ... = keys( ~table days:{ 'mon' : -> 'Monday', 'fri' : -> 'Friday', 'tue' : -> 'Tuesday', 'thur' : -> 'Thursday', 'sat' : -> 'Shabbat', 'sun' : -> 'Sunday', 'wed' : -> 'Wednesday' } )...
+018| daykeys = keys( ~table days:{ 'mon' : -> 'Monday', 'fri' : -> 'Friday', 'tue' : -> 'Tuesday', 'thur' : -> 'Thursday', 'sat' : -> 'Shabbat', 'sun' : -> 'Sunday', 'wed' : -> 'Wednesday' } ):[ 'mon', 'fri', 'tue', 'thur', 'sat', 'sun', 'wed' ]
+019| i = 1
+021| println( ~msg '**** value { keys  } ***' )...
+023| while (daykeys[i:1]:'mon' != Null):true
+024|  println( ~msg days{daykeys[i:1]:'mon'}:'Monday' )...
+025|  i = (i:1 + 1):2
+026| end
+023| while (daykeys[i:2]:'fri' != Null):true
+024|  println( ~msg days{daykeys[i:2]:'fri'}:'Friday' )...
+025|  i = (i:2 + 1):3
+026| end
+023| while (daykeys[i:3]:'tue' != Null):true
+024|  println( ~msg days{daykeys[i:3]:'tue'}:'Tuesday' )...
+025|  i = (i:3 + 1):4
+026| end
+023| while (daykeys[i:4]:'thur' != Null):true
+024|  println( ~msg days{daykeys[i:4]:'thur'}:'Thursday' )...
+025|  i = (i:4 + 1):5
+026| end
+023| while (daykeys[i:5]:'sat' != Null):true
+024|  println( ~msg days{daykeys[i:5]:'sat'}:'Shabbat' )...
+025|  i = (i:5 + 1):6
+026| end
+023| while (daykeys[i:6]:'sun' != Null):true
+024|  println( ~msg days{daykeys[i:6]:'sun'}:'Sunday' )...
+025|  i = (i:6 + 1):7
+026| end
+023| while (daykeys[i:7]:'wed' != Null):true
+024|  println( ~msg days{daykeys[i:7]:'wed'}:'Wednesday' )...
+025|  i = (i:7 + 1):8
+026| end
+023| while (daykeys[i:8]:Null != Null):false
+026| end # finish loop
+028| println( ~msg '*** value ***' )...
+030| ... = values( ~table days:{ 'mon' : -> 'Monday', 'fri' : -> 'Friday', 'tue' : -> 'Tuesday', 'thur' : -> 'Thursday', 'sat' : -> 'Shabbat', 'sun' : -> 'Sunday', 'wed' : -> 'Wednesday' } )...
+030| daykeys = values( ~table days:{ 'mon' : -> 'Monday', 'fri' : -> 'Friday', 'tue' : -> 'Tuesday', 'thur' : -> 'Thursday', 'sat' : -> 'Shabbat', 'sun' : -> 'Sunday', 'wed' : -> 'Wednesday' } ):[ -> 'Monday', -> 'Friday', -> 'Tuesday', -> 'Thursday', -> 'Shabbat', -> 'Sunday', -> 'Wednesday' ]
+031| i = 1
+033| while (daykeys[i:1]:'Monday' != Null):true
+034|  println( ~msg daykeys[i:1]:'Monday' )...
+035|  i = (i:1 + 1):2
+036| end
+033| while (daykeys[i:2]:'Friday' != Null):true
+034|  println( ~msg daykeys[i:2]:'Friday' )...
+035|  i = (i:2 + 1):3
+036| end
+033| while (daykeys[i:3]:'Tuesday' != Null):true
+034|  println( ~msg daykeys[i:3]:'Tuesday' )...
+035|  i = (i:3 + 1):4
+036| end
+033| while (daykeys[i:4]:'Thursday' != Null):true
+034|  println( ~msg daykeys[i:4]:'Thursday' )...
+035|  i = (i:4 + 1):5
+036| end
+033| while (daykeys[i:5]:'Shabbat' != Null):true
+034|  println( ~msg daykeys[i:5]:'Shabbat' )...
+035|  i = (i:5 + 1):6
+036| end
+033| while (daykeys[i:6]:'Sunday' != Null):true
+034|  println( ~msg daykeys[i:6]:'Sunday' )...
+035|  i = (i:6 + 1):7
+036| end
+033| while (daykeys[i:7]:'Wednesday' != Null):true
+034|  println( ~msg daykeys[i:7]:'Wednesday' )...
+035|  i = (i:7 + 1):8
+036| end
+033| while (daykeys[i:8]:Null != Null):false
+036| end # finish loop
+038| println( ~msg '*** each ***' )...
+039| ... = each( ~table days:{ 'mon' : -> 'Monday', 'fri' : -> 'Friday', 'tue' : -> 'Tuesday', 'thur' : -> 'Thursday', 'sat' : -> 'Shabbat', 'sun' : -> 'Sunday', 'wed' : -> 'Wednesday' } )...
+039| v = each( ~table days:{ 'mon' : -> 'Monday', 'fri' : -> 'Friday', 'tue' : -> 'Tuesday', 'thur' : -> 'Thursday', 'sat' : -> 'Shabbat', 'sun' : -> 'Sunday', 'wed' : -> 'Wednesday' } ):[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ]
+041| i = 1
+042| while (i:1 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:1 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):true
+043|  e = v[i:1]:[ 'mon', -> 'Monday' ]
+044|  println( ~msg e[1]:'mon' )...
+045|  println( ~msg e[2]:'Monday' )...
+046|  i = (i:1 + 1):2
+047| end
+042| while (i:2 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:2 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):true
+043|  e = v[i:2]:[ 'fri', -> 'Friday' ]
+044|  println( ~msg e[1]:'fri' )...
+045|  println( ~msg e[2]:'Friday' )...
+046|  i = (i:2 + 1):3
+047| end
+042| while (i:3 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:3 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):true
+043|  e = v[i:3]:[ 'tue', -> 'Tuesday' ]
+044|  println( ~msg e[1]:'tue' )...
+045|  println( ~msg e[2]:'Tuesday' )...
+046|  i = (i:3 + 1):4
+047| end
+042| while (i:4 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:4 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):true
+043|  e = v[i:4]:[ 'thur', -> 'Thursday' ]
+044|  println( ~msg e[1]:'thur' )...
+045|  println( ~msg e[2]:'Thursday' )...
+046|  i = (i:4 + 1):5
+047| end
+042| while (i:5 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:5 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):true
+043|  e = v[i:5]:[ 'sat', -> 'Shabbat' ]
+044|  println( ~msg e[1]:'sat' )...
+045|  println( ~msg e[2]:'Shabbat' )...
+046|  i = (i:5 + 1):6
+047| end
+042| while (i:6 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:6 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):true
+043|  e = v[i:6]:[ 'sun', -> 'Sunday' ]
+044|  println( ~msg e[1]:'sun' )...
+045|  println( ~msg e[2]:'Sunday' )...
+046|  i = (i:6 + 1):7
+047| end
+042| while (i:7 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:7 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):true
+043|  e = v[i:7]:[ 'wed', -> 'Wednesday' ]
+044|  println( ~msg e[1]:'wed' )...
+045|  println( ~msg e[2]:'Wednesday' )...
+046|  i = (i:7 + 1):8
+047| end
+042| while (i:8 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] )...
+042| while (i:8 <= size( ~arg v:[ [ 'mon', -> 'Monday' ], [ 'fri', -> 'Friday' ], [ 'tue', -> 'Tuesday' ], [ 'thur', -> 'Thursday' ], [ 'sat', -> 'Shabbat' ], [ 'sun', -> 'Sunday' ], [ 'wed', -> 'Wednesday' ] ] ):7):false
+047| end # finish loop
+</pre>
+
+<h3>Standard output for 03-print-table2.p</h3>
+
+<pre>
+**** value { keys  } ***
+Monday
+Friday
+Tuesday
+Thursday
+Shabbat
+Sunday
+Wednesday
+*** value ***
+Monday
+Friday
+Tuesday
+Thursday
+Shabbat
+Sunday
+Wednesday
+*** each ***
+mon
+Monday
+fri
+Friday
+tue
+Tuesday
+thur
+Thursday
+sat
+Shabbat
+sun
+Sunday
+wed
+Wednesday
+
+</pre>
+</html>
+</body>

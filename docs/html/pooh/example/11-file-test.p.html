@@ -1,0 +1,200 @@
+<html>
+<head>Pooh program example 11-file-test.p</title></head>
+<body>
+<h3>Test 11-file-test.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+
+
+# read the whole file into a buffer
+
+f = open( ~filename 'test/11-file-test' )
+
+buf = newline()
+f.read( ~toread buf ~numread 1000 )
+
+println( ~msg buf )
+
+f.close()
+
+
+# read the whole file line by line
+
+f = open( ~filename 'test/11-file-test-lines' )
+
+for ln readlines( ~file f )
+    println( ~msg ln )
+end
+
+f.close()
+
+
+
+
+</pre>
+
+<h4>Trace output for 11-file-test.p</h4>
+
+<pre>
+005|... = open( ~filename 'test/11-file-test' )...
+005|f = open( ~filename 'test/11-file-test' ):->(0x9ae9f90)
+007|... = newline(  )...
+007|buf = newline(  ):'
+'
+008|f{'read'}:sub read(( ~toread buf:'
+' ~numread 1000 )...
+008|f{'read'}:sub read(( ~toread buf:'
+' ~numread 1000 ):27
+010|println( ~msg buf:'abcdefghijklmnopqrstuvwxyz
+' )...
+012|f{'close'}:sub close((  )...
+012|f{'close'}:sub close((  ):Null
+017|... = open( ~filename 'test/11-file-test-lines' )...
+017|f = open( ~filename 'test/11-file-test-lines' ):->(0x9ae9f90)
+019|for ... readlines( ~file f:{ 'read' : sub read(~toread , ~numread), 'seek' : sub seek(~mode , ~offset), 'close' : sub close(), 'finalize' : sub close(), '' : 162439032, 'write' : sub write(~towrite , ~numwrite), 'flush' : sub flush() } )...
+019| for ln = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+020|  println( ~msg ln:'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' )...
+019| end
+019| for ...
+019| for ln = 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+020|  println( ~msg ln:'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' )...
+019| end
+019| for ...
+019| for ln = 'ccccccccccccccccccccccccccccccccccccccccccc'
+020|  println( ~msg ln:'ccccccccccccccccccccccccccccccccccccccccccc' )...
+019| end
+019| for ...
+019| for ln = 'ddddddddddddddddddddddddddddddddddddddddddd'
+020|  println( ~msg ln:'ddddddddddddddddddddddddddddddddddddddddddd' )...
+019| end
+019| for ...
+019| for ln = 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+020|  println( ~msg ln:'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' )...
+019| end
+019| for ...
+019| for ln = 'fffffffffffffffffffffffffffffffffffffffffff'
+020|  println( ~msg ln:'fffffffffffffffffffffffffffffffffffffffffff' )...
+019| end
+019| for ...
+019| for ln = 'ggggggggggggggggggggggggggggggggggggggggggg'
+020|  println( ~msg ln:'ggggggggggggggggggggggggggggggggggggggggggg' )...
+019| end
+019| for ...
+019| for ln = 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh'
+020|  println( ~msg ln:'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh' )...
+019| end
+019| for ...
+019| for ln = 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii'
+020|  println( ~msg ln:'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii' )...
+019| end
+019| for ...
+019| for ln = 'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj'
+020|  println( ~msg ln:'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj' )...
+019| end
+019| for ...
+019| for ln = 'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk'
+020|  println( ~msg ln:'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk' )...
+019| end
+019| for ...
+019| for ln = 'lllllllllllllllllllllllllllllllllllllllllll'
+020|  println( ~msg ln:'lllllllllllllllllllllllllllllllllllllllllll' )...
+019| end
+019| for ...
+019| for ln = 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+020|  println( ~msg ln:'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm' )...
+019| end
+019| for ...
+019| for ln = 'nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn'
+020|  println( ~msg ln:'nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn' )...
+019| end
+019| for ...
+019| for ln = 'ooooooooooooooooooooooooooooooooooooooooooo'
+020|  println( ~msg ln:'ooooooooooooooooooooooooooooooooooooooooooo' )...
+019| end
+019| for ...
+019| for ln = 'ppppppppppppppppppppppppppppppppppppppppppp'
+020|  println( ~msg ln:'ppppppppppppppppppppppppppppppppppppppppppp' )...
+019| end
+019| for ...
+019| for ln = 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
+020|  println( ~msg ln:'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq' )...
+019| end
+019| for ...
+019| for ln = 'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr'
+020|  println( ~msg ln:'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr' )...
+019| end
+019| for ...
+019| for ln = 'sssssssssssssssssssssssssssssssssssssssssss'
+020|  println( ~msg ln:'sssssssssssssssssssssssssssssssssssssssssss' )...
+019| end
+019| for ...
+019| for ln = 'ttttttttttttttttttttttttttttttttttttttttttt'
+020|  println( ~msg ln:'ttttttttttttttttttttttttttttttttttttttttttt' )...
+019| end
+019| for ...
+019| for ln = 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu'
+020|  println( ~msg ln:'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu' )...
+019| end
+019| for ...
+019| for ln = 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv'
+020|  println( ~msg ln:'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv' )...
+019| end
+019| for ...
+019| for ln = 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww'
+020|  println( ~msg ln:'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww' )...
+019| end
+019| for ...
+019| for ln = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+020|  println( ~msg ln:'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' )...
+019| end
+019| for ...
+019| for ln = 'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'
+020|  println( ~msg ln:'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy' )...
+019| end
+019| for ...
+019| for ln = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'
+020|  println( ~msg ln:'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' )...
+019| end
+019| for ...
+019| end # finish for loop
+023| f{'close'}:sub close((  )...
+023| f{'close'}:sub close((  ):Null
+</pre>
+
+<h3>Standard output for 11-file-test.p</h3>
+
+<pre>
+abcdefghijklmnopqrstuvwxyz
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ccccccccccccccccccccccccccccccccccccccccccc
+ddddddddddddddddddddddddddddddddddddddddddd
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+fffffffffffffffffffffffffffffffffffffffffff
+ggggggggggggggggggggggggggggggggggggggggggg
+hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+lllllllllllllllllllllllllllllllllllllllllll
+mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+ooooooooooooooooooooooooooooooooooooooooooo
+ppppppppppppppppppppppppppppppppppppppppppp
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+sssssssssssssssssssssssssssssssssssssssssss
+ttttttttttttttttttttttttttttttttttttttttttt
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+
+</pre>
+</html>
+</body>

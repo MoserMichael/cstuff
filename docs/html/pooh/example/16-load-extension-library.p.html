@@ -1,0 +1,34 @@
+<html>
+<head>Pooh program example 16-load-extension-library.p</title></head>
+<body>
+<h3>Test 16-load-extension-library.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+
+
+loadextension 'libextlibexample'
+
+
+c = addnumbers( ~a 42 ~b 3 )
+println( ~msg c )
+
+</pre>
+
+<h4>Trace output for 16-load-extension-library.p</h4>
+
+<pre>
+006|... = addnumbers( ~a 42 ~b 3 )...
+006|c = addnumbers( ~a 42 ~b 3 ):45
+007|println( ~msg c:45 )...
+</pre>
+
+<h3>Standard output for 16-load-extension-library.p</h3>
+
+<pre>
+45
+
+</pre>
+</html>
+</body>

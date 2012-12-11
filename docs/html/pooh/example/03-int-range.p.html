@@ -1,0 +1,152 @@
+<html>
+<head>Pooh program example 03-int-range.p</title></head>
+<body>
+<h3>Test 03-int-range.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+
+
+
+nums = myrange( ~from 1 ~to 10)
+i = 1
+while i <= size( ~arg nums )
+   println( ~msg nums[ i ] )
+   i = i + 1
+end
+
+sub myrange(from,to)
+  ret = []
+
+  while from <= to
+     push( ~array ret ~top from)
+     from = from + 1
+  end
+  return ret
+end
+
+</pre>
+
+<h4>Trace output for 03-int-range.p</h4>
+
+<pre>
+004|... = myrange( ~from 1 ~to 10 )...
+012| ret = [ ] 
+014| while (from:1 <= to:10):true
+015|  push( ~array ret:[  ] ~top from:1 )...
+016|  from = (from:1 + 1):2
+017| end
+014| while (from:2 <= to:10):true
+015|  push( ~array ret:[ -> 1 ] ~top from:2 )...
+016|  from = (from:2 + 1):3
+017| end
+014| while (from:3 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2 ] ~top from:3 )...
+016|  from = (from:3 + 1):4
+017| end
+014| while (from:4 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2, -> 3 ] ~top from:4 )...
+016|  from = (from:4 + 1):5
+017| end
+014| while (from:5 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2, -> 3, -> 4 ] ~top from:5 )...
+016|  from = (from:5 + 1):6
+017| end
+014| while (from:6 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2, -> 3, -> 4, -> 5 ] ~top from:6 )...
+016|  from = (from:6 + 1):7
+017| end
+014| while (from:7 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6 ] ~top from:7 )...
+016|  from = (from:7 + 1):8
+017| end
+014| while (from:8 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7 ] ~top from:8 )...
+016|  from = (from:8 + 1):9
+017| end
+014| while (from:9 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8 ] ~top from:9 )...
+016|  from = (from:9 + 1):10
+017| end
+014| while (from:10 <= to:10):true
+015|  push( ~array ret:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9 ] ~top from:10 )...
+016|  from = (from:10 + 1):11
+017| end
+014| while (from:11 <= to:10):false
+017| end # finish loop
+018| return ret:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ]
+004|nums = myrange( ~from 1 ~to 10 ):[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ]
+005|i = 1
+006|while (i:1 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:1 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:1]:1 )...
+008| i = (i:1 + 1):2
+009|end
+006|while (i:2 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:2 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:2]:2 )...
+008| i = (i:2 + 1):3
+009|end
+006|while (i:3 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:3 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:3]:3 )...
+008| i = (i:3 + 1):4
+009|end
+006|while (i:4 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:4 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:4]:4 )...
+008| i = (i:4 + 1):5
+009|end
+006|while (i:5 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:5 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:5]:5 )...
+008| i = (i:5 + 1):6
+009|end
+006|while (i:6 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:6 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:6]:6 )...
+008| i = (i:6 + 1):7
+009|end
+006|while (i:7 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:7 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:7]:7 )...
+008| i = (i:7 + 1):8
+009|end
+006|while (i:8 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:8 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:8]:8 )...
+008| i = (i:8 + 1):9
+009|end
+006|while (i:9 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:9 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:9]:9 )...
+008| i = (i:9 + 1):10
+009|end
+006|while (i:10 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:10 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):true
+007| println( ~msg nums[i:10]:10 )...
+008| i = (i:10 + 1):11
+009|end
+006|while (i:11 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] )...
+006|while (i:11 <= size( ~arg nums:[ -> 1, -> 2, -> 3, -> 4, -> 5, -> 6, -> 7, -> 8, -> 9, -> 10 ] ):10):false
+009|end # finish loop
+</pre>
+
+<h3>Standard output for 03-int-range.p</h3>
+
+<pre>
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+</pre>
+</html>
+</body>

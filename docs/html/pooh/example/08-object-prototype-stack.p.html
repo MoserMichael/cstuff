@@ -1,0 +1,151 @@
+<html>
+<head>Pooh program example 08-object-prototype-stack.p</title></head>
+<body>
+<h3>Test 08-object-prototype-stack.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# 0bject oriented programming with prototypes: stack class
+
+sub makestack()
+
+ # constructor of object makes a hash table; the methods of the object are has table entries where the value is a function without name (aka lambda)
+ # data members are also table entries; it is good practice to declare data members in the hash.
+
+ return { 
+          'stack' : [], #{},
+          
+
+          # when a function is inserted into a collection (hash or vector) then a function object is created.
+          # the function object has a this symbol that points to the enclosing collection; so a function can access
+          # members of the collection as 'member data' via this . name_of_data_member
+
+          'push' : sub ( top ) 
+
+                  push( ~array this.stack ~top top )
+                  println( ~msg 'push: has [ size( ~arg this . stack ) ] elements' )
+             
+          end,
+
+          'pop' : sub () 
+
+                if size( ~arg this.stack ) == 0
+                     println( ~msg 'Error: empty stack' )
+                     return Null
+                  else 
+                     println( ~msg 'pop: has [ size( ~arg this.stack ) ] elements' )
+                     return pop ( ~array this . stack )
+                  end
+   
+          end
+  }
+
+end
+
+
+stack = makestack()
+
+stack.push( ~top 1 )
+stack.push( ~top 2 )
+stack.push( ~top 3 )
+
+
+i = 1
+while i <= 4
+  println ( ~msg 'pop: result is [ stack.pop() ]' )
+  i = i + 1
+end
+
+</pre>
+
+<h4>Trace output for 08-object-prototype-stack.p</h4>
+
+<pre>
+039|... = makestack(  )...
+008| return { 'stack' : [ ]  , 'push' : sub (~top) , 'pop' : sub () }
+039|stack = makestack(  ):{ 'pop' : sub , 'push' : sub , 'stack' : ->(0x8eaab50) }
+041|stack{'push'}:sub ( ~top 1 )...
+018| push( ~array this{'stack'}:[  ] ~top top:1 )...
+019| println( ~msg 'push: has ' .. size( ~arg this{'stack'}:[ -> 1 ] )...
+019| println( ~msg 'push: has ' .. size( ~arg this{'stack'}:[ -> 1 ] ):1 .. ' elements' )...
+042|stack{'push'}:sub ( ~top 2 )...
+018| push( ~array this{'stack'}:[ -> 1 ] ~top top:2 )...
+019| println( ~msg 'push: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2 ] )...
+019| println( ~msg 'push: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2 ] ):2 .. ' elements' )...
+043|stack{'push'}:sub ( ~top 3 )...
+018| push( ~array this{'stack'}:[ -> 1, -> 2 ] ~top top:3 )...
+019| println( ~msg 'push: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2, -> 3 ] )...
+019| println( ~msg 'push: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2, -> 3 ] ):3 .. ' elements' )...
+046|i = 1
+047|while (i:1 <= 4):true
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  )...
+025|  if (size( ~arg this{'stack'}:[ -> 1, -> 2, -> 3 ] )...
+025|  if (size( ~arg this{'stack'}:[ -> 1, -> 2, -> 3 ] ):3 == 0):false
+027|  else
+029|   println( ~msg 'pop: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2, -> 3 ] )...
+029|   println( ~msg 'pop: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2, -> 3 ] ):3 .. ' elements' )...
+030|   return pop( ~array this{'stack'}:[ -> 1, -> 2, -> 3 ] )...
+030|   return pop( ~array this{'stack'}:[ -> 1, -> 2, -> 3 ] ):-> 3
+030|  end # if
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  ):-> 3 .. '' )...
+049| i = (i:1 + 1):2
+050|end
+047|while (i:2 <= 4):true
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  )...
+025|  if (size( ~arg this{'stack'}:[ -> 1, -> 2 ] )...
+025|  if (size( ~arg this{'stack'}:[ -> 1, -> 2 ] ):2 == 0):false
+027|  else
+029|   println( ~msg 'pop: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2 ] )...
+029|   println( ~msg 'pop: has ' .. size( ~arg this{'stack'}:[ -> 1, -> 2 ] ):2 .. ' elements' )...
+030|   return pop( ~array this{'stack'}:[ -> 1, -> 2 ] )...
+030|   return pop( ~array this{'stack'}:[ -> 1, -> 2 ] ):-> 2
+030|  end # if
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  ):-> 2 .. '' )...
+049| i = (i:2 + 1):3
+050|end
+047|while (i:3 <= 4):true
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  )...
+025|  if (size( ~arg this{'stack'}:[ -> 1 ] )...
+025|  if (size( ~arg this{'stack'}:[ -> 1 ] ):1 == 0):false
+027|  else
+029|   println( ~msg 'pop: has ' .. size( ~arg this{'stack'}:[ -> 1 ] )...
+029|   println( ~msg 'pop: has ' .. size( ~arg this{'stack'}:[ -> 1 ] ):1 .. ' elements' )...
+030|   return pop( ~array this{'stack'}:[ -> 1 ] )...
+030|   return pop( ~array this{'stack'}:[ -> 1 ] ):-> 1
+030|  end # if
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  ):-> 1 .. '' )...
+049| i = (i:3 + 1):4
+050|end
+047|while (i:4 <= 4):true
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  )...
+025|  if (size( ~arg this{'stack'}:[  ] )...
+025|  if (size( ~arg this{'stack'}:[  ] ):0 == 0):true
+026|   println( ~msg 'Error: empty stack' )...
+027|   return Null
+027|  end # if
+048| println( ~msg 'pop: result is ' .. stack{'pop'}:sub (  ):Null .. '' )...
+049| i = (i:4 + 1):5
+050|end
+047|while (i:5 <= 4):false
+050|end # finish loop
+</pre>
+
+<h3>Standard output for 08-object-prototype-stack.p</h3>
+
+<pre>
+push: has 1 elements
+push: has 2 elements
+push: has 3 elements
+pop: has 3 elements
+pop: result is 3
+pop: has 2 elements
+pop: result is 2
+pop: has 1 elements
+pop: result is 1
+Error: empty stack
+pop: result is 
+
+</pre>
+</html>
+</body>

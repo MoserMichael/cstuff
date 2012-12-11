@@ -1,0 +1,55 @@
+<html>
+<head>Pooh program example 11-file-pipe.p</title></head>
+<body>
+<h3>Test 11-file-pipe.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+
+f = openpipe( ~cmdline 'tr a A' )
+
+f.write( ~towrite 'aaaaaaa' ~numwrite 7 )
+
+f.closewrite()
+
+output = emptystring()
+
+f.read( ~toread output ~numread 7 )
+
+status = f.wait()
+
+println( ~msg 'output: [ output ] status: [ status ]' )
+
+
+
+
+
+</pre>
+
+<h4>Trace output for 11-file-pipe.p</h4>
+
+<pre>
+002|... = openpipe( ~cmdline 'tr a A' )...
+002|f = openpipe( ~cmdline 'tr a A' ):->(0x9765518)
+004|f{'write'}:sub write(( ~towrite 'aaaaaaa' ~numwrite 7 )...
+004|f{'write'}:sub write(( ~towrite 'aaaaaaa' ~numwrite 7 ):7
+006|f{'closewrite'}:sub closewrite((  )...
+006|f{'closewrite'}:sub closewrite((  ):Null
+008|... = emptystring(  )...
+008|output = emptystring(  ):''
+010|f{'read'}:sub read(( ~toread output:'' ~numread 7 )...
+010|f{'read'}:sub read(( ~toread output:'' ~numread 7 ):7
+012|... = f{'wait'}:sub wait((  )...
+012|status = f{'wait'}:sub wait((  ):0
+014|println( ~msg 'output: ' .. output:'AAAAAAA' .. ' status: ' .. status:0 .. '' )...
+</pre>
+
+<h3>Standard output for 11-file-pipe.p</h3>
+
+<pre>
+output: AAAAAAA status: 0
+
+</pre>
+</html>
+</body>
