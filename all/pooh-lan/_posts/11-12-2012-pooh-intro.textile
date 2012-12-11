@@ -10,8 +10,8 @@ The pooh programming language is an educational programming language. I think th
 
 h3. Availability
 
-Currently the project is available in source form only, 
-
+Currently the project is available in source form only, It is released under the BSD Three clause license; 
+The copyright is owned by Michael Moser ( c ) 2012
 Sources can be downloaded as "zip archive": https://github.com/MoserMichael/cstuff/zipball/master
 or downloaded by the git program.
 
@@ -78,8 +78,8 @@ the factorial of 4 is 24
 * All values defined in a function are of local scope; if you want to access a global from a function, then you have to add the * global . * prefix to the variable name.
 * strings, numbers, arrays and hashes are not objects, one does not have to introduce object oriented programming from the start on; 
 * A variable is defined when a value is assigned to a variable name;.
-* compiler forbids to reference uninitialized values (like 'use strict' in Perl and recently in Javascript)
-* compiler forbids call of undefined functions ; forbids use of array or hash as scalar
+* compiler forbids to reference uninitialized values (like 'use strict' in Perl and recently optional in Javascript). 
+* compiler forbids call of undefined functions ; forbids use of array or hash as scalar. I really like perl strict mode.
 * In arithmetic operators one can use both number and string variables (strings are converted automatically); Comparison operators - there is a set of numeric comparison operators, where strings are interpreted as numbers, and string comparison operators, where both numbers and strings are allowed and interpreted as string.
 * data structures: has vectors and hash values for collections. 
 * A simplified model of references to values is supported. 
@@ -97,7 +97,9 @@ Things left out:
 * No namespaces; another complication.
 * No meta programming; no pre-processor madness
 * No eval statement; 
+* Strings are multiline and can embed expressions; like HERE documents; the language has one string constant format.
 * Currently no regular expression parsing; I would like something with fewer arcane rules, maybe BNF grammars; Any ideas are and suggestions are really welcomed.
+* No autoincrement operators. One feature less to explain.
 
 All this means pooh is not strongly typed, and also not a dynamic language. Hope you are still interested ;-) Would not it be fore the simplified model of references, we would expect the language to translate into efficient machine code; 
 
