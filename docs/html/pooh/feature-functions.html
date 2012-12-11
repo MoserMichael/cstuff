@@ -1,0 +1,76 @@
+<hr />
+<p>layout: post<br />
+title:  Function Feature<br />
+<del>-</del></p>
+<h2>{{ page.title }}<br />
+<p class="publish_date">7 November 2011</p></h2>
+<h3>Functions<br />
+Are really complex beasts, they introduce the following dimensions</h3>
+<ul>
+	<li>Variable scope</li>
+	<li>Local scope</li>
+	<li>Global scope</li>
+	<li>Enclosing scope / captured variable of a closure</li>
+</ul>
+<p>Function name</p>
+<ul>
+	<li>Overloading allowed or not</li>
+</ul>
+<p>Syntax of passing parameters</p>
+<ul>
+	<li>Passed as named parameters of by position</li>
+	<li>Optional parameters</li>
+	<li>Passed by value or by reference</li>
+</ul>
+<p>Function type signature</p>
+<ul>
+	<li>Are return type / types of arguments declared in function definition ?</li>
+</ul>
+<p>Return values</p>
+<ul>
+	<li>Is there distinction of case when return value exists (function) or is missing (procedure)</li>
+</ul>
+<p>Evaluating strategy</p>
+<ul>
+	<li>Call by value</li>
+	<li>Call by reference</li>
+	<li>Call by sharing</li>
+</ul>
+<h3>Style of passing function parameters</h3>
+<ol>
+	<li>&#8217;&quot;By position&quot; &#8211; arguments are passed in the same order as the parameters definitions in that have been declared in the function prototype (Java, C, Javascript do that).</li>
+	<li>as <a href="http://en.wikipedia.org/wiki/Named_parameter">Named parameters</a></li>
+	<li>Order of parameters does not matter</li>
+	<li>Order of parameters does matter.</li>
+</ol>
+<p>In (1) the order that parameters appear in becomes important. Parameters are usually passed on the stack.<br />
+In (2) Named parameters can either be passed in any order; or have to be passed in the same order as declared by the function (Smalltalk, ObjectiveC).</p>
+<p>Some languages allow passing parameters both by name and by position ( R , Ada ) I think that would be too confusing (too many features) &#8211; not good for educational purpose. There is only one choice for all situations.</p>
+<h3>Advantages of Named Parameters</h3>
+<p>Code that calls functions with name parameters is more readable, in any event.</p>
+<p>Optional parameters are easier &#8211; with (1) only the last parameters of a function can be optional; with (2) one can have any parameter as optional, as order of parameters does not matter.</p>
+<p>Functions with many parameters are much clearer if called by name rather than call by position.</p>
+<h3>Disadvantages of Named parameters</h3>
+<p>For short functions with few parameters, one would have to remember more details, in addition to the function name the programmer will have to memorize the function parameter names.</p>
+<p>One really needs special tools in order to look up all this information. Either some form of auto-completion + hints, like in eclipse; or something like a class browser &#8211; as in smalltalk</p>
+<p>Typing more for can be an issue if you just learn how to type; again good autocompletion can help.</p>
+<p>When writing a function one has to think about clear and concise parameter names; another detail to remember.</p>
+<h3>Decision</h3>
+<p>Named parameters is the way to go for the Pooh programming languages; Named parameters for all situations that is.</p>
+<p>Also order of parameters should not matter &#8211; this allows for greater flexibility / freedom when writing up the function call. This also means that there is no overloading of functions (two functions with the same name) &#8211; function overloading is a confusing feature; with free order of parameters it is even more  confusing.</p>
+<h3>Evaluation strategy</h3>
+<p>Possible choices</p>
+<ol>
+	<li>all call by value</li>
+	<li>all call by reference</li>
+	<li>Collections are passed as reference to collection; scalars as call by value (call by sharing)</li>
+</ol>
+<p>Many programming languages (Lisp,Lua, Python, Java) do choice (3);  which is very confusing by its ambiguity, different rules apply for scalars and for collections.</p>
+<p>Call by reference is not very practical (Perl does that); If everything is a referene then each parameter can be a return value; so by looking at a function call you can&#8217;t tell what it will change or not; by allowing call by reference you will have too many possible side effects.</p>
+<p>So Call by value (1) as default is the least worst choice; alas if a reference is passed, then it is passed as is. On another note this decission forces the language implementations to do reference counted strings (or copy on write strings) &#8211; otherwise a new string copy would be created whenever a string parameters is passed as argument to a function; .</p>
+<p>Function prototype can specify call by reference wen required.</p>
+<p>All parameters are passed by default by value &#8211; even collections. If a parameter is especially marked in the function prototype then parameter is passed by &#8216;reference&#8217;. Also this solution is consistent with <a href="2011-11-07-feature-values.htm">Value feature</a></p>
+<h3>Function type signature</h3>
+<p>Adds additional requirement to writer of a function. Type of parameters must be inferred from use of parameters. Of course the completion tool can display them somehow.</p>
+<h3>Function overloading</h3>
+<p>One function has one implementation; no overloading here;</p>

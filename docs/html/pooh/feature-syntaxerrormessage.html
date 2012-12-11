@@ -1,0 +1,13 @@
+<hr />
+<p>layout: post<br />
+title: Syntax errors<br />
+<del>-</del></p>
+<h2>{{ page.title }}</h2>
+<p class="publish_date">7 November 2011</p>
+<p>An educational programming language should have some very clear syntax error messages, so here is how they should look like</p>
+<p>What kind of syntax errors</p>
+<ul>
+	<li>Exact error reporting is much more important than what is called error recovery; it is better to have detailed diagnostics on one error, rather than having increasingly inexact error messages on a bunch of errors.</li>
+	<li>If a construct (function, if condition, any kind of loop) is not properly closed by ending end statement, then the error message should state which statement is not closed, the report should point to the start of the offending construct.</li>
+	<li>Error message should include some word about wider context; If an error is in an expression, then it is helpful to know that this is the expression of an IF statement, for example.</li>
+</ul>

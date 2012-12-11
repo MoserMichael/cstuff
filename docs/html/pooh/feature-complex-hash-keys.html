@@ -1,0 +1,45 @@
+<hr />
+<p>layout: post<br />
+title:  objects as hash keys<br />
+<del>-</del></p>
+<h2>{{ page.title }}<br />
+<p class="publish_date">7 November 2011</p></h2>
+<h3>what others do</h3>
+<p>Hash tables with complex keys &#8211; keys that are not strings. Ideally a hash should be able to store any object as key; well Python solves this problem by introducing <a href="http://docs.python.org/tutorial/datastructures.html#tuples-and-sequences">tuples</a>  &#8211; read only sequences can be key to a hash; which results in the introduction of yet another entity. Perl does not bother with this problem &#8211; if you insert a Array as key, then it just casts its to scalar &#8211; takes the length of the array as key that is; not very intuitive either.</p>
+<p>Entities that can be stored as keys to an array</p>
+<ul>
+	<li>scalars; numbers. For a string key we have to make a new copy of the string when holding it in the hash entry.</li>
+	<li>Sequences,vectors have to be copied by values, two vectors can be compare by comparing its elements; If the elements of an array are hash collections, then the hash collections have to be compared (ouch);</li>
+</ul>
+<h3>the problem</h3>
+<p>what to do if a hash table is inserted as key, or indirectly, if a hash table is part of an array, that is inserted as key. The problem is how to compare different hash table instances effectively, and how to compute the hash value of a hash object as key.</p>
+<h3>it can be done</h3>
+<p>to compute the hash key;</p>
+<ul>
+	<li>for scalars as keys: compute the hash key</li>
+	<li>for arrays as keys: compute the hash value of each element and combine them in sequence</li>
+	<li>for hash tables as keys: create a sorted ordering of the keys, compute the hash value of each element and combine them in the order of the sorted keys.</li>
+</ul>
+<p>How to sort an arbitrary set of values:</p>
+<ul>
+	<li>all values of the same type are compared with entries of their own kind (integers with integers, strings with strings, arrays with arrays, hashes with hashes)</li>
+</ul>
+<p>comparing two arrays</p>
+<ul>
+	<li>two arrays are equal if both have the same number of elements, and all elements are equal.</li>
+	<li>Array a is smaller than array b</li>
+	<li>if a has less elements than b</li>
+	<li>if an element a[i] is less then element b<br />
+comparison of hashes.</li>
+	<li>If hash a has less keys then hash b then a is smaller than b</li>
+	<li>if both hashes have same number or keys, sort the keys;</li>
+	<li>compare keys after sorting if a.key[i] &lt; b.key[i] then a is smaller then b</li>
+	<li>if a.key[i] == b.key[i] then compare  v1 = a.lookup( a.key[i] ) and v2 = b.lookup( b.key[i] )</li>
+	<li>if v1 &lt; v2 then a is smaller then b.</li>
+	<li>if all are equal then both hash instances are equal.</li>
+</ul>
+<h3>is it all really that bad?</h3>
+<p>First of all the problem is mitigated if each element of the hash collection stores the hash value of  the key; in this case the key has to be compared only in cases when the hash value of the given key is identical with a hash value of the collection entry. Even then most chances are that the ordered sequence of keys must not be created.</p>
+<p>Also the sorted sequence of keys will only be computed on demand.</p>
+<h3>Is all this worth the effort ?</h3>
+<p>In a way yes; otherwise arrays as hash keys may not hold hashes; also yet another mind bending restriction is avoided as a start;</p>

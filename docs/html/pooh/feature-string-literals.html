@@ -1,0 +1,46 @@
+<hr />
+<p>layout: post<br />
+title:  String literals<br />
+<del>-</del></p>
+<h2>{{ page.title }}</h2>
+<p class="publish_date">7 November 2011</p>
+<p>there are many possible choices here, the <a href="http://en.wikipedia.org/wiki/String_literal">wikipedia article on strings</a> explains the many notations for a string literal ; <a href="http://en.wikipedia.org/wiki/Here_document">here documents &#8211; multiple line strings</a> explains more about strings that span multiple lines;</p>
+<p>Perl achieves a great degree of expressiveness at the cost of introducing multiple kinds of string literals. <br />
+Perl has</p>
+<ul>
+	<li>Quoted string constants</li>
+	<li>Literal string constants</li>
+	<li><span class="caps">HERE</span> documents</li>
+	<li>Barewords count as string constants</li>
+	<li>Quote operator</li>
+</ul>
+<p>I guess it is a bit complicated to memorize so many notations, especially if one is new to programming.</p>
+<h3>Requirements for string literals</h3>
+<p>There are therefore the following requirements for  a string notation.</p>
+<ul>
+	<li>One notation for string constants.</li>
+	<li>it should not require any escape sequences, escape sequences are a bit hard to</li>
+	<li>a string literal must express multiple line strings, sort of like &#8220;Here documents&#8221;</li>
+	<li>must allow for embedding of code into the string; the result of evaluating the code will be inserted <br />
+into the string.</li>
+</ul>
+<p>Escape sequences can be avoided, if the definition of  the <span class="caps">HERE</span> document contains a definition of the end of string delimiter;</p>
+<h3>String literals for the Pooh language.<br />
+A string constant can start with a single &#8217; characters, and must end with the same character.</h3>
+<p>&#8216;this is a string&#8217;</p>
+<p>&#8216;this is a string<br />
+that spans two lines&#8217;</p>
+<p>Or it can start with multiple &#8217; characters, and must end with the same number of characters.</p>
+<p>&#8216;&#8217;this is a string too, now I can have a single &#8217; character in the text of the string&#8217;&#8217;</p>
+<p>Also one can have an expression embedded in the string</p>
+<p>&#8216;value of factorial of 10 is [ fact( 10 ) ] a big number&#8217;</p>
+<p>Here the text within the brackets [ ]  is computed, the result of this computation is inserted into the string.</p>
+<p>Now if  we have multiple &#8217; characters for start of string delimiter, then we have multiple brackets as start of expression delimiter.</p>
+<p>&#8216;&#8217;value of factorial of 10 is [[ fact( 10 ) ]] a big number&#8217;&#8217;</p>
+<h3>Empty string</h3>
+<p>This construct is powerful but a bit ambiguous; How do you do an empty string? <br />
+Now we can introduce the &quot; &#8211; which will be an empty string.<br />
+Or you can call a library function emptystring() which returns an empty string.</p>
+<h3>Requirements for println function</h3>
+<p>Often one wants to print a text string followed by a new line; in Perl one does not need a separate println function &#8211; it is easy to express a string constant that has a newline at the end; in Pascal one does not have escape sequences, therefore they added the println function that writes a newline.</p>
+<p>Also you can have a libraryfunction newline(), which returns a single newline character;</p>

@@ -1,0 +1,18 @@
+<hr />
+<p>layout: post<br />
+title: Type checking<br />
+<del>-</del></p>
+<h2>{{ page.title }}</h2>
+<p class="publish_date">7 November 2011</p>
+<p>Most scripting languages do not perform type checking during compilation,</p>
+<p>However <span class="caps">PERL</span> goes the middle ground; one can enable <span class="caps">STRICT</span> mode; in strict mode the following situations are compilation errors; without <span class="caps">STRICT</span> mode these errors are runtime errors.</p>
+<ul>
+	<li>use of variable that has not been initialized</li>
+	<li>call of function that has not been declared.</li>
+	<li>Use of scalar variable as string.</li>
+</ul>
+<p>I think that this is a very useful feature; fixing these errors during compilation is easier then debugging the program and looking for them while debugging the program.</p>
+<p>Now Perl is sort of unique among scripting languages in that it can enforce some typing very easily; each variable has its type as prefix , $sc here sc is a scalar $v[i] here v is a vector and $vv{ &#8216;aa&#8217; } vv is a hash. When type is not part of variable name, then you have to do some type inference in order to implement this feature;</p>
+<p>Of course we can&#8217;t have full type checking; this is a scripting language, after all.<br />
+If a variable is inserted into a collection (array or hash table) and later retrieved from the collection, then its type can only be checked during run time.</p>
+<p>Anyhow for the Pooh scripting language we are going to implement a limited form of type checking.</p>

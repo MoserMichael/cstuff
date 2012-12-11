@@ -1,0 +1,36 @@
+<hr />
+<p>layout: post<br />
+title:  Identifier Scope<br />
+<del>-</del></p>
+<h2>{{ page.title }}</h2>
+<p class="publish_date">7 November 2011</p>
+<p>Identifier scope</p>
+<p>A variable can have the following scope</p>
+<ul>
+	<li>local variable</li>
+	<li>global variable</li>
+	<li>object instance variable</li>
+	<li>capture of outer variable.</li>
+</ul>
+<p>Possible ways of expressing scope information</p>
+<ol>
+	<li>identifier names are not qualified by prefix, identifier assumes lexical scope</li>
+	<li>Qualified identifier names</li>
+</ol>
+<p>There are several problems with this approach:<br />
+Problem: One also has declare a variable somehow before using it, as one needs to know if this is a local or a global or whatever scope.</p>
+<p>Problem: one has to assume a default; a variable without special declaration is often assumed to be global; one has to declare a variable within function scope in order to say that this is a local variable. I would argue that this is not very intuitive choice, made by such languages as Javascript, Perl, Python,      Lua etc. I would argue that the most frequent use of a variable inside a function is that of a local variable.</p>
+<p>Problem: it is not clear what a variable reference means by looking at its use;</p>
+<h3>Qualified identifiers</h3>
+<p><em>Qualified identifiers_:http://en.wikipedia.org/wiki/Scope_(computer_science)#Qualified</em>identifiers<br />
+ most often some prefix is added before the identifier name &#8211;  prefix says if this identifier is local, instance variable, or class instance or global.</p>
+<p>For example in Ruby one has the $ prefix to tell that a variable is used as a global and @ prefix to tell that a variable is used as a object member. Or in Javascript one says this.variablename that tells if one means to access a class member.</p>
+<p>I think that Qualified identifiers are better for code readability, one knows the context of a variable usage by looking at it;  also it avoids the need to declare variables before assignment.</p>
+<p>Qualified identifiers may be a very verbose way of expressing variable usage, but well, I it makes you more aware of what you are doing, which can be of benefit;</p>
+<h3>Pooh language</h3>
+<p>So for the Pooh language we will have <br />
+	_this . _ variablename  &#8211; a field in an object instance<br />
+	_global . _ variablename  &#8211; a global<br />
+	_outer . _ variablename &#8211; reference to captured variable of a closure</p>
+<p>No specifier: if a variable is used within a function and has no specifies, then by default it is assumed to be a local variable or function parameter;</p>
+<p>If a variable is used in global scope without any specifiers, then it is assumed to be a global variable.</p>
