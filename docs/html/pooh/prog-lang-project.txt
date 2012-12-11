@@ -10,11 +10,9 @@ I want a new tinker project, so a scripting language will be created. The projec
 
 First the name; It will be the 'Pooh programming language' ; I think that if there is a Python in honor of Monty, then there should be a Pooh in honor of Pooh, so to speak, this is a long missing detail, so I will strive to correct it ;-) 
 
-The 'Pooh programming language' will be an "Educational programming language":http://en.wikipedia.org/wiki/List_of_educational_programming_languages its purpose is to introduce kids to programming; it also will be a general purpose scripting language. 
+The 'Pooh programming language' will be an "Educational programming language":http://en.wikipedia.org/wiki/List_of_educational_programming_languages its purpose is to introduce kids to programming; 
 
 h3. General observations on the subject of (educational) programming languages
-
-An educational programming language should it make easy for a beginner to learn and use; that excludes statically typed languages; the learner should not spend half of his/her time fighting compilation errors. That leaves us with loosely typed scripting languages.
 
 For me, the practice of programming mainly consists of building bridges / translations between different concepts. Very often information has to be extracted from one source (be it some textual or binary language, or GUI toolkit that receives input from a real person) also very often some existing logical formalism is used to to access structured storage (SQL comes to mind),
 
@@ -75,7 +73,7 @@ h4. these are a few of my favorite things:
 * Function calls with "Named parameters":http:// en.wikipedia.org/wiki/Named_parameter  ; various languages offer named parameters as an additional means of calling a function; I think that this should be the only way to call a function; It is much easier to read code that calls functions with named parameters; alas the notation for function calls is less compact.
 * Python: the for loop construct / generator functions used in for loops (yield statement) 
 * Javascript: objects system by means of creating hash collections (prototypes)
-* Lua: like the _syntax_ of the language - no major anoyances there.
+* Lua: like the basic _syntax_ of the language - no major anoyances there; In Lua I don't like that variable scope in function defaults to global.
 * Ruby: Qualified identifiers (I don't like the choice of characters for prefix, but there should be some way of saying that an identifier refers to a class member or to a global variable) ; by default a variable in a function should be of local scope - what is done most frequently should be the shortest form; other options should be more explicit.
 * Perl/Javascript/Python/Ruby/Lua: Syntax to declare a collection object and populate it with data
 * Here documents: they should be similar to how "Text::Template   
@@ -116,7 +114,7 @@ Currently Javascript does not have any of these features, and seems to do fine w
 
 h4. Plain problems
 
-* Shells, Perl: Separate comparison operators for numeric and string values. Perl inherits separate string comparison operators from the UNIX shells. In Lua and Javascript one does not have them - here if a string is compared with a number, then the number is treated as a string;  Unfortunately it becomes much more difficult to infer the type of variables this way; 
+* Shells, Perl: Separate comparison operators for numeric and string values. Perl inherits separate string comparison operators from the UNIX shells. In Lua and Javascript one does not have them - here if a string is compared with a number, then the number is treated as a string;  Unfortunately it becomes much more difficult to infer the type of variables this way; also numeric and string comparison is not the same ! 
 * Same problem goes for arithmetic operators ; what should happen when adding a string to an number;  
 
 h3. General Terms / General requirements.
@@ -138,10 +136,10 @@ overloading, no macros (never), No advanced looping construct that does assign a
 Please see "oo feature":../07/feature-oo.html	
 
 (GR5) Be fun to use. It is very difficult to quantify this or to give a definition for this concept, but we will try: 
-1.Encourage data driven programming / it must be possible to declare complex lists / hashes in code / Nesting of hashes and lists;
-2.Encourage bottom up software construction / exploratory programming;   (That means we need a REPL)
-3.Quickest way of debugging should be by means of a built in tracing facility. Here we learn from other languages, like in Korn/Bash shells we have set -x; in Chez Scheme there is also a very strong built in trace facility.
-4.If there is a syntax error, it should be clear what it means.
+1. Encourage data driven programming / it must be possible to declare complex lists / hashes in code / Nesting of hashes and lists;
+2. Encourage bottom up software construction / exploratory programming;   (That means we need a REPL)
+3. Quickest way of debugging should be by means of a built in tracing facility. Here we learn from other languages, like in Korn/Bash shells we have set -x; in Chez Scheme there is also a very strong built in trace facility.
+4. If there is a syntax error, it should be clear what it means.
 
 (GR6) Must have a wide field of application; must be able to serve as a scripting language (must not be the most efficient one for that purpose);  One should get the impression of learning something tangible.
 
@@ -150,7 +148,7 @@ Please see "oo feature":../07/feature-oo.html
 
 h3. Defining the Pooh language in some more detail
 
-(R1) Language must be dynamically typed; 
+(R1) Language must not have strong typing, this would introduce too many compiler errors; the language should
 
 (R2) functions are 'first class' - meaning that we have anonymous functions, and 
 functions can be returned as return values, etc. 
