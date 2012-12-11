@@ -1,0 +1,161 @@
+---
+layout: pooh
+title:  The Pooh programming language for kids and grown ups.
+---
+
+h2. {{ page.title }}
+<p class="publish_date">15 December 2012</p>
+
+The pooh programming language is an educational programming language. I think this says that the language should help to overcome difficulties while learning it. Many other programming languages are full with tricky tricks that are there to save a few keystrokes while typing long programs or good for writing very large dinosaur programs, these aids are very powerful, but people who are not already used to thinking in complicated patterns are put off by them. Learning to program with a complicated language becomes some sort of rite for geeks, who already like complicated things; some people are like my friend Tigger who likes to bounce in his thoughts. Pooh thinks that the language that a person uses is making a person accustomed to think the way he speaks, until many people are no longer used to think in any other ways. The computer language one uses as a programmer therefore sets ones mind to thinking in geeky ways (probably only when programming?). This though is also known as the Saphir Worf hypothesis. I think that a simple, yet powerful language would help here.  
+
+h3. Availability
+
+Currently the project is available in source form only, 
+
+Sources can be downloaded as "zip archive": https://github.com/MoserMichael/cstuff/zipball/master
+or downloaded by the git program.
+
+<pre>
+	git clone https://github.com/MoserMichael/cstuff.git
+</pre>
+
+The project can be build on Linux or on Windows with Cygwin. To build the program,we need the presence of bison, flex, gcc and a recent version of make.
+
+Build and install into /usr/local/ directory
+	
+<pre>
+	cd build
+	./build-pooh.sh install
+</pre>
+
+Build and install into /usr/alt directory
+
+<pre>
+	cd build
+	./build-pooh.sh install INSTALL_PREFIX=/usr/alt
+</pre>
+
+h3. Documentation
+
+The "Introduction to Pooh":/docs/html/pooh-lan.pdf which is not complicated. (currently still working on it :-(
+Here "Pooh library reference":/docs/html/pooh-ref.pdf which is at times short an more complicated
+Here are "Some explanations of the design decisions":/docs/html which should be interesting for people who like programming languages.
+
+h3. Features
+
+This section is interesting for people who already know a few programming languages.
+
+* The interpreter can produce a detailed execution trace with with the annotated values for all variables. Here is an example to run a program that computes the factorial of the number 4.
+<notextile>
+<pre>
+pooh -x fact.p
+013|println( ~msg 'the factorial of 4 is ' .. fact( ~num 4 )...
+005| if (num:4 > 0):true
+006|  return (fact( ~num (num:4 - 1):3 )...
+005|   if (num:3 > 0):true
+006|    return (fact( ~num (num:3 - 1):2 )...
+005|     if (num:2 > 0):true
+006|      return (fact( ~num (num:2 - 1):1 )...
+005|       if (num:1 > 0):true
+006|        return (fact( ~num (num:1 - 1):0 )...
+005|         if (num:0 > 0):false
+006|         else
+008|          return 1
+008|         end # if
+006|        return (fact( ~num (num:1 - 1):0 ):1 * num:1):1
+006|       end # if
+006|      return (fact( ~num (num:2 - 1):1 ):1 * num:2):2
+006|     end # if
+006|    return (fact( ~num (num:3 - 1):2 ):2 * num:3):6
+006|   end # if
+006|  return (fact( ~num (num:4 - 1):3 ):6 * num:4):24
+006| end # if
+013|println( ~msg 'the factorial of 4 is ' .. fact( ~num 4 ):24 )...
+the factorial of 4 is 24
+</pre>
+</notextile>
+* functions: all parameters are passed as "named parameters":http://en.wikipedia.org/wiki/Named_parameter , order of parameters does not matter.
+* All values defined in a function are of local scope; if you want to access a global from a function, then you have to add the * global . * prefix to the variable name.
+* strings, numbers, arrays and hashes are not objects, one does not have to introduce object oriented programming from the start on; 
+* A variable is defined when a value is assigned to a variable name;.
+* compiler forbids to reference uninitialized values (like 'use strict' in Perl and recently in Javascript)
+* compiler forbids call of undefined functions ; forbids use of array or hash as scalar
+* In arithmetic operators one can use both number and string variables (strings are converted automatically); Comparison operators - there is a set of numeric comparison operators, where strings are interpreted as numbers, and string comparison operators, where both numbers and strings are allowed and interpreted as string.
+* data structures: has vectors and hash values for collections. 
+* A simplified model of references to values is supported. 
+* Does object oriented programming by "prototyping (prototype based programming)":http://en.wikipedia.org/wiki/Prototype-based_programming ) ; access to data members via _ this . _ prefix to variable names
+* the concept of "closures":http://en.wikipedia.org/wiki/Closure_(computer_science)  is supported, one can have objects via closures. Non local variables references have the * outer . * prefix.
+* the concept of "co-routines / green threads / generators":http://en.wikipedia.org/wiki/Coroutine; which are also known as Pooh routines. for loops invoke a generator thread (similar to python)
+* has "higher order functions":http://en.wikipedia.org/wiki/Higher-order_function  like map/foldl/filter/sort
+* "Multiple return values":http://rosettacode.org/wiki/Return_multiple_values  / "Parallel assignement":http://en.wikipedia.org/wiki/Assignment_(computer_science)#Parallel_assignment is supported.
+* It is possible to extend the language with shared libraries written in C.
+* It is possible to include other text, so it is compiled together with the program.
+* Compiler has detailed error messages. Invested quite some effort to make them clear.
+
+Things left out:
+* No exceptions. Pooh programs either succeed or fail with a very detailed stack trace, its that simple.
+* No namespaces; another complication.
+* No meta programming; no pre-processor madness
+* No eval statement; 
+* Currently no regular expression parsing; I would like something with fewer arcane rules, maybe BNF grammars; Any ideas are and suggestions are really welcomed.
+
+All this means pooh is not strongly typed, and also not a dynamic language. Hope you are still interested ;-) Would not it be fore the simplified model of references, we would expect the language to translate into efficient machine code; 
+
+h3. Tests / examples
+
+This table lists some example programs, they are also used to test the pooh language when building it.
+
+
+
+| * test name * |
+| "01-add.p":/cstuff/docs/html/pooh/example/01-add.p.html |
+| "01-copy-ref.p":/cstuff/docs/html/pooh/example/01-copy-ref.p.html |
+| "01-function-call-by-ref.p":/cstuff/docs/html/pooh/example/01-function-call-by-ref.p.html |
+| "01-hello-world.p":/cstuff/docs/html/pooh/example/01-hello-world.p.html |
+| "02-fact.p":/cstuff/docs/html/pooh/example/02-fact.p.html |
+| "02-loop.p":/cstuff/docs/html/pooh/example/02-loop.p.html |
+| "03-int-range.p":/cstuff/docs/html/pooh/example/03-int-range.p.html |
+| "03-matrix-mult.p":/cstuff/docs/html/pooh/example/03-matrix-mult.p.html |
+| "03-prime-while-loop.p":/cstuff/docs/html/pooh/example/03-prime-while-loop.p.html |
+| "03-print-array.p":/cstuff/docs/html/pooh/example/03-print-array.p.html |
+| "03-print-table.p":/cstuff/docs/html/pooh/example/03-print-table.p.html |
+| "03-print-table2.p":/cstuff/docs/html/pooh/example/03-print-table2.p.html |
+| "03-qsort.p":/cstuff/docs/html/pooh/example/03-qsort.p.html |
+| "03-stringlib.p":/cstuff/docs/html/pooh/example/03-stringlib.p.html |
+| "03-table-any-kind-of-key.p":/cstuff/docs/html/pooh/example/03-table-any-kind-of-key.p.html |
+| "04-file-stat.p":/cstuff/docs/html/pooh/example/04-file-stat.p.html |
+| "04-matrix-mult.p":/cstuff/docs/html/pooh/example/04-matrix-mult.p.html |
+| "04-multi-assign.p":/cstuff/docs/html/pooh/example/04-multi-assign.p.html |
+| "04-strace-test.p":/cstuff/docs/html/pooh/example/04-strace-test.p.html |
+| "04-time.p":/cstuff/docs/html/pooh/example/04-time.p.html |
+| "06-func-obj-call.p":/cstuff/docs/html/pooh/example/06-func-obj-call.p.html |
+| "08-object-prototype-finalizer.p":/cstuff/docs/html/pooh/example/08-object-prototype-finalizer.p.html |
+| "08-object-prototype-point.p":/cstuff/docs/html/pooh/example/08-object-prototype-point.p.html |
+| "08-object-prototype-stack.p":/cstuff/docs/html/pooh/example/08-object-prototype-stack.p.html |
+| "10-object-closure-point.p":/cstuff/docs/html/pooh/example/10-object-closure-point.p.html |
+| "10-object-closure-stack.p":/cstuff/docs/html/pooh/example/10-object-closure-stack.p.html |
+| "11-file-pipe.p":/cstuff/docs/html/pooh/example/11-file-pipe.p.html |
+| "11-file-test.p":/cstuff/docs/html/pooh/example/11-file-test.p.html |
+| "15-thread-range.p":/cstuff/docs/html/pooh/example/15-thread-range.p.html |
+| "15-thread-range-1.p":/cstuff/docs/html/pooh/example/15-thread-range-1.p.html |
+| "15-thread-range-fib.p":/cstuff/docs/html/pooh/example/15-thread-range-fib.p.html |
+| "16-load-extension-library.p":/cstuff/docs/html/pooh/example/16-load-extension-library.p.html |
+| "17-for-lib.p":/cstuff/docs/html/pooh/example/17-for-lib.p.html |
+| "17-for-range.p":/cstuff/docs/html/pooh/example/17-for-range.p.html |
+| "18-higher-order-func.p":/cstuff/docs/html/pooh/example/18-higher-order-func.p.html |
+| "18-higher-order-func-lib.p":/cstuff/docs/html/pooh/example/18-higher-order-func-lib.p.html |
+| "18-higher-order-func-lib2.p":/cstuff/docs/html/pooh/example/18-higher-order-func-lib2.p.html |
+| "18-sort.p":/cstuff/docs/html/pooh/example/18-sort.p.html |
+| "18-sort-anonymous.p":/cstuff/docs/html/pooh/example/18-sort-anonymous.p.html |
+
+h3. And now for something completely different
+
+The best pooh movies are here
+
+<notextile>
+<iframe width="420" height="345" src="http://www.youtube.com/watch?v=sqdiEUp6s4E" frameborder="0" allowfullscreen></iframe> 
+</notextile>
+<notextile>
+<iframe width="420" height="345" src="http://www.youtube.com/watch?v=qam9JBk5Oig" frameborder="0" allowfullscreen></iframe> 
+</notextile>
+
