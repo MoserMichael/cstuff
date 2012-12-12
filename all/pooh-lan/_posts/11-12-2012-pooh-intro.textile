@@ -6,7 +6,7 @@ title:  The Pooh programming language for kids and grown ups.
 h2. {{ page.title }}
 <p class="publish_date">11 December 2012</p>
 
-The pooh programming language is an educational programming language. I think this says that the language should help to overcome difficulties while learning it. Many other programming languages are full with tricky tricks that are there to save a few keystrokes while typing long programs, these aids are very powerful, but people who are not already used to thinking in complicated patterns are put off by them. Learning to program with a complicated language becomes some sort of rite for geeks, who already like complicated things; some people are like Tigger who likes to bounce in his thoughts. Pooh thinks that the language that a person uses is making a person accustomed to think the way he speaks, until many people are no longer used to think in any other ways. The computer language one uses as a programmer therefore sets ones mind to thinking in geeky ways (probably only when programming?). This though is also known as the "Sapir-Whorf hypothesis":http://en.wikipedia.org/wiki/Linguistic_relativity#Programming_languages . I think that a simple, yet powerful language would help here.  
+The pooh programming language is an educational programming language. I think this means that the language should help to overcome difficulties when one tries to learn it. Many other programming languages are full with tricky tricks that are there to save a few keystrokes while typing long programs, these aids are very powerful, but people who are not already used to thinking in complicated patterns are put off by them. Learning to program with a complicated language becomes some sort of rite for geeks, who already like complicated things; Pooh thinks that the language that a person uses is important ; it makes a person accustomed to think the way he speaks, this goes on until many people are no longer used to think in any other ways. The computer language one uses as a programmer therefore sets ones mind to thinking in geeky ways (probably only when programming?). This though is also known as the "Sapir-Whorf  hypothesis":http://en.wikipedia.org/wiki/Linguistic_relativity#Programming_languages ; maybe there is some truth in it with regards to computer languages. I think that a simple, yet powerful language would help here.  
 
 h3. Availability
 
@@ -25,14 +25,14 @@ Build and install into /usr/local/ directory
 	
 <pre>
 	cd build
-            ./build-pooh.sh install
+	./build-pooh.sh install
 </pre>
 
 Build and install into /usr/alt directory
 
 <pre>
 	cd build
-            ./build-pooh.sh install INSTALL_PREFIX=/usr/alt
+	./build-pooh.sh install INSTALL_PREFIX=/usr/alt
 </pre>
 
 h3. Documentation
@@ -74,20 +74,19 @@ pooh -x fact.p
 the factorial of 4 is 24
 </pre>
 </notextile>
-* functions: all parameters are passed as "named parameters":http://en.wikipedia.org/wiki/Named_parameter , order of parameters does not matter.
-* All values defined in a function are of local scope; if you want to access a global from a function, then you have to add the * global . * prefix to the variable name.
+* functions: all parameters are passed as "named parameters":http://en.wikipedia.org/wiki/Named_parameter , order of parameters does not matter. Named parameters make the program much more readable.
+* All values defined in a function are of local scope; if you want to access a global from a function, then you have to add the <b> global . </b> prefix to the variable name.
 * strings, numbers, arrays and hashes are not objects, one does not have to introduce object oriented programming from the start on; 
 * A variable is defined when a value is assigned to a variable name;.
-* compiler forbids to reference uninitialized values (like 'use strict' in Perl and recently optional in Javascript). 
-* compiler forbids call of undefined functions ; forbids use of array or hash as scalar. I really like perl strict mode.
+* The compiler forbids to reference uninitialized values (like 'use strict' in Perl and recently optional in Javascript); also forbidden to call of undefined functions ; forbidden to use of array or hash as scalar. I really like Perl strict mode; too much dynamic typing gets me confused.
 * In arithmetic operators one can use both number and string variables (strings are converted automatically); Comparison operators - there is a set of numeric comparison operators, where strings are interpreted as numbers, and string comparison operators, where both numbers and strings are allowed and interpreted as string.
 * data structures: has vectors and hash values for collections. 
 * A simplified model of references to values is supported. 
-* Does object oriented programming by "prototyping (prototype based programming)":http://en.wikipedia.org/wiki/Prototype-based_programming ) ; access to data members via _ this . _ prefix to variable names
-* the concept of "closures":http://en.wikipedia.org/wiki/Closure_(computer_science)  is supported, one can have objects via closures. Non local variables references have the * outer . * prefix.
+* Does object oriented programming by "prototyping (prototype based programming)":http://en.wikipedia.org/wiki/Prototype-based_programming ) ; access to data members via <b> this . </b> prefix to variable names
+* the concept of "closures":http://en.wikipedia.org/wiki/Closure_(computer_science)  is supported, one can have objects via closures. Non local variables references have the <b> outer . </b> prefix.
 * the concept of "co-routines / generators":http://en.wikipedia.org/wiki/Coroutine  is supported; for loops invoke a generator thread (similar to python)
 * has "higher order functions":http://en.wikipedia.org/wiki/Higher-order_function  like map/foldl/filter/sort
-* "Multiple return values":http://rosettacode.org/wiki/Return_multiple_values  / "Parallel assignement":http://en.wikipedia.org/wiki/Assignment_(computer_science)#Parallel_assignment is supported.
+* "Multiple return values":http://rosettacode.org/wiki/Return_multiple_values  / "Parallel assignment":http://en.wikipedia.org/wiki/Assignment_(computer_science)#Parallel_assignment is supported.
 * It is possible to extend the language with shared libraries written in C.
 * It is possible to include other text, so it is compiled together with the program.
 * Compiler has detailed error messages. Invested quite some effort to make them clear.
@@ -97,11 +96,11 @@ Things left out:
 * No namespaces; another complication.
 * No meta programming; no pre-processor madness
 * No eval statement; 
-* Strings are multiline and can embed expressions; like HERE documents; the language has one string constant format.
+* Strings are can span multiple lines and can embed expressions; very similar to like HERE documents; the language has one string constant format, not twenty.
 * Currently no regular expression parsing; I would like something with fewer arcane rules, maybe BNF grammars; Any ideas are and suggestions are really welcomed.
-* No autoincrement operators. One feature less to explain.
+* No auto-increment operators. One feature less to explain.
 
-All this means pooh is not strongly typed, and also not a dynamic language. Hope you are still interested ;-) Would not it be fore the simplified model of references, we would expect the language to translate into efficient machine code; 
+All this means pooh is not strongly typed, and also not a dynamic language. Hope you are still interested ;-) Because of the simplified reference model, the language probably does not translate into efficient machine code. Don't expect the current implementation to be fast, it is an AST walker; that's because it is easier to do the trace output with an AST walker; also I want to add a "Read-eval-print loop":http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop ( in a coming release. 
 
 h3. Tests / examples
 

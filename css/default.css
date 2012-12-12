@@ -1,6 +1,6 @@
 body {
-background: #58B2A3;
-color:#e5e5e5;
+background: #FCFCFC;
+color:#050505;
 font:86% 'lucida grande','lucida sans unicode',Verdana,Tahoma,Arial,sans-serif;
 line-height:1.2em;
 margin:0 auto;
@@ -10,14 +10,14 @@ padding:0;
 label { margin-left:5px; }
 
 a {
-color:#FFFCB6;
+color:#0000f0;
 font-weight:700;
 text-decoration:none;
 }
 
 a:hover {
 text-decoration:underline;
-color: #f5a2c6;
+color: #0000a0;
 }
 
 a img {
@@ -39,9 +39,9 @@ margin:4px 0 4px 10px;
 
 .posts { padding:0;}
 
-li { padding:0 4px; color:#ccc; list-style: none; }
+li { padding:0 4px; color:#00f000; list-style: none; }
 
-ul.posts li span { float:right; font-family:monofur, monaco, courier; color:#FFFCB6; }
+ul.posts li span { float:right; font-family:monofur, monaco, courier; color:#040404; }
 ul.posts li a { font-weight:200;}
 
 div#post ul li { list-style: circle; }
@@ -63,8 +63,9 @@ blockquote span {
 pre { 
 font-family: Monaco, Courier;
 background: #191919;
+color: #FFFFFF;
 border: dashed 2px #e5e5e5;
- width: 600px;
+width: 800px;
 padding: 5px;
 font-size:1em;
 line-height: 2em;
@@ -76,17 +77,17 @@ clear:both;
 .terminal
 {
 background: #7A1C00;
-color: #FFFF00;
+color: #050505;
 }
 
 .im
 {
 font-size:0.95em;
 line-height: 1.4em;
-width: 650px;
+width: 800px;
 font-family: 'lucida grande','lucida sans','lucida sans unicode',helvetica,tahoma;
 padding: 5px;
-    background-color:#FFB604;
+background-color:#FFB604;
 color:#222;
 border: solid 1px #fff;
 }
@@ -177,7 +178,7 @@ color: #b81f99;
 /*** Main wrap and header ***/
 
 #wrap {
-color:#f4f4f4;
+color:#050505;
 margin:10px auto;
 padding:0;
 width:670px;
@@ -287,7 +288,7 @@ text-align:right;
 .timestamp {
 font-size:1.2em;
 margin:-5px 0 15px 10px;
-}
+    }
 
 .timestamp a {
 font-weight:normal;
