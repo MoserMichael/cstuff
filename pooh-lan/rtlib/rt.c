@@ -1109,6 +1109,27 @@ static void x_tooct( XCALL_DATA *xcall )
 }
 
 
+static void x_find( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg;
+  VALSTRING *hay, *needle;
+  int rt;
+
+  arg = XCALL_param( xcall, 0 ); 
+  hay = BINDING_DATA_get_string( arg );
+
+  arg = XCALL_param( xcall, 1 ); 
+  needle = BINDING_DATA_get_string( arg );
+
+  rt = VALSTRING_find( hay, needle );
+  if (rt < 0) {
+    rt = 0;
+  } else {
+    rt += 1;
+  }
+  BINDING_DATA_set_int( XCALL_rvalue( xcall ), rt );
+}
+
 typedef enum {
   STR_LEFT,
   STR_RIGHT,
@@ -2698,15 +2719,16 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC2( "erase",  x_erase,	0,	    "table", S_VAR_HASH | S_VAR_PARAM_BYREF, "key", S_VAR_ANY ),
 
 /* strings */
-  DEFINE_XFUNC3( "mid",	   x_mid, S_VAR_STRING, "string", S_VAR_STRING, "offset", S_VAR_INT | S_VAR_PARAM_OPTIONAL, "length", S_VAR_INT | S_VAR_PARAM_OPTIONAL),
-  DEFINE_XFUNC2( "left",   x_left, S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
-  DEFINE_XFUNC2( "right",  x_right, S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
-  DEFINE_XFUNC1( "print",  x_print, 0, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
-  DEFINE_XFUNC1( "println",  x_println, 0, "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
-  DEFINE_XFUNC1( "int",	   x_toint, S_VAR_INT, "string", S_VAR_STRING ),
-  DEFINE_XFUNC1( "hex",	   x_tohex, S_VAR_INT, "string", S_VAR_STRING ),
-  DEFINE_XFUNC1( "oct",	   x_tooct, S_VAR_INT, "string", S_VAR_STRING ),
-  DEFINE_XFUNC0( "emptystring",  x_emptystring, S_VAR_STRING ),
+  DEFINE_XFUNC2( "find",   x_find,      S_VAR_INT,  "hay", S_VAR_STRING, "needle", S_VAR_STRING ),
+  DEFINE_XFUNC3( "mid",	   x_mid,       S_VAR_STRING, "string", S_VAR_STRING, "offset", S_VAR_INT | S_VAR_PARAM_OPTIONAL, "length", S_VAR_INT | S_VAR_PARAM_OPTIONAL),
+  DEFINE_XFUNC2( "left",   x_left,      S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
+  DEFINE_XFUNC2( "right",  x_right,     S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
+  DEFINE_XFUNC1( "print",  x_print,     0,            "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
+  DEFINE_XFUNC1( "println",  x_println, 0,            "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
+  DEFINE_XFUNC1( "int",	   x_toint,     S_VAR_INT, "string", S_VAR_STRING ),
+  DEFINE_XFUNC1( "hex",	   x_tohex,     S_VAR_INT, "string", S_VAR_STRING ),
+  DEFINE_XFUNC1( "oct",	   x_tooct,     S_VAR_INT, "string", S_VAR_STRING ),
+  DEFINE_XFUNC0( "emptystring", x_emptystring, S_VAR_STRING ),
   DEFINE_XFUNC0( "newline",  x_newline, S_VAR_STRING ),
       
 

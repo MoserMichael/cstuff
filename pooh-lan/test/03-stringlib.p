@@ -1,5 +1,14 @@
 # tests string library functions mid left right
 
+p = 'the quick brown fox jumped'
+q = 'fox'
+n = find( ~hay p ~needle q )
+println( ~msg 'Position "[ n ]" of "[ q ]" in "[ p ]"' )
+
+q = 'bee'
+n = find( ~hay p ~needle q )
+println( ~msg 'Position "[ n ]" of "[ q ]" in "[ p ]"' )
+
 a = left( ~string 'abcdefg' ~length 3 )
 println( ~msg a )
 
