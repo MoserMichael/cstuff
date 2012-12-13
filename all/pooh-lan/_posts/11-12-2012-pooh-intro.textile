@@ -151,14 +151,17 @@ h3. So what is next ?
 
 So far I did not test the whole concept with real clients - nobody has ever used the Pooh language in order try to teach how to program. Well, it has to start with someone ?.
 
-The concept of passing all function parameters as named parameters maybe a consistent and readable choice, but it is probably more difficult to write the program text this way. What may help is the addition of a special editing program - an IDE (Interactive developing environment) like Eclipse but specially suited for all ages. Here the program parameter names will pop up as hints, together with lots of explanations about the function and its parameters. Now that is a lot of work.
+The concept of passing all function parameters as named parameters maybe a consistent and readable choice, but it is probably more difficult to write the program text this way. What may help is the addition of a special editing program - an IDE (Interactive developing environment) like Eclipse but with a user interface adapted for young people. Here the program parameter names will pop up as hints, together with lots of explanations about the function and its parameters. Now that is a lot of work.
 
-Another important direction is addition of practical parsing engine ;
+Another important direction is addition of practical parsing engine ; similar to those of REBOL or Perl 6.
 
 In the meantime I will continue to 
 * Test the system under different configurations
 * Add missing library functions; 
 * Complete the introduction text.
+
+So maybe all we have is an eclectic set of features chosen by virtue of my personal preferences and not because of any objective and measurably better usability. Maybe that's the way programming languages are progressing; it is hard to compare approaches so that one can make a valid generalization; no tool is going to be the best in all cases, and anyway comparison are often between apples to oranges. Well enough quetching already, lets get some work done!
+
 
 h3. And now for something completely different
 
