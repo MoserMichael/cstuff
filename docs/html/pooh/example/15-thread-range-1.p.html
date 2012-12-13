@@ -62,7 +62,7 @@ testfun()
 008|  while (i:1 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:1 )...
 029|    ... = threadyieldvalue( ~thread th:-> sub myrange(~from , ~to) )...
-029|    [ running:1 , value:-> 1]  = threadyieldvalue( ~thread th:-> sub myrange(~from , ~to) ):->(0x82827f0)
+029|    [ running:1 , value:-> 1]  = threadyieldvalue( ~thread th:-> sub myrange(~from , ~to) ):->(0x99a6980)
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:1 .. '' )...
 035|     ... = resumethread( ~thread th:-> sub myrange(~from , ~to) )...
@@ -71,7 +71,7 @@ testfun()
 016|  end
 008|  while (i:2 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:2 )...
-035|     [ running:1 , value:-> 2]  =threadyield0( ~yieldval i:2 ):->(0x8282960)
+035|     [ running:1 , value:-> 2]  =threadyield0( ~yieldval i:2 ):->(0x99a6af0)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:2 .. '' )...
@@ -81,7 +81,7 @@ testfun()
 016|  end
 008|  while (i:3 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:3 )...
-035|     [ running:1 , value:-> 3]  =threadyield0( ~yieldval i:3 ):->(0x8282a58)
+035|     [ running:1 , value:-> 3]  =threadyield0( ~yieldval i:3 ):->(0x99a6be8)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:3 .. '' )...
@@ -91,7 +91,7 @@ testfun()
 016|  end
 008|  while (i:4 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:4 )...
-035|     [ running:1 , value:-> 4]  =threadyield0( ~yieldval i:4 ):->(0x8282b50)
+035|     [ running:1 , value:-> 4]  =threadyield0( ~yieldval i:4 ):->(0x99a6ce0)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:4 .. '' )...
@@ -101,7 +101,7 @@ testfun()
 016|  end
 008|  while (i:5 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:5 )...
-035|     [ running:1 , value:-> 5]  =threadyield0( ~yieldval i:5 ):->(0x8282c48)
+035|     [ running:1 , value:-> 5]  =threadyield0( ~yieldval i:5 ):->(0x99a6dd8)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:5 .. '' )...
@@ -111,7 +111,7 @@ testfun()
 016|  end
 008|  while (i:6 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:6 )...
-035|     [ running:1 , value:-> 6]  =threadyield0( ~yieldval i:6 ):->(0x8282d40)
+035|     [ running:1 , value:-> 6]  =threadyield0( ~yieldval i:6 ):->(0x99a6ed0)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:6 .. '' )...
@@ -121,7 +121,7 @@ testfun()
 016|  end
 008|  while (i:7 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:7 )...
-035|     [ running:1 , value:-> 7]  =threadyield0( ~yieldval i:7 ):->(0x8282e38)
+035|     [ running:1 , value:-> 7]  =threadyield0( ~yieldval i:7 ):->(0x99a6fc8)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:7 .. '' )...
@@ -131,7 +131,7 @@ testfun()
 016|  end
 008|  while (i:8 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:8 )...
-035|     [ running:1 , value:-> 8]  =threadyield0( ~yieldval i:8 ):->(0x8282f30)
+035|     [ running:1 , value:-> 8]  =threadyield0( ~yieldval i:8 ):->(0x99a70c0)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:8 .. '' )...
@@ -141,7 +141,7 @@ testfun()
 016|  end
 008|  while (i:9 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:9 )...
-035|     [ running:1 , value:-> 9]  =threadyield0( ~yieldval i:9 ):->(0x8282ff8)
+035|     [ running:1 , value:-> 9]  =threadyield0( ~yieldval i:9 ):->(0x99a7188)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:9 .. '' )...
@@ -151,7 +151,7 @@ testfun()
 016|  end
 008|  while (i:10 <= to:-> 10):true
 013|   threadyield0( ~yieldval i:10 )...
-035|     [ running:1 , value:-> 10]  =threadyield0( ~yieldval i:10 ):->(0x8283168)
+035|     [ running:1 , value:-> 10]  =threadyield0( ~yieldval i:10 ):->(0x99a72f8)
 036|    end
 031|    while (running:1 != 0):true
 033|     println( ~msg 'thread returned ' .. value:10 .. '' )...
