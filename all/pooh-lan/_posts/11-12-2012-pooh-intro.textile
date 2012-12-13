@@ -106,8 +106,6 @@ h3. Tests / examples
 
 This table lists some example programs, they make up the test suite of the project and are run on each build.
 
-
-
 | * test name * |
 | "01-add.p":/cstuff/docs/html/pooh/example/01-add.p.html |
 | "01-copy-ref.p":/cstuff/docs/html/pooh/example/01-copy-ref.p.html |
@@ -148,3 +146,42 @@ This table lists some example programs, they make up the test suite of the proje
 | "18-higher-order-func-lib2.p":/cstuff/docs/html/pooh/example/18-higher-order-func-lib2.p.html |
 | "18-sort.p":/cstuff/docs/html/pooh/example/18-sort.p.html |
 | "18-sort-anonymous.p":/cstuff/docs/html/pooh/example/18-sort-anonymous.p.html |
+h3. So what is next ?
+
+So far I did not test the whole concept with real clients - nobody has ever used the Pooh language in order try to teach how to program. Well, it has to start with someone ?.
+
+The concept of passing all function parameters as named parameters maybe a consistent and readable choice, but it is probably more difficult to write the program text this way. What may help is the addition of a special editing program - an IDE (Interactive developing environment) like Eclipse but specially suited for all ages. Here the program parameter names will pop up as hints, together with lots of explanations about the function and its parameters. Now that is a lot of work.
+
+Another important direction is addition of practical parsing engine ;
+
+In the meantime I will continue to 
+* Test the system under different configurations
+* Add missing library functions; 
+* Complete the introduction text.
+
+h3. And now for something completely different
+
+The best pooh movies are here
+
+<notextile>
+
+<iframe width="420" height="315" src="http://www.youtube.com/embed/sqdiEUp6s4E" frameborder="0" allowfullscreen></iframe>
+
+<iframe width="420" height="315" src="http://www.youtube.com/embed/qam9JBk5Oig" frameborder="0" allowfullscreen></iframe>
+
+</notextile>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
