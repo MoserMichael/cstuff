@@ -29,7 +29,11 @@ void AST_print_expr( FILE *out, AST_EXPRESSION *expr)
       switch( expr->value_type )
       {
         case S_VAR_INT:
+#if POOH_INT_SIZE == 4    
 	    fprintf( out, "%ld", expr->val.const_value.long_value );
+#else
+	    fprintf( out, "%lld", expr->val.const_value.long_value );
+#endif	    
 	    break;
 	case S_VAR_DOUBLE:
 	    fprintf( out, "%f", expr->val.const_value.double_value );

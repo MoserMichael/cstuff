@@ -204,7 +204,7 @@ void EVAL_error( EVAL_CTX *out, AST_BASE *ast, const char *format, ... )
 
 BINDING_DATA * EVAL_int_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDING_DATA *rhs )
 {
-  long rval,lval,ret;
+  POOH_INT rval,lval,ret;
   BINDING_DATA *retval;
   EVAL_THREAD *cthread;
  
@@ -279,7 +279,7 @@ BINDING_DATA * EVAL_cmp_null( EVAL_CTX *out, int op, BINDING_DATA *rhs )
 {
     BINDING_DATA *retval;
     EVAL_THREAD *cthread;
-    int rvalt;
+    POOH_INT rvalt;
  	
     cthread = out->context.current_thread;
  
@@ -388,7 +388,7 @@ BINDING_DATA * EVAL_double_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BIN
     retval->b.value.double_value = ret;
   } else {
     retval = EVAL_THREAD_push_stack( cthread, S_VAR_INT );   
-    retval->b.value.long_value = (long) ret;
+    retval->b.value.long_value = (POOH_INT) ret;
   }
   
   return retval;
@@ -466,7 +466,7 @@ BINDING_DATA *  EVAL_boolean_op( EVAL_CTX *out,  AST_EXPRESSION *expr )
 BINDING_DATA *EVAL_string_op( int op, EVAL_THREAD *cthread, BINDING_DATA *lhs, BINDING_DATA *rhs )
 { 
   BINDING_DATA *retval; 
-  int rn;
+  POOH_INT rn;
   DBUF tmpl, tmpr;
   
    if ((lhs->b.value_type & S_VAR_ALL_TYPES) == S_VAR_NULL) {

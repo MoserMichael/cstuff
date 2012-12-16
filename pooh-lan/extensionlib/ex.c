@@ -4,7 +4,7 @@
 
 static void x_addnumbers(XCALL_DATA *xcall)
 {
-  long a,b;
+  POOH_INT a,b;
   BINDING_DATA *arg;
 
   arg = XCALL_param( xcall, 0 ); 

@@ -367,7 +367,7 @@ typedef struct tagBINDING_DATA_VALUE {
 	
 	    VALFUNCTION_CAPTURE  heap2stack_ref; // if reference from heap allocated node to stack - then treat like capture.
 
-	    long	long_value;
+	    POOH_INT	long_value;
 
 	    double	double_value;
 
@@ -459,7 +459,7 @@ M_INLINE int IS_NUMBER( BINDING_DATA *binding )
   return binding->b.value_type & ( S_VAR_INT | S_VAR_DOUBLE );
 }
 
-M_INLINE int BINDING_DATA_get_int( BINDING_DATA *data, long *val )
+M_INLINE int BINDING_DATA_get_int( BINDING_DATA *data, POOH_INT *val )
 {
   if (IS_REF( data ) ) {
     data = BINDING_DATA_follow_ref( data );

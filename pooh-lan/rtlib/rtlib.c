@@ -1679,7 +1679,11 @@ size_t BINDING_DATA_hash( BINDING_DATA *binding )
 
    switch( binding->b.value_type ) {
     case S_VAR_INT:
-      return (size_t) binding->b.value.long_value;
+#if POOH_INT_SIZE == 4
+     return (size_t) binding->b.value.long_value;
+#else
+     return (size_t) binding->b.value.long_value ^ (size_t) (binding->b.value.long_value >> 32 );
+#endif
     case S_VAR_DOUBLE:
       uptr = (uint32_t *) &binding->b.value.double_value;
       return uptr[0] ^ uptr[1];
@@ -1916,7 +1920,12 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
  
   switch( data->b.value_type ) {
     case S_VAR_INT:
+#if POOH_INT_SIZE == 4    
         fprintf( out, "%ld", data->b.value.long_value );
+#else	
+        fprintf( out, "%lld", data->b.value.long_value );
+#endif
+
 	break;
     case S_VAR_DOUBLE:
         fprintf( out, "%e", data->b.value.double_value );

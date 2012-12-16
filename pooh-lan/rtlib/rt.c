@@ -86,7 +86,7 @@ static void x_exit( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
   VALSTRING *sdata;
-  long status = 0;
+  POOH_INT status = 0;
 
   arg = XCALL_param(xcall, 0 ); 
   if (! IS_NULL(arg)) {
@@ -144,10 +144,10 @@ static void x_dump( XCALL_DATA *xcall )
 static void x_trace( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
-  int trace;
+  POOH_INT trace;
   
   arg = XCALL_param(xcall, 0 ); 
-  BINDING_DATA_get_int( arg, (long *) &trace );
+  BINDING_DATA_get_int( arg, &trace );
   xcall->thread->context->trace_on = trace;
 }
 
@@ -416,19 +416,19 @@ static void x_range( XCALL_DATA *xcall )
 {
   BINDING_DATA *tmpn,tmpv,*arg,*rval;
   VALARRAY *arr;
-  long idx, from, to, step;
+  POOH_INT idx, from, to, step;
   int top = EVAL_THREAD_is_threadmain( xcall->thread );
  
   arg = XCALL_param(xcall, 0 ); 
-  BINDING_DATA_get_int( arg, (long *) &from );
+  BINDING_DATA_get_int( arg,  &from );
 
   arg = XCALL_param(xcall, 1 ); 
-  BINDING_DATA_get_int( arg, (long *) &to );
+  BINDING_DATA_get_int( arg,  &to );
 
   step = 1;
   arg = XCALL_param(xcall, 2 ); 
   if (! IS_NULL(arg)) {
-    BINDING_DATA_get_int( arg, (long *) &step );
+    BINDING_DATA_get_int( arg, &step );
   }
 
 
@@ -457,7 +457,7 @@ int compare_cb(const void *a, const void *b )
 {
   BINDING_DATA *pa, *pb, *rval, *tmp;
   size_t frame_start;
-  long nval;
+  POOH_INT nval;
   EVAL_THREAD *cthread;
   VALFUNCTION *func;
 
@@ -488,7 +488,11 @@ int compare_cb(const void *a, const void *b )
   
   EVAL_THREAD_discard_pop_stack( cthread ); 
   
-  return nval;
+  if (nval < 0)
+    return -1;
+  if (nval > 0)
+    return 1;
+  return  0 ;
 }
 
 
@@ -662,7 +666,7 @@ static void x_join( XCALL_DATA *xcall )
   VALARRAY *arr;
   VALSTRING *sdelim,*rval,tval;
   size_t i;
-  char stmp[ 64 ];
+  char stmp[ 120 ];
 
   arg = XCALL_param( xcall, 0 ); 
   sdelim = BINDING_DATA_get_string( arg );
@@ -693,7 +697,11 @@ static void x_join( XCALL_DATA *xcall )
 
     } else {
        if (val->b.value_type & S_VAR_INT) {
+#if POOH_INT_SIZE == 4       
          sprintf( stmp, "%ld", val->b.value.long_value );
+#else
+         sprintf( stmp, "%lld", val->b.value.long_value );
+#endif	 
        } else if (val->b.value_type & S_VAR_DOUBLE) {
          sprintf( stmp, "%f", val->b.value.double_value );
        } else if ( val->b.value_type & S_VAR_HASH) {
@@ -770,7 +778,7 @@ static void x_filtercopy( XCALL_DATA *xcall )
   DATA_REF rfunc,rret;
   VALFUNCTION *func;
   size_t i, j, frame_start, arrsize;
-  long nval;
+  POOH_INT nval;
   arg = XCALL_param(xcall, 0 ); 
   arr = BINDING_DATA_get_arr( arg );
   
@@ -1080,7 +1088,7 @@ static void ton( XCALL_DATA *xcall, int radix )
 {
   BINDING_DATA *arg;
   VALSTRING *sval;
-  long ret;
+  POOH_INT ret;
   
   arg = XCALL_param( xcall, 0 ); 
   sval = BINDING_DATA_get_string( arg );
@@ -1140,7 +1148,7 @@ static void mid_imp( XCALL_DATA *xcall, STR_ACTION act)
 {
   BINDING_DATA *arg;
   VALSTRING *sval,*rval;
-  long n1,n2;
+  POOH_INT n1,n2;
 
   arg = XCALL_param( xcall, 0 ); 
   sval = BINDING_DATA_get_string( arg );
@@ -1159,7 +1167,7 @@ static void mid_imp( XCALL_DATA *xcall, STR_ACTION act)
       if (n1 == 0) {
 	return; // the empty string is returned
       }
-      if (n1 >= (long) sval->length) {
+      if (n1 >= (POOH_INT) sval->length) {
 	n1 = sval->length - 1;
       }
       VALSTRING_substr( rval, sval, 0, n1 );
@@ -1169,7 +1177,7 @@ static void mid_imp( XCALL_DATA *xcall, STR_ACTION act)
       arg = XCALL_param( xcall, 1 );
       if (!IS_NULL(arg)) {
         BINDING_DATA_get_int( arg, &n1 );
-        if (n1 > (long) sval->length) {
+        if (n1 > (POOH_INT) sval->length) {
           return; // the empty string is returned.
         }
       } 
@@ -1196,7 +1204,7 @@ static void mid_imp( XCALL_DATA *xcall, STR_ACTION act)
       if (n1 == 0) {
 	return; // the empty string is returned
       }
-      if (n1 > (long) sval->length) {
+      if (n1 > (POOH_INT) sval->length) {
 	n1 = sval->length;
       }
       VALSTRING_substr( rval, sval, sval->length - n1, n1 );
@@ -1230,7 +1238,11 @@ static void x_print_imp( BINDING_DATA *data )
 
   switch( data->b.value_type ) {
      case S_VAR_INT:
+#if POOH_INT_SIZE == 4       
        fprintf( stdout, "%ld", data->b.value.long_value );
+#else       
+       fprintf( stdout, "%lld", data->b.value.long_value );
+#endif       
        break;
      case S_VAR_DOUBLE:
        fprintf( stdout, "%f", data->b.value.double_value );
@@ -1297,7 +1309,7 @@ static void x_newline( XCALL_DATA *xcall )
 /* -------------- numeric functions ---------------------- */
 static void x_srand( XCALL_DATA *xcall )
 {
-   long nmaxn;
+   POOH_INT nmaxn;
 
    BINDING_DATA_get_int( XCALL_param( xcall, 0 ), &nmaxn );
    srand( (unsigned long) nmaxn );
@@ -1306,7 +1318,7 @@ static void x_srand( XCALL_DATA *xcall )
 static void x_rand( XCALL_DATA *xcall )
 {
   BINDING_DATA *maxn;    
-  long nmaxn;
+  POOH_INT nmaxn;
   double res;
 
   maxn = XCALL_param( xcall, 0 );
@@ -1424,7 +1436,7 @@ static void x_abs( XCALL_DATA *xcall )
 { 
   BINDING_DATA *arg;
   double darg;
-  long larg;
+  POOH_INT larg;
 
   arg = XCALL_param( xcall, 0 );
   arg = BINDING_DATA_follow_ref( arg );
@@ -1481,7 +1493,7 @@ static void make_env( XCALL_DATA *xcall )
   VALHASHPOS pos;
   BINDING_DATA *key, *value;
   DBUF dbuf;
-  char tmp[ 50 ];
+  char tmp[ 120 ];
 
   fflush( stdout );
 
@@ -1515,7 +1527,11 @@ static void make_env( XCALL_DATA *xcall )
        VALSTRING *str = &value->b.value.string_value;
        DBUF_add( &dbuf, str->string, str->length );
     } else if (value->b.value_type & S_VAR_INT) {
+#if POOH_INT_SIZE == 4       
        sprintf( tmp, "%ld", value->b.value.long_value );  
+#else       
+       sprintf( tmp, "%lld", value->b.value.long_value );  
+#endif       
        DBUF_add( &dbuf, tmp, strlen( tmp ) );
     } else if (value->b.value_type & S_VAR_DOUBLE) {
        sprintf( tmp, "%e", value->b.value.double_value );  
@@ -1697,7 +1713,7 @@ static void x_kill( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
   pid_t pid;
-  long tmp,signal,rt;
+  POOH_INT tmp,signal,rt;
 
   arg = XCALL_param( xcall, 0 ); 
   BINDING_DATA_get_int( arg, &tmp );
@@ -1740,22 +1756,24 @@ static void x_trap( XCALL_DATA *xcall )
 static void maketime( XCALL_DATA *xcall, int is_local )
 {
   struct tm tmm;
-  time_t now; 
+  POOH_INT now; 
   BINDING_DATA *rval,tmp, *arg;
   VALARRAY *arr;
 
   arg = XCALL_param( xcall, 0 ); 
 
+  assert( sizeof( POOH_INT ) >= sizeof( time_t ) );
+  
   if (IS_NULL( arg )) {
-    time( &now ); 
+    time( (time_t *) &now ); 
   } else {
     BINDING_DATA_get_int( arg, &now );
   }
   
   if (is_local) {
-    localtime_r( &now, &tmm );
+    localtime_r( (time_t *) &now, &tmm );
   } else {
-    gmtime_r( &now, &tmm );
+    gmtime_r( (time_t *) &now, &tmm );
   }
 
   rval = XCALL_rvalue( xcall ); 
@@ -1812,8 +1830,8 @@ static void x_time( XCALL_DATA *xcall )
 static void x_sleep( XCALL_DATA *xcall )
 {
   BINDING_DATA *units;
-  long val;
-  long val_units = 0;
+  POOH_INT val;
+  POOH_INT val_units = 0;
     
   BINDING_DATA_get_int( XCALL_param( xcall, 0 ), &val );
   
@@ -1837,7 +1855,7 @@ static void x_sleep( XCALL_DATA *xcall )
 
 /* object support */
 
-static void set_int_value( VALHASH *hash, const char *name, long nvalue )
+static void set_int_value( VALHASH *hash, const char *name, POOH_INT nvalue )
 {
   BINDING_DATA key, *value;
 
@@ -1875,7 +1893,7 @@ static void * get_imp( BINDING_DATA *obj )
   VALHASH *hash;
   BINDING_DATA key,*value, *nvalue;
   void *rvalue = 0;
-  unsigned long val = 0;
+  POOH_INT val = 0;
 
   hash = &obj->b.value.hash_value;
  
@@ -1884,7 +1902,7 @@ static void * get_imp( BINDING_DATA *obj )
   if ( ! VALHASH_find( hash, &key, &value ) ) {
      nvalue = BINDING_DATA_follow_ref( value );
      assert( nvalue && nvalue->b.value_type & S_VAR_INT );
-     rvalue = (void *) nvalue->b.value.long_value;
+     rvalue = (void *) (size_t) nvalue->b.value.long_value;
   }
 
   return rvalue;
@@ -1894,7 +1912,7 @@ static void add_imp( BINDING_DATA *obj, void *imp )
 {
   VALHASH *hash;
   BINDING_DATA key,*value;
-  long nkey = 0;
+  POOH_INT nkey = 0;
   hash = &obj->b.value.hash_value;
   
   BINDING_DATA_set_tmp_string( &key, (char *) &nkey, sizeof( nkey )  );
@@ -1902,7 +1920,7 @@ static void add_imp( BINDING_DATA *obj, void *imp )
   value = VALHASH_set_entry( hash, &key );
   BINDING_DATA_init( value, S_VAR_INT );
   value->b.value_flags_val = S_VAR_HEAP_VALUE;
-  value->b.value.long_value = (long) imp;
+  value->b.value.long_value = (POOH_INT) (size_t) imp;
 
 }
 
@@ -1919,10 +1937,10 @@ static void binary_to_array( VALARRAY *arr, unsigned char * buf, size_t buf_len 
 	entry = VALARRAY_get( arr, i );
 
         if (entry && entry->b.value_type & S_VAR_INT) {
-	    entry->b.value.long_value = (long) (unsigned long) buf[ i ];
+	    entry->b.value.long_value = (POOH_INT) (unsigned long) buf[ i ];
         } else {
 	    entry = BINDING_DATA_MEM_new( S_VAR_INT );
-	    entry->b.value.long_value = (long) (unsigned long) buf[ i ];
+	    entry->b.value.long_value = (POOH_INT) (unsigned long) buf[ i ];
 	    VALARRAY_set( arr, i, entry, CP_VALUE );
 	}
     }
@@ -2471,7 +2489,7 @@ static void x_read_lines( XCALL_DATA *xcall )
   VALSTRING *sep, *sreadbuf, *slinestr;
   size_t nreadbuf, nlinestr, idx = 0;  
   VALFUNCTION  *readfun;
-  long rt;
+  POOH_INT rt;
   size_t frame_start;
   char *ssep, *prev, *next, *eof;
   int incomplete_line = 0;

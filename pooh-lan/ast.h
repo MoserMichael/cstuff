@@ -10,6 +10,7 @@
 #include "yystype.h"
 #include "parsectx.h"
 #include <stdlib.h>
+#include <pooh-lan/poohdef.h>
 
 
 /***************************************************/
@@ -326,8 +327,9 @@ M_INLINE int is_collection( AST_VAR_TYPE ty )
 int is_operator_with_number_args( int op );
 int is_operator_with_boolean_result( int op );
 
+
 typedef union {
-  long   long_value;
+  POOH_INT long_value;
 
   double double_value;
 		
