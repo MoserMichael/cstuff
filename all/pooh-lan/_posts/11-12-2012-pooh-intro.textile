@@ -86,18 +86,20 @@ the factorial of 4 is 24
 * the concept of "closures":http://en.wikipedia.org/wiki/Closure_(computer_science)  is supported, one can have objects via closures. Non local variables references have the <b> outer . </b> prefix.
 * the concept of "co-routines / generators":http://en.wikipedia.org/wiki/Coroutine  is supported; for loops invoke a generator thread (similar to python)
 * has "higher order functions":http://en.wikipedia.org/wiki/Higher-order_function  like map/foldl/filter/sort
-* "Multiple return values":http://rosettacode.org/wiki/Return_multiple_values  / "Parallel assignment":http://en.wikipedia.org/wiki/Assignment_(computer_science)#Parallel_assignment is supported.
+"Multiple return values":http://rosettacode.org/wiki/Return_multiple_values  / "Parallel assignment":http://en.wikipedia.org/wiki/Assignment_(computer_science)#Parallel_assignment is supported.
+* Strings are can span multiple lines and can embed expressions; very similar to like HERE documents; the language has one string constant format, not twenty.
 * It is possible to extend the language with shared libraries written in C.
 * It is possible to include other text, so it is compiled together with the program.
 * Compiler has detailed error messages. Invested quite some effort to make them clear.
+
 
 Things left out:
 * No exceptions. Pooh programs either succeed or fail with a very detailed stack trace, its that simple.
 * No namespaces; another complication.
 * No meta programming; no pre-processor madness
 * No eval statement; 
-* Strings are can span multiple lines and can embed expressions; very similar to like HERE documents; the language has one string constant format, not twenty.
 * Currently no regular expression parsing; I would like something with fewer arcane rules, maybe BNF grammars like REBOL; Any ideas are and suggestions are really welcomed.
+* Currently no way to do unicode strings; Really Have To Fix That.
 * No auto-increment operators. One feature less to explain.
 
 All this means pooh is not strongly typed, and also not a dynamic language. Hope you are still interested ;-) Because of the simplified reference model, the language probably does not translate into efficient machine code. Don't expect the current implementation to be fast, it is an AST walker; that's because it is easier to do the trace output with an AST walker; also I want to add a "Read-eval-print loop":http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop ( in a coming release. 
