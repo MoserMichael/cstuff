@@ -476,14 +476,14 @@ M_INLINE int BINDING_DATA_get_int( BINDING_DATA *data, POOH_INT *val )
     return -1;
   }
   if (data->b.value_type & S_VAR_DOUBLE) {
-    *val = (long) data->b.value.double_value;
+    *val = (POOH_INT) data->b.value.double_value;
     return 0;
   }
   *val = data->b.value.long_value;
   return 0;
 }
 
-M_INLINE void BINDING_DATA_set_int( BINDING_DATA *data, long val )
+M_INLINE void BINDING_DATA_set_int( BINDING_DATA *data, POOH_INT val )
 {
   if (IS_REF( data ) ) {
     data = BINDING_DATA_follow_ref( data );

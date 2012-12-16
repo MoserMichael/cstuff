@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <time.h>
+#include <wordexp.h>
 
 //#include <values.h>
 
@@ -362,7 +363,31 @@ BINDING_DATA * dothreadyield0( BINDING_DATA *arg )
   return msg_val;
 }
 
+BINDING_DATA * dothreadyield( BINDING_DATA *arg, int *force_exit )
+{
+  BINDING_DATA *msg_val, *tmp;
+  EVAL_THREAD *thr;
 
+  thr = EVAL_THREAD_yield( arg, &msg_val, force_exit );
+
+  if (!msg_val) {
+    msg_val = get_CONST_NULL();
+  } else {
+    if (IS_STACK_VALUE(msg_val)) {
+      tmp = BINDING_DATA_MEM_new( S_VAR_NULL );
+      BINDING_DATA_copy( tmp, msg_val, CP_REF );
+      
+      if (tmp->b.value_flags_ref & S_VAR_REF_HEAP2STACK) {
+	tmp->b.value.heap2stack_ref.thread = thr;
+      }
+      
+      msg_val = tmp;
+    }
+  }
+
+  EVAL_THREAD_set_current_thread( thr );
+  return msg_val;
+}
 static void x_threadyield0( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg, *msg_val;
@@ -1470,12 +1495,20 @@ static void x_minfloat( XCALL_DATA *xcall )
 
 static void x_maxint( XCALL_DATA *xcall )
 { 
-   BINDING_DATA_set_int( XCALL_rvalue( xcall ), LONG_MAX );
+#if POOH_INT_SIZE == 4       
+   BINDING_DATA_set_int( XCALL_rvalue( xcall ), INT_MAX );
+#else
+   BINDING_DATA_set_int( XCALL_rvalue( xcall ), LLONG_MAX );
+#endif
 }
 
 static void x_minint( XCALL_DATA *xcall )
 { 
-   BINDING_DATA_set_int( XCALL_rvalue( xcall ),  LONG_MIN );
+#if POOH_INT_SIZE == 4       
+   BINDING_DATA_set_int( XCALL_rvalue( xcall ),  INT_MIN );
+#else
+   BINDING_DATA_set_int( XCALL_rvalue( xcall ),  LLONG_MIN );
+#endif
 }
 
 /* -------------- processes and groups ---------------------- */
@@ -1977,9 +2010,9 @@ typedef union tagTRANSPORT {
   int   fd;
 } TRANSPORT;
 
-static size_t do_read_imp(  TRANSPORT_TYPE transport_type, TRANSPORT trans, void *buf, size_t buf_size )
+static POOH_INT do_read_imp(  TRANSPORT_TYPE transport_type, TRANSPORT trans, void *buf, size_t buf_size )
 {
-  size_t nret;
+  POOH_INT nret;
 
   do {
     switch( transport_type ) {
@@ -2022,7 +2055,8 @@ static size_t do_write_imp( TRANSPORT_TYPE transport_type, TRANSPORT trans,  voi
 static void read_imp( TRANSPORT_TYPE transport, TRANSPORT trans, XCALL_DATA *xcall )
 {
     BINDING_DATA *toread, *tmp;
-    size_t nlen, nret = -1;
+    size_t nlen;
+    POOH_INT nret = -1;
  
     toread = XCALL_param( xcall, 0 );  
     toread = BINDING_DATA_follow_ref( toread ); 
@@ -2709,7 +2743,102 @@ static void x_stat( XCALL_DATA *xcall )
  
 }
 
+char * join_strings( VALARRAY *arr )
+{
+  BINDING_DATA *data;
+  VALSTRING *vals;
+  size_t len = 0;
+  char *ret;
+  size_t i;
 
+  for( i = 0; i < VALARRAY_size( arr ); i ++ ) {
+    if ( i > 0)
+      len += 1;
+
+    data = VALARRAY_get( arr , i );
+    data = BINDING_DATA_follow_ref( data );
+
+    if ((data->b.value_type & S_VAR_STRING) == 0) {
+      return 0;	
+    }
+    vals = &data->b.value.string_value;
+    len += vals->length;
+  }
+
+  ret = malloc( len + 1 );
+  if (!ret) {
+    return 0;
+  }
+  strcpy( ret, "" );
+  
+  for( i = 0; i < VALARRAY_size( arr ); i ++ ) {
+    if ( i > 0)
+      strcat( ret, " " );
+
+    data = VALARRAY_get( arr , i );
+    data = BINDING_DATA_follow_ref( data );
+
+    vals = &data->b.value.string_value;
+    VALSTRING_make_null_terminated( vals ); 
+    strcat( ret, vals->string );
+  }
+  return ret;
+}
+
+static void x_listdir( XCALL_DATA *xcall )
+{
+  wordexp_t p;
+  char **w;
+  BINDING_DATA *arg, *ret, *tmps;
+  VALSTRING *str;
+  VALARRAY *aret;
+  size_t i;
+  int force_exit;
+  int top = EVAL_THREAD_is_threadmain( xcall->thread );
+  
+  if (!top) {
+    ret = XCALL_rvalue( xcall ); 
+    BINDING_DATA_init( ret, S_VAR_LIST );
+    aret = &ret->b.value.array_value;
+  }
+  
+  arg = XCALL_param( xcall, 0 ); 
+
+  arg = BINDING_DATA_follow_ref( arg );
+  if (arg->b.value_type & S_VAR_STRING) {
+    str = BINDING_DATA_get_string( arg );
+    VALSTRING_make_null_terminated( str ); 
+    wordexp(str->string, &p, 0);
+  } else {
+    char *vals;
+
+    assert( (arg->b.value_type & S_VAR_LIST) != 0 );
+    vals = join_strings( &arg->b.value.array_value );    
+    if (!vals) {
+     return;
+    }
+    wordexp( vals, &p, 0);
+    free(vals);
+  }
+
+ 
+  w = p.we_wordv;
+  for (i = 0; i < p.we_wordc; i++) {
+    if (top) {
+       tmps = BINDING_DATA_MEM_new( S_VAR_STRING );
+       VALSTRING_set( &tmps->b.value.string_value, w[i], strlen( w[i] ) );
+       dothreadyield( tmps, &force_exit );
+       if (force_exit) {
+         break;
+       }
+    } else {
+       tmps = VALARRAY_set_entry( aret, i );
+       BINDING_DATA_init( tmps, S_VAR_STRING );
+       VALSTRING_set( &tmps->b.value.string_value, w[i], strlen( w[i] ) );
+    }
+  }
+  wordfree( &p );
+}
 
 
 /* -------------- the library ------------------------- */
@@ -2836,6 +2965,8 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC2( "readlines", x_read_lines,S_VAR_LIST, "file", S_VAR_HASH, "separator", S_VAR_STRING | S_VAR_PARAM_OPTIONAL),
   DEFINE_XFUNC1( "stat",      x_stat,      S_VAR_HASH,  "filename",  S_VAR_STRING  ),
   DEFINE_XFUNC1( "filesize",  x_fsize,     S_VAR_INT,   "filename",  S_VAR_STRING  ),
+  DEFINE_XFUNC1( "listdir",   x_listdir,   S_VAR_LIST,  "pattern",   S_VAR_STRING | S_VAR_LIST  ),
+
   DEFINE_XFUNC1( "canread",   x_canread,   S_VAR_INT,   "filename",  S_VAR_STRING  ),
   DEFINE_XFUNC1( "canwrite",  x_canwrite,  S_VAR_INT,   "filename",  S_VAR_STRING  ),
   DEFINE_XFUNC1( "canrun",    x_canrun,    S_VAR_INT,   "filename",  S_VAR_STRING  ),
