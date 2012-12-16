@@ -2797,9 +2797,9 @@ static void x_listdir( XCALL_DATA *xcall )
   int top = EVAL_THREAD_is_threadmain( xcall->thread );
   
   if (!top) {
-    ret = XCALL_rvalue( xcall ); 
-    BINDING_DATA_init( ret, S_VAR_LIST );
+    ret =  BINDING_DATA_MEM_new( S_VAR_LIST ); 
     aret = &ret->b.value.array_value;
+    BINDING_DATA_copy( XCALL_rvalue( xcall ), ret, CP_REF );
   }
   
   arg = XCALL_param( xcall, 0 ); 
