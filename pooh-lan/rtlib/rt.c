@@ -92,7 +92,7 @@ static void x_exit( XCALL_DATA *xcall )
   arg = XCALL_param(xcall, 0 ); 
   if (! IS_NULL(arg)) {
      sdata = BINDING_DATA_get_string( arg );
-     fprintf( stderr, "%.*s", sdata->length, sdata->string );
+     fprintf( stderr, "%.*s", (int) sdata->length, sdata->string );
   }
 
   arg = XCALL_param(xcall, 1 ); 
@@ -1274,7 +1274,7 @@ static void x_print_imp( BINDING_DATA *data )
        break;
      case S_VAR_STRING:
        sdata = &data->b.value.string_value;
-       fprintf( stdout, "%.*s", sdata->length, sdata->string );
+       fprintf( stdout, "%.*s", (int) sdata->length, sdata->string );
        break;
      case S_VAR_LIST:
        arr = &data->b.value.array_value;
@@ -2026,7 +2026,7 @@ static POOH_INT do_read_imp(  TRANSPORT_TYPE transport_type, TRANSPORT trans, vo
 	  nret = -1;
 	break;
     }
-  } while( nret == (size_t) -1 && errno == EINTR);
+  } while( nret == (POOH_INT) -1 && errno == EINTR);
  
   return nret;
 }

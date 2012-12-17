@@ -916,7 +916,7 @@ void VALSTRING_print( FILE *out, VALSTRING *data )
 {
 
   // ??? null terminator
-  fprintf( out, "'%.*s'", data->length, data->string );
+  fprintf( out, "'%.*s'", (int) data->length, data->string );
 }
 
 size_t VALSTRING_hash( VALSTRING *string )
@@ -2096,7 +2096,12 @@ static int check_loop_cmp( HASH_Entry *entry, const void *key, ssize_t key_len)
 static uint32_t check_loop_hash( const void *key, ssize_t klen)
 {
   (void) klen;
+
+#if __WORDSIZE == 32
   return (uint32_t) key;
+#else
+  return (uint32_t) ((uint64_t) key) ^ (uint32_t) ( ((uint64_t) key) >> 32);
+#endif
 }
 
 int EVAL_THREAD_init(EVAL_THREAD *thread, EVAL_THREAD *parent,  EVAL_CONTEXT *context )

@@ -607,7 +607,7 @@ const char *get_type_name_r( AST_VAR_TYPE value_type, char *rval)
     return "any type";
   }
   strcpy(rval,"");
-  for(i=0; TypeMasks[i].mask != (size_t) -1; i++ ) {
+  for(i=0; TypeMasks[i].mask != (unsigned int) -1; i++ ) {
     if (i != 1) 
       res = (value_type & TypeMasks[i].mask) == TypeMasks[i].mask;
     else 

@@ -30,7 +30,7 @@ export OS_TYPE
 endif
 
 pooh_LDFLAGS-Cygwin=-Wl,--export-all-symbols
-pooh_LDFLAGS-GNU-Linux=-rdynamic
+pooh_LDFLAGS-GNU-Linux=-rdynamic -fPIC
 
 pooh_LDFLAGS=$(pooh_LDFLAGS-$(OS_TYPE))
 

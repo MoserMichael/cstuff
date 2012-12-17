@@ -3,7 +3,8 @@
  
 #include <stdint.h>
 
-typedef int64_t POOH_INT; 
+//typedef int64_t POOH_INT; 
+typedef long long int POOH_INT;
 #define POOH_INT_SIZE 8
 
 #endif
