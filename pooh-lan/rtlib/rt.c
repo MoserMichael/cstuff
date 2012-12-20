@@ -1253,6 +1253,57 @@ static void x_right( XCALL_DATA *xcall )
   mid_imp( xcall, STR_RIGHT );
 }
 
+static void x_split( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg, *ret, *tmps;
+  VALSTRING *str,*delim;
+  VALARRAY *aret;
+  char *sstr, *sdelim, *tok;;
+  int force_exit;
+  int i = 0;
+  int top = EVAL_THREAD_is_threadmain( xcall->thread );
+  
+  if (!top) {
+    ret =  BINDING_DATA_MEM_new( S_VAR_LIST ); 
+    aret = &ret->b.value.array_value;
+    BINDING_DATA_copy( XCALL_rvalue( xcall ), ret, CP_REF );
+  }
+  
+  arg = XCALL_param( xcall, 0 ); 
+  str = BINDING_DATA_get_string( arg );
+  VALSTRING_make_null_terminated( str );
+  sstr = strdup( str->string );
+
+  arg = XCALL_param( xcall, 1 ); 
+  delim = BINDING_DATA_get_string( arg );
+  if (delim) {
+    VALSTRING_make_null_terminated( delim );
+    sdelim = delim->string;
+  } else {
+    sdelim = " \t";
+  }
+ 
+  tok = strtok( sstr, sdelim );
+  if (tok) {
+    do {
+      if (top) {
+         tmps = BINDING_DATA_MEM_new( S_VAR_STRING );
+         VALSTRING_set( &tmps->b.value.string_value, tok , strlen( tok ) );
+         dothreadyield( tmps, &force_exit );
+         if (force_exit) {
+           break;
+         }
+      } else {
+         tmps = VALARRAY_set_entry( aret, i ++  );
+         BINDING_DATA_init( tmps, S_VAR_STRING );
+         VALSTRING_set( &tmps->b.value.string_value, tok, strlen( tok ) );
+     }
+    } while( (tok = strtok( 0, sdelim ) ) != 0 );
+  }
+  free( sstr );
+}
+ 
+
 static void x_print_imp( BINDING_DATA *data )
 {
   VALSTRING *sdata;
@@ -2870,8 +2921,10 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC3( "mid",	   x_mid,       S_VAR_STRING, "string", S_VAR_STRING, "offset", S_VAR_INT | S_VAR_PARAM_OPTIONAL, "length", S_VAR_INT | S_VAR_PARAM_OPTIONAL),
   DEFINE_XFUNC2( "left",   x_left,      S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
   DEFINE_XFUNC2( "right",  x_right,     S_VAR_STRING, "string", S_VAR_STRING, "length", S_VAR_INT ),
+  DEFINE_XFUNC2( "split",  x_split,     S_VAR_LIST,   "string", S_VAR_STRING, "separator", S_VAR_STRING | S_VAR_PARAM_OPTIONAL ),
+   
   DEFINE_XFUNC1( "print",  x_print,     0,            "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
-  DEFINE_XFUNC1( "println",  x_println, 0,            "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
+  DEFINE_XFUNC1( "println",x_println,   0,            "msg", S_VAR_STRING | S_VAR_INT | S_VAR_DOUBLE | S_VAR_LIST ),
   DEFINE_XFUNC1( "int",	   x_toint,     S_VAR_INT, "string", S_VAR_STRING ),
   DEFINE_XFUNC1( "hex",	   x_tohex,     S_VAR_INT, "string", S_VAR_STRING ),
   DEFINE_XFUNC1( "oct",	   x_tooct,     S_VAR_INT, "string", S_VAR_STRING ),
