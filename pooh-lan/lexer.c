@@ -265,9 +265,7 @@ YYLTYPE LEXER_get_location( LEXCONTEXT *pc )
     YYLTYPE rt;
     yyscan_t yyscanner = pc->yyscanner;  
     struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
-    rt.file_id = 0;
-    rt.first_line = rt.last_line = yylineno;
-    rt.first_column = rt.last_column = yycolumn;
+    rt = yyloc;
 //  return *yyg->yylloc_r;
     return rt;
 #else
