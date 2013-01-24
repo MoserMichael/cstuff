@@ -9,6 +9,7 @@
 #include "ast.h"
 #include <butils/strtk.h>
 #include <cutils/dbuf.h>
+#include <cutils/array.h>
 #include "ld.h"
 #include "inc.h"
 #include <butils/fn.h>

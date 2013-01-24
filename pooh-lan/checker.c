@@ -1220,9 +1220,8 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
   case S_NULL:
     break;
 
-  //default:
-    //fflush(out);
-    //assert(0);
+  default:
+    assert(0);
   }
   
 }

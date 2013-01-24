@@ -166,7 +166,7 @@ HASH_Entry *HASH_find( HASH *phash, const void *key, ssize_t key_size );
  * @param key_size (in) size of key. If key is a null terminated string then pass VHASH_STRING as value.
  * @return pointer to entry if found; NULL if not found
  */
-HASH_Entry *HASH_find_next( HASH *phash, HASH_Entry *prev, void *key, ssize_t key_size );
+HASH_Entry *HASH_find_next( HASH *phash, HASH_Entry *prev, const void *key, ssize_t key_size );
 
 /**
  * @brief insert new entry in hash table
@@ -174,7 +174,7 @@ HASH_Entry *HASH_find_next( HASH *phash, HASH_Entry *prev, void *key, ssize_t ke
  * @param key  (in) key 
  * @param size (in) size of key. If key is a null terminated string then pass VHASH_STRING as value.
  */
-int HASH_insert( HASH *phash, HASH_Entry *entry, void *key, ssize_t key_size  );
+int HASH_insert( HASH *phash, HASH_Entry *entry, const void *key, ssize_t key_size  );
 
 /**
  * @brief find first hash table entry and unlink it from its bucket. The caller of this function has to free memory held by hash table entry.
@@ -183,7 +183,7 @@ int HASH_insert( HASH *phash, HASH_Entry *entry, void *key, ssize_t key_size  );
  * @param size
  * @returns if entry with given keys exists - pointer to hash table entry.
  */
- HASH_Entry * HASH_unlink( HASH *hash, void *key, ssize_t key_size );
+ HASH_Entry * HASH_unlink( HASH *hash, const void *key, ssize_t key_size );
 
 
 /* internal macro not directly used by user */

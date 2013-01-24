@@ -11,11 +11,18 @@
 
 
 %x	 comment
+%x	 GRAMMAR
+%x	 GRAMMARCHARCL
+
+
 
 INT_CONST	[0-9]+
 ID		[a-zA-Z_][a-zA-Z0-9_]*
 PARAM		"~"[a-zA-Z_][a-zA-Z0-9_]*
 DOUBLE		[0-9]+"."[0-9]+([Ee][+-][0-9]+)?
+RULENAME	[a-zA-Z_-][a-zA-Z0-9_-]* 
+RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
+
 
 
 %%
@@ -145,7 +152,9 @@ DOUBLE		[0-9]+"."[0-9]+([Ee][+-][0-9]+)?
 
 "or"	{ MY_YY_RETURN(TK_OP_LOGICAL_OR); }
 
-":"		{ MY_YY_RETURN(TK_HASH_IT); }  
+":"	{ MY_YY_RETURN(TK_COLON); }  
+
+"="	{ MY_YY_RETURN(TK_ASSIGN);    }
 
 "return" { MY_YY_RETURN(TK_RETURN); }
 
@@ -243,3 +252,149 @@ DOUBLE		[0-9]+"."[0-9]+([Ee][+-][0-9]+)?
 			}
 	}
 
+
+<GRAMMAR>"("	    { MY_YY_RETURN(TK_PARENTHESES_OPEN); }
+
+<GRAMMAR>")"	    { MY_YY_RETURN(TK_PARENTHESES_CLOSE); }
+
+<GRAMMAR>"="	    { MY_YY_RETURN(TK_ASSIGN); }
+
+<GRAMMAR>":"	    { MY_YY_RETURN(TK_COLON); }
+
+<GRAMMAR>"any"	    { MY_YY_RETURN(TK_ANY); }
+ 
+<GRAMMAR>"some"	    { MY_YY_RETURN(TK_SOME); }
+ 
+<GRAMMAR>"none"	    { MY_YY_RETURN(TK_NONE); }
+ 
+<GRAMMAR>"until"    { MY_YY_RETURN(TK_UNTIL); }
+
+<GRAMMAR>"extract"  { MY_YY_RETURN(TK_EXTRACT); }
+
+<GRAMMAR>"optional" { MY_YY_RETURN(TK_OPTIONAL); }
+
+
+
+<GRAMMAR>{RULENAME} {
+			    SET_YY_STYPE( string_value, strdup(yytext) );
+			    MY_YY_RETURN(TK_RULE_NAME); 
+		    }
+
+		  
+<GRAMMAR>{INT_CONST} { 
+			    SET_YY_STYPE(long_value, atol(yytext) );
+			    MY_YY_RETURN(TK_INTEGER_CONSTANT); 
+		    }
+
+<GRAMMAR>"["	    {
+			    STRING_PART *part;
+			    DBUF buff;
+			 
+			    DBUF_init( &buff, 0 );
+			    if (parse_expression_only( lex_context,  &buff) )
+			    {
+				 MY_YY_RETURN(TK_ERROR);
+			    }
+			    DBUF_add_null( &buff );
+			    SET_YY_STYPE( string_value, (const char *) buff.buf );
+			    
+			    MY_YY_RETURN(TK_CODE_SECTION);
+		    }			    
+		    
+<GRAMMAR>{RULEREF}  {
+			    int nlen = strlen( yytext );
+			    char *ruleref = malloc( nlen - 1 );
+			
+			    memcpy( ruleref, yytext + 1, nlen - 2 );
+			    ruleref[ nlen - 1 ] = '\0';
+
+			    SET_YY_STYPE( string_value, ruleref );
+			    MY_YY_RETURN(TK_RULE_REFERENCE); 
+		    }
+
+<GRAMMAR>[\n]	{
+            ++ yylineno;
+	    yycolumn = 0;	
+	  //fprintf(stderr,"NEWLINE %d\n", yylineno );
+	}	 
+
+<GRAMMAR>[ \t]+  { yycolumn += yyleng; }	
+
+<GRAMMAR>"/"	{ BEGIN(GRAMMARCHARCL); MY_YY_RETURN(TK_OP_NUM_DIV); }
+
+
+
+<GRAMMARCHARCL>[0-9a-zA-Z] {
+			    SET_YY_STYPE(long_value, yytext[0] );
+			    MY_YY_RETURN(TK_CHARACTER);
+		    }
+	
+<GRAMMARCHARCL>"-"	{ MY_YY_RETURN(TK_OP_NUM_SUBST); }
+
+<GRAMMARCHARCL>"/"	{ BEGIN(GRAMMAR); MY_YY_RETURN(TK_OP_NUM_DIV); }
+
+
+
+<GRAMMARCHARCL>"\\"	    {
+			    int c;
+			    uint32_t val = 0;
+
+			    c =  MY_YY_INPUT;
+
+			    switch( c ) {
+				case '0':
+				    val = 0;
+				    break;
+				case 'a':
+				    val = '\a';
+				    break;
+				case 'b':
+				    val = '\b';
+				    break;
+				case 'f':
+				    val = '\f';
+				    break;
+				case 'n':
+				    val = '\n';
+				    break;
+				case 'r':
+				    val = '\r';
+				    break;
+				case 't':
+				    val = '\t';
+				    break;
+				case 'v':
+				    val = '\v';
+				    break;
+				default:
+				    if (isxdigit(c)) {
+				      int i;
+
+				      val = c;
+				      for( i = 1; i < 4; i ++ ) {
+					 c = MY_YY_INPUT;
+					 if (!isxdigit(c)) {
+					    break;
+					 }
+					 val |= ((uint32_t) c) << (i * 8);
+				      }
+				      unput(c);
+				    } else {
+				      val = c;
+				    }
+				    break;
+			    }
+			    SET_YY_STYPE(long_value, val );
+			    MY_YY_RETURN(TK_ESCAPE_SEQUENCE); 
+			    
+		    }	    
+
+<GRAMMARCHARCL>[ \t]+  { yycolumn += yyleng; }	
+	
+<GRAMMARCHARCL>[\n]	{
+            ++ yylineno;
+	    yycolumn = 0;	
+	  //fprintf(stderr,"NEWLINE %d\n", yylineno );
+	}	 
+
+	

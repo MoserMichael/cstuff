@@ -5,8 +5,19 @@
 #include <corothread/stacks.h>
 #include "inc.h"
 
-typedef struct {
+typedef enum {
+  EVAL_MODE_SCRIPT,
+  EVAL_MODE_GRAMMAR
 
+} EVAL_MODE;
+
+typedef struct {
+  EVAL_MODE mode;
+
+  // grammar mode
+  char *input_file;
+
+  // script mode.
   char *file_name;
   int   is_trace_on;
   int   is_verbose;

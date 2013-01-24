@@ -125,7 +125,7 @@ HASH_Entry *HASH_find( HASH *phash, const void *key, ssize_t key_size )
 	return HASH_find_in_bucket( abucket, hash, phash->compare_key, key, key_size );
 }
 
-HASH_Entry *HASH_find_next( HASH *phash, HASH_Entry *prev, void *key, ssize_t key_size )
+HASH_Entry *HASH_find_next( HASH *phash, HASH_Entry *prev, const void *key, ssize_t key_size )
 {
 	HASH_Entry *next;
 
@@ -146,7 +146,7 @@ HASH_Entry *HASH_find_next( HASH *phash, HASH_Entry *prev, void *key, ssize_t ke
 	return next;
 }
 
-int HASH_insert( HASH *phash, HASH_Entry *entry, void *key, ssize_t key_size  )
+int HASH_insert( HASH *phash, HASH_Entry *entry, const void *key, ssize_t key_size  )
 {
 	HASH_VALUE hash;
 	int		bucket;
@@ -183,7 +183,7 @@ int HASH_insert( HASH *phash, HASH_Entry *entry, void *key, ssize_t key_size  )
 	return 0;
 }
 
-HASH_Entry * HASH_unlink( HASH *phash, void *key, ssize_t key_size )
+HASH_Entry * HASH_unlink( HASH *phash, const void *key, ssize_t key_size )
 {
 	HASH_VALUE hash;
 	int		bucket;

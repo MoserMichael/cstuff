@@ -4,6 +4,7 @@
 
 #include "lexer.h"
 #include "checker.h"
+#include "grammar.h"
 
 #include <cutils/bhash.h>
 
@@ -22,12 +23,14 @@ typedef struct tagPARSECONTEXT {
 	
   LEXCONTEXT lexctx;
   CHECKERCTX chkctx;
+  GRAMMARCHECKERCTX grctx;
 
   /*  *** error status *** */
   int report_errors;
   int my_yy_is_error;
 
   struct tagAST_BASE * my_ast_root;
+
   struct tagAST_FUNC_DECL *current,*root_ctx;
   
   HASH map_function_defs; // maps function name to function definition. (AST_FUNC_DECL *)
@@ -55,5 +58,7 @@ struct tagAST_BASE * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const ch
 
 int parse_string( LEXCONTEXT *pc , char start_char );
 int parse_string_oneline( LEXCONTEXT *pc );
+int parse_expression_only( LEXCONTEXT *pc, DBUF *parent );
+
 
 #endif

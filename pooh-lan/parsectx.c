@@ -60,6 +60,10 @@ int PARSECONTEXT_init(PARSECONTEXT *ctx, INC_PATH *inc_path)
     return -1;
   }
 
+  if ( GRAMMAR_init( &ctx->grctx, ctx ) ) {
+    return -1;
+  }
+
    if (HASH_init( &ctx->map_function_defs, 10, 0, hash_compare, 0 ) ) {
     return -1;
   }

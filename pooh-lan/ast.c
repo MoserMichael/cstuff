@@ -4,6 +4,14 @@
 #include "lexer.h"
 #include "parser.h"
 
+void AST_FUNC_DECL_set_body( AST_FUNC_DECL *scl, struct tagPARSECONTEXT *ctx, AST_BASE_LIST *body )
+{
+    assert( body->base.type == S_AST_LIST );
+    body->base.parent = &scl->base;
+    scl->func_body = body;
+
+    ctx->current = _OFFSETOF( scl->funcs.parent,  AST_FUNC_DECL, funcs );
+}
 
 AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location, PARSECONTEXT *parse_context)
 {
@@ -393,7 +401,7 @@ int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRE
       scl->value_type = S_VAR_STRING; // always produces a string.
       return 0;
     }
-    if (op ==  TK_HASH_IT) {
+    if (op == TK_COLON) {
       return 0;
     }
 
@@ -688,7 +696,7 @@ const char *get_op_name( int op )
         return "or";
     case TK_OP_LOGICAL_NEGATE:
         return "not";
-    case TK_HASH_IT:
+    case TK_COLON:
         return "cons";
     default:
 	assert(0);
@@ -924,4 +932,83 @@ int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl )
     return 0;
 }
 #endif
+
+
+int AST_PP_CHAR_CLASS_add( AST_PP_CHAR_CLASS *scl, uint32_t from, uint32_t to )
+{
+	AST_PP_RANGE r;
+
+	r.from = from;
+	r.to = to;
+	
+	return ARRAY_push_back( &scl->ranges, &r, sizeof( AST_PP_RANGE ) );
+}
+
+void PARSE_CHAR_CLASS_init( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_class )
+{
+	state->state = CPST_INIT;
+	state->prev_char = (uint32_t) -1;
+	state->char_class = char_class;
+}
+
+
+void PARSE_CHAR_CLASS_add_character( PARSE_CHAR_CLASS *state, uint32_t value  )
+{
+    switch( state->state ) {
+	case CPST_INIT:
+	    state->state = CPST_SINGLE_CHAR;
+	    //break;
+	
+	case CPST_SINGLE_CHAR:
+	    // add single char.
+	    if ( state->prev_char != (uint32_t) -1)  
+		AST_PP_CHAR_CLASS_add( state->char_class, state->prev_char, -1 );
+	    state->prev_char = value;
+	    break;
+
+	case CPST_SEPERATOR:
+	    state->state =  CPST_RANGE_CHARS; 
+	    //break;
+
+	case CPST_RANGE_CHARS:
+	    AST_PP_CHAR_CLASS_add( state->char_class, state->prev_char, value );
+	    state->state = CPST_INIT;
+	    state->prev_char = (uint32_t) -1;
+	    break;
+
+	case CPST_ERROR:
+	    break;
+    }	    
+}
+
+
+
+void PARSE_CHAR_CLASS_add_separator( PARSE_CHAR_CLASS *state )
+{
+    switch( state->state ) {
+	case CPST_SINGLE_CHAR:
+	    state->state = CPST_SEPERATOR;
+	    break;
+	case CPST_ERROR:
+	    break;
+	default:	    
+	    state->state = CPST_ERROR;  
+	    break;
+     }	    
+	        
+}
+
+
+void PARSE_CHAR_CLASS_eof( PARSE_CHAR_CLASS *state )
+{
+
+    if (state->prev_char != (size_t) -1) 
+	AST_PP_CHAR_CLASS_add( state->char_class, state->prev_char, (uint32_t) -1 );
+
+    if (state->state == CPST_SEPERATOR) {
+	state->state = CPST_ERROR;
+    }
+} 
+
+
 

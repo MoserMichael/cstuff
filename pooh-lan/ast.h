@@ -5,17 +5,18 @@
 #include <assert.h>
 #include <cutils/dring.h>
 #include <cutils/array.h>
+#include <cutils/bhash.h>
 #include <cutils/dlist.h>
 #include <cutils/tree.h>
 #include "yystype.h"
-#include "parsectx.h"
+#include "lexer.h"
 #include <stdlib.h>
 #include <pooh-lan/poohdef.h>
 
 
 /***************************************************/
 
-
+struct tagPARSECONTEXT; 
 
 typedef enum 
 {
@@ -48,6 +49,21 @@ typedef enum
   S_BREAK,
 
   S_NULL,
+
+
+/* parsing grammar rules */
+
+  S_PP_RULE,
+
+  S_PP_RULE_REF,
+  
+  S_PP_ALTERNATIVE,
+
+  S_PP_RULE_CONSTANT,
+
+  S_PP_CHAR_CLASS,
+
+
 } 
   S_TYPE;
 
@@ -403,10 +419,10 @@ M_INLINE void AST_EXPRESSION_free( AST_EXPRESSION * expr )
   free(expr );
 }
 
-int AST_EXPRESSION_unary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl );
+int AST_EXPRESSION_unary_op_check_types( struct tagPARSECONTEXT *parse_context, AST_EXPRESSION *scl );
 int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl);
 
-int AST_EXPRESSION_binary_op_check_types( PARSECONTEXT *parse_context, AST_EXPRESSION *scl );
+int AST_EXPRESSION_binary_op_check_types( struct tagPARSECONTEXT *parse_context, AST_EXPRESSION *scl );
 int AST_EXPRESSION_binary_fold_constants( AST_EXPRESSION *scl );
 
 
@@ -466,11 +482,11 @@ M_INLINE AST_EXPRESSION * AST_EXPRESSION_init_unary( int op, AST_EXPRESSION *lhs
   return scl;
 }
 
-AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location, PARSECONTEXT *parse_context);
+AST_EXPRESSION * AST_EXPRESSION_init_ref( const char *name, AST_VECTOR *indexes, YYLTYPE *location, struct tagPARSECONTEXT *parse_context);
 
 
  
-AST_EXPRESSION *AST_compile_multi_part_string( PARSECONTEXT *pc );
+AST_EXPRESSION *AST_compile_multi_part_string( struct tagPARSECONTEXT *pc );
 
 /****************************************************/
 
@@ -862,8 +878,11 @@ typedef struct tagAST_FUNC_DECL {
 } AST_FUNC_DECL;
 
 
+void PARSECONTEXT_add_function_def2(  struct tagPARSECONTEXT *ctx, struct tagAST_FUNC_DECL *decl );
 
-M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func_param, PARSECONTEXT *ctx, YYLTYPE *location  )
+
+
+M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func_param, struct tagPARSECONTEXT *ctx, YYLTYPE *location  )
 {  
   AST_FUNC_DECL *scl;
 
@@ -915,14 +934,6 @@ M_INLINE AST_FUNC_DECL * AST_FUNC_DECL_init(const char *f_name, AST_VECTOR *func
 }
 
 
-M_INLINE void AST_FUNC_DECL_set_body( AST_FUNC_DECL *scl, PARSECONTEXT *ctx, AST_BASE_LIST *body )
-{
-    assert( body->base.type == S_AST_LIST );
-    body->base.parent = &scl->base;
-    scl->func_body = body;
-
-    ctx->current = _OFFSETOF( scl->funcs.parent,  AST_FUNC_DECL, funcs );
-}
 /***************************************************/
 typedef struct tagAST_FUNC_CALL_PARAM {
   
@@ -1047,6 +1058,258 @@ M_INLINE AST_VAR_TYPE AST_EXPRESSION_type( AST_EXPRESSION *expr )
   return expr->value_type & S_VAR_ALL_TYPES;
 }
 
+
+/*
+ * **************************************************
+ * Grammar AST.
+ * **************************************************
+ */ 
+
+typedef struct tagAST_PP_BASE {
+        AST_BASE base; 
+
+	int from;
+	int to;
+} AST_PP_BASE;
+
+M_INLINE void AST_PP_BASE_init( AST_PP_BASE *scl, S_TYPE type , YYLTYPE *location )
+{
+    AST_BASE_init( &scl->base, type, location );
+    scl->from = scl->to = 1;
+}
+
+typedef struct tagAST_PP_ALTERNATIVE {
+        AST_PP_BASE base;
+
+	DRING alternatives;
+	
+
+}	AST_PP_ALTERNATIVE;
+
+M_INLINE void AST_PP_ALTERNATIVE_init_mem( AST_PP_ALTERNATIVE *scl, YYLTYPE *location ) 
+{
+	AST_PP_BASE_init( &scl->base, S_PP_ALTERNATIVE, location );
+	DRING_init( &scl->alternatives ); 
+}
+
+
+
+M_INLINE AST_PP_ALTERNATIVE *AST_PP_ALTERNATIVE_init( YYLTYPE *location ) 
+{
+	AST_PP_ALTERNATIVE  *scl = (AST_PP_ALTERNATIVE *)  malloc( sizeof( AST_PP_ALTERNATIVE ) );
+	if (!scl) 
+	    return 0;
+	AST_PP_ALTERNATIVE_init_mem( scl, location );
+	return scl;	
+}
+
+M_INLINE void AST_PP_ALTERNATIVE_add( AST_PP_ALTERNATIVE *alt, AST_BASE_LIST *sequence ) 
+{
+    DRING_push_back( &alt->alternatives, &sequence->base.entry);
+}
+
+
+
+/***************************************************/
+
+typedef enum 
+{
+	S_PP_RULE_GRAMMAR,
+	S_PP_RULE_TOKEN,
+}
+	S_PP_RULE_TYPE;
+
+#define RULE_FLAGS_VISITED 1
+
+typedef struct tagAST_PP_RULE {
+	AST_PP_BASE base;
+
+	const char *rule_name;
+	S_PP_RULE_TYPE rtype;
+
+	AST_PP_ALTERNATIVE rhs;
+	
+	const char *rule_script;
+	int flags;
+}	
+	AST_PP_RULE;
+
+M_INLINE AST_PP_RULE *AST_PP_RULE_init( const char *rule_name, S_PP_RULE_TYPE ty, YYLTYPE *location )
+{
+	AST_PP_RULE *scl;
+
+	scl = (AST_PP_RULE *)  malloc( sizeof( AST_PP_RULE ) );
+	if (!scl) 
+	    return 0;
+	AST_PP_BASE_init( &scl->base, S_PP_RULE, location );
+	
+	scl->rule_name = strdup( rule_name );
+	scl->rtype = ty;
+	AST_PP_ALTERNATIVE_init_mem( &scl->rhs, location );
+	scl->rule_script = 0;
+	scl->flags = 0;
+	return scl;
+}
+
+/***************************************************/
+
+typedef struct tagAST_PP_RULE_REF {
+	AST_PP_BASE base;
+
+	const char *rule_name;
+	AST_PP_RULE *rule_ref_resolved;
+
+}	AST_PP_RULE_REF;
+
+
+M_INLINE AST_PP_RULE_REF *AST_PP_RULE_REF_init( const char *rule_name, YYLTYPE *location )
+{
+	AST_PP_RULE_REF *scl;
+
+	scl = (AST_PP_RULE_REF *)  malloc( sizeof( AST_PP_RULE_REF ) );
+	if (!scl) 
+	    return 0;
+
+	AST_PP_BASE_init( &scl->base, S_PP_RULE_REF, location );
+
+	scl->rule_name = strdup( rule_name );
+	scl->rule_ref_resolved = 0;
+
+	return scl;
+}
+
+/***************************************************/
+
+typedef struct tagAST_PP_CONSTANT {
+	AST_PP_BASE base;
+	char *const_string;
+}	
+	AST_PP_CONSTANT;
+
+M_INLINE AST_PP_CONSTANT * AST_PP_CONSTANT_init( const char *const_string, YYLTYPE *location  )
+{
+	AST_PP_CONSTANT *scl = (AST_PP_CONSTANT *) malloc( sizeof( AST_PP_CONSTANT ) );
+	if (!scl)
+	    return 0;
+
+	AST_PP_BASE_init( &scl->base, S_PP_RULE_CONSTANT, location );
+	scl->const_string = strdup( const_string );
+
+	return scl;
+}
+
+/***************************************************/
+
+typedef struct tagAST_PP_RANGE {
+	uint32_t from;
+	uint32_t to;
+} AST_PP_RANGE;
+
+typedef struct tagAST_PP_CHAR_CLASS {
+	AST_PP_BASE base;
+	ARRAY  ranges;
+} AST_PP_CHAR_CLASS;
+
+M_INLINE AST_PP_CHAR_CLASS * AST_PP_CHAR_CLASS_init( YYLTYPE *location )   
+{
+	AST_PP_CHAR_CLASS *scl;
+
+	scl = (AST_PP_CHAR_CLASS  *) malloc( sizeof( AST_PP_CHAR_CLASS ) );
+	if (!scl)
+	    return 0;
+
+	AST_PP_BASE_init( &scl->base, S_PP_CHAR_CLASS, location );
+
+	ARRAY_init( &scl->ranges, sizeof( AST_PP_RANGE ), 0 );
+
+	return scl;
+}
+
+/***************************************************/
+
+
+typedef enum 
+{
+	CPST_INIT,
+	CPST_SINGLE_CHAR,
+	CPST_SEPERATOR,
+	CPST_RANGE_CHARS,
+	CPST_ERROR
+}
+	CPST_STATE;
+
+typedef struct tagPARSE_CHAR_CLASS {
+	CPST_STATE state;
+	uint32_t prev_char;
+	AST_PP_CHAR_CLASS  *char_class; 
+
+}	PARSE_CHAR_CLASS;	
+
+
+void PARSE_CHAR_CLASS_init( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_class );
+void PARSE_CHAR_CLASS_add_character( PARSE_CHAR_CLASS *state, uint32_t value  );
+void PARSE_CHAR_CLASS_add_separator( PARSE_CHAR_CLASS *state );
+void PARSE_CHAR_CLASS_eof( PARSE_CHAR_CLASS *ch );
+
+/***************************************************/
+
+
+typedef struct tagPARSE_ALT {
+  AST_PP_ALTERNATIVE *alt; 
+  AST_BASE_LIST *current_sequence;
+  AST_PP_BASE *current_base;
+} PARSE_ALT;
+
+
+M_INLINE PARSE_ALT * PARSE_ALT_init_mem( PARSE_ALT *state, AST_PP_ALTERNATIVE *alt )
+{
+  state->alt = alt;
+  state->current_base = 0; 
+  state->current_sequence = 0;
+   
+  return state;
+}
+
+M_INLINE PARSE_ALT * PARSE_ALT_init( AST_PP_ALTERNATIVE *alt  )
+{
+  PARSE_ALT *ret = (PARSE_ALT * ) malloc( sizeof( PARSE_ALT ) );
+  
+  if ( !ret ) 
+    return 0;
+  PARSE_ALT_init_mem( ret, alt );
+
+
+  
+  return ret;
+}
+
+M_INLINE void PARSE_ALT_add_to_current_alt( PARSE_ALT * state, AST_PP_BASE *elm )
+{
+  if (!state->current_sequence)  {
+    YYLTYPE ltype;
+ 
+    memset( &ltype, 0 , sizeof(YYLTYPE) );
+    state->current_sequence = AST_BASE_LIST_init( &ltype );
+  }
+  state->current_base = elm;
+  AST_BASE_LIST_add( state->current_sequence, &elm->base );
+}
+
+M_INLINE void PARSE_ALT_eof_current_alt( PARSE_ALT *state )
+{
+
+  if (!state->current_sequence)  {
+    YYLTYPE ltype;
+ 
+    memset( &ltype, 0 , sizeof(YYLTYPE) );
+    state->current_sequence = AST_BASE_LIST_init( &ltype );
+  }
+   
+  AST_PP_ALTERNATIVE_add( state->alt, state->current_sequence );	 
+  state->current_sequence = 0;
+}
+
+#include "parsectx.h"
 
 #endif
 

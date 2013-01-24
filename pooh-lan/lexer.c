@@ -335,14 +335,15 @@ int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value,
     ARRAY_push_back( &pc->nested_buffers, & state, sizeof(MY_YY_BUFFER_STATE) );
 #endif
  
-    LEXER_set_next_token( pc, init_token_value );
+    if (init_token_value != -1) 
+      LEXER_set_next_token( pc, init_token_value );
 
     BEGIN(INITIAL);
 
     return 0;
 }
 
-int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )
+int LEXER_scan_file( LEXCONTEXT *pc, int init_token_value, const char *file_name )
 {
 	MY_YY_BUFFER_STATE state;
 	char *scopy;
@@ -391,6 +392,9 @@ int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )
 	scopy = copy_file_name(file_name);
 	LEXER_set_file_name( pc, scopy );
 
+	if (init_token_value != -1) 
+          LEXER_set_next_token( pc, init_token_value );
+
 
 	/* first time open - just use this file descriptor */
 	if (pc->open_count == 1) {
@@ -399,6 +403,11 @@ int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )
 		yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE, yyscanner ), yyscanner );
 #endif	
     
+		if (init_token_value == TK_START_PGRAMMAR)
+		{
+		    fprintf(stderr,"isGrammar\n");
+		    BEGIN GRAMMAR;
+		}		    
 	
 		return 0;
 	}
@@ -425,9 +434,6 @@ int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )
 #else	
 	yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
 #endif
-
-
-
 
 	BEGIN(INITIAL);
 
@@ -679,6 +685,52 @@ int parse_string_data( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char
 
   return parts;
 }
+
+int parse_expression_only( LEXCONTEXT *pc, DBUF *parent )
+{
+  STRING_PART *part; 
+  int c;
+  YYLTYPE start;
+  char *eof;
+  int countb = 1;
+#ifdef IS_REENTRANT
+  yyscan_t yyscanner = pc->yyscanner;
+  struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
+#endif	
+ 
+  start.file_id = yyloc.file_id;
+  start.first_line = start.last_line = yylineno;
+  start.first_column = start.last_column = yycolumn;
+
+
+	
+  while ( (c =  MY_YY_input( pc->yyscanner )) != -1) {
+
+    if (parent) {
+      DBUF_add( parent, &c, sizeof(char) );
+    }
+    
+    DBUF_add(  &part->part_data, &c, sizeof(char) );
+    
+    if (c == '[') {
+      countb ++;
+      continue;
+    }
+    if (c == ']') {
+      if (countb == 0) {
+	return 0;
+      }
+      continue;
+    }
+
+    if (c == '\'' || c == '"') {
+	if (do_parse_string( pc, parent, c ) ) 
+	  return -1;
+    }
+  }
+  return  -1;
+}
+
 
 STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end_of_expression )
 {

@@ -104,6 +104,20 @@ void AST_print_expr( FILE *out, AST_EXPRESSION *expr)
 
 }
 
+
+void print_pp_base( FILE *out, AST_PP_BASE *scl)
+{
+    if (scl->from != scl->to && scl->from != 1 ) {
+        
+	fprintf( out, " %d", scl->from );
+	if (scl->to != -1) {
+	    fprintf( out, "-%d", scl->to );
+	} else {
+	    fprintf( out, "-infinity-and-beyond" );
+	}
+    }
+}
+
 void AST_print( FILE *out, AST_BASE *base )
 {
   size_t i;
@@ -310,6 +324,70 @@ void AST_print( FILE *out, AST_BASE *base )
     break;
   
   case S_NULL:
+    break;
+
+  case S_PP_RULE: {
+    AST_PP_RULE *scl = (AST_PP_RULE *) base;  
+    fprintf( out,"rule rule-name=%s , ", scl->rule_name );
+    AST_print( out, (AST_BASE *) &scl->rhs );
+    print_pp_base( out, &scl->base );
+    }
+    break;
+
+  case S_PP_ALTERNATIVE: {
+    AST_PP_ALTERNATIVE *scl = (AST_PP_ALTERNATIVE *) base; 
+    DRING *cur;
+    AST_BASE *ccur;
+    i = 0;
+
+    fprintf( out, "alternative ( " );
+    DRING_FOREACH( cur, &scl->alternatives ) {
+	
+	if (i) {
+	    fprintf( out, " | " );
+	}
+
+	ccur = _OFFSETOF( cur, AST_BASE, entry ); 
+	AST_print( out, ccur );
+	++i;
+    }
+    fprintf( out, " )" );
+    print_pp_base( out, &scl->base );
+    }
+    break;
+
+  case S_PP_RULE_REF: {
+    AST_PP_RULE_REF *scl = (AST_PP_RULE_REF *) base;
+    fprintf( out, "rule-ref <%s>", scl->rule_name );
+    print_pp_base(  out, &scl->base );
+    }
+    break;
+  
+  case S_PP_RULE_CONSTANT: {
+    AST_PP_CONSTANT *scl = (AST_PP_CONSTANT *) base;
+
+    fprintf( out, "'%s'", scl->const_string );
+    print_pp_base(  out, &scl->base );
+  }
+    break;
+
+  case S_PP_CHAR_CLASS: {
+    AST_PP_CHAR_CLASS *scl = (AST_PP_CHAR_CLASS *) base;  
+    AST_PP_RANGE *cur;
+
+    fprintf( out, "/" );
+    for( i = 0; i < ARRAY_size( &scl->ranges ); i++ ) {
+	cur = (AST_PP_RANGE *) ARRAY_at( &scl->ranges, i ); 
+	if (cur->to == (uint32_t) -1 ) {
+	    fprintf(out, "%c", (char) cur->from );
+	} else {
+	    fprintf(out, "%c-%c", (char) cur->from, (char) cur->to );
+	}
+    }
+    fprintf( out, "/" );
+
+    print_pp_base(  out, &scl->base );
+  }
     break;
 
   default:

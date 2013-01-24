@@ -1,6 +1,7 @@
 #include "lexer.h"
 #include "parser.h"
 #include "ast.h"
+#include "pars.h"
 #include "printast.h"
 #include <eval.h>
 #include <stdio.h>
@@ -27,7 +28,6 @@ int loadRTLIB( PARSECONTEXT *ctx )
   }
   return 0;
 }
-
 int run(EVAL_OPTIONS *opts)
 {
   PARSECONTEXT *ctx;
@@ -37,7 +37,10 @@ int run(EVAL_OPTIONS *opts)
 
   loadRTLIB( ctx );
 
-  if (LEXER_scan_file( &ctx->lexctx, opts->file_name)) {
+  if (LEXER_scan_file( 
+	&ctx->lexctx, 
+	opts->mode == EVAL_MODE_GRAMMAR ? TK_START_PGRAMMAR : TK_START_STATEMENT, 
+	opts->file_name)) {
     fprintf(stderr,"Can't open file %s\n", opts->file_name);
     goto err;
   }
@@ -56,22 +59,25 @@ int run(EVAL_OPTIONS *opts)
     dump_ast( opts->file_name, ctx->my_ast_root, 1 );
   }
 
-  if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
-    fprintf(stderr,"Type checking failed\n");
-    goto err;
-  }
+
+  if (opts->mode == EVAL_MODE_SCRIPT) {
+ 
+    if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
+	fprintf(stderr,"Type checking failed\n");
+	goto err;
+    }
   
-  // dump ast after checker
-  if (opts->is_verbose) {
-    dump_ast( opts->file_name, ctx->my_ast_root, 2 );
-  }
+    // dump ast after checker
+    if (opts->is_verbose) {
+	dump_ast( opts->file_name, ctx->my_ast_root, 2 );
+    }
 
-#if 1
-  if (eval( ctx, opts )) {
-    goto err;
+    if (eval( ctx, opts )) {
+	goto err;
+    }
+  } else {
+    GRAMMAR_checker( &ctx->grctx, ctx->my_ast_root );
   }
-#endif
-
 ok:
   PARSER_free(ctx);
   return 0;
@@ -137,6 +143,8 @@ void print_msg(const char *msg)
 		  " -x		    Trace execution of program\n"
 		  " -v		    print syntax tree into file. the file has the same name\n"
 		  "		    as script with extension .ast.1 .ast.2\n"
+		  " -g <grammar> <input file>\n"
+		  "		    input is the grammar file, which is used to parse the input file.\n"
 		  " -h		    show this help message and exit\n" );
   exit(1);	      
 }
@@ -145,6 +153,7 @@ void print_msg(const char *msg)
 void init_options( EVAL_OPTIONS *opts )
 {
   memset( opts, 0, sizeof( EVAL_OPTIONS ) );
+  opts->mode = EVAL_MODE_SCRIPT;
 }
 
 void parse_cmd_line( int argc, char *argv[], EVAL_OPTIONS *opts )
@@ -185,6 +194,17 @@ void parse_cmd_line( int argc, char *argv[], EVAL_OPTIONS *opts )
 	    INC_PATH_add( opts->inc_path, argv[ i + 1 ], 1 );
 
 	i += 1; // skip argument
+     } else if (strcmp( argv[ i ], "-g" ) == 0) {
+        if ((i + 2 ) < argc) {
+	  opts->file_name = argv[ i + 1 ];
+	  opts->input_file = argv[ i + 2 ];
+	} else if ((i + 1) < argc) {
+	  opts->file_name = argv[ i + 1 ];
+	  opts->input_file = 0; // from stdin
+	} else {
+	  print_msg("Missing argument of -g option");	    
+	}
+	opts->mode = EVAL_MODE_GRAMMAR;	
      } else {
         opts->file_name = argv[ i ];
 

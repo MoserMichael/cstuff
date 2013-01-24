@@ -19,7 +19,7 @@ TARGETS=pooh
 
 pooh_TYPE=exe
 
-pooh_SRC=inc.c lexer.c parser.c ast.c parsectx.c printast.c checker.c ld.c main.c eval.c 
+pooh_SRC=parser.c inc.c lexer.c ast.c parsectx.c printast.c checker.c ld.c main.c eval.c grammar.c
 
 pooh_DEPENDENCIES=pars.txt lex.txt 
 
@@ -42,7 +42,7 @@ parser.c_CFLAGS=-Wno-error
 
 pooh_LIBS=$(TLIB) pthread cutils butils m rtlib nutils dl
 
-pooh_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/pooh test-error test .
+#pooh_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/pooh test-error test .
 
 
 # ---------------------------------------
@@ -57,5 +57,5 @@ lex.txt : lex.l
 
 
 pars.txt : pars.y
-		bison --warnings=error --report=all --report-file=pars.report --defines=pars.h -o $@ $< 	
+		bison --warnings=error --report=all --report-file=pars.report --defines=pars.h -o $@ $< 
 		../scripts/parse-bison-report.pl pars.report pars.txt 

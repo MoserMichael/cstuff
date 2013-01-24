@@ -23,8 +23,8 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 
 #define LOC_COMPACT( yyloc ) { yyloc.first_line = yyloc.last_line; yyloc.first_column = yyloc.last_column; }
 
+%}
 
-%} 
 
 /*
 %left  TK_WHILE TK_UNTIL TK_FOR TK_IF TK_DO TK_ASSIGN TK_ASSIGN_REF TK_ELSE TK_ELSIF TK_END TK_RETURN TK_BREAK TK_CONTINUE TK_INTEGER_CONSTANT TK_STRING_CONSTANT TK_MULTI_PART_STRING_CONSTANT TK_DOUBLE_CONSTANT TK_GOTO TK_SUB TK_INCLUDE
@@ -61,7 +61,7 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 
 %token TK_OP_STR_EQ TK_OP_STR_NE TK_OP_STR_LT TK_OP_STR_GT TK_OP_STR_LE TK_OP_STR_GE
 
-%token TK_OP_STR_CAT TK_HASH_IT
+%token TK_OP_STR_CAT TK_COLON
 
 %token TK_OP_NUM_ADD TK_OP_NUM_SUBST TK_OP_NUM_DIV TK_OP_NUM_MULT TK_OP_NUM_MOD TK_OP_NUM_POW 
 
@@ -71,18 +71,24 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 
 %token TK_OP_STR_REGEXMATCH 
 
-%token TK_COLON TK_SEMICOLON TK_COMMA TK_PARENTHESES_OPEN TK_PARENTHESES_CLOSE TK_BRACE_OPEN TK_BRACE_CLOSE  
+%token TK_SEMICOLON TK_COMMA TK_PARENTHESES_OPEN TK_PARENTHESES_CLOSE TK_BRACE_OPEN TK_BRACE_CLOSE  
 
 %token TK_BYREF TK_OPTIONAL TK_THREE_DOTS 
 
 %left TK_BRACKET_OPEN  TK_BRACKET_CLOSE TK_UNDERSCORE  
  
 
-%token TK_START_STATEMENT TK_START_EXPRESSION TK_PARAMETER_LABEL 
+%token TK_START_STATEMENT TK_START_EXPRESSION TK_START_PGRAMMAR TK_PARAMETER_LABEL 
 
 %token TK_END_OF_FILE 0 "end of file"
 %right TK_END_OF_FILE
 
+/*
+ * ------------------------------------------------------
+ */
+%token TK_RULE_NAME TK_RULE_REFERENCE TK_CHARACTER TK_ESCAPE_SEQUENCE
+%token TK_ANY TK_SOME TK_NONE TK_UNTIL TK_EXTRACT TK_CODE_SECTION 
+ 
 /*
 %token TK_ERROR
 
@@ -123,14 +129,19 @@ prog :
 	       parse_context->my_ast_root = &scl->base;
 	    }
 	    |
+	TK_START_STATEMENT 
+	    {
+		parse_context->my_ast_root = 0;
+	    }
+	    |
 	TK_START_EXPRESSION expr 
 	    {
 		parse_context->my_ast_root = $<ast>2;
 	    }
 	    |
-	TK_START_STATEMENT 
+	TK_START_PGRAMMAR parsingGrammar
 	    {
-		parse_context->my_ast_root = 0;
+		parse_context->my_ast_root = $<ast>2;
 	    }
 	 ;
 
@@ -588,7 +599,7 @@ includeStmt : TK_INCLUDE TK_STRING_CONSTANT
 		cur = (STRING_PART **) ARRAY_at( &parse_context->lexctx.string_parts, 0 );
 		sval = (const char *) (*cur)->part_data.buf;
 
-		int ret = LEXER_scan_file( &parse_context->lexctx, sval );
+		int ret = LEXER_scan_file( &parse_context->lexctx, -1, sval );
 		if (ret < 0) {
 		  char *spath = INC_PATH_to_text( parse_context->lexctx.inc_path );
 		  do_yyerror( &(@2), parse_context,  "Can't open file %s, tried to open the file in current directory %s%s Try to specify the search path with -I <directory name> or -i <directory name> command line options.",
@@ -1325,11 +1336,11 @@ hashClauseList : hashClauseList TK_COMMA hashClause
 
 /** hash data structure **/
 
-hashClause : expr TK_HASH_IT expr
+hashClause : expr TK_COLON expr
 	{
 	  AST_EXPRESSION *scl;
 
-	  scl = AST_EXPRESSION_init_binary( TK_HASH_IT, (AST_EXPRESSION *) $<ast>1 , (AST_EXPRESSION *) $<ast>3 );
+	  scl = AST_EXPRESSION_init_binary( TK_COLON, (AST_EXPRESSION *) $<ast>1 , (AST_EXPRESSION *) $<ast>3 );
 
 	  $<ast>$ = &scl->base;
 	}	
@@ -1340,9 +1351,236 @@ hashClause : expr TK_HASH_IT expr
         {
        	     do_yyerror( &@2, parse_context,  "Error in table constructor. must have : between key and value " );
              $<ast>$ = $<ast>1;	
-        }
+	}
 
 	   ;
+
+/*
+ * --------------------------------------------------------------------------------------------------------------
+ * Parsing grammar definition.
+ * --------------------------------------------------------------------------------------------------------------
+ */
+
+parsingGrammar : ruleList
+	;
+
+ruleList : ruleList rule
+	    {
+		AST_BASE_LIST *slist;
+
+		slist = (AST_BASE_LIST *) $<ast>1;
+		AST_BASE_LIST_add( slist, $<ast>2 );
+
+	        $<ast>$ = &slist->base;
+		AST_BASE_set_location( $<ast>$, YYLOCPTR );  
+	    }
+	 | rule
+	    {
+		AST_BASE_LIST *slist;
+
+		slist = AST_BASE_LIST_init( YYLOCPTR );
+                AST_BASE_LIST_add( slist, $<ast>1 );
+	        $<ast>$ = &slist->base;
+	    }
+	 ;
+
+rule   : TK_RULE_NAME ruleAssignment 	
+	{
+	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+		
+	    grctx->current_rule = AST_PP_RULE_init( $<string_value>1, (S_PP_RULE_TYPE) $<long_value>2, YYLOCPTR );
+	  
+	    GRAMMAR_add_rule( grctx, $<string_value>1 , grctx->current_rule );
+
+	    grctx->parse_alt = PARSE_ALT_init_mem( &grctx->parse_rule_alt, &grctx->current_rule->rhs );
+	} 
+	    ruleElements 
+	{	    
+	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	    
+	    PARSE_ALT_eof_current_alt( grctx->parse_alt );
+	}	    
+	    scriptOpt 
+	{
+	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+
+	    grctx->current_rule->rule_script = $<string_value>2; 
+            $<ast>$ = &grctx->current_rule->base.base;
+
+	}
+       ;
+
+scriptOpt : TK_CODE_SECTION
+	    |
+	    ;	
+       
+ruleAssignment : TK_ASSIGN	
+	{
+	    $<long_value>$ = S_PP_RULE_GRAMMAR; 
+	}	    
+	       | TK_COLON
+	{
+	    $<long_value>$ = S_PP_RULE_TOKEN; 
+	}	    
+	       ;
+
+ruleElements : ruleElements ruleElementOpt
+	      | ruleElementOpt
+              | '|'
+	{	    
+	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	    PARSE_ALT_eof_current_alt( grctx->parse_alt );
+	}	            
+	;
+
+
+ruleElementOpt : ruleElement optMetaInstruction
+	;
+	    
+ruleElement : TK_PARENTHESES_OPEN 	
+	{
+	    AST_PP_ALTERNATIVE *scl;
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	
+	    ARRAY_push_back( &parse_context->grctx.current_alt_stack, &parse_context->grctx.parse_alt, sizeof( void * ) );
+	    scl = AST_PP_ALTERNATIVE_init( YYLOCPTR );
+	    grctx->parse_alt =  PARSE_ALT_init( scl );  
+	}
+	   ruleElements 
+	   TK_PARENTHESES_CLOSE 
+	{
+	    AST_PP_ALTERNATIVE *scl;
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+
+	    PARSE_ALT_eof_current_alt( grctx->parse_alt );
+	    scl = grctx->parse_alt->alt;
+	    ARRAY_pop_back( &grctx->current_alt_stack, &grctx->parse_alt, sizeof( void * ) );
+
+	    PARSE_ALT_add_to_current_alt( grctx->parse_alt, &scl->base );
+
+	}	    
+	    | TK_STRING_CONSTANT
+	{
+	    AST_PP_CONSTANT *scl = AST_PP_CONSTANT_init( $<string_value>1, YYLOCPTR );
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+
+	    PARSE_ALT_add_to_current_alt( grctx->parse_alt, &scl->base );
+
+	}
+	    | TK_RULE_REFERENCE
+	{
+	    AST_PP_RULE_REF *scl;
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	   
+	    scl = AST_PP_RULE_REF_init(  $<string_value>1, YYLOCPTR );
+
+	    PARSE_ALT_add_to_current_alt( grctx->parse_alt, &scl->base );
+	}
+	    | rangeDef
+
+    ;
+
+optMetaInstruction : metaInstruction
+		   |
+	{
+            // which one is the latest element ?
+	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+ 	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+    
+	    alt->from = 1;
+	    alt->to = 1;
+	}
+		   ;
+
+metaInstruction : TK_INTEGER_CONSTANT
+	{
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+	    
+	    alt->from = $<long_value>1;
+	    alt->to = $<long_value>1;
+	}
+		| TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT 
+	{
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+ 	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+	    
+	    alt->from = $<long_value>1;
+	    alt->to = $<long_value>2;
+	}
+		| TK_ANY
+	{
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+  	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+	    
+	    alt->from = 0;
+	    alt->to = -1;
+	}
+		| TK_SOME
+	{
+ 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+  	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+	   
+	    alt->from = 1;
+	    alt->to = -1;
+	}
+		| TK_NONE
+	{
+            GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+	    
+	    alt->from = 0;
+	    alt->to = 0;
+	}
+		| TK_UNTIL
+		| TK_OPTIONAL
+	{
+            GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+  	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+	    
+	    alt->from = 0;
+	    alt->to = 1;
+	}
+		
+		| TK_EXTRACT TK_INTEGER_CONSTANT
+		;
+
+
+
+rangeDef    : TK_OP_NUM_DIV 	
+	{
+	    AST_PP_CHAR_CLASS *scl = AST_PP_CHAR_CLASS_init( YYLOCPTR );
+	    PARSE_CHAR_CLASS_init( &parse_context->grctx.char_class_state, scl );
+	}
+	    rangeElms TK_OP_NUM_DIV
+	{
+	   PARSE_CHAR_CLASS_eof( &parse_context->grctx.char_class_state ); 
+  	   PARSE_ALT_add_to_current_alt( parse_context->grctx.parse_alt, &parse_context->grctx.char_class_state.char_class->base ); 
+	}
+	    ;
+
+
+rangeElms   : rangeElms rangeSym
+	    | rangeSym
+	    ;
+
+rangeSym    : TK_CHARACTER 
+	{
+           GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	   PARSE_CHAR_CLASS_add_character( &grctx->char_class_state , $<long_value>1 );
+	}	    
+	    | TK_OP_NUM_SUBST
+	{
+           GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	   PARSE_CHAR_CLASS_add_separator( &grctx->char_class_state );
+	}	    
+	    | TK_ESCAPE_SEQUENCE
+	{
+           GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	   PARSE_CHAR_CLASS_add_character( &grctx->char_class_state , $<long_value>1 );
+	}		    
+	;
+
 
 %%
 	
