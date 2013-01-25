@@ -4,6 +4,10 @@
 #include <stdarg.h>
 #include <nutils/ioutils.h>
 
+#if defined(__CYGWIN__) || defined(_WIN32)
+#include <bits/wordsize.h>
+#endif
+
 static EVAL_CONTEXT *g_context; // the current interpreter context.
 static EVAL_THREAD  *g_cur_thread;
 static BINDING_DATA finalize_key_name;
