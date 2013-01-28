@@ -335,7 +335,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
            return ;
         }
 
-        if (ctx->chkctx.is_function_name) {
+        if (ctx->chkctx.is_function_name && scope_type != REF_SCOPE_THIS) {
           do_yyerror( &expr->base.location, ctx, "the function %s is not defined, can't call a function that is not defined", name );
           return ;
         }       
