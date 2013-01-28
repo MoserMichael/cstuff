@@ -140,6 +140,8 @@ static int fancy_error_report(YYLTYPE *location, const char *file, int show_high
 	      continue;
 	   }
 
+	   if (ch == '\t') ch = ' ';
+
 	   if (line_num == location->first_line) {
 	     by = (char ) ch;
 	     DBUF_add( &buf, &by, 1);
