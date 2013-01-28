@@ -273,7 +273,7 @@ $(1)__clean_xxx : PRJ_RESULT_FILE=$(BIN_ROOT_DIR)/$(2)/lib$(1).so
 $(1)__run_xxx :
 
 .PHONY: $(1)__install_target_xx
-$(1)__install_target_xx :
+$(1)__install_target_xx :  $($(1)_INSTALL)
 	$$(eval $$(call install-a-file,$$(call make_shared_lib_name,$(1),$(2)),$$(PREFIX)/lib))
 	
 endef

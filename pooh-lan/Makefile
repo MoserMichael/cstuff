@@ -44,10 +44,14 @@ pooh_LIBS=$(TLIB) pthread cutils butils m rtlib nutils dl
 
 pooh_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/pooh test-error test .
 
-
 # ---------------------------------------
 
 include $(TOPDIR)/rules.make
+
+pooh_INSTALL:
+	$(eval $(call install-mkdir,$(PREFIX)/lib/pooh))
+	$(call install-a-file,lib/matrix.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/complex.inc,$(PREFIX)/lib/pooh)
 
 
 
