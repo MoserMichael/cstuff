@@ -1,4 +1,4 @@
-include 'test/04-matrix-mult.inc'
+include 'matrix.inc'
 
 a = [
        [ 1, 2, 3, 4 ],

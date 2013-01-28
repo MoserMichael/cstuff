@@ -1485,6 +1485,16 @@ static void x_atan( XCALL_DATA *xcall )
   BINDING_DATA_set_double( XCALL_rvalue( xcall ), res );
 }
 
+static void x_atan2( XCALL_DATA *xcall )
+{
+  double arg_x, arg_y, res;
+
+  BINDING_DATA_get_double( XCALL_param( xcall, 0 ), &arg_x );
+  BINDING_DATA_get_double( XCALL_param( xcall, 1 ), &arg_y );
+  res = atan2( arg_x, arg_y );
+  BINDING_DATA_set_double( XCALL_rvalue( xcall ), res );
+}
+
 
 static void x_pow( XCALL_DATA *xcall )
 {
@@ -2945,6 +2955,7 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC1( "acos",    x_acos, S_VAR_DOUBLE, "num", S_VAR_INT | S_VAR_DOUBLE ),
   DEFINE_XFUNC1( "tan",     x_tan, S_VAR_DOUBLE,  "num", S_VAR_INT | S_VAR_DOUBLE ),
   DEFINE_XFUNC1( "atan",    x_atan, S_VAR_DOUBLE, "num", S_VAR_INT | S_VAR_DOUBLE ),
+  DEFINE_XFUNC2( "atan2",   x_atan2, S_VAR_DOUBLE, "x", S_VAR_INT | S_VAR_DOUBLE, "y", S_VAR_INT | S_VAR_DOUBLE ),
 
   DEFINE_XFUNC0( "maxfloat",  x_maxfloat, S_VAR_DOUBLE ),
   DEFINE_XFUNC0( "minfloat",  x_minfloat, S_VAR_DOUBLE ),

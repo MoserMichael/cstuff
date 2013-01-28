@@ -1,4 +1,35 @@
 
+
+# print a matrix
+sub print_matrix( matrix )
+  
+   numrows = size( ~arg matrix )
+   numcols = size( ~arg matrix[ 1 ] )
+   maxfield = 0
+
+   for i range( ~from 1 ~to numrows )
+     for j range( ~from 1 ~to numcols )
+        ln = size( ~arg '[matrix[i][j]]' )
+        if maxfield < ln
+	  maxfield = ln
+	end
+     end
+   end
+
+   for i range( ~from 1 ~to numrows )
+     for j range( ~from 1 ~to numcols )
+        fieldlen = size( ~arg '[matrix[i][j]]' )
+	while fieldlen < maxfield
+	   print( ~msg ' ' )
+	   fieldlen = fieldlen + 1
+	end
+        print( ~msg matrix[i][j] .. ' ' )
+     end
+     println( ~msg ' ') 
+   end
+end
+
+# multiply each element of a matrix by a factor
 sub matrix_scale( factor, matrix )
   
   numrows = size( ~arg matrix )
@@ -12,6 +43,7 @@ sub matrix_scale( factor, matrix )
   end
 end
 
+# multiply two matrixes and returns result of multiplication
 sub matrix_mult( leftm, rightm )
   
   numleftrows = size( ~arg leftm )
@@ -39,21 +71,7 @@ sub matrix_mult( leftm, rightm )
   return c
 end
 
-
-sub print_matrix( matrix )
-  
-   numrows = size( ~arg matrix )
-   numcols = size( ~arg matrix[ 1 ] )
-
-   for i range( ~from 1 ~to numrows )
-     for j range( ~from 1 ~to numcols )
-        print( ~msg matrix[i][j] .. ' ' )
-     end
-     println( ~msg ' ') 
-   end
-end
-
-
+# make upper triangle matrix - all elements 1
 sub make_upper_triangle( rows, cols )
    c = []
    for i range( ~from 1 ~to rows )
@@ -68,6 +86,7 @@ sub make_upper_triangle( rows, cols )
    return c
 end
 
+# make identity matrix - all ones.
 sub make_identity_matrix( rows, cols )
    c = []
    for i range( ~from 1 ~to rows )
@@ -81,3 +100,5 @@ sub make_identity_matrix( rows, cols )
    end
    return c
 end
+
+

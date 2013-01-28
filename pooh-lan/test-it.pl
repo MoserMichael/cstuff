@@ -107,7 +107,7 @@ sub show_result
   my $test = shift;
   
   print "\n---Test: ${test} (status: $?)---\n"; 
-  system("cat ${test}.serr");
+  #system("cat ${test}.serr");
   print "---Eof Test---\n"; 
 }
 
@@ -130,8 +130,7 @@ sub test_it
     $total += 1;
    #system("$ttol $test >${test}.out 2>&1");
     print "\n>>$TEST_TOOL $test<<\n";
-    system("$TEST_TOOL -I $LIBDIR -x $test >${test}.sout 2>${test}.serr");
-
+    system("$TEST_TOOL -I $LIBDIR -I lib -x $test >${test}.sout 2>${test}.serr");
 
     my $res = $?;
 

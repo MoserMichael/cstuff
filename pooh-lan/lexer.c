@@ -416,8 +416,11 @@ int LEXER_scan_file( LEXCONTEXT *pc, const char *file_name )
 	state.state = YY_CURRENT_BUFFER;
 	POSITION_RESET_ON_NEW_FILE;
 
+
 	ARRAY_push_back( &pc->nested_buffers, & state, sizeof(MY_YY_BUFFER_STATE) );
 
+
+	yyloc.file_id = ARRAY_size( &pc->nested_buffers ); 
 	/* lex globel: the input stream */
 	yyin = fp;
 	
@@ -458,7 +461,7 @@ int LEXER_close_file( LEXCONTEXT *pc )
 #else
 		yyloc = state.pos;
 #endif		
-
+		yyloc.file_id = ARRAY_size( &pc->nested_buffers );
 
 	} else  {
 
