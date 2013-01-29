@@ -452,28 +452,44 @@ static void x_range( XCALL_DATA *xcall )
 
   step = 1;
   arg = XCALL_param(xcall, 2 ); 
+  arg = BINDING_DATA_follow_ref( arg );
   if (! IS_NULL(arg)) {
     BINDING_DATA_get_int( arg, &step );
   }
 
 
   if (top) {
-    for(idx = 0 ; idx <= (to - from) ; idx += step ) {
-       tmpn = BINDING_DATA_MEM_new( S_VAR_INT );
-       tmpn->b.value.long_value = from + idx;
-       dothreadyield0_nomsg( tmpn ); 
-    }
+    if (step > 0) 
+      for(idx = from ; idx <= to ; idx += step ) {
+        tmpn = BINDING_DATA_MEM_new( S_VAR_INT );
+        tmpn->b.value.long_value = idx;
+        dothreadyield0_nomsg( tmpn ); 
+      }
+    else 
+      for(idx = from ; idx >= to ; idx += step ) {
+        tmpn = BINDING_DATA_MEM_new( S_VAR_INT );
+        tmpn->b.value.long_value = idx;
+        dothreadyield0_nomsg( tmpn ); 
+      }
+
   } else {
     rval = XCALL_rvalue( xcall ); 
     BINDING_DATA_init( rval, S_VAR_LIST );
     arr = &rval->b.value.array_value;
 
-    for(idx = 0 ; idx <= (to - from) ; idx += step ) {
+    if (step > 0)
+     for(idx = from ; idx <= to ; idx += step ) {
        BINDING_DATA_init( &tmpv, S_VAR_INT );
-       tmpv.b.value.long_value = from + idx;
+       tmpv.b.value.long_value = idx;
        VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
-    }
-  }
+     }
+    else  
+     for(idx = from ; idx >= to ; idx += step ) {
+       BINDING_DATA_init( &tmpv, S_VAR_INT );
+       tmpv.b.value.long_value = idx;
+       VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
+     }
+   }
 }
 
 static DATA_REF cb_func;
