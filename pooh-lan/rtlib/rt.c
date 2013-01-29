@@ -439,57 +439,107 @@ static void x_threadyieldvalue( XCALL_DATA *xcall )
 
 static void x_range( XCALL_DATA *xcall )
 {
-  BINDING_DATA *tmpn,tmpv,*arg,*rval;
+  BINDING_DATA *tmpn,tmpv,*arg,*argstep,*rval;
   VALARRAY *arr;
-  POOH_INT idx, from, to, step;
   int top = EVAL_THREAD_is_threadmain( xcall->thread );
  
   arg = XCALL_param(xcall, 0 ); 
-  BINDING_DATA_get_int( arg,  &from );
-
-  arg = XCALL_param(xcall, 1 ); 
-  BINDING_DATA_get_int( arg,  &to );
-
-  step = 1;
-  arg = XCALL_param(xcall, 2 ); 
   arg = BINDING_DATA_follow_ref( arg );
-  if (! IS_NULL(arg)) {
-    BINDING_DATA_get_int( arg, &step );
-  }
+
+  argstep = XCALL_param(xcall, 2 ); 
+  argstep = BINDING_DATA_follow_ref( argstep );
+ 
+  if (arg->b.value_type & S_VAR_DOUBLE || argstep->b.value_type & S_VAR_DOUBLE) {
+    double idx, from, to, step;
+  
+    BINDING_DATA_get_double( arg,  &from );
+    
+    arg = XCALL_param(xcall, 1 ); 
+    BINDING_DATA_get_double( arg,  &to );
+
+    step = 1;
+    if (! IS_NULL(argstep)) {
+      BINDING_DATA_get_double( argstep, &step );
+    }
+
+    if (top) {
+      if (step > 0) 
+        for(idx = from ; idx <= to ; idx += step ) {
+          tmpn = BINDING_DATA_MEM_new( S_VAR_DOUBLE );
+          tmpn->b.value.double_value = idx;
+          dothreadyield0_nomsg( tmpn ); 
+        }
+      else 
+        for(idx = from ; idx >= to ; idx += step ) {
+          tmpn = BINDING_DATA_MEM_new( S_VAR_DOUBLE );
+          tmpn->b.value.double_value = idx;
+          dothreadyield0_nomsg( tmpn ); 
+        }
+    } else {
+      rval = XCALL_rvalue( xcall ); 
+      BINDING_DATA_init( rval, S_VAR_LIST );
+      arr = &rval->b.value.array_value;
+
+      if (step > 0)
+       for(idx = from ; idx <= to ; idx += step ) {
+         BINDING_DATA_init( &tmpv, S_VAR_DOUBLE );
+         tmpv.b.value.double_value = idx;
+         VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
+       }
+      else  
+       for(idx = from ; idx >= to ; idx += step ) {
+         BINDING_DATA_init( &tmpv, S_VAR_DOUBLE );
+         tmpv.b.value.double_value = idx;
+         VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
+       }
+    }
+  } else {  
+    POOH_INT idx, from, to, step;
+  
+    BINDING_DATA_get_int( arg,  &from );
 
 
-  if (top) {
-    if (step > 0) 
-      for(idx = from ; idx <= to ; idx += step ) {
-        tmpn = BINDING_DATA_MEM_new( S_VAR_INT );
-        tmpn->b.value.long_value = idx;
-        dothreadyield0_nomsg( tmpn ); 
-      }
-    else 
-      for(idx = from ; idx >= to ; idx += step ) {
-        tmpn = BINDING_DATA_MEM_new( S_VAR_INT );
-        tmpn->b.value.long_value = idx;
-        dothreadyield0_nomsg( tmpn ); 
-      }
+    arg = XCALL_param(xcall, 1 ); 
+    BINDING_DATA_get_int( arg,  &to );
 
-  } else {
-    rval = XCALL_rvalue( xcall ); 
-    BINDING_DATA_init( rval, S_VAR_LIST );
-    arr = &rval->b.value.array_value;
+    step = 1;
+    if (! IS_NULL(argstep)) {
+      BINDING_DATA_get_int( argstep, &step );
+    }
 
-    if (step > 0)
-     for(idx = from ; idx <= to ; idx += step ) {
-       BINDING_DATA_init( &tmpv, S_VAR_INT );
-       tmpv.b.value.long_value = idx;
-       VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
-     }
-    else  
-     for(idx = from ; idx >= to ; idx += step ) {
-       BINDING_DATA_init( &tmpv, S_VAR_INT );
-       tmpv.b.value.long_value = idx;
-       VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
-     }
-   }
+
+    if (top) {
+      if (step > 0) 
+        for(idx = from ; idx <= to ; idx += step ) {
+          tmpn = BINDING_DATA_MEM_new( S_VAR_INT );
+          tmpn->b.value.long_value = idx;
+          dothreadyield0_nomsg( tmpn ); 
+        }
+      else 
+        for(idx = from ; idx >= to ; idx += step ) {
+          tmpn = BINDING_DATA_MEM_new( S_VAR_INT );
+          tmpn->b.value.long_value = idx;
+          dothreadyield0_nomsg( tmpn ); 
+        }
+    } else {
+      rval = XCALL_rvalue( xcall ); 
+      BINDING_DATA_init( rval, S_VAR_LIST );
+      arr = &rval->b.value.array_value;
+
+      if (step > 0)
+       for(idx = from ; idx <= to ; idx += step ) {
+         BINDING_DATA_init( &tmpv, S_VAR_INT );
+         tmpv.b.value.long_value = idx;
+         VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
+       }
+      else  
+       for(idx = from ; idx >= to ; idx += step ) {
+         BINDING_DATA_init( &tmpv, S_VAR_INT );
+         tmpv.b.value.long_value = idx;
+         VALARRAY_set( arr, idx , &tmpv, CP_VALUE );
+       }
+    }
+  } 
 }
 
 static DATA_REF cb_func;

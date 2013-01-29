@@ -52,6 +52,7 @@ pooh_INSTALL:
 	$(eval $(call install-mkdir,$(PREFIX)/lib/pooh))
 	$(call install-a-file,lib/matrix.inc,$(PREFIX)/lib/pooh)
 	$(call install-a-file,lib/complex.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/heap.inc,$(PREFIX)/lib/pooh)
 
 
 
