@@ -748,15 +748,20 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 	 data = EVAL_reference_scalar( out, expr, 0, copy_type);
 	 BINDING_DATA_copy( EVAL_THREAD_get_stack_top( cthread ), data, CP_REF ); 
 	 
-	 data = BINDING_DATA_follow_ref( data );
-	 collection_type = data->b.value_type;
-
-	 //for( i = AST_VECTOR_size( vect ); ;) {
+	 
 	 for( i = 0; i < AST_VECTOR_size( vect ); ) {
-	    //index_expr = (AST_EXPRESSION *) AST_VECTOR_get( vect , i -1 );
-	    //follow_index_expr = i > 1 ? (AST_EXPRESSION *) AST_VECTOR_get( vect, i - 1 ) : 0;
 	    index_expr = (AST_EXPRESSION *) AST_VECTOR_get( vect , i  );
 	    follow_index_expr = (i + 1) < AST_VECTOR_size( vect ) ? (AST_EXPRESSION *) AST_VECTOR_get( vect, i + 1 ) : 0;
+
+	    // evaluate the index expression.
+	    EVAL_do_expr( out, index_expr, PARAM_BY_VAL, 0 );
+	    index_data = EVAL_THREAD_pop_stack( cthread );
+
+	    // perform the collection lookup - get pointer to collection( is on stack, right before index expression)
+	    data = index_data - 1; 
+	    data = BINDING_DATA_follow_ref( data );
+	    collection_type = data->b.value_type;
+    
 
 	    // check that collection type is what is expected by the type of index expression.
 	    if (index_expr->exp_type == S_EXPR_HASH_INDEX) {
@@ -771,10 +776,6 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 	      assert(0);
 	    }
 
-	    // evaluate the index expression.
-	    EVAL_do_expr( out, index_expr, PARAM_BY_VAL, 0 );
-	    index_data = EVAL_THREAD_pop_stack( cthread );
-
 	    // for array collection - check that the index is a number (must).
 	    if (index_expr->exp_type == S_EXPR_ARRAY_INDEX) {
 	      if (! is_numeric_type( index_data->b.value_type ) ) {
@@ -782,12 +783,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 	      }
 	    }
 
-	    //index_data = BINDING_DATA_follow_ref( index_data );
-
-	    // perform the collection lookup - get pointer to collection( is on stack, right before index expression)
-	    data = index_data - 1; 
-	    data = BINDING_DATA_follow_ref( data );
-		
+	
 	    // if last index and function is used in assingnment - insert value into collection
 	    if ( follow_index_expr == 0 && in_assignment) {
 		if (index_expr->exp_type == S_EXPR_HASH_INDEX) {  // insert into hash 
@@ -853,10 +849,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 	    if (follow_index_expr == 0) 
 		  break;
 
-	    //i -=1;
 	    i += 1;
-	    next_data = BINDING_DATA_follow_ref( next_data );
-	    collection_type = next_data->b.value_type;
 	 } // end for (indexes)
 
        
