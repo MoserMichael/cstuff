@@ -964,22 +964,51 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr, EVAL_REF_KIND get_value_
      break;
 
     case S_EXPR_UNARY:
+
       if (tracer)  {
-        DBUF_add(  &tracer->text, " - ", 3 );
+	 const char *op_name = get_op_name(expr->val.unary.op);  
+         DBUF_add(  &tracer->text, " ", 1);
+         DBUF_add(  &tracer->text, op_name, 1 );
+         DBUF_add(  &tracer->text, " ", 1);
       }	
-      EVAL_do_expr( out, expr->val.unary.expr, PARAM_BY_VAL, 0 );
-      ret = EVAL_THREAD_get_stack_top( cthread );
-      ret = BINDING_DATA_follow_ref( ret );
+      switch( expr->val.unary.op )
+      { 
+      case TK_OP_NUM_SUBST:
+        EVAL_do_expr( out, expr->val.unary.expr, PARAM_BY_VAL, 0 );
+        ret = EVAL_THREAD_get_stack_top( cthread );
+        ret = BINDING_DATA_follow_ref( ret );
 
-      if ( ! is_numeric_type( ret->b.value_type )) {
+        if ( ! is_numeric_type( ret->b.value_type )) {
+	   EVAL_error( out, &expr->base , "Operator - expects number as value, instead got %s", get_type_name( ret->b.value_type ) );
+ 
+        }
+        if ( ret->b.value_type == S_VAR_INT) {
+	  ret->b.value.long_value = - ret->b.value.long_value;
+        } else {
+          ret->b.value.double_value = - ret->b.value.double_value;
+        }
+	break;
+      case TK_OP_NUM_ADD:
+        EVAL_do_expr( out, expr->val.unary.expr, PARAM_BY_VAL, 0 );
+	break;
+      case TK_OP_LOGICAL_NEGATE:
+        if (tracer)  {
+          DBUF_add(  &tracer->text, " ! ", 3 );
+        }	
+        EVAL_do_expr( out, expr->val.unary.expr, PARAM_BY_VAL, 0 );
+        ret = EVAL_THREAD_get_stack_top( cthread );
+        ret = BINDING_DATA_follow_ref( ret );
 
+        if ( ! is_numeric_type( ret->b.value_type )) {
+	   EVAL_error( out, &expr->base , "Operator ! expects number as value, instead got %s", get_type_name( ret->b.value_type ) );
+        }
+        if ( ret->b.value_type == S_VAR_INT) {
+	  ret->b.value.long_value = ret->b.value.long_value == 0;
+        } else {
+          ret->b.value.double_value = ret->b.value.double_value == 0;
+        }
+  	break;
       }
-      if ( ret->b.value_type == S_VAR_INT) {
-	ret->b.value.long_value = - ret->b.value.long_value;
-      } else {
-        ret->b.value.double_value = - ret->b.value.double_value;
-      }
-
       break;
 
     case S_EXPR_REFERENCE: {
