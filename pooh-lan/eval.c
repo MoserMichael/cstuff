@@ -227,12 +227,15 @@ BINDING_DATA * EVAL_int_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDIN
       if (rval == 0) {
 	 EVAL_error( out , 0,  "can't divide by zero" );
       }
+      ret = lval / rval;
+#if 0      
       EVAL_THREAD_discard_pop_stack( cthread );
       EVAL_THREAD_discard_pop_stack( cthread );
 
       retval = EVAL_THREAD_push_stack( cthread, S_VAR_DOUBLE );  
       retval->b.value.double_value = (double) lval / rval;
       return retval;
+#endif      
       }
       break;
     case TK_OP_NUM_MULT:
