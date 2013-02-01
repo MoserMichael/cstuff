@@ -1460,8 +1460,19 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
      is_heap2stack = from->b.value_flags_ref & S_VAR_REF_HEAP2STACK; 
     
      //from = BINDING_DATA_follow_ref( from ); // ???? must be wrong somewhere.
+     if (from->b.value_flags_ref & S_VAR_REF_STACK2STACK && !IS_STACK_VALUE(to)) {
+       size_t pos;
+       BINDING_DATA *binding;
+
+       pos = from->b.value.stack2stack_ref;
+       assert( pos < ARRAY_size( &g_cur_thread->binding_data_stack ) );
+       binding= ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer) + pos;
+
+       // make heap 2 stack reference
+       to->b.value_flags_ref = S_VAR_REF_HEAP2STACK;
+       make_capture(  &to->b.value.heap2stack_ref, binding, 1 , g_cur_thread);
      
-     if (! (is_heap2stack && IS_STACK_VALUE( to ) ) ) {
+     } else if (! (is_heap2stack && IS_STACK_VALUE( to ) ) ) {
     
        BINDING_DATA_cp( to, from);
  
@@ -1470,9 +1481,9 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
        if (is_heap2stack) {
          DDDLIST_insert_after( &from->b.value.heap2stack_ref.next, &to->b.value.heap2stack_ref.next );
        }
-     } else {
-      to->b.value_flags_ref = S_VAR_REF_HEAP;
-      to->b.value.value_ref = from;
+     } else { 
+       to->b.value_flags_ref = S_VAR_REF_HEAP;
+       to->b.value.value_ref = from;
      }
      
 #if 0   
