@@ -14,7 +14,11 @@ examplecoro_TYPE=exe
 
 examplecoro_SRC=embed_example.c
 
-examplecoro_LIBS=webbylib webbycorolib evcorothread event corothread hutils nutils butils cutils dl rt pthread
+ifeq "$(shell uname -o)" "Cygwin"
+examplecoro_LIBS=webbylib webbycorolib evcorothread event corothrjmp hutils nutils butils cutils dl rt pthread
+else
+examplecoro_LIBS=webbylib webbycorolib evcorothread event corothructx hutils nutils butils cutils dl rt pthread
+endif
 
 examplecoro_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 

@@ -38,7 +38,12 @@ webbycoro_TYPE=exe
 
 webbycoro_SRC=webbymain.c webbymain_blurb.c
 
-webbycoro_LIBS=webbylibsh webbycorolib evcorothread event corothread hutils nutils butils cutils dl rt pthread
+
+ifeq "$(shell uname -o)" "Cygwin"
+webbycoro_LIBS=webbylibsh webbycorolib evcorothread corothrjmp event hutils nutils butils cutils dl rt pthread
+else
+webbycoro_LIBS=webbylibsh webbycorolib evcorothread corothructx event hutils nutils butils cutils dl rt pthread
+endif
 
 webbycoro_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 
