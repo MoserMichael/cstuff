@@ -693,7 +693,7 @@ AST_XFUNC_PARAM_DECL *CHECKER_xfind_param_by_label( AST_XFUNC_DECL *xfunc , cons
 
 int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL *fcall, AST_BASE *func_def )
 {
-    size_t i, num_param;
+    size_t i, num_param = 0;
     AST_FUNC_CALL_PARAM *param;
     AST_EXPRESSION *param_expr;
     int rt = 0;
@@ -732,7 +732,7 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
        } else { // pass 1
         if (fcall->call_params)
 	 for( i = 0; i < AST_VECTOR_size( fcall->call_params ); i++ ) {
-	   AST_VAR_TYPE var_type;
+	   AST_VAR_TYPE var_type = S_VAR_UNKNOWN;
 	   param = (AST_FUNC_CALL_PARAM *) AST_VECTOR_get( fcall->call_params, i );
            param_expr = param->expr;
            //fparam = CHECKER_find_param_by_label2( fdecl->func_params, param->label_name );

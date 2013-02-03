@@ -2078,12 +2078,15 @@ void DATA_REF_set( DATA_REF *ref, BINDING_DATA *data )
 {
   ref->data = data;
   ref->is_stack = 0;
-      if (IS_STACK_VALUE( data )) {
+  if (IS_STACK_VALUE( data )) {
     ARRAY *b = &g_cur_thread->binding_data_stack;
     ref->is_stack = 1;
     assert( data >= (BINDING_DATA *) ARRAY_at( b, 0 ) && data <= (BINDING_DATA *) ARRAY_at( b, ARRAY_size( b ) - 1 ) );
     ref->idx = data - (BINDING_DATA *) ARRAY_at( b, 0 ); 
     ref->thread = g_cur_thread;
+  } else {
+    ref->idx = 0;
+    ref->thread = 0;
   }
 }
 
@@ -2388,7 +2391,7 @@ EVAL_THREAD * EVAL_THREAD_prepare_coroutine( EVAL_THREAD *thread, size_t frame_s
 {
   EVAL_THREAD *new_thread;
   AST_XFUNC_DECL *xfdecl;
-  AST_FUNC_DECL * fdecl;
+  AST_FUNC_DECL * fdecl = 0;
   BINDING_DATA *param, *newparam;
   size_t i, idx, num_params, nsize, ncount;
   VALACTIVATION *arecord;

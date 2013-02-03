@@ -558,7 +558,7 @@ int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl)
 {
   int op = scl->val.unary.op;
   AST_EXPRESSION *arg = scl->val.unary.expr;
-  long res_num,arg_num;
+  long res_num = 0 ,arg_num;
 
 
    if (arg->exp_type != S_EXPR_CONSTANT || arg->exp_type != S_EXPR_CONSTANT) {
@@ -572,7 +572,8 @@ int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl)
 
    switch( op ) {
       case TK_OP_NUM_ADD:
-        break;
+       res_num =  arg_num;
+       break;
       case TK_OP_NUM_SUBST:
         res_num =  - arg_num;
       case TK_OP_LOGICAL_NEGATE: 

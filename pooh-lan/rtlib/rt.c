@@ -105,7 +105,7 @@ static void x_exit( XCALL_DATA *xcall )
 static void x_size( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
-  size_t rt;
+  size_t rt = 0; 
   
   arg = XCALL_param(xcall, 0 ); 
 
@@ -1323,7 +1323,7 @@ static void x_split( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg, *ret, *tmps;
   VALSTRING *str,*delim;
-  VALARRAY *aret;
+  VALARRAY *aret = 0;
   char *sstr, *sdelim, *tok;;
   int force_exit;
   int i = 0;
@@ -1821,7 +1821,7 @@ static void x_run( XCALL_DATA *xcall )
   BINDING_DATA *arg, *rval, *runout, tmpv;
   VALSTRING *sval, *srunout;
   VALARRAY *arr;
-  int status;
+  int status = -1;
   FILE *fp;
   char buf[ 513 ];
   size_t nread;
@@ -2225,7 +2225,7 @@ static void read_imp( TRANSPORT_TYPE transport, TRANSPORT trans, XCALL_DATA *xca
 static void write_imp( TRANSPORT_TYPE transport, TRANSPORT trans, XCALL_DATA *xcall )
 {
     BINDING_DATA *obj, *towrite, *tmp;
-    size_t nlen;
+    size_t nlen = 0;
     int has_len = 0;
     size_t nret;
 
@@ -2918,7 +2918,7 @@ static void x_listdir( XCALL_DATA *xcall )
   char **w;
   BINDING_DATA *arg, *ret, *tmps;
   VALSTRING *str;
-  VALARRAY *aret;
+  VALARRAY *aret = 0;
   size_t i;
   int force_exit;
   int top = EVAL_THREAD_is_threadmain( xcall->thread );
