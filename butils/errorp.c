@@ -60,8 +60,8 @@ void errorp(int rval, const char *fmt, ... )
   char *p, *eof;
   va_list ap;
   int len, n;
-  int rt;
 #if __linux__
+  int rt;
   void *sframes[ STACK_FRAMES + 1 ];
   int nframes, i;
 #endif
