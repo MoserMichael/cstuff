@@ -289,7 +289,7 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
 
     case S_EXPR_REFERENCE: {
       BINDING_ENTRY *binding;
-      int scope_nesting;
+      int scope_nesting = 0;
       REF_SCOPE scope_type; 
       const char *name;
 

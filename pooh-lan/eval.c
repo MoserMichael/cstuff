@@ -583,7 +583,7 @@ BINDING_DATA *EVAL_string_op( int op, EVAL_THREAD *cthread, BINDING_DATA *lhs, B
 BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDING_DATA *new_value, EVAL_REF_KIND copy_type)
 {
     EVAL_THREAD *cthread;
-    BINDING_DATA *data,*arec;
+    BINDING_DATA *data = 0,*arec;
     BINDING_ENTRY *bentry;
     VALACTIVATION *activation_rec;
     VALFUNCTION *val_func;
@@ -1356,7 +1356,7 @@ void EVAL_proceed_fun_call( size_t frame_start, AST_BASE *fdecl, VALFUNCTION *va
       EVAL_THREAD *cthread;
       EVAL_CTX *out = (EVAL_CTX *) oout;   
       EVAL_TRACE_ENTRY *tracer; 
-      int old_level;
+      int old_level = 0;
  
       
       cthread = out->context.current_thread;
@@ -1393,7 +1393,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
     EVAL_THREAD *cthread;
     size_t frame_start;
     EVAL_TRACE_ENTRY *tracer = 0;
-    int prev;
+    int prev = 0;
     int has_return_value = 0;
     //int prev_val;
 
@@ -1527,7 +1527,7 @@ void EVAL_do(  EVAL_CTX *out )
   EVAL_THREAD *cthread;
   AST_BASE *base;
   BINDING_DATA *data;
-  int old_level;
+  int old_level = 0;
 
   cthread = out->context.current_thread;
   base = cthread->instr;
@@ -1569,7 +1569,7 @@ void EVAL_do(  EVAL_CTX *out )
   {
     AST_ASSIGNMENT *scl = (AST_ASSIGNMENT *) base;
     EVAL_THREAD *cthread;
-    EVAL_TRACE_ENTRY *trace_lhs;
+    EVAL_TRACE_ENTRY *trace_lhs = 0;
     AST_EXPRESSION *lhs;
     AST_VAR_TYPE offending_type;
     BINDING_DATA *dref;
