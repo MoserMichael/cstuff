@@ -79,7 +79,7 @@ void MLOG_dump_stack_level( MLOG_LEVEL level )
 
 int MLOG_printf( MLOG_LEVEL current,  const char *file, int line, const char *format , ... )
 {
-  char *sbuf,*pos;
+  char *sbuf = 0,*pos;
   size_t buf_size, msg_len;
   va_list vlist;
   struct timeval now_time_val;
@@ -160,13 +160,17 @@ int MLOG_printf( MLOG_LEVEL current,  const char *file, int line, const char *fo
   msg_len = alloc_size - buf_size - 1;
   
   if (log_action & MLOG_ACTION_CONSOLE) {
-    write( 2, sbuf, msg_len );
+    rt = write( 2, sbuf, msg_len );
+    if (rt == -1)
+      return -1;
   } 
 
 
   if (log_action & MLOG_ACTION_TO_FILE) {
-    write( log_fd, sbuf, msg_len );
-  }
+    rt = write( log_fd, sbuf, msg_len );
+    if (rt == -1)
+      return -1;
+   }
 
   if (log_action & MLOG_ACTION_SYSLOG_TRACE) {
     syslog( LOG_USER, "%s", sbuf );

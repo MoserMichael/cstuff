@@ -95,6 +95,7 @@ void *parse_hexa_string( const char *str, int len, uint32_t *rsize )
        }
     } else {
       high_val = 0;
+      low_val = 0;
     }
    
     *pos++ = (uint8_t) ( (high_val << 4) | low_val );  

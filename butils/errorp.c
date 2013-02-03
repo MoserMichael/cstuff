@@ -60,6 +60,7 @@ void errorp(int rval, const char *fmt, ... )
   char *p, *eof;
   va_list ap;
   int len, n;
+  int rt;
 #if __linux__
   void *sframes[ STACK_FRAMES + 1 ];
   int nframes, i;
@@ -82,21 +83,27 @@ void errorp(int rval, const char *fmt, ... )
 
 #if __linux__
   nframes = backtrace( sframes, STACK_FRAMES + 1); \
-  write( FD_OUT, STACK_START, strlen( STACK_START ) );
-  
+  rt = write( FD_OUT, STACK_START, strlen( STACK_START ) );
+  if (rt == -1)
+    return;
   nframes =  backtrace( sframes, STACK_FRAMES );
   for (i=0; i<nframes; i++) {
     snprintf( buff, sizeof(buff),  "frame %d ip: %p\n", i, sframes[ i ]);
-    write( FD_OUT , buff, strlen( buff ) );
+    rt = write( FD_OUT , buff, strlen( buff ) );
+    if (rt == -1)
+      return;
   }
 
   dump_modules( buff, sizeof(buff) );
-  write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
+  rt = write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
+  if (rt == -1)
+    return;
 #endif
 }
 
 void error_dump_string( const char *msg, char *buff, size_t buff_size)
 {
+  int rt;
 #if __linux__
   void *sframes[ STACK_FRAMES + 1 ];
   int nframes, i;
@@ -107,21 +114,28 @@ void error_dump_string( const char *msg, char *buff, size_t buff_size)
 
 
 
-  write( FD_OUT , msg , strlen( msg ) );
-
+  rt = write( FD_OUT , msg , strlen( msg ) );
+  if (rt == -1)
+    return;
 #if __linux__
   nframes = backtrace( sframes, STACK_FRAMES + 1); \
-  write( FD_OUT, STACK_START, strlen( STACK_START ) );
+  rt = write( FD_OUT, STACK_START, strlen( STACK_START ) );
+  if (rt == -1)
+    return;
   
   nframes =  backtrace( sframes, STACK_FRAMES );
   for (i=0; i<nframes; i++) {
     snprintf( buff, buff_size,  "frame %d ip: %p\n", i, sframes[ i ]);
-    write( FD_OUT , buff, strlen( buff ) );
-  }
+    rt = write( FD_OUT , buff, strlen( buff ) );
+    if (rt == -1)
+      return;
+ }
 
   dump_modules( buff, buff_size );
-  write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
-#endif
+  rt = write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
+  if (rt == -1)
+     return;
+ #endif
 }
 
 #define TOKENS_COUNT	    6
@@ -136,6 +150,7 @@ static void dump_modules(char *buf, size_t buff_size)
   int fd, n, i, buf_start;
   char line[30];
   char *pos, *eof_line, *tokens[ TOKENS_COUNT ];
+  int rt;
 
   sprintf(buf,"/proc/%d/maps", getpid() );
 
@@ -174,9 +189,12 @@ static void dump_modules(char *buf, size_t buff_size)
        }
        if (i == TOKENS_COUNT) {
           snprintf(line, sizeof(line) - 1, "\n%s %s ", tokens[ TOKENS_ADDRESS ] , tokens[ TOKENS_FILEOFFSET ]);
-	  write( FD_OUT, line, strlen(line) );
-	  write( FD_OUT, tokens[ TOKENS_PATH ], strlen( tokens[ TOKENS_PATH ] ) );
-       
+	  rt = write( FD_OUT, line, strlen(line) );
+	  if (rt == -1)
+	    return;
+	  rt = write( FD_OUT, tokens[ TOKENS_PATH ], strlen( tokens[ TOKENS_PATH ] ) );
+      	  if (rt == -1)
+	    return;
        }
       
        pos = eof_line + 1;

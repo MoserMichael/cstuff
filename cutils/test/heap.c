@@ -8,7 +8,7 @@
 
 typedef struct HEntry {
 	int Key;
-	char Name[6];
+	char Name[8];
 } HEntry;
 
 int HEntry_compare(void *lh, void *rh, size_t entry)

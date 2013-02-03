@@ -63,19 +63,14 @@ endif
 #-
 # Add optimization
 #-
-ifdef OPT
-  ifeq "$(strip $(OPT))" "3"
+ifeq "$(strip $(MODE))" "release"
+    CFLAGS+=-O3
+    CXXFLAGS+=-O3
+endif
+
+ifeq "$(strip $(MODE))" "release2"
     CFLAGS+=-O2
     CXXFLAGS+=-O2
-  else
-    ifeq "$(strip $(OPT))" "1"
-      CFLAGS+=-O1
-      CXXFLAGS+=-O1
-    else
-      CFLAGS+=-O2
-      CXXFLAGS+=-O2
-    endif
-  endif
 endif
 
 #-

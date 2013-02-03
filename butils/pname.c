@@ -37,7 +37,8 @@ char *posix_get_process_name( const char *argv )
     return strdup( argv );
  
 
-  getcwd( dir, sizeof( dir ) );
+  if (getcwd( dir, sizeof( dir ) ) == 0)
+    return 0;
  
   path = FN_make_path( dir, argv );  
   if (!access( path, R_OK )) {
@@ -58,7 +59,8 @@ char *get_current_process_name( const char *argv0)
   
   (void) argv0;
   memset(buf, 0, sizeof(buf));
-  readlink( "/proc/self/exe", buf, sizeof( buf ) );
+  if (readlink( "/proc/self/exe", buf, sizeof( buf ) ) == -1)
+    return 0;
   if (strcmp(buf,"")!=0)
     return strdup( buf );
   return posix_get_process_name( argv0 );

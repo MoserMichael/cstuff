@@ -185,9 +185,10 @@ char *FN_set_extension( const char *fname_or_path, const char *extension )
 char *FN_normalize( const char *relpath )
 {
   char tmp[ PATH_MAX + 1];
+  char *rtp;
 
   strcpy( tmp, "" );
-  realpath( relpath, tmp );
+  rtp = realpath( relpath, tmp );
   if (strcmp(tmp,"") == 0)
     return 0;
 

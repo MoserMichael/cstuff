@@ -5,6 +5,12 @@
 #--------------------------
 
 
+ifeq "$(strip $(MODE))" ""
+MODE:=debug
+endif
+
+
+
 #-
 # ROOT_DIR - where the rules.make file is (in most projects it is the top directory of the project; but this may be overriden by setting
 # the root directory from the environment)
@@ -60,7 +66,7 @@ endif
 #-
 #  object directory. Each target will place objects into subdirectory of this one.
 #-
-OBJECT_DIR=$(BIN_ROOT_DIR)/obj$(CURWD)
+OBJECT_DIR=$(BIN_ROOT_DIR)/obj/$(MODE)$(CURWD)
 
 # Uncomment in order to show generated rules.
 #SHOW_RULES=1
@@ -132,6 +138,7 @@ define display_build_banner
   $(info  ****)
   $(info  * Target:    $(1))
   $(info  * Type:      $(2))
+  $(info  * Mode:      $(MODE))
   $(info  * Host:      os: $(OS_TYPE) os-version: $(OS_VERSION) architecture: $(ARCH))
   $(info  * Directory: $(3)) 
   $(info  ****)
@@ -218,10 +225,10 @@ ifneq "$$(strip $$($(1)_POSTBUILD))" ""
 endif
 
 
-objects_$(1):=$$(addprefix $$(BIN_ROOT_DIR)/obj$$(CURWD)/$(1)/, $$(addsuffix .o, $$(basename $$(sources_$(1)) ) ) )
+objects_$(1):=$$(addprefix $$(BIN_ROOT_DIR)/obj/$(MODE)$$(CURWD)/$(1)/, $$(addsuffix .o, $$(basename $$(sources_$(1)) ) ) )
 
 
--include $$(addprefix $$(BIN_ROOT_DIR)/obj$$(CURWD)/$(1)/, $$(addsuffix .d, $$(basename $$(sources_$(1)) ) ) )
+-include $$(addprefix $$(BIN_ROOT_DIR)/obj/$(MODE)$$(CURWD)/$(1)/, $$(addsuffix .d, $$(basename $$(sources_$(1)) ) ) )
 
 .PHONY: banner_xxx_$(1)
 banner_xxx_$(1) :

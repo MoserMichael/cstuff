@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 
 TARGETS="vtest cutils butils nutils corothread pooh-lan"

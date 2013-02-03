@@ -68,5 +68,5 @@ if [ "x$1" != "x" ]; then
   make $@
 else
   make cleanall $@
-  make test $@
+  make MODE=release test $@
 fi
