@@ -18,16 +18,17 @@ if [ ! -d $VERSION ]; then
   tar xvfz $VERSION.tar.gz
 fi
 
-if [ ! -h $VERSION ]; then
+if [ ! -h libevent ]; then
   ln -s $VERSION libevent
 fi
 
-if [  -d install ]; then
+if [  -e install/lib/libevent.a ]; then
   exit 0
 fi
 
-mkdir install
-
+if [ ! -d install ]; then
+  mkdir install
+fi
 INSTALL=$(readlink -f install)
 
 export CFLAGS="-m32 -g -fno-omit-frame-pointer -O2" 

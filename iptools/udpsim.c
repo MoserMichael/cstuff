@@ -388,14 +388,14 @@ static ssize_t send_fragmented( const void *buf, size_t len,
  		      const struct sockaddr *dest_addr, socklen_t addrlen)
 {
   char ip_hdr[200];
-  int hdr_len;
+  int hdr_len = 0;
   struct ip * hdr = 0;
   uint8_t *pos = (uint8_t *) buf;
   int   offset = 0;
   int   is_last = 0;
   size_t to_send;
   struct udphdr *udp; 
-  int fragment_length;
+  int fragment_length = 0;
 
   ++ cur_packet_id;
 

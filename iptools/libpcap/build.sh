@@ -12,6 +12,12 @@ fi
 
 BIN_ROOT_DIR=`readlink -f $BIN_ROOT_DIR`
 
+
+if [ -e $BIN_ROOT_DIR/lib/libpcap.a ]; then
+   exit 0
+fi
+
+
 if [ "x$ACTION" = "xclean" ]; then
    rm -rf libpcap-${VERSION}  
    rm -rf inst
@@ -23,9 +29,9 @@ if [ ! -d libpcap-${VERSION} ]; then
   cp -f pcap-linux.c libpcap-${VERSION}/
 fi
 
-if [ -d inst ]; then
-  exit 0
-fi
+#if [ -d inst ]; then
+#  exit 0
+#fi
 
 
 DIR=$BIN_ROOT_DIR

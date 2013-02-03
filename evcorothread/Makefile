@@ -1,5 +1,6 @@
 TOPDIR=..
 
+PREBUILD_SUBDIRS=libevent
 POSTBUILD_SUBDIRS=test
 
 TARGETS:=evcorothread evcorothreadsh

@@ -106,7 +106,7 @@ static void *combine_fragments( IP_PACKET_INFO *info, size_t *rlength )
    size_t length = 0;
    int is_first = 1;
    int header_len;
-   uint8_t *ret,*pos,*data;
+   uint8_t *ret,*pos,*data = 0;
    IP_FRAGMENT_INFO *frag;
    DRING *cur;
 

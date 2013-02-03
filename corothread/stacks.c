@@ -39,7 +39,7 @@ STACK_ENTRY *make_one_stack( STACKS *stack, uint8_t * offset )
   size_t page_size;
 
 #ifndef HAS_WIN32_FIBER
-  uint8_t *guard_page;
+  uint8_t *guard_page = 0;
   size_t stack_len;
 #else
   (void) offset;

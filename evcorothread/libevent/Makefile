@@ -1,6 +1,5 @@
 TOPDIR=../..
 
-include $(TOPDIR)/rules.make
 
 .PHONY: all
 all :
@@ -12,3 +11,6 @@ clean :
 
 cleanall :
 	./build.sh clean
+
+include $(TOPDIR)/rules.make
+

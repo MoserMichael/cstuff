@@ -574,7 +574,7 @@ int EVSOCKET_recv( EVSOCKET *socket, void *buf, size_t buf_size, int flags, stru
 int EVSOCKET_recv_all( EVSOCKET *socket, void *buf, size_t buf_size, int flags, struct timeval timeout )
 {
   uint8_t *cur = (uint8_t *) buf;
-  int pos, rt;
+  int pos, rt = -1;
 
   for(pos = 0 ; buf_size != 0 ; pos += rt ) {
     rt = EVSOCKET_recv_internal( socket, cur, buf_size, flags, timeout );
