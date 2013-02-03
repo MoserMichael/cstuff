@@ -29,7 +29,7 @@ static int compare_entry(HASH_Entry *entry, const void *key, ssize_t key_size)
 
 int QUERYSTRING_init(QUERYSTRING *query, URI *uri)
 {
-   char *start, *pos, *name;    
+   char *start = 0, *pos, *name = 0;    
    int state = 0;
    size_t off;  
    char is_escaped_char;
@@ -73,6 +73,8 @@ int QUERYSTRING_init(QUERYSTRING *query, URI *uri)
 	   break;
       }
    }
+   if (!start || !name)
+     return -1;
    if (state <= 2) {
 	 if (QUERYSTRING_add( query,  strdup_range(start, pos), strdup("") ) ) {
                 return -1;

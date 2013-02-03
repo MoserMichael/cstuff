@@ -24,7 +24,7 @@ int  parse_filter_definition( char *arg, size_t *vhost_id, char **lib_name, char
 void parse_cmd_line(int argc, char *argv[]) {
 
   int c;
-  char *tmp, *host_name, *cfg_file, *lib_name, *fact_function;
+  char *tmp, *host_name, *cfg_file = 0, *lib_name, *fact_function;
   int port_num;
   size_t vhost_id;
   char stmp[ 20 ];
