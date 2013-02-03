@@ -1,33 +1,36 @@
 TOPDIR=../..
 
+ifeq "$(shell uname -o)" "Cygwin"
+TESTS=evcorothreadjmptest 
+else
+TESTS=evcorothreaductxtest 
+endif
 
-#TESTS=evcorothreadtest evcorothreadtestsh  
-TESTS=evcorothreadtest
+#--
 
+evcorothreaductxtest_TYPE=exe
 
+evcorothreaductxtest_SRC_EXTENSION=c
 
-evcorothreadtest_TYPE=exe
+evcorothreaductxtest_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 
-evcorothreadtest_SRC_EXTENSION=c
+evcorothreaductxtest_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
 
-evcorothreadtest_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
+evcorothreaductxtest_LIBS=corothructx evcorothread cutils butils nutils vtest pthread event rt
 
-evcorothreadtest_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
+#--
 
-evcorothreadtest_LIBS=corothread evcorothread cutils butils nutils vtest pthread event rt
+evcorothreadjmptest_TYPE=exe
 
+evcorothreadjmptest_SRC_EXTENSION=c
 
-evcorothreadtestsh_TYPE=exe
+evcorothreadjmptest_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 
-evcorothreadtestsh_SRC_EXTENSION=c
+evcorothreadjmptest_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
 
-evcorothreadtestsh_LIBS=corothreadsh evcorothreadsh cutilssh butilssh nutilssh vtest pthread event rt
+evcorothreadjmptest_LIBS=corothrjmp evcorothread cutils butils nutils vtest pthread event rt
 
-evcorothreadtestsh_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
-
-evcorothreadtestsh_LDFLAGS=-L$(ROOT_DIR)/evcorothread/libevent/install/lib
-
-
+#--
 
 
 
