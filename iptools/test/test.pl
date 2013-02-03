@@ -183,7 +183,8 @@ sub find_iface_with_mtu
 sub check_root
 {
   if (int($<) != 0) {
-    die "ERROR: udpsim test must be run as root. sorry.\n";
+    print "MESSAGE: udpsim test must be run as root. sorry.\n";
+    exit(0);
   }
 }
 

@@ -5,6 +5,8 @@ TOPDIR=../..
 all :
 	./build.sh
 
+test :
+	./build.sh
 
 clean :
 	./build.sh clean
