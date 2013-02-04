@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <time.h>
-#include <wordexp.h>
+#include <glob.h>
 
 //#include <values.h>
 
@@ -2914,8 +2914,7 @@ char * join_strings( VALARRAY *arr )
 
 static void x_listdir( XCALL_DATA *xcall )
 {
-  wordexp_t p;
-  char **w;
+  glob_t gl;
   BINDING_DATA *arg, *ret, *tmps;
   VALSTRING *str;
   VALARRAY *aret = 0;
@@ -2932,28 +2931,44 @@ static void x_listdir( XCALL_DATA *xcall )
   arg = XCALL_param( xcall, 0 ); 
 
   arg = BINDING_DATA_follow_ref( arg );
+
+  memset( &gl, 0, sizeof( glob_t ) );
+
   if (arg->b.value_type & S_VAR_STRING) {
     str = BINDING_DATA_get_string( arg );
-    VALSTRING_make_null_terminated( str ); 
-    wordexp(str->string, &p, 0);
+    if (str) {
+      VALSTRING_make_null_terminated( str ); 
+      glob( str->string , GLOB_TILDE | GLOB_MARK, 0, &gl ) ;
+    }      
+
   } else {
-    char *vals;
+    BINDING_DATA *data;
 
     assert( (arg->b.value_type & S_VAR_LIST) != 0 );
-    vals = join_strings( &arg->b.value.array_value );    
-    if (!vals) {
-     return;
-    }
-    wordexp( vals, &p, 0);
-    free(vals);
+
+    for( i = 0; i < arg->b.value.array_value.size ; i ++ ) {
+      data = VALARRAY_get( &arg->b.value.array_value, i );
+
+      str = BINDING_DATA_get_string( data );
+      if ( str ) {
+        VALSTRING_make_null_terminated( str ); 
+	if (i == 0)
+	  glob( str->string, GLOB_TILDE | GLOB_MARK, 0, &gl );
+        else
+	  glob( str->string, GLOB_TILDE | GLOB_MARK | GLOB_APPEND, 0, &gl );
+      }
+    }      
   }
 
  
-  w = p.we_wordv;
-  for (i = 0; i < p.we_wordc; i++) {
+  for (i = 0; i < gl.gl_pathc; i++) {
+    char *s;
+    
     if (top) {
+
        tmps = BINDING_DATA_MEM_new( S_VAR_STRING );
-       VALSTRING_set( &tmps->b.value.string_value, w[i], strlen( w[i] ) );
+       s = gl.gl_pathv[ i ]; 
+       VALSTRING_set( &tmps->b.value.string_value, s, strlen( s ) );
        dothreadyield( tmps, &force_exit );
        if (force_exit) {
          break;
@@ -2961,10 +2976,11 @@ static void x_listdir( XCALL_DATA *xcall )
     } else {
        tmps = VALARRAY_set_entry( aret, i );
        BINDING_DATA_init( tmps, S_VAR_STRING );
-       VALSTRING_set( &tmps->b.value.string_value, w[i], strlen( w[i] ) );
+       s = gl.gl_pathv[ i ]; 
+       VALSTRING_set( &tmps->b.value.string_value, s, strlen( s ) );
     }
   }
-  wordfree( &p );
+  globfree( &gl );
 }
 
 
