@@ -124,15 +124,29 @@ static void x_size( XCALL_DATA *xcall )
   BINDING_DATA_set_int( XCALL_rvalue(xcall), rt );
 } 
 
-static void x_defined( XCALL_DATA *xcall )
+static void x_issame( XCALL_DATA *xcall )
 {
-  BINDING_DATA *arg;
+  BINDING_DATA *arga, *argb;
   
-  arg = XCALL_param(xcall, 0 ); 
-  arg = BINDING_DATA_follow_ref( arg );  
-  BINDING_DATA_set_int( XCALL_rvalue(xcall), ! IS_NULL( arg ) );
+  arga = XCALL_param(xcall, 0 ); 
+  arga = BINDING_DATA_follow_ref( arga );  
+  
+  argb = XCALL_param(xcall, 1 ); 
+  argb = BINDING_DATA_follow_ref( argb );
+
+  BINDING_DATA_set_int( XCALL_rvalue(xcall), arga == argb );
 }
 
+static void x_defined( XCALL_DATA *xcall )
+{
+   BINDING_DATA *arg;
+  
+   arg = XCALL_param(xcall, 0 ); 
+   arg = BINDING_DATA_follow_ref( arg );  
+   
+   BINDING_DATA_set_int( XCALL_rvalue(xcall), ! IS_NULL( arg ) );
+}
+     
 static void x_dump( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
@@ -3048,6 +3062,7 @@ AST_XFUNC_DECL xlib[] = {
 /* Miscellaneous functions */
   DEFINE_XFUNC1( "size",    x_size,	    S_VAR_INT,	"arg", S_VAR_STRING | S_VAR_LIST | S_VAR_HASH ),
   DEFINE_XFUNC1( "defined", x_defined,	    S_VAR_INT,	"arg", S_VAR_ANY ),  
+  DEFINE_XFUNC2( "issame",  x_issame,       S_VAR_INT, "a",  S_VAR_ANY, "b", S_VAR_ANY ), 
   DEFINE_XFUNC1( "dump",    x_dump,	    0,		"arg", S_VAR_ANY ),  
   DEFINE_XFUNC1( "trace",   x_trace,	    0,		 "onoff", S_VAR_INT ),
   DEFINE_XFUNC0( "showstack", x_showstack,  0 ),
