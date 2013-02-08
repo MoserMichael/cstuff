@@ -1,0 +1,3388 @@
+<html>
+<head>Pooh program example 08-object-prototype-heap2.p</title></head>
+<body>
+<h3>Test 08-object-prototype-heap2.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+include 'heap.inc'
+
+println( ~msg '*** test min heap ***' )
+h = make_min_heap()
+
+for i range( ~from 30 ~to 1 ~step -1 )
+    h . push( ~key i ~data '[i]' )
+end
+
+while ! h.empty()
+    [key, val ] = h.pop()
+
+    println( ~msg 'key [ key ] value [ val ]' )
+end
+
+
+</pre>
+
+<h4>Included file: heap.inc</h4>
+
+<pre>
+
+
+# make a heap - the top is always the smallest key. 
+sub make_min_heap()
+
+    return {
+	      'values' : [],
+
+	      'push'   : sub( key, data )
+
+			    push( ~array this.values ~top [ key, data ] )
+
+			    n = size( ~arg this.values )
+			    while n > 1
+				parent = n / 2
+				if this.values[ parent ] [ 1 ] > this.values[ n ] [ 1 ] 
+				    tmp = this.values[ parent ]
+				    this.values[ parent ] = this.values[ n ]
+				    this.values[ n ] = tmp
+				else
+				    break
+				end
+                                n = parent
+			    end
+			 end,
+
+              'empty'  : sub() 
+                            return size( ~arg this.values ) == 0
+                         end,
+	      
+	      'top'    : sub()
+			    if size( ~arg this.values ) == 0
+			      return []
+			    end
+			    return this.values[ 1 ] 
+		         end,
+
+	      'pop'    : sub()
+			     sz = size( ~arg this.values )
+			     if sz == 0
+				return []
+			     end
+
+			     res = this.values[ 1 ]
+			     this.values[ 1 ] = this.values[ sz ]
+			     pop( ~array this.values )
+			     
+			  
+			     pos = 1
+			     loop
+				    rightn = pos * 2
+				    leftn = pos * 2 + 1
+
+				    if rightn >= sz
+				      break
+				    end
+
+				    if leftn >= sz
+					if this.values[ pos ][ 1 ] < this.values[ rightn ] [ 1 ]
+					   break
+					end
+					nextn = rightn
+				    else
+
+					if this.values[ pos ][ 1 ] < this.values[ rightn ][ 1 ] &&
+					    this.values[ pos ][ 1 ] < this.values[ leftn  ][ 1 ]
+					    break
+					end
+
+				
+				        if this.values[ rightn ][ 1 ] < this.values[ leftn ][ 1 ] 
+					  nextn = rightn
+	    			        else
+					  nextn = leftn
+				        end
+				   end			
+
+				   tmp = this.values[ nextn ]
+				   this.values[ nextn ] = this.values[ pos ]
+				   this.values[ pos ] = tmp
+
+				   pos = nextn
+			     end
+
+			     return res
+			 end
+
+	   }
+end
+
+
+# make a heap - the top is always the largest key. 
+sub make_max_heap()
+
+    return {
+	      'values' : [],
+
+	      'push'   : sub( key, data )
+
+			    push( ~array this.values ~top [ key, data ] )
+
+			    n = size( ~arg this.values )
+			    while n > 1
+				parent = n / 2
+				if this.values[ parent ] [ 1 ] < this.values[ n ] [ 1 ] 
+				    tmp = this.values[ parent ]
+				    this.values[ parent ] = this.values[ n ]
+				    this.values[ n ] = tmp
+				else
+				    break
+				end
+                                n = parent
+			    end
+			 end,
+
+              'empty'  : sub() 
+                            return size( ~arg this.values ) == 0
+                         end,
+	      
+	      'top'    : sub()
+			    if size( ~arg this.values ) == 0
+			      return []
+			    end
+			    return this.values[ 1 ] 
+		         end,
+
+	      'pop'    : sub()
+			     sz = size( ~arg this.values )
+			     if sz == 0
+				return []
+			     end
+
+			     res = this.values[ 1 ]
+			     this.values[ 1 ] = this.values[ sz ]
+			     pop( ~array this.values )
+			     
+			  
+			     pos = 1
+			     loop
+				    rightn = pos * 2
+				    leftn = pos * 2 + 1
+
+				    if rightn >= sz
+				      break
+				    end
+
+				    if leftn >= sz
+					if this.values[ pos ][ 1 ] > this.values[ rightn ] [ 1 ]
+					   break
+					end
+					nextn = rightn
+				    else
+
+					if this.values[ pos ][ 1 ] > this.values[ rightn ][ 1 ] &&
+					    this.values[ pos ][ 1 ] > this.values[ leftn  ][ 1 ]
+					    break
+					end
+
+				
+				        if this.values[ rightn ][ 1 ] > this.values[ leftn ][ 1 ] 
+					  nextn = rightn
+	    			        else
+					  nextn = leftn
+				        end
+				   end			
+
+				   tmp = this.values[ nextn ]
+				   this.values[ nextn ] = this.values[ pos ]
+				   this.values[ pos ] = tmp
+
+				   pos = nextn
+			     end
+
+			     return res
+			 end
+
+	   }
+end
+
+
+</pre>
+
+<h4>Trace output for 08-object-prototype-heap2.p</h4>
+
+<pre>
+003|println( ~msg '*** test min heap ***' )...
+004|... = make_min_heap(  )...
+006| return { 'values' : [ ]  , 'push' : sub (~key , ~data) , 'empty' : sub () , 'top' : sub () , 'pop' : sub () }
+004|h = make_min_heap(  ):{ 'pop' : sub , 'values' : ->(0x99c3860), 'empty' : sub , 'push' : sub , 'top' : sub  }
+006|for ... range( ~from 30 ~to 1 ~step  - 1 )...
+006| for i = 30
+007|  h{'push'}:sub ( ~key i:30 ~data '' .. i:30 .. '' )...
+011|   push( ~array this{'values'}:[  ] ~top [ key:30 , data:'30']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958) ] ):1
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 29
+007|  h{'push'}:sub ( ~key i:29 ~data '' .. i:29 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958) ] ~top [ key:29 , data:'29']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] ):2
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:30 > this{'values'}[n:2][1]:29):true
+017|     tmp = this{'values'}[parent:1]:[ -> 30, -> '30' ]
+018|     this{'values'}[parent:1]:[ -> 29, -> '29' ] = this{'values'}[n:2]:[ -> 29, -> '29' ]
+019|     this{'values'}[n:2]:[ -> 30, -> '30' ] = tmp:[ -> 30, -> '30' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 28
+007|  h{'push'}:sub ( ~key i:28 ~data '' .. i:28 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] ~top [ key:28 , data:'28']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] ):3
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:29 > this{'values'}[n:3][1]:28):true
+017|     tmp = this{'values'}[parent:1]:[ -> 29, -> '29' ]
+018|     this{'values'}[parent:1]:[ -> 28, -> '28' ] = this{'values'}[n:3]:[ -> 28, -> '28' ]
+019|     this{'values'}[n:3]:[ -> 29, -> '29' ] = tmp:[ -> 29, -> '29' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 27
+007|  h{'push'}:sub ( ~key i:27 ~data '' .. i:27 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] ~top [ key:27 , data:'27']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] ):4
+014|   while (n:4 > 1):true
+015|    parent = (n:4 / 2):2
+016|    if (this{'values'}[parent:2][1]:30 > this{'values'}[n:4][1]:27):true
+017|     tmp = this{'values'}[parent:2]:[ -> 30, -> '30' ]
+018|     this{'values'}[parent:2]:[ -> 27, -> '27' ] = this{'values'}[n:4]:[ -> 27, -> '27' ]
+019|     this{'values'}[n:4]:[ -> 30, -> '30' ] = tmp:[ -> 30, -> '30' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:28 > this{'values'}[n:2][1]:27):true
+017|     tmp = this{'values'}[parent:1]:[ -> 28, -> '28' ]
+018|     this{'values'}[parent:1]:[ -> 27, -> '27' ] = this{'values'}[n:2]:[ -> 27, -> '27' ]
+019|     this{'values'}[n:2]:[ -> 28, -> '28' ] = tmp:[ -> 28, -> '28' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 26
+007|  h{'push'}:sub ( ~key i:26 ~data '' .. i:26 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] ~top [ key:26 , data:'26']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] ):5
+014|   while (n:5 > 1):true
+015|    parent = (n:5 / 2):2
+016|    if (this{'values'}[parent:2][1]:28 > this{'values'}[n:5][1]:26):true
+017|     tmp = this{'values'}[parent:2]:[ -> 28, -> '28' ]
+018|     this{'values'}[parent:2]:[ -> 26, -> '26' ] = this{'values'}[n:5]:[ -> 26, -> '26' ]
+019|     this{'values'}[n:5]:[ -> 28, -> '28' ] = tmp:[ -> 28, -> '28' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:27 > this{'values'}[n:2][1]:26):true
+017|     tmp = this{'values'}[parent:1]:[ -> 27, -> '27' ]
+018|     this{'values'}[parent:1]:[ -> 26, -> '26' ] = this{'values'}[n:2]:[ -> 26, -> '26' ]
+019|     this{'values'}[n:2]:[ -> 27, -> '27' ] = tmp:[ -> 27, -> '27' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 25
+007|  h{'push'}:sub ( ~key i:25 ~data '' .. i:25 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] ~top [ key:25 , data:'25']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] ):6
+014|   while (n:6 > 1):true
+015|    parent = (n:6 / 2):3
+016|    if (this{'values'}[parent:3][1]:29 > this{'values'}[n:6][1]:25):true
+017|     tmp = this{'values'}[parent:3]:[ -> 29, -> '29' ]
+018|     this{'values'}[parent:3]:[ -> 25, -> '25' ] = this{'values'}[n:6]:[ -> 25, -> '25' ]
+019|     this{'values'}[n:6]:[ -> 29, -> '29' ] = tmp:[ -> 29, -> '29' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:26 > this{'values'}[n:3][1]:25):true
+017|     tmp = this{'values'}[parent:1]:[ -> 26, -> '26' ]
+018|     this{'values'}[parent:1]:[ -> 25, -> '25' ] = this{'values'}[n:3]:[ -> 25, -> '25' ]
+019|     this{'values'}[n:3]:[ -> 26, -> '26' ] = tmp:[ -> 26, -> '26' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 24
+007|  h{'push'}:sub ( ~key i:24 ~data '' .. i:24 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] ~top [ key:24 , data:'24']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] ):7
+014|   while (n:7 > 1):true
+015|    parent = (n:7 / 2):3
+016|    if (this{'values'}[parent:3][1]:26 > this{'values'}[n:7][1]:24):true
+017|     tmp = this{'values'}[parent:3]:[ -> 26, -> '26' ]
+018|     this{'values'}[parent:3]:[ -> 24, -> '24' ] = this{'values'}[n:7]:[ -> 24, -> '24' ]
+019|     this{'values'}[n:7]:[ -> 26, -> '26' ] = tmp:[ -> 26, -> '26' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:25 > this{'values'}[n:3][1]:24):true
+017|     tmp = this{'values'}[parent:1]:[ -> 25, -> '25' ]
+018|     this{'values'}[parent:1]:[ -> 24, -> '24' ] = this{'values'}[n:3]:[ -> 24, -> '24' ]
+019|     this{'values'}[n:3]:[ -> 25, -> '25' ] = tmp:[ -> 25, -> '25' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 23
+007|  h{'push'}:sub ( ~key i:23 ~data '' .. i:23 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] ~top [ key:23 , data:'23']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] ):8
+014|   while (n:8 > 1):true
+015|    parent = (n:8 / 2):4
+016|    if (this{'values'}[parent:4][1]:30 > this{'values'}[n:8][1]:23):true
+017|     tmp = this{'values'}[parent:4]:[ -> 30, -> '30' ]
+018|     this{'values'}[parent:4]:[ -> 23, -> '23' ] = this{'values'}[n:8]:[ -> 23, -> '23' ]
+019|     this{'values'}[n:8]:[ -> 30, -> '30' ] = tmp:[ -> 30, -> '30' ]
+019|    end # if
+023|    n = parent:4
+024|   end
+014|   while (n:4 > 1):true
+015|    parent = (n:4 / 2):2
+016|    if (this{'values'}[parent:2][1]:27 > this{'values'}[n:4][1]:23):true
+017|     tmp = this{'values'}[parent:2]:[ -> 27, -> '27' ]
+018|     this{'values'}[parent:2]:[ -> 23, -> '23' ] = this{'values'}[n:4]:[ -> 23, -> '23' ]
+019|     this{'values'}[n:4]:[ -> 27, -> '27' ] = tmp:[ -> 27, -> '27' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:24 > this{'values'}[n:2][1]:23):true
+017|     tmp = this{'values'}[parent:1]:[ -> 24, -> '24' ]
+018|     this{'values'}[parent:1]:[ -> 23, -> '23' ] = this{'values'}[n:2]:[ -> 23, -> '23' ]
+019|     this{'values'}[n:2]:[ -> 24, -> '24' ] = tmp:[ -> 24, -> '24' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 22
+007|  h{'push'}:sub ( ~key i:22 ~data '' .. i:22 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] ~top [ key:22 , data:'22']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] ):9
+014|   while (n:9 > 1):true
+015|    parent = (n:9 / 2):4
+016|    if (this{'values'}[parent:4][1]:27 > this{'values'}[n:9][1]:22):true
+017|     tmp = this{'values'}[parent:4]:[ -> 27, -> '27' ]
+018|     this{'values'}[parent:4]:[ -> 22, -> '22' ] = this{'values'}[n:9]:[ -> 22, -> '22' ]
+019|     this{'values'}[n:9]:[ -> 27, -> '27' ] = tmp:[ -> 27, -> '27' ]
+019|    end # if
+023|    n = parent:4
+024|   end
+014|   while (n:4 > 1):true
+015|    parent = (n:4 / 2):2
+016|    if (this{'values'}[parent:2][1]:24 > this{'values'}[n:4][1]:22):true
+017|     tmp = this{'values'}[parent:2]:[ -> 24, -> '24' ]
+018|     this{'values'}[parent:2]:[ -> 22, -> '22' ] = this{'values'}[n:4]:[ -> 22, -> '22' ]
+019|     this{'values'}[n:4]:[ -> 24, -> '24' ] = tmp:[ -> 24, -> '24' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:23 > this{'values'}[n:2][1]:22):true
+017|     tmp = this{'values'}[parent:1]:[ -> 23, -> '23' ]
+018|     this{'values'}[parent:1]:[ -> 22, -> '22' ] = this{'values'}[n:2]:[ -> 22, -> '22' ]
+019|     this{'values'}[n:2]:[ -> 23, -> '23' ] = tmp:[ -> 23, -> '23' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 21
+007|  h{'push'}:sub ( ~key i:21 ~data '' .. i:21 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] ~top [ key:21 , data:'21']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] ):10
+014|   while (n:10 > 1):true
+015|    parent = (n:10 / 2):5
+016|    if (this{'values'}[parent:5][1]:28 > this{'values'}[n:10][1]:21):true
+017|     tmp = this{'values'}[parent:5]:[ -> 28, -> '28' ]
+018|     this{'values'}[parent:5]:[ -> 21, -> '21' ] = this{'values'}[n:10]:[ -> 21, -> '21' ]
+019|     this{'values'}[n:10]:[ -> 28, -> '28' ] = tmp:[ -> 28, -> '28' ]
+019|    end # if
+023|    n = parent:5
+024|   end
+014|   while (n:5 > 1):true
+015|    parent = (n:5 / 2):2
+016|    if (this{'values'}[parent:2][1]:23 > this{'values'}[n:5][1]:21):true
+017|     tmp = this{'values'}[parent:2]:[ -> 23, -> '23' ]
+018|     this{'values'}[parent:2]:[ -> 21, -> '21' ] = this{'values'}[n:5]:[ -> 21, -> '21' ]
+019|     this{'values'}[n:5]:[ -> 23, -> '23' ] = tmp:[ -> 23, -> '23' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:22 > this{'values'}[n:2][1]:21):true
+017|     tmp = this{'values'}[parent:1]:[ -> 22, -> '22' ]
+018|     this{'values'}[parent:1]:[ -> 21, -> '21' ] = this{'values'}[n:2]:[ -> 21, -> '21' ]
+019|     this{'values'}[n:2]:[ -> 22, -> '22' ] = tmp:[ -> 22, -> '22' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 20
+007|  h{'push'}:sub ( ~key i:20 ~data '' .. i:20 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] ~top [ key:20 , data:'20']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] ):11
+014|   while (n:11 > 1):true
+015|    parent = (n:11 / 2):5
+016|    if (this{'values'}[parent:5][1]:23 > this{'values'}[n:11][1]:20):true
+017|     tmp = this{'values'}[parent:5]:[ -> 23, -> '23' ]
+018|     this{'values'}[parent:5]:[ -> 20, -> '20' ] = this{'values'}[n:11]:[ -> 20, -> '20' ]
+019|     this{'values'}[n:11]:[ -> 23, -> '23' ] = tmp:[ -> 23, -> '23' ]
+019|    end # if
+023|    n = parent:5
+024|   end
+014|   while (n:5 > 1):true
+015|    parent = (n:5 / 2):2
+016|    if (this{'values'}[parent:2][1]:22 > this{'values'}[n:5][1]:20):true
+017|     tmp = this{'values'}[parent:2]:[ -> 22, -> '22' ]
+018|     this{'values'}[parent:2]:[ -> 20, -> '20' ] = this{'values'}[n:5]:[ -> 20, -> '20' ]
+019|     this{'values'}[n:5]:[ -> 22, -> '22' ] = tmp:[ -> 22, -> '22' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:21 > this{'values'}[n:2][1]:20):true
+017|     tmp = this{'values'}[parent:1]:[ -> 21, -> '21' ]
+018|     this{'values'}[parent:1]:[ -> 20, -> '20' ] = this{'values'}[n:2]:[ -> 20, -> '20' ]
+019|     this{'values'}[n:2]:[ -> 21, -> '21' ] = tmp:[ -> 21, -> '21' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 19
+007|  h{'push'}:sub ( ~key i:19 ~data '' .. i:19 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] ~top [ key:19 , data:'19']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] ):12
+014|   while (n:12 > 1):true
+015|    parent = (n:12 / 2):6
+016|    if (this{'values'}[parent:6][1]:29 > this{'values'}[n:12][1]:19):true
+017|     tmp = this{'values'}[parent:6]:[ -> 29, -> '29' ]
+018|     this{'values'}[parent:6]:[ -> 19, -> '19' ] = this{'values'}[n:12]:[ -> 19, -> '19' ]
+019|     this{'values'}[n:12]:[ -> 29, -> '29' ] = tmp:[ -> 29, -> '29' ]
+019|    end # if
+023|    n = parent:6
+024|   end
+014|   while (n:6 > 1):true
+015|    parent = (n:6 / 2):3
+016|    if (this{'values'}[parent:3][1]:25 > this{'values'}[n:6][1]:19):true
+017|     tmp = this{'values'}[parent:3]:[ -> 25, -> '25' ]
+018|     this{'values'}[parent:3]:[ -> 19, -> '19' ] = this{'values'}[n:6]:[ -> 19, -> '19' ]
+019|     this{'values'}[n:6]:[ -> 25, -> '25' ] = tmp:[ -> 25, -> '25' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:20 > this{'values'}[n:3][1]:19):true
+017|     tmp = this{'values'}[parent:1]:[ -> 20, -> '20' ]
+018|     this{'values'}[parent:1]:[ -> 19, -> '19' ] = this{'values'}[n:3]:[ -> 19, -> '19' ]
+019|     this{'values'}[n:3]:[ -> 20, -> '20' ] = tmp:[ -> 20, -> '20' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 18
+007|  h{'push'}:sub ( ~key i:18 ~data '' .. i:18 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] ~top [ key:18 , data:'18']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] ):13
+014|   while (n:13 > 1):true
+015|    parent = (n:13 / 2):6
+016|    if (this{'values'}[parent:6][1]:25 > this{'values'}[n:13][1]:18):true
+017|     tmp = this{'values'}[parent:6]:[ -> 25, -> '25' ]
+018|     this{'values'}[parent:6]:[ -> 18, -> '18' ] = this{'values'}[n:13]:[ -> 18, -> '18' ]
+019|     this{'values'}[n:13]:[ -> 25, -> '25' ] = tmp:[ -> 25, -> '25' ]
+019|    end # if
+023|    n = parent:6
+024|   end
+014|   while (n:6 > 1):true
+015|    parent = (n:6 / 2):3
+016|    if (this{'values'}[parent:3][1]:20 > this{'values'}[n:6][1]:18):true
+017|     tmp = this{'values'}[parent:3]:[ -> 20, -> '20' ]
+018|     this{'values'}[parent:3]:[ -> 18, -> '18' ] = this{'values'}[n:6]:[ -> 18, -> '18' ]
+019|     this{'values'}[n:6]:[ -> 20, -> '20' ] = tmp:[ -> 20, -> '20' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:19 > this{'values'}[n:3][1]:18):true
+017|     tmp = this{'values'}[parent:1]:[ -> 19, -> '19' ]
+018|     this{'values'}[parent:1]:[ -> 18, -> '18' ] = this{'values'}[n:3]:[ -> 18, -> '18' ]
+019|     this{'values'}[n:3]:[ -> 19, -> '19' ] = tmp:[ -> 19, -> '19' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 17
+007|  h{'push'}:sub ( ~key i:17 ~data '' .. i:17 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] ~top [ key:17 , data:'17']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] ):14
+014|   while (n:14 > 1):true
+015|    parent = (n:14 / 2):7
+016|    if (this{'values'}[parent:7][1]:26 > this{'values'}[n:14][1]:17):true
+017|     tmp = this{'values'}[parent:7]:[ -> 26, -> '26' ]
+018|     this{'values'}[parent:7]:[ -> 17, -> '17' ] = this{'values'}[n:14]:[ -> 17, -> '17' ]
+019|     this{'values'}[n:14]:[ -> 26, -> '26' ] = tmp:[ -> 26, -> '26' ]
+019|    end # if
+023|    n = parent:7
+024|   end
+014|   while (n:7 > 1):true
+015|    parent = (n:7 / 2):3
+016|    if (this{'values'}[parent:3][1]:19 > this{'values'}[n:7][1]:17):true
+017|     tmp = this{'values'}[parent:3]:[ -> 19, -> '19' ]
+018|     this{'values'}[parent:3]:[ -> 17, -> '17' ] = this{'values'}[n:7]:[ -> 17, -> '17' ]
+019|     this{'values'}[n:7]:[ -> 19, -> '19' ] = tmp:[ -> 19, -> '19' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:18 > this{'values'}[n:3][1]:17):true
+017|     tmp = this{'values'}[parent:1]:[ -> 18, -> '18' ]
+018|     this{'values'}[parent:1]:[ -> 17, -> '17' ] = this{'values'}[n:3]:[ -> 17, -> '17' ]
+019|     this{'values'}[n:3]:[ -> 18, -> '18' ] = tmp:[ -> 18, -> '18' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 16
+007|  h{'push'}:sub ( ~key i:16 ~data '' .. i:16 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] ~top [ key:16 , data:'16']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] ):15
+014|   while (n:15 > 1):true
+015|    parent = (n:15 / 2):7
+016|    if (this{'values'}[parent:7][1]:19 > this{'values'}[n:15][1]:16):true
+017|     tmp = this{'values'}[parent:7]:[ -> 19, -> '19' ]
+018|     this{'values'}[parent:7]:[ -> 16, -> '16' ] = this{'values'}[n:15]:[ -> 16, -> '16' ]
+019|     this{'values'}[n:15]:[ -> 19, -> '19' ] = tmp:[ -> 19, -> '19' ]
+019|    end # if
+023|    n = parent:7
+024|   end
+014|   while (n:7 > 1):true
+015|    parent = (n:7 / 2):3
+016|    if (this{'values'}[parent:3][1]:18 > this{'values'}[n:7][1]:16):true
+017|     tmp = this{'values'}[parent:3]:[ -> 18, -> '18' ]
+018|     this{'values'}[parent:3]:[ -> 16, -> '16' ] = this{'values'}[n:7]:[ -> 16, -> '16' ]
+019|     this{'values'}[n:7]:[ -> 18, -> '18' ] = tmp:[ -> 18, -> '18' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:17 > this{'values'}[n:3][1]:16):true
+017|     tmp = this{'values'}[parent:1]:[ -> 17, -> '17' ]
+018|     this{'values'}[parent:1]:[ -> 16, -> '16' ] = this{'values'}[n:3]:[ -> 16, -> '16' ]
+019|     this{'values'}[n:3]:[ -> 17, -> '17' ] = tmp:[ -> 17, -> '17' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 15
+007|  h{'push'}:sub ( ~key i:15 ~data '' .. i:15 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] ~top [ key:15 , data:'15']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] ):16
+014|   while (n:16 > 1):true
+015|    parent = (n:16 / 2):8
+016|    if (this{'values'}[parent:8][1]:30 > this{'values'}[n:16][1]:15):true
+017|     tmp = this{'values'}[parent:8]:[ -> 30, -> '30' ]
+018|     this{'values'}[parent:8]:[ -> 15, -> '15' ] = this{'values'}[n:16]:[ -> 15, -> '15' ]
+019|     this{'values'}[n:16]:[ -> 30, -> '30' ] = tmp:[ -> 30, -> '30' ]
+019|    end # if
+023|    n = parent:8
+024|   end
+014|   while (n:8 > 1):true
+015|    parent = (n:8 / 2):4
+016|    if (this{'values'}[parent:4][1]:24 > this{'values'}[n:8][1]:15):true
+017|     tmp = this{'values'}[parent:4]:[ -> 24, -> '24' ]
+018|     this{'values'}[parent:4]:[ -> 15, -> '15' ] = this{'values'}[n:8]:[ -> 15, -> '15' ]
+019|     this{'values'}[n:8]:[ -> 24, -> '24' ] = tmp:[ -> 24, -> '24' ]
+019|    end # if
+023|    n = parent:4
+024|   end
+014|   while (n:4 > 1):true
+015|    parent = (n:4 / 2):2
+016|    if (this{'values'}[parent:2][1]:21 > this{'values'}[n:4][1]:15):true
+017|     tmp = this{'values'}[parent:2]:[ -> 21, -> '21' ]
+018|     this{'values'}[parent:2]:[ -> 15, -> '15' ] = this{'values'}[n:4]:[ -> 15, -> '15' ]
+019|     this{'values'}[n:4]:[ -> 21, -> '21' ] = tmp:[ -> 21, -> '21' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:16 > this{'values'}[n:2][1]:15):true
+017|     tmp = this{'values'}[parent:1]:[ -> 16, -> '16' ]
+018|     this{'values'}[parent:1]:[ -> 15, -> '15' ] = this{'values'}[n:2]:[ -> 15, -> '15' ]
+019|     this{'values'}[n:2]:[ -> 16, -> '16' ] = tmp:[ -> 16, -> '16' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 14
+007|  h{'push'}:sub ( ~key i:14 ~data '' .. i:14 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] ~top [ key:14 , data:'14']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] ):17
+014|   while (n:17 > 1):true
+015|    parent = (n:17 / 2):8
+016|    if (this{'values'}[parent:8][1]:24 > this{'values'}[n:17][1]:14):true
+017|     tmp = this{'values'}[parent:8]:[ -> 24, -> '24' ]
+018|     this{'values'}[parent:8]:[ -> 14, -> '14' ] = this{'values'}[n:17]:[ -> 14, -> '14' ]
+019|     this{'values'}[n:17]:[ -> 24, -> '24' ] = tmp:[ -> 24, -> '24' ]
+019|    end # if
+023|    n = parent:8
+024|   end
+014|   while (n:8 > 1):true
+015|    parent = (n:8 / 2):4
+016|    if (this{'values'}[parent:4][1]:21 > this{'values'}[n:8][1]:14):true
+017|     tmp = this{'values'}[parent:4]:[ -> 21, -> '21' ]
+018|     this{'values'}[parent:4]:[ -> 14, -> '14' ] = this{'values'}[n:8]:[ -> 14, -> '14' ]
+019|     this{'values'}[n:8]:[ -> 21, -> '21' ] = tmp:[ -> 21, -> '21' ]
+019|    end # if
+023|    n = parent:4
+024|   end
+014|   while (n:4 > 1):true
+015|    parent = (n:4 / 2):2
+016|    if (this{'values'}[parent:2][1]:16 > this{'values'}[n:4][1]:14):true
+017|     tmp = this{'values'}[parent:2]:[ -> 16, -> '16' ]
+018|     this{'values'}[parent:2]:[ -> 14, -> '14' ] = this{'values'}[n:4]:[ -> 14, -> '14' ]
+019|     this{'values'}[n:4]:[ -> 16, -> '16' ] = tmp:[ -> 16, -> '16' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:15 > this{'values'}[n:2][1]:14):true
+017|     tmp = this{'values'}[parent:1]:[ -> 15, -> '15' ]
+018|     this{'values'}[parent:1]:[ -> 14, -> '14' ] = this{'values'}[n:2]:[ -> 14, -> '14' ]
+019|     this{'values'}[n:2]:[ -> 15, -> '15' ] = tmp:[ -> 15, -> '15' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 13
+007|  h{'push'}:sub ( ~key i:13 ~data '' .. i:13 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] ~top [ key:13 , data:'13']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] ):18
+014|   while (n:18 > 1):true
+015|    parent = (n:18 / 2):9
+016|    if (this{'values'}[parent:9][1]:27 > this{'values'}[n:18][1]:13):true
+017|     tmp = this{'values'}[parent:9]:[ -> 27, -> '27' ]
+018|     this{'values'}[parent:9]:[ -> 13, -> '13' ] = this{'values'}[n:18]:[ -> 13, -> '13' ]
+019|     this{'values'}[n:18]:[ -> 27, -> '27' ] = tmp:[ -> 27, -> '27' ]
+019|    end # if
+023|    n = parent:9
+024|   end
+014|   while (n:9 > 1):true
+015|    parent = (n:9 / 2):4
+016|    if (this{'values'}[parent:4][1]:16 > this{'values'}[n:9][1]:13):true
+017|     tmp = this{'values'}[parent:4]:[ -> 16, -> '16' ]
+018|     this{'values'}[parent:4]:[ -> 13, -> '13' ] = this{'values'}[n:9]:[ -> 13, -> '13' ]
+019|     this{'values'}[n:9]:[ -> 16, -> '16' ] = tmp:[ -> 16, -> '16' ]
+019|    end # if
+023|    n = parent:4
+024|   end
+014|   while (n:4 > 1):true
+015|    parent = (n:4 / 2):2
+016|    if (this{'values'}[parent:2][1]:15 > this{'values'}[n:4][1]:13):true
+017|     tmp = this{'values'}[parent:2]:[ -> 15, -> '15' ]
+018|     this{'values'}[parent:2]:[ -> 13, -> '13' ] = this{'values'}[n:4]:[ -> 13, -> '13' ]
+019|     this{'values'}[n:4]:[ -> 15, -> '15' ] = tmp:[ -> 15, -> '15' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:14 > this{'values'}[n:2][1]:13):true
+017|     tmp = this{'values'}[parent:1]:[ -> 14, -> '14' ]
+018|     this{'values'}[parent:1]:[ -> 13, -> '13' ] = this{'values'}[n:2]:[ -> 13, -> '13' ]
+019|     this{'values'}[n:2]:[ -> 14, -> '14' ] = tmp:[ -> 14, -> '14' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 12
+007|  h{'push'}:sub ( ~key i:12 ~data '' .. i:12 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] ~top [ key:12 , data:'12']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] ):19
+014|   while (n:19 > 1):true
+015|    parent = (n:19 / 2):9
+016|    if (this{'values'}[parent:9][1]:16 > this{'values'}[n:19][1]:12):true
+017|     tmp = this{'values'}[parent:9]:[ -> 16, -> '16' ]
+018|     this{'values'}[parent:9]:[ -> 12, -> '12' ] = this{'values'}[n:19]:[ -> 12, -> '12' ]
+019|     this{'values'}[n:19]:[ -> 16, -> '16' ] = tmp:[ -> 16, -> '16' ]
+019|    end # if
+023|    n = parent:9
+024|   end
+014|   while (n:9 > 1):true
+015|    parent = (n:9 / 2):4
+016|    if (this{'values'}[parent:4][1]:15 > this{'values'}[n:9][1]:12):true
+017|     tmp = this{'values'}[parent:4]:[ -> 15, -> '15' ]
+018|     this{'values'}[parent:4]:[ -> 12, -> '12' ] = this{'values'}[n:9]:[ -> 12, -> '12' ]
+019|     this{'values'}[n:9]:[ -> 15, -> '15' ] = tmp:[ -> 15, -> '15' ]
+019|    end # if
+023|    n = parent:4
+024|   end
+014|   while (n:4 > 1):true
+015|    parent = (n:4 / 2):2
+016|    if (this{'values'}[parent:2][1]:14 > this{'values'}[n:4][1]:12):true
+017|     tmp = this{'values'}[parent:2]:[ -> 14, -> '14' ]
+018|     this{'values'}[parent:2]:[ -> 12, -> '12' ] = this{'values'}[n:4]:[ -> 12, -> '12' ]
+019|     this{'values'}[n:4]:[ -> 14, -> '14' ] = tmp:[ -> 14, -> '14' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:13 > this{'values'}[n:2][1]:12):true
+017|     tmp = this{'values'}[parent:1]:[ -> 13, -> '13' ]
+018|     this{'values'}[parent:1]:[ -> 12, -> '12' ] = this{'values'}[n:2]:[ -> 12, -> '12' ]
+019|     this{'values'}[n:2]:[ -> 13, -> '13' ] = tmp:[ -> 13, -> '13' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 11
+007|  h{'push'}:sub ( ~key i:11 ~data '' .. i:11 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] ~top [ key:11 , data:'11']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] ):20
+014|   while (n:20 > 1):true
+015|    parent = (n:20 / 2):10
+016|    if (this{'values'}[parent:10][1]:28 > this{'values'}[n:20][1]:11):true
+017|     tmp = this{'values'}[parent:10]:[ -> 28, -> '28' ]
+018|     this{'values'}[parent:10]:[ -> 11, -> '11' ] = this{'values'}[n:20]:[ -> 11, -> '11' ]
+019|     this{'values'}[n:20]:[ -> 28, -> '28' ] = tmp:[ -> 28, -> '28' ]
+019|    end # if
+023|    n = parent:10
+024|   end
+014|   while (n:10 > 1):true
+015|    parent = (n:10 / 2):5
+016|    if (this{'values'}[parent:5][1]:22 > this{'values'}[n:10][1]:11):true
+017|     tmp = this{'values'}[parent:5]:[ -> 22, -> '22' ]
+018|     this{'values'}[parent:5]:[ -> 11, -> '11' ] = this{'values'}[n:10]:[ -> 11, -> '11' ]
+019|     this{'values'}[n:10]:[ -> 22, -> '22' ] = tmp:[ -> 22, -> '22' ]
+019|    end # if
+023|    n = parent:5
+024|   end
+014|   while (n:5 > 1):true
+015|    parent = (n:5 / 2):2
+016|    if (this{'values'}[parent:2][1]:13 > this{'values'}[n:5][1]:11):true
+017|     tmp = this{'values'}[parent:2]:[ -> 13, -> '13' ]
+018|     this{'values'}[parent:2]:[ -> 11, -> '11' ] = this{'values'}[n:5]:[ -> 11, -> '11' ]
+019|     this{'values'}[n:5]:[ -> 13, -> '13' ] = tmp:[ -> 13, -> '13' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:12 > this{'values'}[n:2][1]:11):true
+017|     tmp = this{'values'}[parent:1]:[ -> 12, -> '12' ]
+018|     this{'values'}[parent:1]:[ -> 11, -> '11' ] = this{'values'}[n:2]:[ -> 11, -> '11' ]
+019|     this{'values'}[n:2]:[ -> 12, -> '12' ] = tmp:[ -> 12, -> '12' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 10
+007|  h{'push'}:sub ( ~key i:10 ~data '' .. i:10 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] ~top [ key:10 , data:'10']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] ):21
+014|   while (n:21 > 1):true
+015|    parent = (n:21 / 2):10
+016|    if (this{'values'}[parent:10][1]:22 > this{'values'}[n:21][1]:10):true
+017|     tmp = this{'values'}[parent:10]:[ -> 22, -> '22' ]
+018|     this{'values'}[parent:10]:[ -> 10, -> '10' ] = this{'values'}[n:21]:[ -> 10, -> '10' ]
+019|     this{'values'}[n:21]:[ -> 22, -> '22' ] = tmp:[ -> 22, -> '22' ]
+019|    end # if
+023|    n = parent:10
+024|   end
+014|   while (n:10 > 1):true
+015|    parent = (n:10 / 2):5
+016|    if (this{'values'}[parent:5][1]:13 > this{'values'}[n:10][1]:10):true
+017|     tmp = this{'values'}[parent:5]:[ -> 13, -> '13' ]
+018|     this{'values'}[parent:5]:[ -> 10, -> '10' ] = this{'values'}[n:10]:[ -> 10, -> '10' ]
+019|     this{'values'}[n:10]:[ -> 13, -> '13' ] = tmp:[ -> 13, -> '13' ]
+019|    end # if
+023|    n = parent:5
+024|   end
+014|   while (n:5 > 1):true
+015|    parent = (n:5 / 2):2
+016|    if (this{'values'}[parent:2][1]:12 > this{'values'}[n:5][1]:10):true
+017|     tmp = this{'values'}[parent:2]:[ -> 12, -> '12' ]
+018|     this{'values'}[parent:2]:[ -> 10, -> '10' ] = this{'values'}[n:5]:[ -> 10, -> '10' ]
+019|     this{'values'}[n:5]:[ -> 12, -> '12' ] = tmp:[ -> 12, -> '12' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:11 > this{'values'}[n:2][1]:10):true
+017|     tmp = this{'values'}[parent:1]:[ -> 11, -> '11' ]
+018|     this{'values'}[parent:1]:[ -> 10, -> '10' ] = this{'values'}[n:2]:[ -> 10, -> '10' ]
+019|     this{'values'}[n:2]:[ -> 11, -> '11' ] = tmp:[ -> 11, -> '11' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 9
+007|  h{'push'}:sub ( ~key i:9 ~data '' .. i:9 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] ~top [ key:9 , data:'9']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] ):22
+014|   while (n:22 > 1):true
+015|    parent = (n:22 / 2):11
+016|    if (this{'values'}[parent:11][1]:23 > this{'values'}[n:22][1]:9):true
+017|     tmp = this{'values'}[parent:11]:[ -> 23, -> '23' ]
+018|     this{'values'}[parent:11]:[ -> 9, -> '9' ] = this{'values'}[n:22]:[ -> 9, -> '9' ]
+019|     this{'values'}[n:22]:[ -> 23, -> '23' ] = tmp:[ -> 23, -> '23' ]
+019|    end # if
+023|    n = parent:11
+024|   end
+014|   while (n:11 > 1):true
+015|    parent = (n:11 / 2):5
+016|    if (this{'values'}[parent:5][1]:12 > this{'values'}[n:11][1]:9):true
+017|     tmp = this{'values'}[parent:5]:[ -> 12, -> '12' ]
+018|     this{'values'}[parent:5]:[ -> 9, -> '9' ] = this{'values'}[n:11]:[ -> 9, -> '9' ]
+019|     this{'values'}[n:11]:[ -> 12, -> '12' ] = tmp:[ -> 12, -> '12' ]
+019|    end # if
+023|    n = parent:5
+024|   end
+014|   while (n:5 > 1):true
+015|    parent = (n:5 / 2):2
+016|    if (this{'values'}[parent:2][1]:11 > this{'values'}[n:5][1]:9):true
+017|     tmp = this{'values'}[parent:2]:[ -> 11, -> '11' ]
+018|     this{'values'}[parent:2]:[ -> 9, -> '9' ] = this{'values'}[n:5]:[ -> 9, -> '9' ]
+019|     this{'values'}[n:5]:[ -> 11, -> '11' ] = tmp:[ -> 11, -> '11' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:10 > this{'values'}[n:2][1]:9):true
+017|     tmp = this{'values'}[parent:1]:[ -> 10, -> '10' ]
+018|     this{'values'}[parent:1]:[ -> 9, -> '9' ] = this{'values'}[n:2]:[ -> 9, -> '9' ]
+019|     this{'values'}[n:2]:[ -> 10, -> '10' ] = tmp:[ -> 10, -> '10' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 8
+007|  h{'push'}:sub ( ~key i:8 ~data '' .. i:8 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] ~top [ key:8 , data:'8']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] ):23
+014|   while (n:23 > 1):true
+015|    parent = (n:23 / 2):11
+016|    if (this{'values'}[parent:11][1]:12 > this{'values'}[n:23][1]:8):true
+017|     tmp = this{'values'}[parent:11]:[ -> 12, -> '12' ]
+018|     this{'values'}[parent:11]:[ -> 8, -> '8' ] = this{'values'}[n:23]:[ -> 8, -> '8' ]
+019|     this{'values'}[n:23]:[ -> 12, -> '12' ] = tmp:[ -> 12, -> '12' ]
+019|    end # if
+023|    n = parent:11
+024|   end
+014|   while (n:11 > 1):true
+015|    parent = (n:11 / 2):5
+016|    if (this{'values'}[parent:5][1]:11 > this{'values'}[n:11][1]:8):true
+017|     tmp = this{'values'}[parent:5]:[ -> 11, -> '11' ]
+018|     this{'values'}[parent:5]:[ -> 8, -> '8' ] = this{'values'}[n:11]:[ -> 8, -> '8' ]
+019|     this{'values'}[n:11]:[ -> 11, -> '11' ] = tmp:[ -> 11, -> '11' ]
+019|    end # if
+023|    n = parent:5
+024|   end
+014|   while (n:5 > 1):true
+015|    parent = (n:5 / 2):2
+016|    if (this{'values'}[parent:2][1]:10 > this{'values'}[n:5][1]:8):true
+017|     tmp = this{'values'}[parent:2]:[ -> 10, -> '10' ]
+018|     this{'values'}[parent:2]:[ -> 8, -> '8' ] = this{'values'}[n:5]:[ -> 8, -> '8' ]
+019|     this{'values'}[n:5]:[ -> 10, -> '10' ] = tmp:[ -> 10, -> '10' ]
+019|    end # if
+023|    n = parent:2
+024|   end
+014|   while (n:2 > 1):true
+015|    parent = (n:2 / 2):1
+016|    if (this{'values'}[parent:1][1]:9 > this{'values'}[n:2][1]:8):true
+017|     tmp = this{'values'}[parent:1]:[ -> 9, -> '9' ]
+018|     this{'values'}[parent:1]:[ -> 8, -> '8' ] = this{'values'}[n:2]:[ -> 8, -> '8' ]
+019|     this{'values'}[n:2]:[ -> 9, -> '9' ] = tmp:[ -> 9, -> '9' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 7
+007|  h{'push'}:sub ( ~key i:7 ~data '' .. i:7 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] ~top [ key:7 , data:'7']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] ):24
+014|   while (n:24 > 1):true
+015|    parent = (n:24 / 2):12
+016|    if (this{'values'}[parent:12][1]:29 > this{'values'}[n:24][1]:7):true
+017|     tmp = this{'values'}[parent:12]:[ -> 29, -> '29' ]
+018|     this{'values'}[parent:12]:[ -> 7, -> '7' ] = this{'values'}[n:24]:[ -> 7, -> '7' ]
+019|     this{'values'}[n:24]:[ -> 29, -> '29' ] = tmp:[ -> 29, -> '29' ]
+019|    end # if
+023|    n = parent:12
+024|   end
+014|   while (n:12 > 1):true
+015|    parent = (n:12 / 2):6
+016|    if (this{'values'}[parent:6][1]:20 > this{'values'}[n:12][1]:7):true
+017|     tmp = this{'values'}[parent:6]:[ -> 20, -> '20' ]
+018|     this{'values'}[parent:6]:[ -> 7, -> '7' ] = this{'values'}[n:12]:[ -> 7, -> '7' ]
+019|     this{'values'}[n:12]:[ -> 20, -> '20' ] = tmp:[ -> 20, -> '20' ]
+019|    end # if
+023|    n = parent:6
+024|   end
+014|   while (n:6 > 1):true
+015|    parent = (n:6 / 2):3
+016|    if (this{'values'}[parent:3][1]:17 > this{'values'}[n:6][1]:7):true
+017|     tmp = this{'values'}[parent:3]:[ -> 17, -> '17' ]
+018|     this{'values'}[parent:3]:[ -> 7, -> '7' ] = this{'values'}[n:6]:[ -> 7, -> '7' ]
+019|     this{'values'}[n:6]:[ -> 17, -> '17' ] = tmp:[ -> 17, -> '17' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:8 > this{'values'}[n:3][1]:7):true
+017|     tmp = this{'values'}[parent:1]:[ -> 8, -> '8' ]
+018|     this{'values'}[parent:1]:[ -> 7, -> '7' ] = this{'values'}[n:3]:[ -> 7, -> '7' ]
+019|     this{'values'}[n:3]:[ -> 8, -> '8' ] = tmp:[ -> 8, -> '8' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 6
+007|  h{'push'}:sub ( ~key i:6 ~data '' .. i:6 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] ~top [ key:6 , data:'6']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] ):25
+014|   while (n:25 > 1):true
+015|    parent = (n:25 / 2):12
+016|    if (this{'values'}[parent:12][1]:20 > this{'values'}[n:25][1]:6):true
+017|     tmp = this{'values'}[parent:12]:[ -> 20, -> '20' ]
+018|     this{'values'}[parent:12]:[ -> 6, -> '6' ] = this{'values'}[n:25]:[ -> 6, -> '6' ]
+019|     this{'values'}[n:25]:[ -> 20, -> '20' ] = tmp:[ -> 20, -> '20' ]
+019|    end # if
+023|    n = parent:12
+024|   end
+014|   while (n:12 > 1):true
+015|    parent = (n:12 / 2):6
+016|    if (this{'values'}[parent:6][1]:17 > this{'values'}[n:12][1]:6):true
+017|     tmp = this{'values'}[parent:6]:[ -> 17, -> '17' ]
+018|     this{'values'}[parent:6]:[ -> 6, -> '6' ] = this{'values'}[n:12]:[ -> 6, -> '6' ]
+019|     this{'values'}[n:12]:[ -> 17, -> '17' ] = tmp:[ -> 17, -> '17' ]
+019|    end # if
+023|    n = parent:6
+024|   end
+014|   while (n:6 > 1):true
+015|    parent = (n:6 / 2):3
+016|    if (this{'values'}[parent:3][1]:8 > this{'values'}[n:6][1]:6):true
+017|     tmp = this{'values'}[parent:3]:[ -> 8, -> '8' ]
+018|     this{'values'}[parent:3]:[ -> 6, -> '6' ] = this{'values'}[n:6]:[ -> 6, -> '6' ]
+019|     this{'values'}[n:6]:[ -> 8, -> '8' ] = tmp:[ -> 8, -> '8' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:7 > this{'values'}[n:3][1]:6):true
+017|     tmp = this{'values'}[parent:1]:[ -> 7, -> '7' ]
+018|     this{'values'}[parent:1]:[ -> 6, -> '6' ] = this{'values'}[n:3]:[ -> 6, -> '6' ]
+019|     this{'values'}[n:3]:[ -> 7, -> '7' ] = tmp:[ -> 7, -> '7' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 5
+007|  h{'push'}:sub ( ~key i:5 ~data '' .. i:5 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] ~top [ key:5 , data:'5']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] ):26
+014|   while (n:26 > 1):true
+015|    parent = (n:26 / 2):13
+016|    if (this{'values'}[parent:13][1]:25 > this{'values'}[n:26][1]:5):true
+017|     tmp = this{'values'}[parent:13]:[ -> 25, -> '25' ]
+018|     this{'values'}[parent:13]:[ -> 5, -> '5' ] = this{'values'}[n:26]:[ -> 5, -> '5' ]
+019|     this{'values'}[n:26]:[ -> 25, -> '25' ] = tmp:[ -> 25, -> '25' ]
+019|    end # if
+023|    n = parent:13
+024|   end
+014|   while (n:13 > 1):true
+015|    parent = (n:13 / 2):6
+016|    if (this{'values'}[parent:6][1]:8 > this{'values'}[n:13][1]:5):true
+017|     tmp = this{'values'}[parent:6]:[ -> 8, -> '8' ]
+018|     this{'values'}[parent:6]:[ -> 5, -> '5' ] = this{'values'}[n:13]:[ -> 5, -> '5' ]
+019|     this{'values'}[n:13]:[ -> 8, -> '8' ] = tmp:[ -> 8, -> '8' ]
+019|    end # if
+023|    n = parent:6
+024|   end
+014|   while (n:6 > 1):true
+015|    parent = (n:6 / 2):3
+016|    if (this{'values'}[parent:3][1]:7 > this{'values'}[n:6][1]:5):true
+017|     tmp = this{'values'}[parent:3]:[ -> 7, -> '7' ]
+018|     this{'values'}[parent:3]:[ -> 5, -> '5' ] = this{'values'}[n:6]:[ -> 5, -> '5' ]
+019|     this{'values'}[n:6]:[ -> 7, -> '7' ] = tmp:[ -> 7, -> '7' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:6 > this{'values'}[n:3][1]:5):true
+017|     tmp = this{'values'}[parent:1]:[ -> 6, -> '6' ]
+018|     this{'values'}[parent:1]:[ -> 5, -> '5' ] = this{'values'}[n:3]:[ -> 5, -> '5' ]
+019|     this{'values'}[n:3]:[ -> 6, -> '6' ] = tmp:[ -> 6, -> '6' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 4
+007|  h{'push'}:sub ( ~key i:4 ~data '' .. i:4 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] ~top [ key:4 , data:'4']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] ):27
+014|   while (n:27 > 1):true
+015|    parent = (n:27 / 2):13
+016|    if (this{'values'}[parent:13][1]:8 > this{'values'}[n:27][1]:4):true
+017|     tmp = this{'values'}[parent:13]:[ -> 8, -> '8' ]
+018|     this{'values'}[parent:13]:[ -> 4, -> '4' ] = this{'values'}[n:27]:[ -> 4, -> '4' ]
+019|     this{'values'}[n:27]:[ -> 8, -> '8' ] = tmp:[ -> 8, -> '8' ]
+019|    end # if
+023|    n = parent:13
+024|   end
+014|   while (n:13 > 1):true
+015|    parent = (n:13 / 2):6
+016|    if (this{'values'}[parent:6][1]:7 > this{'values'}[n:13][1]:4):true
+017|     tmp = this{'values'}[parent:6]:[ -> 7, -> '7' ]
+018|     this{'values'}[parent:6]:[ -> 4, -> '4' ] = this{'values'}[n:13]:[ -> 4, -> '4' ]
+019|     this{'values'}[n:13]:[ -> 7, -> '7' ] = tmp:[ -> 7, -> '7' ]
+019|    end # if
+023|    n = parent:6
+024|   end
+014|   while (n:6 > 1):true
+015|    parent = (n:6 / 2):3
+016|    if (this{'values'}[parent:3][1]:6 > this{'values'}[n:6][1]:4):true
+017|     tmp = this{'values'}[parent:3]:[ -> 6, -> '6' ]
+018|     this{'values'}[parent:3]:[ -> 4, -> '4' ] = this{'values'}[n:6]:[ -> 4, -> '4' ]
+019|     this{'values'}[n:6]:[ -> 6, -> '6' ] = tmp:[ -> 6, -> '6' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:5 > this{'values'}[n:3][1]:4):true
+017|     tmp = this{'values'}[parent:1]:[ -> 5, -> '5' ]
+018|     this{'values'}[parent:1]:[ -> 4, -> '4' ] = this{'values'}[n:3]:[ -> 4, -> '4' ]
+019|     this{'values'}[n:3]:[ -> 5, -> '5' ] = tmp:[ -> 5, -> '5' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 3
+007|  h{'push'}:sub ( ~key i:3 ~data '' .. i:3 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] ~top [ key:3 , data:'3']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] ):28
+014|   while (n:28 > 1):true
+015|    parent = (n:28 / 2):14
+016|    if (this{'values'}[parent:14][1]:26 > this{'values'}[n:28][1]:3):true
+017|     tmp = this{'values'}[parent:14]:[ -> 26, -> '26' ]
+018|     this{'values'}[parent:14]:[ -> 3, -> '3' ] = this{'values'}[n:28]:[ -> 3, -> '3' ]
+019|     this{'values'}[n:28]:[ -> 26, -> '26' ] = tmp:[ -> 26, -> '26' ]
+019|    end # if
+023|    n = parent:14
+024|   end
+014|   while (n:14 > 1):true
+015|    parent = (n:14 / 2):7
+016|    if (this{'values'}[parent:7][1]:18 > this{'values'}[n:14][1]:3):true
+017|     tmp = this{'values'}[parent:7]:[ -> 18, -> '18' ]
+018|     this{'values'}[parent:7]:[ -> 3, -> '3' ] = this{'values'}[n:14]:[ -> 3, -> '3' ]
+019|     this{'values'}[n:14]:[ -> 18, -> '18' ] = tmp:[ -> 18, -> '18' ]
+019|    end # if
+023|    n = parent:7
+024|   end
+014|   while (n:7 > 1):true
+015|    parent = (n:7 / 2):3
+016|    if (this{'values'}[parent:3][1]:5 > this{'values'}[n:7][1]:3):true
+017|     tmp = this{'values'}[parent:3]:[ -> 5, -> '5' ]
+018|     this{'values'}[parent:3]:[ -> 3, -> '3' ] = this{'values'}[n:7]:[ -> 3, -> '3' ]
+019|     this{'values'}[n:7]:[ -> 5, -> '5' ] = tmp:[ -> 5, -> '5' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:4 > this{'values'}[n:3][1]:3):true
+017|     tmp = this{'values'}[parent:1]:[ -> 4, -> '4' ]
+018|     this{'values'}[parent:1]:[ -> 3, -> '3' ] = this{'values'}[n:3]:[ -> 3, -> '3' ]
+019|     this{'values'}[n:3]:[ -> 4, -> '4' ] = tmp:[ -> 4, -> '4' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 2
+007|  h{'push'}:sub ( ~key i:2 ~data '' .. i:2 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] ~top [ key:2 , data:'2']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] ):29
+014|   while (n:29 > 1):true
+015|    parent = (n:29 / 2):14
+016|    if (this{'values'}[parent:14][1]:18 > this{'values'}[n:29][1]:2):true
+017|     tmp = this{'values'}[parent:14]:[ -> 18, -> '18' ]
+018|     this{'values'}[parent:14]:[ -> 2, -> '2' ] = this{'values'}[n:29]:[ -> 2, -> '2' ]
+019|     this{'values'}[n:29]:[ -> 18, -> '18' ] = tmp:[ -> 18, -> '18' ]
+019|    end # if
+023|    n = parent:14
+024|   end
+014|   while (n:14 > 1):true
+015|    parent = (n:14 / 2):7
+016|    if (this{'values'}[parent:7][1]:5 > this{'values'}[n:14][1]:2):true
+017|     tmp = this{'values'}[parent:7]:[ -> 5, -> '5' ]
+018|     this{'values'}[parent:7]:[ -> 2, -> '2' ] = this{'values'}[n:14]:[ -> 2, -> '2' ]
+019|     this{'values'}[n:14]:[ -> 5, -> '5' ] = tmp:[ -> 5, -> '5' ]
+019|    end # if
+023|    n = parent:7
+024|   end
+014|   while (n:7 > 1):true
+015|    parent = (n:7 / 2):3
+016|    if (this{'values'}[parent:3][1]:4 > this{'values'}[n:7][1]:2):true
+017|     tmp = this{'values'}[parent:3]:[ -> 4, -> '4' ]
+018|     this{'values'}[parent:3]:[ -> 2, -> '2' ] = this{'values'}[n:7]:[ -> 2, -> '2' ]
+019|     this{'values'}[n:7]:[ -> 4, -> '4' ] = tmp:[ -> 4, -> '4' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:3 > this{'values'}[n:3][1]:2):true
+017|     tmp = this{'values'}[parent:1]:[ -> 3, -> '3' ]
+018|     this{'values'}[parent:1]:[ -> 2, -> '2' ] = this{'values'}[n:3]:[ -> 2, -> '2' ]
+019|     this{'values'}[n:3]:[ -> 3, -> '3' ] = tmp:[ -> 3, -> '3' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| for i = 1
+007|  h{'push'}:sub ( ~key i:1 ~data '' .. i:1 .. '' )...
+011|   push( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] ~top [ key:1 , data:'1']  )...
+013|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] )...
+013|   n = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] ):30
+014|   while (n:30 > 1):true
+015|    parent = (n:30 / 2):15
+016|    if (this{'values'}[parent:15][1]:19 > this{'values'}[n:30][1]:1):true
+017|     tmp = this{'values'}[parent:15]:[ -> 19, -> '19' ]
+018|     this{'values'}[parent:15]:[ -> 1, -> '1' ] = this{'values'}[n:30]:[ -> 1, -> '1' ]
+019|     this{'values'}[n:30]:[ -> 19, -> '19' ] = tmp:[ -> 19, -> '19' ]
+019|    end # if
+023|    n = parent:15
+024|   end
+014|   while (n:15 > 1):true
+015|    parent = (n:15 / 2):7
+016|    if (this{'values'}[parent:7][1]:4 > this{'values'}[n:15][1]:1):true
+017|     tmp = this{'values'}[parent:7]:[ -> 4, -> '4' ]
+018|     this{'values'}[parent:7]:[ -> 1, -> '1' ] = this{'values'}[n:15]:[ -> 1, -> '1' ]
+019|     this{'values'}[n:15]:[ -> 4, -> '4' ] = tmp:[ -> 4, -> '4' ]
+019|    end # if
+023|    n = parent:7
+024|   end
+014|   while (n:7 > 1):true
+015|    parent = (n:7 / 2):3
+016|    if (this{'values'}[parent:3][1]:3 > this{'values'}[n:7][1]:1):true
+017|     tmp = this{'values'}[parent:3]:[ -> 3, -> '3' ]
+018|     this{'values'}[parent:3]:[ -> 1, -> '1' ] = this{'values'}[n:7]:[ -> 1, -> '1' ]
+019|     this{'values'}[n:7]:[ -> 3, -> '3' ] = tmp:[ -> 3, -> '3' ]
+019|    end # if
+023|    n = parent:3
+024|   end
+014|   while (n:3 > 1):true
+015|    parent = (n:3 / 2):1
+016|    if (this{'values'}[parent:1][1]:2 > this{'values'}[n:3][1]:1):true
+017|     tmp = this{'values'}[parent:1]:[ -> 2, -> '2' ]
+018|     this{'values'}[parent:1]:[ -> 1, -> '1' ] = this{'values'}[n:3]:[ -> 1, -> '1' ]
+019|     this{'values'}[n:3]:[ -> 2, -> '2' ] = tmp:[ -> 2, -> '2' ]
+019|    end # if
+023|    n = parent:1
+024|   end
+014|   while (n:1 > 1):false
+024|   end # finish loop
+006| end
+006| for ...
+006| end # finish for loop
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] ):30 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] ):30
+040|   if (sz:30 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 1, -> '1' ]
+045|   this{'values'}[1]:[ -> 19, -> '19' ] = this{'values'}[sz:30]:[ -> 19, -> '19' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090), ->(0x99dc608) ] ):->(0x99dc608)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:30):false
+055|    end # if
+058|    if (leftn:3 >= sz:30):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:19 < this{'values'}[rightn:2][1]:9):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:2):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 2, -> '2' ]
+079|    this{'values'}[nextn:3]:[ -> 19, -> '19' ] = this{'values'}[pos:1]:[ -> 19, -> '19' ]
+080|    this{'values'}[pos:1]:[ -> 2, -> '2' ] = tmp:[ -> 2, -> '2' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:30):false
+055|    end # if
+058|    if (leftn:7 >= sz:30):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:19 < this{'values'}[rightn:6][1]:6):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:6 < this{'values'}[leftn:7][1]:3):false
+072|     else
+074|      nextn = leftn:7
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:7]:[ -> 3, -> '3' ]
+079|    this{'values'}[nextn:7]:[ -> 19, -> '19' ] = this{'values'}[pos:3]:[ -> 19, -> '19' ]
+080|    this{'values'}[pos:3]:[ -> 3, -> '3' ] = tmp:[ -> 3, -> '3' ]
+082|    pos = nextn:7
+083|   end
+050|   loop
+051|    rightn = (pos:7 * 2):14
+052|    leftn = ((pos:7 * 2):14 + 1):15
+054|    if (rightn:14 >= sz:30):false
+055|    end # if
+058|    if (leftn:15 >= sz:30):false
+062|    else
+065|     if ((this{'values'}[pos:7][1]:19 < this{'values'}[rightn:14][1]:5):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:14][1]:5 < this{'values'}[leftn:15][1]:4):false
+072|     else
+074|      nextn = leftn:15
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:15]:[ -> 4, -> '4' ]
+079|    this{'values'}[nextn:15]:[ -> 19, -> '19' ] = this{'values'}[pos:7]:[ -> 19, -> '19' ]
+080|    this{'values'}[pos:7]:[ -> 4, -> '4' ] = tmp:[ -> 4, -> '4' ]
+082|    pos = nextn:15
+083|   end
+050|   loop
+051|    rightn = (pos:15 * 2):30
+052|    leftn = ((pos:15 * 2):30 + 1):31
+054|    if (rightn:30 >= sz:30):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 1, -> '1' ]
+011|  [ key:-> 1 , val:-> '1']  = h{'pop'}:sub (  ):[ -> 1, -> '1' ]
+013|  println( ~msg 'key ' .. key:1 .. ' value ' .. val:'1' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] ):29 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] ):29
+040|   if (sz:29 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 2, -> '2' ]
+045|   this{'values'}[1]:[ -> 18, -> '18' ] = this{'values'}[sz:29]:[ -> 18, -> '18' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58), ->(0x99db090) ] ):->(0x99db090)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:29):false
+055|    end # if
+058|    if (leftn:3 >= sz:29):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:18 < this{'values'}[rightn:2][1]:9):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:3):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 3, -> '3' ]
+079|    this{'values'}[nextn:3]:[ -> 18, -> '18' ] = this{'values'}[pos:1]:[ -> 18, -> '18' ]
+080|    this{'values'}[pos:1]:[ -> 3, -> '3' ] = tmp:[ -> 3, -> '3' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:29):false
+055|    end # if
+058|    if (leftn:7 >= sz:29):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:18 < this{'values'}[rightn:6][1]:6):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:6 < this{'values'}[leftn:7][1]:4):false
+072|     else
+074|      nextn = leftn:7
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:7]:[ -> 4, -> '4' ]
+079|    this{'values'}[nextn:7]:[ -> 18, -> '18' ] = this{'values'}[pos:3]:[ -> 18, -> '18' ]
+080|    this{'values'}[pos:3]:[ -> 4, -> '4' ] = tmp:[ -> 4, -> '4' ]
+082|    pos = nextn:7
+083|   end
+050|   loop
+051|    rightn = (pos:7 * 2):14
+052|    leftn = ((pos:7 * 2):14 + 1):15
+054|    if (rightn:14 >= sz:29):false
+055|    end # if
+058|    if (leftn:15 >= sz:29):false
+062|    else
+065|     if ((this{'values'}[pos:7][1]:18 < this{'values'}[rightn:14][1]:5):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:14][1]:5 < this{'values'}[leftn:15][1]:19):true
+072|      nextn = rightn:14
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:14]:[ -> 5, -> '5' ]
+079|    this{'values'}[nextn:14]:[ -> 18, -> '18' ] = this{'values'}[pos:7]:[ -> 18, -> '18' ]
+080|    this{'values'}[pos:7]:[ -> 5, -> '5' ] = tmp:[ -> 5, -> '5' ]
+082|    pos = nextn:14
+083|   end
+050|   loop
+051|    rightn = (pos:14 * 2):28
+052|    leftn = ((pos:14 * 2):28 + 1):29
+054|    if (rightn:28 >= sz:29):false
+055|    end # if
+058|    if (leftn:29 >= sz:29):true
+059|     if (this{'values'}[pos:14][1]:18 < this{'values'}[rightn:28][1]:26):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 2, -> '2' ]
+011|  [ key:-> 2 , val:-> '2']  = h{'pop'}:sub (  ):[ -> 2, -> '2' ]
+013|  println( ~msg 'key ' .. key:2 .. ' value ' .. val:'2' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] ):28 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] ):28
+040|   if (sz:28 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 3, -> '3' ]
+045|   this{'values'}[1]:[ -> 26, -> '26' ] = this{'values'}[sz:28]:[ -> 26, -> '26' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80), ->(0x99d9d58) ] ):->(0x99d9d58)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:28):false
+055|    end # if
+058|    if (leftn:3 >= sz:28):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:26 < this{'values'}[rightn:2][1]:9):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:4):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 4, -> '4' ]
+079|    this{'values'}[nextn:3]:[ -> 26, -> '26' ] = this{'values'}[pos:1]:[ -> 26, -> '26' ]
+080|    this{'values'}[pos:1]:[ -> 4, -> '4' ] = tmp:[ -> 4, -> '4' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:28):false
+055|    end # if
+058|    if (leftn:7 >= sz:28):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:26 < this{'values'}[rightn:6][1]:6):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:6 < this{'values'}[leftn:7][1]:5):false
+072|     else
+074|      nextn = leftn:7
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:7]:[ -> 5, -> '5' ]
+079|    this{'values'}[nextn:7]:[ -> 26, -> '26' ] = this{'values'}[pos:3]:[ -> 26, -> '26' ]
+080|    this{'values'}[pos:3]:[ -> 5, -> '5' ] = tmp:[ -> 5, -> '5' ]
+082|    pos = nextn:7
+083|   end
+050|   loop
+051|    rightn = (pos:7 * 2):14
+052|    leftn = ((pos:7 * 2):14 + 1):15
+054|    if (rightn:14 >= sz:28):false
+055|    end # if
+058|    if (leftn:15 >= sz:28):false
+062|    else
+065|     if ((this{'values'}[pos:7][1]:26 < this{'values'}[rightn:14][1]:18):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:14][1]:18 < this{'values'}[leftn:15][1]:19):true
+072|      nextn = rightn:14
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:14]:[ -> 18, -> '18' ]
+079|    this{'values'}[nextn:14]:[ -> 26, -> '26' ] = this{'values'}[pos:7]:[ -> 26, -> '26' ]
+080|    this{'values'}[pos:7]:[ -> 18, -> '18' ] = tmp:[ -> 18, -> '18' ]
+082|    pos = nextn:14
+083|   end
+050|   loop
+051|    rightn = (pos:14 * 2):28
+052|    leftn = ((pos:14 * 2):28 + 1):29
+054|    if (rightn:28 >= sz:28):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 3, -> '3' ]
+011|  [ key:-> 3 , val:-> '3']  = h{'pop'}:sub (  ):[ -> 3, -> '3' ]
+013|  println( ~msg 'key ' .. key:3 .. ' value ' .. val:'3' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] ):27 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] ):27
+040|   if (sz:27 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 4, -> '4' ]
+045|   this{'values'}[1]:[ -> 8, -> '8' ] = this{'values'}[sz:27]:[ -> 8, -> '8' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808), ->(0x99d8a80) ] ):->(0x99d8a80)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:27):false
+055|    end # if
+058|    if (leftn:3 >= sz:27):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:8 < this{'values'}[rightn:2][1]:9):true and (this{'values'}[pos:1][1]:8 < this{'values'}[leftn:3][1]:5):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:5):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 5, -> '5' ]
+079|    this{'values'}[nextn:3]:[ -> 8, -> '8' ] = this{'values'}[pos:1]:[ -> 8, -> '8' ]
+080|    this{'values'}[pos:1]:[ -> 5, -> '5' ] = tmp:[ -> 5, -> '5' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:27):false
+055|    end # if
+058|    if (leftn:7 >= sz:27):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:8 < this{'values'}[rightn:6][1]:6):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:6 < this{'values'}[leftn:7][1]:18):true
+072|      nextn = rightn:6
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:6]:[ -> 6, -> '6' ]
+079|    this{'values'}[nextn:6]:[ -> 8, -> '8' ] = this{'values'}[pos:3]:[ -> 8, -> '8' ]
+080|    this{'values'}[pos:3]:[ -> 6, -> '6' ] = tmp:[ -> 6, -> '6' ]
+082|    pos = nextn:6
+083|   end
+050|   loop
+051|    rightn = (pos:6 * 2):12
+052|    leftn = ((pos:6 * 2):12 + 1):13
+054|    if (rightn:12 >= sz:27):false
+055|    end # if
+058|    if (leftn:13 >= sz:27):false
+062|    else
+065|     if ((this{'values'}[pos:6][1]:8 < this{'values'}[rightn:12][1]:17):true and (this{'values'}[pos:6][1]:8 < this{'values'}[leftn:13][1]:7):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:12][1]:17 < this{'values'}[leftn:13][1]:7):false
+072|     else
+074|      nextn = leftn:13
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:13]:[ -> 7, -> '7' ]
+079|    this{'values'}[nextn:13]:[ -> 8, -> '8' ] = this{'values'}[pos:6]:[ -> 8, -> '8' ]
+080|    this{'values'}[pos:6]:[ -> 7, -> '7' ] = tmp:[ -> 7, -> '7' ]
+082|    pos = nextn:13
+083|   end
+050|   loop
+051|    rightn = (pos:13 * 2):26
+052|    leftn = ((pos:13 * 2):26 + 1):27
+054|    if (rightn:26 >= sz:27):false
+055|    end # if
+058|    if (leftn:27 >= sz:27):true
+059|     if (this{'values'}[pos:13][1]:8 < this{'values'}[rightn:26][1]:25):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 4, -> '4' ]
+011|  [ key:-> 4 , val:-> '4']  = h{'pop'}:sub (  ):[ -> 4, -> '4' ]
+013|  println( ~msg 'key ' .. key:4 .. ' value ' .. val:'4' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] ):26 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] ):26
+040|   if (sz:26 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 5, -> '5' ]
+045|   this{'values'}[1]:[ -> 25, -> '25' ] = this{'values'}[sz:26]:[ -> 25, -> '25' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0), ->(0x99d7808) ] ):->(0x99d7808)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:26):false
+055|    end # if
+058|    if (leftn:3 >= sz:26):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:25 < this{'values'}[rightn:2][1]:9):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:6):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 6, -> '6' ]
+079|    this{'values'}[nextn:3]:[ -> 25, -> '25' ] = this{'values'}[pos:1]:[ -> 25, -> '25' ]
+080|    this{'values'}[pos:1]:[ -> 6, -> '6' ] = tmp:[ -> 6, -> '6' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:26):false
+055|    end # if
+058|    if (leftn:7 >= sz:26):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:25 < this{'values'}[rightn:6][1]:7):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:7 < this{'values'}[leftn:7][1]:18):true
+072|      nextn = rightn:6
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:6]:[ -> 7, -> '7' ]
+079|    this{'values'}[nextn:6]:[ -> 25, -> '25' ] = this{'values'}[pos:3]:[ -> 25, -> '25' ]
+080|    this{'values'}[pos:3]:[ -> 7, -> '7' ] = tmp:[ -> 7, -> '7' ]
+082|    pos = nextn:6
+083|   end
+050|   loop
+051|    rightn = (pos:6 * 2):12
+052|    leftn = ((pos:6 * 2):12 + 1):13
+054|    if (rightn:12 >= sz:26):false
+055|    end # if
+058|    if (leftn:13 >= sz:26):false
+062|    else
+065|     if ((this{'values'}[pos:6][1]:25 < this{'values'}[rightn:12][1]:17):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:12][1]:17 < this{'values'}[leftn:13][1]:8):false
+072|     else
+074|      nextn = leftn:13
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:13]:[ -> 8, -> '8' ]
+079|    this{'values'}[nextn:13]:[ -> 25, -> '25' ] = this{'values'}[pos:6]:[ -> 25, -> '25' ]
+080|    this{'values'}[pos:6]:[ -> 8, -> '8' ] = tmp:[ -> 8, -> '8' ]
+082|    pos = nextn:13
+083|   end
+050|   loop
+051|    rightn = (pos:13 * 2):26
+052|    leftn = ((pos:13 * 2):26 + 1):27
+054|    if (rightn:26 >= sz:26):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 5, -> '5' ]
+011|  [ key:-> 5 , val:-> '5']  = h{'pop'}:sub (  ):[ -> 5, -> '5' ]
+013|  println( ~msg 'key ' .. key:5 .. ' value ' .. val:'5' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] ):25 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] ):25
+040|   if (sz:25 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 6, -> '6' ]
+045|   this{'values'}[1]:[ -> 20, -> '20' ] = this{'values'}[sz:25]:[ -> 20, -> '20' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438), ->(0x99d65f0) ] ):->(0x99d65f0)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:25):false
+055|    end # if
+058|    if (leftn:3 >= sz:25):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:20 < this{'values'}[rightn:2][1]:9):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:7):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 7, -> '7' ]
+079|    this{'values'}[nextn:3]:[ -> 20, -> '20' ] = this{'values'}[pos:1]:[ -> 20, -> '20' ]
+080|    this{'values'}[pos:1]:[ -> 7, -> '7' ] = tmp:[ -> 7, -> '7' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:25):false
+055|    end # if
+058|    if (leftn:7 >= sz:25):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:20 < this{'values'}[rightn:6][1]:8):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:8 < this{'values'}[leftn:7][1]:18):true
+072|      nextn = rightn:6
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:6]:[ -> 8, -> '8' ]
+079|    this{'values'}[nextn:6]:[ -> 20, -> '20' ] = this{'values'}[pos:3]:[ -> 20, -> '20' ]
+080|    this{'values'}[pos:3]:[ -> 8, -> '8' ] = tmp:[ -> 8, -> '8' ]
+082|    pos = nextn:6
+083|   end
+050|   loop
+051|    rightn = (pos:6 * 2):12
+052|    leftn = ((pos:6 * 2):12 + 1):13
+054|    if (rightn:12 >= sz:25):false
+055|    end # if
+058|    if (leftn:13 >= sz:25):false
+062|    else
+065|     if ((this{'values'}[pos:6][1]:20 < this{'values'}[rightn:12][1]:17):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:12][1]:17 < this{'values'}[leftn:13][1]:25):true
+072|      nextn = rightn:12
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:12]:[ -> 17, -> '17' ]
+079|    this{'values'}[nextn:12]:[ -> 20, -> '20' ] = this{'values'}[pos:6]:[ -> 20, -> '20' ]
+080|    this{'values'}[pos:6]:[ -> 17, -> '17' ] = tmp:[ -> 17, -> '17' ]
+082|    pos = nextn:12
+083|   end
+050|   loop
+051|    rightn = (pos:12 * 2):24
+052|    leftn = ((pos:12 * 2):24 + 1):25
+054|    if (rightn:24 >= sz:25):false
+055|    end # if
+058|    if (leftn:25 >= sz:25):true
+059|     if (this{'values'}[pos:12][1]:20 < this{'values'}[rightn:24][1]:29):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 6, -> '6' ]
+011|  [ key:-> 6 , val:-> '6']  = h{'pop'}:sub (  ):[ -> 6, -> '6' ]
+013|  println( ~msg 'key ' .. key:6 .. ' value ' .. val:'6' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] ):24 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] ):24
+040|   if (sz:24 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 7, -> '7' ]
+045|   this{'values'}[1]:[ -> 29, -> '29' ] = this{'values'}[sz:24]:[ -> 29, -> '29' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0), ->(0x99d5438) ] ):->(0x99d5438)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:24):false
+055|    end # if
+058|    if (leftn:3 >= sz:24):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:29 < this{'values'}[rightn:2][1]:9):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:8):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 8, -> '8' ]
+079|    this{'values'}[nextn:3]:[ -> 29, -> '29' ] = this{'values'}[pos:1]:[ -> 29, -> '29' ]
+080|    this{'values'}[pos:1]:[ -> 8, -> '8' ] = tmp:[ -> 8, -> '8' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:24):false
+055|    end # if
+058|    if (leftn:7 >= sz:24):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:29 < this{'values'}[rightn:6][1]:17):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:17 < this{'values'}[leftn:7][1]:18):true
+072|      nextn = rightn:6
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:6]:[ -> 17, -> '17' ]
+079|    this{'values'}[nextn:6]:[ -> 29, -> '29' ] = this{'values'}[pos:3]:[ -> 29, -> '29' ]
+080|    this{'values'}[pos:3]:[ -> 17, -> '17' ] = tmp:[ -> 17, -> '17' ]
+082|    pos = nextn:6
+083|   end
+050|   loop
+051|    rightn = (pos:6 * 2):12
+052|    leftn = ((pos:6 * 2):12 + 1):13
+054|    if (rightn:12 >= sz:24):false
+055|    end # if
+058|    if (leftn:13 >= sz:24):false
+062|    else
+065|     if ((this{'values'}[pos:6][1]:29 < this{'values'}[rightn:12][1]:20):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:12][1]:20 < this{'values'}[leftn:13][1]:25):true
+072|      nextn = rightn:12
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:12]:[ -> 20, -> '20' ]
+079|    this{'values'}[nextn:12]:[ -> 29, -> '29' ] = this{'values'}[pos:6]:[ -> 29, -> '29' ]
+080|    this{'values'}[pos:6]:[ -> 20, -> '20' ] = tmp:[ -> 20, -> '20' ]
+082|    pos = nextn:12
+083|   end
+050|   loop
+051|    rightn = (pos:12 * 2):24
+052|    leftn = ((pos:12 * 2):24 + 1):25
+054|    if (rightn:24 >= sz:24):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 7, -> '7' ]
+011|  [ key:-> 7 , val:-> '7']  = h{'pop'}:sub (  ):[ -> 7, -> '7' ]
+013|  println( ~msg 'key ' .. key:7 .. ' value ' .. val:'7' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] ):23 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] ):23
+040|   if (sz:23 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 8, -> '8' ]
+045|   this{'values'}[1]:[ -> 12, -> '12' ] = this{'values'}[sz:23]:[ -> 12, -> '12' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188), ->(0x99c92b0) ] ):->(0x99c92b0)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:23):false
+055|    end # if
+058|    if (leftn:3 >= sz:23):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:12 < this{'values'}[rightn:2][1]:9):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:9 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 9, -> '9' ]
+079|    this{'values'}[nextn:2]:[ -> 12, -> '12' ] = this{'values'}[pos:1]:[ -> 12, -> '12' ]
+080|    this{'values'}[pos:1]:[ -> 9, -> '9' ] = tmp:[ -> 9, -> '9' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:23):false
+055|    end # if
+058|    if (leftn:5 >= sz:23):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:12 < this{'values'}[rightn:4][1]:14):true and (this{'values'}[pos:2][1]:12 < this{'values'}[leftn:5][1]:10):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:14 < this{'values'}[leftn:5][1]:10):false
+072|     else
+074|      nextn = leftn:5
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:5]:[ -> 10, -> '10' ]
+079|    this{'values'}[nextn:5]:[ -> 12, -> '12' ] = this{'values'}[pos:2]:[ -> 12, -> '12' ]
+080|    this{'values'}[pos:2]:[ -> 10, -> '10' ] = tmp:[ -> 10, -> '10' ]
+082|    pos = nextn:5
+083|   end
+050|   loop
+051|    rightn = (pos:5 * 2):10
+052|    leftn = ((pos:5 * 2):10 + 1):11
+054|    if (rightn:10 >= sz:23):false
+055|    end # if
+058|    if (leftn:11 >= sz:23):false
+062|    else
+065|     if ((this{'values'}[pos:5][1]:12 < this{'values'}[rightn:10][1]:13):true and (this{'values'}[pos:5][1]:12 < this{'values'}[leftn:11][1]:11):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:10][1]:13 < this{'values'}[leftn:11][1]:11):false
+072|     else
+074|      nextn = leftn:11
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:11]:[ -> 11, -> '11' ]
+079|    this{'values'}[nextn:11]:[ -> 12, -> '12' ] = this{'values'}[pos:5]:[ -> 12, -> '12' ]
+080|    this{'values'}[pos:5]:[ -> 11, -> '11' ] = tmp:[ -> 11, -> '11' ]
+082|    pos = nextn:11
+083|   end
+050|   loop
+051|    rightn = (pos:11 * 2):22
+052|    leftn = ((pos:11 * 2):22 + 1):23
+054|    if (rightn:22 >= sz:23):false
+055|    end # if
+058|    if (leftn:23 >= sz:23):true
+059|     if (this{'values'}[pos:11][1]:12 < this{'values'}[rightn:22][1]:23):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 8, -> '8' ]
+011|  [ key:-> 8 , val:-> '8']  = h{'pop'}:sub (  ):[ -> 8, -> '8' ]
+013|  println( ~msg 'key ' .. key:8 .. ' value ' .. val:'8' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] ):22 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] ):22
+040|   if (sz:22 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 9, -> '9' ]
+045|   this{'values'}[1]:[ -> 23, -> '23' ] = this{'values'}[sz:22]:[ -> 23, -> '23' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98), ->(0x99d3188) ] ):->(0x99d3188)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:22):false
+055|    end # if
+058|    if (leftn:3 >= sz:22):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:23 < this{'values'}[rightn:2][1]:10):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:10 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 10, -> '10' ]
+079|    this{'values'}[nextn:2]:[ -> 23, -> '23' ] = this{'values'}[pos:1]:[ -> 23, -> '23' ]
+080|    this{'values'}[pos:1]:[ -> 10, -> '10' ] = tmp:[ -> 10, -> '10' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:22):false
+055|    end # if
+058|    if (leftn:5 >= sz:22):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:23 < this{'values'}[rightn:4][1]:14):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:14 < this{'values'}[leftn:5][1]:11):false
+072|     else
+074|      nextn = leftn:5
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:5]:[ -> 11, -> '11' ]
+079|    this{'values'}[nextn:5]:[ -> 23, -> '23' ] = this{'values'}[pos:2]:[ -> 23, -> '23' ]
+080|    this{'values'}[pos:2]:[ -> 11, -> '11' ] = tmp:[ -> 11, -> '11' ]
+082|    pos = nextn:5
+083|   end
+050|   loop
+051|    rightn = (pos:5 * 2):10
+052|    leftn = ((pos:5 * 2):10 + 1):11
+054|    if (rightn:10 >= sz:22):false
+055|    end # if
+058|    if (leftn:11 >= sz:22):false
+062|    else
+065|     if ((this{'values'}[pos:5][1]:23 < this{'values'}[rightn:10][1]:13):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:10][1]:13 < this{'values'}[leftn:11][1]:12):false
+072|     else
+074|      nextn = leftn:11
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:11]:[ -> 12, -> '12' ]
+079|    this{'values'}[nextn:11]:[ -> 23, -> '23' ] = this{'values'}[pos:5]:[ -> 23, -> '23' ]
+080|    this{'values'}[pos:5]:[ -> 12, -> '12' ] = tmp:[ -> 12, -> '12' ]
+082|    pos = nextn:11
+083|   end
+050|   loop
+051|    rightn = (pos:11 * 2):22
+052|    leftn = ((pos:11 * 2):22 + 1):23
+054|    if (rightn:22 >= sz:22):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 9, -> '9' ]
+011|  [ key:-> 9 , val:-> '9']  = h{'pop'}:sub (  ):[ -> 9, -> '9' ]
+013|  println( ~msg 'key ' .. key:9 .. ' value ' .. val:'9' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] ):21 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] ):21
+040|   if (sz:21 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 10, -> '10' ]
+045|   this{'values'}[1]:[ -> 22, -> '22' ] = this{'values'}[sz:21]:[ -> 22, -> '22' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0), ->(0x99d1a98) ] ):->(0x99d1a98)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:21):false
+055|    end # if
+058|    if (leftn:3 >= sz:21):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:22 < this{'values'}[rightn:2][1]:11):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:11 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 11, -> '11' ]
+079|    this{'values'}[nextn:2]:[ -> 22, -> '22' ] = this{'values'}[pos:1]:[ -> 22, -> '22' ]
+080|    this{'values'}[pos:1]:[ -> 11, -> '11' ] = tmp:[ -> 11, -> '11' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:21):false
+055|    end # if
+058|    if (leftn:5 >= sz:21):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:22 < this{'values'}[rightn:4][1]:14):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:14 < this{'values'}[leftn:5][1]:12):false
+072|     else
+074|      nextn = leftn:5
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:5]:[ -> 12, -> '12' ]
+079|    this{'values'}[nextn:5]:[ -> 22, -> '22' ] = this{'values'}[pos:2]:[ -> 22, -> '22' ]
+080|    this{'values'}[pos:2]:[ -> 12, -> '12' ] = tmp:[ -> 12, -> '12' ]
+082|    pos = nextn:5
+083|   end
+050|   loop
+051|    rightn = (pos:5 * 2):10
+052|    leftn = ((pos:5 * 2):10 + 1):11
+054|    if (rightn:10 >= sz:21):false
+055|    end # if
+058|    if (leftn:11 >= sz:21):false
+062|    else
+065|     if ((this{'values'}[pos:5][1]:22 < this{'values'}[rightn:10][1]:13):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:10][1]:13 < this{'values'}[leftn:11][1]:23):true
+072|      nextn = rightn:10
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:10]:[ -> 13, -> '13' ]
+079|    this{'values'}[nextn:10]:[ -> 22, -> '22' ] = this{'values'}[pos:5]:[ -> 22, -> '22' ]
+080|    this{'values'}[pos:5]:[ -> 13, -> '13' ] = tmp:[ -> 13, -> '13' ]
+082|    pos = nextn:10
+083|   end
+050|   loop
+051|    rightn = (pos:10 * 2):20
+052|    leftn = ((pos:10 * 2):20 + 1):21
+054|    if (rightn:20 >= sz:21):false
+055|    end # if
+058|    if (leftn:21 >= sz:21):true
+059|     if (this{'values'}[pos:10][1]:22 < this{'values'}[rightn:20][1]:28):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 10, -> '10' ]
+011|  [ key:-> 10 , val:-> '10']  = h{'pop'}:sub (  ):[ -> 10, -> '10' ]
+013|  println( ~msg 'key ' .. key:10 .. ' value ' .. val:'10' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] ):20 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] ):20
+040|   if (sz:20 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 11, -> '11' ]
+045|   this{'values'}[1]:[ -> 28, -> '28' ] = this{'values'}[sz:20]:[ -> 28, -> '28' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0), ->(0x99d0cf0) ] ):->(0x99d0cf0)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:20):false
+055|    end # if
+058|    if (leftn:3 >= sz:20):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:28 < this{'values'}[rightn:2][1]:12):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:12 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 12, -> '12' ]
+079|    this{'values'}[nextn:2]:[ -> 28, -> '28' ] = this{'values'}[pos:1]:[ -> 28, -> '28' ]
+080|    this{'values'}[pos:1]:[ -> 12, -> '12' ] = tmp:[ -> 12, -> '12' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:20):false
+055|    end # if
+058|    if (leftn:5 >= sz:20):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:28 < this{'values'}[rightn:4][1]:14):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:14 < this{'values'}[leftn:5][1]:13):false
+072|     else
+074|      nextn = leftn:5
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:5]:[ -> 13, -> '13' ]
+079|    this{'values'}[nextn:5]:[ -> 28, -> '28' ] = this{'values'}[pos:2]:[ -> 28, -> '28' ]
+080|    this{'values'}[pos:2]:[ -> 13, -> '13' ] = tmp:[ -> 13, -> '13' ]
+082|    pos = nextn:5
+083|   end
+050|   loop
+051|    rightn = (pos:5 * 2):10
+052|    leftn = ((pos:5 * 2):10 + 1):11
+054|    if (rightn:10 >= sz:20):false
+055|    end # if
+058|    if (leftn:11 >= sz:20):false
+062|    else
+065|     if ((this{'values'}[pos:5][1]:28 < this{'values'}[rightn:10][1]:22):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:10][1]:22 < this{'values'}[leftn:11][1]:23):true
+072|      nextn = rightn:10
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:10]:[ -> 22, -> '22' ]
+079|    this{'values'}[nextn:10]:[ -> 28, -> '28' ] = this{'values'}[pos:5]:[ -> 28, -> '28' ]
+080|    this{'values'}[pos:5]:[ -> 22, -> '22' ] = tmp:[ -> 22, -> '22' ]
+082|    pos = nextn:10
+083|   end
+050|   loop
+051|    rightn = (pos:10 * 2):20
+052|    leftn = ((pos:10 * 2):20 + 1):21
+054|    if (rightn:20 >= sz:20):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 11, -> '11' ]
+011|  [ key:-> 11 , val:-> '11']  = h{'pop'}:sub (  ):[ -> 11, -> '11' ]
+013|  println( ~msg 'key ' .. key:11 .. ' value ' .. val:'11' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] ):19 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] ):19
+040|   if (sz:19 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 12, -> '12' ]
+045|   this{'values'}[1]:[ -> 16, -> '16' ] = this{'values'}[sz:19]:[ -> 16, -> '16' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80), ->(0x99cfcf0) ] ):->(0x99cfcf0)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:19):false
+055|    end # if
+058|    if (leftn:3 >= sz:19):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:16 < this{'values'}[rightn:2][1]:13):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:13 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 13, -> '13' ]
+079|    this{'values'}[nextn:2]:[ -> 16, -> '16' ] = this{'values'}[pos:1]:[ -> 16, -> '16' ]
+080|    this{'values'}[pos:1]:[ -> 13, -> '13' ] = tmp:[ -> 13, -> '13' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:19):false
+055|    end # if
+058|    if (leftn:5 >= sz:19):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:16 < this{'values'}[rightn:4][1]:14):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:14 < this{'values'}[leftn:5][1]:22):true
+072|      nextn = rightn:4
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:4]:[ -> 14, -> '14' ]
+079|    this{'values'}[nextn:4]:[ -> 16, -> '16' ] = this{'values'}[pos:2]:[ -> 16, -> '16' ]
+080|    this{'values'}[pos:2]:[ -> 14, -> '14' ] = tmp:[ -> 14, -> '14' ]
+082|    pos = nextn:4
+083|   end
+050|   loop
+051|    rightn = (pos:4 * 2):8
+052|    leftn = ((pos:4 * 2):8 + 1):9
+054|    if (rightn:8 >= sz:19):false
+055|    end # if
+058|    if (leftn:9 >= sz:19):false
+062|    else
+065|     if ((this{'values'}[pos:4][1]:16 < this{'values'}[rightn:8][1]:21):true and (this{'values'}[pos:4][1]:16 < this{'values'}[leftn:9][1]:15):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:8][1]:21 < this{'values'}[leftn:9][1]:15):false
+072|     else
+074|      nextn = leftn:9
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:9]:[ -> 15, -> '15' ]
+079|    this{'values'}[nextn:9]:[ -> 16, -> '16' ] = this{'values'}[pos:4]:[ -> 16, -> '16' ]
+080|    this{'values'}[pos:4]:[ -> 15, -> '15' ] = tmp:[ -> 15, -> '15' ]
+082|    pos = nextn:9
+083|   end
+050|   loop
+051|    rightn = (pos:9 * 2):18
+052|    leftn = ((pos:9 * 2):18 + 1):19
+054|    if (rightn:18 >= sz:19):false
+055|    end # if
+058|    if (leftn:19 >= sz:19):true
+059|     if (this{'values'}[pos:9][1]:16 < this{'values'}[rightn:18][1]:27):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 12, -> '12' ]
+011|  [ key:-> 12 , val:-> '12']  = h{'pop'}:sub (  ):[ -> 12, -> '12' ]
+013|  println( ~msg 'key ' .. key:12 .. ' value ' .. val:'12' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] ):18 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] ):18
+040|   if (sz:18 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 13, -> '13' ]
+045|   this{'values'}[1]:[ -> 27, -> '27' ] = this{'values'}[sz:18]:[ -> 27, -> '27' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70), ->(0x99ceb80) ] ):->(0x99ceb80)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:18):false
+055|    end # if
+058|    if (leftn:3 >= sz:18):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:27 < this{'values'}[rightn:2][1]:14):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:14 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 14, -> '14' ]
+079|    this{'values'}[nextn:2]:[ -> 27, -> '27' ] = this{'values'}[pos:1]:[ -> 27, -> '27' ]
+080|    this{'values'}[pos:1]:[ -> 14, -> '14' ] = tmp:[ -> 14, -> '14' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:18):false
+055|    end # if
+058|    if (leftn:5 >= sz:18):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:27 < this{'values'}[rightn:4][1]:15):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:15 < this{'values'}[leftn:5][1]:22):true
+072|      nextn = rightn:4
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:4]:[ -> 15, -> '15' ]
+079|    this{'values'}[nextn:4]:[ -> 27, -> '27' ] = this{'values'}[pos:2]:[ -> 27, -> '27' ]
+080|    this{'values'}[pos:2]:[ -> 15, -> '15' ] = tmp:[ -> 15, -> '15' ]
+082|    pos = nextn:4
+083|   end
+050|   loop
+051|    rightn = (pos:4 * 2):8
+052|    leftn = ((pos:4 * 2):8 + 1):9
+054|    if (rightn:8 >= sz:18):false
+055|    end # if
+058|    if (leftn:9 >= sz:18):false
+062|    else
+065|     if ((this{'values'}[pos:4][1]:27 < this{'values'}[rightn:8][1]:21):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:8][1]:21 < this{'values'}[leftn:9][1]:16):false
+072|     else
+074|      nextn = leftn:9
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:9]:[ -> 16, -> '16' ]
+079|    this{'values'}[nextn:9]:[ -> 27, -> '27' ] = this{'values'}[pos:4]:[ -> 27, -> '27' ]
+080|    this{'values'}[pos:4]:[ -> 16, -> '16' ] = tmp:[ -> 16, -> '16' ]
+082|    pos = nextn:9
+083|   end
+050|   loop
+051|    rightn = (pos:9 * 2):18
+052|    leftn = ((pos:9 * 2):18 + 1):19
+054|    if (rightn:18 >= sz:18):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 13, -> '13' ]
+011|  [ key:-> 13 , val:-> '13']  = h{'pop'}:sub (  ):[ -> 13, -> '13' ]
+013|  println( ~msg 'key ' .. key:13 .. ' value ' .. val:'13' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] ):17 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] ):17
+040|   if (sz:17 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 14, -> '14' ]
+045|   this{'values'}[1]:[ -> 24, -> '24' ] = this{'values'}[sz:17]:[ -> 24, -> '24' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90), ->(0x99cdc70) ] ):->(0x99cdc70)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:17):false
+055|    end # if
+058|    if (leftn:3 >= sz:17):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:24 < this{'values'}[rightn:2][1]:15):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:15 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 15, -> '15' ]
+079|    this{'values'}[nextn:2]:[ -> 24, -> '24' ] = this{'values'}[pos:1]:[ -> 24, -> '24' ]
+080|    this{'values'}[pos:1]:[ -> 15, -> '15' ] = tmp:[ -> 15, -> '15' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:17):false
+055|    end # if
+058|    if (leftn:5 >= sz:17):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:24 < this{'values'}[rightn:4][1]:16):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:16 < this{'values'}[leftn:5][1]:22):true
+072|      nextn = rightn:4
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:4]:[ -> 16, -> '16' ]
+079|    this{'values'}[nextn:4]:[ -> 24, -> '24' ] = this{'values'}[pos:2]:[ -> 24, -> '24' ]
+080|    this{'values'}[pos:2]:[ -> 16, -> '16' ] = tmp:[ -> 16, -> '16' ]
+082|    pos = nextn:4
+083|   end
+050|   loop
+051|    rightn = (pos:4 * 2):8
+052|    leftn = ((pos:4 * 2):8 + 1):9
+054|    if (rightn:8 >= sz:17):false
+055|    end # if
+058|    if (leftn:9 >= sz:17):false
+062|    else
+065|     if ((this{'values'}[pos:4][1]:24 < this{'values'}[rightn:8][1]:21):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:8][1]:21 < this{'values'}[leftn:9][1]:27):true
+072|      nextn = rightn:8
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:8]:[ -> 21, -> '21' ]
+079|    this{'values'}[nextn:8]:[ -> 24, -> '24' ] = this{'values'}[pos:4]:[ -> 24, -> '24' ]
+080|    this{'values'}[pos:4]:[ -> 21, -> '21' ] = tmp:[ -> 21, -> '21' ]
+082|    pos = nextn:8
+083|   end
+050|   loop
+051|    rightn = (pos:8 * 2):16
+052|    leftn = ((pos:8 * 2):16 + 1):17
+054|    if (rightn:16 >= sz:17):false
+055|    end # if
+058|    if (leftn:17 >= sz:17):true
+059|     if (this{'values'}[pos:8][1]:24 < this{'values'}[rightn:16][1]:30):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 14, -> '14' ]
+011|  [ key:-> 14 , val:-> '14']  = h{'pop'}:sub (  ):[ -> 14, -> '14' ]
+013|  println( ~msg 'key ' .. key:14 .. ' value ' .. val:'14' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] ):16 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] ):16
+040|   if (sz:16 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 15, -> '15' ]
+045|   this{'values'}[1]:[ -> 30, -> '30' ] = this{'values'}[sz:16]:[ -> 30, -> '30' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8), ->(0x99ccd90) ] ):->(0x99ccd90)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:16):false
+055|    end # if
+058|    if (leftn:3 >= sz:16):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:30 < this{'values'}[rightn:2][1]:16):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:16 < this{'values'}[leftn:3][1]:17):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 16, -> '16' ]
+079|    this{'values'}[nextn:2]:[ -> 30, -> '30' ] = this{'values'}[pos:1]:[ -> 30, -> '30' ]
+080|    this{'values'}[pos:1]:[ -> 16, -> '16' ] = tmp:[ -> 16, -> '16' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:16):false
+055|    end # if
+058|    if (leftn:5 >= sz:16):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:30 < this{'values'}[rightn:4][1]:21):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:21 < this{'values'}[leftn:5][1]:22):true
+072|      nextn = rightn:4
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:4]:[ -> 21, -> '21' ]
+079|    this{'values'}[nextn:4]:[ -> 30, -> '30' ] = this{'values'}[pos:2]:[ -> 30, -> '30' ]
+080|    this{'values'}[pos:2]:[ -> 21, -> '21' ] = tmp:[ -> 21, -> '21' ]
+082|    pos = nextn:4
+083|   end
+050|   loop
+051|    rightn = (pos:4 * 2):8
+052|    leftn = ((pos:4 * 2):8 + 1):9
+054|    if (rightn:8 >= sz:16):false
+055|    end # if
+058|    if (leftn:9 >= sz:16):false
+062|    else
+065|     if ((this{'values'}[pos:4][1]:30 < this{'values'}[rightn:8][1]:24):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:8][1]:24 < this{'values'}[leftn:9][1]:27):true
+072|      nextn = rightn:8
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:8]:[ -> 24, -> '24' ]
+079|    this{'values'}[nextn:8]:[ -> 30, -> '30' ] = this{'values'}[pos:4]:[ -> 30, -> '30' ]
+080|    this{'values'}[pos:4]:[ -> 24, -> '24' ] = tmp:[ -> 24, -> '24' ]
+082|    pos = nextn:8
+083|   end
+050|   loop
+051|    rightn = (pos:8 * 2):16
+052|    leftn = ((pos:8 * 2):16 + 1):17
+054|    if (rightn:16 >= sz:16):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 15, -> '15' ]
+011|  [ key:-> 15 , val:-> '15']  = h{'pop'}:sub (  ):[ -> 15, -> '15' ]
+013|  println( ~msg 'key ' .. key:15 .. ' value ' .. val:'15' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] ):15 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] ):15
+040|   if (sz:15 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 16, -> '16' ]
+045|   this{'values'}[1]:[ -> 19, -> '19' ] = this{'values'}[sz:15]:[ -> 19, -> '19' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8), ->(0x99cc0f8) ] ):->(0x99cc0f8)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:15):false
+055|    end # if
+058|    if (leftn:3 >= sz:15):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:19 < this{'values'}[rightn:2][1]:21):true and (this{'values'}[pos:1][1]:19 < this{'values'}[leftn:3][1]:17):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:21 < this{'values'}[leftn:3][1]:17):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 17, -> '17' ]
+079|    this{'values'}[nextn:3]:[ -> 19, -> '19' ] = this{'values'}[pos:1]:[ -> 19, -> '19' ]
+080|    this{'values'}[pos:1]:[ -> 17, -> '17' ] = tmp:[ -> 17, -> '17' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:15):false
+055|    end # if
+058|    if (leftn:7 >= sz:15):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:19 < this{'values'}[rightn:6][1]:20):true and (this{'values'}[pos:3][1]:19 < this{'values'}[leftn:7][1]:18):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:20 < this{'values'}[leftn:7][1]:18):false
+072|     else
+074|      nextn = leftn:7
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:7]:[ -> 18, -> '18' ]
+079|    this{'values'}[nextn:7]:[ -> 19, -> '19' ] = this{'values'}[pos:3]:[ -> 19, -> '19' ]
+080|    this{'values'}[pos:3]:[ -> 18, -> '18' ] = tmp:[ -> 18, -> '18' ]
+082|    pos = nextn:7
+083|   end
+050|   loop
+051|    rightn = (pos:7 * 2):14
+052|    leftn = ((pos:7 * 2):14 + 1):15
+054|    if (rightn:14 >= sz:15):false
+055|    end # if
+058|    if (leftn:15 >= sz:15):true
+059|     if (this{'values'}[pos:7][1]:19 < this{'values'}[rightn:14][1]:26):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 16, -> '16' ]
+011|  [ key:-> 16 , val:-> '16']  = h{'pop'}:sub (  ):[ -> 16, -> '16' ]
+013|  println( ~msg 'key ' .. key:16 .. ' value ' .. val:'16' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] ):14 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] ):14
+040|   if (sz:14 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 17, -> '17' ]
+045|   this{'values'}[1]:[ -> 26, -> '26' ] = this{'values'}[sz:14]:[ -> 26, -> '26' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860), ->(0x99cb5a8) ] ):->(0x99cb5a8)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:14):false
+055|    end # if
+058|    if (leftn:3 >= sz:14):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:26 < this{'values'}[rightn:2][1]:21):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:21 < this{'values'}[leftn:3][1]:18):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 18, -> '18' ]
+079|    this{'values'}[nextn:3]:[ -> 26, -> '26' ] = this{'values'}[pos:1]:[ -> 26, -> '26' ]
+080|    this{'values'}[pos:1]:[ -> 18, -> '18' ] = tmp:[ -> 18, -> '18' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:14):false
+055|    end # if
+058|    if (leftn:7 >= sz:14):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:26 < this{'values'}[rightn:6][1]:20):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:20 < this{'values'}[leftn:7][1]:19):false
+072|     else
+074|      nextn = leftn:7
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:7]:[ -> 19, -> '19' ]
+079|    this{'values'}[nextn:7]:[ -> 26, -> '26' ] = this{'values'}[pos:3]:[ -> 26, -> '26' ]
+080|    this{'values'}[pos:3]:[ -> 19, -> '19' ] = tmp:[ -> 19, -> '19' ]
+082|    pos = nextn:7
+083|   end
+050|   loop
+051|    rightn = (pos:7 * 2):14
+052|    leftn = ((pos:7 * 2):14 + 1):15
+054|    if (rightn:14 >= sz:14):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 17, -> '17' ]
+011|  [ key:-> 17 , val:-> '17']  = h{'pop'}:sub (  ):[ -> 17, -> '17' ]
+013|  println( ~msg 'key ' .. key:17 .. ' value ' .. val:'17' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] ):13 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] ):13
+040|   if (sz:13 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 18, -> '18' ]
+045|   this{'values'}[1]:[ -> 25, -> '25' ] = this{'values'}[sz:13]:[ -> 25, -> '25' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90), ->(0x99ca860) ] ):->(0x99ca860)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:13):false
+055|    end # if
+058|    if (leftn:3 >= sz:13):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:25 < this{'values'}[rightn:2][1]:21):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:21 < this{'values'}[leftn:3][1]:19):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 19, -> '19' ]
+079|    this{'values'}[nextn:3]:[ -> 25, -> '25' ] = this{'values'}[pos:1]:[ -> 25, -> '25' ]
+080|    this{'values'}[pos:1]:[ -> 19, -> '19' ] = tmp:[ -> 19, -> '19' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:13):false
+055|    end # if
+058|    if (leftn:7 >= sz:13):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:25 < this{'values'}[rightn:6][1]:20):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:20 < this{'values'}[leftn:7][1]:26):true
+072|      nextn = rightn:6
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:6]:[ -> 20, -> '20' ]
+079|    this{'values'}[nextn:6]:[ -> 25, -> '25' ] = this{'values'}[pos:3]:[ -> 25, -> '25' ]
+080|    this{'values'}[pos:3]:[ -> 20, -> '20' ] = tmp:[ -> 20, -> '20' ]
+082|    pos = nextn:6
+083|   end
+050|   loop
+051|    rightn = (pos:6 * 2):12
+052|    leftn = ((pos:6 * 2):12 + 1):13
+054|    if (rightn:12 >= sz:13):false
+055|    end # if
+058|    if (leftn:13 >= sz:13):true
+059|     if (this{'values'}[pos:6][1]:25 < this{'values'}[rightn:12][1]:29):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 18, -> '18' ]
+011|  [ key:-> 18 , val:-> '18']  = h{'pop'}:sub (  ):[ -> 18, -> '18' ]
+013|  println( ~msg 'key ' .. key:18 .. ' value ' .. val:'18' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] ):12 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] ):12
+040|   if (sz:12 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 19, -> '19' ]
+045|   this{'values'}[1]:[ -> 29, -> '29' ] = this{'values'}[sz:12]:[ -> 29, -> '29' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788), ->(0x99c9c90) ] ):->(0x99c9c90)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:12):false
+055|    end # if
+058|    if (leftn:3 >= sz:12):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:29 < this{'values'}[rightn:2][1]:21):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:21 < this{'values'}[leftn:3][1]:20):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 20, -> '20' ]
+079|    this{'values'}[nextn:3]:[ -> 29, -> '29' ] = this{'values'}[pos:1]:[ -> 29, -> '29' ]
+080|    this{'values'}[pos:1]:[ -> 20, -> '20' ] = tmp:[ -> 20, -> '20' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:12):false
+055|    end # if
+058|    if (leftn:7 >= sz:12):false
+062|    else
+065|     if ((this{'values'}[pos:3][1]:29 < this{'values'}[rightn:6][1]:25):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:6][1]:25 < this{'values'}[leftn:7][1]:26):true
+072|      nextn = rightn:6
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:6]:[ -> 25, -> '25' ]
+079|    this{'values'}[nextn:6]:[ -> 29, -> '29' ] = this{'values'}[pos:3]:[ -> 29, -> '29' ]
+080|    this{'values'}[pos:3]:[ -> 25, -> '25' ] = tmp:[ -> 25, -> '25' ]
+082|    pos = nextn:6
+083|   end
+050|   loop
+051|    rightn = (pos:6 * 2):12
+052|    leftn = ((pos:6 * 2):12 + 1):13
+054|    if (rightn:12 >= sz:12):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 19, -> '19' ]
+011|  [ key:-> 19 , val:-> '19']  = h{'pop'}:sub (  ):[ -> 19, -> '19' ]
+013|  println( ~msg 'key ' .. key:19 .. ' value ' .. val:'19' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] ):11 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] ):11
+040|   if (sz:11 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 20, -> '20' ]
+045|   this{'values'}[1]:[ -> 23, -> '23' ] = this{'values'}[sz:11]:[ -> 23, -> '23' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48), ->(0x99c8788) ] ):->(0x99c8788)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:11):false
+055|    end # if
+058|    if (leftn:3 >= sz:11):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:23 < this{'values'}[rightn:2][1]:21):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:21 < this{'values'}[leftn:3][1]:25):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 21, -> '21' ]
+079|    this{'values'}[nextn:2]:[ -> 23, -> '23' ] = this{'values'}[pos:1]:[ -> 23, -> '23' ]
+080|    this{'values'}[pos:1]:[ -> 21, -> '21' ] = tmp:[ -> 21, -> '21' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:11):false
+055|    end # if
+058|    if (leftn:5 >= sz:11):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:23 < this{'values'}[rightn:4][1]:24):true and (this{'values'}[pos:2][1]:23 < this{'values'}[leftn:5][1]:22):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:24 < this{'values'}[leftn:5][1]:22):false
+072|     else
+074|      nextn = leftn:5
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:5]:[ -> 22, -> '22' ]
+079|    this{'values'}[nextn:5]:[ -> 23, -> '23' ] = this{'values'}[pos:2]:[ -> 23, -> '23' ]
+080|    this{'values'}[pos:2]:[ -> 22, -> '22' ] = tmp:[ -> 22, -> '22' ]
+082|    pos = nextn:5
+083|   end
+050|   loop
+051|    rightn = (pos:5 * 2):10
+052|    leftn = ((pos:5 * 2):10 + 1):11
+054|    if (rightn:10 >= sz:11):false
+055|    end # if
+058|    if (leftn:11 >= sz:11):true
+059|     if (this{'values'}[pos:5][1]:23 < this{'values'}[rightn:10][1]:28):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 20, -> '20' ]
+011|  [ key:-> 20 , val:-> '20']  = h{'pop'}:sub (  ):[ -> 20, -> '20' ]
+013|  println( ~msg 'key ' .. key:20 .. ' value ' .. val:'20' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] ):10 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] ):10
+040|   if (sz:10 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 21, -> '21' ]
+045|   this{'values'}[1]:[ -> 28, -> '28' ] = this{'values'}[sz:10]:[ -> 28, -> '28' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28), ->(0x99c7d48) ] ):->(0x99c7d48)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:10):false
+055|    end # if
+058|    if (leftn:3 >= sz:10):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:28 < this{'values'}[rightn:2][1]:22):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:22 < this{'values'}[leftn:3][1]:25):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 22, -> '22' ]
+079|    this{'values'}[nextn:2]:[ -> 28, -> '28' ] = this{'values'}[pos:1]:[ -> 28, -> '28' ]
+080|    this{'values'}[pos:1]:[ -> 22, -> '22' ] = tmp:[ -> 22, -> '22' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:10):false
+055|    end # if
+058|    if (leftn:5 >= sz:10):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:28 < this{'values'}[rightn:4][1]:24):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:24 < this{'values'}[leftn:5][1]:23):false
+072|     else
+074|      nextn = leftn:5
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:5]:[ -> 23, -> '23' ]
+079|    this{'values'}[nextn:5]:[ -> 28, -> '28' ] = this{'values'}[pos:2]:[ -> 28, -> '28' ]
+080|    this{'values'}[pos:2]:[ -> 23, -> '23' ] = tmp:[ -> 23, -> '23' ]
+082|    pos = nextn:5
+083|   end
+050|   loop
+051|    rightn = (pos:5 * 2):10
+052|    leftn = ((pos:5 * 2):10 + 1):11
+054|    if (rightn:10 >= sz:10):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 21, -> '21' ]
+011|  [ key:-> 21 , val:-> '21']  = h{'pop'}:sub (  ):[ -> 21, -> '21' ]
+013|  println( ~msg 'key ' .. key:21 .. ' value ' .. val:'21' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] ):9 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] ):9
+040|   if (sz:9 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 22, -> '22' ]
+045|   this{'values'}[1]:[ -> 27, -> '27' ] = this{'values'}[sz:9]:[ -> 27, -> '27' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110), ->(0x99c7b28) ] ):->(0x99c7b28)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:9):false
+055|    end # if
+058|    if (leftn:3 >= sz:9):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:27 < this{'values'}[rightn:2][1]:23):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:23 < this{'values'}[leftn:3][1]:25):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 23, -> '23' ]
+079|    this{'values'}[nextn:2]:[ -> 27, -> '27' ] = this{'values'}[pos:1]:[ -> 27, -> '27' ]
+080|    this{'values'}[pos:1]:[ -> 23, -> '23' ] = tmp:[ -> 23, -> '23' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:9):false
+055|    end # if
+058|    if (leftn:5 >= sz:9):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:27 < this{'values'}[rightn:4][1]:24):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:24 < this{'values'}[leftn:5][1]:28):true
+072|      nextn = rightn:4
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:4]:[ -> 24, -> '24' ]
+079|    this{'values'}[nextn:4]:[ -> 27, -> '27' ] = this{'values'}[pos:2]:[ -> 27, -> '27' ]
+080|    this{'values'}[pos:2]:[ -> 24, -> '24' ] = tmp:[ -> 24, -> '24' ]
+082|    pos = nextn:4
+083|   end
+050|   loop
+051|    rightn = (pos:4 * 2):8
+052|    leftn = ((pos:4 * 2):8 + 1):9
+054|    if (rightn:8 >= sz:9):false
+055|    end # if
+058|    if (leftn:9 >= sz:9):true
+059|     if (this{'values'}[pos:4][1]:27 < this{'values'}[rightn:8][1]:30):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 22, -> '22' ]
+011|  [ key:-> 22 , val:-> '22']  = h{'pop'}:sub (  ):[ -> 22, -> '22' ]
+013|  println( ~msg 'key ' .. key:22 .. ' value ' .. val:'22' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] ):8 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] ):8
+040|   if (sz:8 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 23, -> '23' ]
+045|   this{'values'}[1]:[ -> 30, -> '30' ] = this{'values'}[sz:8]:[ -> 30, -> '30' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940), ->(0x99c7110) ] ):->(0x99c7110)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:8):false
+055|    end # if
+058|    if (leftn:3 >= sz:8):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:30 < this{'values'}[rightn:2][1]:24):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:24 < this{'values'}[leftn:3][1]:25):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 24, -> '24' ]
+079|    this{'values'}[nextn:2]:[ -> 30, -> '30' ] = this{'values'}[pos:1]:[ -> 30, -> '30' ]
+080|    this{'values'}[pos:1]:[ -> 24, -> '24' ] = tmp:[ -> 24, -> '24' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:8):false
+055|    end # if
+058|    if (leftn:5 >= sz:8):false
+062|    else
+065|     if ((this{'values'}[pos:2][1]:30 < this{'values'}[rightn:4][1]:27):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:4][1]:27 < this{'values'}[leftn:5][1]:28):true
+072|      nextn = rightn:4
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:4]:[ -> 27, -> '27' ]
+079|    this{'values'}[nextn:4]:[ -> 30, -> '30' ] = this{'values'}[pos:2]:[ -> 30, -> '30' ]
+080|    this{'values'}[pos:2]:[ -> 27, -> '27' ] = tmp:[ -> 27, -> '27' ]
+082|    pos = nextn:4
+083|   end
+050|   loop
+051|    rightn = (pos:4 * 2):8
+052|    leftn = ((pos:4 * 2):8 + 1):9
+054|    if (rightn:8 >= sz:8):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 23, -> '23' ]
+011|  [ key:-> 23 , val:-> '23']  = h{'pop'}:sub (  ):[ -> 23, -> '23' ]
+013|  println( ~msg 'key ' .. key:23 .. ' value ' .. val:'23' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] ):7 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] ):7
+040|   if (sz:7 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 24, -> '24' ]
+045|   this{'values'}[1]:[ -> 26, -> '26' ] = this{'values'}[sz:7]:[ -> 26, -> '26' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0), ->(0x99c6940) ] ):->(0x99c6940)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:7):false
+055|    end # if
+058|    if (leftn:3 >= sz:7):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:26 < this{'values'}[rightn:2][1]:27):true and (this{'values'}[pos:1][1]:26 < this{'values'}[leftn:3][1]:25):false):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:27 < this{'values'}[leftn:3][1]:25):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 25, -> '25' ]
+079|    this{'values'}[nextn:3]:[ -> 26, -> '26' ] = this{'values'}[pos:1]:[ -> 26, -> '26' ]
+080|    this{'values'}[pos:1]:[ -> 25, -> '25' ] = tmp:[ -> 25, -> '25' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:7):false
+055|    end # if
+058|    if (leftn:7 >= sz:7):true
+059|     if (this{'values'}[pos:3][1]:26 < this{'values'}[rightn:6][1]:29):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 24, -> '24' ]
+011|  [ key:-> 24 , val:-> '24']  = h{'pop'}:sub (  ):[ -> 24, -> '24' ]
+013|  println( ~msg 'key ' .. key:24 .. ' value ' .. val:'24' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] ):6 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] ):6
+040|   if (sz:6 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 25, -> '25' ]
+045|   this{'values'}[1]:[ -> 29, -> '29' ] = this{'values'}[sz:6]:[ -> 29, -> '29' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80), ->(0x99c61c0) ] ):->(0x99c61c0)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:6):false
+055|    end # if
+058|    if (leftn:3 >= sz:6):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:29 < this{'values'}[rightn:2][1]:27):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:27 < this{'values'}[leftn:3][1]:26):false
+072|     else
+074|      nextn = leftn:3
+074|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:3]:[ -> 26, -> '26' ]
+079|    this{'values'}[nextn:3]:[ -> 29, -> '29' ] = this{'values'}[pos:1]:[ -> 29, -> '29' ]
+080|    this{'values'}[pos:1]:[ -> 26, -> '26' ] = tmp:[ -> 26, -> '26' ]
+082|    pos = nextn:3
+083|   end
+050|   loop
+051|    rightn = (pos:3 * 2):6
+052|    leftn = ((pos:3 * 2):6 + 1):7
+054|    if (rightn:6 >= sz:6):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 25, -> '25' ]
+011|  [ key:-> 25 , val:-> '25']  = h{'pop'}:sub (  ):[ -> 25, -> '25' ]
+013|  println( ~msg 'key ' .. key:25 .. ' value ' .. val:'25' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] ):5 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] ):5
+040|   if (sz:5 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 26, -> '26' ]
+045|   this{'values'}[1]:[ -> 28, -> '28' ] = this{'values'}[sz:5]:[ -> 28, -> '28' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0), ->(0x99c5a80) ] ):->(0x99c5a80)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:5):false
+055|    end # if
+058|    if (leftn:3 >= sz:5):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:28 < this{'values'}[rightn:2][1]:27):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:27 < this{'values'}[leftn:3][1]:29):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 27, -> '27' ]
+079|    this{'values'}[nextn:2]:[ -> 28, -> '28' ] = this{'values'}[pos:1]:[ -> 28, -> '28' ]
+080|    this{'values'}[pos:1]:[ -> 27, -> '27' ] = tmp:[ -> 27, -> '27' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:5):false
+055|    end # if
+058|    if (leftn:5 >= sz:5):true
+059|     if (this{'values'}[pos:2][1]:28 < this{'values'}[rightn:4][1]:30):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 26, -> '26' ]
+011|  [ key:-> 26 , val:-> '26']  = h{'pop'}:sub (  ):[ -> 26, -> '26' ]
+013|  println( ~msg 'key ' .. key:26 .. ' value ' .. val:'26' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] ):4 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] ):4
+040|   if (sz:4 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 27, -> '27' ]
+045|   this{'values'}[1]:[ -> 30, -> '30' ] = this{'values'}[sz:4]:[ -> 30, -> '30' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20), ->(0x99c53d0) ] ):->(0x99c53d0)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:4):false
+055|    end # if
+058|    if (leftn:3 >= sz:4):false
+062|    else
+065|     if ((this{'values'}[pos:1][1]:30 < this{'values'}[rightn:2][1]:28):false and _ ):):false
+067|     end # if
+071|     if (this{'values'}[rightn:2][1]:28 < this{'values'}[leftn:3][1]:29):true
+072|      nextn = rightn:2
+072|     end # if
+075|    end # if
+078|    tmp = this{'values'}[nextn:2]:[ -> 28, -> '28' ]
+079|    this{'values'}[nextn:2]:[ -> 30, -> '30' ] = this{'values'}[pos:1]:[ -> 30, -> '30' ]
+080|    this{'values'}[pos:1]:[ -> 28, -> '28' ] = tmp:[ -> 28, -> '28' ]
+082|    pos = nextn:2
+083|   end
+050|   loop
+051|    rightn = (pos:2 * 2):4
+052|    leftn = ((pos:2 * 2):4 + 1):5
+054|    if (rightn:4 >= sz:4):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 27, -> '27' ]
+011|  [ key:-> 27 , val:-> '27']  = h{'pop'}:sub (  ):[ -> 27, -> '27' ]
+013|  println( ~msg 'key ' .. key:27 .. ' value ' .. val:'27' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] ):3 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] ):3
+040|   if (sz:3 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 28, -> '28' ]
+045|   this{'values'}[1]:[ -> 29, -> '29' ] = this{'values'}[sz:3]:[ -> 29, -> '29' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80), ->(0x99c4f20) ] ):->(0x99c4f20)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:3):false
+055|    end # if
+058|    if (leftn:3 >= sz:3):true
+059|     if (this{'values'}[pos:1][1]:29 < this{'values'}[rightn:2][1]:30):true
+060|      break
+060|     end # if
+062|    end # if
+083|   end # finish loop
+085|   return res:[ -> 28, -> '28' ]
+011|  [ key:-> 28 , val:-> '28']  = h{'pop'}:sub (  ):[ -> 28, -> '28' ]
+013|  println( ~msg 'key ' .. key:28 .. ' value ' .. val:'28' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] ):2 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] ):2
+040|   if (sz:2 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 29, -> '29' ]
+045|   this{'values'}[1]:[ -> 30, -> '30' ] = this{'values'}[sz:2]:[ -> 30, -> '30' ]
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] )...
+046|   pop( ~array this{'values'}:[ ->(0x99c4958), ->(0x99c4b80) ] ):->(0x99c4b80)
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:2):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 29, -> '29' ]
+011|  [ key:-> 29 , val:-> '29']  = h{'pop'}:sub (  ):[ -> 29, -> '29' ]
+013|  println( ~msg 'key ' .. key:29 .. ' value ' .. val:'29' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958) ] )...
+028|  return (size( ~arg this{'values'}:[ ->(0x99c4958) ] ):1 == 0):false
+010| while  n  ! h{'empty'}:sub (  ):0
+011|  ... = h{'pop'}:sub (  )...
+039|   ... = size( ~arg this{'values'}:[ ->(0x99c4958) ] )...
+039|   sz = size( ~arg this{'values'}:[ ->(0x99c4958) ] ):1
+040|   if (sz:1 == 0):false
+041|   end # if
+044|   res = this{'values'}[1]:[ -> 30, -> '30' ]
+045|   this{'values'}[1]:Null = this{'values'}[sz:1]:[ -> 30, -> '30' ]
+046|   pop( ~array this{'values'}:[ -> Null ] )...
+046|   pop( ~array this{'values'}:[ -> Null ] ):-> Null
+049|   pos = 1
+050|   loop
+051|    rightn = (pos:1 * 2):2
+052|    leftn = ((pos:1 * 2):2 + 1):3
+054|    if (rightn:2 >= sz:1):true
+055|     break
+055|    end # if
+083|   end # finish loop
+085|   return res:[ -> 30, -> '30' ]
+011|  [ key:-> 30 , val:-> '30']  = h{'pop'}:sub (  ):[ -> 30, -> '30' ]
+013|  println( ~msg 'key ' .. key:30 .. ' value ' .. val:'30' .. '' )...
+014| end
+010| while  n  ! h{'empty'}:sub (  )...
+028|  return (size( ~arg this{'values'}:[  ] )...
+028|  return (size( ~arg this{'values'}:[  ] ):0 == 0):true
+010| while  n  ! h{'empty'}:sub (  ):1
+014| end # finish loop
+</pre>
+
+<h3>Standard output for 08-object-prototype-heap2.p</h3>
+
+<pre>
+*** test min heap ***
+key 1 value 1
+key 2 value 2
+key 3 value 3
+key 4 value 4
+key 5 value 5
+key 6 value 6
+key 7 value 7
+key 8 value 8
+key 9 value 9
+key 10 value 10
+key 11 value 11
+key 12 value 12
+key 13 value 13
+key 14 value 14
+key 15 value 15
+key 16 value 16
+key 17 value 17
+key 18 value 18
+key 19 value 19
+key 20 value 20
+key 21 value 21
+key 22 value 22
+key 23 value 23
+key 24 value 24
+key 25 value 25
+key 26 value 26
+key 27 value 27
+key 28 value 28
+key 29 value 29
+key 30 value 30
+
+</pre>
+</html>
+</body>

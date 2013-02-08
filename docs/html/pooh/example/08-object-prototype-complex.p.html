@@ -1,0 +1,93 @@
+<html>
+<head>Pooh program example 08-object-prototype-complex.p</title></head>
+<body>
+<h3>Test 08-object-prototype-complex.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+include 'lib/complex.inc'
+
+
+n = make_rect_complex( ~re 0 ~im 1 )
+m = make_rect_complex( ~re 0 ~im 1 )
+
+res = n . mult( ~num m )
+
+println( ~msg 'square of i is' )
+res . print()
+
+
+res = res . add( ~num res )
+
+println( ~msg '
+twice i is' )
+res . print()
+
+
+println( ~msg '
+absolute is [ res . absolute () ]' )
+
+
+
+
+</pre>
+
+<h4>Included file: lib/complex.inc</h4>
+
+<pre>
+
+</pre>
+
+<h4>Trace output for 08-object-prototype-complex.p</h4>
+
+<pre>
+004|... = make_rect_complex( ~re 0 ~im 1 )...
+069| return { 'mode' : 'rectangular' , 're' : re:0 , 'im' : im:1 , 'add' : sub (~num) , 'mult' : sub (~num) , 'print' : sub () , 'div' : sub (~num) , 'absolute' : sub () , 'torect' : sub () , 'topolar' : sub () }
+004|n = make_rect_complex( ~re 0 ~im 1 ):{ 'absolute' : sub , 'torect' : sub , 'topolar' : sub , 'mode' : -> 'rectangular', 'print' : sub , 'mult' : sub , 'div' : sub , 'im' : -> 1, 'add' : sub , 're' : -> 0 }
+005|... = make_rect_complex( ~re 0 ~im 1 )...
+069| return { 'mode' : 'rectangular' , 're' : re:0 , 'im' : im:1 , 'add' : sub (~num) , 'mult' : sub (~num) , 'print' : sub () , 'div' : sub (~num) , 'absolute' : sub () , 'torect' : sub () , 'topolar' : sub () }
+005|m = make_rect_complex( ~re 0 ~im 1 ):{ 'absolute' : sub , 'torect' : sub , 'topolar' : sub , 'mode' : -> 'rectangular', 'print' : sub , 'mult' : sub , 'div' : sub , 'im' : -> 1, 'add' : sub , 're' : -> 0 }
+007|... = n{'mult'}:sub ( ~num m:{ 'absolute' : sub (), 'torect' : sub (), 'topolar' : sub (), 'mode' : -> 'rectangular', 'print' : sub (), 'mult' : sub (~num), 'div' : sub (~num), 'im' : -> 1, 'add' : sub (~num), 're' : -> 0 } )...
+089| if (num{'mode'}:'rectangular' ne 'rectangular'):false
+090| end # if
+092| return make_rect_complex( ~re ((this{'re'}:0 * num{'re'}:0):0 - (this{'im'}:1 * num{'im'}:1):1):-1 ~im ((this{'im'}:1 * num{'re'}:0):0 + (this{'re'}:0 * num{'im'}:1):0):0 )...
+069|  return { 'mode' : 'rectangular' , 're' : re:-1 , 'im' : im:0 , 'add' : sub (~num) , 'mult' : sub (~num) , 'print' : sub () , 'div' : sub (~num) , 'absolute' : sub () , 'torect' : sub () , 'topolar' : sub () }
+092| return make_rect_complex( ~re ((this{'re'}:0 * num{'re'}:0):0 - (this{'im'}:1 * num{'im'}:1):1):-1 ~im ((this{'im'}:1 * num{'re'}:0):0 + (this{'re'}:0 * num{'im'}:1):0):0 ):{ 'absolute' : sub , 'torect' : sub , 'topolar' : sub , 'mode' : -> 'rectangular', 'print' : sub , 'mult' : sub , 'div' : sub , 'im' : -> 0, 'add' : sub , 're' : -> -1 }
+007|res = n{'mult'}:sub ( ~num m:{ 'absolute' : sub (), 'torect' : sub (), 'topolar' : sub (), 'mode' : -> 'rectangular', 'print' : sub (), 'mult' : sub (~num), 'div' : sub (~num), 'im' : -> 1, 'add' : sub (~num), 're' : -> 0 } ):{ 'absolute' : sub , 'torect' : sub , 'topolar' : sub , 'mode' : -> 'rectangular', 'print' : sub , 'mult' : sub , 'div' : sub , 'im' : -> 0, 'add' : sub , 're' : -> -1 }
+009|println( ~msg 'square of i is' )...
+010|res{'print'}:sub (  )...
+097| print( ~msg 'rectangular-complex: real ' .. this{'re'}:-1 .. ' imaginary ' .. this{'im'}:0 .. '' )...
+
+013|... = res{'add'}:sub ( ~num res:{ 'absolute' : sub (), 'torect' : sub (), 'topolar' : sub (), 'mode' : -> 'rectangular', 'print' : sub (), 'mult' : sub (~num), 'div' : sub (~num), 'im' : -> 0, 'add' : sub (~num), 're' : -> -1 } )...
+081| if (num{'mode'}:'rectangular' ne 'rectangular'):false
+082| end # if
+084| return make_rect_complex( ~re (this{'re'}:-1 + num{'re'}:-1):-2 ~im (this{'im'}:0 + num{'im'}:0):0 )...
+069|  return { 'mode' : 'rectangular' , 're' : re:-2 , 'im' : im:0 , 'add' : sub (~num) , 'mult' : sub (~num) , 'print' : sub () , 'div' : sub (~num) , 'absolute' : sub () , 'torect' : sub () , 'topolar' : sub () }
+084| return make_rect_complex( ~re (this{'re'}:-1 + num{'re'}:-1):-2 ~im (this{'im'}:0 + num{'im'}:0):0 ):{ 'absolute' : sub , 'torect' : sub , 'topolar' : sub , 'mode' : -> 'rectangular', 'print' : sub , 'mult' : sub , 'div' : sub , 'im' : -> 0, 'add' : sub , 're' : -> -2 }
+013|res = res{'add'}:sub ( ~num res:{ 'absolute' : sub (), 'torect' : sub (), 'topolar' : sub (), 'mode' : -> 'rectangular', 'print' : sub (), 'mult' : sub (~num), 'div' : sub (~num), 'im' : -> 0, 'add' : sub (~num), 're' : -> -1 } ):{ 'absolute' : sub , 'torect' : sub , 'topolar' : sub , 'mode' : -> 'rectangular', 'print' : sub , 'mult' : sub , 'div' : sub , 'im' : -> 0, 'add' : sub , 're' : -> -2 }
+015|println( ~msg '
+twice i is' )...
+018|res{'print'}:sub (  )...
+097| print( ~msg 'rectangular-complex: real ' .. this{'re'}:-2 .. ' imaginary ' .. this{'im'}:0 .. '' )...
+
+021|println( ~msg '
+absolute is ' .. res{'absolute'}:sub (  )...
+115| return sqr( ~num 3 )...
+115| return sqr( ~num 3 ):1.732051e+00
+021|println( ~msg '
+absolute is ' .. res{'absolute'}:sub (  ):1.732051e+00 .. '' )...
+</pre>
+
+<h3>Standard output for 08-object-prototype-complex.p</h3>
+
+<pre>
+square of i is
+rectangular-complex: real -1 imaginary 0
+twice i is
+rectangular-complex: real -2 imaginary 0
+absolute is 1.732051e+00
+
+</pre>
+</html>
+</body>
