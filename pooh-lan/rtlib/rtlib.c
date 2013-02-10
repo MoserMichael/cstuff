@@ -25,6 +25,7 @@ typedef struct tagPRINT_CHECK_LOOP {
   HASH_Entry entry;
   void *key;
   void *to;
+  int   cnt; // counter of references.
 } PRINT_CHECK_LOOP;
 
 // check if array contains self references.
@@ -206,15 +207,23 @@ void set_outer_ref( BINDING_DATA *mem, void *arr, AST_VAR_TYPE ty, int set_ref )
 
 }
 
-void VALARRAY_update_this_env( VALARRAY *arr )
+void VALARRAY_update_this_env( VALARRAY *arr, BINDING_DATA *from )
 {
   BINDING_DATA *binding;
   size_t i;
 
   for( i = 0; i < arr->size; i++ ) {
     binding = arr->data[i];
-    if (binding != 0  && binding->b.value_type == S_VAR_CODE ) {
-      set_outer_ref( binding, arr, S_VAR_LIST, 0 );
+    if (binding != 0) {
+      if (binding->b.value_type == S_VAR_CODE ) {
+        set_outer_ref( binding, arr, S_VAR_LIST, 0 );
+      } else if (from && IS_REF( binding ) ) {
+        BINDING_DATA *binding_to = BINDING_DATA_follow_ref( binding );
+        if (binding_to == from) {
+ 	  // self reference.
+	  BINDING_DATA_copy( binding_to, (BINDING_DATA *) _OFFSETOF(arr, BINDING_DATA_VALUE, value ), CP_REF );
+        }
+      }
     }
   }
 }
@@ -797,7 +806,7 @@ void VALHASH_check_ref( VALHASH *hash, int stage )
 }
 
 
-void VALHASH_upate_this_env( VALHASH *hash )
+void VALHASH_upate_this_env( VALHASH *hash, BINDING_DATA *from  )
 {
   size_t i;
   HASH_VALUE_ENTRY *cur_entry;
@@ -811,8 +820,16 @@ void VALHASH_upate_this_env( VALHASH *hash )
         cur_entry = (HASH_VALUE_ENTRY *) cur;
 
 	binding = cur_entry->value;
-        if (binding != 0  && binding->b.value_type == S_VAR_CODE ) {
-          set_outer_ref( binding, hash, S_VAR_HASH, 0 );
+        if (binding != 0) {
+	  if (binding->b.value_type == S_VAR_CODE ) {
+            set_outer_ref( binding, hash, S_VAR_HASH, 0 );
+	  } else if (from && IS_REF( binding ) ) {
+            BINDING_DATA *binding_to = BINDING_DATA_follow_ref( binding );
+            if (binding_to == from) {
+	      // self reference.
+	      BINDING_DATA_copy( binding, (BINDING_DATA *) _OFFSETOF(hash, BINDING_DATA_VALUE, value ), CP_REF );
+            }
+	  }
         }
       }	 
     }
@@ -1325,14 +1342,15 @@ void BINDING_DATA_cp( BINDING_DATA *to, BINDING_DATA *from)
 
   memcpy( to, from, sizeof( BINDING_DATA ) );
   
-  if ( (to->b.value_flags_ref & S_VAR_OBJECT) != 0) {
+  if ( (to->b.value_flags_ref & (S_VAR_OBJECT|S_VAR_SELF_REF)) != 0) {
+     BINDING_DATA *f = to->b.value_flags_ref & S_VAR_SELF_REF  ? from : 0;
      switch( to->b.value_type )
      {
        case S_VAR_HASH:
-         VALHASH_upate_this_env( &to->b.value.hash_value );
+         VALHASH_upate_this_env( &to->b.value.hash_value, f );
          break;
        case S_VAR_LIST:
-         VALARRAY_update_this_env( &to->b.value.array_value );
+         VALARRAY_update_this_env( &to->b.value.array_value, f );
          break;
        default:
          assert( 0 );
@@ -2611,17 +2629,6 @@ int EVAL_THREAD_pop_frame ( EVAL_THREAD *thread )
   thread->current_function_frame_start = pframe->function_frame_start;
  
   return 0;
-}
-
-BINDING_DATA *EVAL_THREAD_get_stack_top( EVAL_THREAD *thread )
-{
-   BINDING_DATA *data;
-   size_t nsize;
-
-   nsize = ARRAY_size( &thread->binding_data_stack ); 
-   data = (BINDING_DATA *) ARRAY_at( &thread->binding_data_stack, nsize - 1 );
-   assert( data != 0);
-   return data;
 }
 
 BINDING_DATA *EVAL_THREAD_stack_frame_offset( EVAL_THREAD *thread, size_t stack_offset )

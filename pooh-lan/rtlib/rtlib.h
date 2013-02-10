@@ -339,7 +339,8 @@ typedef enum {
 #define S_VAR_CAPTURE_REF		0x10    // refers to a captured value. (index into function objects' array of captured values)
 #define S_VAR_OBJECT                	0x20    // collection that contains function object, the function object 
 						// has a this pointer to containing collection.
-#define REF_COPY_ON_WRITE		0x40    // 
+#define S_VAR_SELF_REF			0x40    // self referencial ; has elements that refer back to collection
+#define REF_COPY_ON_WRITE		0x80    // copy on write - used for function parameters that are passed by value.
 /* ----------- */
 
 #define S_MASK_ENTRY			( S_VAR_HEAP_VALUE | S_VAR_GLOB_VALUE )
@@ -666,7 +667,17 @@ void EVAL_THREAD_free(EVAL_THREAD *thread);
 
 
 // get the binding that is at the top of the stack.
-BINDING_DATA *EVAL_THREAD_get_stack_top( EVAL_THREAD *thread );
+M_INLINE BINDING_DATA *EVAL_THREAD_get_stack_top( EVAL_THREAD *thread )
+{
+   BINDING_DATA *data;
+   size_t nsize;
+
+   nsize = ARRAY_size( &thread->binding_data_stack ); 
+   data = (BINDING_DATA *) ARRAY_at( &thread->binding_data_stack, nsize - 1 );
+   assert( data != 0);
+   return data;
+}
+
 
 M_INLINE size_t EVAL_THREAD_get_stack_top_pos( EVAL_THREAD *thread ) {
   return  ARRAY_size( & thread->binding_data_stack ) - 1;

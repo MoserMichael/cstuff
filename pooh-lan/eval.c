@@ -11,6 +11,7 @@ int can_assign( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offe
 
 struct tagEVAL_CTX;
 
+BINDING_DATA *last_collection = 0; // ugly hack.
 
 BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDING_DATA *new_value, EVAL_REF_KIND copy_type);
 void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr, BINDING_DATA *nvalue, EVAL_REF_KIND  copy_type, VALFUNC_PRINT_MODE rval_method_hide_sig);
@@ -790,6 +791,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 	    // if last index and function is used in assingnment - insert value into collection
 	    if ( follow_index_expr == 0 && in_assignment) {
 		if (index_expr->exp_type == S_EXPR_HASH_INDEX) {  // insert into hash 
+		    last_collection = data;
 		    tmp = VALHASH_set_entry( &data->b.value.hash_value, index_data );	
 		} else {					      // insert into vector
 		    BINDING_DATA_get_double( index_data, &nval );
@@ -797,6 +799,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 		    if (nval < 1) {
 			 EVAL_error( out , &index_expr->base, "Array index must be greater or equal to one. instead got %d", (long) nval );
 		    }
+		    last_collection = data;
 		    tmp = VALARRAY_set_entry( &data->b.value.array_value, (long) nval - 1 );  
 		}
 		BINDING_DATA_copy_ext( tmp,  index_data - 2 , copy_type ); 
@@ -1091,13 +1094,13 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr, EVAL_REF_KIND get_value_
 	    DBUF_add(  &tracer->text, " , ", 3 );
 	 }
          EVAL_do_expr( out, expr, 0, 0 );
-         rhs = EVAL_THREAD_pop_stack( cthread );
+         rhs = EVAL_THREAD_get_stack_top(cthread );
 
 	 ret = EVAL_THREAD_stack_offset( cthread, rpos );
          rval = &ret->b.value.array_value;
 
 	 VALARRAY_set( rval,  i, rhs, CP_REF );
-	 BINDING_DATA_free( rhs );
+	 EVAL_THREAD_discard_pop_stack( cthread );
       }
   
       assert( rpos == ( ARRAY_size( &cthread->binding_data_stack ) - 1  ) );
@@ -1134,15 +1137,16 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr, EVAL_REF_KIND get_value_
 	 }
 
 	 EVAL_do_expr( out,  expr->val.expr.expr_right, 0, 0 );
-         rhs = EVAL_THREAD_pop_stack( cthread );
-         lhs = EVAL_THREAD_pop_stack( cthread );
+         rhs = EVAL_THREAD_get_stack_top(cthread );
+         lhs = rhs - 1;
 	
          ret = EVAL_THREAD_stack_offset( cthread, rpos );
          rval  = &ret->b.value.hash_value;	
 
 	 VALHASH_set( rval, lhs , rhs, CP_REF );
-         BINDING_DATA_free( rhs );
-         BINDING_DATA_free( lhs );
+       	 
+	 EVAL_THREAD_discard_pop_stack( cthread );
+	 EVAL_THREAD_discard_pop_stack( cthread );
       }
 
       assert( rpos == ( ARRAY_size( &cthread->binding_data_stack ) - 1  ) );
@@ -1605,8 +1609,13 @@ void EVAL_do(  EVAL_CTX *out )
 	 trace_lhs = EVAL_CTX_new_trace( out, &scl->base);
        }
 
+	  
+
        EVAL_reference( out, scl->left_side, 0, scl->type == CP_REF ? COPY_SINGLE_ASSIGN_BY_REF : COPY_SINGLE_ASSIGN_BY_VAL, VALFUNC_SHOW_METHOD_SIG );
-  
+
+       if (scl->type == CP_REF && last_collection == dref ) {
+         last_collection->b.value_flags_ref |= S_VAR_SELF_REF; 
+       }
 
     } else { // multivalue assignment
        AST_VECTOR *values;
