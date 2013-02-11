@@ -24,25 +24,25 @@ static BINDING_DATA finalize_key_name;
 typedef struct tagPRINT_CHECK_LOOP {
   HASH_Entry entry;
   void *key;
-  void *to;
-  int   cnt; // counter of references.
+  int   cnt : 31; // counter of references.
+  int   first : 1;
 } PRINT_CHECK_LOOP;
 
 // check if array contains self references.
-void VALARRAY_check_ref( VALARRAY *arr, int stage);
+void VALARRAY_check_ref( VALARRAY *arr);
 
 
 // check if hash contains self references.
-void VALHASH_check_ref( VALHASH *hash, int stage );
+void VALHASH_check_ref( VALHASH *hash );
 
 void BINDING_DATA_unlink_ref( BINDING_DATA *src, BINDING_DATA *ref );
 
-int  BINDING_DATA_check_ref( BINDING_DATA *data, int stage );
+int  BINDING_DATA_check_ref( BINDING_DATA *data );
 
 void BINDING_DATA_move( BINDING_DATA *to, BINDING_DATA *from);
 
 void EVAL_THREAD_clear_check_ref( EVAL_THREAD *thread );
-void EVAL_THREAD_print_ref_add_loop( BINDING_DATA *from, BINDING_DATA *to);
+void EVAL_THREAD_print_ref_add_loop( BINDING_DATA *to);
 void make_capture( VALFUNCTION_CAPTURE *pentry, union tagBINDING_DATA *data, int data_entry, struct tagEVAL_THREAD *thread );
 
 /* ==================================================================================== */
@@ -368,15 +368,15 @@ void VALARRAY_print( FILE *out, VALARRAY *arr, int level )
   fprintf( out," ]");
 }
 
-void  VALARRAY_check_ref( VALARRAY *arr, int stage )
+void  VALARRAY_check_ref( VALARRAY *arr )
 {
   size_t i;
   BINDING_DATA *data;
 
   for( i = 0; i < VALARRAY_size( arr ) ; i++ ) {
-    data = VALARRAY_get( arr , i );  
-    if (!IS_NULL( data )) {
-      BINDING_DATA_check_ref(  data, stage );
+    data = VALARRAY_get_n( arr , i );  
+    if (data != 0) {
+      BINDING_DATA_check_ref(  data );
     }
   }
 
@@ -793,15 +793,15 @@ void VALHASH_print( FILE *out, VALHASH *data, int level  )
    fprintf(out," }");
 }
 
-void VALHASH_check_ref( VALHASH *hash, int stage )
+void VALHASH_check_ref( VALHASH *hash )
 {
    VALHASHPOS pos;
    BINDING_DATA *key,*value;
  
    VALHASHPOS_init( &pos );
    for( ; VALHASH_iterate( hash, &key, &value, &pos ) ; ) {
-     BINDING_DATA_check_ref( key, stage );
-     BINDING_DATA_check_ref( value, stage );
+     BINDING_DATA_check_ref( key );
+     BINDING_DATA_check_ref( value );
    }
 }
 
@@ -1824,43 +1824,31 @@ int  BINDING_DATA_cmp( BINDING_DATA *acmpa, BINDING_DATA *acmpb )
    return 0;
 }
 
-int BINDING_DATA_check_ref( BINDING_DATA *data, int stage )
+int BINDING_DATA_check_ref( BINDING_DATA *data )
 {
   BINDING_DATA *ref;
 
+  if (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS) {
+    EVAL_THREAD_print_ref_add_loop( data );
+    return 0;
+  }
+  data->b.value_flags_val |= S_VAR_PRINT_CHECK_LOOPS;	 
 
-  if (stage == 0) {
-
-    if (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS) {
-      return 0;
-    }
-    data->b.value_flags_val |= S_VAR_PRINT_CHECK_LOOPS;	 
-
-    switch( data->b.value_type ) {
+  switch( data->b.value_type ) {
       case S_VAR_HASH:
-        g_cur_thread->loop_collection_cnt ++;  
-        VALHASH_check_ref( &data->b.value.hash_value, 0 );
+        VALHASH_check_ref( &data->b.value.hash_value );
 	break;
       case S_VAR_LIST:
-        g_cur_thread->loop_collection_cnt ++;  
-	VALARRAY_check_ref( &data->b.value.array_value, 0);
+	VALARRAY_check_ref( &data->b.value.array_value );
 	break;
       default:
         if (IS_REF(data)) {
           ref = BINDING_DATA_follow_ref( data );
-
-	  if (! is_collection( ref->b.value_type ) ) {  
-	    return 0;
-	  }
-
-          if (ref->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS /*|| 
-	     ref->b.value_flags & S_VAR_COLL_ENTRY*/) {
-            EVAL_THREAD_print_ref_add_loop( data, ref );
-	  }
-	  BINDING_DATA_check_ref( ref, 0 );
+	  BINDING_DATA_check_ref( ref );
         }
         break;
     }
+#if 0    
   } else {
     switch( data->b.value_type ) {
       case S_VAR_HASH:
@@ -1882,42 +1870,14 @@ int BINDING_DATA_check_ref( BINDING_DATA *data, int stage )
 	}
      }	
   }
+#endif  
   return 0;
 }
 
 void BINDING_DATA_print_check_loops( BINDING_DATA *data )
 {
-  
-  g_cur_thread->loop_collection_cnt = 0;
- 
-  BINDING_DATA_check_ref( data, 0 );
-  
-  if (g_cur_thread->loop_collection_cnt) {
-    BINDING_DATA_check_ref( data, 1 );
-  }
-
+  BINDING_DATA_check_ref( data );
   g_cur_thread->has_loops = HASH_size( &g_cur_thread->print_check_ref_loops );
-}
-
-int BINDING_DATA_print_ref( FILE *out, BINDING_DATA *data, int prefix) 
-{
-   PRINT_CHECK_LOOP *cloop;
-
-   if (g_cur_thread->has_loops != 0) {
-       // check if reference is circular
-       //
-       cloop = (PRINT_CHECK_LOOP *) HASH_find( &g_cur_thread->print_check_ref_loops, data, sizeof(void *) ); 
-       if (cloop != 0) {
-         g_cur_thread->has_loops --;
-	 if (cloop->to == 0) {
-	     fprintf(out, "<%p> ", cloop->key );
-	  } else {
-	    fprintf( out, "%s(%p)", (prefix ? "->" : "") , cloop->to );
-	    return 1;
-	 }  
-      }
-   }
-   return 0;
 }
 
 
@@ -1926,30 +1886,49 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
 {
   int free_check_loops = 0;
 
-  // ??? self eferential structures - what is the format to print them ???
   if (level == 0) {
      g_cur_thread->has_loops = 0;
-     if (data->b.value_type == S_VAR_HASH || data->b.value_type == S_VAR_LIST || IS_REF(data)) {
-       BINDING_DATA_print_check_loops( data );
-       free_check_loops = 1;
-     }
+     BINDING_DATA_print_check_loops( data );
+     free_check_loops = 1;
   }
+  
 
-  data->b.value_flags_val &= ~S_VAR_PRINT_CHECK_LOOPS;
-
-  if (BINDING_DATA_print_ref( out, data, 1 )) {
-    return;
+  if (g_cur_thread->has_loops != 0) {
+      PRINT_CHECK_LOOP *cloop; 
+       // check if reference is circular
+       cloop = (PRINT_CHECK_LOOP *) HASH_find( &g_cur_thread->print_check_ref_loops, data, sizeof(void *) ); 
+       if (cloop != 0) {
+         if ( cloop->first == 0) {
+	   fprintf( out, "(%p)", data );
+	   cloop->first = 1;
+	   cloop->cnt -= 1;
+	 } else {
+	   fprintf(out, "<%p> ", data );
+	   cloop->cnt -= 1;
+	   if (cloop->cnt == 0) {
+	     data->b.value_flags_val &= ~S_VAR_PRINT_CHECK_LOOPS;
+             g_cur_thread->has_loops --;
+	   }
+   	   return;
+	 }
+      }
   }
 
   if (IS_REF( data ) ) {
-    data = BINDING_DATA_follow_ref( data );
-    assert( data != 0 );
- 
+    BINDING_DATA *dataNext;
+    
     fprintf(out, "-> ");
-    if (BINDING_DATA_print_ref( out, data, 0 )) {
-      return;
-    }  
+    dataNext = BINDING_DATA_follow_ref( data );
+    BINDING_DATA_print( out, dataNext, level + 1 );
+ 
+    assert( data != STATIC_NULL || (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS ) != 0 );
+    data->b.value_flags_val &= ~S_VAR_PRINT_CHECK_LOOPS;
+
+    return;
   }
+  assert( data != STATIC_NULL || (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS ) != 0 );
+  data->b.value_flags_val &= ~S_VAR_PRINT_CHECK_LOOPS;
+
  
   switch( data->b.value_type ) {
     case S_VAR_INT:
@@ -2298,24 +2277,21 @@ void EVAL_THREAD_free(EVAL_THREAD *thread)
   DRING_unlink( &thread->threads );
 }
 
-void EVAL_THREAD_print_ref_add_loop( BINDING_DATA *from, BINDING_DATA *to)
+void EVAL_THREAD_print_ref_add_loop( BINDING_DATA *data )
 {
   PRINT_CHECK_LOOP *cloop;
 
-//fprintf(stderr,"<%p-%p> ", from, to );
+  cloop = (PRINT_CHECK_LOOP *) HASH_find( &g_cur_thread->print_check_ref_loops, data, -1 ); 
+  if (!cloop) {
+    cloop = (PRINT_CHECK_LOOP *) malloc( sizeof( PRINT_CHECK_LOOP ) );
+    cloop->key = data;
+    cloop->cnt = 2;
+    cloop->first = 0;
 
-  // circular reference has been found.
-  cloop = (PRINT_CHECK_LOOP *) HEAP_alloc( sizeof( PRINT_CHECK_LOOP ) );
-  cloop->key = from;
-  cloop->to = to;
-    
-  HASH_insert( &g_cur_thread->print_check_ref_loops, &cloop->entry, cloop->key, sizeof(void *) ); 
- 
-  cloop = (PRINT_CHECK_LOOP *) HEAP_alloc( sizeof( PRINT_CHECK_LOOP ) );
-  cloop->key = to;
-  cloop->to = 0;
-
-  HASH_insert( &g_cur_thread->print_check_ref_loops, &cloop->entry, cloop->key, sizeof(void *) ); 
+    HASH_insert( &g_cur_thread->print_check_ref_loops, &cloop->entry, data, -1 ); 
+  } else {
+    cloop->cnt += 1;
+  }
 }
 
 void EVAL_THREAD_clear_check_ref( EVAL_THREAD *thread )
