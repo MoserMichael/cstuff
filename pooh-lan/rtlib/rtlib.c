@@ -1466,7 +1466,12 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
      BINDING_DATA_free( to );
   
    if (copy_by_value == CP_MOVE) {
-     BINDING_DATA_move( to, from );
+     //if (!IS_REF(from) || BINDING_DATA_follow_ref( from ) != to ) {
+       BINDING_DATA_move( to, from );
+     //} else {       
+     //  BINDING_DATA_init( from, S_VAR_NULL );
+     //  BINDING_DATA_init( to, S_VAR_NULL );
+     //} 
      return;
    }
 
@@ -1880,6 +1885,7 @@ void BINDING_DATA_print_check_loops( BINDING_DATA *data )
   g_cur_thread->has_loops = HASH_size( &g_cur_thread->print_check_ref_loops );
 }
 
+//#define __DEBUG_SHOW_ 
 
 
 void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
@@ -1891,6 +1897,10 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
      BINDING_DATA_print_check_loops( data );
      free_check_loops = 1;
   }
+
+#ifdef __DEBUG_SHOW_
+  fprintf( out, "(%p)", data );
+#endif
   
 
   if (g_cur_thread->has_loops != 0) {
@@ -1899,7 +1909,9 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
        cloop = (PRINT_CHECK_LOOP *) HASH_find( &g_cur_thread->print_check_ref_loops, data, sizeof(void *) ); 
        if (cloop != 0) {
          if ( cloop->first == 0) {
+#ifndef __DEBUG_SHOW_
 	   fprintf( out, "(%p)", data );
+#endif	   
 	   cloop->first = 1;
 	   cloop->cnt -= 1;
 	 } else {
