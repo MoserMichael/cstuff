@@ -154,6 +154,7 @@ static void x_dump( XCALL_DATA *xcall )
   arg = XCALL_param(xcall, 0 ); 
   arg = BINDING_DATA_follow_ref( arg );  
   BINDING_DATA_print( stderr, arg , 0 );
+  fprintf(stderr,"\n");
 }
 
 static void x_trace( XCALL_DATA *xcall )
