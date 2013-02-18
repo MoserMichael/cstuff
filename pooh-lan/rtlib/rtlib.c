@@ -1396,7 +1396,7 @@ void BINDING_DATA_copy_ext( BINDING_DATA *to, BINDING_DATA *from , EVAL_REF_KIND
      break;
    
    case COPY_SINGLE_ASSIGN_BY_REF:
-     to = BINDING_DATA_follow_ref_imp( to, 1, &prev );
+     //to = BINDING_DATA_follow_ref_imp( to, 1, &prev );
      BINDING_DATA_copy( to, from, CP_MOVE );
      break;
    
