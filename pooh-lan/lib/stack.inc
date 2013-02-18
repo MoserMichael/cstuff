@@ -18,7 +18,7 @@ sub make_stack()
    'push' : sub( data )
         newnode := make_stack_node( ~data data )
         if defined( ~arg this . head[ 1 ] )
-          newnode[ 1 ]  = this . head [ 1 ]
+          newnode[ 1 ]  := this . head [ 1 ]
         end
         this . head[ 1 ] := newnode
         this . ncount = this . ncount + 1
@@ -32,8 +32,8 @@ sub make_stack()
         if ! defined( ~arg this . head[ 1 ] )
           return Null
         end
-        rt = this . head[ 1 ]
-        this . head[ 1 ]   = rt[ 1 ]
+        rt := this . head[ 1 ]
+        this . head[ 1 ]   := rt[ 1 ]
         this . ncount = this . ncount - 1
         
         #dump( ~arg this . head )
