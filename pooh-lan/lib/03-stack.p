@@ -1,8 +1,8 @@
-    include 'stack.inc'
+include 'stack.inc'
 
 println( ~msg 'stack of numbers' )
 
-l = make_slist()
+l = make_stack()
 
 l . push( ~data 1 )
 l . push( ~data 2 )

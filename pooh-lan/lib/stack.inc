@@ -1,5 +1,5 @@
 
-sub make_slist_node( data optional )
+sub make_stack_node( data optional )
   
   # this ugly construct forces to return a node in heap memory. 
   # i think the notion of a clear language has to be revised a bit ;-)
@@ -8,15 +8,15 @@ sub make_slist_node( data optional )
 end
 
 # constructs a linked list stack
-sub make_slist()
-  e := make_slist_node( )
+sub make_stack()
+  e := make_stack_node( )
   return {
    'head' : e,
    'ncount' : 0,
   
    # add new element to the top of the stack
    'push' : sub( data )
-        newnode := make_slist_node( ~data data )
+        newnode := make_stack_node( ~data data )
         if defined( ~arg this . head[ 1 ] )
           newnode[ 1 ]  = this . head [ 1 ]
         end
