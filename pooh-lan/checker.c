@@ -1003,6 +1003,11 @@ int can_assign( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type, AST_VAR_TYPE *offe
      return 0;
    }
 
+   // can assign Null to any value.
+   if (rhs_type == S_VAR_NULL) {
+     return 0;
+   }
+
    if ((lhs_type & rhs_type) != 0) {
      return 0;
    }
