@@ -53,7 +53,7 @@
      TK_STRING_CONSTANT = 268,
      TK_INTEGER_CONSTANT = 269,
      TK_IDENTIFIER = 270,
-     TK_NEXT = 271,
+     TK_SKIP = 271,
      TK_BREAK = 272,
      TK_RETURN = 273,
      TK_END = 274,

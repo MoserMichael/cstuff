@@ -153,7 +153,7 @@ DOUBLE		[0-9]+"."[0-9]+([Ee][+-][0-9]+)?
 
 "break" { MY_YY_RETURN(TK_BREAK); }
 
-"next" { MY_YY_RETURN(TK_NEXT); }
+"skip"  { MY_YY_RETURN(TK_SKIP); }
 
 "loop"	{ MY_YY_RETURN(TK_LOOP); }
 
