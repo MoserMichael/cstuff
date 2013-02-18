@@ -1909,7 +1909,7 @@ void EVAL_do(  EVAL_CTX *out )
 
     yield_value = newthread->yield_rvalue;
     
-    while( do_loop && newthread->eval_impl && CTHREAD_state( newthread->eval_impl ) != CTHREAD_STATE_EXIT)  {
+    while( newthread->eval_impl && CTHREAD_state( newthread->eval_impl ) != CTHREAD_STATE_EXIT)  {
 
 	 if (!yield_value) {
 	   yield_value = get_CONST_NULL();
@@ -2026,6 +2026,9 @@ void EVAL_do(  EVAL_CTX *out )
 	  ;
         }
        }
+       if (!do_loop) {
+         break;
+       }         
 
 
        if (EVAL_trace_on(out)) {
@@ -2046,6 +2049,8 @@ void EVAL_do(  EVAL_CTX *out )
       CTHREAD_kill( newthread->eval_impl );
   
     EVAL_THREAD_free( newthread ); 
+    EVAL_THREAD_set_current_thread( cur_thread );
+
 
      
 #if 0    
