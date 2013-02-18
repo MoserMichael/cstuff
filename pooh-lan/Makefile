@@ -42,7 +42,7 @@ parser.c_CFLAGS=-Wno-error
 
 pooh_LIBS=$(TLIB) pthread cutils butils m rtlib nutils dl
 
-pooh_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/pooh test-error test .
+pooh_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/pooh test-error test lib .
 
 # ---------------------------------------
 
