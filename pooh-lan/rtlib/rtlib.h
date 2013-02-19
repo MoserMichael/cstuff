@@ -339,7 +339,10 @@ typedef enum {
 #define S_VAR_CAPTURE_REF		0x10    // refers to a captured value. (index into function objects' array of captured values)
 #define S_VAR_OBJECT                	0x20    // collection that contains function object, the function object 
 						// has a this pointer to containing collection.
+
+#if 0
 #define S_VAR_SELF_REF			0x40    // self referencial ; has elements that refer back to collection
+#endif
 #define REF_COPY_ON_WRITE		0x80    // copy on write - used for function parameters that are passed by value.
 /* ----------- */
 
