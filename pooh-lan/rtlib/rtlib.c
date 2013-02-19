@@ -1552,6 +1552,7 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
 	
 	 if (IS_STACK_VALUE( to )) {
 	    pos =  from - ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer); 
+	    assert( pos < ARRAY_size( &g_cur_thread->binding_data_stack ) );
 	    to->b.value_flags_ref = S_VAR_REF_STACK2STACK;
 	    to->b.value.stack2stack_ref = pos;
 	  //to->b.value.heap2stack_ref = pos;
