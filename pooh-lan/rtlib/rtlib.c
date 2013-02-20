@@ -179,31 +179,34 @@ union tagBINDING_DATA *VALARRAY_get_n( VALARRAY *arr, size_t idx )
 void set_outer_ref( BINDING_DATA *mem, void *arr, AST_VAR_TYPE ty, int set_ref )
 {
   BINDING_DATA *env; //,*this_ref;
+  VALFUNCTION *func;
+  size_t pos;
 
   assert( mem->b.value_type ==  S_VAR_CODE );
   
   env = (BINDING_DATA *) _OFFSETOF( arr, BINDING_DATA_VALUE, value );
   assert( env->b.value_type == (short) ty );
 
+  func = mem->b.value.func_value;
+  assert( func != 0 );
+
+  if (IS_STACK_VALUE( env ) ) {
+    pos = env - ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer); 
+    assert( pos < ARRAY_size( &g_cur_thread->binding_data_stack ) );
+    func->this_env.this_offset = pos;
+    func->this_thread = g_cur_thread;
+  } else {
+    func->this_env.this_environment = env;
+    func->this_thread = 0;
+  }
+
+    
   if (set_ref) {
     //this_ref = BINDING_DATA_MEM_new( S_VAR_NULL );
     //BINDING_DATA_copy( this_ref, env, CP_REF );
     //mem->b.value.func_value.this_environment = this_ref;
-
-    mem->b.value.func_value.this_environment = env;
     env->b.value_flags_ref |= S_VAR_OBJECT;  
- 
-  } else {
-    mem->b.value.func_value.this_environment = env;
-    
-    //this_ref = mem->b.value.func_value.this_environment;
-    //assert( this_ref->b.value_flags_ref != 0 );
- 
-    //if ((this_ref->b.value_flags_ref & S_VAR_REF_HEAP2STACK) != 0) {
-    //  BINDING_DATA_unlink_ref( env, this_ref );
-    //}
-    //BINDING_DATA_copy( this_ref, env, CP_REF );
-  }
+  } 
 
 }
 
@@ -983,7 +986,9 @@ void VALFUNCTION_copy( VALFUNCTION *to, VALFUNCTION *from )
 {
   memset( to, 0, sizeof( VALFUNCTION ) );
   to->fdecl = from->fdecl;
-  to->this_environment = from->this_environment;
+  // uPS, what happens if source gets out of scope ????
+  to->this_env= from->this_env;
+  to->this_thread = from->this_thread;
 }
 
 int VALFUNCTION_capture_equal( ARRAY *cmpa, ARRAY *cmpb )
@@ -1015,7 +1020,7 @@ int  VALFUNCTION_equal( VALFUNCTION *cmpa, VALFUNCTION *cmpb)
   }
 
   if (cmpa->fdecl == cmpb->fdecl) {
-      if (cmpa->this_environment == cmpb->this_environment) {
+      if (&cmpa->this_env == &cmpb->this_env) {
 //         if ( VALFUNCTION_capture_equal( &cmpa->captures, &cmpb->captures ) ) {
 	     return 0;
 //	   }
@@ -1028,7 +1033,7 @@ int  VALFUNCTION_equal( VALFUNCTION *cmpa, VALFUNCTION *cmpb)
 void VALFUNCTION_init_cap( VALFUNCTION *func, size_t num_captures, size_t num_nested_closures )
 {
 //func->fdecl = 0;
-  func->this_environment = 0;
+//func->this_environment = 0; //???
 
 #if 0
   if (ARRAY_init( &func->captures, sizeof( VALFUNCTION_CAPTURE ), num_captures )) {
@@ -1124,7 +1129,7 @@ void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTIO
         // function object for nested declaration created.
         nested_func = BINDING_DATA_MEM_new( S_VAR_CODE ); 
     
-        nested_func_obj = &nested_func->b.value.func_value; 
+        nested_func_obj = nested_func->b.value.func_value; 
         nested_func_obj->fdecl = (AST_BASE *) fdecl_child;
         VALFUNCTION_init_cap( nested_func_obj, ARRAY_size( &fdecl_child->outer_refs ), fdecl_child->num_nested_func_decl );
      
@@ -1136,6 +1141,21 @@ void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTIO
         VALFUNCTION_init_outer_ref_tree( cthread, nested_func_obj, fdecl_child, nesting + 1 );
     }
 }
+
+BINDING_DATA *VALFUNCTION_this( VALFUNCTION *func )
+{
+  EVAL_THREAD *thread;
+  size_t pos;
+  
+  if (func->this_thread!=0) {
+    thread = func->this_thread;
+    pos = func->this_env.this_offset;
+    assert( pos < ARRAY_size( &thread->binding_data_stack ) );
+    return ((BINDING_DATA *) thread->binding_data_stack.buffer) + pos;
+  }
+  return func->this_env.this_environment;
+}
+
 
 #define SIZE_HIGH_BIT 0x80000000
 #define SIZE_MASK     0x7FFFFFFF
@@ -1240,8 +1260,11 @@ void BINDING_DATA_init( BINDING_DATA *binding, AST_VAR_TYPE value_type)
     case S_VAR_STRING:
       VALSTRING_init( &binding->b.value.string_value );
       break;
-    case S_VAR_CODE:
-      VALFUNCTION_init( &binding->b.value.func_value );
+    case S_VAR_CODE: {
+      VALFUNCTION *func = (VALFUNCTION *) HEAP_alloc( sizeof( VALFUNCTION ) ) ;
+      VALFUNCTION_init(func);
+      binding->b.value.func_value = func; 
+      }
       break;
     case S_VAR_HASH:
       VALHASH_init( &binding->b.value.hash_value );
@@ -1353,6 +1376,7 @@ void BINDING_DATA_cp( BINDING_DATA *to, BINDING_DATA *from)
   if ( (to->b.value_flags_ref & (S_VAR_OBJECT|S_VAR_SELF_REF)) != 0) {
       BINDING_DATA *f = to->b.value_flags_ref & S_VAR_SELF_REF  ? from : 0;
 #endif  
+  to->b.value_flags_val = tmp;
   if ( (to->b.value_flags_ref & S_VAR_OBJECT) != 0) {
      switch( to->b.value_type )
      {
@@ -1367,7 +1391,6 @@ void BINDING_DATA_cp( BINDING_DATA *to, BINDING_DATA *from)
          break;
      }
   }
-  to->b.value_flags_val = tmp;
 }
 
 void BINDING_DATA_copy_ext( BINDING_DATA *to, BINDING_DATA *from , EVAL_REF_KIND ty )
@@ -1591,8 +1614,13 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
       VALSTRING_init( &to->b.value.string_value );
       VALSTRING_copy( &to->b.value.string_value, &from->b.value.string_value );
       break;
-    case S_VAR_CODE:
-      VALFUNCTION_copy( &to->b.value.func_value, &from->b.value.func_value  );
+    case S_VAR_CODE: {
+      //BINDING_DATA_init( to, S_VAR_CODE );
+      VALFUNCTION *func = (VALFUNCTION *) HEAP_alloc( sizeof( VALFUNCTION ) ) ;
+      VALFUNCTION_init(func);
+      to->b.value.func_value = func; 
+      VALFUNCTION_copy( to->b.value.func_value, from->b.value.func_value );
+      }
       break;
     case S_VAR_HASH:
       VALHASH_init( &to->b.value.hash_value );
@@ -1688,7 +1716,7 @@ void BINDING_DATA_free( BINDING_DATA *binding )
       VALSTRING_free( &binding->b.value.string_value );
       break;
     case S_VAR_CODE:
-      VALFUNCTION_free( &binding->b.value.func_value );
+      VALFUNCTION_free( binding->b.value.func_value );
       break;
     case S_VAR_HASH: {
       VALHASH *vhash;
@@ -1702,7 +1730,7 @@ void BINDING_DATA_free( BINDING_DATA *binding )
 	  size_t frame_start;
 		
 	  // call finalizer on the object.
-	  func = &finalize_value->b.value.func_value;
+	  func = finalize_value->b.value.func_value;
 	  frame_start = EVAL_THREAD_prepare_func_call( g_cur_thread, func );
   	  EVAL_THREAD_proceed_func_call( g_cur_thread, frame_start, func );
         }
@@ -1739,7 +1767,7 @@ size_t BINDING_DATA_hash( BINDING_DATA *binding )
     case S_VAR_STRING:
       return VALSTRING_hash( &binding->b.value.string_value );
     case S_VAR_CODE:
-      return (size_t) binding->b.value.func_value.fdecl;
+      return (size_t) binding->b.value.func_value->fdecl;
     case S_VAR_HASH:
       return VALHASH_hash( &binding->b.value.hash_value );
     case S_VAR_LIST:
@@ -1819,7 +1847,7 @@ int  BINDING_DATA_cmp( BINDING_DATA *acmpa, BINDING_DATA *acmpb )
       break;
     
     case S_VAR_CODE:
-      return VALFUNCTION_equal( &cmpa->b.value.func_value, &cmpb->b.value.func_value ); 
+      return VALFUNCTION_equal( cmpa->b.value.func_value, cmpb->b.value.func_value ); 
 
     case S_VAR_HASH:
       return VALHASH_equal( &cmpa->b.value.hash_value, &cmpb->b.value.hash_value ); 
@@ -1970,7 +1998,7 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
 	break;
     case S_VAR_CODE:
     case (S_VAR_CODE | S_VAR_CODE_THREAD) :
-        VALFUNCTION_print( out, &data->b.value.func_value  );
+        VALFUNCTION_print( out, data->b.value.func_value  );
 	break;
     case S_VAR_HASH:
         VALHASH_print( out, &data->b.value.hash_value, level + 1  );
@@ -2630,6 +2658,29 @@ int EVAL_THREAD_pop_frame ( EVAL_THREAD *thread )
   return 0;
 }
 
+
+BINDING_DATA *XCALL_this( XCALL_DATA *xcall )
+{
+   BINDING_DATA * act;
+   VALACTIVATION *valact; 
+   VALFUNCTION   *func;
+    
+   act = ((BINDING_DATA *) xcall->thread->binding_data_stack.buffer) +  xcall->frame_offset + 1;
+   valact = &act->activation_record;
+
+   if (!valact->function_object) {
+     return 0;
+   }
+
+   func = valact->function_object;
+   if (!func) {
+     return 0;
+   }
+   return VALFUNCTION_this( func );
+}
+
+
+
 BINDING_DATA *EVAL_THREAD_stack_frame_offset( EVAL_THREAD *thread, size_t stack_offset )
 {
    size_t pos; 
@@ -2917,8 +2968,8 @@ void EVAL_CONTEXT_do_mark_binding( BINDING_DATA *binding )
   switch( binding->b.value_type ) {
 
     case S_VAR_CODE:
-      pfunc_value = &binding->b.value.func_value;
-      EVAL_CONTEXT_mark_binding( pfunc_value->this_environment, 0 ); 
+      pfunc_value = binding->b.value.func_value;
+      EVAL_CONTEXT_mark_binding( VALFUNCTION_this( pfunc_value ), 0 ); 
 
       // visit captures as well (may include pointers to heap values).
       for( i = 0; i < pfunc_value->ncaptures; i ++ ) {

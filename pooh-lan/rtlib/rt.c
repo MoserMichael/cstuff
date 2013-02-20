@@ -2041,6 +2041,9 @@ static void set_int_value( VALHASH *hash, const char *name, POOH_INT nvalue )
   value->b.value.long_value = nvalue;
 }
 
+void set_outer_ref( BINDING_DATA *mem, void *arr, AST_VAR_TYPE ty, int set_ref );
+
+
 static void add_member_func( BINDING_DATA *obj, const char *func_name, AST_BASE *func )
 {
   VALHASH *hash;
@@ -2055,8 +2058,9 @@ static void add_member_func( BINDING_DATA *obj, const char *func_name, AST_BASE 
   BINDING_DATA_init( value, S_VAR_CODE );
   value->b.value_flags_val = S_VAR_HEAP_VALUE;
   
-  code_value = &value->b.value.func_value;
-  code_value->this_environment = obj;
+  code_value = value->b.value.func_value;
+
+  set_outer_ref( value, hash, S_VAR_HASH, 1 );
 
   assert( func->type == S_FUN_DECL || func->type == S_XFUN_DECL );
   code_value->fdecl = func;

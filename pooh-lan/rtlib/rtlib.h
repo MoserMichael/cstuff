@@ -231,7 +231,14 @@ M_INLINE int CAPTURE_IS_ON_HEAP( VALFUNCTION_CAPTURE *cap )
 }
 
 typedef struct tagVALFUNCTION {
-  union tagBINDING_DATA *this_environment;  // if function is member function of object - ptr to object data
+  
+  union {
+    union tagBINDING_DATA *this_environment;  // if function is member function of object - ptr to object data
+    size_t this_offset;			      // if object is on stack - offset of stack object.
+  }
+    this_env;
+  struct tagEVAL_THREAD *this_thread;	    // not null if ref to this is on the stack.
+ 
   struct tagAST_BASE *fdecl;		    // the function declaration
   struct tagEVAL_THREAD *thread;	    // attached co-routine.
   
@@ -246,7 +253,8 @@ typedef struct tagVALFUNCTION {
 M_INLINE void VALFUNCTION_init( VALFUNCTION *func )
 {
   func->fdecl = 0;
-  func->this_environment = 0;
+  func->this_env.this_environment = 0;
+  func->this_thread = 0;
 
 #if 0
   ARRAY_init( &func->captures, sizeof( VALFUNCTION_CAPTURE ), 0 );
@@ -264,6 +272,7 @@ void VALFUNCTION_init_outer_ref_tree( struct tagEVAL_THREAD *cthread, VALFUNCTIO
 void VALFUNCTION_free( VALFUNCTION *fnc );
 
 void VALFUNCTION_copy( VALFUNCTION *to, VALFUNCTION *from );
+union tagBINDING_DATA *VALFUNCTION_this( VALFUNCTION *func );
 
 
 // Make a capture ; if binding is on stack then forward reference is created.
@@ -381,7 +390,7 @@ typedef struct tagBINDING_DATA_VALUE {
 
 	    VALHASH     hash_value;
 
-	    VALFUNCTION func_value;
+	    VALFUNCTION *func_value;
 
 	} value;
     
@@ -532,7 +541,7 @@ M_INLINE VALFUNCTION  *BINDING_DATA_get_fun( BINDING_DATA *data )
   if ((data->b.value_type & S_VAR_CODE) == 0) {
     return 0;
   }
-  return &data->b.value.func_value;
+  return data->b.value.func_value;
 }
 
 
@@ -783,28 +792,7 @@ M_INLINE BINDING_DATA *XCALL_rvalue( XCALL_DATA *xcall )
    return ((BINDING_DATA *) xcall->thread->binding_data_stack.buffer) +  xcall->frame_offset;
 }
 
-M_INLINE BINDING_DATA *XCALL_this( XCALL_DATA *xcall )
-{
-   BINDING_DATA * act, *ret;    
-   VALACTIVATION *valact; 
-   VALFUNCTION   *func;
-    
-   act = ((BINDING_DATA *) xcall->thread->binding_data_stack.buffer) +  xcall->frame_offset + 1;
-   valact = &act->activation_record;
-
-   if (!valact->function_object) {
-     return 0;
-   }
-
-   func = valact->function_object;
-   if (!func) {
-     return 0;
-   }
-
-   ret =  func->this_environment;
-   assert( ret != 0 );
-   return ret;
-}
+BINDING_DATA *XCALL_this( XCALL_DATA *xcall );
 
 
 M_INLINE BINDING_DATA *XCALL_param( XCALL_DATA *xcall, size_t num_param )

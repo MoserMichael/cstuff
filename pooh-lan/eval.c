@@ -638,15 +638,14 @@ BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDIN
         val_func = activation_rec->function_object;
  
         switch( scope ) {
-    
            case REF_SCOPE_THIS:
              if (new_value != 0) {
                EVAL_error( out,  0, "Can' assign value to this." );
              } else {
-               if (!val_func->this_environment) {
-                 EVAL_error( out,  0,  "not called via this." );
+               if (val_func->this_env.this_environment == 0) {
+                 EVAL_error( out,  0,  "referencing this, but function is not part of an object." );
 	       }
-	       data = val_func->this_environment;
+	       data = VALFUNCTION_this( val_func );
              }
              break;
            case REF_SCOPE_CLOSURE: {
@@ -1171,7 +1170,7 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr, EVAL_REF_KIND get_value_
       if (fdecl->type == S_XFUN_DECL) {
 rvall:      
         ret = EVAL_THREAD_push_stack( cthread, S_VAR_CODE );
-        valfunc = &ret->b.value.func_value;
+        valfunc = ret->b.value.func_value;
         valfunc->fdecl = fdecl;
 
 	if (tracer)
@@ -1204,7 +1203,7 @@ rvall:
         // if current evaluated function is a closure, then we want to return function object that is nested in current declaration.
         func = val_func->pnested_closures[ ffdecl->this_func_decl_index ];
  
-        valfunc = &func->b.value.func_value;
+        valfunc = func->b.value.func_value;
  
       } else {
       
@@ -1214,7 +1213,7 @@ rvall:
         func = BINDING_DATA_MEM_new( S_VAR_CODE );
 
 
-        valfunc = &func->b.value.func_value;
+        valfunc = func->b.value.func_value;
         valfunc->fdecl = fdecl;
         
         VALFUNCTION_init_cap( valfunc, ARRAY_size( &ffdecl->outer_refs ), ffdecl->num_nested_func_decl );
@@ -1421,7 +1420,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
         is_thread = data->b.value_type & S_VAR_CODE_THREAD;  
       }
 
-      valfunc = &data->b.value.func_value;
+      valfunc = data->b.value.func_value;
       fdecl = valfunc->fdecl;
 
       // check that all parameters are supplied.
@@ -1610,9 +1609,11 @@ void EVAL_do(  EVAL_CTX *out )
 
        EVAL_reference( out, scl->left_side, 0, scl->type == CP_REF ? COPY_SINGLE_ASSIGN_BY_REF : COPY_SINGLE_ASSIGN_BY_VAL, VALFUNC_SHOW_METHOD_SIG );
 
+#if 0
        if (scl->type == CP_REF && last_collection == dref ) {
          last_collection->b.value_flags_ref |= S_VAR_SELF_REF; 
        }
+#endif
 
     } else { // multivalue assignment
        AST_VECTOR *values;
