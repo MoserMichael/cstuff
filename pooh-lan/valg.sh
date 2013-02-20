@@ -20,7 +20,7 @@ PLATFORM_NAME="$OS_TYPE-$OS_VERSION-$ARCH"
 
 echo "running tests with valgrind. Please Wait (tm)"
 
-./test-it.pl ../$PLATFORM_NAME/bin/pooh test >valg.log 2>&1
+./test-it.pl ../$PLATFORM_NAME/bin/pooh test lib >valg.log 2>&1
 
 
 ERRORS=`egrep -n "^==[^=]" valg.log` || true
