@@ -7,7 +7,8 @@ sub make_slist_node( data optional )
   return l[1]
 end
 
-# constructs a linked list stack
+# constructs a single linked list . 
+# Each node of the list has a link to the next node ; one can move forward among the links of the list, but not backward.
 sub make_slist()
   e := make_slist_node( )
   return {
@@ -41,20 +42,29 @@ sub make_slist()
     end,
 
     'insert' : sub ( pos, data )
-      new := make_slist_node( ~data data )
-      new[ 1 ] := pos[ 1 ]
-      pos[ 1 ] := new
+      newnode := make_slist_node( ~data data )
+      if defined( ~arg pos[ 1 ] )
+        newnode[ 1 ] := pos[ 1 ]
+      end
+      pos[ 1 ] := newnode
       this . ncount = this . ncount + 1
+
+      return newnode
     end,
 
     'remove' : sub( pos )
+       if ! defined( ~arg pos )
+	  return false
+       end	  
+       
        rt := pos[ 1 ]
 
        if defined( ~arg rt )
          pos[ 1 ] := rt[ 1 ]
-	 this . ncount = this . ncount - 1
+         this . ncount = this . ncount - 1
 	 return true
        end	 
+       
        return false       
     end,
 
@@ -62,16 +72,57 @@ sub make_slist()
         return this . ncount
     end,
 
-    'map' : sub()
-       pos := this . head[ 1 ]
-       
+    'mapcopy' : sub( func )
+       rt := make_slist()
+       rpos := rt . headp
+
+       pos := this . headp[ 1 ]
        while defined( ~arg pos )
-         println( ~msg pos[ 2 ] )
+         fres := func( ~arg pos [ 2 ] )
+	 rt . count()
+	 rpos := rt . insert( ~pos rpos ~data fres )
          pos := pos[ 1 ]
        end
+       return rt
+    end,
 
-    end
- 
+    'mapreplace' : sub( func )
+       pos := this . headp[ 1 ]
+       while defined( ~arg pos )
+         pos[ 2 ] := func( ~arg pos [ 2 ] )
+         pos := pos[ 1 ]
+       end
+    end,
+
+    'filtercopy' : sub( func )
+       rt = make_slist()
+       rpos := rt . head()
+       pos := this . headp[ 1 ]
+       while defined( ~arg pos )
+         if func( ~arg pos [ 2 ] )
+	    data := pos[ 2 ]
+	    rpos := rt . insert( ~pos rpos ~data data )
+	 end
+         pos := pos[ 1 ]
+       end
+       return rt
+    end,
+
+    'foldfirst2last' : sub( func, initval )
+       pos := this . headp[ 1 ]
+       first = 1
+       rt = Null
+       while defined( ~arg pos )
+         if first
+            rt = func( ~a initval ~b pos[ 2 ] )
+            first = 0
+         else
+            rt = func( ~a rt ~b pos[ 2 ] )
+         end
+         pos := pos[ 1 ]
+       end
+       return rt
+     end
   }
 end
 
