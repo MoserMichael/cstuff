@@ -3091,7 +3091,7 @@ AST_XFUNC_DECL xlib[] = {
 
 /* co-routine threads */
   DEFINE_XFUNC1( "makethread",	 x_make_thread,	 S_VAR_CODE, "func", S_VAR_CODE ),  
-  DEFINE_XFUNC1( "isthreadmain", x_isthreadmain, S_VAR_INT,  "thread", S_VAR_CODE ),  
+  DEFINE_XFUNC0( "isthreadmain", x_isthreadmain, S_VAR_INT ),  
   DEFINE_XFUNC0( "threadexit",	 x_threadexit, 0	 ),  
   DEFINE_XFUNC1( "stopthread",	 x_stopthread,	0,	    "thread", S_VAR_CODE ),  
   DEFINE_XFUNC1( "threadyield",	 x_threadyield,	S_VAR_LIST,  "yieldval", S_VAR_ANY | S_VAR_PARAM_OPTIONAL ),  
