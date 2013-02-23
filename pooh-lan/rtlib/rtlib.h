@@ -744,7 +744,7 @@ BINDING_DATA * EVAL_THREAD_proceed_func_call( EVAL_THREAD *thread, size_t frame_
 
 
 // prepare co-routine call: create new stack and push ref to call parameters.
-EVAL_THREAD * EVAL_THREAD_prepare_coroutine( EVAL_THREAD *thread, size_t frame_start, AST_BASE *fdcl);
+EVAL_THREAD * EVAL_THREAD_prepare_coroutine( EVAL_THREAD *thread, size_t frame_start, VALFUNCTION *func, AST_BASE *fdcl);
 
 BINDING_DATA *EVAL_THREAD_parameter( EVAL_THREAD *thread, size_t frame_start, size_t param_num, AST_VAR_TYPE type );
 BINDING_DATA *EVAL_THREAD_parameter_ref( EVAL_THREAD *thread, size_t frame_start, size_t param_num );

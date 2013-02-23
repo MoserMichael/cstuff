@@ -243,9 +243,12 @@ static void x_make_thread( XCALL_DATA *xcall )
   BINDING_DATA_copy( XCALL_rvalue( xcall ), ret, CP_REF );
 }
 
+
+int EVAL_THREAD_is_threadmain_interpreter( EVAL_THREAD *thread );
+
 static void x_isthreadmain( XCALL_DATA *xcall )
 {
-  int iscoro = EVAL_THREAD_is_threadmain( xcall->thread );
+  int iscoro =   EVAL_THREAD_is_threadmain_interpreter( xcall->thread );
   BINDING_DATA_set_int( XCALL_rvalue(xcall), iscoro );
 }
 

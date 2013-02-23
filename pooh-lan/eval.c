@@ -17,7 +17,7 @@ BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDIN
 void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr, BINDING_DATA *nvalue, EVAL_REF_KIND  copy_type, VALFUNC_PRINT_MODE rval_method_hide_sig);
 
 void EVAL_do_expr( struct tagEVAL_CTX *out, AST_EXPRESSION *expr, EVAL_REF_KIND get_value_ref, int get_function);
-int  EVAL_do_function( struct tagEVAL_CTX *out , AST_FUNC_CALL *scl, int is_threa, EVAL_THREAD **newthread );
+int  EVAL_do_function( struct tagEVAL_CTX *out , AST_FUNC_CALL *scl, int is_threa, VALFUNCTION **rfunc, EVAL_THREAD **newthread );
 void EVAL_do(  struct tagEVAL_CTX *out );
 int EVAL_thread_create(AST_BASE *fdecl, size_t frame_start, EVAL_THREAD *arg_thread, void *eval_ctx);
 int EVAL_thread_resume_do( EVAL_THREAD *thread, BINDING_DATA *resume_msg, BINDING_DATA **yield_value );
@@ -1046,7 +1046,7 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr, EVAL_REF_KIND get_value_
       break;
 
     case S_EXPR_FUNCALL:
-     EVAL_do_function( out , expr->val.fcall, 0, 0 );
+     EVAL_do_function( out , expr->val.fcall, 0, 0, 0 );
      break;
 
     case S_EXPR_HASH_INDEX:
@@ -1384,7 +1384,7 @@ void EVAL_proceed_fun_call( size_t frame_start, AST_BASE *fdecl, VALFUNCTION *va
  
 }      
  
-int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_THREAD **newthread  )
+int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, VALFUNCTION **rfunc, EVAL_THREAD **newthread  )
 {
     AST_EXPRESSION *f_name = scl->f_name;
     AST_BASE *fdecl;
@@ -1422,6 +1422,9 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
 
       valfunc = data->b.value.func_value;
       fdecl = valfunc->fdecl;
+
+      if (rfunc)
+        *rfunc = valfunc;
 
       // check that all parameters are supplied.
       if (CHECKER_check_func_call_params( out->ctx, 0, scl, fdecl ) ) {
@@ -1470,7 +1473,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
           EVAL_error( out , &scl->base,  "Can't start thread on this value - it is already running" );
         }
        
-        new_thread = EVAL_THREAD_prepare_coroutine( cthread, frame_start, fdecl );
+        new_thread = EVAL_THREAD_prepare_coroutine( cthread, frame_start, valfunc, fdecl );
         
         if (newthread) {
           *newthread = new_thread;
@@ -1865,6 +1868,7 @@ void EVAL_do(  EVAL_CTX *out )
     AST_EXPRESSION  *lhs, *lexpr = scl->loop_expr;
     BINDING_DATA *yield_value, *binding_rhs;
     EVAL_THREAD *cur_thread = out->context.current_thread;
+    VALFUNCTION *fval = 0;
     AST_VAR_TYPE offending_type;
     AST_VECTOR *values;
     int do_loop = 1;
@@ -1876,7 +1880,7 @@ void EVAL_do(  EVAL_CTX *out )
 
     switch(lexpr->exp_type) {
       case S_EXPR_FUNCALL:
-        EVAL_do_function( out , lexpr->val.fcall, 1, &newthread );
+        EVAL_do_function( out , lexpr->val.fcall, 1, &fval, &newthread );
         break;
       default: {
         BINDING_DATA *top;
@@ -1898,7 +1902,7 @@ void EVAL_do(  EVAL_CTX *out )
           EVAL_error( out , &lexpr->base,  "For statement needs function call or array, instead got %s",  get_type_name( top->b.value_type ) );
 	}
 
-        newthread = EVAL_THREAD_prepare_coroutine( cthread, frame_start, &xfunc->base );
+        newthread = EVAL_THREAD_prepare_coroutine( cthread, frame_start, 0, &xfunc->base );
         
 	EVAL_thread_create( &xfunc->base, frame_start, newthread, out);
 	}
@@ -2043,8 +2047,11 @@ void EVAL_do(  EVAL_CTX *out )
       TRACE_println( &out->trace_out, scl->base.location.first_line ,  "end # finish for loop", 21 );
     }
 
-    if (newthread->eval_impl ) 
+    if (newthread->eval_impl ) {
       CTHREAD_kill( newthread->eval_impl );
+    }
+    if (fval)
+	fval->thread = 0;
   
     EVAL_THREAD_free( newthread ); 
     EVAL_THREAD_set_current_thread( cur_thread );
@@ -2071,7 +2078,7 @@ void EVAL_do(  EVAL_CTX *out )
       trace = EVAL_CTX_new_trace( out, &scl->base);
     }
 
-    show = EVAL_do_function( out, scl, 0, 0 );
+    show = EVAL_do_function( out, scl, 0, 0, 0 );
 
     //EVAL_THREAD_pop_frame( cthread );
 
