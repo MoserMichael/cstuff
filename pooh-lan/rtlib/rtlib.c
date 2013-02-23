@@ -2432,15 +2432,16 @@ void EVAL_THREAD_copy_binding( BINDING_DATA *to, BINDING_DATA *from )
 }
 
 
-EVAL_THREAD * EVAL_THREAD_prepare_coroutine( EVAL_THREAD *thread, size_t frame_start, AST_BASE *fdcl )
+EVAL_THREAD * EVAL_THREAD_prepare_coroutine( EVAL_THREAD *thread, size_t frame_start,  VALFUNCTION *func, AST_BASE *fdcl )
 {
   EVAL_THREAD *new_thread;
   AST_XFUNC_DECL *xfdecl;
   AST_FUNC_DECL * fdecl = 0;
   BINDING_DATA *param, *newparam;
   size_t i, idx, num_params, nsize, ncount;
+#if 0  
   VALACTIVATION *arecord;
-
+#endif
 
   // create new thread
   new_thread = (EVAL_THREAD *) malloc( sizeof( EVAL_THREAD ) );
@@ -2451,10 +2452,14 @@ EVAL_THREAD * EVAL_THREAD_prepare_coroutine( EVAL_THREAD *thread, size_t frame_s
     return 0;
   }
 
+#if 0
   arecord = (VALACTIVATION *) new_thread->binding_data_stack.buffer ;
   
   // prepare top level stack frame of co-routine.
   arecord->fdecl = fdcl;
+  arecord->function_object = func; 
+#endif
+  EVAL_THREAD_make_activation_record( new_thread, fdcl, func, 0 );
 
   if (fdcl->type == S_XFUN_DECL) {
     xfdecl = (AST_XFUNC_DECL *) fdcl;
@@ -2824,7 +2829,13 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
 // returns 1 if this function is called as a co-routine.
 int EVAL_THREAD_is_threadmain( EVAL_THREAD *thread )
 {
-  return  &g_context->main != thread && thread->current_activation_record == 0;
+  return  &g_context->main != thread && thread->current_activation_record == 1;
+}
+
+int EVAL_THREAD_is_threadmain_interpreter( EVAL_THREAD *thread )
+{
+  VALACTIVATION *arecord = (VALACTIVATION *) EVAL_THREAD_stack_offset( thread, thread->current_activation_record);
+  return  &g_context->main != thread &&  arecord->parent_function == 1;
 }
 
 
