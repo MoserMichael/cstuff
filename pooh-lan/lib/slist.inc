@@ -15,20 +15,26 @@ sub make_slist()
    'headp' : e,
    'ncount' : 0,
 
+   # returns position of the head of the list - 
+   # this is an empty node that is maintained for each list; also known as the 0th node.
    'head' : sub()
       rt := this . headp
       return rt
    end,
 
+ 
+   # given a position (pos argument) returns the data entry for the node identified by the position
    'data' : sub( pos )
       return pos[ 2 ]
    end,
 
+   # given a position (pos argument) returns the next entry following pos.
    'next' : sub( pos )
       rt := pos[ 1 ]
       return rt
    end,
 
+   # returns position of the nth element in the list (0th element is the head of the list)
    'nth' : sub( num )
       pos := this . headp
       while num > 0
@@ -41,6 +47,7 @@ sub make_slist()
       return pos
     end,
 
+    # insert new node after node identified by pos argument , the new node will have data argument attached to it.
     'insert' : sub ( pos, data )
       newnode := make_slist_node( ~data data )
       if defined( ~arg pos[ 1 ] )
@@ -52,6 +59,7 @@ sub make_slist()
       return newnode
     end,
 
+    # remove the node after the node identified by pos argument
     'remove' : sub( pos )
        if ! defined( ~arg pos )
 	  return false
@@ -68,10 +76,12 @@ sub make_slist()
        return false       
     end,
 
+    # returns the number of elements in the list; the list object has attached counter of elements.
     'count' : sub() 
         return this . ncount
     end,
 
+    # apply argument function func to each element in the list; returns a new list made up of the results.
     'mapcopy' : sub( func )
        rt := make_slist()
        rpos := rt . headp
@@ -86,6 +96,7 @@ sub make_slist()
        return rt
     end,
 
+    # apply argument function func to each element of the list; the original list data entries are replaced with call results.
     'mapreplace' : sub( func )
        pos := this . headp[ 1 ]
        while defined( ~arg pos )
@@ -94,6 +105,7 @@ sub make_slist()
        end
     end,
 
+    # apply argument function to each element of the list; if it returns true then add reference to list data to return list
     'filtercopy' : sub( func )
        rt = make_slist()
        rpos := rt . head()
@@ -108,6 +120,7 @@ sub make_slist()
        return rt
     end,
 
+    # fold the first to last element in the list
     'foldfirst2last' : sub( func, initval )
        pos := this . headp[ 1 ]
        first = 1
@@ -122,6 +135,51 @@ sub make_slist()
          pos := pos[ 1 ]
        end
        return rt
+     end,
+
+     # list iterator: 
+     'range' : sub( from optional, to optional )
+	
+        
+	if ! defined( ~arg from )
+          n = 1 
+        else
+          n = from
+	  if n < 1
+	    n = 1
+	  end
+	end
+
+	if ! defined( ~arg to )
+	   m = -1
+        else 
+           m = to
+	end
+    
+	pos := this . nth( ~num n )
+
+        if isthreadmain()
+	    while defined( ~arg pos ) 
+		if m != -1 and n > m
+		    break
+		end
+		threadyield0( ~yieldval pos[ 2 ] )
+		pos := pos[ 1 ]
+                n = n + 1
+	    end
+	else
+	    rt = []
+	    while defined( ~arg pos ) 
+		if m != -1 and n > m
+		    break
+		end
+		tmp := pos[ 2 ]
+		push( ~array rt ~top tmp )
+		pos := pos[ 1 ]
+                n = n + 1
+	    end	
+	    return rt
+	end
      end
   }
 end

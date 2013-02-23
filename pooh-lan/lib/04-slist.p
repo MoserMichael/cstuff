@@ -51,6 +51,25 @@ r . remove( ~pos r . nth( ~num 1 ) )
 print_list( ~list r )
 
 
+println( ~msg 'test range iterator / for loop - iterate over all elements' )
+
+for n   r.range()
+  println( ~msg n )
+end
+
+println( ~msg 'test range iterator / for loop - iterate from second to fourth' )
+
+for n   r.range( ~from 2 ~to 4 )
+  println( ~msg n )
+end
+
+println( ~msg 'test range iterator / for loop - iterate from second to last' )
+
+for n   r.range( ~from 2 )
+  println( ~msg n )
+end
+
+
 # ** iterate over the list and print the elements **
 
 sub print_list( list )
@@ -61,6 +80,8 @@ sub print_list( list )
      pos := list . next( ~pos pos )
   end
 end
+
+
 
 
 
