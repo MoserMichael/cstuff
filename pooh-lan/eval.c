@@ -1940,7 +1940,7 @@ void EVAL_do(  EVAL_CTX *out )
 	 if (exprvar->exp_type != S_EXPR_LIST_VALUES) { // not multivalue left hand side
 	   assert(exprvar->exp_type ==  S_EXPR_REFERENCE );
            if (can_assign( AST_EXPRESSION_type( exprvar ), data->b.value_type, &offending_type)) {
-	     EVAL_error( out , &lexpr->base, "Can't assign the %s value to %s", get_type_name( yield_value->b.value_type ), exprvar->val.ref.lhs);
+	     EVAL_error( out , &lexpr->base, "Can't assign the %s value to %s", get_type_name( data->b.value_type ), exprvar->val.ref.lhs);
            }
 	   if (EVAL_trace_on(out)) {
              DBUF_add( &trace->text,exprvar->val.ref.lhs, strlen( exprvar->val.ref.lhs ) ); 
