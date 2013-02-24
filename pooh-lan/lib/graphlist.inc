@@ -12,6 +12,8 @@ sub make_graph_list( keepinedge optional )
     'keepinedge' : defined( ~arg keepinedge ),
 
     # add a new node to the graph; the index of the new node is returned;
+    # you can attach data to the node (if data argument is not Null)
+    # you can set the node index with optional index parameter
     'addnode' : 
       sub ( data optional, index optional )
         links := make_slist()
@@ -139,6 +141,7 @@ sub make_graph_list( keepinedge optional )
         return true
       end,
 
+    # returns true if edge exists from node with index from to node with index to
     'hasedge' :
        sub (from, to )
         rt := this . nodes[ from ]
@@ -155,6 +158,7 @@ sub make_graph_list( keepinedge optional )
         return false
        end,
 
+    # returns data associated to edge from node with index from to node with index to
     'edgedata' : 
       sub( from, to)
         rt := this . nodes[ from ]
@@ -172,6 +176,7 @@ sub make_graph_list( keepinedge optional )
         return Null
       end,
 
+    # delete edge that leads from node with index from to node with index to
     'deledge' :
       sub (from, to )
         if this . deledgeimp( ~from from ~to to ) and this . keepinedge == true
@@ -179,6 +184,7 @@ sub make_graph_list( keepinedge optional )
         end
       end,
 
+    # internal function, do not call.
     'deledgeimp' : 
       sub( from, to )
         rt := this . nodes[ from ]
@@ -202,6 +208,7 @@ sub make_graph_list( keepinedge optional )
         return false
      end,
 
+    # iterator - returns the index of all edges that lead out of node with index from
     'outedges' :
       sub (from)
         rt := this . nodes[ from ]
@@ -227,6 +234,7 @@ sub make_graph_list( keepinedge optional )
       end,
 
 
+    # iterator - returns edges that lead into node with index from
     'inedges':
        sub (from)
          if this . keepinedge == true
@@ -253,7 +261,7 @@ sub make_graph_list( keepinedge optional )
             end
          else
             rt = []
-            for n this . eachnodes() 
+            for n this . eachnode() 
               if this . hasedge( ~from n ~to from )
                 if isthreadmain()
                   threadyield0( ~yieldval n )
@@ -262,7 +270,7 @@ sub make_graph_list( keepinedge optional )
                 end
               end
             end
-            if isthreadmain()
+            if not isthreadmain()
               return rt
             end
          end
