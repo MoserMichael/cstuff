@@ -782,7 +782,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 	    // for array collection - check that the index is a number (must).
 	    if (index_expr->exp_type == S_EXPR_ARRAY_INDEX) {
 	      if (! is_numeric_type( index_data->b.value_type ) ) {
-		EVAL_error( out, &expr->base, "Expects number as array index for %s instead got %s", expr->val.ref.lhs, get_type_name( data->b.value_type ) );
+		EVAL_error( out, &expr->base, "Expects number as array index for %s instead got %s", expr->val.ref.lhs, get_type_name( index_data->b.value_type ) );
 	      }
 	    }
 
