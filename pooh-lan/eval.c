@@ -764,6 +764,8 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 	    data = index_data - 1; 
 	    data = BINDING_DATA_follow_ref( data );
 	    collection_type = data->b.value_type;
+
+	    index_data = BINDING_DATA_follow_ref( index_data );
     
 
 	    // check that collection type is what is expected by the type of index expression.
