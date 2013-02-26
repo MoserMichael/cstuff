@@ -376,7 +376,12 @@ typedef struct tagBINDING_DATA_VALUE {
 
 	    union tagBINDING_DATA *value_ref; // reference to binding on heap.
 
-	    size_t	stack2stack_ref; // if reference between two stack locations, then reference is via offset from start of stack.
+	    //size_t	stack2stack_ref; // if reference between two stack locations, then reference is via offset from start of stack.
+	    struct {
+		size_t stack2stack_ref;		
+		struct tagEVAL_THREAD *thread;
+	    }
+		stackref;	// if reference between two stack locations, then reference is via offset from start of stack.
 	
 	    VALFUNCTION_CAPTURE  heap2stack_ref; // if reference from heap allocated node to stack - then treat like capture.
 
@@ -714,7 +719,7 @@ void EVAL_THREAD_push_stack2( EVAL_THREAD *thread, BINDING_DATA *entry);
 
 M_INLINE BINDING_DATA *EVAL_THREAD_stack_offset( EVAL_THREAD *thread, size_t pos )
 {
-   if (pos > ARRAY_size( &thread->binding_data_stack )) {
+   if (pos >= ARRAY_size( &thread->binding_data_stack )) {
       assert(0);
    }
    BINDING_DATA *data = (BINDING_DATA *) ARRAY_at( &thread->binding_data_stack, pos ); //ARRAY_size( &thread->binding_data_stack ) - 1 - stack_offset );

@@ -1287,6 +1287,7 @@ BINDING_DATA *BINDING_DATA_follow_ref_imp(  BINDING_DATA *arg, int copy_on_write
     size_t cap_idx,pos;
     VALFUNCTION_CAPTURE *cap;
     VALFUNCTION *fobject;  
+    EVAL_THREAD *thread;
 
     for( prev = 0, binding = arg ; ;  ) {
 
@@ -1313,23 +1314,23 @@ BINDING_DATA *BINDING_DATA_follow_ref_imp(  BINDING_DATA *arg, int copy_on_write
       if (value_flags & S_VAR_REF_HEAP) {
         binding = binding->b.value.value_ref;
       } else if (value_flags & S_VAR_REF_HEAP2STACK) {
-        EVAL_THREAD *thread;
 	
 	thread = binding->b.value.heap2stack_ref.thread;
 	pos = binding->b.value.heap2stack_ref.value.stack_ref & SIZE_MASK;
 	assert( pos < ARRAY_size( &thread->binding_data_stack ) );
 	binding= ((BINDING_DATA *) thread->binding_data_stack.buffer) + pos;
       } else if (value_flags & S_VAR_REF_STACK2STACK) { 
-	pos = binding->b.value.stack2stack_ref;
-	assert( pos < ARRAY_size( &g_cur_thread->binding_data_stack ) );
-	binding = ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer) + pos;
+	thread = binding->b.value.stackref.thread;
+	pos = binding->b.value.stackref.stack2stack_ref;
+	assert( pos < ARRAY_size( &thread->binding_data_stack ) );
+	binding = ((BINDING_DATA *) thread->binding_data_stack.buffer) + pos;
       } else if (value_flags & S_VAR_REF_GLOB) { 
-     	pos = binding->b.value.stack2stack_ref;
+     	pos = binding->b.value.stackref.stack2stack_ref;
 	assert( pos < ARRAY_size( &g_context->bindings_global ) );
 	binding = ((BINDING_DATA *) g_context->bindings_global.buffer) + pos;
       } else if (value_flags & S_VAR_CAPTURE_REF) {
         arecord = ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer) + g_cur_thread->current_function_frame_start + 1;
-        cap_idx = binding->b.value.stack2stack_ref & SIZE_MASK;	
+        cap_idx = binding->b.value.stackref.stack2stack_ref & SIZE_MASK;	
 
 	fobject = arecord->activation_record.function_object;
 	if (!fobject) {
@@ -1500,12 +1501,14 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
   
    if (copy_by_value == CP_MOVE) {
      //if (!IS_REF(from) || BINDING_DATA_follow_ref( from ) != to ) {
-       BINDING_DATA_move( to, from );
-     //} else {       
+       //} else {       
      //  BINDING_DATA_init( from, S_VAR_NULL );
      //  BINDING_DATA_init( to, S_VAR_NULL );
      //} 
-     return;
+     if ( !IS_REF( from ) ) {
+       BINDING_DATA_move( to, from );
+       return;
+     }
    }
 
    if ( IS_REF( from ) ) {
@@ -1514,15 +1517,17 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
      assert( (from->b.value_flags_ref &  S_VAR_CAPTURE_REF)  == 0 ); // have to think about this case
         
      is_heap2stack = from->b.value_flags_ref & S_VAR_REF_HEAP2STACK; 
-    
+   
      //from = BINDING_DATA_follow_ref( from ); // ???? must be wrong somewhere.
      if (from->b.value_flags_ref & S_VAR_REF_STACK2STACK && !IS_STACK_VALUE(to)) {
        size_t pos;
        BINDING_DATA *binding;
+       EVAL_THREAD *thread;
 
-       pos = from->b.value.stack2stack_ref;
-       assert( pos < ARRAY_size( &g_cur_thread->binding_data_stack ) );
-       binding= ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer) + pos;
+       thread = from->b.value.stackref.thread;
+       pos = from->b.value.stackref.stack2stack_ref;
+       assert( pos < ARRAY_size( &thread->binding_data_stack ) );
+       binding= ((BINDING_DATA *) thread->binding_data_stack.buffer) + pos;
 
        // make heap 2 stack reference
        to->b.value_flags_ref = S_VAR_REF_HEAP2STACK;
@@ -1578,16 +1583,18 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
      } else if (IS_GLOBAL_VALUE(from)) {
        	
 	pos =  from - ((BINDING_DATA *) g_context->bindings_global.buffer); 
-        to->b.value_flags_ref = S_VAR_REF_GLOB;
-	to->b.value.stack2stack_ref = pos;
- 
+       	assert( pos < ARRAY_size( & g_context->bindings_global ) );
+	to->b.value_flags_ref = S_VAR_REF_GLOB;
+	to->b.value.stackref.stack2stack_ref = pos;
+     
      } else if ( IS_STACK_VALUE( from ) ) {
 	
 	 if (IS_STACK_VALUE( to )) {
 	    pos =  from - ((BINDING_DATA *) g_cur_thread->binding_data_stack.buffer); 
 	    assert( pos < ARRAY_size( &g_cur_thread->binding_data_stack ) );
 	    to->b.value_flags_ref = S_VAR_REF_STACK2STACK;
-	    to->b.value.stack2stack_ref = pos;
+	    to->b.value.stackref.stack2stack_ref = pos;
+	    to->b.value.stackref.thread = g_cur_thread;
 	  //to->b.value.heap2stack_ref = pos;
 	 
 	 } else {
@@ -1938,7 +1945,7 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
   }
 
 #ifdef __DEBUG_SHOW_
-  fprintf( out, "(%p)", data );
+  fprintf( out, "(%c %p)", IS_HEAP_VALUE(data) ? 'H' : (IS_GLOBAL_VALUE(data) ? 'G' : 'S' ), data );
 #endif
   
 
