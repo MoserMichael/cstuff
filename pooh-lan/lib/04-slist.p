@@ -1,6 +1,6 @@
 include 'slist.inc'
 
-r = make_slist()
+r := make_slist()
 
 r . insert( ~pos r . head() ~data 1 )
 r . insert( ~pos r . nth( ~num 1 ) ~data 2 )
