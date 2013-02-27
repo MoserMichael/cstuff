@@ -1,0 +1,349 @@
+<html>
+<head>Pooh program example 03-stack.p</title></head>
+<body>
+<h3>Test 03-stack.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# test stack data structure - stack.inc
+
+include 'stack.inc'
+
+println( ~msg 'stack of numbers' )
+
+l = make_stack()
+
+l . push( ~data 1 )
+l . push( ~data 2 )
+l . push( ~data 3 )
+l . push( ~data 4 )
+
+
+while  l . count() != 0
+  r = l . pop( )
+  println( ~msg r )
+end
+
+println( ~msg 'stack of arrays' )
+
+l . push( ~data [ 1, 2] )
+l . push( ~data [ 2, 3] )
+l . push( ~data [ 3, 4] )
+l . push( ~data [ 5, 6] )
+
+while  l . count() != 0
+  r = l . pop( )
+  println( ~msg join( ~array r ~separator ' - ' ) )
+end
+
+
+
+print( ~msg '*** eof stack test ***' )
+
+
+
+
+</pre>
+
+<h4>Included file: stack.inc</h4>
+
+<pre>
+
+sub make_stack_node( data optional )
+  
+  # this ugly construct forces to return a node in heap memory. 
+  # i think the notion of a clear language has to be revised a bit ;-)
+  l = [ [ Null, data ] ]
+  return l[1]
+end
+
+# constructs a linked list stack
+sub make_stack()
+  e := make_stack_node( )
+  return {
+   'head' : e,
+   'ncount' : 0,
+  
+   # add new element to the top of the stack
+   'push' : sub( data )
+        newnode := make_stack_node( ~data data )
+        if defined( ~arg this . head[ 1 ] )
+          newnode[ 1 ]  := this . head [ 1 ]
+        end
+        this . head[ 1 ] := newnode
+        this . ncount = this . ncount + 1
+        
+        #dump( ~arg this . head )
+        #println( ~msg '***' )
+     end,
+
+    # removes an element from the stack; the last value inserted with push is the first one returned by pop.
+   'pop' : sub( )
+        if ! defined( ~arg this . head[ 1 ] )
+          return Null
+        end
+        rt := this . head[ 1 ]
+        this . head[ 1 ]   := rt[ 1 ]
+        this . ncount = this . ncount - 1
+        
+        #dump( ~arg this . head )
+        #println( ~msg '***' )
+
+        return rt[ 2 ]
+    end,
+
+    'count' : sub() 
+        return this . ncount
+    end        
+ 
+  }
+end
+
+
+
+</pre>
+
+<h4>Trace output for 03-stack.p</h4>
+
+<pre>
+003|println( ~msg 'stack of numbers' )...
+005|... = make_stack(  )...
+012| ... := make_stack_node(  )...
+006|  l = [ [ Null , data:Null] ] 
+007|  return l[1]:[ -> Null, -> Null ]
+012| e := make_stack_node(  ):-> [ -> Null, -> Null ]
+013| return { 'head' : e:-> [ -> Null, -> Null ] , 'ncount' : 0 , 'push' : sub (~data) , 'pop' : sub () , 'count' : sub () }
+005|l = make_stack(  ):{ 'count' : sub , 'head' : -> [ -> Null, -> Null ], 'pop' : sub , 'ncount' : -> 0, 'push' : sub  }
+007|l{'push'}:sub ( ~data 1 )...
+019| ... := make_stack_node( ~data data:1 )...
+006|  l = [ [ Null , data:1] ] 
+007|  return l[1]:[ -> Null, -> 1 ]
+019| newnode := make_stack_node( ~data data:1 ):-> [ -> Null, -> 1 ]
+020| if defined( ~arg this{'head'}[1]:Null )...
+020| if defined( ~arg this{'head'}[1]:Null ):0
+021| end # if
+023| this{'head'}[1]:[ -> Null, -> 1 ] := newnode:-> [ -> Null, -> 1 ]
+024| this{'ncount'}:1 = (this{'ncount'}:0 + 1):1
+008|l{'push'}:sub ( ~data 2 )...
+019| ... := make_stack_node( ~data data:2 )...
+006|  l = [ [ Null , data:2] ] 
+007|  return l[1]:[ -> Null, -> 2 ]
+019| newnode := make_stack_node( ~data data:2 ):-> [ -> Null, -> 2 ]
+020| if defined( ~arg this{'head'}[1]:[ -> Null, -> 1 ] )...
+020| if defined( ~arg this{'head'}[1]:[ -> Null, -> 1 ] ):1
+021|  newnode[1]:[ -> Null, -> 1 ] := this{'head'}[1]:[ -> Null, -> 1 ]
+021| end # if
+023| this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ] := newnode:-> [ -> [ -> Null, -> 1 ], -> 2 ]
+024| this{'ncount'}:2 = (this{'ncount'}:1 + 1):2
+009|l{'push'}:sub ( ~data 3 )...
+019| ... := make_stack_node( ~data data:3 )...
+006|  l = [ [ Null , data:3] ] 
+007|  return l[1]:[ -> Null, -> 3 ]
+019| newnode := make_stack_node( ~data data:3 ):-> [ -> Null, -> 3 ]
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ] )...
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ] ):1
+021|  newnode[1]:[ -> [ -> Null, -> 1 ], -> 2 ] := this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ]
+021| end # if
+023| this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ] := newnode:-> [ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ]
+024| this{'ncount'}:3 = (this{'ncount'}:2 + 1):3
+010|l{'push'}:sub ( ~data 4 )...
+019| ... := make_stack_node( ~data data:4 )...
+006|  l = [ [ Null , data:4] ] 
+007|  return l[1]:[ -> Null, -> 4 ]
+019| newnode := make_stack_node( ~data data:4 ):-> [ -> Null, -> 4 ]
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ] )...
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ] ):1
+021|  newnode[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ] := this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ]
+021| end # if
+023| this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ], -> 4 ] := newnode:-> [ -> [ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ], -> 4 ]
+024| this{'ncount'}:4 = (this{'ncount'}:3 + 1):4
+013|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:4
+013|while (l{'count'}:sub (  ):-> 4 != 0):true
+014| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ], -> 4 ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ], -> 4 ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ], -> 4 ]
+036|  this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ] := rt[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ]
+037|  this{'ncount'}:3 = (this{'ncount'}:4 - 1):3
+042|  return rt[2]:4
+014| r = l{'pop'}:sub (  ):-> 4
+015| println( ~msg r:4 )...
+016|end
+013|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:3
+013|while (l{'count'}:sub (  ):-> 3 != 0):true
+014| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> [ -> [ -> Null, -> 1 ], -> 2 ], -> 3 ]
+036|  this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ] := rt[1]:[ -> [ -> Null, -> 1 ], -> 2 ]
+037|  this{'ncount'}:2 = (this{'ncount'}:3 - 1):2
+042|  return rt[2]:3
+014| r = l{'pop'}:sub (  ):-> 3
+015| println( ~msg r:3 )...
+016|end
+013|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:2
+013|while (l{'count'}:sub (  ):-> 2 != 0):true
+014| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> [ -> Null, -> 1 ], -> 2 ]
+036|  this{'head'}[1]:[ -> Null, -> 1 ] := rt[1]:[ -> Null, -> 1 ]
+037|  this{'ncount'}:1 = (this{'ncount'}:2 - 1):1
+042|  return rt[2]:2
+014| r = l{'pop'}:sub (  ):-> 2
+015| println( ~msg r:2 )...
+016|end
+013|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:1
+013|while (l{'count'}:sub (  ):-> 1 != 0):true
+014| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> Null, -> 1 ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> Null, -> 1 ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> Null, -> 1 ]
+036|  this{'head'}[1]:Null := rt[1]:Null
+037|  this{'ncount'}:0 = (this{'ncount'}:1 - 1):0
+042|  return rt[2]:1
+014| r = l{'pop'}:sub (  ):-> 1
+015| println( ~msg r:1 )...
+016|end
+013|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:0
+013|while (l{'count'}:sub (  ):-> 0 != 0):false
+016|end # finish loop
+018|println( ~msg 'stack of arrays' )...
+020|l{'push'}:sub ( ~data [ 1 , 2]  )...
+019| ... := make_stack_node( ~data data:[ -> 1, -> 2 ] )...
+006|  l = [ [ Null , data:-> [ -> 1, -> 2 ]] ] 
+007|  return l[1]:[ -> Null, -> [ -> 1, -> 2 ] ]
+019| newnode := make_stack_node( ~data data:[ -> 1, -> 2 ] ):-> [ -> Null, -> [ -> 1, -> 2 ] ]
+020| if defined( ~arg this{'head'}[1]:Null )...
+020| if defined( ~arg this{'head'}[1]:Null ):0
+021| end # if
+023| this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ] := newnode:-> [ -> Null, -> [ -> 1, -> 2 ] ]
+024| this{'ncount'}:1 = (this{'ncount'}:0 + 1):1
+021|l{'push'}:sub ( ~data [ 2 , 3]  )...
+019| ... := make_stack_node( ~data data:[ -> 2, -> 3 ] )...
+006|  l = [ [ Null , data:-> [ -> 2, -> 3 ]] ] 
+007|  return l[1]:[ -> Null, -> [ -> 2, -> 3 ] ]
+019| newnode := make_stack_node( ~data data:[ -> 2, -> 3 ] ):-> [ -> Null, -> [ -> 2, -> 3 ] ]
+020| if defined( ~arg this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ] )...
+020| if defined( ~arg this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ] ):1
+021|  newnode[1]:[ -> Null, -> [ -> 1, -> 2 ] ] := this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ]
+021| end # if
+023| this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ] := newnode:-> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ]
+024| this{'ncount'}:2 = (this{'ncount'}:1 + 1):2
+022|l{'push'}:sub ( ~data [ 3 , 4]  )...
+019| ... := make_stack_node( ~data data:[ -> 3, -> 4 ] )...
+006|  l = [ [ Null , data:-> [ -> 3, -> 4 ]] ] 
+007|  return l[1]:[ -> Null, -> [ -> 3, -> 4 ] ]
+019| newnode := make_stack_node( ~data data:[ -> 3, -> 4 ] ):-> [ -> Null, -> [ -> 3, -> 4 ] ]
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ] )...
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ] ):1
+021|  newnode[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ] := this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ]
+021| end # if
+023| this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ] := newnode:-> [ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ]
+024| this{'ncount'}:3 = (this{'ncount'}:2 + 1):3
+023|l{'push'}:sub ( ~data [ 5 , 6]  )...
+019| ... := make_stack_node( ~data data:[ -> 5, -> 6 ] )...
+006|  l = [ [ Null , data:-> [ -> 5, -> 6 ]] ] 
+007|  return l[1]:[ -> Null, -> [ -> 5, -> 6 ] ]
+019| newnode := make_stack_node( ~data data:[ -> 5, -> 6 ] ):-> [ -> Null, -> [ -> 5, -> 6 ] ]
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ] )...
+020| if defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ] ):1
+021|  newnode[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ] := this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ]
+021| end # if
+023| this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ], -> [ -> 5, -> 6 ] ] := newnode:-> [ -> [ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ], -> [ -> 5, -> 6 ] ]
+024| this{'ncount'}:4 = (this{'ncount'}:3 + 1):4
+025|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:4
+025|while (l{'count'}:sub (  ):-> 4 != 0):true
+026| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ], -> [ -> 5, -> 6 ] ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ], -> [ -> 5, -> 6 ] ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ], -> [ -> 5, -> 6 ] ]
+036|  this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ] := rt[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ]
+037|  this{'ncount'}:3 = (this{'ncount'}:4 - 1):3
+042|  return rt[2]:[ -> 5, -> 6 ]
+026| r = l{'pop'}:sub (  ):-> [ -> 5, -> 6 ]
+027| println( ~msg join( ~array r:[ -> 5, -> 6 ] ~separator ' - ' )...
+027| println( ~msg join( ~array r:[ -> 5, -> 6 ] ~separator ' - ' ):'5 - 6' )...
+028|end
+025|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:3
+025|while (l{'count'}:sub (  ):-> 3 != 0):true
+026| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> [ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ], -> [ -> 3, -> 4 ] ]
+036|  this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ] := rt[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ]
+037|  this{'ncount'}:2 = (this{'ncount'}:3 - 1):2
+042|  return rt[2]:[ -> 3, -> 4 ]
+026| r = l{'pop'}:sub (  ):-> [ -> 3, -> 4 ]
+027| println( ~msg join( ~array r:[ -> 3, -> 4 ] ~separator ' - ' )...
+027| println( ~msg join( ~array r:[ -> 3, -> 4 ] ~separator ' - ' ):'3 - 4' )...
+028|end
+025|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:2
+025|while (l{'count'}:sub (  ):-> 2 != 0):true
+026| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> [ -> Null, -> [ -> 1, -> 2 ] ], -> [ -> 2, -> 3 ] ]
+036|  this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ] := rt[1]:[ -> Null, -> [ -> 1, -> 2 ] ]
+037|  this{'ncount'}:1 = (this{'ncount'}:2 - 1):1
+042|  return rt[2]:[ -> 2, -> 3 ]
+026| r = l{'pop'}:sub (  ):-> [ -> 2, -> 3 ]
+027| println( ~msg join( ~array r:[ -> 2, -> 3 ] ~separator ' - ' )...
+027| println( ~msg join( ~array r:[ -> 2, -> 3 ] ~separator ' - ' ):'2 - 3' )...
+028|end
+025|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:1
+025|while (l{'count'}:sub (  ):-> 1 != 0):true
+026| ... = l{'pop'}:sub (  )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ] )...
+032|  if  not defined( ~arg this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ] ):1
+033|  end # if
+035|  rt := this{'head'}[1]:[ -> Null, -> [ -> 1, -> 2 ] ]
+036|  this{'head'}[1]:Null := rt[1]:Null
+037|  this{'ncount'}:0 = (this{'ncount'}:1 - 1):0
+042|  return rt[2]:[ -> 1, -> 2 ]
+026| r = l{'pop'}:sub (  ):-> [ -> 1, -> 2 ]
+027| println( ~msg join( ~array r:[ -> 1, -> 2 ] ~separator ' - ' )...
+027| println( ~msg join( ~array r:[ -> 1, -> 2 ] ~separator ' - ' ):'1 - 2' )...
+028|end
+025|while (l{'count'}:sub (  )...
+046| return this{'ncount'}:0
+025|while (l{'count'}:sub (  ):-> 0 != 0):false
+028|end # finish loop
+032|print( ~msg '*** eof stack test ***' )...
+
+</pre>
+
+<h3>Standard output for 03-stack.p</h3>
+
+<pre>
+stack of numbers
+4
+3
+2
+1
+stack of arrays
+5 - 6
+3 - 4
+2 - 3
+1 - 2
+*** eof stack test ***
+</pre>
+</html>
+</body>

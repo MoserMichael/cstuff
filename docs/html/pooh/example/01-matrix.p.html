@@ -1,0 +1,2565 @@
+<html>
+<head>Pooh program example 01-matrix.p</title></head>
+<body>
+<h3>Test 01-matrix.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# test matrix library - matrix.inc
+include 'matrix.inc'
+
+a = [
+       [ 1, 2, 3, 4 ],
+       [ 5, 6, 7, 8 ],
+       [ 9, 0, 1, 2 ],
+       [ 3, 4, 5, 6 ]
+    ]
+
+c = make_identity_matrix( ~rows 4 ~cols 4 )
+print_matrix( ~matrix c )
+
+println( ~msg 'matrix a' )
+print_matrix( ~matrix a )
+
+matrix_scale( ~factor 2 ~matrix a )
+println( ~msg 'scale a by 2' )
+print_matrix( ~matrix a )
+
+println( ~msg 'matrix b' )
+b = make_upper_triangle( ~rows 4 ~cols 4 )
+print_matrix( ~matrix b )
+
+d = matrix_mult( ~leftm a  ~rightm b )
+println( ~msg 'product of matrix a and b' )
+print_matrix( ~matrix d )
+
+
+
+</pre>
+
+<h4>Included file: matrix.inc</h4>
+
+<pre>
+
+
+# print a matrix
+sub print_matrix( matrix )
+  
+   numrows = size( ~arg matrix )
+   numcols = size( ~arg matrix[ 1 ] )
+   maxfield = 0
+
+   for i range( ~from 1 ~to numrows )
+     for j range( ~from 1 ~to numcols )
+        ln = size( ~arg '[matrix[i][j]]' )
+        if maxfield < ln
+	  maxfield = ln
+	end
+     end
+   end
+
+   for i range( ~from 1 ~to numrows )
+     for j range( ~from 1 ~to numcols )
+        fieldlen = size( ~arg '[matrix[i][j]]' )
+	while fieldlen < maxfield
+	   print( ~msg ' ' )
+	   fieldlen = fieldlen + 1
+	end
+        print( ~msg matrix[i][j] .. ' ' )
+     end
+     println( ~msg ' ') 
+   end
+end
+
+# multiply each element of a matrix by a factor
+sub matrix_scale( factor, matrix )
+  
+  numrows = size( ~arg matrix )
+  numcols = size( ~arg matrix[ 1 ] )
+
+
+  for i range( ~from 1 ~to numrows )
+    for j range( ~from 1 ~to numcols )
+       matrix[i][j] = factor * matrix[ i ] [ j ]
+    end
+  end
+end
+
+# multiply two matrixes and returns result of multiplication
+sub matrix_mult( leftm, rightm )
+  
+  numleftrows = size( ~arg leftm )
+  numleftcols = size( ~arg leftm[ 1 ] )
+
+  numrightrows = size( ~arg rightm )
+  numrightcols = size( ~arg rightm[ 1 ] )
+
+  if numleftcols != numrightrows 
+    return []
+  end
+
+  c = []
+
+  for left_row range( ~from 1 ~to numleftrows )
+    for right_col range( ~from 1 ~to numrightcols )
+
+       s = 0
+       for n range( ~from 1 ~to numleftcols )
+         s = s + leftm[ left_row ] [ n ] * rightm[ n ] [ right_col ]
+       end
+       c[ left_row ] [ right_col ] = s 
+    end
+  end
+  return c
+end
+
+# make upper triangle matrix - all elements 1
+sub make_upper_triangle( rows, cols )
+   c = []
+   for i range( ~from 1 ~to rows )
+     for j range( ~from 1 ~to cols )
+       if i <= j
+         c[ i ] [ j ] = 1
+       else 
+         c[ i ] [ j ] = 0
+       end
+     end
+   end
+   return c
+end
+
+# make identity matrix - all ones.
+sub make_identity_matrix( rows, cols )
+   c = []
+   for i range( ~from 1 ~to rows )
+     for j range( ~from 1 ~to cols )
+       if i == j 
+         c[ i ] [ j ] = 1
+       else 
+         c[ i ] [ j ] = 0
+       end
+     end
+   end
+   return c
+end
+
+
+
+</pre>
+
+<h4>Trace output for 01-matrix.p</h4>
+
+<pre>
+003|a = [ [ 1 , 2 , 3 , 4]  , [ 5 , 6 , 7 , 8]  , [ 9 , 0 , 1 , 2]  , [ 3 , 4 , 5 , 6] ] 
+010|... = make_identity_matrix( ~rows 4 ~cols 4 )...
+091| c = [ ] 
+092| for ... range( ~from 1 ~to rows:4 )...
+092|  for i = 1
+093|   for ... range( ~from 1 ~to cols:4 )...
+093|    for j = 1
+094|     if (i:1 == j:1):true
+095|      c[i:1][j:1]:1 = 1
+095|     end # if
+093|    end
+093|    for ...
+093|    for j = 2
+094|     if (i:1 == j:2):false
+095|     else
+097|      c[i:1][j:2]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 3
+094|     if (i:1 == j:3):false
+095|     else
+097|      c[i:1][j:3]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 4
+094|     if (i:1 == j:4):false
+095|     else
+097|      c[i:1][j:4]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    end # finish for loop
+092|  end
+092|  for ...
+092|  for i = 2
+093|   for ... range( ~from 1 ~to cols:4 )...
+093|    for j = 1
+094|     if (i:2 == j:1):false
+095|     else
+097|      c[i:2][j:1]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 2
+094|     if (i:2 == j:2):true
+095|      c[i:2][j:2]:1 = 1
+095|     end # if
+093|    end
+093|    for ...
+093|    for j = 3
+094|     if (i:2 == j:3):false
+095|     else
+097|      c[i:2][j:3]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 4
+094|     if (i:2 == j:4):false
+095|     else
+097|      c[i:2][j:4]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    end # finish for loop
+092|  end
+092|  for ...
+092|  for i = 3
+093|   for ... range( ~from 1 ~to cols:4 )...
+093|    for j = 1
+094|     if (i:3 == j:1):false
+095|     else
+097|      c[i:3][j:1]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 2
+094|     if (i:3 == j:2):false
+095|     else
+097|      c[i:3][j:2]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 3
+094|     if (i:3 == j:3):true
+095|      c[i:3][j:3]:1 = 1
+095|     end # if
+093|    end
+093|    for ...
+093|    for j = 4
+094|     if (i:3 == j:4):false
+095|     else
+097|      c[i:3][j:4]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    end # finish for loop
+092|  end
+092|  for ...
+092|  for i = 4
+093|   for ... range( ~from 1 ~to cols:4 )...
+093|    for j = 1
+094|     if (i:4 == j:1):false
+095|     else
+097|      c[i:4][j:1]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 2
+094|     if (i:4 == j:2):false
+095|     else
+097|      c[i:4][j:2]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 3
+094|     if (i:4 == j:3):false
+095|     else
+097|      c[i:4][j:3]:0 = 0
+097|     end # if
+093|    end
+093|    for ...
+093|    for j = 4
+094|     if (i:4 == j:4):true
+095|      c[i:4][j:4]:1 = 1
+095|     end # if
+093|    end
+093|    for ...
+093|    end # finish for loop
+092|  end
+092|  for ...
+092|  end # finish for loop
+101|  return c:[ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ]
+010|c = make_identity_matrix( ~rows 4 ~cols 4 ):[ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ]
+011|print_matrix( ~matrix c:[ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ] )...
+006| ... = size( ~arg matrix:-> [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ] )...
+006| numrows = size( ~arg matrix:-> [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ] ):4
+007| ... = size( ~arg matrix[1]:[ 1, 0, 0, 0 ] )...
+007| numcols = size( ~arg matrix[1]:[ 1, 0, 0, 0 ] ):4
+008| maxfield = 0
+010| for ... range( ~from 1 ~to numrows:4 )...
+010|  for i = 1
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' ):1
+013|     if (maxfield:0 < ln:1):true
+014|      maxfield = ln:1
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:1][j:2]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:2]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:1][j:3]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:3]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:1][j:4]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:4]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 2
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:2][j:3]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:3]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:2][j:4]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:4]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 3
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:3][j:4]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:4]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 4
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  end # finish for loop
+019|  for ... range( ~from 1 ~to numrows:4 )...
+019|   for i = 1
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:1]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:1][j:2]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:2]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:2]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:1][j:3]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:3]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:3]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:1][j:4]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:4]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:4]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 2
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:1]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:2]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:2][j:3]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:3]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:3]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:2][j:4]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:4]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:4]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 3
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:1]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:2]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:3]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:3][j:4]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:4]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:4]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 4
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:1]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:2]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:3]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:4]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   end # finish for loop
+013|println( ~msg 'matrix a' )...
+014|print_matrix( ~matrix a:[ -> [ -> 1, -> 2, -> 3, -> 4 ], -> [ -> 5, -> 6, -> 7, -> 8 ], -> [ -> 9, -> 0, -> 1, -> 2 ], -> [ -> 3, -> 4, -> 5, -> 6 ] ] )...
+006| ... = size( ~arg matrix:-> [ -> [ -> 1, -> 2, -> 3, -> 4 ], -> [ -> 5, -> 6, -> 7, -> 8 ], -> [ -> 9, -> 0, -> 1, -> 2 ], -> [ -> 3, -> 4, -> 5, -> 6 ] ] )...
+006| numrows = size( ~arg matrix:-> [ -> [ -> 1, -> 2, -> 3, -> 4 ], -> [ -> 5, -> 6, -> 7, -> 8 ], -> [ -> 9, -> 0, -> 1, -> 2 ], -> [ -> 3, -> 4, -> 5, -> 6 ] ] ):4
+007| ... = size( ~arg matrix[1]:[ -> 1, -> 2, -> 3, -> 4 ] )...
+007| numcols = size( ~arg matrix[1]:[ -> 1, -> 2, -> 3, -> 4 ] ):4
+008| maxfield = 0
+010| for ... range( ~from 1 ~to numrows:4 )...
+010|  for i = 1
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' ):1
+013|     if (maxfield:0 < ln:1):true
+014|      maxfield = ln:1
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:1][j:2]:2 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:2]:2 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:1][j:3]:3 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:3]:3 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:1][j:4]:4 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:4]:4 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 2
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:2][j:1]:5 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:1]:5 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:2][j:2]:6 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:2]:6 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:2][j:3]:7 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:3]:7 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:2][j:4]:8 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:4]:8 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 3
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:3][j:1]:9 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:1]:9 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:3][j:4]:2 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:4]:2 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 4
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:4][j:1]:3 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:1]:3 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:4][j:2]:4 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:2]:4 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:4][j:3]:5 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:3]:5 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:4][j:4]:6 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:4]:6 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  end # finish for loop
+019|  for ... range( ~from 1 ~to numrows:4 )...
+019|   for i = 1
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:1]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:1][j:2]:2 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:2]:2 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:2]:2 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:1][j:3]:3 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:3]:3 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:3]:3 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:1][j:4]:4 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:4]:4 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:4]:4 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 2
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:2][j:1]:5 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:1]:5 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:1]:5 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:2][j:2]:6 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:2]:6 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:2]:6 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:2][j:3]:7 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:3]:7 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:3]:7 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:2][j:4]:8 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:4]:8 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:4]:8 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 3
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:3][j:1]:9 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:1]:9 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:1]:9 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:2]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:3]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:3][j:4]:2 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:4]:2 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:4]:2 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 4
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:4][j:1]:3 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:1]:3 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:1]:3 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:4][j:2]:4 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:2]:4 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:2]:4 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:4][j:3]:5 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:3]:5 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:3]:5 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:4][j:4]:6 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:4]:6 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:4]:6 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   end # finish for loop
+016|matrix_scale( ~factor 2 ~matrix a:[ -> [ -> 1, -> 2, -> 3, -> 4 ], -> [ -> 5, -> 6, -> 7, -> 8 ], -> [ -> 9, -> 0, -> 1, -> 2 ], -> [ -> 3, -> 4, -> 5, -> 6 ] ] )...
+035| ... = size( ~arg matrix:-> [ -> [ -> 1, -> 2, -> 3, -> 4 ], -> [ -> 5, -> 6, -> 7, -> 8 ], -> [ -> 9, -> 0, -> 1, -> 2 ], -> [ -> 3, -> 4, -> 5, -> 6 ] ] )...
+035| numrows = size( ~arg matrix:-> [ -> [ -> 1, -> 2, -> 3, -> 4 ], -> [ -> 5, -> 6, -> 7, -> 8 ], -> [ -> 9, -> 0, -> 1, -> 2 ], -> [ -> 3, -> 4, -> 5, -> 6 ] ] ):4
+036| ... = size( ~arg matrix[1]:[ -> 1, -> 2, -> 3, -> 4 ] )...
+036| numcols = size( ~arg matrix[1]:[ -> 1, -> 2, -> 3, -> 4 ] ):4
+039| for ... range( ~from 1 ~to numrows:4 )...
+039|  for i = 1
+040|   for ... range( ~from 1 ~to numcols:4 )...
+040|    for j = 1
+041|     matrix[i:1][j:1]:2 = (factor:2 * matrix[i:1][j:1]:1):2
+040|    end
+040|    for ...
+040|    for j = 2
+041|     matrix[i:1][j:2]:4 = (factor:2 * matrix[i:1][j:2]:2):4
+040|    end
+040|    for ...
+040|    for j = 3
+041|     matrix[i:1][j:3]:6 = (factor:2 * matrix[i:1][j:3]:3):6
+040|    end
+040|    for ...
+040|    for j = 4
+041|     matrix[i:1][j:4]:8 = (factor:2 * matrix[i:1][j:4]:4):8
+040|    end
+040|    for ...
+040|    end # finish for loop
+039|  end
+039|  for ...
+039|  for i = 2
+040|   for ... range( ~from 1 ~to numcols:4 )...
+040|    for j = 1
+041|     matrix[i:2][j:1]:10 = (factor:2 * matrix[i:2][j:1]:5):10
+040|    end
+040|    for ...
+040|    for j = 2
+041|     matrix[i:2][j:2]:12 = (factor:2 * matrix[i:2][j:2]:6):12
+040|    end
+040|    for ...
+040|    for j = 3
+041|     matrix[i:2][j:3]:14 = (factor:2 * matrix[i:2][j:3]:7):14
+040|    end
+040|    for ...
+040|    for j = 4
+041|     matrix[i:2][j:4]:16 = (factor:2 * matrix[i:2][j:4]:8):16
+040|    end
+040|    for ...
+040|    end # finish for loop
+039|  end
+039|  for ...
+039|  for i = 3
+040|   for ... range( ~from 1 ~to numcols:4 )...
+040|    for j = 1
+041|     matrix[i:3][j:1]:18 = (factor:2 * matrix[i:3][j:1]:9):18
+040|    end
+040|    for ...
+040|    for j = 2
+041|     matrix[i:3][j:2]:0 = (factor:2 * matrix[i:3][j:2]:0):0
+040|    end
+040|    for ...
+040|    for j = 3
+041|     matrix[i:3][j:3]:2 = (factor:2 * matrix[i:3][j:3]:1):2
+040|    end
+040|    for ...
+040|    for j = 4
+041|     matrix[i:3][j:4]:4 = (factor:2 * matrix[i:3][j:4]:2):4
+040|    end
+040|    for ...
+040|    end # finish for loop
+039|  end
+039|  for ...
+039|  for i = 4
+040|   for ... range( ~from 1 ~to numcols:4 )...
+040|    for j = 1
+041|     matrix[i:4][j:1]:6 = (factor:2 * matrix[i:4][j:1]:3):6
+040|    end
+040|    for ...
+040|    for j = 2
+041|     matrix[i:4][j:2]:8 = (factor:2 * matrix[i:4][j:2]:4):8
+040|    end
+040|    for ...
+040|    for j = 3
+041|     matrix[i:4][j:3]:10 = (factor:2 * matrix[i:4][j:3]:5):10
+040|    end
+040|    for ...
+040|    for j = 4
+041|     matrix[i:4][j:4]:12 = (factor:2 * matrix[i:4][j:4]:6):12
+040|    end
+040|    for ...
+040|    end # finish for loop
+039|  end
+039|  for ...
+039|  end # finish for loop
+017|println( ~msg 'scale a by 2' )...
+018|print_matrix( ~matrix a:[ -> [ -> 2, -> 4, -> 6, -> 8 ], -> [ -> 10, -> 12, -> 14, -> 16 ], -> [ -> 18, -> 0, -> 2, -> 4 ], -> [ -> 6, -> 8, -> 10, -> 12 ] ] )...
+006| ... = size( ~arg matrix:-> [ -> [ -> 2, -> 4, -> 6, -> 8 ], -> [ -> 10, -> 12, -> 14, -> 16 ], -> [ -> 18, -> 0, -> 2, -> 4 ], -> [ -> 6, -> 8, -> 10, -> 12 ] ] )...
+006| numrows = size( ~arg matrix:-> [ -> [ -> 2, -> 4, -> 6, -> 8 ], -> [ -> 10, -> 12, -> 14, -> 16 ], -> [ -> 18, -> 0, -> 2, -> 4 ], -> [ -> 6, -> 8, -> 10, -> 12 ] ] ):4
+007| ... = size( ~arg matrix[1]:[ -> 2, -> 4, -> 6, -> 8 ] )...
+007| numcols = size( ~arg matrix[1]:[ -> 2, -> 4, -> 6, -> 8 ] ):4
+008| maxfield = 0
+010| for ... range( ~from 1 ~to numrows:4 )...
+010|  for i = 1
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' ):1
+013|     if (maxfield:0 < ln:1):true
+014|      maxfield = ln:1
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:1][j:2]:4 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:2]:4 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:1][j:3]:6 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:3]:6 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:1][j:4]:8 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:4]:8 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 2
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' ):2
+013|     if (maxfield:1 < ln:2):true
+014|      maxfield = ln:2
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:2][j:2]:12 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:2]:12 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:2][j:3]:14 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:3]:14 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:2][j:4]:16 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:4]:16 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 3
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+013|     if (maxfield:2 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:3][j:3]:2 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:3]:2 .. '' ):1
+013|     if (maxfield:2 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:3][j:4]:4 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:4]:4 .. '' ):1
+013|     if (maxfield:2 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 4
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' ):1
+013|     if (maxfield:2 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:4][j:2]:8 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:2]:8 .. '' ):1
+013|     if (maxfield:2 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:4][j:3]:10 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:3]:10 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:4][j:4]:12 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:4]:12 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  end # finish for loop
+019|  for ... range( ~from 1 ~to numrows:4 )...
+019|   for i = 1
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:1]:2 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:1][j:2]:4 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:2]:4 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:2]:4 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:1][j:3]:6 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:3]:6 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:3]:6 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:1][j:4]:8 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:4]:8 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:4]:8 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 2
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:1]:10 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:2][j:2]:12 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:2]:12 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:2]:12 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:2][j:3]:14 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:3]:14 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:3]:14 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:2][j:4]:16 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:4]:16 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:4]:16 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 3
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:1]:18 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:2]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:3][j:3]:2 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:3]:2 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:3]:2 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:3][j:4]:4 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:4]:4 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:4]:4 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 4
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:1]:6 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:4][j:2]:8 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:2]:8 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:2]:8 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:4][j:3]:10 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:3]:10 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:3]:10 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:4][j:4]:12 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:4]:12 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:4]:12 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   end # finish for loop
+020|println( ~msg 'matrix b' )...
+021|... = make_upper_triangle( ~rows 4 ~cols 4 )...
+076| c = [ ] 
+077| for ... range( ~from 1 ~to rows:4 )...
+077|  for i = 1
+078|   for ... range( ~from 1 ~to cols:4 )...
+078|    for j = 1
+079|     if (i:1 <= j:1):true
+080|      c[i:1][j:1]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    for j = 2
+079|     if (i:1 <= j:2):true
+080|      c[i:1][j:2]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    for j = 3
+079|     if (i:1 <= j:3):true
+080|      c[i:1][j:3]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    for j = 4
+079|     if (i:1 <= j:4):true
+080|      c[i:1][j:4]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    end # finish for loop
+077|  end
+077|  for ...
+077|  for i = 2
+078|   for ... range( ~from 1 ~to cols:4 )...
+078|    for j = 1
+079|     if (i:2 <= j:1):false
+080|     else
+082|      c[i:2][j:1]:0 = 0
+082|     end # if
+078|    end
+078|    for ...
+078|    for j = 2
+079|     if (i:2 <= j:2):true
+080|      c[i:2][j:2]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    for j = 3
+079|     if (i:2 <= j:3):true
+080|      c[i:2][j:3]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    for j = 4
+079|     if (i:2 <= j:4):true
+080|      c[i:2][j:4]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    end # finish for loop
+077|  end
+077|  for ...
+077|  for i = 3
+078|   for ... range( ~from 1 ~to cols:4 )...
+078|    for j = 1
+079|     if (i:3 <= j:1):false
+080|     else
+082|      c[i:3][j:1]:0 = 0
+082|     end # if
+078|    end
+078|    for ...
+078|    for j = 2
+079|     if (i:3 <= j:2):false
+080|     else
+082|      c[i:3][j:2]:0 = 0
+082|     end # if
+078|    end
+078|    for ...
+078|    for j = 3
+079|     if (i:3 <= j:3):true
+080|      c[i:3][j:3]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    for j = 4
+079|     if (i:3 <= j:4):true
+080|      c[i:3][j:4]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    end # finish for loop
+077|  end
+077|  for ...
+077|  for i = 4
+078|   for ... range( ~from 1 ~to cols:4 )...
+078|    for j = 1
+079|     if (i:4 <= j:1):false
+080|     else
+082|      c[i:4][j:1]:0 = 0
+082|     end # if
+078|    end
+078|    for ...
+078|    for j = 2
+079|     if (i:4 <= j:2):false
+080|     else
+082|      c[i:4][j:2]:0 = 0
+082|     end # if
+078|    end
+078|    for ...
+078|    for j = 3
+079|     if (i:4 <= j:3):false
+080|     else
+082|      c[i:4][j:3]:0 = 0
+082|     end # if
+078|    end
+078|    for ...
+078|    for j = 4
+079|     if (i:4 <= j:4):true
+080|      c[i:4][j:4]:1 = 1
+080|     end # if
+078|    end
+078|    for ...
+078|    end # finish for loop
+077|  end
+077|  for ...
+077|  end # finish for loop
+086|  return c:[ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ]
+021|b = make_upper_triangle( ~rows 4 ~cols 4 ):[ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ]
+022|print_matrix( ~matrix b:[ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ] )...
+006| ... = size( ~arg matrix:-> [ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ] )...
+006| numrows = size( ~arg matrix:-> [ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ] ):4
+007| ... = size( ~arg matrix[1]:[ 1, 1, 1, 1 ] )...
+007| numcols = size( ~arg matrix[1]:[ 1, 1, 1, 1 ] ):4
+008| maxfield = 0
+010| for ... range( ~from 1 ~to numrows:4 )...
+010|  for i = 1
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' ):1
+013|     if (maxfield:0 < ln:1):true
+014|      maxfield = ln:1
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:1][j:2]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:2]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:1][j:3]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:3]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:1][j:4]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:4]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 2
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:2][j:3]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:3]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:2][j:4]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:4]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 3
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:3][j:4]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:4]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 4
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  end # finish for loop
+019|  for ... range( ~from 1 ~to numrows:4 )...
+019|   for i = 1
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:1]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:1]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:1][j:2]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:2]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:2]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:1][j:3]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:3]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:3]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:1][j:4]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:4]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:4]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 2
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:1]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:1]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:2]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:2]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:2][j:3]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:3]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:3]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:2][j:4]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:4]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:4]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 3
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:1]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:1]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:2]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:2]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:3]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:3]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:3][j:4]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:4]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:4]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 4
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:1]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:1]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:2]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:2]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:3]:0 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:3]:0 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:4]:1 .. '' ):1
+022|      while (fieldlen:1 < maxfield:1):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:4]:1 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   end # finish for loop
+024|... = matrix_mult( ~leftm a:[ -> [ -> 2, -> 4, -> 6, -> 8 ], -> [ -> 10, -> 12, -> 14, -> 16 ], -> [ -> 18, -> 0, -> 2, -> 4 ], -> [ -> 6, -> 8, -> 10, -> 12 ] ] ~rightm b:[ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ] )...
+049| ... = size( ~arg leftm:-> [ -> [ -> 2, -> 4, -> 6, -> 8 ], -> [ -> 10, -> 12, -> 14, -> 16 ], -> [ -> 18, -> 0, -> 2, -> 4 ], -> [ -> 6, -> 8, -> 10, -> 12 ] ] )...
+049| numleftrows = size( ~arg leftm:-> [ -> [ -> 2, -> 4, -> 6, -> 8 ], -> [ -> 10, -> 12, -> 14, -> 16 ], -> [ -> 18, -> 0, -> 2, -> 4 ], -> [ -> 6, -> 8, -> 10, -> 12 ] ] ):4
+050| ... = size( ~arg leftm[1]:[ -> 2, -> 4, -> 6, -> 8 ] )...
+050| numleftcols = size( ~arg leftm[1]:[ -> 2, -> 4, -> 6, -> 8 ] ):4
+052| ... = size( ~arg rightm:-> [ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ] )...
+052| numrightrows = size( ~arg rightm:-> [ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ] ):4
+053| ... = size( ~arg rightm[1]:[ 1, 1, 1, 1 ] )...
+053| numrightcols = size( ~arg rightm[1]:[ 1, 1, 1, 1 ] ):4
+055| if (numleftcols:4 != numrightrows:4):false
+056| end # if
+059| c = [ ] 
+061| for ... range( ~from 1 ~to numleftrows:4 )...
+061|  for left_row = 1
+062|   for ... range( ~from 1 ~to numrightcols:4 )...
+062|    for right_col = 1
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:1][n:1]:2 * rightm[n:1][right_col:1]:1):2):2
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:2 + (leftm[left_row:1][n:2]:4 * rightm[n:2][right_col:1]:0):0):2
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:2 + (leftm[left_row:1][n:3]:6 * rightm[n:3][right_col:1]:0):0):2
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:2 + (leftm[left_row:1][n:4]:8 * rightm[n:4][right_col:1]:0):0):2
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:1][right_col:1]:2 = s:2
+062|    end
+062|    for ...
+062|    for right_col = 2
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:1][n:1]:2 * rightm[n:1][right_col:2]:1):2):2
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:2 + (leftm[left_row:1][n:2]:4 * rightm[n:2][right_col:2]:1):4):6
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:6 + (leftm[left_row:1][n:3]:6 * rightm[n:3][right_col:2]:0):0):6
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:6 + (leftm[left_row:1][n:4]:8 * rightm[n:4][right_col:2]:0):0):6
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:1][right_col:2]:6 = s:6
+062|    end
+062|    for ...
+062|    for right_col = 3
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:1][n:1]:2 * rightm[n:1][right_col:3]:1):2):2
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:2 + (leftm[left_row:1][n:2]:4 * rightm[n:2][right_col:3]:1):4):6
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:6 + (leftm[left_row:1][n:3]:6 * rightm[n:3][right_col:3]:1):6):12
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:12 + (leftm[left_row:1][n:4]:8 * rightm[n:4][right_col:3]:0):0):12
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:1][right_col:3]:12 = s:12
+062|    end
+062|    for ...
+062|    for right_col = 4
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:1][n:1]:2 * rightm[n:1][right_col:4]:1):2):2
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:2 + (leftm[left_row:1][n:2]:4 * rightm[n:2][right_col:4]:1):4):6
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:6 + (leftm[left_row:1][n:3]:6 * rightm[n:3][right_col:4]:1):6):12
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:12 + (leftm[left_row:1][n:4]:8 * rightm[n:4][right_col:4]:1):8):20
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:1][right_col:4]:20 = s:20
+062|    end
+062|    for ...
+062|    end # finish for loop
+061|  end
+061|  for ...
+061|  for left_row = 2
+062|   for ... range( ~from 1 ~to numrightcols:4 )...
+062|    for right_col = 1
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:2][n:1]:10 * rightm[n:1][right_col:1]:1):10):10
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:10 + (leftm[left_row:2][n:2]:12 * rightm[n:2][right_col:1]:0):0):10
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:10 + (leftm[left_row:2][n:3]:14 * rightm[n:3][right_col:1]:0):0):10
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:10 + (leftm[left_row:2][n:4]:16 * rightm[n:4][right_col:1]:0):0):10
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:2][right_col:1]:10 = s:10
+062|    end
+062|    for ...
+062|    for right_col = 2
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:2][n:1]:10 * rightm[n:1][right_col:2]:1):10):10
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:10 + (leftm[left_row:2][n:2]:12 * rightm[n:2][right_col:2]:1):12):22
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:22 + (leftm[left_row:2][n:3]:14 * rightm[n:3][right_col:2]:0):0):22
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:22 + (leftm[left_row:2][n:4]:16 * rightm[n:4][right_col:2]:0):0):22
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:2][right_col:2]:22 = s:22
+062|    end
+062|    for ...
+062|    for right_col = 3
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:2][n:1]:10 * rightm[n:1][right_col:3]:1):10):10
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:10 + (leftm[left_row:2][n:2]:12 * rightm[n:2][right_col:3]:1):12):22
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:22 + (leftm[left_row:2][n:3]:14 * rightm[n:3][right_col:3]:1):14):36
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:36 + (leftm[left_row:2][n:4]:16 * rightm[n:4][right_col:3]:0):0):36
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:2][right_col:3]:36 = s:36
+062|    end
+062|    for ...
+062|    for right_col = 4
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:2][n:1]:10 * rightm[n:1][right_col:4]:1):10):10
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:10 + (leftm[left_row:2][n:2]:12 * rightm[n:2][right_col:4]:1):12):22
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:22 + (leftm[left_row:2][n:3]:14 * rightm[n:3][right_col:4]:1):14):36
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:36 + (leftm[left_row:2][n:4]:16 * rightm[n:4][right_col:4]:1):16):52
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:2][right_col:4]:52 = s:52
+062|    end
+062|    for ...
+062|    end # finish for loop
+061|  end
+061|  for ...
+061|  for left_row = 3
+062|   for ... range( ~from 1 ~to numrightcols:4 )...
+062|    for right_col = 1
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:3][n:1]:18 * rightm[n:1][right_col:1]:1):18):18
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:18 + (leftm[left_row:3][n:2]:0 * rightm[n:2][right_col:1]:0):0):18
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:18 + (leftm[left_row:3][n:3]:2 * rightm[n:3][right_col:1]:0):0):18
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:18 + (leftm[left_row:3][n:4]:4 * rightm[n:4][right_col:1]:0):0):18
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:3][right_col:1]:18 = s:18
+062|    end
+062|    for ...
+062|    for right_col = 2
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:3][n:1]:18 * rightm[n:1][right_col:2]:1):18):18
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:18 + (leftm[left_row:3][n:2]:0 * rightm[n:2][right_col:2]:1):0):18
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:18 + (leftm[left_row:3][n:3]:2 * rightm[n:3][right_col:2]:0):0):18
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:18 + (leftm[left_row:3][n:4]:4 * rightm[n:4][right_col:2]:0):0):18
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:3][right_col:2]:18 = s:18
+062|    end
+062|    for ...
+062|    for right_col = 3
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:3][n:1]:18 * rightm[n:1][right_col:3]:1):18):18
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:18 + (leftm[left_row:3][n:2]:0 * rightm[n:2][right_col:3]:1):0):18
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:18 + (leftm[left_row:3][n:3]:2 * rightm[n:3][right_col:3]:1):2):20
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:20 + (leftm[left_row:3][n:4]:4 * rightm[n:4][right_col:3]:0):0):20
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:3][right_col:3]:20 = s:20
+062|    end
+062|    for ...
+062|    for right_col = 4
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:3][n:1]:18 * rightm[n:1][right_col:4]:1):18):18
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:18 + (leftm[left_row:3][n:2]:0 * rightm[n:2][right_col:4]:1):0):18
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:18 + (leftm[left_row:3][n:3]:2 * rightm[n:3][right_col:4]:1):2):20
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:20 + (leftm[left_row:3][n:4]:4 * rightm[n:4][right_col:4]:1):4):24
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:3][right_col:4]:24 = s:24
+062|    end
+062|    for ...
+062|    end # finish for loop
+061|  end
+061|  for ...
+061|  for left_row = 4
+062|   for ... range( ~from 1 ~to numrightcols:4 )...
+062|    for right_col = 1
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:4][n:1]:6 * rightm[n:1][right_col:1]:1):6):6
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:6 + (leftm[left_row:4][n:2]:8 * rightm[n:2][right_col:1]:0):0):6
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:6 + (leftm[left_row:4][n:3]:10 * rightm[n:3][right_col:1]:0):0):6
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:6 + (leftm[left_row:4][n:4]:12 * rightm[n:4][right_col:1]:0):0):6
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:4][right_col:1]:6 = s:6
+062|    end
+062|    for ...
+062|    for right_col = 2
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:4][n:1]:6 * rightm[n:1][right_col:2]:1):6):6
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:6 + (leftm[left_row:4][n:2]:8 * rightm[n:2][right_col:2]:1):8):14
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:14 + (leftm[left_row:4][n:3]:10 * rightm[n:3][right_col:2]:0):0):14
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:14 + (leftm[left_row:4][n:4]:12 * rightm[n:4][right_col:2]:0):0):14
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:4][right_col:2]:14 = s:14
+062|    end
+062|    for ...
+062|    for right_col = 3
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:4][n:1]:6 * rightm[n:1][right_col:3]:1):6):6
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:6 + (leftm[left_row:4][n:2]:8 * rightm[n:2][right_col:3]:1):8):14
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:14 + (leftm[left_row:4][n:3]:10 * rightm[n:3][right_col:3]:1):10):24
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:24 + (leftm[left_row:4][n:4]:12 * rightm[n:4][right_col:3]:0):0):24
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:4][right_col:3]:24 = s:24
+062|    end
+062|    for ...
+062|    for right_col = 4
+064|     s = 0
+065|     for ... range( ~from 1 ~to numleftcols:4 )...
+065|      for n = 1
+066|       s = (s:0 + (leftm[left_row:4][n:1]:6 * rightm[n:1][right_col:4]:1):6):6
+065|      end
+065|      for ...
+065|      for n = 2
+066|       s = (s:6 + (leftm[left_row:4][n:2]:8 * rightm[n:2][right_col:4]:1):8):14
+065|      end
+065|      for ...
+065|      for n = 3
+066|       s = (s:14 + (leftm[left_row:4][n:3]:10 * rightm[n:3][right_col:4]:1):10):24
+065|      end
+065|      for ...
+065|      for n = 4
+066|       s = (s:24 + (leftm[left_row:4][n:4]:12 * rightm[n:4][right_col:4]:1):12):36
+065|      end
+065|      for ...
+065|      end # finish for loop
+068|      c[left_row:4][right_col:4]:36 = s:36
+062|    end
+062|    for ...
+062|    end # finish for loop
+061|  end
+061|  for ...
+061|  end # finish for loop
+071|  return c:[ [ 2, 6, 12, 20 ], [ 10, 22, 36, 52 ], [ 18, 18, 20, 24 ], [ 6, 14, 24, 36 ] ]
+024|d = matrix_mult( ~leftm a:[ -> [ -> 2, -> 4, -> 6, -> 8 ], -> [ -> 10, -> 12, -> 14, -> 16 ], -> [ -> 18, -> 0, -> 2, -> 4 ], -> [ -> 6, -> 8, -> 10, -> 12 ] ] ~rightm b:[ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ] ):[ [ 2, 6, 12, 20 ], [ 10, 22, 36, 52 ], [ 18, 18, 20, 24 ], [ 6, 14, 24, 36 ] ]
+025|println( ~msg 'product of matrix a and b' )...
+026|print_matrix( ~matrix d:[ [ 2, 6, 12, 20 ], [ 10, 22, 36, 52 ], [ 18, 18, 20, 24 ], [ 6, 14, 24, 36 ] ] )...
+006| ... = size( ~arg matrix:-> [ [ 2, 6, 12, 20 ], [ 10, 22, 36, 52 ], [ 18, 18, 20, 24 ], [ 6, 14, 24, 36 ] ] )...
+006| numrows = size( ~arg matrix:-> [ [ 2, 6, 12, 20 ], [ 10, 22, 36, 52 ], [ 18, 18, 20, 24 ], [ 6, 14, 24, 36 ] ] ):4
+007| ... = size( ~arg matrix[1]:[ 2, 6, 12, 20 ] )...
+007| numcols = size( ~arg matrix[1]:[ 2, 6, 12, 20 ] ):4
+008| maxfield = 0
+010| for ... range( ~from 1 ~to numrows:4 )...
+010|  for i = 1
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' ):1
+013|     if (maxfield:0 < ln:1):true
+014|      maxfield = ln:1
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:1][j:2]:6 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:2]:6 .. '' ):1
+013|     if (maxfield:1 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:1][j:3]:12 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:3]:12 .. '' ):2
+013|     if (maxfield:1 < ln:2):true
+014|      maxfield = ln:2
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:1][j:4]:20 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:1][j:4]:20 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 2
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:2][j:2]:22 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:2]:22 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:2][j:3]:36 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:3]:36 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:2][j:4]:52 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:2][j:4]:52 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 3
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:3][j:2]:18 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:2]:18 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:3][j:3]:20 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:3]:20 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:3][j:4]:24 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:3][j:4]:24 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  for i = 4
+011|   for ... range( ~from 1 ~to numcols:4 )...
+011|    for j = 1
+012|     ... = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' ):1
+013|     if (maxfield:2 < ln:1):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 2
+012|     ... = size( ~arg '' .. matrix[i:4][j:2]:14 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:2]:14 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 3
+012|     ... = size( ~arg '' .. matrix[i:4][j:3]:24 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:3]:24 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    for j = 4
+012|     ... = size( ~arg '' .. matrix[i:4][j:4]:36 .. '' )...
+012|     ln = size( ~arg '' .. matrix[i:4][j:4]:36 .. '' ):2
+013|     if (maxfield:2 < ln:2):false
+014|     end # if
+011|    end
+011|    for ...
+011|    end # finish for loop
+010|  end
+010|  for ...
+010|  end # finish for loop
+019|  for ... range( ~from 1 ~to numrows:4 )...
+019|   for i = 1
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:1]:2 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:1]:2 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:1][j:2]:6 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:2]:6 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:2]:6 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:1][j:3]:12 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:3]:12 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:3]:12 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:1][j:4]:20 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:1][j:4]:20 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:1][j:4]:20 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 2
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:1]:10 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:1]:10 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:2][j:2]:22 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:2]:22 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:2]:22 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:2][j:3]:36 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:3]:36 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:3]:36 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:2][j:4]:52 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:2][j:4]:52 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:2][j:4]:52 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 3
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:1]:18 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:1]:18 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:3][j:2]:18 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:2]:18 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:2]:18 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:3][j:3]:20 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:3]:20 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:3]:20 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:3][j:4]:24 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:3][j:4]:24 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:3][j:4]:24 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   for i = 4
+020|    for ... range( ~from 1 ~to numcols:4 )...
+020|     for j = 1
+021|      ... = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:1]:6 .. '' ):1
+022|      while (fieldlen:1 < maxfield:2):true
+023|       print( ~msg ' ' )...
+
+024|       fieldlen = (fieldlen:1 + 1):2
+025|      end
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:1]:6 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 2
+021|      ... = size( ~arg '' .. matrix[i:4][j:2]:14 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:2]:14 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:2]:14 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 3
+021|      ... = size( ~arg '' .. matrix[i:4][j:3]:24 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:3]:24 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:3]:24 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     for j = 4
+021|      ... = size( ~arg '' .. matrix[i:4][j:4]:36 .. '' )...
+021|      fieldlen = size( ~arg '' .. matrix[i:4][j:4]:36 .. '' ):2
+022|      while (fieldlen:2 < maxfield:2):false
+025|      end # finish loop
+026|      print( ~msg matrix[i:4][j:4]:36 .. ' ' )...
+
+020|     end
+020|     for ...
+020|     end # finish for loop
+028|     println( ~msg ' ' )...
+019|   end
+019|   for ...
+019|   end # finish for loop
+</pre>
+
+<h3>Standard output for 01-matrix.p</h3>
+
+<pre>
+1 0 0 0  
+0 1 0 0  
+0 0 1 0  
+0 0 0 1  
+matrix a
+1 2 3 4  
+5 6 7 8  
+9 0 1 2  
+3 4 5 6  
+scale a by 2
+ 2  4  6  8  
+10 12 14 16  
+18  0  2  4  
+ 6  8 10 12  
+matrix b
+1 1 1 1  
+0 1 1 1  
+0 0 1 1  
+0 0 0 1  
+product of matrix a and b
+ 2  6 12 20  
+10 22 36 52  
+18 18 20 24  
+ 6 14 24 36  
+
+</pre>
+</html>
+</body>

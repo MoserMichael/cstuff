@@ -1,0 +1,1684 @@
+<html>
+<head>Pooh program example 05-graphlist.p</title></head>
+<body>
+<h3>Test 05-graphlist.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# test adjacency graph data structure - graphlist.inc
+include 'graphlist.inc'
+
+
+r := make_graph_list( ~keepinedge 1 )
+
+r . addnode( ~index 1 ~data [1, 2] )
+r . addnode( ~index 2 ~data [2, 3] )
+r . addnode( ~index 3 ~data [3, 4] )
+r . addedge( ~from 1 ~to 2 )
+r . addedge( ~from 1 ~to 3 )
+r . addedge( ~from 2 ~to 1 )
+r . addedge( ~from 2 ~to 3 )
+r . addedge( ~from 3 ~to 1 )
+r . addedge( ~from 3 ~to 2 )
+
+
+
+r . addedge( ~from 4 ~to 6 )
+r . addedge( ~from 5 ~to 6 )
+r . addedge( ~from 5 ~to 6 )
+r . addedge( ~from 5 ~to 7 )
+r . addedge( ~from 6 ~to 7 )
+r . addedge( ~from 7 ~to 1 )
+
+println( ~msg '** the nodes **' )
+for n  r . eachnode()
+  d := r . nodedata( ~node n )
+  println( ~msg ''node [[ n ]] data [ [[ join( ~array d ~separator ' ' ) ]] ]'' )
+end
+
+#println( ~msg '** the nodes with data  **' )
+#for nd  r . eachnodewithdata()
+#  println( ~msg nd[1] .. ' ' .. nd[2] )
+#end
+
+println( ~msg 'out edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+println( ~msg 'in edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+println( ~msg 'delete edge 1-2' )
+r . deledge( ~from 1 ~to 2 )
+
+println( ~msg 'out edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+println( ~msg 'in edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+
+<h4>Included file: graphlist.inc</h4>
+
+<pre>
+include 'slist.inc'
+
+# makes an adjacency graph - a graph where the links between nodes are stored in linked list
+# The argument keepinedge says if fast lookup of reverse edges is enabled 
+# this means that for each edge an entre for the reverse direction is maintained
+
+sub make_graph_list( keepinedge optional )
+  return {
+    
+    'nodes' : [],
+    'deletednodes' : [],
+    'keepinedge' : defined( ~arg keepinedge ),
+
+    # returns the number of nodes in the graph
+    'numnodes' : 
+      sub()
+	return size( ~arg this . nodes ) - size( ~arg this . deletednodes )
+      end,
+
+    # add a new node to the graph; the index of the new node is returned;
+    # you can attach data to the node (if data argument is not Null)
+    # you can set the node index with optional index parameter
+    'addnode' : 
+      sub ( data optional, index optional )
+        links := make_slist()
+
+	if !defined( ~arg index )
+          if size( ~arg this . deletednodes ) == 0
+            num = size( ~arg this . nodes ) + 1
+          else
+            num = pop( ~array this . deletednodes )
+          end
+	else
+	  num = index
+	  if defined( ~arg this . nodes[ num ] )
+	    return false
+	  end
+	end
+
+        this . nodes [ num ] := [ data, links ]
+        return num
+      end,
+
+    # return a reference to the data attached to node with index node
+    'nodedata' :
+      sub( node )
+        rt := this . nodes[ node ]
+        if ! defined( ~arg rt )
+          return Null
+        end
+        return rt[ 1 ]
+      end,
+
+    # delete a node with given index.
+    'delnode' :
+      sub (node)
+        rt := this . nodes[ node ]
+        if ! defined( ~arg rt )
+          return false
+        end
+        
+        # delete all reverse edges
+        if  this . keepinedge 
+          nlist := rt[ 2 ]
+          for n nlist . range()
+            to = n[ 1 ]
+            if to < 0
+              this . deledgeimp( ~from - to ~to node )
+            end
+          end
+        end
+
+        this . nodes[ node ] = Null
+        push( ~array this . deletednodes ~top node )
+        return true
+      end,
+
+    # iterator, returns the index of each node in the graph.
+    'eachnode' : 
+      sub ()
+        if isthreadmain()
+           for i range( ~from 1 ~to size( ~arg this . nodes ) )
+              if defined( ~arg this . nodes[ i ] )
+	        threadyield0( ~yieldval i )
+              end
+           end
+        else
+	   rt = []
+           for i range( ~from 1 ~to size( ~arg this . nodes ) )
+              if defined( ~arg this . nodes[ i ] )
+	         push( ~array rt ~top i )
+              end
+           end
+           return rt
+        end
+      end,
+
+    # iterator, returns the index of each node in the graph and the data of the node
+    'eachnodewithdata' : 
+      sub ( )
+        if isthreadmain()
+           for i range( ~from 1 ~to size( ~arg this . nodes ) )
+              if defined( ~arg this . nodes[ i ] )
+		threadyield0( ~yieldval [ i , this.nodes[ i ] [ 2 ] ] )
+              end
+           end
+        else
+	   rt = []
+           for i range( ~from 1 ~to size( ~arg this . nodes ) )
+              if this . nodes[ i ] != Null
+	        push( ~array rt ~top [ i , this.nodes[ i ] [ 2 ] ] )
+              end
+           end
+           return rt
+        end
+      end,
+
+    # add a new edge to the graph.
+    'addedge' :
+      sub (from,to,linkdata optional)  
+         
+        rt := this . nodes[ from ]
+        if ! defined( ~arg rt )
+          return false
+        end
+
+        if ! defined( ~arg this . nodes[ to ] )
+          return false
+        end
+        
+        nlist := rt [ 2 ]
+
+        # check that this is a new edge
+        for n nlist . range( )
+          if n[ 1 ] == from
+            return false
+          end
+        end 
+    
+        nlist . insert( ~pos nlist . head( ) ~data [ to , linkdata ] )
+        if this . keepinedge == true
+          rt := this . nodes[ to ]
+          nlist := rt[ 2 ]
+          nlist . insert( ~pos nlist . head( ) ~data [ - from , Null ] )
+        end
+
+        return true
+      end,
+
+    # returns true if edge exists from node with index from to node with index to
+    'hasedge' :
+       sub (from, to )
+        rt := this . nodes[ from ]
+        if ! defined( ~arg rt )
+          return false
+        end
+        nlist := rt [ 2 ]
+
+        for n nlist . range( )
+          if n[ 1 ] == to
+            return true
+          end
+        end
+        return false
+       end,
+
+    # returns data associated to edge from node with index from to node with index to
+    'edgedata' : 
+      sub( from, to)
+        rt := this . nodes[ from ]
+        if ! defined( ~arg rt )
+          return Null
+        end
+        nlist := rt [ 2 ]
+
+        for n nlist . range( )
+          if n[ 1 ] == to
+            return n[ 2 ]
+          end
+        end
+
+        return Null
+      end,
+
+    # delete edge that leads from node with index from to node with index to
+    'deledge' :
+      sub (from, to )
+        if this . deledgeimp( ~from from ~to to ) and this . keepinedge == true
+          this . deledgeimp( ~from to ~to - from )
+        end
+      end,
+
+    # internal function, do not call.
+    'deledgeimp' : 
+      sub( from, to )
+        rt := this . nodes[ from ]
+        if ! defined( ~arg rt )
+          return Null
+        end
+        nlist := rt [ 2 ]
+
+        prev := nlist . head()
+        pos := nlist . nth( ~num 1 )
+ 
+        while defined( ~arg pos )
+          data := pos[ 2 ]
+          if data[ 1 ] == to
+              nlist . remove( ~pos prev )
+              return true
+          end
+          pos := pos[ 1 ] 
+          prev := prev[ 1 ]
+        end
+        return false
+     end,
+
+    # iterator - returns the index of all edges that lead out of node with index from
+    'outedges' :
+      sub (from)
+        rt := this . nodes[ from ]
+        if ! defined( ~arg rt )
+          return Null
+        end
+        nlist := rt [ 2 ]
+        if isthreadmain()
+          for n nlist . range()
+            if n[ 1 ]  > 0
+	      threadyield0( ~yieldval n[ 1 ] )
+            end
+          end
+        else
+          rt = []
+          for n nlist . each()
+            if n[ 1 ]  > 0
+	      push( ~array rt ~top n[ 1 ] )
+            end
+          end
+          return rt
+        end
+      end,
+
+
+    # iterator - returns edges that lead into node with index from
+    'inedges':
+       sub (from)
+         if this . keepinedge == true
+            rt := this . nodes[ from ]
+            if ! defined( ~arg rt )
+                return Null
+            end
+            nlist := rt [ 2 ]
+
+            if isthreadmain()
+              for n nlist . range()
+                if n[ 1 ]  < 0
+                  threadyield0( ~yieldval - n[ 1 ] )
+                end
+              end
+            else
+              rt = []
+              for n nlist . range()
+                if n[ 1 ]  < 0
+                  push( ~array rt ~top - n[ 1 ] )
+                end
+              end
+              return rt
+            end
+         else
+            rt = []
+            for n this . eachnode() 
+              if this . hasedge( ~from n ~to from )
+                if isthreadmain()
+                  threadyield0( ~yieldval n )
+                else
+                  push( ~array rt ~top n )
+                end
+              end
+            end
+            if not isthreadmain()
+              return rt
+            end
+         end
+       end
+  }
+end
+
+
+</pre>
+
+<h4>Trace output for 05-graphlist.p</h4>
+
+<pre>
+004|... := make_graph_list( ~keepinedge 1 )...
+008| return { 'nodes' : [ ]  , 'deletednodes' : [ ]  , 'keepinedge' : defined( ~arg keepinedge:1 )...
+008| return { 'nodes' : [ ]  , 'deletednodes' : [ ]  , 'keepinedge' : defined( ~arg keepinedge:1 ):1 , 'numnodes' : sub () , 'addnode' : sub (~data , ~index) , 'nodedata' : sub (~node) , 'delnode' : sub (~node) , 'eachnode' : sub () , 'eachnodewithdata' : sub () , 'addedge' : sub (~from , ~to , ~linkdata) , 'hasedge' : sub (~from , ~to) , 'edgedata' : sub (~from , ~to) , 'deledge' : sub (~from , ~to) , 'deledgeimp' : sub (~from , ~to) , 'outedges' : sub (~from) , 'inedges' : sub (~from) }
+004|r := make_graph_list( ~keepinedge 1 ):{ 'deledge' : sub , 'nodedata' : sub , 'deletednodes' : -> [  ], 'outedges' : sub , 'addedge' : sub , 'nodes' : -> [  ], 'numnodes' : sub , 'inedges' : sub , 'hasedge' : sub , 'addnode' : sub , 'edgedata' : sub , 'eachnode' : sub , 'deledgeimp' : sub , 'keepinedge' : -> 1, 'delnode' : sub , 'eachnodewithdata' : sub  }
+006|r{'addnode'}:sub ( ~index 1 ~data [ 1 , 2]  )...
+025| ... := make_slist(  )...
+013|  ... := make_slist_node(  )...
+006|   l = [ [ Null , data:Null] ] 
+007|   return l[1]:[ -> Null, -> Null ]
+013|  e := make_slist_node(  ):-> [ -> Null, -> Null ]
+014|  return { 'headp' : e:-> [ -> Null, -> Null ] , 'ncount' : 0 , 'head' : sub () , 'data' : sub (~pos) , 'next' : sub (~pos) , 'nth' : sub (~num) , 'insert' : sub (~pos , ~data) , 'remove' : sub (~pos) , 'count' : sub () , 'mapcopy' : sub (~func) , 'mapreplace' : sub (~func) , 'filtercopy' : sub (~func) , 'foldfirst2last' : sub (~func , ~initval) , 'range' : sub (~from , ~to) }
+025| links := make_slist(  ):{ 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] }
+027| if  not defined( ~arg index:1 )...
+027| if  not defined( ~arg index:1 ):1
+032| else
+034|  num = index:1
+035|  if defined( ~arg this{'nodes'}[num:1]:Null )...
+035|  if defined( ~arg this{'nodes'}[num:1]:Null ):0
+036|  end # if
+037| end # if
+040| this{'nodes'}[num:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ] := [ data:[ -> 1, -> 2 ] , links:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] }] 
+041| return num:1
+006|r{'addnode'}:sub ( ~index 1 ~data [ 1 , 2]  ):1
+007|r{'addnode'}:sub ( ~index 2 ~data [ 2 , 3]  )...
+025| ... := make_slist(  )...
+013|  ... := make_slist_node(  )...
+006|   l = [ [ Null , data:Null] ] 
+007|   return l[1]:[ -> Null, -> Null ]
+013|  e := make_slist_node(  ):-> [ -> Null, -> Null ]
+014|  return { 'headp' : e:-> [ -> Null, -> Null ] , 'ncount' : 0 , 'head' : sub () , 'data' : sub (~pos) , 'next' : sub (~pos) , 'nth' : sub (~num) , 'insert' : sub (~pos , ~data) , 'remove' : sub (~pos) , 'count' : sub () , 'mapcopy' : sub (~func) , 'mapreplace' : sub (~func) , 'filtercopy' : sub (~func) , 'foldfirst2last' : sub (~func , ~initval) , 'range' : sub (~from , ~to) }
+025| links := make_slist(  ):{ 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] }
+027| if  not defined( ~arg index:2 )...
+027| if  not defined( ~arg index:2 ):1
+032| else
+034|  num = index:2
+035|  if defined( ~arg this{'nodes'}[num:2]:Null )...
+035|  if defined( ~arg this{'nodes'}[num:2]:Null ):0
+036|  end # if
+037| end # if
+040| this{'nodes'}[num:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ] := [ data:[ -> 2, -> 3 ] , links:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] }] 
+041| return num:2
+007|r{'addnode'}:sub ( ~index 2 ~data [ 2 , 3]  ):2
+008|r{'addnode'}:sub ( ~index 3 ~data [ 3 , 4]  )...
+025| ... := make_slist(  )...
+013|  ... := make_slist_node(  )...
+006|   l = [ [ Null , data:Null] ] 
+007|   return l[1]:[ -> Null, -> Null ]
+013|  e := make_slist_node(  ):-> [ -> Null, -> Null ]
+014|  return { 'headp' : e:-> [ -> Null, -> Null ] , 'ncount' : 0 , 'head' : sub () , 'data' : sub (~pos) , 'next' : sub (~pos) , 'nth' : sub (~num) , 'insert' : sub (~pos , ~data) , 'remove' : sub (~pos) , 'count' : sub () , 'mapcopy' : sub (~func) , 'mapreplace' : sub (~func) , 'filtercopy' : sub (~func) , 'foldfirst2last' : sub (~func , ~initval) , 'range' : sub (~from , ~to) }
+025| links := make_slist(  ):{ 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] }
+027| if  not defined( ~arg index:3 )...
+027| if  not defined( ~arg index:3 ):1
+032| else
+034|  num = index:3
+035|  if defined( ~arg this{'nodes'}[num:3]:Null )...
+035|  if defined( ~arg this{'nodes'}[num:3]:Null ):0
+036|  end # if
+037| end # if
+040| this{'nodes'}[num:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ] := [ data:[ -> 3, -> 4 ] , links:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] }] 
+041| return num:3
+008|r{'addnode'}:sub ( ~index 3 ~data [ 3 , 4]  ):3
+009|r{'addedge'}:sub ( ~from 1 ~to 2 )...
+122| rt := this{'nodes'}[from:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ]
+123| if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] } ] )...
+123| if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] } ] ):1
+124| end # if
+127| if  not defined( ~arg this{'nodes'}[to:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ] )...
+127| if  not defined( ~arg this{'nodes'}[to:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ] ):1
+128| end # if
+131| nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] }
+134| for ... nlist{'range'}:sub (  )...
+144|  if  not defined( ~arg from:-> Null )...
+144|  if  not defined( ~arg from:-> Null ):0
+145|   n = 1
+145|  end # if
+153|  if  not defined( ~arg to:-> Null )...
+153|  if  not defined( ~arg to:-> Null ):0
+154|   m =  - 1
+154|  end # if
+159|  ... := this{'nth'}:sub ( ~num n:1 )...
+039|   pos := this{'headp'}:[ -> Null, -> Null ]
+040|   while (num:1 > 0):true
+041|    if  not defined( ~arg pos:-> [ -> Null, -> Null ] )...
+041|    if  not defined( ~arg pos:-> [ -> Null, -> Null ] ):1
+042|    end # if
+044|    num = (num:1 - 1):0
+045|    pos := pos[1]:Null
+046|   end
+040|   while (num:0 > 0):false
+046|   end # finish loop
+047|   return pos:-> Null
+159|  pos := this{'nth'}:sub ( ~num n:1 ):-> Null
+161|  if isthreadmain(  )...
+161|  if isthreadmain(  ):1
+162|   while defined( ~arg pos:-> Null )...
+162|   while defined( ~arg pos:-> Null ):0
+169|   end # finish loop
+169|  end # if
+134|  end # finish for loop
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|   rt := this{'headp'}:[ -> Null, -> Null ]
+022|   return rt:-> [ -> Null, -> Null ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> Null, -> Null ] ~data [ to:2 , linkdata:Null]  )...
+052|   ... := make_slist_node( ~data data:[ -> 2, -> Null ] )...
+006|    l = [ [ Null , data:-> [ -> 2, -> Null ]] ] 
+007|    return l[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+052|   newnode := make_slist_node( ~data data:[ -> 2, -> Null ] ):-> [ -> Null, -> [ -> 2, -> Null ] ]
+053|   if defined( ~arg pos[1]:Null )...
+053|   if defined( ~arg pos[1]:Null ):0
+054|   end # if
+056|   pos[1]:[ -> Null, -> [ -> 2, -> Null ] ] := newnode:-> [ -> Null, -> [ -> 2, -> Null ] ]
+057|   this{'ncount'}:1 = (this{'ncount'}:0 + 1):1
+059|   return newnode:-> [ -> Null, -> [ -> 2, -> Null ] ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> Null, -> Null ] ~data [ to:2 , linkdata:Null]  ):-> [ -> Null, -> [ -> 2, -> Null ] ]
+141|  if (this{'keepinedge'}:1 == 1):true
+142|   rt := this{'nodes'}[to:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ]
+143|   nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] }
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|    rt := this{'headp'}:[ -> Null, -> Null ]
+022|    return rt:-> [ -> Null, -> Null ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> Null, -> Null ] ~data [  - from:1 , Null]  )...
+052|    ... := make_slist_node( ~data data:[ -> -1, -> Null ] )...
+006|     l = [ [ Null , data:-> [ -> -1, -> Null ]] ] 
+007|     return l[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+052|    newnode := make_slist_node( ~data data:[ -> -1, -> Null ] ):-> [ -> Null, -> [ -> -1, -> Null ] ]
+053|    if defined( ~arg pos[1]:Null )...
+053|    if defined( ~arg pos[1]:Null ):0
+054|    end # if
+056|    pos[1]:[ -> Null, -> [ -> -1, -> Null ] ] := newnode:-> [ -> Null, -> [ -> -1, -> Null ] ]
+057|    this{'ncount'}:1 = (this{'ncount'}:0 + 1):1
+059|    return newnode:-> [ -> Null, -> [ -> -1, -> Null ] ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> Null, -> Null ] ~data [  - from:1 , Null]  ):-> [ -> Null, -> [ -> -1, -> Null ] ]
+144|  end # if
+147|  return 1
+134|for ... nlist{'range'}:sub (  )
+010|r{'addedge'}:sub ( ~from 1 ~to 3 )...
+122| rt := this{'nodes'}[from:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 1, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] } ]
+123| if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 1, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] } ] )...
+123| if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 1, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] } ] ):1
+124| end # if
+127| if  not defined( ~arg this{'nodes'}[to:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ] )...
+127| if  not defined( ~arg this{'nodes'}[to:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ] ):1
+128| end # if
+131| nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 1, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] }
+134| for ... nlist{'range'}:sub (  )...
+144|  if  not defined( ~arg from:-> Null )...
+144|  if  not defined( ~arg from:-> Null ):0
+145|   n = 1
+145|  end # if
+153|  if  not defined( ~arg to:-> Null )...
+153|  if  not defined( ~arg to:-> Null ):0
+154|   m =  - 1
+154|  end # if
+159|  ... := this{'nth'}:sub ( ~num n:1 )...
+039|   pos := this{'headp'}:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ]
+040|   while (num:1 > 0):true
+041|    if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] )...
+041|    if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] ):1
+042|    end # if
+044|    num = (num:1 - 1):0
+045|    pos := pos[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+046|   end
+040|   while (num:0 > 0):false
+046|   end # finish loop
+047|   return pos:-> [ -> Null, -> [ -> 2, -> Null ] ]
+159|  pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> Null, -> [ -> 2, -> Null ] ]
+161|  if isthreadmain(  )...
+161|  if isthreadmain(  ):1
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> 2, -> Null ] )...
+134|     for n = [ -> 2, -> Null ]
+135|      if (n[1]:2 == from:1):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> 2, -> Null ] ):-> Null
+167|    pos := pos[1]:Null
+168|    n = (n:1 + 1):2
+169|   end
+162|   while defined( ~arg pos:-> Null )...
+162|   while defined( ~arg pos:-> Null ):0
+169|   end # finish loop
+169|  end # if
+134|  end # finish for loop
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|   rt := this{'headp'}:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ]
+022|   return rt:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] ~data [ to:3 , linkdata:Null]  )...
+052|   ... := make_slist_node( ~data data:[ -> 3, -> Null ] )...
+006|    l = [ [ Null , data:-> [ -> 3, -> Null ]] ] 
+007|    return l[1]:[ -> Null, -> [ -> 3, -> Null ] ]
+052|   newnode := make_slist_node( ~data data:[ -> 3, -> Null ] ):-> [ -> Null, -> [ -> 3, -> Null ] ]
+053|   if defined( ~arg pos[1]:[ -> Null, -> [ -> 2, -> Null ] ] )...
+053|   if defined( ~arg pos[1]:[ -> Null, -> [ -> 2, -> Null ] ] ):1
+054|    newnode[1]:[ -> Null, -> [ -> 2, -> Null ] ] := pos[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+054|   end # if
+056|   pos[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] := newnode:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+057|   this{'ncount'}:2 = (this{'ncount'}:1 + 1):2
+059|   return newnode:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> Null ] ~data [ to:3 , linkdata:Null]  ):-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+141|  if (this{'keepinedge'}:1 == 1):true
+142|   rt := this{'nodes'}[to:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 0, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> Null, -> Null ] } ]
+143|   nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 0, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> Null, -> Null ] }
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|    rt := this{'headp'}:[ -> Null, -> Null ]
+022|    return rt:-> [ -> Null, -> Null ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> Null, -> Null ] ~data [  - from:1 , Null]  )...
+052|    ... := make_slist_node( ~data data:[ -> -1, -> Null ] )...
+006|     l = [ [ Null , data:-> [ -> -1, -> Null ]] ] 
+007|     return l[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+052|    newnode := make_slist_node( ~data data:[ -> -1, -> Null ] ):-> [ -> Null, -> [ -> -1, -> Null ] ]
+053|    if defined( ~arg pos[1]:Null )...
+053|    if defined( ~arg pos[1]:Null ):0
+054|    end # if
+056|    pos[1]:[ -> Null, -> [ -> -1, -> Null ] ] := newnode:-> [ -> Null, -> [ -> -1, -> Null ] ]
+057|    this{'ncount'}:1 = (this{'ncount'}:0 + 1):1
+059|    return newnode:-> [ -> Null, -> [ -> -1, -> Null ] ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> Null, -> Null ] ~data [  - from:1 , Null]  ):-> [ -> Null, -> [ -> -1, -> Null ] ]
+144|  end # if
+147|  return 1
+134|for ... nlist{'range'}:sub (  )
+011|r{'addedge'}:sub ( ~from 2 ~to 1 )...
+122| rt := this{'nodes'}[from:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 1, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] } ]
+123| if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 1, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] } ] )...
+123| if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 1, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] } ] ):1
+124| end # if
+127| if  not defined( ~arg this{'nodes'}[to:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 2, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] } ] )...
+127| if  not defined( ~arg this{'nodes'}[to:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 2, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] } ] ):1
+128| end # if
+131| nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 1, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] }
+134| for ... nlist{'range'}:sub (  )...
+144|  if  not defined( ~arg from:-> Null )...
+144|  if  not defined( ~arg from:-> Null ):0
+145|   n = 1
+145|  end # if
+153|  if  not defined( ~arg to:-> Null )...
+153|  if  not defined( ~arg to:-> Null ):0
+154|   m =  - 1
+154|  end # if
+159|  ... := this{'nth'}:sub ( ~num n:1 )...
+039|   pos := this{'headp'}:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ]
+040|   while (num:1 > 0):true
+041|    if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] )...
+041|    if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] ):1
+042|    end # if
+044|    num = (num:1 - 1):0
+045|    pos := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+046|   end
+040|   while (num:0 > 0):false
+046|   end # finish loop
+047|   return pos:-> [ -> Null, -> [ -> -1, -> Null ] ]
+159|  pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> Null, -> [ -> -1, -> Null ] ]
+161|  if isthreadmain(  )...
+161|  if isthreadmain(  ):1
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] )...
+134|     for n = [ -> -1, -> Null ]
+135|      if (n[1]:-1 == from:2):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] ):-> Null
+167|    pos := pos[1]:Null
+168|    n = (n:1 + 1):2
+169|   end
+162|   while defined( ~arg pos:-> Null )...
+162|   while defined( ~arg pos:-> Null ):0
+169|   end # finish loop
+169|  end # if
+134|  end # finish for loop
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|   rt := this{'headp'}:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ]
+022|   return rt:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] ~data [ to:1 , linkdata:Null]  )...
+052|   ... := make_slist_node( ~data data:[ -> 1, -> Null ] )...
+006|    l = [ [ Null , data:-> [ -> 1, -> Null ]] ] 
+007|    return l[1]:[ -> Null, -> [ -> 1, -> Null ] ]
+052|   newnode := make_slist_node( ~data data:[ -> 1, -> Null ] ):-> [ -> Null, -> [ -> 1, -> Null ] ]
+053|   if defined( ~arg pos[1]:[ -> Null, -> [ -> -1, -> Null ] ] )...
+053|   if defined( ~arg pos[1]:[ -> Null, -> [ -> -1, -> Null ] ] ):1
+054|    newnode[1]:[ -> Null, -> [ -> -1, -> Null ] ] := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+054|   end # if
+056|   pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] := newnode:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+057|   this{'ncount'}:2 = (this{'ncount'}:1 + 1):2
+059|   return newnode:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] ~data [ to:1 , linkdata:Null]  ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+141|  if (this{'keepinedge'}:1 == 1):true
+142|   rt := this{'nodes'}[to:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 2, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] } ]
+143|   nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 2, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] }
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|    rt := this{'headp'}:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ]
+022|    return rt:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] ~data [  - from:2 , Null]  )...
+052|    ... := make_slist_node( ~data data:[ -> -2, -> Null ] )...
+006|     l = [ [ Null , data:-> [ -> -2, -> Null ]] ] 
+007|     return l[1]:[ -> Null, -> [ -> -2, -> Null ] ]
+052|    newnode := make_slist_node( ~data data:[ -> -2, -> Null ] ):-> [ -> Null, -> [ -> -2, -> Null ] ]
+053|    if defined( ~arg pos[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+053|    if defined( ~arg pos[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+054|     newnode[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] := pos[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+054|    end # if
+056|    pos[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] := newnode:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+057|    this{'ncount'}:3 = (this{'ncount'}:2 + 1):3
+059|    return newnode:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] ~data [  - from:2 , Null]  ):-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+144|  end # if
+147|  return 1
+134|for ... nlist{'range'}:sub (  )
+012|r{'addedge'}:sub ( ~from 2 ~to 3 )...
+122| rt := this{'nodes'}[from:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 2, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] } ]
+123| if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 2, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] } ] )...
+123| if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 2, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] } ] ):1
+124| end # if
+127| if  not defined( ~arg this{'nodes'}[to:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 1, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] } ] )...
+127| if  not defined( ~arg this{'nodes'}[to:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 1, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] } ] ):1
+128| end # if
+131| nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 2, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] }
+134| for ... nlist{'range'}:sub (  )...
+144|  if  not defined( ~arg from:-> Null )...
+144|  if  not defined( ~arg from:-> Null ):0
+145|   n = 1
+145|  end # if
+153|  if  not defined( ~arg to:-> Null )...
+153|  if  not defined( ~arg to:-> Null ):0
+154|   m =  - 1
+154|  end # if
+159|  ... := this{'nth'}:sub ( ~num n:1 )...
+039|   pos := this{'headp'}:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ]
+040|   while (num:1 > 0):true
+041|    if  not defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] )...
+041|    if  not defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] ):1
+042|    end # if
+044|    num = (num:1 - 1):0
+045|    pos := pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+046|   end
+040|   while (num:0 > 0):false
+046|   end # finish loop
+047|   return pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+159|  pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+161|  if isthreadmain(  )...
+161|  if isthreadmain(  ):1
+162|   while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> 1, -> Null ] )...
+134|     for n = [ -> 1, -> Null ]
+135|      if (n[1]:1 == from:2):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> 1, -> Null ] ):-> Null
+167|    pos := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+168|    n = (n:1 + 1):2
+169|   end
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] )...
+134|     for n = [ -> -1, -> Null ]
+135|      if (n[1]:-1 == from:2):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] ):-> Null
+167|    pos := pos[1]:Null
+168|    n = (n:2 + 1):3
+169|   end
+162|   while defined( ~arg pos:-> Null )...
+162|   while defined( ~arg pos:-> Null ):0
+169|   end # finish loop
+169|  end # if
+134|  end # finish for loop
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|   rt := this{'headp'}:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ]
+022|   return rt:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] ~data [ to:3 , linkdata:Null]  )...
+052|   ... := make_slist_node( ~data data:[ -> 3, -> Null ] )...
+006|    l = [ [ Null , data:-> [ -> 3, -> Null ]] ] 
+007|    return l[1]:[ -> Null, -> [ -> 3, -> Null ] ]
+052|   newnode := make_slist_node( ~data data:[ -> 3, -> Null ] ):-> [ -> Null, -> [ -> 3, -> Null ] ]
+053|   if defined( ~arg pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] )...
+053|   if defined( ~arg pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] ):1
+054|    newnode[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] := pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+054|   end # if
+056|   pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ] := newnode:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ]
+057|   this{'ncount'}:3 = (this{'ncount'}:2 + 1):3
+059|   return newnode:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] ~data [ to:3 , linkdata:Null]  ):-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ]
+141|  if (this{'keepinedge'}:1 == 1):true
+142|   rt := this{'nodes'}[to:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 1, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] } ]
+143|   nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 1, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] }
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|    rt := this{'headp'}:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ]
+022|    return rt:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] ~data [  - from:2 , Null]  )...
+052|    ... := make_slist_node( ~data data:[ -> -2, -> Null ] )...
+006|     l = [ [ Null , data:-> [ -> -2, -> Null ]] ] 
+007|     return l[1]:[ -> Null, -> [ -> -2, -> Null ] ]
+052|    newnode := make_slist_node( ~data data:[ -> -2, -> Null ] ):-> [ -> Null, -> [ -> -2, -> Null ] ]
+053|    if defined( ~arg pos[1]:[ -> Null, -> [ -> -1, -> Null ] ] )...
+053|    if defined( ~arg pos[1]:[ -> Null, -> [ -> -1, -> Null ] ] ):1
+054|     newnode[1]:[ -> Null, -> [ -> -1, -> Null ] ] := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+054|    end # if
+056|    pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] := newnode:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+057|    this{'ncount'}:2 = (this{'ncount'}:1 + 1):2
+059|    return newnode:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> Null ] ~data [  - from:2 , Null]  ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+144|  end # if
+147|  return 1
+134|for ... nlist{'range'}:sub (  )
+013|r{'addedge'}:sub ( ~from 3 ~to 1 )...
+122| rt := this{'nodes'}[from:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 2, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] } ]
+123| if  not defined( ~arg rt:-> [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 2, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] } ] )...
+123| if  not defined( ~arg rt:-> [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 2, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] } ] ):1
+124| end # if
+127| if  not defined( ~arg this{'nodes'}[to:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] } ] )...
+127| if  not defined( ~arg this{'nodes'}[to:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] } ] ):1
+128| end # if
+131| nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 2, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] }
+134| for ... nlist{'range'}:sub (  )...
+144|  if  not defined( ~arg from:-> Null )...
+144|  if  not defined( ~arg from:-> Null ):0
+145|   n = 1
+145|  end # if
+153|  if  not defined( ~arg to:-> Null )...
+153|  if  not defined( ~arg to:-> Null ):0
+154|   m =  - 1
+154|  end # if
+159|  ... := this{'nth'}:sub ( ~num n:1 )...
+039|   pos := this{'headp'}:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ]
+040|   while (num:1 > 0):true
+041|    if  not defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] )...
+041|    if  not defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] ):1
+042|    end # if
+044|    num = (num:1 - 1):0
+045|    pos := pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+046|   end
+040|   while (num:0 > 0):false
+046|   end # finish loop
+047|   return pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+159|  pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+161|  if isthreadmain(  )...
+161|  if isthreadmain(  ):1
+162|   while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] )...
+134|     for n = [ -> -2, -> Null ]
+135|      if (n[1]:-2 == from:3):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] ):-> Null
+167|    pos := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+168|    n = (n:1 + 1):2
+169|   end
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] )...
+134|     for n = [ -> -1, -> Null ]
+135|      if (n[1]:-1 == from:3):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] ):-> Null
+167|    pos := pos[1]:Null
+168|    n = (n:2 + 1):3
+169|   end
+162|   while defined( ~arg pos:-> Null )...
+162|   while defined( ~arg pos:-> Null ):0
+169|   end # finish loop
+169|  end # if
+134|  end # finish for loop
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|   rt := this{'headp'}:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ]
+022|   return rt:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] ~data [ to:1 , linkdata:Null]  )...
+052|   ... := make_slist_node( ~data data:[ -> 1, -> Null ] )...
+006|    l = [ [ Null , data:-> [ -> 1, -> Null ]] ] 
+007|    return l[1]:[ -> Null, -> [ -> 1, -> Null ] ]
+052|   newnode := make_slist_node( ~data data:[ -> 1, -> Null ] ):-> [ -> Null, -> [ -> 1, -> Null ] ]
+053|   if defined( ~arg pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+053|   if defined( ~arg pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+054|    newnode[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] := pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+054|   end # if
+056|   pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ] := newnode:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ]
+057|   this{'ncount'}:3 = (this{'ncount'}:2 + 1):3
+059|   return newnode:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] ~data [ to:1 , linkdata:Null]  ):-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ]
+141|  if (this{'keepinedge'}:1 == 1):true
+142|   rt := this{'nodes'}[to:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] } ]
+143|   nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] }
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|    rt := this{'headp'}:[ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ]
+022|    return rt:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] ~data [  - from:3 , Null]  )...
+052|    ... := make_slist_node( ~data data:[ -> -3, -> Null ] )...
+006|     l = [ [ Null , data:-> [ -> -3, -> Null ]] ] 
+007|     return l[1]:[ -> Null, -> [ -> -3, -> Null ] ]
+052|    newnode := make_slist_node( ~data data:[ -> -3, -> Null ] ):-> [ -> Null, -> [ -> -3, -> Null ] ]
+053|    if defined( ~arg pos[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+053|    if defined( ~arg pos[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+054|     newnode[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] := pos[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+054|    end # if
+056|    pos[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] := newnode:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+057|    this{'ncount'}:4 = (this{'ncount'}:3 + 1):4
+059|    return newnode:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> Null ] ~data [  - from:3 , Null]  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+144|  end # if
+147|  return 1
+134|for ... nlist{'range'}:sub (  )
+014|r{'addedge'}:sub ( ~from 3 ~to 2 )...
+122| rt := this{'nodes'}[from:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] } ]
+123| if  not defined( ~arg rt:-> [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] } ] )...
+123| if  not defined( ~arg rt:-> [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] } ] ):1
+124| end # if
+127| if  not defined( ~arg this{'nodes'}[to:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] } ] )...
+127| if  not defined( ~arg this{'nodes'}[to:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] } ] ):1
+128| end # if
+131| nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] }
+134| for ... nlist{'range'}:sub (  )...
+144|  if  not defined( ~arg from:-> Null )...
+144|  if  not defined( ~arg from:-> Null ):0
+145|   n = 1
+145|  end # if
+153|  if  not defined( ~arg to:-> Null )...
+153|  if  not defined( ~arg to:-> Null ):0
+154|   m =  - 1
+154|  end # if
+159|  ... := this{'nth'}:sub ( ~num n:1 )...
+039|   pos := this{'headp'}:[ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ]
+040|   while (num:1 > 0):true
+041|    if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] )...
+041|    if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] ):1
+042|    end # if
+044|    num = (num:1 - 1):0
+045|    pos := pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ]
+046|   end
+040|   while (num:0 > 0):false
+046|   end # finish loop
+047|   return pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ]
+159|  pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ]
+161|  if isthreadmain(  )...
+161|  if isthreadmain(  ):1
+162|   while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> 1, -> Null ] )...
+134|     for n = [ -> 1, -> Null ]
+135|      if (n[1]:1 == from:3):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> 1, -> Null ] ):-> Null
+167|    pos := pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ]
+168|    n = (n:1 + 1):2
+169|   end
+162|   while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] )...
+134|     for n = [ -> -2, -> Null ]
+135|      if (n[1]:-2 == from:3):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] ):-> Null
+167|    pos := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+168|    n = (n:2 + 1):3
+169|   end
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] )...
+162|   while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] ):1
+163|    if ((m:-1 !=  - 1):false and _ ):):false
+164|    end # if
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] )...
+134|     for n = [ -> -1, -> Null ]
+135|      if (n[1]:-1 == from:3):false
+136|      end # if
+134|     end
+134|     for ...
+166|    threadyield0( ~yieldval pos[2]:[ -> -1, -> Null ] ):-> Null
+167|    pos := pos[1]:Null
+168|    n = (n:3 + 1):4
+169|   end
+162|   while defined( ~arg pos:-> Null )...
+162|   while defined( ~arg pos:-> Null ):0
+169|   end # finish loop
+169|  end # if
+134|  end # finish for loop
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|   rt := this{'headp'}:[ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ]
+022|   return rt:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] ~data [ to:2 , linkdata:Null]  )...
+052|   ... := make_slist_node( ~data data:[ -> 2, -> Null ] )...
+006|    l = [ [ Null , data:-> [ -> 2, -> Null ]] ] 
+007|    return l[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+052|   newnode := make_slist_node( ~data data:[ -> 2, -> Null ] ):-> [ -> Null, -> [ -> 2, -> Null ] ]
+053|   if defined( ~arg pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ] )...
+053|   if defined( ~arg pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ] ):1
+054|    newnode[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ] := pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ]
+054|   end # if
+056|   pos[1]:[ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ] := newnode:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ]
+057|   this{'ncount'}:4 = (this{'ncount'}:3 + 1):4
+059|   return newnode:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ]
+140|  nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> Null ] ~data [ to:2 , linkdata:Null]  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ]
+141|  if (this{'keepinedge'}:1 == 1):true
+142|   rt := this{'nodes'}[to:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] } ]
+143|   nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] }
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  )...
+021|    rt := this{'headp'}:[ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ]
+022|    return rt:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] ~data [  - from:3 , Null]  )...
+052|    ... := make_slist_node( ~data data:[ -> -3, -> Null ] )...
+006|     l = [ [ Null , data:-> [ -> -3, -> Null ]] ] 
+007|     return l[1]:[ -> Null, -> [ -> -3, -> Null ] ]
+052|    newnode := make_slist_node( ~data data:[ -> -3, -> Null ] ):-> [ -> Null, -> [ -> -3, -> Null ] ]
+053|    if defined( ~arg pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+053|    if defined( ~arg pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+054|     newnode[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ] := pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ]
+054|    end # if
+056|    pos[1]:[ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ] := newnode:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ]
+057|    this{'ncount'}:4 = (this{'ncount'}:3 + 1):4
+059|    return newnode:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ]
+144|   nlist{'insert'}:sub ( ~pos nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> Null ] ~data [  - from:3 , Null]  ):-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ]
+144|  end # if
+147|  return 1
+134|for ... nlist{'range'}:sub (  )
+018|r{'addedge'}:sub ( ~from 4 ~to 6 )...
+122| rt := this{'nodes'}[from:4]:Null
+123| if  not defined( ~arg rt:Null )...
+123| if  not defined( ~arg rt:Null ):0
+124|  return 0
+124| end # if
+018|r{'addedge'}:sub ( ~from 4 ~to 6 ):0
+019|r{'addedge'}:sub ( ~from 5 ~to 6 )...
+122| rt := this{'nodes'}[from:5]:Null
+123| if  not defined( ~arg rt:Null )...
+123| if  not defined( ~arg rt:Null ):0
+124|  return 0
+124| end # if
+019|r{'addedge'}:sub ( ~from 5 ~to 6 ):0
+020|r{'addedge'}:sub ( ~from 5 ~to 6 )...
+122| rt := this{'nodes'}[from:5]:Null
+123| if  not defined( ~arg rt:Null )...
+123| if  not defined( ~arg rt:Null ):0
+124|  return 0
+124| end # if
+020|r{'addedge'}:sub ( ~from 5 ~to 6 ):0
+021|r{'addedge'}:sub ( ~from 5 ~to 7 )...
+122| rt := this{'nodes'}[from:5]:Null
+123| if  not defined( ~arg rt:Null )...
+123| if  not defined( ~arg rt:Null ):0
+124|  return 0
+124| end # if
+021|r{'addedge'}:sub ( ~from 5 ~to 7 ):0
+022|r{'addedge'}:sub ( ~from 6 ~to 7 )...
+122| rt := this{'nodes'}[from:6]:Null
+123| if  not defined( ~arg rt:Null )...
+123| if  not defined( ~arg rt:Null ):0
+124|  return 0
+124| end # if
+022|r{'addedge'}:sub ( ~from 6 ~to 7 ):0
+023|r{'addedge'}:sub ( ~from 7 ~to 1 )...
+122| rt := this{'nodes'}[from:7]:Null
+123| if  not defined( ~arg rt:Null )...
+123| if  not defined( ~arg rt:Null ):0
+124|  return 0
+124| end # if
+023|r{'addedge'}:sub ( ~from 7 ~to 1 ):0
+025|println( ~msg '** the nodes **' )...
+026|for ... r{'eachnode'}:sub (  )...
+081| if isthreadmain(  )...
+081| if isthreadmain(  ):1
+082|  for ... range( ~from 1 ~to size( ~arg this{'nodes'}:[ [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ], [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ], [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ], -> Null ] } ] ] )...
+082|  for ... range( ~from 1 ~to size( ~arg this{'nodes'}:[ [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ], [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ], [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ], -> Null ] } ] ] ):3 )...
+082|   for i = 1
+083|    if defined( ~arg this{'nodes'}[i:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+083|    if defined( ~arg this{'nodes'}[i:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+084|     threadyield0( ~yieldval i:1 )...
+026|      for n = 1
+027|       ... := r{'nodedata'}:sub ( ~node n:1 )...
+047|        rt := this{'nodes'}[node:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+048|        if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+048|        if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+049|        end # if
+051|        return rt[1]:[ -> 1, -> 2 ]
+027|       d := r{'nodedata'}:sub ( ~node n:1 ):-> [ -> 1, -> 2 ]
+028|       println( ~msg 'node ' .. n:1 .. ' data [ ' .. join( ~array d:-> [ -> 1, -> 2 ] ~separator ' ' )...
+028|       println( ~msg 'node ' .. n:1 .. ' data [ ' .. join( ~array d:-> [ -> 1, -> 2 ] ~separator ' ' ):'1 2' .. ' ]' )...
+026|      end
+026|      for ...
+084|     threadyield0( ~yieldval i:1 ):-> Null
+084|    end # if
+082|   end
+082|   for ...
+082|   for i = 2
+083|    if defined( ~arg this{'nodes'}[i:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+083|    if defined( ~arg this{'nodes'}[i:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+084|     threadyield0( ~yieldval i:2 )...
+026|      for n = 2
+027|       ... := r{'nodedata'}:sub ( ~node n:2 )...
+047|        rt := this{'nodes'}[node:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+048|        if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+048|        if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+049|        end # if
+051|        return rt[1]:[ -> 2, -> 3 ]
+027|       d := r{'nodedata'}:sub ( ~node n:2 ):-> [ -> 2, -> 3 ]
+028|       println( ~msg 'node ' .. n:2 .. ' data [ ' .. join( ~array d:-> [ -> 2, -> 3 ] ~separator ' ' )...
+028|       println( ~msg 'node ' .. n:2 .. ' data [ ' .. join( ~array d:-> [ -> 2, -> 3 ] ~separator ' ' ):'2 3' .. ' ]' )...
+026|      end
+026|      for ...
+084|     threadyield0( ~yieldval i:2 ):-> Null
+084|    end # if
+082|   end
+082|   for ...
+082|   for i = 3
+083|    if defined( ~arg this{'nodes'}[i:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ], -> Null ] } ] )...
+083|    if defined( ~arg this{'nodes'}[i:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ], -> Null ] } ] ):1
+084|     threadyield0( ~yieldval i:3 )...
+026|      for n = 3
+027|       ... := r{'nodedata'}:sub ( ~node n:3 )...
+047|        rt := this{'nodes'}[node:3]:[ -> [ -> 3, -> 4 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ], -> Null ] } ]
+048|        if  not defined( ~arg rt:-> [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ], -> Null ] } ] )...
+048|        if  not defined( ~arg rt:-> [ -> [ -> 3, -> 4 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 2, -> Null ] ], -> Null ] } ] ):1
+049|        end # if
+051|        return rt[1]:[ -> 3, -> 4 ]
+027|       d := r{'nodedata'}:sub ( ~node n:3 ):-> [ -> 3, -> 4 ]
+028|       println( ~msg 'node ' .. n:3 .. ' data [ ' .. join( ~array d:-> [ -> 3, -> 4 ] ~separator ' ' )...
+028|       println( ~msg 'node ' .. n:3 .. ' data [ ' .. join( ~array d:-> [ -> 3, -> 4 ] ~separator ' ' ):'3 4' .. ' ]' )...
+026|      end
+026|      for ...
+084|     threadyield0( ~yieldval i:3 ):-> Null
+084|    end # if
+082|   end
+082|   for ...
+082|   end # finish for loop
+086| end # if
+026| end # finish for loop
+036| println( ~msg 'out edges for node 1' )...
+037| for ... r{'outedges'}:sub ( ~from 1 )...
+220|  rt := this{'nodes'}[from:-> 1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+221|  if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+221|  if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+222|  end # if
+224|  nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] }
+225|  if isthreadmain(  )...
+225|  if isthreadmain(  ):1
+226|   for ... nlist{'range'}:sub (  )...
+144|    if  not defined( ~arg from:-> Null )...
+144|    if  not defined( ~arg from:-> Null ):0
+145|     n = 1
+145|    end # if
+153|    if  not defined( ~arg to:-> Null )...
+153|    if  not defined( ~arg to:-> Null ):0
+154|     m =  - 1
+154|    end # if
+159|    ... := this{'nth'}:sub ( ~num n:1 )...
+039|     pos := this{'headp'}:[ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+040|     while (num:1 > 0):true
+041|      if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] )...
+041|      if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] ):1
+042|      end # if
+044|      num = (num:1 - 1):0
+045|      pos := pos[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+046|     end
+040|     while (num:0 > 0):false
+046|     end # finish loop
+047|     return pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+159|    pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+161|    if isthreadmain(  )...
+161|    if isthreadmain(  ):1
+162|     while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] )...
+162|     while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] ):1
+163|      if ((m:-1 !=  - 1):false and _ ):):false
+164|      end # if
+166|      threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] )...
+226|       for n = [ -> -3, -> Null ]
+227|        if (n[1]:-3 > 0):false
+228|        end # if
+226|       end
+226|       for ...
+166|      threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] ):-> [  ]
+167|      pos := pos[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+168|      n = (n:1 + 1):2
+169|     end
+162|     while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+162|     while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+163|      if ((m:-1 !=  - 1):false and _ ):):false
+164|      end # if
+166|      threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] )...
+226|       for n = [ -> -2, -> Null ]
+227|        if (n[1]:-2 > 0):false
+228|        end # if
+226|       end
+226|       for ...
+166|      threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] ):-> Null
+167|      pos := pos[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+168|      n = (n:2 + 1):3
+169|     end
+162|     while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+162|     while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+163|      if ((m:-1 !=  - 1):false and _ ):):false
+164|      end # if
+166|      threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] )...
+226|       for n = [ -> 3, -> Null ]
+227|        if (n[1]:3 > 0):true
+228|         threadyield0( ~yieldval n[1]:3 )...
+037|          for e = 3
+038|           println( ~msg e:3 )...
+037|          end
+037|          for ...
+228|         threadyield0( ~yieldval n[1]:3 ):-> Null
+228|        end # if
+226|       end
+226|       for ...
+166|      threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] ):-> Null
+167|      pos := pos[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+168|      n = (n:3 + 1):4
+169|     end
+162|     while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] )...
+162|     while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] ):1
+163|      if ((m:-1 !=  - 1):false and _ ):):false
+164|      end # if
+166|      threadyield0( ~yieldval pos[2]:[ -> 2, -> Null ] )...
+226|       for n = [ -> 2, -> Null ]
+227|        if (n[1]:2 > 0):true
+228|         threadyield0( ~yieldval n[1]:2 )...
+037|          for e = 2
+038|           println( ~msg e:2 )...
+037|          end
+037|          for ...
+228|         threadyield0( ~yieldval n[1]:2 ):-> Null
+228|        end # if
+226|       end
+226|       for ...
+166|      threadyield0( ~yieldval pos[2]:[ -> 2, -> Null ] ):-> Null
+167|      pos := pos[1]:Null
+168|      n = (n:4 + 1):5
+169|     end
+162|     while defined( ~arg pos:-> Null )...
+162|     while defined( ~arg pos:-> Null ):0
+169|     end # finish loop
+169|    end # if
+226|    end # finish for loop
+230|  end # if
+037|  end # finish for loop
+041|  println( ~msg 'in edges for node 1' )...
+042|  for ... r{'outedges'}:sub ( ~from 1 )...
+220|   rt := this{'nodes'}[from:-> 1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+221|   if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+221|   if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+222|   end # if
+224|   nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] }
+225|   if isthreadmain(  )...
+225|   if isthreadmain(  ):1
+226|    for ... nlist{'range'}:sub (  )...
+144|     if  not defined( ~arg from:-> Null )...
+144|     if  not defined( ~arg from:-> Null ):0
+145|      n = 1
+145|     end # if
+153|     if  not defined( ~arg to:-> Null )...
+153|     if  not defined( ~arg to:-> Null ):0
+154|      m =  - 1
+154|     end # if
+159|     ... := this{'nth'}:sub ( ~num n:1 )...
+039|      pos := this{'headp'}:[ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+040|      while (num:1 > 0):true
+041|       if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] )...
+041|       if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] ):1
+042|       end # if
+044|       num = (num:1 - 1):0
+045|       pos := pos[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+046|      end
+040|      while (num:0 > 0):false
+046|      end # finish loop
+047|      return pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+159|     pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+161|     if isthreadmain(  )...
+161|     if isthreadmain(  ):1
+162|      while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] )...
+162|      while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] ):1
+163|       if ((m:-1 !=  - 1):false and _ ):):false
+164|       end # if
+166|       threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] )...
+226|        for n = [ -> -3, -> Null ]
+227|         if (n[1]:-3 > 0):false
+228|         end # if
+226|        end
+226|        for ...
+166|       threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] ):-> [  ]
+167|       pos := pos[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+168|       n = (n:1 + 1):2
+169|      end
+162|      while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+162|      while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+163|       if ((m:-1 !=  - 1):false and _ ):):false
+164|       end # if
+166|       threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] )...
+226|        for n = [ -> -2, -> Null ]
+227|         if (n[1]:-2 > 0):false
+228|         end # if
+226|        end
+226|        for ...
+166|       threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] ):-> Null
+167|       pos := pos[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+168|       n = (n:2 + 1):3
+169|      end
+162|      while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+162|      while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+163|       if ((m:-1 !=  - 1):false and _ ):):false
+164|       end # if
+166|       threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] )...
+226|        for n = [ -> 3, -> Null ]
+227|         if (n[1]:3 > 0):true
+228|          threadyield0( ~yieldval n[1]:3 )...
+042|           for e = 3
+043|            println( ~msg e:3 )...
+042|           end
+042|           for ...
+228|          threadyield0( ~yieldval n[1]:3 ):-> Null
+228|         end # if
+226|        end
+226|        for ...
+166|       threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] ):-> Null
+167|       pos := pos[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+168|       n = (n:3 + 1):4
+169|      end
+162|      while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] )...
+162|      while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] ):1
+163|       if ((m:-1 !=  - 1):false and _ ):):false
+164|       end # if
+166|       threadyield0( ~yieldval pos[2]:[ -> 2, -> Null ] )...
+226|        for n = [ -> 2, -> Null ]
+227|         if (n[1]:2 > 0):true
+228|          threadyield0( ~yieldval n[1]:2 )...
+042|           for e = 2
+043|            println( ~msg e:2 )...
+042|           end
+042|           for ...
+228|          threadyield0( ~yieldval n[1]:2 ):-> Null
+228|         end # if
+226|        end
+226|        for ...
+166|       threadyield0( ~yieldval pos[2]:[ -> 2, -> Null ] ):-> Null
+167|       pos := pos[1]:Null
+168|       n = (n:4 + 1):5
+169|      end
+162|      while defined( ~arg pos:-> Null )...
+162|      while defined( ~arg pos:-> Null ):0
+169|      end # finish loop
+169|     end # if
+226|     end # finish for loop
+230|   end # if
+042|   end # finish for loop
+046|   println( ~msg 'delete edge 1-2' )...
+047|   r{'deledge'}:sub ( ~from 1 ~to 2 )...
+188|    if (this{'deledgeimp'}:sub ( ~from from:1 ~to to:2 )...
+196|     rt := this{'nodes'}[from:1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+197|     if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+197|     if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+198|     end # if
+200|     nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] }
+202|     ... := nlist{'head'}:sub (  )...
+021|      rt := this{'headp'}:[ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+022|      return rt:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+202|     prev := nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+203|     ... := nlist{'nth'}:sub ( ~num 1 )...
+039|      pos := this{'headp'}:[ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+040|      while (num:1 > 0):true
+041|       if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] )...
+041|       if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] ):1
+042|       end # if
+044|       num = (num:1 - 1):0
+045|       pos := pos[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+046|      end
+040|      while (num:0 > 0):false
+046|      end # finish loop
+047|      return pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+203|     pos := nlist{'nth'}:sub ( ~num 1 ):-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+205|     while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] )...
+205|     while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] ):1
+206|      data := pos[2]:[ -> -3, -> Null ]
+207|      if (data[1]:-3 == to:2):false
+209|      end # if
+211|      pos := pos[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+212|      prev := prev[1]:[ -> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+213|     end
+205|     while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+205|     while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+206|      data := pos[2]:[ -> -2, -> Null ]
+207|      if (data[1]:-2 == to:2):false
+209|      end # if
+211|      pos := pos[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+212|      prev := prev[1]:[ -> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+213|     end
+205|     while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+205|     while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+206|      data := pos[2]:[ -> 3, -> Null ]
+207|      if (data[1]:3 == to:2):false
+209|      end # if
+211|      pos := pos[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+212|      prev := prev[1]:[ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ]
+213|     end
+205|     while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] )...
+205|     while defined( ~arg pos:-> [ -> Null, -> [ -> 2, -> Null ] ] ):1
+206|      data := pos[2]:[ -> 2, -> Null ]
+207|      if (data[1]:2 == to:2):true
+208|       nlist{'remove'}:sub ( ~pos prev:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+064|        if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+064|        if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+065|        end # if
+068|        rt := pos[1]:[ -> Null, -> [ -> 2, -> Null ] ]
+070|        if defined( ~arg rt:-> [ -> Null, -> [ -> 2, -> Null ] ] )...
+070|        if defined( ~arg rt:-> [ -> Null, -> [ -> 2, -> Null ] ] ):1
+071|         pos[1]:Null := rt[1]:Null
+072|         this{'ncount'}:3 = (this{'ncount'}:4 - 1):3
+073|         return 1
+073|        end # if
+208|       nlist{'remove'}:sub ( ~pos prev:-> [ -> [ -> Null, -> [ -> 2, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+209|       return 1
+209|      end # if
+188|    if (this{'deledgeimp'}:sub ( ~from from:1 ~to to:2 ):1 and (this{'keepinedge'}:1 == 1):true):true
+189|     this{'deledgeimp'}:sub ( ~from to:2 ~to  - from:1 )...
+196|      rt := this{'nodes'}[from:2]:[ -> [ -> 2, -> 3 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 4, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+197|      if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+197|      if  not defined( ~arg rt:-> [ -> [ -> 2, -> 3 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+198|      end # if
+200|      nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 4, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] }
+202|      ... := nlist{'head'}:sub (  )...
+021|       rt := this{'headp'}:[ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+022|       return rt:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+202|      prev := nlist{'head'}:sub (  ):-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+203|      ... := nlist{'nth'}:sub ( ~num 1 )...
+039|       pos := this{'headp'}:[ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+040|       while (num:1 > 0):true
+041|        if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] )...
+041|        if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] ):1
+042|        end # if
+044|        num = (num:1 - 1):0
+045|        pos := pos[1]:[ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ]
+046|       end
+040|       while (num:0 > 0):false
+046|       end # finish loop
+047|       return pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ]
+203|      pos := nlist{'nth'}:sub ( ~num 1 ):-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ]
+205|      while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ] )...
+205|      while defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ] ):1
+206|       data := pos[2]:[ -> -3, -> Null ]
+207|       if (data[1]:-3 == to:-1):false
+209|       end # if
+211|       pos := pos[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ]
+212|       prev := prev[1]:[ -> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ], -> [ -> -3, -> Null ] ]
+213|      end
+205|      while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ] )...
+205|      while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ] ):1
+206|       data := pos[2]:[ -> 3, -> Null ]
+207|       if (data[1]:3 == to:-1):false
+209|       end # if
+211|       pos := pos[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+212|       prev := prev[1]:[ -> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ], -> [ -> 3, -> Null ] ]
+213|      end
+205|      while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] )...
+205|      while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] ):1
+206|       data := pos[2]:[ -> 1, -> Null ]
+207|       if (data[1]:1 == to:-1):false
+209|       end # if
+211|       pos := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+212|       prev := prev[1]:[ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ]
+213|      end
+205|      while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] )...
+205|      while defined( ~arg pos:-> [ -> Null, -> [ -> -1, -> Null ] ] ):1
+206|       data := pos[2]:[ -> -1, -> Null ]
+207|       if (data[1]:-1 == to:-1):true
+208|        nlist{'remove'}:sub ( ~pos prev:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] )...
+064|         if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] )...
+064|         if  not defined( ~arg pos:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] ):1
+065|         end # if
+068|         rt := pos[1]:[ -> Null, -> [ -> -1, -> Null ] ]
+070|         if defined( ~arg rt:-> [ -> Null, -> [ -> -1, -> Null ] ] )...
+070|         if defined( ~arg rt:-> [ -> Null, -> [ -> -1, -> Null ] ] ):1
+071|          pos[1]:Null := rt[1]:Null
+072|          this{'ncount'}:3 = (this{'ncount'}:4 - 1):3
+073|          return 1
+073|         end # if
+208|        nlist{'remove'}:sub ( ~pos prev:-> [ -> [ -> Null, -> [ -> -1, -> Null ] ], -> [ -> 1, -> Null ] ] ):1
+209|        return 1
+209|       end # if
+189|     this{'deledgeimp'}:sub ( ~from to:2 ~to  - from:1 ):1
+189|    end # if
+049|   println( ~msg 'out edges for node 1' )...
+050|   for ... r{'outedges'}:sub ( ~from 1 )...
+220|    rt := this{'nodes'}[from:-> 1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+221|    if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+221|    if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+222|    end # if
+224|    nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] }
+225|    if isthreadmain(  )...
+225|    if isthreadmain(  ):1
+226|     for ... nlist{'range'}:sub (  )...
+144|      if  not defined( ~arg from:-> Null )...
+144|      if  not defined( ~arg from:-> Null ):0
+145|       n = 1
+145|      end # if
+153|      if  not defined( ~arg to:-> Null )...
+153|      if  not defined( ~arg to:-> Null ):0
+154|       m =  - 1
+154|      end # if
+159|      ... := this{'nth'}:sub ( ~num n:1 )...
+039|       pos := this{'headp'}:[ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+040|       while (num:1 > 0):true
+041|        if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] )...
+041|        if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] ):1
+042|        end # if
+044|        num = (num:1 - 1):0
+045|        pos := pos[1]:[ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+046|       end
+040|       while (num:0 > 0):false
+046|       end # finish loop
+047|       return pos:-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+159|      pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+161|      if isthreadmain(  )...
+161|      if isthreadmain(  ):1
+162|       while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] )...
+162|       while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] ):1
+163|        if ((m:-1 !=  - 1):false and _ ):):false
+164|        end # if
+166|        threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] )...
+226|         for n = [ -> -3, -> Null ]
+227|          if (n[1]:-3 > 0):false
+228|          end # if
+226|         end
+226|         for ...
+166|        threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] ):-> [  ]
+167|        pos := pos[1]:[ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+168|        n = (n:1 + 1):2
+169|       end
+162|       while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+162|       while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+163|        if ((m:-1 !=  - 1):false and _ ):):false
+164|        end # if
+166|        threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] )...
+226|         for n = [ -> -2, -> Null ]
+227|          if (n[1]:-2 > 0):false
+228|          end # if
+226|         end
+226|         for ...
+166|        threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] ):-> Null
+167|        pos := pos[1]:[ -> Null, -> [ -> 3, -> Null ] ]
+168|        n = (n:2 + 1):3
+169|       end
+162|       while defined( ~arg pos:-> [ -> Null, -> [ -> 3, -> Null ] ] )...
+162|       while defined( ~arg pos:-> [ -> Null, -> [ -> 3, -> Null ] ] ):1
+163|        if ((m:-1 !=  - 1):false and _ ):):false
+164|        end # if
+166|        threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] )...
+226|         for n = [ -> 3, -> Null ]
+227|          if (n[1]:3 > 0):true
+228|           threadyield0( ~yieldval n[1]:3 )...
+050|            for e = 3
+051|             println( ~msg e:3 )...
+050|            end
+050|            for ...
+228|           threadyield0( ~yieldval n[1]:3 ):-> Null
+228|          end # if
+226|         end
+226|         for ...
+166|        threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] ):-> Null
+167|        pos := pos[1]:Null
+168|        n = (n:3 + 1):4
+169|       end
+162|       while defined( ~arg pos:-> Null )...
+162|       while defined( ~arg pos:-> Null ):0
+169|       end # finish loop
+169|      end # if
+226|      end # finish for loop
+230|    end # if
+050|    end # finish for loop
+054|    println( ~msg 'in edges for node 1' )...
+055|    for ... r{'outedges'}:sub ( ~from 1 )...
+220|     rt := this{'nodes'}[from:-> 1]:[ -> [ -> 1, -> 2 ], -> { 'count' : sub , 'head' : sub , 'foldfirst2last' : sub , 'next' : sub , 'insert' : sub , 'ncount' : -> 3, 'filtercopy' : sub , 'nth' : sub , 'mapreplace' : sub , 'mapcopy' : sub , 'remove' : sub , 'data' : sub , 'range' : sub , 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ]
+221|     if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] )...
+221|     if  not defined( ~arg rt:-> [ -> [ -> 1, -> 2 ], -> { 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] } ] ):1
+222|     end # if
+224|     nlist := rt[2]:{ 'count' : sub (), 'head' : sub (), 'foldfirst2last' : sub (~func , ~initval), 'next' : sub (~pos), 'insert' : sub (~pos , ~data), 'ncount' : -> 3, 'filtercopy' : sub (~func), 'nth' : sub (~num), 'mapreplace' : sub (~func), 'mapcopy' : sub (~func), 'remove' : sub (~pos), 'data' : sub (~pos), 'range' : sub (~from , ~to), 'headp' : -> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] }
+225|     if isthreadmain(  )...
+225|     if isthreadmain(  ):1
+226|      for ... nlist{'range'}:sub (  )...
+144|       if  not defined( ~arg from:-> Null )...
+144|       if  not defined( ~arg from:-> Null ):0
+145|        n = 1
+145|       end # if
+153|       if  not defined( ~arg to:-> Null )...
+153|       if  not defined( ~arg to:-> Null ):0
+154|        m =  - 1
+154|       end # if
+159|       ... := this{'nth'}:sub ( ~num n:1 )...
+039|        pos := this{'headp'}:[ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ]
+040|        while (num:1 > 0):true
+041|         if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] )...
+041|         if  not defined( ~arg pos:-> [ -> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ], -> Null ] ):1
+042|         end # if
+044|         num = (num:1 - 1):0
+045|         pos := pos[1]:[ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+046|        end
+040|        while (num:0 > 0):false
+046|        end # finish loop
+047|        return pos:-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+159|       pos := this{'nth'}:sub ( ~num n:1 ):-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ]
+161|       if isthreadmain(  )...
+161|       if isthreadmain(  ):1
+162|        while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] )...
+162|        while defined( ~arg pos:-> [ -> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ], -> [ -> -3, -> Null ] ] ):1
+163|         if ((m:-1 !=  - 1):false and _ ):):false
+164|         end # if
+166|         threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] )...
+226|          for n = [ -> -3, -> Null ]
+227|           if (n[1]:-3 > 0):false
+228|           end # if
+226|          end
+226|          for ...
+166|         threadyield0( ~yieldval pos[2]:[ -> -3, -> Null ] ):-> [  ]
+167|         pos := pos[1]:[ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ]
+168|         n = (n:1 + 1):2
+169|        end
+162|        while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] )...
+162|        while defined( ~arg pos:-> [ -> [ -> Null, -> [ -> 3, -> Null ] ], -> [ -> -2, -> Null ] ] ):1
+163|         if ((m:-1 !=  - 1):false and _ ):):false
+164|         end # if
+166|         threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] )...
+226|          for n = [ -> -2, -> Null ]
+227|           if (n[1]:-2 > 0):false
+228|           end # if
+226|          end
+226|          for ...
+166|         threadyield0( ~yieldval pos[2]:[ -> -2, -> Null ] ):-> Null
+167|         pos := pos[1]:[ -> Null, -> [ -> 3, -> Null ] ]
+168|         n = (n:2 + 1):3
+169|        end
+162|        while defined( ~arg pos:-> [ -> Null, -> [ -> 3, -> Null ] ] )...
+162|        while defined( ~arg pos:-> [ -> Null, -> [ -> 3, -> Null ] ] ):1
+163|         if ((m:-1 !=  - 1):false and _ ):):false
+164|         end # if
+166|         threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] )...
+226|          for n = [ -> 3, -> Null ]
+227|           if (n[1]:3 > 0):true
+228|            threadyield0( ~yieldval n[1]:3 )...
+055|             for e = 3
+056|              println( ~msg e:3 )...
+055|             end
+055|             for ...
+228|            threadyield0( ~yieldval n[1]:3 ):-> Null
+228|           end # if
+226|          end
+226|          for ...
+166|         threadyield0( ~yieldval pos[2]:[ -> 3, -> Null ] ):-> Null
+167|         pos := pos[1]:Null
+168|         n = (n:3 + 1):4
+169|        end
+162|        while defined( ~arg pos:-> Null )...
+162|        while defined( ~arg pos:-> Null ):0
+169|        end # finish loop
+169|       end # if
+226|       end # finish for loop
+230|     end # if
+055|     end # finish for loop
+</pre>
+
+<h3>Standard output for 05-graphlist.p</h3>
+
+<pre>
+** the nodes **
+node 1 data [ 1 2 ]
+node 2 data [ 2 3 ]
+node 3 data [ 3 4 ]
+out edges for node 1
+3
+2
+in edges for node 1
+3
+2
+delete edge 1-2
+out edges for node 1
+3
+in edges for node 1
+3
+
+</pre>
+</html>
+</body>

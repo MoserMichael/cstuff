@@ -1,0 +1,226 @@
+<html>
+<head>Pooh program example 17-for-while-break-skip.p</title></head>
+<body>
+<h3>Test 17-for-while-break-skip.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# for loop ; test keywords: break - finishing the iteration and skip - continue to next iteration. 
+
+println( ~msg 'while loop with skip and break' )
+
+i = 1
+while i < 11
+  if i == 10 
+    break
+  end    
+  if i % 2 == 0
+    i = i + 1
+    skip
+  end
+  println( ~msg i )
+  i = i + 1
+end  
+
+println( ~msg 'for loop with skip and break' )
+
+for i range( ~from 1 ~to 11 )
+  if i == 10 
+    break
+  end    
+
+  if i % 2 == 0
+    skip
+  end
+  println( ~msg i )
+end
+
+println( ~msg '*** eof ***' )
+
+</pre>
+
+<h4>Trace output for 17-for-while-break-skip.p</h4>
+
+<pre>
+003|println( ~msg 'while loop with skip and break' )...
+005|i = 1
+006|while (i:1 < 11):true
+007| if (i:1 == 10):false
+008| end # if
+010| if ((i:1 % 2):1 == 0):false
+012| end # if
+014| println( ~msg i:1 )...
+015| i = (i:1 + 1):2
+016|end
+006|while (i:2 < 11):true
+007| if (i:2 == 10):false
+008| end # if
+010| if ((i:2 % 2):0 == 0):true
+011|  i = (i:2 + 1):3
+012|  next
+012| end # if
+016|end
+006|while (i:3 < 11):true
+007| if (i:3 == 10):false
+008| end # if
+010| if ((i:3 % 2):1 == 0):false
+012| end # if
+014| println( ~msg i:3 )...
+015| i = (i:3 + 1):4
+016|end
+006|while (i:4 < 11):true
+007| if (i:4 == 10):false
+008| end # if
+010| if ((i:4 % 2):0 == 0):true
+011|  i = (i:4 + 1):5
+012|  next
+012| end # if
+016|end
+006|while (i:5 < 11):true
+007| if (i:5 == 10):false
+008| end # if
+010| if ((i:5 % 2):1 == 0):false
+012| end # if
+014| println( ~msg i:5 )...
+015| i = (i:5 + 1):6
+016|end
+006|while (i:6 < 11):true
+007| if (i:6 == 10):false
+008| end # if
+010| if ((i:6 % 2):0 == 0):true
+011|  i = (i:6 + 1):7
+012|  next
+012| end # if
+016|end
+006|while (i:7 < 11):true
+007| if (i:7 == 10):false
+008| end # if
+010| if ((i:7 % 2):1 == 0):false
+012| end # if
+014| println( ~msg i:7 )...
+015| i = (i:7 + 1):8
+016|end
+006|while (i:8 < 11):true
+007| if (i:8 == 10):false
+008| end # if
+010| if ((i:8 % 2):0 == 0):true
+011|  i = (i:8 + 1):9
+012|  next
+012| end # if
+016|end
+006|while (i:9 < 11):true
+007| if (i:9 == 10):false
+008| end # if
+010| if ((i:9 % 2):1 == 0):false
+012| end # if
+014| println( ~msg i:9 )...
+015| i = (i:9 + 1):10
+016|end
+006|while (i:10 < 11):true
+007| if (i:10 == 10):true
+008|  break
+008| end # if
+016|end # finish loop
+018|println( ~msg 'for loop with skip and break' )...
+020|for ... range( ~from 1 ~to 11 )...
+020| for i = 1
+021|  if (i:1 == 10):false
+022|  end # if
+025|  if ((i:1 % 2):1 == 0):false
+026|  end # if
+028|  println( ~msg i:1 )...
+020| end
+020| for ...
+020| for i = 2
+021|  if (i:2 == 10):false
+022|  end # if
+025|  if ((i:2 % 2):0 == 0):true
+026|   next
+026|  end # if
+020| end
+020| for ...
+020| for i = 3
+021|  if (i:3 == 10):false
+022|  end # if
+025|  if ((i:3 % 2):1 == 0):false
+026|  end # if
+028|  println( ~msg i:3 )...
+020| end
+020| for ...
+020| for i = 4
+021|  if (i:4 == 10):false
+022|  end # if
+025|  if ((i:4 % 2):0 == 0):true
+026|   next
+026|  end # if
+020| end
+020| for ...
+020| for i = 5
+021|  if (i:5 == 10):false
+022|  end # if
+025|  if ((i:5 % 2):1 == 0):false
+026|  end # if
+028|  println( ~msg i:5 )...
+020| end
+020| for ...
+020| for i = 6
+021|  if (i:6 == 10):false
+022|  end # if
+025|  if ((i:6 % 2):0 == 0):true
+026|   next
+026|  end # if
+020| end
+020| for ...
+020| for i = 7
+021|  if (i:7 == 10):false
+022|  end # if
+025|  if ((i:7 % 2):1 == 0):false
+026|  end # if
+028|  println( ~msg i:7 )...
+020| end
+020| for ...
+020| for i = 8
+021|  if (i:8 == 10):false
+022|  end # if
+025|  if ((i:8 % 2):0 == 0):true
+026|   next
+026|  end # if
+020| end
+020| for ...
+020| for i = 9
+021|  if (i:9 == 10):false
+022|  end # if
+025|  if ((i:9 % 2):1 == 0):false
+026|  end # if
+028|  println( ~msg i:9 )...
+020| end
+020| for ...
+020| for i = 10
+021|  if (i:10 == 10):true
+022|   break
+022|  end # if
+020| end # finish for loop
+031| println( ~msg '*** eof ***' )...
+</pre>
+
+<h3>Standard output for 17-for-while-break-skip.p</h3>
+
+<pre>
+while loop with skip and break
+1
+3
+5
+7
+9
+for loop with skip and break
+1
+3
+5
+7
+9
+*** eof ***
+
+</pre>
+</html>
+</body>

@@ -1,0 +1,854 @@
+<html>
+<head>Pooh program example 05-graphmatrix.p</title></head>
+<body>
+<h3>Test 05-graphmatrix.p</h3>
+
+<h4>Source of programm</h4>
+
+<pre>
+# test adjacency matrix data structure - graphmatrix.inc
+include 'graphmatrix.inc'
+
+r := make_graph_matrix( ~keepinedge 1 )
+
+r . addnode( ~index 1 ~data [1, 2] )
+r . addnode( ~index 2 ~data [2, 3] )
+r . addnode( ~index 3 ~data [3, 4] )
+
+r . addedge( ~from 1 ~to 2 )
+r . addedge( ~from 1 ~to 3 )
+r . addedge( ~from 2 ~to 1 )
+r . addedge( ~from 2 ~to 3 )
+r . addedge( ~from 3 ~to 1 )
+r . addedge( ~from 3 ~to 2 )
+
+r . addedge( ~from 4 ~to 6 )
+r . addedge( ~from 5 ~to 6 )
+r . addedge( ~from 5 ~to 6 )
+r . addedge( ~from 5 ~to 7 )
+r . addedge( ~from 6 ~to 7 )
+r . addedge( ~from 7 ~to 1 )
+
+println( ~msg '** the nodes **' )
+for n  r . eachnode()
+  d := r . nodedata( ~node n )
+  println( ~msg ''node [[ n ]] data [ [[ join( ~array d ~separator ' ' ) ]] ]'' )
+end
+
+#println( ~msg '** the nodes with data  **' )
+#for nd  r . eachnodewithdata()
+#  println( ~msg nd[1] .. ' ' .. nd[2] )
+#end
+
+
+println( ~msg 'out edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+println( ~msg 'in edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+println( ~msg 'delete edge 1-2' )
+r . deledge( ~from 1 ~to 2 )
+
+
+println( ~msg 'out edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+println( ~msg 'in edges for node 1' )
+for e  r . outedges( ~from 1 )
+   println( ~msg e )
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+
+<h4>Included file: graphmatrix.inc</h4>
+
+<pre>
+
+
+sub make_graph_matrix( keepinedge )
+  return {
+    'nullnode' : [],
+    'nodes' : [],
+    'deletednods' : [],
+
+    'links' : [],
+    'linksreverse' : [],
+    'keepinedge' : defined( ~arg keepinedge ),
+
+    # returns the number of nodes in the graph
+    'numnodes' : 
+      sub()
+	return size( ~arg this . nodes ) - size( ~arg this . deletednodes )
+      end,
+
+    # add a new node to the graph; the index of the new node is returned;
+    # you can attach data to the node (if data argument is not Null)
+    # you can set the node index with optional index parameter
+    'addnode' : 
+      sub( data optional , index optional )
+      	if ! defined( ~arg index )
+          if size( ~arg this . deletednodes ) == 0
+            num = size( ~arg this . nodes ) + 1
+          else
+            num = pop( ~array this . deletednodes )
+          end
+	else
+	  num = index
+	  if defined( ~arg this . nodes[ num ] )
+	    return false
+	  end
+	end
+    
+	if defined( ~arg data )
+	  this . nodes[ num ] := data
+	else
+	  this . nodes[ num ] := this . nullnode
+	end
+      end,
+
+    # return a reference to the data attached to node with index node
+    'nodedata' :
+      sub( node )
+	if ! defined( ~arg this . nodes[ node ] )
+	  return Null
+	end
+
+	rt := this . nodes[ node ]
+	if issame( ~a rt ~b this . nullnode )
+	  return Null
+	else
+	  return this . nodes[ node ]
+	end
+      end,
+       
+    # delete a node with given index.
+    'delnode' :
+      sub (node)
+	if ! defined( ~arg this . nodes[ node ] )
+	  return false
+	end
+	this . nodes[ node ] = Null 
+	
+	if this . keepinedge == 1
+	  this . linksreverse[ node ] = Null
+	end
+
+	push( ~array this . deletednods ~top node )
+	return true
+      end, 
+
+    # iterator, returns the index of each node in the graph.
+    'eachnode' : 
+      sub ()
+        rt = []
+	for i range( ~from 1 ~to size( ~arg this . nodes ) )
+	    rt := this . nodes[ i ]
+
+	    if defined( ~arg rt ) and not issame( ~a rt ~b this . nullnode )
+		if isthreadmain()
+		  threadyield0( ~yieldval i )
+		else
+		  push( ~array rt ~top i )
+		end
+	    end
+	end
+	if not isthreadmain()
+	  return rt
+	end
+      end,
+
+    # iterator, returns the index of each node in the graph and the data of the node
+    'eachnodewithdata' : 
+      sub ()
+        rt = []
+	for i range( ~from 1 ~to size( ~arg this . nodes ) )
+	    rt := this . nodes[ i ]
+
+	    if defined( ~arg rt ) and not issame( ~a rt ~b this . nullnode )
+		if isthreadmain()
+		  threadyield0( ~yieldval [ i , this . nodedata( ~node i ) ] )
+		else
+		  push( ~array rt ~top  [ i , this . nodedata( ~node i ) ] )
+		end
+	    end
+	end
+	if not isthreadmain()
+	  return rt
+	end
+      end,
+
+    # add a new edge to the graph.
+    'addedge' :
+      sub (from,to,linkdata optional)  
+      	if ! defined( ~arg this . nodes[ from ] )
+	  return false
+	end
+      	if ! defined( ~arg this . nodes[ to ] )
+	  return false
+	end
+
+     
+    	if defined( ~arg linkdata )
+	  d := linkdata	    
+	else
+	  d := this . nullnode
+	end
+	
+	this . links [ from ] [ to ] := d
+	if this . keepinedge == true
+	  this . linksreverse [ to ] [ from ] := d
+	end
+      end,
+
+    # returns true if edge exists from node with index from to node with index to
+    'hasedge' :
+       sub (from, to )
+
+      	if ! defined( ~arg this . nodes[ from ] )
+	  return false
+	end
+      	if ! defined( ~arg this . nodes[ to ] )
+	  return false
+	end
+
+	if  defined( ~arg this . links [ from ] [ to ] )
+	  return true
+	end
+	return false
+     end,
+
+    # returns data associated to edge from node with index from to node with index to
+    'edgedata' : 
+      sub( from, to)
+      	if ! defined( ~arg this . nodes[ from ] )
+	  return Null
+	end
+      	if ! defined( ~arg this . nodes[ to ] )
+	  return Null
+	end
+
+	rt := this . links [ from ] [ to ] 
+	if ! defined( ~arg rt ) or issame( ~a rt ~b this . nullnode )
+	  return Null
+	end
+        return rt
+      end,
+
+    # delete edge that leads from node with index from to node with index to
+    'deledge' :
+      sub (from, to )
+       	if ! defined( ~arg this . nodes[ from ] )
+	  return false
+	end
+      	if ! defined( ~arg this . nodes[ to ] )
+	  return false
+	end
+	
+	this . links [ from ] [ to ] := Null
+	if this . keepinedge == true
+	    this . linksreverse [ from ] [ to ] := Null
+	end
+	return false
+      end,      
+
+    # iterator - returns the index of all edges that lead out of node with index from
+    'outedges' :
+      sub (from)
+	if ! defined( ~arg this . nodes[ from ] )
+	  return Null
+	end
+
+	rt = []
+	for i range( ~from 1 ~to size( ~arg this . links[ from ] ) )
+	  
+          if ! defined( ~arg this . links [ from ] [ i ]  ) 
+	     skip
+	  end
+
+	  if isthreadmain()
+	     threadyield0( ~yieldval i )
+	  else
+	     push( ~array rt ~top i )
+	  end
+	end
+        if  not isthreadmain()
+	  return rt
+	end
+      end,
+
+    # iterator - returns edges that lead into node with index from
+    'inedges':
+       sub (from)
+	if ! defined( ~arg this . nodes[ from ] )
+	  return Null
+	end
+
+	if  this . keepinedge  == true
+	  rt = []
+	  for i range( ~from 1 ~to size( ~arg this . linksreverse[ from ] ) )
+	    v := this . linksreverse [ from ] [ i ]
+	    if not defined( ~arg v ) 
+	      skip
+	    end	
+
+	    if isthreadmain()
+	      threadyield0( ~yieldval i )
+	    else
+	      push( ~array rt ~top i )
+	    end
+	  end
+          if  not isthreadmain()
+	    return rt
+	  end
+       	else
+          rt = []
+          for n this . eachnode() 
+            if this . hasedge( ~from n ~to from )
+                if isthreadmain()
+                  threadyield0( ~yieldval n )
+                else
+                  push( ~array rt ~top n )
+                end
+              end
+            end
+            if not isthreadmain()
+              return rt
+            end
+ 	end
+     end
+  }      
+end
+
+</pre>
+
+<h4>Trace output for 05-graphmatrix.p</h4>
+
+<pre>
+003|... := make_graph_matrix( ~keepinedge 1 )...
+004| return { 'nullnode' : [ ]  , 'nodes' : [ ]  , 'deletednods' : [ ]  , 'links' : [ ]  , 'linksreverse' : [ ]  , 'keepinedge' : defined( ~arg keepinedge:1 )...
+004| return { 'nullnode' : [ ]  , 'nodes' : [ ]  , 'deletednods' : [ ]  , 'links' : [ ]  , 'linksreverse' : [ ]  , 'keepinedge' : defined( ~arg keepinedge:1 ):1 , 'numnodes' : sub () , 'addnode' : sub (~data , ~index) , 'nodedata' : sub (~node) , 'delnode' : sub (~node) , 'eachnode' : sub () , 'eachnodewithdata' : sub () , 'addedge' : sub (~from , ~to , ~linkdata) , 'hasedge' : sub (~from , ~to) , 'edgedata' : sub (~from , ~to) , 'deledge' : sub (~from , ~to) , 'outedges' : sub (~from) , 'inedges' : sub (~from) }
+003|r := make_graph_matrix( ~keepinedge 1 ):{ 'links' : -> [  ], 'deledge' : sub , 'nodedata' : sub , 'outedges' : sub , 'addedge' : sub , 'nodes' : -> [  ], 'numnodes' : sub , 'inedges' : sub , 'deletednods' : -> [  ], 'hasedge' : sub , 'addnode' : sub , 'nullnode' : -> [  ], 'edgedata' : sub , 'eachnode' : sub , 'keepinedge' : -> 1, 'delnode' : sub , 'eachnodewithdata' : sub , 'linksreverse' : -> [  ] }
+005|r{'addnode'}:sub ( ~index 1 ~data [ 1 , 2]  )...
+024| if  not defined( ~arg index:1 )...
+024| if  not defined( ~arg index:1 ):1
+029| else
+031|  num = index:1
+032|  if defined( ~arg this{'nodes'}[num:1]:Null )...
+032|  if defined( ~arg this{'nodes'}[num:1]:Null ):0
+033|  end # if
+034| end # if
+037| if defined( ~arg data:[ -> 1, -> 2 ] )...
+037| if defined( ~arg data:[ -> 1, -> 2 ] ):1
+038|  this{'nodes'}[num:1]:[ -> 1, -> 2 ] := data:[ -> 1, -> 2 ]
+038| end # if
+005|r{'addnode'}:sub ( ~index 1 ~data [ 1 , 2]  ):Null
+006|r{'addnode'}:sub ( ~index 2 ~data [ 2 , 3]  )...
+024| if  not defined( ~arg index:2 )...
+024| if  not defined( ~arg index:2 ):1
+029| else
+031|  num = index:2
+032|  if defined( ~arg this{'nodes'}[num:2]:Null )...
+032|  if defined( ~arg this{'nodes'}[num:2]:Null ):0
+033|  end # if
+034| end # if
+037| if defined( ~arg data:[ -> 2, -> 3 ] )...
+037| if defined( ~arg data:[ -> 2, -> 3 ] ):1
+038|  this{'nodes'}[num:2]:[ -> 2, -> 3 ] := data:[ -> 2, -> 3 ]
+038| end # if
+006|r{'addnode'}:sub ( ~index 2 ~data [ 2 , 3]  ):Null
+007|r{'addnode'}:sub ( ~index 3 ~data [ 3 , 4]  )...
+024| if  not defined( ~arg index:3 )...
+024| if  not defined( ~arg index:3 ):1
+029| else
+031|  num = index:3
+032|  if defined( ~arg this{'nodes'}[num:3]:Null )...
+032|  if defined( ~arg this{'nodes'}[num:3]:Null ):0
+033|  end # if
+034| end # if
+037| if defined( ~arg data:[ -> 3, -> 4 ] )...
+037| if defined( ~arg data:[ -> 3, -> 4 ] ):1
+038|  this{'nodes'}[num:3]:[ -> 3, -> 4 ] := data:[ -> 3, -> 4 ]
+038| end # if
+007|r{'addnode'}:sub ( ~index 3 ~data [ 3 , 4]  ):Null
+009|r{'addedge'}:sub ( ~from 1 ~to 2 )...
+118| if  not defined( ~arg this{'nodes'}[from:1]:[ -> 1, -> 2 ] )...
+118| if  not defined( ~arg this{'nodes'}[from:1]:[ -> 1, -> 2 ] ):1
+119| end # if
+121| if  not defined( ~arg this{'nodes'}[to:2]:[ -> 2, -> 3 ] )...
+121| if  not defined( ~arg this{'nodes'}[to:2]:[ -> 2, -> 3 ] ):1
+122| end # if
+126| if defined( ~arg linkdata:Null )...
+126| if defined( ~arg linkdata:Null ):0
+127| else
+129|  d := this{'nullnode'}:[  ]
+129| end # if
+132| this{'links'}[from:1][to:2]:[  ] := d:-> [  ]
+133| if (this{'keepinedge'}:1 == 1):true
+134|  this{'linksreverse'}[to:2][from:1]:[  ] := d:-> [  ]
+134| end # if
+009|r{'addedge'}:sub ( ~from 1 ~to 2 ):Null
+010|r{'addedge'}:sub ( ~from 1 ~to 3 )...
+118| if  not defined( ~arg this{'nodes'}[from:1]:[ -> 1, -> 2 ] )...
+118| if  not defined( ~arg this{'nodes'}[from:1]:[ -> 1, -> 2 ] ):1
+119| end # if
+121| if  not defined( ~arg this{'nodes'}[to:3]:[ -> 3, -> 4 ] )...
+121| if  not defined( ~arg this{'nodes'}[to:3]:[ -> 3, -> 4 ] ):1
+122| end # if
+126| if defined( ~arg linkdata:Null )...
+126| if defined( ~arg linkdata:Null ):0
+127| else
+129|  d := this{'nullnode'}:[  ]
+129| end # if
+132| this{'links'}[from:1][to:3]:[  ] := d:-> [  ]
+133| if (this{'keepinedge'}:1 == 1):true
+134|  this{'linksreverse'}[to:3][from:1]:[  ] := d:-> [  ]
+134| end # if
+010|r{'addedge'}:sub ( ~from 1 ~to 3 ):Null
+011|r{'addedge'}:sub ( ~from 2 ~to 1 )...
+118| if  not defined( ~arg this{'nodes'}[from:2]:[ -> 2, -> 3 ] )...
+118| if  not defined( ~arg this{'nodes'}[from:2]:[ -> 2, -> 3 ] ):1
+119| end # if
+121| if  not defined( ~arg this{'nodes'}[to:1]:[ -> 1, -> 2 ] )...
+121| if  not defined( ~arg this{'nodes'}[to:1]:[ -> 1, -> 2 ] ):1
+122| end # if
+126| if defined( ~arg linkdata:Null )...
+126| if defined( ~arg linkdata:Null ):0
+127| else
+129|  d := this{'nullnode'}:[  ]
+129| end # if
+132| this{'links'}[from:2][to:1]:[  ] := d:-> [  ]
+133| if (this{'keepinedge'}:1 == 1):true
+134|  this{'linksreverse'}[to:1][from:2]:[  ] := d:-> [  ]
+134| end # if
+011|r{'addedge'}:sub ( ~from 2 ~to 1 ):Null
+012|r{'addedge'}:sub ( ~from 2 ~to 3 )...
+118| if  not defined( ~arg this{'nodes'}[from:2]:[ -> 2, -> 3 ] )...
+118| if  not defined( ~arg this{'nodes'}[from:2]:[ -> 2, -> 3 ] ):1
+119| end # if
+121| if  not defined( ~arg this{'nodes'}[to:3]:[ -> 3, -> 4 ] )...
+121| if  not defined( ~arg this{'nodes'}[to:3]:[ -> 3, -> 4 ] ):1
+122| end # if
+126| if defined( ~arg linkdata:Null )...
+126| if defined( ~arg linkdata:Null ):0
+127| else
+129|  d := this{'nullnode'}:[  ]
+129| end # if
+132| this{'links'}[from:2][to:3]:[  ] := d:-> [  ]
+133| if (this{'keepinedge'}:1 == 1):true
+134|  this{'linksreverse'}[to:3][from:2]:[  ] := d:-> [  ]
+134| end # if
+012|r{'addedge'}:sub ( ~from 2 ~to 3 ):Null
+013|r{'addedge'}:sub ( ~from 3 ~to 1 )...
+118| if  not defined( ~arg this{'nodes'}[from:3]:[ -> 3, -> 4 ] )...
+118| if  not defined( ~arg this{'nodes'}[from:3]:[ -> 3, -> 4 ] ):1
+119| end # if
+121| if  not defined( ~arg this{'nodes'}[to:1]:[ -> 1, -> 2 ] )...
+121| if  not defined( ~arg this{'nodes'}[to:1]:[ -> 1, -> 2 ] ):1
+122| end # if
+126| if defined( ~arg linkdata:Null )...
+126| if defined( ~arg linkdata:Null ):0
+127| else
+129|  d := this{'nullnode'}:[  ]
+129| end # if
+132| this{'links'}[from:3][to:1]:[  ] := d:-> [  ]
+133| if (this{'keepinedge'}:1 == 1):true
+134|  this{'linksreverse'}[to:1][from:3]:[  ] := d:-> [  ]
+134| end # if
+013|r{'addedge'}:sub ( ~from 3 ~to 1 ):Null
+014|r{'addedge'}:sub ( ~from 3 ~to 2 )...
+118| if  not defined( ~arg this{'nodes'}[from:3]:[ -> 3, -> 4 ] )...
+118| if  not defined( ~arg this{'nodes'}[from:3]:[ -> 3, -> 4 ] ):1
+119| end # if
+121| if  not defined( ~arg this{'nodes'}[to:2]:[ -> 2, -> 3 ] )...
+121| if  not defined( ~arg this{'nodes'}[to:2]:[ -> 2, -> 3 ] ):1
+122| end # if
+126| if defined( ~arg linkdata:Null )...
+126| if defined( ~arg linkdata:Null ):0
+127| else
+129|  d := this{'nullnode'}:[  ]
+129| end # if
+132| this{'links'}[from:3][to:2]:[  ] := d:-> [  ]
+133| if (this{'keepinedge'}:1 == 1):true
+134|  this{'linksreverse'}[to:2][from:3]:[  ] := d:-> [  ]
+134| end # if
+014|r{'addedge'}:sub ( ~from 3 ~to 2 ):Null
+016|r{'addedge'}:sub ( ~from 4 ~to 6 )...
+118| if  not defined( ~arg this{'nodes'}[from:4]:Null )...
+118| if  not defined( ~arg this{'nodes'}[from:4]:Null ):0
+119|  return 0
+119| end # if
+016|r{'addedge'}:sub ( ~from 4 ~to 6 ):0
+017|r{'addedge'}:sub ( ~from 5 ~to 6 )...
+118| if  not defined( ~arg this{'nodes'}[from:5]:Null )...
+118| if  not defined( ~arg this{'nodes'}[from:5]:Null ):0
+119|  return 0
+119| end # if
+017|r{'addedge'}:sub ( ~from 5 ~to 6 ):0
+018|r{'addedge'}:sub ( ~from 5 ~to 6 )...
+118| if  not defined( ~arg this{'nodes'}[from:5]:Null )...
+118| if  not defined( ~arg this{'nodes'}[from:5]:Null ):0
+119|  return 0
+119| end # if
+018|r{'addedge'}:sub ( ~from 5 ~to 6 ):0
+019|r{'addedge'}:sub ( ~from 5 ~to 7 )...
+118| if  not defined( ~arg this{'nodes'}[from:5]:Null )...
+118| if  not defined( ~arg this{'nodes'}[from:5]:Null ):0
+119|  return 0
+119| end # if
+019|r{'addedge'}:sub ( ~from 5 ~to 7 ):0
+020|r{'addedge'}:sub ( ~from 6 ~to 7 )...
+118| if  not defined( ~arg this{'nodes'}[from:6]:Null )...
+118| if  not defined( ~arg this{'nodes'}[from:6]:Null ):0
+119|  return 0
+119| end # if
+020|r{'addedge'}:sub ( ~from 6 ~to 7 ):0
+021|r{'addedge'}:sub ( ~from 7 ~to 1 )...
+118| if  not defined( ~arg this{'nodes'}[from:7]:Null )...
+118| if  not defined( ~arg this{'nodes'}[from:7]:Null ):0
+119|  return 0
+119| end # if
+021|r{'addedge'}:sub ( ~from 7 ~to 1 ):0
+023|println( ~msg '** the nodes **' )...
+024|for ... r{'eachnode'}:sub (  )...
+078| rt = [ ] 
+079| for ... range( ~from 1 ~to size( ~arg this{'nodes'}:[ -> [ -> 1, -> 2 ], -> [ -> 2, -> 3 ], -> [ -> 3, -> 4 ] ] )...
+079| for ... range( ~from 1 ~to size( ~arg this{'nodes'}:[ -> [ -> 1, -> 2 ], -> [ -> 2, -> 3 ], -> [ -> 3, -> 4 ] ] ):3 )...
+079|  for i = 1
+080|   rt := this{'nodes'}[i:1]:[ -> 1, -> 2 ]
+082|   if (defined( ~arg rt:-> [ -> 1, -> 2 ] )...
+082|   if (defined( ~arg rt:-> [ -> 1, -> 2 ] ):1 and  not issame( ~a rt:-> [ -> 1, -> 2 ] ~b this{'nullnode'}:[  ] )...
+082|   if (defined( ~arg rt:-> [ -> 1, -> 2 ] ):1 and  not issame( ~a rt:-> [ -> 1, -> 2 ] ~b this{'nullnode'}:[  ] ):0):true
+083|    if isthreadmain(  )...
+083|    if isthreadmain(  ):1
+084|     threadyield0( ~yieldval i:1 )...
+024|      for n = 1
+025|       ... := r{'nodedata'}:sub ( ~node n:1 )...
+047|        if  not defined( ~arg this{'nodes'}[node:1]:[ -> 1, -> 2 ] )...
+047|        if  not defined( ~arg this{'nodes'}[node:1]:[ -> 1, -> 2 ] ):1
+048|        end # if
+051|        rt := this{'nodes'}[node:1]:[ -> 1, -> 2 ]
+052|        if issame( ~a rt:-> [ -> 1, -> 2 ] ~b this{'nullnode'}:[  ] )...
+052|        if issame( ~a rt:-> [ -> 1, -> 2 ] ~b this{'nullnode'}:[  ] ):0
+053|        else
+055|         return this{'nodes'}[node:1]:[ -> 1, -> 2 ]
+055|        end # if
+025|       d := r{'nodedata'}:sub ( ~node n:1 ):-> [ -> 1, -> 2 ]
+026|       println( ~msg 'node ' .. n:1 .. ' data [ ' .. join( ~array d:-> [ -> 1, -> 2 ] ~separator ' ' )...
+026|       println( ~msg 'node ' .. n:1 .. ' data [ ' .. join( ~array d:-> [ -> 1, -> 2 ] ~separator ' ' ):'1 2' .. ' ]' )...
+024|      end
+024|      for ...
+084|     threadyield0( ~yieldval i:1 ):-> Null
+084|    end # if
+088|   end # if
+079|  end
+079|  for ...
+079|  for i = 2
+080|   rt := this{'nodes'}[i:2]:[ -> 2, -> 3 ]
+082|   if (defined( ~arg rt:-> [ -> 2, -> 3 ] )...
+082|   if (defined( ~arg rt:-> [ -> 2, -> 3 ] ):1 and  not issame( ~a rt:-> [ -> 2, -> 3 ] ~b this{'nullnode'}:[  ] )...
+082|   if (defined( ~arg rt:-> [ -> 2, -> 3 ] ):1 and  not issame( ~a rt:-> [ -> 2, -> 3 ] ~b this{'nullnode'}:[  ] ):0):true
+083|    if isthreadmain(  )...
+083|    if isthreadmain(  ):1
+084|     threadyield0( ~yieldval i:2 )...
+024|      for n = 2
+025|       ... := r{'nodedata'}:sub ( ~node n:2 )...
+047|        if  not defined( ~arg this{'nodes'}[node:2]:[ -> 2, -> 3 ] )...
+047|        if  not defined( ~arg this{'nodes'}[node:2]:[ -> 2, -> 3 ] ):1
+048|        end # if
+051|        rt := this{'nodes'}[node:2]:[ -> 2, -> 3 ]
+052|        if issame( ~a rt:-> [ -> 2, -> 3 ] ~b this{'nullnode'}:[  ] )...
+052|        if issame( ~a rt:-> [ -> 2, -> 3 ] ~b this{'nullnode'}:[  ] ):0
+053|        else
+055|         return this{'nodes'}[node:2]:[ -> 2, -> 3 ]
+055|        end # if
+025|       d := r{'nodedata'}:sub ( ~node n:2 ):-> [ -> 2, -> 3 ]
+026|       println( ~msg 'node ' .. n:2 .. ' data [ ' .. join( ~array d:-> [ -> 2, -> 3 ] ~separator ' ' )...
+026|       println( ~msg 'node ' .. n:2 .. ' data [ ' .. join( ~array d:-> [ -> 2, -> 3 ] ~separator ' ' ):'2 3' .. ' ]' )...
+024|      end
+024|      for ...
+084|     threadyield0( ~yieldval i:2 ):-> Null
+084|    end # if
+088|   end # if
+079|  end
+079|  for ...
+079|  for i = 3
+080|   rt := this{'nodes'}[i:3]:[ -> 3, -> 4 ]
+082|   if (defined( ~arg rt:-> [ -> 3, -> 4 ] )...
+082|   if (defined( ~arg rt:-> [ -> 3, -> 4 ] ):1 and  not issame( ~a rt:-> [ -> 3, -> 4 ] ~b this{'nullnode'}:[  ] )...
+082|   if (defined( ~arg rt:-> [ -> 3, -> 4 ] ):1 and  not issame( ~a rt:-> [ -> 3, -> 4 ] ~b this{'nullnode'}:[  ] ):0):true
+083|    if isthreadmain(  )...
+083|    if isthreadmain(  ):1
+084|     threadyield0( ~yieldval i:3 )...
+024|      for n = 3
+025|       ... := r{'nodedata'}:sub ( ~node n:3 )...
+047|        if  not defined( ~arg this{'nodes'}[node:3]:[ -> 3, -> 4 ] )...
+047|        if  not defined( ~arg this{'nodes'}[node:3]:[ -> 3, -> 4 ] ):1
+048|        end # if
+051|        rt := this{'nodes'}[node:3]:[ -> 3, -> 4 ]
+052|        if issame( ~a rt:-> [ -> 3, -> 4 ] ~b this{'nullnode'}:[  ] )...
+052|        if issame( ~a rt:-> [ -> 3, -> 4 ] ~b this{'nullnode'}:[  ] ):0
+053|        else
+055|         return this{'nodes'}[node:3]:[ -> 3, -> 4 ]
+055|        end # if
+025|       d := r{'nodedata'}:sub ( ~node n:3 ):-> [ -> 3, -> 4 ]
+026|       println( ~msg 'node ' .. n:3 .. ' data [ ' .. join( ~array d:-> [ -> 3, -> 4 ] ~separator ' ' )...
+026|       println( ~msg 'node ' .. n:3 .. ' data [ ' .. join( ~array d:-> [ -> 3, -> 4 ] ~separator ' ' ):'3 4' .. ' ]' )...
+024|      end
+024|      for ...
+084|     threadyield0( ~yieldval i:3 ):-> Null
+084|    end # if
+088|   end # if
+079|  end
+079|  for ...
+079|  end # finish for loop
+090|  if  not isthreadmain(  )...
+090|  if  not isthreadmain(  ):1
+091|  end # if
+024|  end # finish for loop
+035|  println( ~msg 'out edges for node 1' )...
+036|  for ... r{'outedges'}:sub ( ~from 1 )...
+192|   if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] )...
+192|   if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] ):1
+193|   end # if
+196|   rt = [ ] 
+197|   for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] )...
+197|   for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] ):3 )...
+197|    for i = 1
+199|     if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null )...
+199|     if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null ):0
+200|      next
+200|     end # if
+197|    end
+197|    for ...
+197|    for i = 2
+199|     if  not defined( ~arg this{'links'}[from:-> 1][i:2]:[  ] )...
+199|     if  not defined( ~arg this{'links'}[from:-> 1][i:2]:[  ] ):1
+200|     end # if
+203|     if isthreadmain(  )...
+203|     if isthreadmain(  ):1
+204|      threadyield0( ~yieldval i:2 )...
+036|       for e = 2
+037|        println( ~msg e:2 )...
+036|       end
+036|       for ...
+204|      threadyield0( ~yieldval i:2 ):-> Null
+204|     end # if
+197|    end
+197|    for ...
+197|    for i = 3
+199|     if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] )...
+199|     if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] ):1
+200|     end # if
+203|     if isthreadmain(  )...
+203|     if isthreadmain(  ):1
+204|      threadyield0( ~yieldval i:3 )...
+036|       for e = 3
+037|        println( ~msg e:3 )...
+036|       end
+036|       for ...
+204|      threadyield0( ~yieldval i:3 ):-> Null
+204|     end # if
+197|    end
+197|    for ...
+197|    end # finish for loop
+209|    if  not isthreadmain(  )...
+209|    if  not isthreadmain(  ):1
+210|    end # if
+036|    end # finish for loop
+040|    println( ~msg 'in edges for node 1' )...
+041|    for ... r{'outedges'}:sub ( ~from 1 )...
+192|     if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] )...
+192|     if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] ):1
+193|     end # if
+196|     rt = [ ] 
+197|     for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] )...
+197|     for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] ):3 )...
+197|      for i = 1
+199|       if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null )...
+199|       if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null ):0
+200|        next
+200|       end # if
+197|      end
+197|      for ...
+197|      for i = 2
+199|       if  not defined( ~arg this{'links'}[from:-> 1][i:2]:[  ] )...
+199|       if  not defined( ~arg this{'links'}[from:-> 1][i:2]:[  ] ):1
+200|       end # if
+203|       if isthreadmain(  )...
+203|       if isthreadmain(  ):1
+204|        threadyield0( ~yieldval i:2 )...
+041|         for e = 2
+042|          println( ~msg e:2 )...
+041|         end
+041|         for ...
+204|        threadyield0( ~yieldval i:2 ):-> Null
+204|       end # if
+197|      end
+197|      for ...
+197|      for i = 3
+199|       if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] )...
+199|       if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] ):1
+200|       end # if
+203|       if isthreadmain(  )...
+203|       if isthreadmain(  ):1
+204|        threadyield0( ~yieldval i:3 )...
+041|         for e = 3
+042|          println( ~msg e:3 )...
+041|         end
+041|         for ...
+204|        threadyield0( ~yieldval i:3 ):-> Null
+204|       end # if
+197|      end
+197|      for ...
+197|      end # finish for loop
+209|      if  not isthreadmain(  )...
+209|      if  not isthreadmain(  ):1
+210|      end # if
+041|      end # finish for loop
+045|      println( ~msg 'delete edge 1-2' )...
+046|      r{'deledge'}:sub ( ~from 1 ~to 2 )...
+175|       if  not defined( ~arg this{'nodes'}[from:1]:[ -> 1, -> 2 ] )...
+175|       if  not defined( ~arg this{'nodes'}[from:1]:[ -> 1, -> 2 ] ):1
+176|       end # if
+178|       if  not defined( ~arg this{'nodes'}[to:2]:[ -> 2, -> 3 ] )...
+178|       if  not defined( ~arg this{'nodes'}[to:2]:[ -> 2, -> 3 ] ):1
+179|       end # if
+182|       this{'links'}[from:1][to:2]:Null := Null
+183|       if (this{'keepinedge'}:1 == 1):true
+184|        this{'linksreverse'}[from:1][to:2]:Null := Null
+184|       end # if
+186|       return 0
+046|      r{'deledge'}:sub ( ~from 1 ~to 2 ):0
+049|      println( ~msg 'out edges for node 1' )...
+050|      for ... r{'outedges'}:sub ( ~from 1 )...
+192|       if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] )...
+192|       if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] ):1
+193|       end # if
+196|       rt = [ ] 
+197|       for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, Null, -> [  ] ] )...
+197|       for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, Null, -> [  ] ] ):3 )...
+197|        for i = 1
+199|         if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null )...
+199|         if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null ):0
+200|          next
+200|         end # if
+197|        end
+197|        for ...
+197|        for i = 2
+199|         if  not defined( ~arg this{'links'}[from:-> 1][i:2]:Null )...
+199|         if  not defined( ~arg this{'links'}[from:-> 1][i:2]:Null ):0
+200|          next
+200|         end # if
+197|        end
+197|        for ...
+197|        for i = 3
+199|         if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] )...
+199|         if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] ):1
+200|         end # if
+203|         if isthreadmain(  )...
+203|         if isthreadmain(  ):1
+204|          threadyield0( ~yieldval i:3 )...
+050|           for e = 3
+051|            println( ~msg e:3 )...
+050|           end
+050|           for ...
+204|          threadyield0( ~yieldval i:3 ):-> Null
+204|         end # if
+197|        end
+197|        for ...
+197|        end # finish for loop
+209|        if  not isthreadmain(  )...
+209|        if  not isthreadmain(  ):1
+210|        end # if
+050|        end # finish for loop
+054|        println( ~msg 'in edges for node 1' )...
+055|        for ... r{'outedges'}:sub ( ~from 1 )...
+192|         if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] )...
+192|         if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] ):1
+193|         end # if
+196|         rt = [ ] 
+197|         for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, Null, -> [  ] ] )...
+197|         for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, Null, -> [  ] ] ):3 )...
+197|          for i = 1
+199|           if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null )...
+199|           if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null ):0
+200|            next
+200|           end # if
+197|          end
+197|          for ...
+197|          for i = 2
+199|           if  not defined( ~arg this{'links'}[from:-> 1][i:2]:Null )...
+199|           if  not defined( ~arg this{'links'}[from:-> 1][i:2]:Null ):0
+200|            next
+200|           end # if
+197|          end
+197|          for ...
+197|          for i = 3
+199|           if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] )...
+199|           if  not defined( ~arg this{'links'}[from:-> 1][i:3]:[  ] ):1
+200|           end # if
+203|           if isthreadmain(  )...
+203|           if isthreadmain(  ):1
+204|            threadyield0( ~yieldval i:3 )...
+055|             for e = 3
+056|              println( ~msg e:3 )...
+055|             end
+055|             for ...
+204|            threadyield0( ~yieldval i:3 ):-> Null
+204|           end # if
+197|          end
+197|          for ...
+197|          end # finish for loop
+209|          if  not isthreadmain(  )...
+209|          if  not isthreadmain(  ):1
+210|          end # if
+055|          end # finish for loop
+</pre>
+
+<h3>Standard output for 05-graphmatrix.p</h3>
+
+<pre>
+** the nodes **
+node 1 data [ 1 2 ]
+node 2 data [ 2 3 ]
+node 3 data [ 3 4 ]
+out edges for node 1
+2
+3
+in edges for node 1
+2
+3
+delete edge 1-2
+out edges for node 1
+3
+in edges for node 1
+3
+
+</pre>
+</html>
+</body>
