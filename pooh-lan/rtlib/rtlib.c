@@ -1979,12 +1979,12 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
     dataNext = BINDING_DATA_follow_ref( data );
     BINDING_DATA_print( out, dataNext, level + 1 );
  
-    assert( data != STATIC_NULL || (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS ) != 0 );
+    //assert( data != STATIC_NULL || (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS ) != 0 );
     data->b.value_flags_val &= ~S_VAR_PRINT_CHECK_LOOPS;
 
     return;
   }
-  assert( data != STATIC_NULL || (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS ) != 0 );
+  //assert( data != STATIC_NULL || (data->b.value_flags_val & S_VAR_PRINT_CHECK_LOOPS ) != 0 );
   data->b.value_flags_val &= ~S_VAR_PRINT_CHECK_LOOPS;
 
  

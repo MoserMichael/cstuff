@@ -838,9 +838,9 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 		      next_data->b.value_flags_val = S_VAR_HEAP_VALUE;
 		    }
 		  }
-		  if (next_data == 0) {
-		    next_data = get_CONST_NULL();
-		  }
+		  //if (next_data == 0) {
+		  //  next_data = get_CONST_NULL();
+		  //}
 		}
 
 	
@@ -849,7 +849,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
 		} else {
 		  next_data = EVAL_THREAD_get_stack_top( cthread );
 		  BINDING_DATA_init( next_data, S_VAR_NULL ); 
-		  next_data->b.value_flags_val = S_VAR_HEAP_VALUE;
+		  //next_data->b.value_flags_val = S_VAR_HEAP_VALUE;
 		}
 	    }
 
@@ -1932,6 +1932,7 @@ void EVAL_do(  EVAL_CTX *out )
 	   yield_value = tmp;
 	 }
 	 EVAL_THREAD_set_current_thread( cur_thread );
+	 assert( out->context.current_thread == cur_thread );
 
          if (EVAL_trace_on(out)) {
            trace = EVAL_CTX_new_trace( out, &scl->base);
