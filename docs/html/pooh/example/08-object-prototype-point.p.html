@@ -50,6 +50,14 @@ println( ~msg 'point-accessors x = [ pt . get_x () ]  y = [ pt . get_y() ]' )
              
 
 </pre>
+</pre>
+
+<h3>Standard output for 08-object-prototype-point.p</h3>
+
+<pre>
+point x-pos: 10  y-pos: 10
+point x-pos: 11  y-pos: 9
+point-accessors x = 11  y = 9
 
 <h4>Trace output for 08-object-prototype-point.p</h4>
 
@@ -71,14 +79,6 @@ println( ~msg 'point-accessors x = [ pt . get_x () ]  y = [ pt . get_y() ]' )
 040|println( ~msg 'point-accessors x = ' .. pt{'get_x'}:sub (  ):-> 11 .. '  y = ' .. pt{'get_y'}:sub (  )...
 026| return this{'y_pos'}:9
 040|println( ~msg 'point-accessors x = ' .. pt{'get_x'}:sub (  ):-> 11 .. '  y = ' .. pt{'get_y'}:sub (  ):-> 9 .. '' )...
-</pre>
-
-<h3>Standard output for 08-object-prototype-point.p</h3>
-
-<pre>
-point x-pos: 10  y-pos: 10
-point x-pos: 11  y-pos: 9
-point-accessors x = 11  y = 9
 
 </pre>
 </html>

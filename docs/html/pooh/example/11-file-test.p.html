@@ -34,12 +34,45 @@ f.close()
 
 
 </pre>
+</pre>
+
+<h3>Standard output for 11-file-test.p</h3>
+
+<pre>
+abcdefghijklmnopqrstuvwxyz
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ccccccccccccccccccccccccccccccccccccccccccc
+ddddddddddddddddddddddddddddddddddddddddddd
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+fffffffffffffffffffffffffffffffffffffffffff
+ggggggggggggggggggggggggggggggggggggggggggg
+hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+lllllllllllllllllllllllllllllllllllllllllll
+mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+ooooooooooooooooooooooooooooooooooooooooooo
+ppppppppppppppppppppppppppppppppppppppppppp
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+sssssssssssssssssssssssssssssssssssssssssss
+ttttttttttttttttttttttttttttttttttttttttttt
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 
 <h4>Trace output for 11-file-test.p</h4>
 
 <pre>
 005|... = open( ~filename 'test/11-file-test' )...
-005|f = open( ~filename 'test/11-file-test' ):-> { 'read' : sub read(, 'seek' : sub seek(, 'close' : sub close(, '' : 145349640, 'finalize' : sub close(, 'write' : sub write(, 'flush' : sub flush( }
+005|f = open( ~filename 'test/11-file-test' ):-> { 'read' : sub read(, 'seek' : sub seek(, 'close' : sub close(, '' : 166989416, 'finalize' : sub close(, 'write' : sub write(, 'flush' : sub flush( }
 007|... = newline(  )...
 007|buf = newline(  ):'
 '
@@ -52,8 +85,8 @@ f.close()
 012|f{'close'}:sub close((  )...
 012|f{'close'}:sub close((  ):Null
 017|... = open( ~filename 'test/11-file-test-lines' )...
-017|f = open( ~filename 'test/11-file-test-lines' ):-> { 'read' : sub read(, 'seek' : sub seek(, 'close' : sub close(, '' : 145349640, 'finalize' : sub close(, 'write' : sub write(, 'flush' : sub flush( }
-019|for ... readlines( ~file f:{ 'read' : sub read(~toread , ~numread), 'seek' : sub seek(~mode , ~offset), 'close' : sub close(), '' : 145349640, 'finalize' : sub close(), 'write' : sub write(~towrite , ~numwrite), 'flush' : sub flush() } )...
+017|f = open( ~filename 'test/11-file-test-lines' ):-> { 'read' : sub read(, 'seek' : sub seek(, 'close' : sub close(, '' : 166989416, 'finalize' : sub close(, 'write' : sub write(, 'flush' : sub flush( }
+019|for ... readlines( ~file f:{ 'read' : sub read(~toread , ~numread), 'seek' : sub seek(~mode , ~offset), 'close' : sub close(), '' : 166989416, 'finalize' : sub close(), 'write' : sub write(~towrite , ~numwrite), 'flush' : sub flush() } )...
 019| for ln = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 020|  println( ~msg ln:'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' )...
 019| end
@@ -161,39 +194,6 @@ f.close()
 019| end # finish for loop
 023| f{'close'}:sub close((  )...
 023| f{'close'}:sub close((  ):Null
-</pre>
-
-<h3>Standard output for 11-file-test.p</h3>
-
-<pre>
-abcdefghijklmnopqrstuvwxyz
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-ccccccccccccccccccccccccccccccccccccccccccc
-ddddddddddddddddddddddddddddddddddddddddddd
-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-fffffffffffffffffffffffffffffffffffffffffff
-ggggggggggggggggggggggggggggggggggggggggggg
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
-kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-lllllllllllllllllllllllllllllllllllllllllll
-mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-ooooooooooooooooooooooooooooooooooooooooooo
-ppppppppppppppppppppppppppppppppppppppppppp
-qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-sssssssssssssssssssssssssssssssssssssssssss
-ttttttttttttttttttttttttttttttttttttttttttt
-uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
-zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 
 </pre>
 </html>

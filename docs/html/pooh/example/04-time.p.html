@@ -21,28 +21,28 @@ println( ~msg 'UTC time: Today is [daysofweek[dayofweek+1]] the time is [hour]:[
 println( ~msg 'UTC time: Today is [daysofweek[dayofweek+1]] the time is [hour]:[mins]:[secs]  [dayofmonth]/[month]/[year]' )
 
 </pre>
+</pre>
+
+<h3>Standard output for 04-time.p</h3>
+
+<pre>
+The seconds passed since Jan 1 1970 UTC time 1361980840 
+UTC time: Today is Wed the time is 11:0:40  27/1/2013
+UTC time: Today is Wed the time is 16:0:40  27/1/2013
 
 <h4>Trace output for 04-time.p</h4>
 
 <pre>
 003|daysofweek = [ 'Sun' , 'Mon' , 'Tue' , 'Wed' , 'Thur' , 'Fri' , 'Sat'] 
 005|... = currenttime(  )...
-005|ctime = currenttime(  ):1361979819
-006|println( ~msg 'The seconds passed since Jan 1 1970 UTC time ' .. ctime:1361979819 .. ' ' )...
-008|... = localtime( ~epoch ctime:1361979819 )...
-008|[ secs:39 , mins:43 , hour:10 , dayofmonth:27 , month:1 , year:2013 , dayofweek:3 ,  ]  = localtime( ~epoch ctime:1361979819 ):[ 39, 43, 10, 27, 1, 2013, 3, 57, 0 ]
-010|println( ~msg 'UTC time: Today is ' .. daysofweek[(dayofweek:3 + 1):4]:'Wed' .. ' the time is ' .. hour:10 .. ':' .. mins:43 .. ':' .. secs:39 .. '  ' .. dayofmonth:27 .. '/' .. month:1 .. '/' .. year:2013 .. '' )...
-011|... = gmtime( ~epoch ctime:1361979819 )...
-011|[ secs:39 , mins:43 , hour:15 , dayofmonth:27 , month:1 , year:2013 , dayofweek:3 ,  ]  = gmtime( ~epoch ctime:1361979819 ):[ 39, 43, 15, 27, 1, 2013, 3, 57, 0 ]
-013|println( ~msg 'UTC time: Today is ' .. daysofweek[(dayofweek:3 + 1):4]:'Wed' .. ' the time is ' .. hour:15 .. ':' .. mins:43 .. ':' .. secs:39 .. '  ' .. dayofmonth:27 .. '/' .. month:1 .. '/' .. year:2013 .. '' )...
-</pre>
-
-<h3>Standard output for 04-time.p</h3>
-
-<pre>
-The seconds passed since Jan 1 1970 UTC time 1361979819 
-UTC time: Today is Wed the time is 10:43:39  27/1/2013
-UTC time: Today is Wed the time is 15:43:39  27/1/2013
+005|ctime = currenttime(  ):1361980840
+006|println( ~msg 'The seconds passed since Jan 1 1970 UTC time ' .. ctime:1361980840 .. ' ' )...
+008|... = localtime( ~epoch ctime:1361980840 )...
+008|[ secs:40 , mins:0 , hour:11 , dayofmonth:27 , month:1 , year:2013 , dayofweek:3 ,  ]  = localtime( ~epoch ctime:1361980840 ):[ 40, 0, 11, 27, 1, 2013, 3, 57, 0 ]
+010|println( ~msg 'UTC time: Today is ' .. daysofweek[(dayofweek:3 + 1):4]:'Wed' .. ' the time is ' .. hour:11 .. ':' .. mins:0 .. ':' .. secs:40 .. '  ' .. dayofmonth:27 .. '/' .. month:1 .. '/' .. year:2013 .. '' )...
+011|... = gmtime( ~epoch ctime:1361980840 )...
+011|[ secs:40 , mins:0 , hour:16 , dayofmonth:27 , month:1 , year:2013 , dayofweek:3 ,  ]  = gmtime( ~epoch ctime:1361980840 ):[ 40, 0, 16, 27, 1, 2013, 3, 57, 0 ]
+013|println( ~msg 'UTC time: Today is ' .. daysofweek[(dayofweek:3 + 1):4]:'Wed' .. ' the time is ' .. hour:16 .. ':' .. mins:0 .. ':' .. secs:40 .. '  ' .. dayofmonth:27 .. '/' .. month:1 .. '/' .. year:2013 .. '' )...
 
 </pre>
 </html>

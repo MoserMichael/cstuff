@@ -60,6 +60,14 @@ println( ~msg 'horizontal postion [ point( ~method 'x-pos') () ] vertical positi
 
 
 </pre>
+</pre>
+
+<h3>Standard output for 10-object-closure-point.p</h3>
+
+<pre>
+position x = 42 y = 10
+position x = 52 y = 20
+horizontal postion 52 vertical position 20
 
 <h4>Trace output for 10-object-closure-point.p</h4>
 
@@ -106,14 +114,6 @@ println( ~msg 'horizontal postion [ point( ~method 'x-pos') () ] vertical positi
 050|println( ~msg 'horizontal postion ' .. point:-> sub ( ~method 'x-pos' ):-> sub (  ):52 .. ' vertical position ' .. point:-> sub ( ~method 'y-pos' ):-> sub (  )...
 030| return outer.y:20
 050|println( ~msg 'horizontal postion ' .. point:-> sub ( ~method 'x-pos' ):-> sub (  ):52 .. ' vertical position ' .. point:-> sub ( ~method 'y-pos' ):-> sub (  ):20 .. '' )...
-</pre>
-
-<h3>Standard output for 10-object-closure-point.p</h3>
-
-<pre>
-position x = 42 y = 10
-position x = 52 y = 20
-horizontal postion 52 vertical position 20
 
 </pre>
 </html>

@@ -422,6 +422,25 @@ end
 
 
 </pre>
+</pre>
+
+<h3>Standard output for 06-graphutils.p</h3>
+
+<pre>
+*** breadth first search iterator ***
+node 1
+node 3
+node 2
+node 5
+node 4
+node 6
+*** depth first search iterator ***
+node 1
+node 2
+node 4
+node 5
+node 6
+node 3
 
 <h4>Trace output for 06-graphutils.p</h4>
 
@@ -1086,7 +1105,7 @@ end
 007|   return l[1]:[ -> Null, -> Null ]
 012|  e := make_queue_node(  ):-> [ -> Null, -> Null ]
 013|  return { 'head' : e:-> [ -> Null, -> Null ] , 'tail' : e:-> [ -> Null, -> Null ] , 'ncount' : 0 , 'push' : sub (~data) , 'pop' : sub () , 'count' : sub () }
-011| current := make_queue(  ):{ 'count' : sub , 'head' : -> (0x9f17d50)[ -> Null, -> Null ], 'pop' : sub , 'ncount' : -> 0, 'tail' : -> <0x9f17d50> , 'push' : sub  }
+011| current := make_queue(  ):{ 'count' : sub , 'head' : -> (0x82b6fb0)[ -> Null, -> Null ], 'pop' : sub , 'ncount' : -> 0, 'tail' : -> <0x82b6fb0> , 'push' : sub  }
 012| rt = [ ] 
 014| current{'push'}:sub ( ~data startnode:-> 1 )...
 020|  ... := make_queue_node( ~data data:-> 1 )...
@@ -2227,25 +2246,6 @@ end
 073|  if  not isthreadmain(  ):1
 074|  end # if
 030|  end # finish for loop
-</pre>
-
-<h3>Standard output for 06-graphutils.p</h3>
-
-<pre>
-*** breadth first search iterator ***
-node 1
-node 3
-node 2
-node 5
-node 4
-node 6
-*** depth first search iterator ***
-node 1
-node 2
-node 4
-node 5
-node 6
-node 3
 
 </pre>
 </html>

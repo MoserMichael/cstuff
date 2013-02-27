@@ -27,12 +27,18 @@ println( ~msg 'output: [ output ] status: [ status ]' )
 
 
 </pre>
+</pre>
+
+<h3>Standard output for 11-file-pipe.p</h3>
+
+<pre>
+output: AAAAAAA status: 0
 
 <h4>Trace output for 11-file-pipe.p</h4>
 
 <pre>
 003|... = openpipe( ~cmdline 'tr a A' )...
-003|f = openpipe( ~cmdline 'tr a A' ):-> { 'read' : sub read(, 'closeread' : sub closeread(, '' : 137236856, 'wait' : sub wait(, 'finalize' : sub finalize(, 'write' : sub write(, 'closewrite' : sub closewrite(, 'pid' : 26353 }
+003|f = openpipe( ~cmdline 'tr a A' ):-> { 'read' : sub read(, 'closeread' : sub closeread(, '' : 139166680, 'wait' : sub wait(, 'finalize' : sub finalize(, 'write' : sub write(, 'closewrite' : sub closewrite(, 'pid' : 29013 }
 005|f{'write'}:sub write(( ~towrite 'aaaaaaa' ~numwrite 7 )...
 005|f{'write'}:sub write(( ~towrite 'aaaaaaa' ~numwrite 7 ):7
 007|f{'closewrite'}:sub closewrite((  )...
@@ -44,12 +50,6 @@ println( ~msg 'output: [ output ] status: [ status ]' )
 013|... = f{'wait'}:sub wait((  )...
 013|status = f{'wait'}:sub wait((  ):0
 015|println( ~msg 'output: ' .. output:'AAAAAAA' .. ' status: ' .. status:0 .. '' )...
-</pre>
-
-<h3>Standard output for 11-file-pipe.p</h3>
-
-<pre>
-output: AAAAAAA status: 0
 
 </pre>
 </html>

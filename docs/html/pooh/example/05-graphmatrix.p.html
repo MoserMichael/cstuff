@@ -345,6 +345,26 @@ sub make_graph_matrix( keepinedge )
 end
 
 </pre>
+</pre>
+
+<h3>Standard output for 05-graphmatrix.p</h3>
+
+<pre>
+** the nodes **
+node 1 data [ 1 2 ]
+node 2 data [ 2 3 ]
+node 3 data [ 3 4 ]
+out edges for node 1
+2
+3
+in edges for node 1
+2
+3
+delete edge 1-2
+out edges for node 1
+3
+in edges for node 1
+3
 
 <h4>Trace output for 05-graphmatrix.p</h4>
 
@@ -636,8 +656,8 @@ end
 192|   if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] ):1
 193|   end # if
 196|   rt = [ ] 
-197|   for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] )...
-197|   for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] ):3 )...
+197|   for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x80d6440)[  ], -> <0x80d6440>  ] )...
+197|   for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x80d6440)[  ], -> <0x80d6440>  ] ):3 )...
 197|    for i = 1
 199|     if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null )...
 199|     if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null ):0
@@ -686,8 +706,8 @@ end
 192|     if  not defined( ~arg this{'nodes'}[from:-> 1]:[ -> 1, -> 2 ] ):1
 193|     end # if
 196|     rt = [ ] 
-197|     for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] )...
-197|     for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x9cbb440)[  ], -> <0x9cbb440>  ] ):3 )...
+197|     for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x80d6440)[  ], -> <0x80d6440>  ] )...
+197|     for ... range( ~from 1 ~to size( ~arg this{'links'}[from:-> 1]:[ Null, -> (0x80d6440)[  ], -> <0x80d6440>  ] ):3 )...
 197|      for i = 1
 199|       if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null )...
 199|       if  not defined( ~arg this{'links'}[from:-> 1][i:1]:Null ):0
@@ -828,26 +848,6 @@ end
 209|          if  not isthreadmain(  ):1
 210|          end # if
 055|          end # finish for loop
-</pre>
-
-<h3>Standard output for 05-graphmatrix.p</h3>
-
-<pre>
-** the nodes **
-node 1 data [ 1 2 ]
-node 2 data [ 2 3 ]
-node 3 data [ 3 4 ]
-out edges for node 1
-2
-3
-in edges for node 1
-2
-3
-delete edge 1-2
-out edges for node 1
-3
-in edges for node 1
-3
 
 </pre>
 </html>

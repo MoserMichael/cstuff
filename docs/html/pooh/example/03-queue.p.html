@@ -106,7 +106,22 @@ end
 
 
 </pre>
+</pre>
 
+<h3>Standard output for 03-queue.p</h3>
+
+<pre>
+queue of numbers
+1
+2
+3
+4
+stack of arrays
+1 - 2
+2 - 3
+3 - 4
+5 - 6
+*** eof stack test ***
 <h4>Trace output for 03-queue.p</h4>
 
 <pre>
@@ -117,7 +132,7 @@ end
 007|  return l[1]:[ -> Null, -> Null ]
 012| e := make_queue_node(  ):-> [ -> Null, -> Null ]
 013| return { 'head' : e:-> [ -> Null, -> Null ] , 'tail' : e:-> [ -> Null, -> Null ] , 'ncount' : 0 , 'push' : sub (~data) , 'pop' : sub () , 'count' : sub () }
-005|l = make_queue(  ):{ 'count' : sub , 'head' : -> (0x97268f8)[ -> Null, -> Null ], 'pop' : sub , 'ncount' : -> 0, 'tail' : -> <0x97268f8> , 'push' : sub  }
+005|l = make_queue(  ):{ 'count' : sub , 'head' : -> (0x8f708f8)[ -> Null, -> Null ], 'pop' : sub , 'ncount' : -> 0, 'tail' : -> <0x8f708f8> , 'push' : sub  }
 007|l{'push'}:sub ( ~data 1 )...
 020| ... := make_queue_node( ~data data:1 )...
 006|  l = [ [ Null , data:1] ] 
@@ -327,22 +342,7 @@ end
 027|end # finish loop
 031|print( ~msg '*** eof stack test ***' )...
 
-</pre>
 
-<h3>Standard output for 03-queue.p</h3>
-
-<pre>
-queue of numbers
-1
-2
-3
-4
-stack of arrays
-1 - 2
-2 - 3
-3 - 4
-5 - 6
-*** eof stack test ***
 </pre>
 </html>
 </body>
