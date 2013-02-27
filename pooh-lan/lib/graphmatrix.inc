@@ -10,6 +10,12 @@ sub make_graph_matrix( keepinedge )
     'linksreverse' : [],
     'keepinedge' : defined( ~arg keepinedge ),
 
+    # returns the number of nodes in the graph
+    'numnodes' : 
+      sub()
+	return size( ~arg this . nodes ) - size( ~arg this . deletednodes )
+      end,
+
     # add a new node to the graph; the index of the new node is returned;
     # you can attach data to the node (if data argument is not Null)
     # you can set the node index with optional index parameter
