@@ -1,3 +1,5 @@
+# test stack data structure - stack.inc
+
 include 'stack.inc'
 
 println( ~msg 'stack of numbers' )
