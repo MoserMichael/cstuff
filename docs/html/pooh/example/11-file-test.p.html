@@ -6,7 +6,7 @@
 <h4>Source of programm</h4>
 
 <pre>
-
+# working with files
 
 # read the whole file into a buffer
 
@@ -39,7 +39,7 @@ f.close()
 
 <pre>
 005|... = open( ~filename 'test/11-file-test' )...
-005|f = open( ~filename 'test/11-file-test' ):->(0x8a98f90)
+005|f = open( ~filename 'test/11-file-test' ):-> { 'read' : sub read(, 'seek' : sub seek(, 'close' : sub close(, '' : 145349640, 'finalize' : sub close(, 'write' : sub write(, 'flush' : sub flush( }
 007|... = newline(  )...
 007|buf = newline(  ):'
 '
@@ -52,8 +52,8 @@ f.close()
 012|f{'close'}:sub close((  )...
 012|f{'close'}:sub close((  ):Null
 017|... = open( ~filename 'test/11-file-test-lines' )...
-017|f = open( ~filename 'test/11-file-test-lines' ):->(0x8a98f90)
-019|for ... readlines( ~file f:{ 'read' : sub read(~toread , ~numread), 'seek' : sub seek(~mode , ~offset), 'close' : sub close(), '' : 145330040, 'finalize' : sub close(), 'write' : sub write(~towrite , ~numwrite), 'flush' : sub flush() } )...
+017|f = open( ~filename 'test/11-file-test-lines' ):-> { 'read' : sub read(, 'seek' : sub seek(, 'close' : sub close(, '' : 145349640, 'finalize' : sub close(, 'write' : sub write(, 'flush' : sub flush( }
+019|for ... readlines( ~file f:{ 'read' : sub read(~toread , ~numread), 'seek' : sub seek(~mode , ~offset), 'close' : sub close(), '' : 145349640, 'finalize' : sub close(), 'write' : sub write(~towrite , ~numwrite), 'flush' : sub flush() } )...
 019| for ln = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 020|  println( ~msg ln:'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' )...
 019| end

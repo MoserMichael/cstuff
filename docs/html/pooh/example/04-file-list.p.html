@@ -6,7 +6,7 @@
 <h4>Source of programm</h4>
 
 <pre>
-
+# test listing files in directory.
 println( ~msg '*** list *.c files ***' )
 for f listdir( ~pattern '../cutils/*.c' )
   println ( ~msg 'file name [f]' )
@@ -228,7 +228,7 @@ println( ~msg '*** eof files ***' )
 009|  end # finish for loop
 013|  println( ~msg '*** list *.c and *.h files (2) ***' )...
 014|  ... = listdir( ~pattern [ '../cutils/*.h' , '../cutils/*.c']  )...
-014|  ofile = listdir( ~pattern [ '../cutils/*.h' , '../cutils/*.c']  ):->(0x9fef470)
+014|  ofile = listdir( ~pattern [ '../cutils/*.h' , '../cutils/*.c']  ):-> [ '../cutils/array.h', '../cutils/base.h', '../cutils/bhash.h', '../cutils/dbuf.h', '../cutils/dddlist.h', '../cutils/ddlist.h', '../cutils/dlist.h', '../cutils/dlistunr.h', '../cutils/dring.h', '../cutils/hashfunction.h', '../cutils/heap.h', '../cutils/properties.h', '../cutils/slist.h', '../cutils/sring.h', '../cutils/strtoint.h', '../cutils/tree.h', '../cutils/util.h', '../cutils/array.c', '../cutils/bhash.c', '../cutils/dbuf.c', '../cutils/dddlist.c', '../cutils/ddlist.c', '../cutils/dlist.c', '../cutils/dlistunr.c', '../cutils/dring.c', '../cutils/hashfunction.c', '../cutils/heap.c', '../cutils/properties.c', '../cutils/slist.c', '../cutils/sring.c', '../cutils/tree.c', '../cutils/util.c' ]
 015|  for f = '../cutils/array.h'
 016|   println( ~msg 'file name ' .. f:'../cutils/array.h' .. '' )...
 015|  end

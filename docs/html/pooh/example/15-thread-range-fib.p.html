@@ -67,7 +67,7 @@ stopthread( ~thread th )
 017|  nextval = (a:1 + b:1):2
 019|  threadyield0( ~yieldval nextval:2 )...
 035|   ... = threadyieldvalue( ~thread th:-> sub myrange(~to) )...
-035|   [ running:1 , value:-> 2]  = threadyieldvalue( ~thread th:-> sub myrange(~to) ):->(0x9451930)
+035|   [ running:1 , value:-> 2]  = threadyieldvalue( ~thread th:-> sub myrange(~to) ):-> [ 1, -> 2 ]
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:2 .. '' )...
 041|    ... = resumethread( ~thread th:-> sub myrange(~to) )...
@@ -79,7 +79,7 @@ stopthread( ~thread th )
 012| while (i:2 <= to:-> 10):true
 017|  nextval = (a:1 + b:2):3
 019|  threadyield0( ~yieldval nextval:3 )...
-041|    [ running:1 , value:-> 3]  =threadyield0( ~yieldval nextval:3 ):->(0x9451a68)
+041|    [ running:1 , value:-> 3]  =threadyield0( ~yieldval nextval:3 ):-> [ 1, -> 3 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:3 .. '' )...
@@ -92,7 +92,7 @@ stopthread( ~thread th )
 012| while (i:3 <= to:-> 10):true
 017|  nextval = (a:2 + b:3):5
 019|  threadyield0( ~yieldval nextval:5 )...
-041|    [ running:1 , value:-> 5]  =threadyield0( ~yieldval nextval:5 ):->(0x9451c08)
+041|    [ running:1 , value:-> 5]  =threadyield0( ~yieldval nextval:5 ):-> [ 1, -> 5 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:5 .. '' )...
@@ -105,7 +105,7 @@ stopthread( ~thread th )
 012| while (i:4 <= to:-> 10):true
 017|  nextval = (a:3 + b:5):8
 019|  threadyield0( ~yieldval nextval:8 )...
-041|    [ running:1 , value:-> 8]  =threadyield0( ~yieldval nextval:8 ):->(0x9451d00)
+041|    [ running:1 , value:-> 8]  =threadyield0( ~yieldval nextval:8 ):-> [ 1, -> 8 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:8 .. '' )...
@@ -118,7 +118,7 @@ stopthread( ~thread th )
 012| while (i:5 <= to:-> 10):true
 017|  nextval = (a:5 + b:8):13
 019|  threadyield0( ~yieldval nextval:13 )...
-041|    [ running:1 , value:-> 13]  =threadyield0( ~yieldval nextval:13 ):->(0x9451dc8)
+041|    [ running:1 , value:-> 13]  =threadyield0( ~yieldval nextval:13 ):-> [ 1, -> 13 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:13 .. '' )...
@@ -131,7 +131,7 @@ stopthread( ~thread th )
 012| while (i:6 <= to:-> 10):true
 017|  nextval = (a:8 + b:13):21
 019|  threadyield0( ~yieldval nextval:21 )...
-041|    [ running:1 , value:-> 21]  =threadyield0( ~yieldval nextval:21 ):->(0x9451f38)
+041|    [ running:1 , value:-> 21]  =threadyield0( ~yieldval nextval:21 ):-> [ 1, -> 21 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:21 .. '' )...
@@ -144,7 +144,7 @@ stopthread( ~thread th )
 012| while (i:7 <= to:-> 10):true
 017|  nextval = (a:13 + b:21):34
 019|  threadyield0( ~yieldval nextval:34 )...
-041|    [ running:1 , value:-> 34]  =threadyield0( ~yieldval nextval:34 ):->(0x9452030)
+041|    [ running:1 , value:-> 34]  =threadyield0( ~yieldval nextval:34 ):-> [ 1, -> 34 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:34 .. '' )...
@@ -157,7 +157,7 @@ stopthread( ~thread th )
 012| while (i:8 <= to:-> 10):true
 017|  nextval = (a:21 + b:34):55
 019|  threadyield0( ~yieldval nextval:55 )...
-041|    [ running:1 , value:-> 55]  =threadyield0( ~yieldval nextval:55 ):->(0x9452128)
+041|    [ running:1 , value:-> 55]  =threadyield0( ~yieldval nextval:55 ):-> [ 1, -> 55 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:55 .. '' )...
@@ -170,7 +170,7 @@ stopthread( ~thread th )
 012| while (i:9 <= to:-> 10):true
 017|  nextval = (a:34 + b:55):89
 019|  threadyield0( ~yieldval nextval:89 )...
-041|    [ running:1 , value:-> 89]  =threadyield0( ~yieldval nextval:89 ):->(0x94521f0)
+041|    [ running:1 , value:-> 89]  =threadyield0( ~yieldval nextval:89 ):-> [ 1, -> 89 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:89 .. '' )...
@@ -183,7 +183,7 @@ stopthread( ~thread th )
 012| while (i:10 <= to:-> 10):true
 017|  nextval = (a:55 + b:89):144
 019|  threadyield0( ~yieldval nextval:144 )...
-041|    [ running:1 , value:-> 144]  =threadyield0( ~yieldval nextval:144 ):->(0x9452360)
+041|    [ running:1 , value:-> 144]  =threadyield0( ~yieldval nextval:144 ):-> [ 1, -> 144 ]
 042|   end
 037|   while (running:1 != 0):true
 039|    println( ~msg 'thread returned ' .. value:144 .. '' )...

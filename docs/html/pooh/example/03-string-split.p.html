@@ -6,7 +6,7 @@
 <h4>Source of programm</h4>
 
 <pre>
-
+# test split library function - string split into array.
 
 text = 'the quick brown fox jumped over the lazy dog'
 
@@ -78,7 +78,7 @@ end
 006| end # finish for loop
 010| text = 'the quick brown fox jumped over the lazy dog'
 011| ... = split( ~string text:'the quick brown fox jumped over the lazy dog' )...
-011| tokens = split( ~string text:'the quick brown fox jumped over the lazy dog' ):->(0x9d24370)
+011| tokens = split( ~string text:'the quick brown fox jumped over the lazy dog' ):-> [ 'the', 'quick', 'brown', 'fox', 'jumped', 'over', 'the', 'lazy', 'dog' ]
 013| println( ~msg '*** split returning an array of tokens ***' )...
 015| for f = 'the'
 016|  println( ~msg f:'the' )...
