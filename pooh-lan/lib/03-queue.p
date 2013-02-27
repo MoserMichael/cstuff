@@ -1,3 +1,4 @@
+# test queue data structure - queue.inc
 include 'queue.inc'
 
 println( ~msg 'queue of numbers' )

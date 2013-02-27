@@ -1,3 +1,4 @@
+# test linked list data structure - slist.inc
 include 'slist.inc'
 
 r := make_slist()

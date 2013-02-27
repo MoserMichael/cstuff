@@ -1,3 +1,4 @@
+# test adjacency matrix data structure - graphmatrix.inc
 include 'graphmatrix.inc'
 
 r := make_graph_matrix( ~keepinedge 1 )

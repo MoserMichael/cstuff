@@ -1,3 +1,4 @@
+# test matrix library - matrix.inc
 include 'matrix.inc'
 
 a = [

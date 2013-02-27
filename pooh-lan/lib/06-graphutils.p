@@ -1,3 +1,4 @@
+# test graph traversal class - graphutils.inc
 include 'graphutils.inc'
 include 'graphlist.inc'
 
