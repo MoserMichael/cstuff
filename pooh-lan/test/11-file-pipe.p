@@ -1,3 +1,4 @@
+# run process and script send data to it via stdin and read stdout
 
 f = openpipe( ~cmdline 'tr a A' )
 

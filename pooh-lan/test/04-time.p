@@ -1,4 +1,4 @@
-
+# get current date / time; functions: localtime, gmtime, currenttime
 
 daysofweek = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat' ]
 

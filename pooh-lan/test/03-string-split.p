@@ -1,4 +1,4 @@
-
+# test split library function - string split into array.
 
 text = 'the quick brown fox jumped over the lazy dog'
 

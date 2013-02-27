@@ -1,4 +1,4 @@
-
+# function fills array with number range, array is the return value.
 
 
 nums = myrange( ~from 1 ~to 10)

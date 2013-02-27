@@ -1,3 +1,5 @@
+# with references, the := operator creates alias, left hand side refers to value returned by right hand side expression.
+
 ff := 42 
 gg := ff
 println( ~msg ff )

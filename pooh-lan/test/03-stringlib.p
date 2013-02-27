@@ -1,4 +1,4 @@
-# tests string library functions mid left right
+# tests string library functions 
 
 p = 'the quick brown fox jumped'
 q = 'fox'

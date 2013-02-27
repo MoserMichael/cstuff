@@ -1,4 +1,4 @@
-
+# load an extension library written in C and call exported function
 
 loadextension 'libextlibexample'
 

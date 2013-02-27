@@ -1,4 +1,4 @@
-
+# test listing files in directory.
 println( ~msg '*** list *.c files ***' )
 for f listdir( ~pattern '../cutils/*.c' )
   println ( ~msg 'file name [f]' )

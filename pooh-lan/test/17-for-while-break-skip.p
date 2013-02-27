@@ -1,4 +1,4 @@
-
+# for loop ; test keywords: break - finishing the iteration and skip - continue to next iteration. 
 
 println( ~msg 'while loop with skip and break' )
 

@@ -1,4 +1,4 @@
-# Higher order functions fold/filter/map - use standard library implementation.
+# Higher order functions fold/filter/map - use built in library implementation.
 
 
 sub recsum( num )
