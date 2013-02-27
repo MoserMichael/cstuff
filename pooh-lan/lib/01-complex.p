@@ -1,5 +1,5 @@
 # test complex number library - complex.inc
-include 'lib/complex.inc'
+include 'complex.inc'
 
 
 n = make_rect_complex( ~re 0 ~im 1 )
