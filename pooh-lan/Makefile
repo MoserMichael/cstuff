@@ -53,6 +53,12 @@ pooh_INSTALL:
 	$(call install-a-file,lib/matrix.inc,$(PREFIX)/lib/pooh)
 	$(call install-a-file,lib/complex.inc,$(PREFIX)/lib/pooh)
 	$(call install-a-file,lib/heap.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/queue.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/stack.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/slist.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/graphlist.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/graphmatrix.inc,$(PREFIX)/lib/pooh)
+	$(call install-a-file,lib/graphutils.inc,$(PREFIX)/lib/pooh)
 
 
 
