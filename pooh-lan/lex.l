@@ -286,7 +286,16 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 			    MY_YY_RETURN(TK_INTEGER_CONSTANT); 
 		    }
 
+<GRAMMAR>"'"	    {
+			    if (!do_parse_string_no_expression( lex_context,  '\'' ))
+			    {
+				MY_YY_RETURN(TK_STRING_CONSTANT);
+			    }
+	 		    MY_YY_RETURN(TK_ERROR);
+		    }
+	
 <GRAMMAR>"["	    {
+
 			    STRING_PART *part;
 			    DBUF buff;
 			 

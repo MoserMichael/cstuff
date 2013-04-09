@@ -1221,7 +1221,10 @@ void BINDING_DATA_init( BINDING_DATA *binding, AST_VAR_TYPE value_type)
     case S_VAR_LIST:
       VALARRAY_init( &binding->b.value.array_value ); 
       break;
-    case S_VAR_NULL:     
+    case S_VAR_GRAMMAR:
+      binding->b.value.grammar_value = 0;
+      break;
+    case S_VAR_NULL:
       break;
     default: 
       assert(0);
@@ -1552,6 +1555,9 @@ void BINDING_DATA_copy( BINDING_DATA *to, BINDING_DATA *from, CP_KIND copy_by_va
     case S_VAR_LIST:
       VALARRAY_init( &to->b.value.array_value );
       VALARRAY_copy( &to->b.value.array_value, &from->b.value.array_value, 1 );
+      break;
+    case S_VAR_GRAMMAR:
+      to->b.value.grammar_value = from->b.value.grammar_value;
       break;
     case S_VAR_NULL:
       break;
@@ -2151,6 +2157,7 @@ int EVAL_THREAD_init(EVAL_THREAD *thread, EVAL_THREAD *parent,  EVAL_CONTEXT *co
    thread->current_function_frame_start = 0;
    thread->instr = 0;
    thread->eval_impl = 0;
+   thread->parse_impl = 0; 
    return 0;
 }
 
@@ -2486,6 +2493,10 @@ BINDING_DATA * EVAL_THREAD_proceed_func_call( EVAL_THREAD *thread, size_t frame_
   return EVAL_THREAD_stack_offset( thread, frame_start );
 }
 
+int GRAMMAR_run_implx( AST_BASE *grammar, PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo  )
+{
+  return g_context->parse_cb(  grammar, data_cb, data_cb_ctx, pinfo, g_context->thread_ctx );
+}  
 
 
 BINDING_DATA *EVAL_THREAD_parameter( EVAL_THREAD *thread, size_t frame_start, size_t param_num, AST_VAR_TYPE type )
@@ -2787,7 +2798,6 @@ int EVAL_CONTEXT_init( EVAL_CONTEXT *context, size_t num_globals )
   STATIC_NULL = (BINDING_DATA *) context->bindings_global.buffer;
   context->bindings_global.elmcount = num_globals;
   context->trace_on = 0; 
-  context->event_loop = 0;
 
   BINDING_DATA_set_tmp_string( &finalize_key_name, "finalizer", -1 );
 

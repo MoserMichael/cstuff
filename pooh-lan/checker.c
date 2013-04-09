@@ -533,6 +533,9 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
       break;
 
     case S_EXPR_CONSTANT:
+      if (expr->value_type == S_VAR_GRAMMAR) {
+        CHECKER_pass( ctx, expr->val.const_value.grammar_value );
+      }
       break;
 
     case S_EXPR_FUNCALL: {
@@ -1055,6 +1058,7 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
   assert(base );
 
   switch( base->type ) {
+
   case S_EXPRESSION:
     CHECKER_expr( ctx, (AST_EXPRESSION *) base );
     break;
@@ -1216,6 +1220,18 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
   
   case S_BREAK:
     break;
+
+  case S_PP_RULE_REF:
+  case S_PP_ALTERNATIVE:
+  case S_PP_RULE_CONSTANT:
+  case S_PP_CHAR_CLASS:
+  case S_PP_RULE: {
+    AST_PP_BASE *scl = (AST_PP_BASE *) base;
+    if (scl->rule_script) {
+        CHECKER_pass( ctx, scl->rule_script );
+    }        
+    }
+    break;
  
   case S_NULL:
     break;
@@ -1231,7 +1247,7 @@ int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE *program)
   PARSECONTEXT *pctx = _OFFSETOF( ctx, PARSECONTEXT, chkctx );
   AST_FUNC_DECL *fdecl = (AST_FUNC_DECL *) program;
 
-  assert(program->type == S_FUN_DECL); 
+  if (program->type == S_FUN_DECL) { //temporary ?
   
   ctx->func_decls = 0;
   ctx->is_root_func = 1;
@@ -1239,6 +1255,7 @@ int CHECKER_run( CHECKERCTX *ctx, struct tagAST_BASE *program)
   // declare built in global variables.
   make_binding2( pctx, fdecl, S_VAR_LIST, 0, "ARGV", 1, REF_SCOPE_GLOBAL  );
   make_binding2( pctx, fdecl, S_VAR_HASH, 0, "ENV", 1, REF_SCOPE_GLOBAL  );
+  }
 
   ctx->pass = 0;
   CHECKER_pass( pctx, &fdecl->base );

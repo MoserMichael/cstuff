@@ -59,24 +59,50 @@ int run(EVAL_OPTIONS *opts)
     dump_ast( opts->file_name, ctx->my_ast_root, 1 );
   }
 
+  if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
+    fprintf(stderr,"Type checking failed\n");
+    goto err;
+  }
+ 
+  // dump ast after checker
+  if (opts->is_verbose) {
+    dump_ast( opts->file_name, ctx->my_ast_root, 2 );
+  }
 
+ 
   if (opts->mode == EVAL_MODE_SCRIPT) {
  
-    if ( CHECKER_run( &ctx->chkctx, ctx->my_ast_root ) ) {
-	fprintf(stderr,"Type checking failed\n");
-	goto err;
-    }
-  
-    // dump ast after checker
-    if (opts->is_verbose) {
-	dump_ast( opts->file_name, ctx->my_ast_root, 2 );
-    }
-
-    if (eval( ctx, opts )) {
+     if (eval( ctx, opts )) {
 	goto err;
     }
   } else {
-    GRAMMAR_checker( &ctx->grctx, ctx->my_ast_root );
+    FILE *fp;
+    PEG_PARSER parser; 
+    PP_BASE_INFO rinfo;
+    EVAL_CTX ectx;
+
+    if ( !EVAL_init( &ectx, ctx, opts->is_trace_on  )) {
+      goto err;
+    }      
+   
+    fp = fopen( opts->input_file, "r" );
+    if (!fp) {
+      printf("Can't open file for parsing %s", opts->input_file );
+      goto err;
+    }
+
+    if ( PEG_PARSER_init( &parser, ctx->my_ast_root , 4096, PARSER_DATA_SRC_file, fp, &ectx ) ) {
+      printf( "Failed to initialize parser\n" );
+      goto err;
+    }
+
+    if ( PEG_PARSER_run( &parser, &rinfo ) ) {
+      printf("Parsing failed\n");
+    } else {
+      printf("Parsing ok");
+    }
+
+    EVAL_free( &ectx );
   }
 ok:
   PARSER_free(ctx);

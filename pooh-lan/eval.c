@@ -23,6 +23,14 @@ int EVAL_thread_resume_do( EVAL_THREAD *thread, BINDING_DATA *resume_msg, BINDIN
 
 int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL *fcall, AST_BASE *func_def );
 
+int EVAL_thread_yield( BINDING_DATA *yield_value, BINDING_DATA **resume_msg, void *eval_ctx );
+int EVAL_thread_yield( BINDING_DATA *yield_value, BINDING_DATA **resume_msg, void *eval_ctx );
+int EVAL_thread_exit( void *eval_ctx );
+int EVAL_thread_kill( BINDING_DATA *function, void *eval_ctx );
+void EVAL_proceed_fun_call( size_t frame_start, AST_BASE *fdecl, VALFUNCTION *valfunc, void *oout );
+int EVAL_parse_func( AST_BASE *grammar,  PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo, void *eval_ctx );
+int EVAL_thread_resume( BINDING_DATA *function, BINDING_DATA *resume_msg, BINDING_DATA **yield_value, void *eval_ctx );
+ 
 // ========================================================================================
 
 
@@ -104,7 +112,7 @@ void EVAL_TRACE_ENTRY_free( EVAL_TRACE_ENTRY *entry )
 
 // ========================================================================================
 
-int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx)
+int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on )
 {
   size_t num_globals = ((AST_FUNC_DECL *) ctx->my_ast_root)->last_stack_offset + 1;
   if (EVAL_CONTEXT_init( &out->context, num_globals )) {
@@ -126,6 +134,21 @@ int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx)
   if (STACKS_init_on_demand( &out->stacks, -1, 15 )) {
     return -1;
   }
+
+  out->context.show_source_line =  SHOW_SOURCE_LINE_impl;
+  out->context.show_source_line_ctx = ctx;
+
+  out->context.thread_yield_cb  = EVAL_thread_yield; 
+  out->context.thread_resume_cb = EVAL_thread_resume; 
+  out->context.thread_exit_cb   = EVAL_thread_exit;
+  out->context.thread_kill_cb   = EVAL_thread_kill;
+  out->context.invoke_function_cb  =  EVAL_proceed_fun_call;
+
+  out->context.parse_cb = EVAL_parse_func;
+  out->context.thread_ctx       = out;
+
+  out->context.trace_on =  is_trace_on;
+
   return 0;
 }
 
@@ -1010,6 +1033,9 @@ void EVAL_do_expr( EVAL_CTX *out, AST_EXPRESSION *expr, EVAL_REF_KIND get_value_
 	    VALSTRING_set( &ret->b.value.string_value, str, nstr );
 	    }
 	    break;
+	case S_VAR_GRAMMAR:
+	    ret->b.value.grammar_value = expr->val.const_value.grammar_value; 
+	    break;
 	case S_VAR_NULL:
 	    break;
 	default:
@@ -1493,6 +1519,30 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
       BINDING_DATA_prints( &tracer->text, EVAL_THREAD_get_stack_top( cthread ), 0 ); 
     }
     return has_return_value;
+}
+
+BINDING_DATA * EVAL_function(  EVAL_CTX *out, AST_FUNC_CALL *scl )
+{
+    int show;
+    EVAL_TRACE_ENTRY *trace;
+    BINDING_DATA *data;
+    EVAL_THREAD *cthread;
+
+    cthread = out->context.current_thread;
+    if (EVAL_trace_on(out)) {
+      trace = EVAL_CTX_new_trace( out, &scl->base);
+    }
+
+    show = EVAL_do_function( out, scl, 0, 0 );
+
+    //EVAL_THREAD_pop_frame( cthread );
+
+    data = EVAL_THREAD_pop_stack( cthread );
+    
+    if (trace) {
+       EVAL_CTX_free_trace( out,  show ? SHOW : DISCARD ); 	  
+    }
+    return data;
 }
 
 void EVAL_do(  EVAL_CTX *out )
@@ -2028,22 +2078,11 @@ void EVAL_do(  EVAL_CTX *out )
   
   case S_FUN_CALL: {
     AST_FUNC_CALL *scl = (AST_FUNC_CALL *) base;
-    int show;
-
-    if (EVAL_trace_on(out)) {
-      trace = EVAL_CTX_new_trace( out, &scl->base);
-    }
-
-    show = EVAL_do_function( out, scl, 0, 0 );
-
-    //EVAL_THREAD_pop_frame( cthread );
-
-    data = EVAL_THREAD_pop_stack( cthread );
+    BINDING_DATA *data = EVAL_function( out, scl );
     BINDING_DATA_free( data );   
-    
-    if (trace) {
-       EVAL_CTX_free_trace( out,  show ? SHOW : DISCARD ); 	  
-    }
+
+
+
   }
     break;
 
@@ -2249,6 +2288,29 @@ int EVAL_thread_resume_do( EVAL_THREAD *thread, BINDING_DATA *resume_msg, BINDIN
   return 1;
 }
 
+int EVAL_parse_func( AST_BASE *grammar,  PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo, void *eval_ctx )
+{
+  EVAL_CTX *ctx = (EVAL_CTX *) eval_ctx;
+  EVAL_CONTEXT *rtctx = &ctx->context; 
+  EVAL_THREAD *cthread = rtctx->current_thread;
+  PEG_PARSER parser;
+  int rt;
+
+  if (cthread->parse_impl != 0) {
+     EVAL_error( ctx , 0,  "parser already running in current thread" );
+  }
+
+  PEG_PARSER_init( &parser, grammar, 4096, data_cb, data_cb_ctx, ctx );
+
+  rt = PEG_PARSER_run( &parser, pinfo );
+
+  cthread->parse_impl = 0;  
+
+  return rt;
+
+}
+
+
 int EVAL_thread_resume( BINDING_DATA *function, BINDING_DATA *resume_msg, BINDING_DATA **yield_value, void *eval_ctx )
 {
   VALFUNCTION *func = BINDING_DATA_get_fun( function );
@@ -2314,19 +2376,7 @@ int eval( PARSECONTEXT *ctx, EVAL_OPTIONS *opts  )
 {
   EVAL_CTX ectx;
 
-  if ( !EVAL_init( &ectx, ctx )) {
-
-    ectx.context.show_source_line =  SHOW_SOURCE_LINE_impl;
-    ectx.context.show_source_line_ctx = ctx;
-
-    ectx.context.thread_yield_cb  = EVAL_thread_yield; 
-    ectx.context.thread_resume_cb = EVAL_thread_resume; 
-    ectx.context.thread_exit_cb   = EVAL_thread_exit;
-    ectx.context.thread_kill_cb   = EVAL_thread_kill;
-    ectx.context.invoke_function_cb  =  EVAL_proceed_fun_call;
-    ectx.context.thread_ctx       = &ectx;
-
-    ectx.context.trace_on =  opts->is_trace_on;
+  if ( !EVAL_init( &ectx, ctx, opts->is_trace_on  )) {
 
     if (EVAL_run( &ectx, ctx->my_ast_root, opts->argv, opts->argc )) {
       return -1;

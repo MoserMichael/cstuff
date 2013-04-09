@@ -5,6 +5,7 @@
 #include "yystype.h"
 #include "pars.h"
 #include <butils/strtk.h>
+#include <ctype.h>
 
 
 /* ****************************************************************************** 
@@ -584,6 +585,56 @@ void print_string( LEXCONTEXT *pc )
 }
 #endif
 
+int do_parse_string_no_expression( LEXCONTEXT *pc, char start_char )
+{
+  int c;
+#ifdef IS_REENTRANT
+  yyscan_t yyscanner = pc->yyscanner;
+  struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
+#endif
+  DBUF eof_expression;
+  char *end_of_expression;
+  YYLTYPE strdefloc = yyloc;
+  STRING_PART *part;
+
+  part = STRING_PART_init( 0, &strdefloc );
+ 
+  DBUF_init( &eof_expression, 0 );
+  DBUF_add( &eof_expression, &start_char, 1 );
+ 
+  while ( (c =  MY_YY_INPUT) != -1) {
+    if (c == start_char) 
+      DBUF_add( &eof_expression, &start_char, 1 );
+    else { 
+      unput(c);
+      break;
+    }
+  }
+  DBUF_add_null( &eof_expression );
+  end_of_expression = (char *) eof_expression.buf;
+  
+  while ( (c =  MY_YY_INPUT) != -1) {
+    
+    if (dbuf_ends_with( &part->part_data, end_of_expression ) ) {
+
+       part->part_data.buf_used  -= eof_expression.buf_used;
+       part->loc.last_line = yylineno;
+       part->loc.last_column = yycolumn;
+       ARRAY_push_back( &pc->string_parts, &part, sizeof(void *) );
+
+       DBUF_add_null( &part->part_data );
+       DBUF_free( &eof_expression );
+
+       return 0;
+    }
+    DBUF_add(  &part->part_data, &c, sizeof(char) );
+  }
+  STRING_PART_free( part );
+  do_yyerror( &strdefloc, (PARSECONTEXT *) pc, "Wrong string, starting at");
+  return 1;
+}
+
+
 int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char )
 {
   DBUF header;
@@ -691,7 +742,6 @@ int parse_expression_only( LEXCONTEXT *pc, DBUF *parent )
   STRING_PART *part; 
   int c;
   YYLTYPE start;
-  char *eof;
   int countb = 1;
 #ifdef IS_REENTRANT
   yyscan_t yyscanner = pc->yyscanner;
@@ -941,7 +991,4 @@ int parse_string_oneline( LEXCONTEXT *pc )
   return TK_ERROR;
 }
 #endif
-
-
-
 

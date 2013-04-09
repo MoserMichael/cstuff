@@ -59,6 +59,7 @@ struct tagAST_BASE * PARSECONTEXT_find_function_def( PARSECONTEXT *ctx, const ch
 int parse_string( LEXCONTEXT *pc , char start_char );
 int parse_string_oneline( LEXCONTEXT *pc );
 int parse_expression_only( LEXCONTEXT *pc, DBUF *parent );
+int do_parse_string_no_expression( LEXCONTEXT *pc, char start_char );
 
 
 #endif

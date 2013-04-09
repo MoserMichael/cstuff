@@ -379,6 +379,8 @@ typedef struct tagBINDING_DATA_VALUE {
 
 	    VALFUNCTION func_value;
 
+	    AST_BASE    *grammar_value;
+
 	} value;
     
         //void *backlink; //container;
@@ -656,6 +658,8 @@ typedef struct tagEVAL_THREAD {
 
   void  *eval_impl;		    // evaluator's implementation data (opaque)
 
+  void  *parse_impl;		    // the current parser.
+
 } EVAL_THREAD;
 
 // create a new thread.
@@ -812,7 +816,12 @@ M_INLINE size_t XCALL_nparams( XCALL_DATA *xcall)
 typedef int (*THREAD_YIELD_CB)     ( BINDING_DATA *yield_value, BINDING_DATA **resume_msg, void *eval_ctx );
 typedef int (*THREAD_RESUME_CB)    ( BINDING_DATA *function, BINDING_DATA *resume_msg, BINDING_DATA **yield_value, void *eval_ctx );
 typedef int (*THREAD_EXIT_CB)      ( void *eval_ctx );
-typedef int (*THREAD_KILL_CB)	    ( BINDING_DATA *function, void *eval_ctx );
+typedef int (*THREAD_KILL_CB)	   ( BINDING_DATA *function, void *eval_ctx );
+
+
+/** callback function set by evaluator - parsing support ***/
+
+typedef int (*PARSE_CB)		   ( AST_BASE *grammar, PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo, void *eval_ctx   );
 
 /** callback function set by evaluator - invocation of interpreter function ***/
 
@@ -840,9 +849,10 @@ typedef struct tagEVAL_CONTEXT {
   INVOKE_FUNCTION_CB invoke_function_cb; // callback: call interpreter to run a function of the script.
   void *thread_ctx;
 
+  PARSE_CB parse_cb;		      // callback: parsing engine implementation
+
   BINDING_DATA *env,*argv;	      // global values of environment and cmdline arguments, used to always mark these values, even if they are not used right now.
   
-  struct tagCTHREAD *event_loop;      // event loop for socket handling. (cooperative thread);
 
 } EVAL_CONTEXT;
 

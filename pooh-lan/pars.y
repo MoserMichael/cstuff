@@ -606,6 +606,7 @@ includeStmt : TK_INCLUDE TK_STRING_CONSTANT
 			sval, 
 			spath != 0 ? "and then in each directory that is part of the search path: " : 0,
 			spath != 0 ? spath : 0 );
+	          LEXER_clean_string_parts( &parse_context->lexctx );
 		  return -1;
 		}
 	     
@@ -800,6 +801,14 @@ expr : logicalExp
      | hashConstructor
      | listConstructor
      | anonymousFunction
+     | parsingGrammar 
+	{
+	  AST_EXPRESSION *scl;
+
+	  scl = AST_EXPRESSION_init( S_EXPR_CONSTANT, S_VAR_GRAMMAR, YYLOCPTR ); 
+	  scl->val.const_value.grammar_value = $<ast>1;
+	  $<ast>$ = &scl->base;
+	}
      ;   
 
 anonymousFunctionPrototype : TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
@@ -1387,8 +1396,9 @@ ruleList : ruleList rule
 rule   : TK_RULE_NAME ruleAssignment 	
 	{
 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
-		
+
 	    grctx->current_rule = AST_PP_RULE_init( $<string_value>1, (S_PP_RULE_TYPE) $<long_value>2, YYLOCPTR );
+printf("rule=%s %p\n", $<string_value>1, grctx->current_rule);
 	  
 	    GRAMMAR_add_rule( grctx, $<string_value>1 , grctx->current_rule );
 
@@ -1399,21 +1409,28 @@ rule   : TK_RULE_NAME ruleAssignment
 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
 	    
 	    PARSE_ALT_eof_current_alt( grctx->parse_alt );
-	}	    
-	    scriptOpt 
-	{
-	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
-
-	    grctx->current_rule->rule_script = $<string_value>2; 
-            $<ast>$ = &grctx->current_rule->base.base;
-
-	}
+	    $<ast>$ = grctx->current_rule;
+printf("eof rule %p\n", grctx->current_rule);
+	    
+	}	
        ;
 
 scriptOpt : TK_CODE_SECTION
-	    |
+	{
+            // which one is the latest element ?
+	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+ 	    AST_PP_BASE *cur = grctx->parse_alt->current_base;
+	    AST_BASE *base;
+	    const char *current_file;
+
+	    current_file = LEXER_get_current_file_name( &parse_context->lexctx );
+	    base = compile_string( $<string_value>1, TK_START_STATEMENT, current_file, &yyloc, 1  ); 
+	    if (base) {
+	      cur->rule_script = make_function_env(  parse_context, base, &yyloc, 0 );
+	    }	      
+	}	    |
 	    ;	
-       
+
 ruleAssignment : TK_ASSIGN	
 	{
 	    $<long_value>$ = S_PP_RULE_GRAMMAR; 
@@ -1461,10 +1478,20 @@ ruleElement : TK_PARENTHESES_OPEN
 	}	    
 	    | TK_STRING_CONSTANT
 	{
-	    AST_PP_CONSTANT *scl = AST_PP_CONSTANT_init( $<string_value>1, YYLOCPTR );
+	    AST_PP_CONSTANT *scl;
  	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
+	    STRING_PART **cur;
+	    const char *sval;
+	
+	    cur = (STRING_PART **) ARRAY_at( &parse_context->lexctx.string_parts, 0 );
+	    sval = (const char *) (*cur)->part_data.buf;
 
+
+	    scl = AST_PP_CONSTANT_init( sval, YYLOCPTR );
 	    PARSE_ALT_add_to_current_alt( grctx->parse_alt, &scl->base );
+
+	    LEXER_clean_string_parts( &parse_context->lexctx );
+	    
 
 	}
 	    | TK_RULE_REFERENCE
@@ -1480,19 +1507,24 @@ ruleElement : TK_PARENTHESES_OPEN
 
     ;
 
-optMetaInstruction : metaInstruction
+optMetaInstruction : multiplicityOpt scriptOpt 
+		 ;
+
+
+multiplicityOpt : multiplicityDef
+		     
 		   |
 	{
             // which one is the latest element ?
 	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
- 	    AST_PP_BASE *alt = grctx->parse_alt->current_base;
+ 	    AST_PP_BASE *cur = grctx->parse_alt->current_base;
     
-	    alt->from = 1;
-	    alt->to = 1;
+	    cur->from = 1;
+	    cur->to = 1;
 	}
 		   ;
 
-metaInstruction : TK_INTEGER_CONSTANT
+multiplicityDef : TK_INTEGER_CONSTANT
 	{
  	    GRAMMARCHECKERCTX *grctx = &parse_context->grctx;
 	    AST_PP_BASE *alt = grctx->parse_alt->current_base;

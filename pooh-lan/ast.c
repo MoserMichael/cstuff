@@ -126,6 +126,32 @@ ret:
    return rval;
 }
 
+AST_BASE *make_function_env(  PARSECONTEXT *pc, AST_BASE *base,  YYLTYPE *loc, int make_expr )
+{
+      AST_FUNC_DECL *fdecl;
+      AST_FUNC_CALL *fcall;
+      AST_VECTOR *fparams;
+      AST_EXPRESSION *ret;
+
+      // make a function,
+      fparams = AST_VECTOR_init( loc  );
+      fdecl = AST_FUNC_DECL_init( 0, fparams, 0, loc  );
+      AST_FUNC_DECL_set_body( fdecl, pc, (AST_BASE_LIST *) base );
+
+      // make a function call
+      fparams = AST_VECTOR_init( loc );
+      fcall = AST_FUNC_CALL_init( 0, fparams, loc );
+      fcall->func_decl = (AST_BASE *) fdecl;
+
+      if (!make_expr)
+	return &fcall->base;
+
+      ret = AST_EXPRESSION_init( S_FUN_CALL, S_VAR_ANY, loc  ); 
+      ret->val.fcall = fcall;
+
+      return &ret->base;
+} 
+
 static AST_EXPRESSION * AST_compile_string_part( PARSECONTEXT *pc, size_t pos )
 {
   STRING_PART **ptr, *cur;
@@ -152,25 +178,10 @@ static AST_EXPRESSION * AST_compile_string_part( PARSECONTEXT *pc, size_t pos )
       }
     } 
     
-    if (base->type != S_EXPRESSION) {
-      AST_FUNC_DECL *fdecl;
-      AST_FUNC_CALL *fcall;
-      AST_VECTOR *fparams;
-
-      // make a function,
-      fparams = AST_VECTOR_init( &cur->loc  );
-      fdecl = AST_FUNC_DECL_init( 0, fparams, 0, &cur->loc  );
-      AST_FUNC_DECL_set_body( fdecl, pc, (AST_BASE_LIST *) base );
-
-      // make a function call
-      fparams = AST_VECTOR_init( &cur->loc );
-      fcall = AST_FUNC_CALL_init( 0, fparams, &cur->loc );
-      fcall->func_decl = (AST_BASE *) fdecl;
-
+    if (base->type != S_EXPRESSION) {    
       // make a function call expression
-      ret = AST_EXPRESSION_init( S_FUN_CALL, S_VAR_ANY, &cur->loc  ); 
-      ret->val.fcall = fcall;
-    
+      ret = (AST_EXPRESSION *) make_function_env( pc, base, &cur->loc, 1 );
+          
     } else {
       ret = (AST_EXPRESSION *) base;
     }
@@ -952,7 +963,7 @@ void PARSE_CHAR_CLASS_init( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_cla
 }
 
 
-void PARSE_CHAR_CLASS_add_character( PARSE_CHAR_CLASS *state, uint32_t value  )
+void PARSE_CHAR_CLASS_add_character( PARSE_CHAR_CLASS *state, PP_CHAR value  )
 {
     switch( state->state ) {
 	case CPST_INIT:

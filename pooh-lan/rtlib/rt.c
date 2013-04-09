@@ -2310,12 +2310,17 @@ static void x_file_flush( XCALL_DATA *xcall )
     fflush( imp->fp );
 }
 
+static void x_file_parse( XCALL_DATA *xcall );
+
 AST_XFUNC_DECL file_io_xlib[] = {
 
     DEFINE_XFUNC0( "flush", x_file_flush,	S_VAR_INT ),
     DEFINE_XFUNC2( "seek",  x_file_seek,	S_VAR_INT,	"mode",   S_VAR_INT,	"offset", S_VAR_INT ),
     DEFINE_XFUNC2( "read",  x_file_read,	S_VAR_INT,	"toread", S_VAR_STRING|S_VAR_LIST|S_VAR_PARAM_BYREF ,  "numread", S_VAR_INT ),
     DEFINE_XFUNC2( "write", x_file_write,	S_VAR_INT,	"towrite", S_VAR_STRING|S_VAR_LIST, "numwrite", S_VAR_INT | S_VAR_PARAM_OPTIONAL ),
+    DEFINE_XFUNC1( "parse", x_file_parse,	S_VAR_HASH,	"grammar", S_VAR_GRAMMAR ),
+
+    
     DEFINE_XFUNC0( "close", x_file_close,	S_VAR_INT ),
 };
 
@@ -2392,7 +2397,6 @@ static void x_file_open( XCALL_DATA *xcall )
   add_member_func( obj, "write",    &file_io_xlib[3].base );
   add_member_func( obj, "close",    &file_io_xlib[4].base );
   add_member_func( obj, "finalize", &file_io_xlib[4].base );
-
   imp->fp = fp;
 
   add_imp( obj, imp );
@@ -2891,6 +2895,142 @@ static void x_listdir( XCALL_DATA *xcall )
   wordfree( &p );
 }
 
+/* parsing */
+
+// fill the circular lookahead buffer with data; do some from FILE source.
+int PARSER_DATA_SRC_file (struct tagCIRCBUF *buf, size_t *read, void *ctx )
+{
+   FILE *fl = (FILE *) ctx;
+   size_t rt, sz, nread = 0;
+   int wrap_buffer;
+
+
+   wrap_buffer = buf->read_pos < buf->write_pos;
+   sz = buf->maxcount - buf->write_pos; 
+   rt = fread( buf->data + buf->write_pos, sz, 1, fl );
+   if (rt > 0) {
+      nread += rt;
+      buf->write_pos += rt;
+      if (wrap_buffer && rt == sz && buf->read_pos > 0) {
+          rt = fread( buf->data, sz, 1, fl );
+	  if (rt > 0) {
+	    nread += rt;
+	    buf->write_pos = rt;
+	  }
+      }
+   }
+
+   *read = nread;
+   return nread != 0;
+}
+
+static void make_parse_rvalue(  XCALL_DATA *xcall, int rt, PP_BASE_INFO *pinfo )
+{
+  BINDING_DATA *rval, tmp;
+  VALARRAY *arr;
+
+  rval = XCALL_rvalue( xcall ); 
+  BINDING_DATA_init( rval, S_VAR_LIST );
+  arr = &rval->b.value.array_value;
+
+  BINDING_DATA_init( &tmp, S_VAR_INT );
+  tmp.b.value.long_value = rt;
+  VALARRAY_set( arr, 0, &tmp, CP_VALUE );
+
+  VALARRAY_set( arr, 1, pinfo->data, CP_REF );
+
+
+}
+
+int GRAMMAR_run_implx( AST_BASE *grammar, PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo  );
+
+static void x_file_parse( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg, *obj;
+  AST_BASE *grammar;
+  FILE_IMP *imp;
+  PP_BASE_INFO pinfo;
+  int rt;
+
+  arg = XCALL_param( xcall, 0 ); 
+  arg = BINDING_DATA_follow_ref( arg );
+  grammar = arg->b.value.grammar_value;
+
+  obj =  XCALL_this( xcall ); 
+  imp = (FILE_IMP *) get_imp( obj );
+  if (!imp || !imp->fp) {
+    BINDING_DATA_set_int( XCALL_rvalue( xcall ), -1 );  
+    return;
+  }
+
+  rt = GRAMMAR_run_implx(  grammar, PARSER_DATA_SRC_file, imp->fp, &pinfo );
+  make_parse_rvalue( xcall, rt, &pinfo );
+
+}
+
+
+static void x_parse( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg;
+  AST_BASE *grammar;
+  VALSTRING *str;
+  FILE *fp;
+  PP_BASE_INFO pinfo;
+  int rt;
+
+  arg = XCALL_param( xcall, 0 ); 
+  arg = BINDING_DATA_follow_ref( arg );
+  grammar = arg->b.value.grammar_value;
+
+  arg = XCALL_param( xcall, 0 ); 
+  arg = BINDING_DATA_follow_ref( arg );
+
+  str = &arg->b.value.string_value; 
+
+  fp = fmemopen( str->string, str->length, "r" );
+  if (!fp) {
+    BINDING_DATA_set_int( XCALL_rvalue( xcall ), -1 );  
+    return;
+  }
+
+  rt =  GRAMMAR_run_implx(  grammar, PARSER_DATA_SRC_file, fp, &pinfo );
+  make_parse_rvalue( xcall, rt, &pinfo );
+
+}
+
+
+static void x_terminfo( XCALL_DATA *xcall )
+{
+  BINDING_DATA *data;
+  EVAL_THREAD *th = xcall->thread;
+  PEG_PARSER *parse;
+  POOH_INT index;
+  PP_BASE_INFO *pinfo;
+
+  if (!th->parse_impl) {
+     return;
+  }
+  parse = (PEG_PARSER *) th->parse_impl;
+
+  data = XCALL_param( xcall, 0 ); 
+  BINDING_DATA_get_int( data, &index );
+
+  if (parse->current_rhs_clause_len < index || index == 0)  {
+    return;
+  }
+ 
+  pinfo = parse->current_rhs_clause + index - 1;
+
+#if 0
+  BINDING_DATA *obj, *rval;
+
+  obj = BINDING_DATA_MEM_new( S_VAR_HASH );
+  rval = XCALL_rvalue( xcall ); 
+  BINDING_DATA_copy( rval, obj, CP_REF );
+#endif
+}
+
+
 
 /* -------------- the library ------------------------- */
 AST_XFUNC_DECL xlib[] = {
@@ -3024,6 +3164,9 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC1( "canwrite",  x_canwrite,  S_VAR_INT,   "filename",  S_VAR_STRING  ),
   DEFINE_XFUNC1( "canrun",    x_canrun,    S_VAR_INT,   "filename",  S_VAR_STRING  ),
   
+/* functions for parsing */
+  DEFINE_XFUNC2( "parse",     x_parse, S_VAR_HASH,	"rules",     S_VAR_GRAMMAR, "input", S_VAR_STRING | S_VAR_HASH  ), 
+  DEFINE_XFUNC1( "terminfo",  x_terminfo,  S_VAR_HASH,	"num",       S_VAR_INT ), 
 
 
 /* eof */

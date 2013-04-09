@@ -275,13 +275,15 @@ typedef enum {
 
   S_VAR_LIST = 32,
 
-  S_VAR_NULL = 64,
+  S_VAR_GRAMMAR = 64,
 
-  S_VAR_ANY = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST,
+  S_VAR_NULL = 128,
+
+  S_VAR_ANY = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST | S_VAR_GRAMMAR,
   
-  S_VAR_ALL_TYPES = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST | S_VAR_NULL,
- 
-  S_VAR_SCALAR = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING,
+  S_VAR_ALL_TYPES = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_CODE | S_VAR_HASH | S_VAR_LIST | S_VAR_GRAMMAR | S_VAR_NULL,
+
+  S_VAR_SCALAR = S_VAR_INT | S_VAR_DOUBLE | S_VAR_STRING | S_VAR_GRAMMAR,
   
   S_VAR_NUMBER = S_VAR_INT | S_VAR_DOUBLE,
 
@@ -350,6 +352,9 @@ typedef union {
   double double_value;
 		
   char   *string_value;
+
+  AST_BASE *grammar_value;
+
 } Simple_value_type;
 
 typedef enum {
@@ -1065,31 +1070,39 @@ M_INLINE AST_VAR_TYPE AST_EXPRESSION_type( AST_EXPRESSION *expr )
  * **************************************************
  */ 
 
+typedef uint32_t PP_CHAR; 
+
 typedef struct tagAST_PP_BASE {
         AST_BASE base; 
 
 	int from;
 	int to;
+
+        AST_BASE *rule_script;
+	
 } AST_PP_BASE;
 
 M_INLINE void AST_PP_BASE_init( AST_PP_BASE *scl, S_TYPE type , YYLTYPE *location )
 {
     AST_BASE_init( &scl->base, type, location );
     scl->from = scl->to = 1;
+    scl->rule_script = 0;
 }
 
 typedef struct tagAST_PP_ALTERNATIVE {
         AST_PP_BASE base;
 
 	DRING alternatives;
+	size_t max_length_sequence;
 	
-
+ 
 }	AST_PP_ALTERNATIVE;
 
 M_INLINE void AST_PP_ALTERNATIVE_init_mem( AST_PP_ALTERNATIVE *scl, YYLTYPE *location ) 
 {
 	AST_PP_BASE_init( &scl->base, S_PP_ALTERNATIVE, location );
 	DRING_init( &scl->alternatives ); 
+	scl->max_length_sequence = 0; 
 }
 
 
@@ -1105,7 +1118,13 @@ M_INLINE AST_PP_ALTERNATIVE *AST_PP_ALTERNATIVE_init( YYLTYPE *location )
 
 M_INLINE void AST_PP_ALTERNATIVE_add( AST_PP_ALTERNATIVE *alt, AST_BASE_LIST *sequence ) 
 {
+    size_t cnt;
+
     DRING_push_back( &alt->alternatives, &sequence->base.entry);
+
+    cnt = DRING_size( &sequence->statements );
+    if (alt->max_length_sequence < cnt ) 
+	alt->max_length_sequence = cnt;
 }
 
 
@@ -1120,6 +1139,8 @@ typedef enum
 	S_PP_RULE_TYPE;
 
 #define RULE_FLAGS_VISITED 1
+#define RULE_FLAGS_CIRCLE_REPORTED 2
+
 
 typedef struct tagAST_PP_RULE {
 	AST_PP_BASE base;
@@ -1129,7 +1150,6 @@ typedef struct tagAST_PP_RULE {
 
 	AST_PP_ALTERNATIVE rhs;
 	
-	const char *rule_script;
 	int flags;
 }	
 	AST_PP_RULE;
@@ -1146,7 +1166,6 @@ M_INLINE AST_PP_RULE *AST_PP_RULE_init( const char *rule_name, S_PP_RULE_TYPE ty
 	scl->rule_name = strdup( rule_name );
 	scl->rtype = ty;
 	AST_PP_ALTERNATIVE_init_mem( &scl->rhs, location );
-	scl->rule_script = 0;
 	scl->flags = 0;
 	return scl;
 }
@@ -1201,8 +1220,8 @@ M_INLINE AST_PP_CONSTANT * AST_PP_CONSTANT_init( const char *const_string, YYLTY
 /***************************************************/
 
 typedef struct tagAST_PP_RANGE {
-	uint32_t from;
-	uint32_t to;
+	PP_CHAR from;
+	PP_CHAR to;
 } AST_PP_RANGE;
 
 typedef struct tagAST_PP_CHAR_CLASS {
@@ -1240,14 +1259,14 @@ typedef enum
 
 typedef struct tagPARSE_CHAR_CLASS {
 	CPST_STATE state;
-	uint32_t prev_char;
+	PP_CHAR prev_char;
 	AST_PP_CHAR_CLASS  *char_class; 
 
 }	PARSE_CHAR_CLASS;	
 
 
 void PARSE_CHAR_CLASS_init( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_class );
-void PARSE_CHAR_CLASS_add_character( PARSE_CHAR_CLASS *state, uint32_t value  );
+void PARSE_CHAR_CLASS_add_character( PARSE_CHAR_CLASS *state, PP_CHAR value  );
 void PARSE_CHAR_CLASS_add_separator( PARSE_CHAR_CLASS *state );
 void PARSE_CHAR_CLASS_eof( PARSE_CHAR_CLASS *ch );
 
@@ -1258,6 +1277,8 @@ typedef struct tagPARSE_ALT {
   AST_PP_ALTERNATIVE *alt; 
   AST_BASE_LIST *current_sequence;
   AST_PP_BASE *current_base;
+
+ 
 } PARSE_ALT;
 
 
@@ -1278,8 +1299,6 @@ M_INLINE PARSE_ALT * PARSE_ALT_init( AST_PP_ALTERNATIVE *alt  )
     return 0;
   PARSE_ALT_init_mem( ret, alt );
 
-
-  
   return ret;
 }
 
@@ -1308,6 +1327,46 @@ M_INLINE void PARSE_ALT_eof_current_alt( PARSE_ALT *state )
   AST_PP_ALTERNATIVE_add( state->alt, state->current_sequence );	 
   state->current_sequence = 0;
 }
+
+/***************************************************/
+
+struct tagCIRCBUF *buf;
+
+typedef int (*PEG_PARSER_DATA_SRC) (struct tagCIRCBUF *buf, size_t *read, void *ctx );
+
+typedef struct tagPEG_PARSER_POS 
+{
+   size_t line;
+   size_t column;
+   size_t lookahead_offset;
+}  PEG_PARSER_POS;
+
+M_INLINE void PEG_PARSER_POS_init( PEG_PARSER_POS *pos )
+{
+  pos->line = pos->column = pos->lookahead_offset = 0;
+}
+
+M_INLINE void PEG_PARSER_POS_add( PEG_PARSER_POS *pos, PP_CHAR ch )
+{
+  if (ch != '\n' ) 
+    pos->column ++;
+  else {    
+    pos->line ++;
+    pos->column = 0;
+  }
+  pos->lookahead_offset ++;
+}
+
+// info on a parsed clause.
+typedef struct tagPP_BASE_INFO {
+  PEG_PARSER_POS  start_idx;         // start position of match
+  PEG_PARSER_POS end_idx;           // end position of match
+  size_t match_count;               // number of repetitions of the clause
+  union tagBINDING_DATA *data;      // value produced by rule.
+  
+} PP_BASE_INFO;
+
+
 
 #include "parsectx.h"
 

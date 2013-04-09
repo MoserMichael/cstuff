@@ -57,9 +57,10 @@ typedef struct tagEVAL_CTX {
 } EVAL_CTX;
 
 
-int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx);
+int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on  );
 int EVAL_run(  EVAL_CTX *out, AST_BASE *base, char **argv, int argc );
 int EVAL_free( EVAL_CTX *out );
+BINDING_DATA * EVAL_function(  EVAL_CTX *out, AST_FUNC_CALL *scl );
 
 M_INLINE int EVAL_trace_on( EVAL_CTX *ctx )
 {
