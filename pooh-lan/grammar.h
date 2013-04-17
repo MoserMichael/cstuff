@@ -23,11 +23,13 @@ typedef struct tagGRAMMARCHECKERCTX
   ARRAY  current_alt_stack;
   PARSE_CHAR_CLASS char_class_state;
   int is_reporting_circle;
+  AST_BASE_LIST *rules_list;
 }
   GRAMMARCHECKERCTX;
 
 
-int GRAMMAR_init(  GRAMMARCHECKERCTX * ctx,  struct tagPARSECONTEXT *pctx  );
+GRAMMARCHECKERCTX * GRAMMAR_init( struct tagPARSECONTEXT *pctx  );
+void GRAMMAR_free( GRAMMARCHECKERCTX * ctx );
 int GRAMMAR_add_rule( GRAMMARCHECKERCTX *ctx,  const char *rule_name, struct tagAST_PP_RULE *rule );
 int GRAMMAR_checker( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program);
 
@@ -44,10 +46,14 @@ typedef struct tagPEG_PARSER {
   CIRCBUF lookahead;		// lookahead buffer for data.
   PEG_PARSER_POS offset;        // curren position in lookahead buffer (the current character)
   int    undo_nesting;          // is this a nested option? if yes then we must be able to backtrack.
-
+  ARRAY	 error_stack;		// stack of error entries / each clause that fails leaves an entry.
+    
   PEG_PARSER_DATA_SRC data_src; // data source
   void *data_src_ctx;		// context data for data source.
   S_PP_RULE_TYPE rtype;		// currently parsing a rule or a token.
+
+  union tagBINDING_DATA *fail_reason;	// value set by x_failparsing.
+  int	is_fail_parsing;	// is set if semantic action has stopped the parsing (x_failparsing called)
 
   struct tagEVAL_CTX *eval_ctx;		// needed to run associated scripts.
 

@@ -108,4 +108,6 @@ YYLTYPE LEXER_get_location( LEXCONTEXT *ctx );
 
 void  LEXER_set_next_token( LEXCONTEXT *pc, int init_token_value );
 
+void LEXER_set_state( LEXCONTEXT *pc, int set_state );
+
 #endif

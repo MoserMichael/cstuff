@@ -58,16 +58,36 @@ static int hash_compare(HASH_Entry *entry, const void * key, ssize_t key_length)
 }
 
 
-int GRAMMAR_init(  GRAMMARCHECKERCTX * ctx,  struct tagPARSECONTEXT *pctx  )
+GRAMMARCHECKERCTX * GRAMMAR_init( struct tagPARSECONTEXT *pctx  )
 {
+    GRAMMARCHECKERCTX * ctx;
+
+    ctx = (GRAMMARCHECKERCTX *) malloc( sizeof( GRAMMARCHECKERCTX ) );
+    if (!ctx) {
+        return 0;
+    }
+    memset( ctx, 0, sizeof( GRAMMARCHECKERCTX ) ); 
     if (HASH_init( &ctx->rule_defs, 10, 0, hash_compare, 0 )) {
-	return -1;
+	return 0;
     }
     ARRAY_init( &ctx->visited, sizeof( void *) , 0 );
     ARRAY_init( &ctx->current_alt_stack, sizeof( void *) , 0 );
     ctx->ctx = pctx;
-    return 0;
+    ctx->rules_list = 0;
+    pctx->grctx = ctx;
+
+    return ctx;
 }
+
+void GRAMMAR_free( GRAMMARCHECKERCTX * ctx )
+{
+  HASH_deleteall( &ctx->rule_defs, 0, 0, 0 );
+  HASH_free( &ctx->rule_defs );
+  ARRAY_free( &ctx->visited );
+  ARRAY_free( &ctx->current_alt_stack );
+  free( ctx );
+}
+
 
 void print_range_char( int ch )
 {
@@ -214,6 +234,8 @@ void GRAMMAR_check_sequence( GRAMMARCHECKERCTX *ctx, AST_BASE_LIST *lst )
 		  do_yyerror( &rref->base.base.location, ctx->ctx, "The rule %s is not defined", rref->rule_name );
 		}
 
+                rref->rule_ref_resolved = rule;
+
 		if (is_first && rule) {
 
 		    // check for left recursion.
@@ -270,6 +292,7 @@ int GRAMMAR_checker( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program)
    AST_BASE_LIST *slist;
    DRING *cur;
    AST_PP_RULE *rule;
+   int cnt = 0;
 
    slist = (AST_BASE_LIST *) program;
    assert( slist->base.type == S_AST_LIST );
@@ -279,11 +302,38 @@ int GRAMMAR_checker( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program)
 	rule = (AST_PP_RULE *)  _OFFSETOF( cur, AST_BASE, entry );
 	assert( rule->base.base.type ==  S_PP_RULE );
 	GRAMMAR_check_rule( ctx, rule );
+        cnt++;
+   }
+
+   if (cnt == 0) {
+      YYLTYPE loc = DEFINE_NULL_YYLTYPE; 
+      do_yyerror( &loc, ctx->ctx, "The grammar does not define any rules" );
    }
    return 0;
 }
 
 /* ----------------- */
+
+typedef enum {
+  PERR_RULE_FAILED, 
+  PERR_TERM_EXPECTED_HERE,
+  PERR_TERM_NOT_EXPECTED_HERE,
+  PERR_TERM_NOT_ENOUGH_OCCURANCES,
+  PERR_STOPPED_BY_SEMANTIC_ACTION,
+} PEG_PARSER_ERROR;
+
+typedef struct tagPEG_ERROR_ENTRY {
+  PEG_PARSER_ERROR type;
+  PEG_PARSER_POS start_pos;  
+  AST_PP_RULE *rule;
+  AST_PP_BASE *term;
+  int count_expected;
+  int count_actual;
+} PEG_ERROR_ENTRY;
+
+#define ADD_ERROR( gr, ty, trm, sp, ce, ca ) do { PEG_ERROR_ENTRY e; e.type = ty; e.term = trm; e.start_pos = sp; e.count_expected = ce; e.count_actual = ca; ARRAY_push_back( &(gr)->error_stack, &e, sizeof( e ) ); } while( 0 );
+
+#define ERROR_RESET( gr ) do { ARRAY_reset( &(gr)->error_stack ); } while( 0 );
 
 int PEG_PARSER_init( PEG_PARSER *parser, struct tagAST_BASE *program, size_t lookahead_size, PEG_PARSER_DATA_SRC data_source, void *data_src_ctx , EVAL_CTX *eval_ctx )
 {
@@ -291,11 +341,15 @@ int PEG_PARSER_init( PEG_PARSER *parser, struct tagAST_BASE *program, size_t loo
   
   
   slist = (AST_BASE_LIST *) program;
-  parser->root = (AST_PP_BASE *) DRING_get_first( &slist->statements ); // first rule is the top rule to parse.
+  parser->root = (AST_PP_BASE *) _OFFSETOF(  DRING_get_first( &slist->statements ), AST_BASE, entry ) ; // first rule is the top rule to parse.
  
+
   if (CIRCBUF_init( &parser->lookahead, lookahead_size )) {
     return -1;
   }
+
+  ARRAY_init( &parser->error_stack, sizeof( PEG_ERROR_ENTRY), 0 );	
+
   parser->rtype = S_PP_RULE_GRAMMAR; 
   PEG_PARSER_POS_init( &parser->offset );
   parser->data_src = data_source;
@@ -305,6 +359,11 @@ int PEG_PARSER_init( PEG_PARSER *parser, struct tagAST_BASE *program, size_t loo
   
   parser->current_rhs_clause = 0;
   parser->current_rhs_clause_len = 0;
+
+  parser->fail_reason = 0;
+  parser->is_fail_parsing = 0;
+
+ 
 
   return 0;
 }
@@ -340,7 +399,9 @@ int PEG_PARSER_next_char( PEG_PARSER *parser, PP_CHAR *rt )
     PEG_PARSER_POS_add( &parser->offset, ch );
     *rt = (PP_CHAR) ch;
     return 0;
-  }  
+  }
+
+
   
   return  -1;
 
@@ -377,11 +438,9 @@ int PEG_PARSER_run_impl( PEG_PARSER *parser, AST_PP_BASE *current, PP_BASE_INFO 
   PP_CHAR ch;
   int repetition = 0;
   BINDING_DATA *rdata = 0;
+  int rdata_count = 0;
   PP_BASE_INFO cur_pp_info;
   int rt;
-  PP_BASE_INFO *rhs_terms_info = 0;
-  size_t rhs_terms_info_count = (size_t) -1;
-
   cursor_iteration = cursor = parser->offset;
 
 parse_start:
@@ -397,8 +456,6 @@ parse_start:
         goto parse_error;
       }
       	
-      rhs_terms_info  = &cur_pp_info;
-      rhs_terms_info_count = 1;
       goto parse_ok;
       }
       break;
@@ -414,9 +471,10 @@ parse_start:
 
       if (rt) 
         goto parse_error;
+  
+      ADD_ERROR( parser, PERR_RULE_FAILED, current, cursor_iteration, 0, 0 )
+
       
-      rhs_terms_info = &cur_pp_info;
-      rhs_terms_info_count = 1;
       goto parse_ok;
       }
       break;
@@ -429,6 +487,8 @@ parse_start:
       int sequence_ok = 1;
       PEG_PARSER_POS alt_pos;
       S_PP_RULE_TYPE rtype = parser->rtype;
+      PP_BASE_INFO *rhs_terms_info = 0;
+      size_t rhs_terms_info_count = (size_t) -1;
       size_t max_length_sequence = 0;
 
       max_length_sequence = scl->max_length_sequence;
@@ -438,20 +498,59 @@ parse_start:
 
       parser->undo_nesting ++; 
       // the main challenge.
-      DRING_FOREACH(  cur, &scl->alternatives ) {
-	sequence = (AST_BASE_LIST *) cur;
-
+      DRING_FOREACH( cur, &scl->alternatives ) {
+	sequence = (AST_BASE_LIST *) _OFFSETOF(  cur, AST_BASE, entry );
+	
 	sequence_ok = 1;
 
 	alt_pos = parser->offset;
 
 	rhs_terms_info_count = 0;
+	
+	ERROR_RESET( parser );
 
 	DRING_FOREACH( curs, &sequence->statements) {
-	  pbase = (AST_PP_BASE *) curs;
+	  pbase = (AST_PP_BASE *) _OFFSETOF(  curs, AST_BASE, entry );
 
 	  if (rtype == S_PP_RULE_GRAMMAR) {
 	    PEG_PARSER_skip_spaces( parser );
+	  }
+
+	  if (pbase->base.type == S_PP_SCRIPT) {
+	    AST_PP_SCRIPT *scl_scr = (AST_PP_SCRIPT *) pbase;
+	    BINDING_DATA *res;
+	    // prior to invocation - the current clauses and their values have to be made available to the script
+	    // the script can get them by calling some functions.
+	    parser->current_rhs_clause = rhs_terms_info; 
+	    parser->current_rhs_clause_len = rhs_terms_info_count;
+
+	    // run the script attached to the rule.
+	    res = EVAL_function(  parser->eval_ctx, (AST_FUNC_CALL *) scl_scr->rule_script );
+
+	    if (parser->is_fail_parsing) {
+		ADD_ERROR( parser, PERR_STOPPED_BY_SEMANTIC_ACTION, current, cursor_iteration, 0, 0 );
+	    }
+
+	    switch( rdata_count) {
+		case 0: {
+		    rdata = BINDING_DATA_MEM_new( S_VAR_NULL );
+		    BINDING_DATA_copy( rdata, res, CP_REF );
+		    }
+		    break;
+		case 1: {
+		    BINDING_DATA *vect = BINDING_DATA_MEM_new( S_VAR_LIST );
+		    VALARRAY_set( &vect->b.value.array_value, 0, rdata, CP_REF );
+		    rdata = vect;
+		    }
+		    //break;
+		default:
+		    VALARRAY_set( &rdata->b.value.array_value, rdata_count, res, CP_REF );
+		    break;
+	    }		
+	    rdata_count++;
+
+
+ 	    continue;
 	  }
 
 	  INIT_PP_DATA( rinfo + rhs_terms_info_count );
@@ -527,6 +626,7 @@ parse_ok:
   
   if (current->to == 0) { // match none; but we have a match -> fail.
      parser->offset = cursor;
+     ADD_ERROR( parser, PERR_TERM_NOT_EXPECTED_HERE, current, cursor_iteration, 0, 0 )
      return -1;
   }
   
@@ -543,35 +643,24 @@ parse_ok:
 
   if (repetition >= current->from) {
     SET_PP_RET_DATA( rinfo, cursor, parser->offset, repetition, rdata )
-    goto parser_ok_script;
+    return 0;
   }
+
+  assert(0);
   return -1;    
 
 parse_error:
   if ( repetition >= current->from ) {
     SET_PP_RET_DATA( rinfo, cursor, parser->offset, repetition, rdata )
     parser->offset = cursor_iteration;
-    goto parser_ok_script;
+    return 0;
   }
+  if (current->from == current->to && current->from == 1)
+    ADD_ERROR( parser, PERR_TERM_EXPECTED_HERE, current, cursor_iteration, 0, 0 )
+  else
+    ADD_ERROR( parser, PERR_TERM_NOT_ENOUGH_OCCURANCES, current, cursor_iteration, current->from , repetition );
+
   return -1;
-
-parser_ok_script:
-  if (current->rule_script != 0) {
-    // prior to invocation - the current clauses and their values have to be made available to the script
-    // the script can get them by calling some functions.
-    if (rhs_terms_info_count != (size_t) -1)  {
-      parser->current_rhs_clause = rhs_terms_info; 
-      parser->current_rhs_clause_len = rhs_terms_info_count;
-    } else {
-      parser->current_rhs_clause = rinfo;
-      parser->current_rhs_clause_len = 1;
-    }
-
-    // run the script attached to the rule.
-    rdata = EVAL_function(  parser->eval_ctx, (AST_FUNC_CALL *) current->rule_script );
-  } 
-
-  return 0;
 }
 
 int PEG_PARSER_run( PEG_PARSER *parser, PP_BASE_INFO *rinfo)

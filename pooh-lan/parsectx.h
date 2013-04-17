@@ -23,8 +23,10 @@ typedef struct tagPARSECONTEXT {
 	
   LEXCONTEXT lexctx;
   CHECKERCTX chkctx;
-  GRAMMARCHECKERCTX grctx;
 
+  GRAMMARCHECKERCTX *grctx;
+  ARRAY grammar_contexts;
+ 
   /*  *** error status *** */
   int report_errors;
   int my_yy_is_error;

@@ -244,7 +244,7 @@ M_INLINE DRING *DRING_get_prev( DRING *end, DRING *cur )
  */
 M_INLINE size_t DRING_size( DRING *list )
 {
-	size_t sz;
+	size_t sz = 0;
 	DRING * cur;
 	
 	DRING_FOREACH( cur, list ) {

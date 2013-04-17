@@ -59,10 +59,15 @@ int PARSECONTEXT_init(PARSECONTEXT *ctx, INC_PATH *inc_path)
   if ( CHECKER_init( &ctx->chkctx ) ) {
     return -1;
   }
+  ARRAY_init( &ctx->grammar_contexts, sizeof( void *), 0 );
 
+
+#if 0
   if ( GRAMMAR_init( &ctx->grctx, ctx ) ) {
     return -1;
   }
+#endif
+  ctx->grctx = 0;
 
    if (HASH_init( &ctx->map_function_defs, 10, 0, hash_compare, 0 ) ) {
     return -1;

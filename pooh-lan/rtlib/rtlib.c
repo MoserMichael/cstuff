@@ -1949,6 +1949,9 @@ void BINDING_DATA_print( FILE *out, BINDING_DATA *data , int level )
     case S_VAR_LIST:
 	VALARRAY_print( out, &data->b.value.array_value, level + 1  );
 	break;
+    case S_VAR_GRAMMAR:
+        fprintf( out, "Grammar" );
+	break;
     case S_VAR_NULL:
         fprintf( out, "Null" );
         break;

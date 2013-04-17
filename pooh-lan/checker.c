@@ -533,9 +533,11 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
       break;
 
     case S_EXPR_CONSTANT:
+#if 0    
       if (expr->value_type == S_VAR_GRAMMAR) {
         CHECKER_pass( ctx, expr->val.const_value.grammar_value );
       }
+#endif      
       break;
 
     case S_EXPR_FUNCALL: {
@@ -1221,18 +1223,46 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
   case S_BREAK:
     break;
 
-  case S_PP_RULE_REF:
-  case S_PP_ALTERNATIVE:
-  case S_PP_RULE_CONSTANT:
-  case S_PP_CHAR_CLASS:
+  case S_PP_RULE_REF: {
+    AST_PP_RULE_REF *scl = (AST_PP_RULE_REF *) base;
+    assert( scl->rule_ref_resolved != 0 ); 
+    CHECKER_pass( ctx, &scl->rule_ref_resolved->base.base );
+    }
+    break; 
+  case S_PP_ALTERNATIVE:{
+    AST_PP_ALTERNATIVE *scl = (AST_PP_ALTERNATIVE *) base;
+    DRING *cur, *curs;
+    AST_BASE_LIST *sequence;
+    AST_BASE *pbase;
+  
+    DRING_FOREACH(  cur, &scl->alternatives ) {
+	sequence = (AST_BASE_LIST *)  _OFFSETOF( cur, AST_BASE, entry );
+	DRING_FOREACH( curs, &sequence->statements) {
+	  pbase = (AST_BASE *) curs;
+	  CHECKER_pass( ctx, _OFFSETOF( curs, AST_BASE, entry ) );
+	}
+    }	
+    }
+    break;
+  
   case S_PP_RULE: {
-    AST_PP_BASE *scl = (AST_PP_BASE *) base;
+    AST_PP_RULE *scl = (AST_PP_RULE *) base;
+    CHECKER_pass( ctx, &scl->rhs.base.base );
+    }
+    break;
+  
+  case S_PP_SCRIPT: {
+    AST_PP_SCRIPT *scl = (AST_PP_SCRIPT *) base;
     if (scl->rule_script) {
         CHECKER_pass( ctx, scl->rule_script );
     }        
     }
     break;
- 
+  
+  case S_PP_RULE_CONSTANT:
+  case S_PP_CHAR_CLASS:
+    break;
+   
   case S_NULL:
     break;
 

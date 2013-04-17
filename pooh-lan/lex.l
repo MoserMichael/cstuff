@@ -156,6 +156,8 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 
 "="	{ MY_YY_RETURN(TK_ASSIGN);    }
 
+"&"     { MY_YY_RETURN(TK_GRAMMAR_DELIM); }
+
 "return" { MY_YY_RETURN(TK_RETURN); }
 
 "while" { MY_YY_RETURN(TK_WHILE); }
@@ -223,35 +225,6 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 
 
 			
-"#" {
-
-	int c;
-	while ( (c =  MY_YY_INPUT) != EOF )  {
-	
-	    if (c ==  '\n' ) {
-		break;
-	    } 
-	}
-	//fprintf(stderr,"*** comment ***\n");
-    }
-
-
-
-[\n]	{
-            ++ yylineno;
-	    yycolumn = 0;	
-	  //fprintf(stderr,"NEWLINE %d\n", yylineno );
-	}	 
-
-[ \t]+  { yycolumn += yyleng; }	
-
-
-<<EOF>> {
-			if (LEXER_close_file( lex_context )) {
-				yyterminate();
-			}
-	}
-
 
 <GRAMMAR>"("	    { MY_YY_RETURN(TK_PARENTHESES_OPEN); }
 
@@ -321,13 +294,10 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 			    MY_YY_RETURN(TK_RULE_REFERENCE); 
 		    }
 
-<GRAMMAR>[\n]	{
-            ++ yylineno;
-	    yycolumn = 0;	
-	  //fprintf(stderr,"NEWLINE %d\n", yylineno );
-	}	 
-
 <GRAMMAR>[ \t]+  { yycolumn += yyleng; }	
+
+<GRAMMAR>"&"    { MY_YY_RETURN(TK_GRAMMAR_DELIM); }
+
 
 <GRAMMAR>"/"	{ BEGIN(GRAMMARCHARCL); MY_YY_RETURN(TK_OP_NUM_DIV); }
 
@@ -398,12 +368,33 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 			    
 		    }	    
 
-<GRAMMARCHARCL>[ \t]+  { yycolumn += yyleng; }	
+<INITIAL,GRAMMAR>"#" {
+
+	int c;
+	while ( (c =  MY_YY_INPUT) != EOF )  {
 	
-<GRAMMARCHARCL>[\n]	{
+	    if (c ==  '\n' ) {
+		break;
+	    } 
+	}
+	//fprintf(stderr,"*** comment ***\n");
+    }
+
+
+
+<INITIAL,GRAMMAR>[\n]	{
             ++ yylineno;
 	    yycolumn = 0;	
 	  //fprintf(stderr,"NEWLINE %d\n", yylineno );
 	}	 
+
+<INITIAL,GRAMMAR>[ \t]+  { yycolumn += yyleng; }	
+
+
+<INITIAL,GRAMMAR><<EOF>> {
+			if (LEXER_close_file( lex_context )) {
+				yyterminate();
+			}
+	}
 
 	

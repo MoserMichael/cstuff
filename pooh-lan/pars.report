@@ -139,7 +139,7 @@ Grammar
    91     | hashConstructor
    92     | listConstructor
    93     | anonymousFunction
-   94     | parsingGrammar
+   94     | TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
 
    95 anonymousFunctionPrototype: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
 
@@ -252,64 +252,62 @@ Grammar
   176 hashClause: expr TK_COLON expr
   177           | expr error
 
-  178 parsingGrammar: ruleList
+  178 $@1: /* empty */
 
-  179 ruleList: ruleList rule
-  180         | rule
+  179 parsingGrammar: $@1 ruleList
 
-  181 $@1: /* empty */
+  180 ruleList: ruleList rule
+  181         | rule
 
-  182 rule: TK_RULE_NAME ruleAssignment $@1 ruleElements
+  182 $@2: /* empty */
 
-  183 scriptOpt: TK_CODE_SECTION
-  184          | /* empty */
+  183 rule: TK_RULE_NAME ruleAssignment $@2 ruleElements
 
-  185 ruleAssignment: TK_ASSIGN
-  186               | TK_COLON
+  184 ruleAssignment: TK_ASSIGN
+  185               | TK_COLON
 
-  187 ruleElements: ruleElements ruleElementOpt
-  188             | ruleElementOpt
-  189             | '|'
+  186 ruleElements: ruleElements ruleElementOpt
+  187             | ruleElementOpt
+  188             | '|'
 
-  190 ruleElementOpt: ruleElement optMetaInstruction
+  189 ruleElementOpt: ruleElement optMetaInstruction
 
-  191 $@2: /* empty */
+  190 $@3: /* empty */
 
-  192 ruleElement: TK_PARENTHESES_OPEN $@2 ruleElements TK_PARENTHESES_CLOSE
-  193            | TK_STRING_CONSTANT
-  194            | TK_RULE_REFERENCE
-  195            | rangeDef
+  191 ruleElement: TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  192            | TK_STRING_CONSTANT
+  193            | TK_RULE_REFERENCE
+  194            | rangeDef
+  195            | TK_CODE_SECTION
 
-  196 optMetaInstruction: multiplicityOpt scriptOpt
+  196 optMetaInstruction: multiplicityDef
+  197                   | /* empty */
 
-  197 multiplicityOpt: multiplicityDef
-  198                | /* empty */
+  198 multiplicityDef: TK_INTEGER_CONSTANT
+  199                | TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
+  200                | TK_ANY
+  201                | TK_SOME
+  202                | TK_NONE
+  203                | TK_UNTIL
+  204                | TK_OPTIONAL
+  205                | TK_EXTRACT TK_INTEGER_CONSTANT
 
-  199 multiplicityDef: TK_INTEGER_CONSTANT
-  200                | TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
-  201                | TK_ANY
-  202                | TK_SOME
-  203                | TK_NONE
-  204                | TK_UNTIL
-  205                | TK_OPTIONAL
-  206                | TK_EXTRACT TK_INTEGER_CONSTANT
+  206 $@4: /* empty */
 
-  207 $@3: /* empty */
+  207 rangeDef: TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-  208 rangeDef: TK_OP_NUM_DIV $@3 rangeElms TK_OP_NUM_DIV
+  208 rangeElms: rangeElms rangeSym
+  209          | rangeSym
 
-  209 rangeElms: rangeElms rangeSym
-  210          | rangeSym
-
-  211 rangeSym: TK_CHARACTER
-  212         | TK_OP_NUM_SUBST
-  213         | TK_ESCAPE_SEQUENCE
+  210 rangeSym: TK_CHARACTER
+  211         | TK_OP_NUM_SUBST
+  212         | TK_ESCAPE_SEQUENCE
 
 
 Terminals, with rules where they appear
 
 "end of file" (0) 0 37
-'|' (124) 189
+'|' (124) 188
 error (256) 49 51 55 73 144 151 153 155 164 165 169 174 177
 TK_ERROR (258)
 TK_LOADEXTENSION (259) 68
@@ -321,8 +319,8 @@ TK_FALSE (264) 139
 TK_NIL (265) 138
 TK_DOUBLE_CONSTANT (266) 135
 TK_MULTI_PART_STRING_CONSTANT (267) 136
-TK_STRING_CONSTANT (268) 68 69 137 193
-TK_INTEGER_CONSTANT (269) 134 199 200 206
+TK_STRING_CONSTANT (268) 68 69 137 192
+TK_INTEGER_CONSTANT (269) 134 198 199 205
 TK_IDENTIFIER (270) 38 41 72 73 79 146 147 154
 TK_NEXT (271) 87
 TK_BREAK (272) 86
@@ -331,7 +329,7 @@ TK_END (274) 21 38 39 40 41 42 43 46 47 60 70 71 96 97
 TK_ELSIF (275) 63
 TK_ELSE (276) 61
 TK_ASSIGN_REF (277) 50 51
-TK_ASSIGN (278) 48 49 185
+TK_ASSIGN (278) 48 49 184
 TK_LOOP (279) 44 45 46 47
 TK_IF (280) 60
 TK_FOR (281) 38 39 40 41
@@ -352,10 +350,10 @@ TK_OP_STR_GT (295) 113
 TK_OP_STR_LE (296) 114
 TK_OP_STR_GE (297) 115
 TK_OP_STR_CAT (298) 121
-TK_COLON (299) 176 186
+TK_COLON (299) 176 185
 TK_OP_NUM_ADD (300) 122 130
-TK_OP_NUM_SUBST (301) 120 131 200 212
-TK_OP_NUM_DIV (302) 125 208
+TK_OP_NUM_SUBST (301) 120 131 199 211
+TK_OP_NUM_DIV (302) 125 207
 TK_OP_NUM_MULT (303) 126
 TK_OP_NUM_MOD (304) 127
 TK_OP_NUM_POW (305) 116
@@ -367,12 +365,12 @@ TK_CODEREF_DEF (310)
 TK_OP_STR_REGEXMATCH (311)
 TK_SEMICOLON (312)
 TK_COMMA (313) 56 76 167 172
-TK_PARENTHESES_OPEN (314) 72 95 142 144 156 192
-TK_PARENTHESES_CLOSE (315) 72 95 142 156 192
+TK_PARENTHESES_OPEN (314) 72 95 142 144 156 191
+TK_PARENTHESES_CLOSE (315) 72 95 142 156 191
 TK_BRACE_OPEN (316) 150 151 171
 TK_BRACE_CLOSE (317) 150 171
 TK_BYREF (318) 84
-TK_OPTIONAL (319) 85 205
+TK_OPTIONAL (319) 85 204
 TK_THREE_DOTS (320) 75
 TK_UNDERSCORE (321) 59
 TK_BRACKET_CLOSE (322) 54 152 166
@@ -381,185 +379,184 @@ TK_START_STATEMENT (324) 1 2
 TK_START_EXPRESSION (325) 3
 TK_START_PGRAMMAR (326) 4
 TK_PARAMETER_LABEL (327) 163 165
-TK_RULE_NAME (328) 182
-TK_RULE_REFERENCE (329) 194
-TK_CHARACTER (330) 211
-TK_ESCAPE_SEQUENCE (331) 213
-TK_ANY (332) 201
-TK_SOME (333) 202
-TK_NONE (334) 203
-TK_UNTIL (335) 204
-TK_EXTRACT (336) 206
-TK_CODE_SECTION (337) 183
+TK_GRAMMAR_DELIM (328) 94
+TK_RULE_NAME (329) 183
+TK_RULE_REFERENCE (330) 193
+TK_CHARACTER (331) 210
+TK_ESCAPE_SEQUENCE (332) 212
+TK_ANY (333) 200
+TK_SOME (334) 201
+TK_NONE (335) 202
+TK_UNTIL (336) 203
+TK_EXTRACT (337) 205
+TK_CODE_SECTION (338) 195
 
 
 Nonterminals, with rules where they appear
 
-$accept (84)
+$accept (85)
     on left: 0
-prog (85)
+prog (86)
     on left: 1 2 3 4, on right: 0
-stmtList (86)
+stmtList (87)
     on left: 5 6, on right: 1 5
-stmt (87)
+stmt (88)
     on left: 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21, on right: 5
     6
-stmtInnerList (88)
+stmtInnerList (89)
     on left: 22 23, on right: 22 38 39 42 44 46 66 70 96
-stmtInner (89)
+stmtInner (90)
     on left: 24 25 26 27 28 29 30 31 32 33 34 35 36 37, on right: 22
     23
-forStmt (90)
+forStmt (91)
     on left: 38 39 40 41, on right: 14 29
-whileStmt (91)
+whileStmt (92)
     on left: 42 43, on right: 15 30
-doWhileStmt (92)
+doWhileStmt (93)
     on left: 44 45, on right: 16 31
-loopStmt (93)
+loopStmt (94)
     on left: 46 47, on right: 17 32
-valueDeepCopyAssignStmt (94)
+valueDeepCopyAssignStmt (95)
     on left: 48 49, on right: 7 24
-referenceCopyAssignmentStmt (95)
+referenceCopyAssignmentStmt (96)
     on left: 50 51, on right: 8 25
-assignmentLeftHandSide (96)
+assignmentLeftHandSide (97)
     on left: 52 53, on right: 48 49 50 51
-multiValueLeftHandSide (97)
+multiValueLeftHandSide (98)
     on left: 54 55, on right: 39 40 53
-multiValueLeftHandSideList (98)
+multiValueLeftHandSideList (99)
     on left: 56 57, on right: 54 55 56
-multiValueLeftHandSideClause (99)
+multiValueLeftHandSideClause (100)
     on left: 58 59, on right: 56 57
-ifStmt (100)
+ifStmt (101)
     on left: 60, on right: 13 28
-elseClauses (101)
+elseClauses (102)
     on left: 61 62, on right: 60
-elsifClause (102)
+elsifClause (103)
     on left: 63 64, on right: 61 62 63
-condClause (103)
+condClause (104)
     on left: 65, on right: 60 63
-conditionContent (104)
+conditionContent (105)
     on left: 66 67, on right: 61 65
-loadExtensionStmt (105)
+loadExtensionStmt (106)
     on left: 68, on right: 10
-includeStmt (106)
+includeStmt (107)
     on left: 69, on right: 9 26
-functionDefStmt (107)
+functionDefStmt (108)
     on left: 70 71, on right: 12
-functionPrototypeDecl (108)
+functionPrototypeDecl (109)
     on left: 72 73, on right: 70 71
-funcPDecl (109)
+funcPDecl (110)
     on left: 74 75, on right: 72
-funcParamDecls (110)
+funcParamDecls (111)
     on left: 76 77 78, on right: 74 76 95
-funcParamDecl (111)
+funcParamDecl (112)
     on left: 79, on right: 76 77
-optParamSpecs2 (112)
+optParamSpecs2 (113)
     on left: 80 81, on right: 79
-optParamSpecs (113)
+optParamSpecs (114)
     on left: 82 83, on right: 80 82
-optParamSpec (114)
+optParamSpec (115)
     on left: 84 85, on right: 82 83
-breakStmt (115)
+breakStmt (116)
     on left: 86, on right: 19 34
-nextStmt (116)
+nextStmt (117)
     on left: 87, on right: 20 35
-returnStmt (117)
+returnStmt (118)
     on left: 88 89, on right: 18 33
-expr (118)
+expr (119)
     on left: 90 91 92 93 94, on right: 3 38 39 40 41 42 43 44 45 48
     50 65 88 142 144 150 151 152 153 163 167 168 176 177
-anonymousFunctionPrototype (119)
+anonymousFunctionPrototype (120)
     on left: 95, on right: 96 97
-anonymousFunction (120)
+anonymousFunction (121)
     on left: 96 97, on right: 93
-logicalExp (121)
+logicalExp (122)
     on left: 98 99, on right: 90 98
-logExpOp (122)
+logExpOp (123)
     on left: 100 101, on right: 98
-compExp (123)
+compExp (124)
     on left: 102 103, on right: 98 99 102
-compExpOp (124)
+compExpOp (125)
     on left: 104 105 106 107 108 109 110 111 112 113 114 115, on right:
     102
-powExp (125)
+powExp (126)
     on left: 116 117, on right: 102 103 116
-addExp (126)
+addExp (127)
     on left: 118 119, on right: 116 117 118
-addExpOp (127)
+addExpOp (128)
     on left: 120 121 122, on right: 118
-multExp (128)
+multExp (129)
     on left: 123 124, on right: 118 119 123
-multExpOp (129)
+multExpOp (130)
     on left: 125 126 127, on right: 123
-unaryExp (130)
+unaryExp (131)
     on left: 128 129, on right: 123 124
-unaryExpOpPrefix (131)
+unaryExpOpPrefix (132)
     on left: 130 131 132, on right: 128
-primaryExp (132)
+primaryExp (133)
     on left: 133 134 135 136 137 138 139 140 141 142 143 144, on right:
     128 129
-functionCallExpr (133)
+functionCallExpr (134)
     on left: 145, on right: 143 158
-varRef (134)
+varRef (135)
     on left: 146 147, on right: 52 58 133 157
-varIndexes (135)
+varIndexes (136)
     on left: 148 149, on right: 146 148
-varIndex (136)
+varIndex (137)
     on left: 150 151 152 153 154 155, on right: 148 149
-functionCallStmt (137)
+functionCallStmt (138)
     on left: 156, on right: 11 27 145
-functionCallLhs (138)
+functionCallLhs (139)
     on left: 157 158, on right: 156
-functionArgs (139)
+functionArgs (140)
     on left: 159 160, on right: 156
-functionArgList (140)
+functionArgList (141)
     on left: 161 162, on right: 159 161
-functionParam (141)
+functionParam (142)
     on left: 163 164 165, on right: 161 162
-listConstructor (142)
+listConstructor (143)
     on left: 166, on right: 92
-expressionList (143)
+expressionList (144)
     on left: 167 168 169 170, on right: 166 167 169
-hashConstructor (144)
+hashConstructor (145)
     on left: 171, on right: 91
-hashClauseList (145)
+hashClauseList (146)
     on left: 172 173 174 175, on right: 171 172 174
-hashClause (146)
+hashClause (147)
     on left: 176 177, on right: 172 173
-parsingGrammar (147)
-    on left: 178, on right: 4 94
-ruleList (148)
-    on left: 179 180, on right: 178 179
-rule (149)
-    on left: 182, on right: 179 180
-$@1 (150)
-    on left: 181, on right: 182
-scriptOpt (151)
-    on left: 183 184, on right: 196
-ruleAssignment (152)
-    on left: 185 186, on right: 182
-ruleElements (153)
-    on left: 187 188 189, on right: 182 187 192
-ruleElementOpt (154)
-    on left: 190, on right: 187 188
-ruleElement (155)
-    on left: 192 193 194 195, on right: 190
-$@2 (156)
-    on left: 191, on right: 192
-optMetaInstruction (157)
-    on left: 196, on right: 190
-multiplicityOpt (158)
-    on left: 197 198, on right: 196
+parsingGrammar (148)
+    on left: 179, on right: 4 94
+$@1 (149)
+    on left: 178, on right: 179
+ruleList (150)
+    on left: 180 181, on right: 179 180
+rule (151)
+    on left: 183, on right: 180 181
+$@2 (152)
+    on left: 182, on right: 183
+ruleAssignment (153)
+    on left: 184 185, on right: 183
+ruleElements (154)
+    on left: 186 187 188, on right: 183 186 191
+ruleElementOpt (155)
+    on left: 189, on right: 186 187
+ruleElement (156)
+    on left: 191 192 193 194 195, on right: 189
+$@3 (157)
+    on left: 190, on right: 191
+optMetaInstruction (158)
+    on left: 196 197, on right: 189
 multiplicityDef (159)
-    on left: 199 200 201 202 203 204 205 206, on right: 197
+    on left: 198 199 200 201 202 203 204 205, on right: 196
 rangeDef (160)
-    on left: 208, on right: 195
-$@3 (161)
-    on left: 207, on right: 208
+    on left: 207, on right: 194
+$@4 (161)
+    on left: 206, on right: 207
 rangeElms (162)
-    on left: 209 210, on right: 208 209
+    on left: 208 209, on right: 207 208
 rangeSym (163)
-    on left: 211 212 213, on right: 209 210
+    on left: 210 211 212, on right: 208 209
 
 
 state 0
@@ -681,7 +678,7 @@ state 2
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -720,10 +717,6 @@ state 2
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -741,7 +734,7 @@ state 2
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
     expr                        go to state 56
     anonymousFunctionPrototype  go to state 57
@@ -760,45 +753,39 @@ state 2
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
 state 3
 
     4 prog: TK_START_PGRAMMAR . parsingGrammar
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
+  178 $@1: .
+  179 parsingGrammar: . $@1 ruleList
 
-    TK_RULE_NAME  shift, and go to state 55
+    $default  reduce using rule 178 ($@1)
 
-    parsingGrammar  go to state 75
-    ruleList        go to state 73
-    rule            go to state 74
+    parsingGrammar  go to state 72
+    $@1             go to state 73
 
 
 state 4
 
     0 $accept: prog . "end of file"
 
-    "end of file"  shift, and go to state 76
+    "end of file"  shift, and go to state 74
 
 
 state 5
 
    68 loadExtensionStmt: TK_LOADEXTENSION . TK_STRING_CONSTANT
 
-    TK_STRING_CONSTANT  shift, and go to state 77
+    TK_STRING_CONSTANT  shift, and go to state 75
 
 
 state 6
 
    69 includeStmt: TK_INCLUDE . TK_STRING_CONSTANT
 
-    TK_STRING_CONSTANT  shift, and go to state 78
+    TK_STRING_CONSTANT  shift, and go to state 76
 
 
 state 7
@@ -806,7 +793,7 @@ state 7
    72 functionPrototypeDecl: TK_SUB . TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE
    73                      | TK_SUB . TK_IDENTIFIER error
 
-    TK_IDENTIFIER  shift, and go to state 79
+    TK_IDENTIFIER  shift, and go to state 77
 
 
 state 8
@@ -822,14 +809,14 @@ state 8
   154         | . TK_OP_DOT TK_IDENTIFIER
   155         | . TK_OP_DOT error
 
-    TK_OP_DOT        shift, and go to state 80
-    TK_BRACE_OPEN    shift, and go to state 81
-    TK_BRACKET_OPEN  shift, and go to state 82
+    TK_OP_DOT        shift, and go to state 78
+    TK_BRACE_OPEN    shift, and go to state 79
+    TK_BRACKET_OPEN  shift, and go to state 80
 
     $default  reduce using rule 147 (varRef)
 
-    varIndexes  go to state 83
-    varIndex    go to state 84
+    varIndexes  go to state 81
+    varIndex    go to state 82
 
     Conflict between rule 147 and token TK_BRACKET_OPEN resolved as shift (TK_IDENTIFIER < TK_BRACKET_OPEN).
 
@@ -856,7 +843,7 @@ state 11
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -895,10 +882,6 @@ state 11
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -916,11 +899,11 @@ state 11
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
     $default  reduce using rule 89 (returnStmt)
 
-    expr                        go to state 85
+    expr                        go to state 83
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -937,9 +920,6 @@ state 11
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
     Conflict between rule 89 and token TK_SUB resolved as shift (%right TK_SUB).
     Conflict between rule 89 and token TK_IDENTIFIER resolved as shift (%right TK_IDENTIFIER).
@@ -1006,38 +986,38 @@ state 13
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 88
+    TK_END           shift, and go to state 86
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
-    TK_WHILE         shift, and go to state 89
+    TK_WHILE         shift, and go to state 87
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInnerList                go to state 90
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 88
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
@@ -1049,7 +1029,7 @@ state 14
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -1088,10 +1068,6 @@ state 14
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -1109,10 +1085,10 @@ state 14
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    condClause                  go to state 104
-    expr                        go to state 105
+    condClause                  go to state 102
+    expr                        go to state 103
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -1129,9 +1105,6 @@ state 14
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
 state 15
@@ -1143,10 +1116,10 @@ state 15
    54 multiValueLeftHandSide: . TK_BRACKET_OPEN multiValueLeftHandSideList TK_BRACKET_CLOSE
    55                       | . TK_BRACKET_OPEN multiValueLeftHandSideList error
 
-    TK_IDENTIFIER    shift, and go to state 106
+    TK_IDENTIFIER    shift, and go to state 104
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    multiValueLeftHandSide  go to state 107
+    multiValueLeftHandSide  go to state 105
 
 
 state 16
@@ -1157,7 +1130,7 @@ state 16
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -1196,10 +1169,6 @@ state 16
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -1217,9 +1186,9 @@ state 16
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 108
+    expr                        go to state 106
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -1236,9 +1205,6 @@ state 16
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
 state 17
@@ -1253,11 +1219,11 @@ state 17
   147       | . TK_IDENTIFIER
 
     TK_IDENTIFIER  shift, and go to state 8
-    TK_UNDERSCORE  shift, and go to state 109
+    TK_UNDERSCORE  shift, and go to state 107
 
-    multiValueLeftHandSideList    go to state 110
-    multiValueLeftHandSideClause  go to state 111
-    varRef                        go to state 112
+    multiValueLeftHandSideList    go to state 108
+    multiValueLeftHandSideClause  go to state 109
+    varRef                        go to state 110
 
 
 state 18
@@ -1331,7 +1297,7 @@ state 18
 
     $default  reduce using rule 1 (prog)
 
-    stmt                         go to state 113
+    stmt                         go to state 111
     forStmt                      go to state 20
     whileStmt                    go to state 21
     doWhileStmt                  go to state 22
@@ -1410,8 +1376,8 @@ state 26
    50 referenceCopyAssignmentStmt: assignmentLeftHandSide . TK_ASSIGN_REF expr
    51                            | assignmentLeftHandSide . TK_ASSIGN_REF error
 
-    TK_ASSIGN_REF  shift, and go to state 114
-    TK_ASSIGN      shift, and go to state 115
+    TK_ASSIGN_REF  shift, and go to state 112
+    TK_ASSIGN      shift, and go to state 113
 
 
 state 27
@@ -1500,38 +1466,38 @@ state 32
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 116
+    TK_END           shift, and go to state 114
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInnerList                go to state 117
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 115
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
@@ -1585,14 +1551,14 @@ state 39
 
   156 functionCallStmt: functionCallLhs . TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
 
-    TK_PARENTHESES_OPEN  shift, and go to state 118
+    TK_PARENTHESES_OPEN  shift, and go to state 116
 
 
 state 40
 
    95 anonymousFunctionPrototype: TK_SUB . TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
 
-    TK_PARENTHESES_OPEN  shift, and go to state 119
+    TK_PARENTHESES_OPEN  shift, and go to state 117
 
 
 state 41
@@ -1678,7 +1644,7 @@ state 52
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -1719,10 +1685,6 @@ state 52
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -1740,9 +1702,9 @@ state 52
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 120
+    expr                        go to state 118
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -1759,9 +1721,6 @@ state 52
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
 state 53
@@ -1770,7 +1729,7 @@ state 53
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -1816,10 +1775,6 @@ state 53
   175               | .  [error, TK_COMMA, TK_BRACE_CLOSE]
   176 hashClause: . expr TK_COLON expr
   177           | . expr error
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -1837,11 +1792,11 @@ state 53
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
     $default  reduce using rule 175 (hashClauseList)
 
-    expr                        go to state 121
+    expr                        go to state 119
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -1858,11 +1813,8 @@ state 53
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    hashClauseList              go to state 122
-    hashClause                  go to state 123
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
+    hashClauseList              go to state 120
+    hashClause                  go to state 121
 
 
 state 54
@@ -1871,7 +1823,7 @@ state 54
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -1915,10 +1867,6 @@ state 54
   169               | . expressionList error
   170               | .  [error, TK_COMMA, TK_BRACKET_CLOSE]
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -1936,11 +1884,11 @@ state 54
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
     $default  reduce using rule 170 (expressionList)
 
-    expr                        go to state 124
+    expr                        go to state 122
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -1956,23 +1904,20 @@ state 54
     functionCallStmt            go to state 69
     functionCallLhs             go to state 39
     listConstructor             go to state 70
-    expressionList              go to state 125
+    expressionList              go to state 123
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
 state 55
 
-  182 rule: TK_RULE_NAME . ruleAssignment $@1 ruleElements
-  185 ruleAssignment: . TK_ASSIGN
-  186               | . TK_COLON
+   94 expr: TK_GRAMMAR_DELIM . parsingGrammar TK_GRAMMAR_DELIM
+  178 $@1: .
+  179 parsingGrammar: . $@1 ruleList
 
-    TK_ASSIGN  shift, and go to state 126
-    TK_COLON   shift, and go to state 127
+    $default  reduce using rule 178 ($@1)
 
-    ruleAssignment  go to state 128
+    parsingGrammar  go to state 124
+    $@1             go to state 73
 
 
 state 56
@@ -2033,38 +1978,38 @@ state 57
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 129
+    TK_END           shift, and go to state 125
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInnerList                go to state 130
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 126
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
@@ -2082,12 +2027,12 @@ state 59
   100 logExpOp: . TK_OP_LOGICAL_AND
   101         | . TK_OP_LOGICAL_OR
 
-    TK_OP_LOGICAL_AND  shift, and go to state 131
-    TK_OP_LOGICAL_OR   shift, and go to state 132
+    TK_OP_LOGICAL_AND  shift, and go to state 127
+    TK_OP_LOGICAL_OR   shift, and go to state 128
 
     $default  reduce using rule 90 (expr)
 
-    logExpOp  go to state 133
+    logExpOp  go to state 129
 
 
 state 60
@@ -2107,22 +2052,22 @@ state 60
   114          | . TK_OP_STR_LE
   115          | . TK_OP_STR_GE
 
-    TK_OP_NUM_EQ  shift, and go to state 134
-    TK_OP_NUM_NE  shift, and go to state 135
-    TK_OP_NUM_LT  shift, and go to state 136
-    TK_OP_NUM_GT  shift, and go to state 137
-    TK_OP_NUM_LE  shift, and go to state 138
-    TK_OP_NUM_GE  shift, and go to state 139
-    TK_OP_STR_EQ  shift, and go to state 140
-    TK_OP_STR_NE  shift, and go to state 141
-    TK_OP_STR_LT  shift, and go to state 142
-    TK_OP_STR_GT  shift, and go to state 143
-    TK_OP_STR_LE  shift, and go to state 144
-    TK_OP_STR_GE  shift, and go to state 145
+    TK_OP_NUM_EQ  shift, and go to state 130
+    TK_OP_NUM_NE  shift, and go to state 131
+    TK_OP_NUM_LT  shift, and go to state 132
+    TK_OP_NUM_GT  shift, and go to state 133
+    TK_OP_NUM_LE  shift, and go to state 134
+    TK_OP_NUM_GE  shift, and go to state 135
+    TK_OP_STR_EQ  shift, and go to state 136
+    TK_OP_STR_NE  shift, and go to state 137
+    TK_OP_STR_LT  shift, and go to state 138
+    TK_OP_STR_GT  shift, and go to state 139
+    TK_OP_STR_LE  shift, and go to state 140
+    TK_OP_STR_GE  shift, and go to state 141
 
     $default  reduce using rule 99 (logicalExp)
 
-    compExpOp  go to state 146
+    compExpOp  go to state 142
 
 
 state 61
@@ -2130,7 +2075,7 @@ state 61
   103 compExp: powExp .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_COLON, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
   116 powExp: powExp . TK_OP_NUM_POW addExp
 
-    TK_OP_NUM_POW  shift, and go to state 147
+    TK_OP_NUM_POW  shift, and go to state 143
 
     $default  reduce using rule 103 (compExp)
 
@@ -2143,13 +2088,13 @@ state 62
   121         | . TK_OP_STR_CAT
   122         | . TK_OP_NUM_ADD
 
-    TK_OP_STR_CAT    shift, and go to state 148
-    TK_OP_NUM_ADD    shift, and go to state 149
-    TK_OP_NUM_SUBST  shift, and go to state 150
+    TK_OP_STR_CAT    shift, and go to state 144
+    TK_OP_NUM_ADD    shift, and go to state 145
+    TK_OP_NUM_SUBST  shift, and go to state 146
 
     $default  reduce using rule 117 (powExp)
 
-    addExpOp  go to state 151
+    addExpOp  go to state 147
 
 
 state 63
@@ -2160,13 +2105,13 @@ state 63
   126          | . TK_OP_NUM_MULT
   127          | . TK_OP_NUM_MOD
 
-    TK_OP_NUM_DIV   shift, and go to state 152
-    TK_OP_NUM_MULT  shift, and go to state 153
-    TK_OP_NUM_MOD   shift, and go to state 154
+    TK_OP_NUM_DIV   shift, and go to state 148
+    TK_OP_NUM_MULT  shift, and go to state 149
+    TK_OP_NUM_MOD   shift, and go to state 150
 
     $default  reduce using rule 119 (addExp)
 
-    multExpOp  go to state 155
+    multExpOp  go to state 151
 
 
 state 64
@@ -2209,7 +2154,7 @@ state 65
     TK_IDENTIFIER                  shift, and go to state 8
     TK_PARENTHESES_OPEN            shift, and go to state 52
 
-    primaryExp        go to state 156
+    primaryExp        go to state 152
     functionCallExpr  go to state 67
     varRef            go to state 68
     functionCallStmt  go to state 69
@@ -2264,84 +2209,70 @@ state 71
 
 state 72
 
-   94 expr: parsingGrammar .
-
-    $default  reduce using rule 94 (expr)
-
-
-state 73
-
-  178 parsingGrammar: ruleList .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_COLON, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
-  179 ruleList: ruleList . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
-
-    TK_RULE_NAME  shift, and go to state 55
-
-    $default  reduce using rule 178 (parsingGrammar)
-
-    rule  go to state 157
-
-
-state 74
-
-  180 ruleList: rule .
-
-    $default  reduce using rule 180 (ruleList)
-
-
-state 75
-
     4 prog: TK_START_PGRAMMAR parsingGrammar .
 
     $default  reduce using rule 4 (prog)
 
 
-state 76
+state 73
+
+  179 parsingGrammar: $@1 . ruleList
+  180 ruleList: . ruleList rule
+  181         | . rule
+  183 rule: . TK_RULE_NAME ruleAssignment $@2 ruleElements
+
+    TK_RULE_NAME  shift, and go to state 153
+
+    ruleList  go to state 154
+    rule      go to state 155
+
+
+state 74
 
     0 $accept: prog "end of file" .
 
     $default  accept
 
 
-state 77
+state 75
 
    68 loadExtensionStmt: TK_LOADEXTENSION TK_STRING_CONSTANT .
 
     $default  reduce using rule 68 (loadExtensionStmt)
 
 
-state 78
+state 76
 
    69 includeStmt: TK_INCLUDE TK_STRING_CONSTANT .
 
     $default  reduce using rule 69 (includeStmt)
 
 
-state 79
+state 77
 
    72 functionPrototypeDecl: TK_SUB TK_IDENTIFIER . TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE
    73                      | TK_SUB TK_IDENTIFIER . error
 
-    error                shift, and go to state 158
-    TK_PARENTHESES_OPEN  shift, and go to state 159
+    error                shift, and go to state 156
+    TK_PARENTHESES_OPEN  shift, and go to state 157
 
 
-state 80
+state 78
 
   154 varIndex: TK_OP_DOT . TK_IDENTIFIER
   155         | TK_OP_DOT . error
 
-    error          shift, and go to state 160
-    TK_IDENTIFIER  shift, and go to state 161
+    error          shift, and go to state 158
+    TK_IDENTIFIER  shift, and go to state 159
 
 
-state 81
+state 79
 
    90 expr: . logicalExp
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -2382,10 +2313,6 @@ state 81
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -2403,9 +2330,9 @@ state 81
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 162
+    expr                        go to state 160
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -2422,18 +2349,15 @@ state 81
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 82
+state 80
 
    90 expr: . logicalExp
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -2474,10 +2398,6 @@ state 82
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -2495,9 +2415,9 @@ state 82
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 163
+    expr                        go to state 161
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -2514,12 +2434,9 @@ state 82
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 83
+state 81
 
   146 varRef: TK_IDENTIFIER varIndexes .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_ASSIGN_REF, TK_ASSIGN, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_COLON, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_DIV, TK_OP_NUM_MULT, TK_OP_NUM_MOD, TK_OP_NUM_POW, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_PARAMETER_LABEL]
   148 varIndexes: varIndexes . varIndex
@@ -2530,53 +2447,53 @@ state 83
   154         | . TK_OP_DOT TK_IDENTIFIER
   155         | . TK_OP_DOT error
 
-    TK_OP_DOT        shift, and go to state 80
-    TK_BRACE_OPEN    shift, and go to state 81
-    TK_BRACKET_OPEN  shift, and go to state 82
+    TK_OP_DOT        shift, and go to state 78
+    TK_BRACE_OPEN    shift, and go to state 79
+    TK_BRACKET_OPEN  shift, and go to state 80
 
     $default  reduce using rule 146 (varRef)
 
-    varIndex  go to state 164
+    varIndex  go to state 162
 
     Conflict between rule 146 and token TK_BRACKET_OPEN resolved as shift (TK_IDENTIFIER < TK_BRACKET_OPEN).
 
 
-state 84
+state 82
 
   149 varIndexes: varIndex .
 
     $default  reduce using rule 149 (varIndexes)
 
 
-state 85
+state 83
 
    88 returnStmt: TK_RETURN expr .
 
     $default  reduce using rule 88 (returnStmt)
 
 
-state 86
+state 84
 
    37 stmtInner: "end of file" .
 
     $default  reduce using rule 37 (stmtInner)
 
 
-state 87
+state 85
 
    36 stmtInner: TK_SUB .
 
     $default  reduce using rule 36 (stmtInner)
 
 
-state 88
+state 86
 
    47 loopStmt: TK_LOOP TK_END .
 
     $default  reduce using rule 47 (loopStmt)
 
 
-state 89
+state 87
 
    42 whileStmt: TK_WHILE . expr stmtInnerList TK_END
    43          | TK_WHILE . expr TK_END
@@ -2585,7 +2502,7 @@ state 89
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -2624,10 +2541,6 @@ state 89
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -2645,9 +2558,9 @@ state 89
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 165
+    expr                        go to state 163
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -2664,12 +2577,9 @@ state 89
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 90
+state 88
 
    22 stmtInnerList: stmtInnerList . stmtInner
    24 stmtInner: . valueDeepCopyAssignStmt
@@ -2719,125 +2629,125 @@ state 90
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 166
+    TK_END           shift, and go to state 164
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
-    TK_WHILE         shift, and go to state 167
+    TK_WHILE         shift, and go to state 165
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInner                    go to state 168
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInner                    go to state 166
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 91
+state 89
 
    23 stmtInnerList: stmtInner .
 
     $default  reduce using rule 23 (stmtInnerList)
 
 
-state 92
+state 90
 
    29 stmtInner: forStmt .
 
     $default  reduce using rule 29 (stmtInner)
 
 
-state 93
+state 91
 
    30 stmtInner: whileStmt .
 
     $default  reduce using rule 30 (stmtInner)
 
 
-state 94
+state 92
 
    31 stmtInner: doWhileStmt .
 
     $default  reduce using rule 31 (stmtInner)
 
 
-state 95
+state 93
 
    32 stmtInner: loopStmt .
 
     $default  reduce using rule 32 (stmtInner)
 
 
-state 96
+state 94
 
    24 stmtInner: valueDeepCopyAssignStmt .
 
     $default  reduce using rule 24 (stmtInner)
 
 
-state 97
+state 95
 
    25 stmtInner: referenceCopyAssignmentStmt .
 
     $default  reduce using rule 25 (stmtInner)
 
 
-state 98
+state 96
 
    28 stmtInner: ifStmt .
 
     $default  reduce using rule 28 (stmtInner)
 
 
-state 99
+state 97
 
    26 stmtInner: includeStmt .
 
     $default  reduce using rule 26 (stmtInner)
 
 
-state 100
+state 98
 
    34 stmtInner: breakStmt .
 
     $default  reduce using rule 34 (stmtInner)
 
 
-state 101
+state 99
 
    35 stmtInner: nextStmt .
 
     $default  reduce using rule 35 (stmtInner)
 
 
-state 102
+state 100
 
    33 stmtInner: returnStmt .
 
     $default  reduce using rule 33 (stmtInner)
 
 
-state 103
+state 101
 
    27 stmtInner: functionCallStmt .  ["end of file", TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_BRACKET_OPEN]
   145 functionCallExpr: functionCallStmt .  [TK_PARENTHESES_OPEN]
@@ -2846,7 +2756,7 @@ state 103
     $default             reduce using rule 27 (stmtInner)
 
 
-state 104
+state 102
 
    60 ifStmt: TK_IF condClause . elseClauses TK_END
    61 elseClauses: . elsifClause TK_ELSE conditionContent
@@ -2854,15 +2764,15 @@ state 104
    63 elsifClause: . TK_ELSIF condClause elsifClause
    64            | .  [TK_END, TK_ELSE]
 
-    TK_ELSIF  shift, and go to state 169
+    TK_ELSIF  shift, and go to state 167
 
     $default  reduce using rule 64 (elsifClause)
 
-    elseClauses  go to state 170
-    elsifClause  go to state 171
+    elseClauses  go to state 168
+    elsifClause  go to state 169
 
 
-state 105
+state 103
 
    22 stmtInnerList: . stmtInnerList stmtInner
    23              | . stmtInner
@@ -2914,9 +2824,9 @@ state 105
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
@@ -2929,29 +2839,29 @@ state 105
 
     $default  reduce using rule 67 (conditionContent)
 
-    stmtInnerList                go to state 172
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 170
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    conditionContent             go to state 173
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    conditionContent             go to state 171
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 106
+state 104
 
    38 forStmt: TK_FOR TK_IDENTIFIER . expr stmtInnerList TK_END
    41        | TK_FOR TK_IDENTIFIER . expr TK_END
@@ -2959,7 +2869,7 @@ state 106
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -2998,10 +2908,6 @@ state 106
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -3019,9 +2925,9 @@ state 106
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 174
+    expr                        go to state 172
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -3038,12 +2944,9 @@ state 106
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 107
+state 105
 
    39 forStmt: TK_FOR multiValueLeftHandSide . expr stmtInnerList TK_END
    40        | TK_FOR multiValueLeftHandSide . expr TK_END
@@ -3051,7 +2954,7 @@ state 107
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -3090,10 +2993,6 @@ state 107
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -3111,9 +3010,9 @@ state 107
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 175
+    expr                        go to state 173
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -3130,12 +3029,9 @@ state 107
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 108
+state 106
 
    22 stmtInnerList: . stmtInnerList stmtInner
    23              | . stmtInner
@@ -3186,81 +3082,81 @@ state 108
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 176
+    TK_END           shift, and go to state 174
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInnerList                go to state 177
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 175
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 109
+state 107
 
    59 multiValueLeftHandSideClause: TK_UNDERSCORE .
 
     $default  reduce using rule 59 (multiValueLeftHandSideClause)
 
 
-state 110
+state 108
 
    54 multiValueLeftHandSide: TK_BRACKET_OPEN multiValueLeftHandSideList . TK_BRACKET_CLOSE
    55                       | TK_BRACKET_OPEN multiValueLeftHandSideList . error
    56 multiValueLeftHandSideList: multiValueLeftHandSideList . TK_COMMA multiValueLeftHandSideClause
 
-    error             shift, and go to state 178
-    TK_COMMA          shift, and go to state 179
-    TK_BRACKET_CLOSE  shift, and go to state 180
+    error             shift, and go to state 176
+    TK_COMMA          shift, and go to state 177
+    TK_BRACKET_CLOSE  shift, and go to state 178
 
 
-state 111
+state 109
 
    57 multiValueLeftHandSideList: multiValueLeftHandSideClause .
 
     $default  reduce using rule 57 (multiValueLeftHandSideList)
 
 
-state 112
+state 110
 
    58 multiValueLeftHandSideClause: varRef .
 
     $default  reduce using rule 58 (multiValueLeftHandSideClause)
 
 
-state 113
+state 111
 
     5 stmtList: stmtList stmt .
 
     $default  reduce using rule 5 (stmtList)
 
 
-state 114
+state 112
 
    50 referenceCopyAssignmentStmt: assignmentLeftHandSide TK_ASSIGN_REF . expr
    51                            | assignmentLeftHandSide TK_ASSIGN_REF . error
@@ -3268,7 +3164,7 @@ state 114
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -3307,10 +3203,92 @@ state 114
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
+
+    error                          shift, and go to state 179
+    TK_SUB                         shift, and go to state 40
+    TK_EMPTY_STRING                shift, and go to state 41
+    TK_TRUE                        shift, and go to state 42
+    TK_FALSE                       shift, and go to state 43
+    TK_NIL                         shift, and go to state 44
+    TK_DOUBLE_CONSTANT             shift, and go to state 45
+    TK_MULTI_PART_STRING_CONSTANT  shift, and go to state 46
+    TK_STRING_CONSTANT             shift, and go to state 47
+    TK_INTEGER_CONSTANT            shift, and go to state 48
+    TK_IDENTIFIER                  shift, and go to state 8
+    TK_OP_NUM_ADD                  shift, and go to state 49
+    TK_OP_NUM_SUBST                shift, and go to state 50
+    TK_OP_LOGICAL_NEGATE           shift, and go to state 51
+    TK_PARENTHESES_OPEN            shift, and go to state 52
+    TK_BRACE_OPEN                  shift, and go to state 53
+    TK_BRACKET_OPEN                shift, and go to state 54
+    TK_GRAMMAR_DELIM               shift, and go to state 55
+
+    expr                        go to state 180
+    anonymousFunctionPrototype  go to state 57
+    anonymousFunction           go to state 58
+    logicalExp                  go to state 59
+    compExp                     go to state 60
+    powExp                      go to state 61
+    addExp                      go to state 62
+    multExp                     go to state 63
+    unaryExp                    go to state 64
+    unaryExpOpPrefix            go to state 65
+    primaryExp                  go to state 66
+    functionCallExpr            go to state 67
+    varRef                      go to state 68
+    functionCallStmt            go to state 69
+    functionCallLhs             go to state 39
+    listConstructor             go to state 70
+    hashConstructor             go to state 71
+
+
+state 113
+
+   48 valueDeepCopyAssignStmt: assignmentLeftHandSide TK_ASSIGN . expr
+   49                        | assignmentLeftHandSide TK_ASSIGN . error
+   90 expr: . logicalExp
+   91     | . hashConstructor
+   92     | . listConstructor
+   93     | . anonymousFunction
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
+   95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
+   96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
+   97                  | . anonymousFunctionPrototype TK_END
+   98 logicalExp: . logicalExp logExpOp compExp
+   99           | . compExp
+  102 compExp: . compExp compExpOp powExp
+  103        | . powExp
+  116 powExp: . powExp TK_OP_NUM_POW addExp
+  117       | . addExp
+  118 addExp: . addExp addExpOp multExp
+  119       | . multExp
+  123 multExp: . multExp multExpOp unaryExp
+  124        | . unaryExp
+  128 unaryExp: . unaryExpOpPrefix primaryExp
+  129         | . primaryExp
+  130 unaryExpOpPrefix: . TK_OP_NUM_ADD
+  131                 | . TK_OP_NUM_SUBST
+  132                 | . TK_OP_LOGICAL_NEGATE
+  133 primaryExp: . varRef
+  134           | . TK_INTEGER_CONSTANT
+  135           | . TK_DOUBLE_CONSTANT
+  136           | . TK_MULTI_PART_STRING_CONSTANT
+  137           | . TK_STRING_CONSTANT
+  138           | . TK_NIL
+  139           | . TK_FALSE
+  140           | . TK_TRUE
+  141           | . TK_EMPTY_STRING
+  142           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
+  143           | . functionCallExpr
+  144           | . TK_PARENTHESES_OPEN expr error
+  145 functionCallExpr: . functionCallStmt
+  146 varRef: . TK_IDENTIFIER varIndexes
+  147       | . TK_IDENTIFIER
+  156 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
+  157 functionCallLhs: . varRef
+  158                | . functionCallExpr
+  166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
+  171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
 
     error                          shift, and go to state 181
     TK_SUB                         shift, and go to state 40
@@ -3329,7 +3307,7 @@ state 114
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
     expr                        go to state 182
     anonymousFunctionPrototype  go to state 57
@@ -3348,112 +3326,16 @@ state 114
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 115
-
-   48 valueDeepCopyAssignStmt: assignmentLeftHandSide TK_ASSIGN . expr
-   49                        | assignmentLeftHandSide TK_ASSIGN . error
-   90 expr: . logicalExp
-   91     | . hashConstructor
-   92     | . listConstructor
-   93     | . anonymousFunction
-   94     | . parsingGrammar
-   95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
-   96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
-   97                  | . anonymousFunctionPrototype TK_END
-   98 logicalExp: . logicalExp logExpOp compExp
-   99           | . compExp
-  102 compExp: . compExp compExpOp powExp
-  103        | . powExp
-  116 powExp: . powExp TK_OP_NUM_POW addExp
-  117       | . addExp
-  118 addExp: . addExp addExpOp multExp
-  119       | . multExp
-  123 multExp: . multExp multExpOp unaryExp
-  124        | . unaryExp
-  128 unaryExp: . unaryExpOpPrefix primaryExp
-  129         | . primaryExp
-  130 unaryExpOpPrefix: . TK_OP_NUM_ADD
-  131                 | . TK_OP_NUM_SUBST
-  132                 | . TK_OP_LOGICAL_NEGATE
-  133 primaryExp: . varRef
-  134           | . TK_INTEGER_CONSTANT
-  135           | . TK_DOUBLE_CONSTANT
-  136           | . TK_MULTI_PART_STRING_CONSTANT
-  137           | . TK_STRING_CONSTANT
-  138           | . TK_NIL
-  139           | . TK_FALSE
-  140           | . TK_TRUE
-  141           | . TK_EMPTY_STRING
-  142           | . TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE
-  143           | . functionCallExpr
-  144           | . TK_PARENTHESES_OPEN expr error
-  145 functionCallExpr: . functionCallStmt
-  146 varRef: . TK_IDENTIFIER varIndexes
-  147       | . TK_IDENTIFIER
-  156 functionCallStmt: . functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE
-  157 functionCallLhs: . varRef
-  158                | . functionCallExpr
-  166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
-  171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
-
-    error                          shift, and go to state 183
-    TK_SUB                         shift, and go to state 40
-    TK_EMPTY_STRING                shift, and go to state 41
-    TK_TRUE                        shift, and go to state 42
-    TK_FALSE                       shift, and go to state 43
-    TK_NIL                         shift, and go to state 44
-    TK_DOUBLE_CONSTANT             shift, and go to state 45
-    TK_MULTI_PART_STRING_CONSTANT  shift, and go to state 46
-    TK_STRING_CONSTANT             shift, and go to state 47
-    TK_INTEGER_CONSTANT            shift, and go to state 48
-    TK_IDENTIFIER                  shift, and go to state 8
-    TK_OP_NUM_ADD                  shift, and go to state 49
-    TK_OP_NUM_SUBST                shift, and go to state 50
-    TK_OP_LOGICAL_NEGATE           shift, and go to state 51
-    TK_PARENTHESES_OPEN            shift, and go to state 52
-    TK_BRACE_OPEN                  shift, and go to state 53
-    TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
-
-    expr                        go to state 184
-    anonymousFunctionPrototype  go to state 57
-    anonymousFunction           go to state 58
-    logicalExp                  go to state 59
-    compExp                     go to state 60
-    powExp                      go to state 61
-    addExp                      go to state 62
-    multExp                     go to state 63
-    unaryExp                    go to state 64
-    unaryExpOpPrefix            go to state 65
-    primaryExp                  go to state 66
-    functionCallExpr            go to state 67
-    varRef                      go to state 68
-    functionCallStmt            go to state 69
-    functionCallLhs             go to state 39
-    listConstructor             go to state 70
-    hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
-
-
-state 116
+state 114
 
    71 functionDefStmt: functionPrototypeDecl TK_END .
 
     $default  reduce using rule 71 (functionDefStmt)
 
 
-state 117
+state 115
 
    22 stmtInnerList: stmtInnerList . stmtInner
    24 stmtInner: . valueDeepCopyAssignStmt
@@ -3502,41 +3384,41 @@ state 117
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 185
+    TK_END           shift, and go to state 183
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInner                    go to state 168
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInner                    go to state 166
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 118
+state 116
 
   156 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN . functionArgs TK_PARENTHESES_CLOSE
   159 functionArgs: . functionArgList
@@ -3547,17 +3429,17 @@ state 118
   164              | . error
   165              | . TK_PARAMETER_LABEL error
 
-    error               shift, and go to state 186
-    TK_PARAMETER_LABEL  shift, and go to state 187
+    error               shift, and go to state 184
+    TK_PARAMETER_LABEL  shift, and go to state 185
 
     TK_PARENTHESES_CLOSE  reduce using rule 160 (functionArgs)
 
-    functionArgs     go to state 188
-    functionArgList  go to state 189
-    functionParam    go to state 190
+    functionArgs     go to state 186
+    functionArgList  go to state 187
+    functionParam    go to state 188
 
 
-state 119
+state 117
 
    76 funcParamDecls: . funcParamDecls TK_COMMA funcParamDecl
    77               | . funcParamDecl
@@ -3565,100 +3447,83 @@ state 119
    79 funcParamDecl: . TK_IDENTIFIER optParamSpecs2
    95 anonymousFunctionPrototype: TK_SUB TK_PARENTHESES_OPEN . funcParamDecls TK_PARENTHESES_CLOSE
 
-    TK_IDENTIFIER  shift, and go to state 191
+    TK_IDENTIFIER  shift, and go to state 189
 
     $default  reduce using rule 78 (funcParamDecls)
 
-    funcParamDecls  go to state 192
-    funcParamDecl   go to state 193
+    funcParamDecls  go to state 190
+    funcParamDecl   go to state 191
 
 
-state 120
+state 118
 
   142 primaryExp: TK_PARENTHESES_OPEN expr . TK_PARENTHESES_CLOSE
   144           | TK_PARENTHESES_OPEN expr . error
 
-    error                 shift, and go to state 194
-    TK_PARENTHESES_CLOSE  shift, and go to state 195
+    error                 shift, and go to state 192
+    TK_PARENTHESES_CLOSE  shift, and go to state 193
 
 
-state 121
+state 119
 
   176 hashClause: expr . TK_COLON expr
   177           | expr . error
 
-    error     shift, and go to state 196
-    TK_COLON  shift, and go to state 197
+    error     shift, and go to state 194
+    TK_COLON  shift, and go to state 195
 
 
-state 122
+state 120
 
   171 hashConstructor: TK_BRACE_OPEN hashClauseList . TK_BRACE_CLOSE
   172 hashClauseList: hashClauseList . TK_COMMA hashClause
   174               | hashClauseList . error
 
-    error           shift, and go to state 198
-    TK_COMMA        shift, and go to state 199
-    TK_BRACE_CLOSE  shift, and go to state 200
+    error           shift, and go to state 196
+    TK_COMMA        shift, and go to state 197
+    TK_BRACE_CLOSE  shift, and go to state 198
 
 
-state 123
+state 121
 
   173 hashClauseList: hashClause .
 
     $default  reduce using rule 173 (hashClauseList)
 
 
-state 124
+state 122
 
   168 expressionList: expr .
 
     $default  reduce using rule 168 (expressionList)
 
 
-state 125
+state 123
 
   166 listConstructor: TK_BRACKET_OPEN expressionList . TK_BRACKET_CLOSE
   167 expressionList: expressionList . TK_COMMA expr
   169               | expressionList . error
 
-    error             shift, and go to state 201
-    TK_COMMA          shift, and go to state 202
-    TK_BRACKET_CLOSE  shift, and go to state 203
+    error             shift, and go to state 199
+    TK_COMMA          shift, and go to state 200
+    TK_BRACKET_CLOSE  shift, and go to state 201
 
 
-state 126
+state 124
 
-  185 ruleAssignment: TK_ASSIGN .
+   94 expr: TK_GRAMMAR_DELIM parsingGrammar . TK_GRAMMAR_DELIM
 
-    $default  reduce using rule 185 (ruleAssignment)
-
-
-state 127
-
-  186 ruleAssignment: TK_COLON .
-
-    $default  reduce using rule 186 (ruleAssignment)
+    TK_GRAMMAR_DELIM  shift, and go to state 202
 
 
-state 128
-
-  181 $@1: .
-  182 rule: TK_RULE_NAME ruleAssignment . $@1 ruleElements
-
-    $default  reduce using rule 181 ($@1)
-
-    $@1  go to state 204
-
-
-state 129
+state 125
 
    97 anonymousFunction: anonymousFunctionPrototype TK_END .
 
     $default  reduce using rule 97 (anonymousFunction)
 
 
-state 130
+state 126
 
    22 stmtInnerList: stmtInnerList . stmtInner
    24 stmtInner: . valueDeepCopyAssignStmt
@@ -3707,55 +3572,55 @@ state 130
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 205
+    TK_END           shift, and go to state 203
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInner                    go to state 168
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInner                    go to state 166
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 131
+state 127
 
   100 logExpOp: TK_OP_LOGICAL_AND .
 
     $default  reduce using rule 100 (logExpOp)
 
 
-state 132
+state 128
 
   101 logExpOp: TK_OP_LOGICAL_OR .
 
     $default  reduce using rule 101 (logExpOp)
 
 
-state 133
+state 129
 
    98 logicalExp: logicalExp logExpOp . compExp
   102 compExp: . compExp compExpOp powExp
@@ -3804,7 +3669,7 @@ state 133
     TK_OP_LOGICAL_NEGATE           shift, and go to state 51
     TK_PARENTHESES_OPEN            shift, and go to state 52
 
-    compExp           go to state 206
+    compExp           go to state 204
     powExp            go to state 61
     addExp            go to state 62
     multExp           go to state 63
@@ -3817,91 +3682,91 @@ state 133
     functionCallLhs   go to state 39
 
 
-state 134
+state 130
 
   104 compExpOp: TK_OP_NUM_EQ .
 
     $default  reduce using rule 104 (compExpOp)
 
 
-state 135
+state 131
 
   105 compExpOp: TK_OP_NUM_NE .
 
     $default  reduce using rule 105 (compExpOp)
 
 
-state 136
+state 132
 
   106 compExpOp: TK_OP_NUM_LT .
 
     $default  reduce using rule 106 (compExpOp)
 
 
-state 137
+state 133
 
   107 compExpOp: TK_OP_NUM_GT .
 
     $default  reduce using rule 107 (compExpOp)
 
 
-state 138
+state 134
 
   108 compExpOp: TK_OP_NUM_LE .
 
     $default  reduce using rule 108 (compExpOp)
 
 
-state 139
+state 135
 
   109 compExpOp: TK_OP_NUM_GE .
 
     $default  reduce using rule 109 (compExpOp)
 
 
-state 140
+state 136
 
   110 compExpOp: TK_OP_STR_EQ .
 
     $default  reduce using rule 110 (compExpOp)
 
 
-state 141
+state 137
 
   111 compExpOp: TK_OP_STR_NE .
 
     $default  reduce using rule 111 (compExpOp)
 
 
-state 142
+state 138
 
   112 compExpOp: TK_OP_STR_LT .
 
     $default  reduce using rule 112 (compExpOp)
 
 
-state 143
+state 139
 
   113 compExpOp: TK_OP_STR_GT .
 
     $default  reduce using rule 113 (compExpOp)
 
 
-state 144
+state 140
 
   114 compExpOp: TK_OP_STR_LE .
 
     $default  reduce using rule 114 (compExpOp)
 
 
-state 145
+state 141
 
   115 compExpOp: TK_OP_STR_GE .
 
     $default  reduce using rule 115 (compExpOp)
 
 
-state 146
+state 142
 
   102 compExp: compExp compExpOp . powExp
   116 powExp: . powExp TK_OP_NUM_POW addExp
@@ -3948,7 +3813,7 @@ state 146
     TK_OP_LOGICAL_NEGATE           shift, and go to state 51
     TK_PARENTHESES_OPEN            shift, and go to state 52
 
-    powExp            go to state 207
+    powExp            go to state 205
     addExp            go to state 62
     multExp           go to state 63
     unaryExp          go to state 64
@@ -3960,7 +3825,7 @@ state 146
     functionCallLhs   go to state 39
 
 
-state 147
+state 143
 
   116 powExp: powExp TK_OP_NUM_POW . addExp
   118 addExp: . addExp addExpOp multExp
@@ -4005,7 +3870,7 @@ state 147
     TK_OP_LOGICAL_NEGATE           shift, and go to state 51
     TK_PARENTHESES_OPEN            shift, and go to state 52
 
-    addExp            go to state 208
+    addExp            go to state 206
     multExp           go to state 63
     unaryExp          go to state 64
     unaryExpOpPrefix  go to state 65
@@ -4016,28 +3881,28 @@ state 147
     functionCallLhs   go to state 39
 
 
-state 148
+state 144
 
   121 addExpOp: TK_OP_STR_CAT .
 
     $default  reduce using rule 121 (addExpOp)
 
 
-state 149
+state 145
 
   122 addExpOp: TK_OP_NUM_ADD .
 
     $default  reduce using rule 122 (addExpOp)
 
 
-state 150
+state 146
 
   120 addExpOp: TK_OP_NUM_SUBST .
 
     $default  reduce using rule 120 (addExpOp)
 
 
-state 151
+state 147
 
   118 addExp: addExp addExpOp . multExp
   123 multExp: . multExp multExpOp unaryExp
@@ -4080,7 +3945,7 @@ state 151
     TK_OP_LOGICAL_NEGATE           shift, and go to state 51
     TK_PARENTHESES_OPEN            shift, and go to state 52
 
-    multExp           go to state 209
+    multExp           go to state 207
     unaryExp          go to state 64
     unaryExpOpPrefix  go to state 65
     primaryExp        go to state 66
@@ -4090,28 +3955,28 @@ state 151
     functionCallLhs   go to state 39
 
 
-state 152
+state 148
 
   125 multExpOp: TK_OP_NUM_DIV .
 
     $default  reduce using rule 125 (multExpOp)
 
 
-state 153
+state 149
 
   126 multExpOp: TK_OP_NUM_MULT .
 
     $default  reduce using rule 126 (multExpOp)
 
 
-state 154
+state 150
 
   127 multExpOp: TK_OP_NUM_MOD .
 
     $default  reduce using rule 127 (multExpOp)
 
 
-state 155
+state 151
 
   123 multExp: multExp multExpOp . unaryExp
   128 unaryExp: . unaryExpOpPrefix primaryExp
@@ -4152,7 +4017,7 @@ state 155
     TK_OP_LOGICAL_NEGATE           shift, and go to state 51
     TK_PARENTHESES_OPEN            shift, and go to state 52
 
-    unaryExp          go to state 210
+    unaryExp          go to state 208
     unaryExpOpPrefix  go to state 65
     primaryExp        go to state 66
     functionCallExpr  go to state 67
@@ -4161,28 +4026,53 @@ state 155
     functionCallLhs   go to state 39
 
 
-state 156
+state 152
 
   128 unaryExp: unaryExpOpPrefix primaryExp .
 
     $default  reduce using rule 128 (unaryExp)
 
 
-state 157
+state 153
 
-  179 ruleList: ruleList rule .
+  183 rule: TK_RULE_NAME . ruleAssignment $@2 ruleElements
+  184 ruleAssignment: . TK_ASSIGN
+  185               | . TK_COLON
 
-    $default  reduce using rule 179 (ruleList)
+    TK_ASSIGN  shift, and go to state 209
+    TK_COLON   shift, and go to state 210
+
+    ruleAssignment  go to state 211
 
 
-state 158
+state 154
+
+  179 parsingGrammar: $@1 ruleList .  ["end of file", TK_GRAMMAR_DELIM]
+  180 ruleList: ruleList . rule
+  183 rule: . TK_RULE_NAME ruleAssignment $@2 ruleElements
+
+    TK_RULE_NAME  shift, and go to state 153
+
+    $default  reduce using rule 179 (parsingGrammar)
+
+    rule  go to state 212
+
+
+state 155
+
+  181 ruleList: rule .
+
+    $default  reduce using rule 181 (ruleList)
+
+
+state 156
 
    73 functionPrototypeDecl: TK_SUB TK_IDENTIFIER error .
 
     $default  reduce using rule 73 (functionPrototypeDecl)
 
 
-state 159
+state 157
 
    72 functionPrototypeDecl: TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN . funcPDecl TK_PARENTHESES_CLOSE
    74 funcPDecl: . funcParamDecls
@@ -4192,56 +4082,56 @@ state 159
    78               | .  [TK_COMMA, TK_PARENTHESES_CLOSE]
    79 funcParamDecl: . TK_IDENTIFIER optParamSpecs2
 
-    TK_IDENTIFIER  shift, and go to state 191
-    TK_THREE_DOTS  shift, and go to state 211
+    TK_IDENTIFIER  shift, and go to state 189
+    TK_THREE_DOTS  shift, and go to state 213
 
     $default  reduce using rule 78 (funcParamDecls)
 
-    funcPDecl       go to state 212
-    funcParamDecls  go to state 213
-    funcParamDecl   go to state 193
+    funcPDecl       go to state 214
+    funcParamDecls  go to state 215
+    funcParamDecl   go to state 191
 
 
-state 160
+state 158
 
   155 varIndex: TK_OP_DOT error .
 
     $default  reduce using rule 155 (varIndex)
 
 
-state 161
+state 159
 
   154 varIndex: TK_OP_DOT TK_IDENTIFIER .
 
     $default  reduce using rule 154 (varIndex)
 
 
-state 162
+state 160
 
   150 varIndex: TK_BRACE_OPEN expr . TK_BRACE_CLOSE
   151         | TK_BRACE_OPEN expr . error
 
-    error           shift, and go to state 214
-    TK_BRACE_CLOSE  shift, and go to state 215
+    error           shift, and go to state 216
+    TK_BRACE_CLOSE  shift, and go to state 217
 
 
-state 163
+state 161
 
   152 varIndex: TK_BRACKET_OPEN expr . TK_BRACKET_CLOSE
   153         | TK_BRACKET_OPEN expr . error
 
-    error             shift, and go to state 216
-    TK_BRACKET_CLOSE  shift, and go to state 217
+    error             shift, and go to state 218
+    TK_BRACKET_CLOSE  shift, and go to state 219
 
 
-state 164
+state 162
 
   148 varIndexes: varIndexes varIndex .
 
     $default  reduce using rule 148 (varIndexes)
 
 
-state 165
+state 163
 
    22 stmtInnerList: . stmtInnerList stmtInner
    23              | . stmtInner
@@ -4293,14 +4183,14 @@ state 165
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 176
+    TK_END           shift, and go to state 174
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
@@ -4309,24 +4199,24 @@ state 165
 
     $default  reduce using rule 45 (doWhileStmt)
 
-    stmtInnerList                go to state 177
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 175
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
     Conflict between rule 45 and token "end of file" resolved as shift (TK_WHILE < "end of file").
@@ -4344,14 +4234,14 @@ state 165
     Conflict between rule 45 and token TK_BRACKET_OPEN resolved as shift (TK_WHILE < TK_BRACKET_OPEN).
 
 
-state 166
+state 164
 
    46 loopStmt: TK_LOOP stmtInnerList TK_END .
 
     $default  reduce using rule 46 (loopStmt)
 
 
-state 167
+state 165
 
    42 whileStmt: TK_WHILE . expr stmtInnerList TK_END
    43          | TK_WHILE . expr TK_END
@@ -4360,7 +4250,7 @@ state 167
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -4399,10 +4289,6 @@ state 167
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -4420,9 +4306,9 @@ state 167
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 218
+    expr                        go to state 220
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -4439,19 +4325,16 @@ state 167
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 168
+state 166
 
    22 stmtInnerList: stmtInnerList stmtInner .
 
     $default  reduce using rule 22 (stmtInnerList)
 
 
-state 169
+state 167
 
    63 elsifClause: TK_ELSIF . condClause elsifClause
    65 condClause: . expr conditionContent
@@ -4459,7 +4342,7 @@ state 169
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -4498,10 +4381,6 @@ state 169
   158                | . functionCallExpr
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -4519,10 +4398,10 @@ state 169
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    condClause                  go to state 219
-    expr                        go to state 105
+    condClause                  go to state 221
+    expr                        go to state 103
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -4539,29 +4418,26 @@ state 169
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 170
+state 168
 
    60 ifStmt: TK_IF condClause elseClauses . TK_END
 
-    TK_END  shift, and go to state 220
+    TK_END  shift, and go to state 222
 
 
-state 171
+state 169
 
    61 elseClauses: elsifClause . TK_ELSE conditionContent
    62            | elsifClause .  [TK_END]
 
-    TK_ELSE  shift, and go to state 221
+    TK_ELSE  shift, and go to state 223
 
     $default  reduce using rule 62 (elseClauses)
 
 
-state 172
+state 170
 
    22 stmtInnerList: stmtInnerList . stmtInner
    24 stmtInner: . valueDeepCopyAssignStmt
@@ -4610,9 +4486,9 @@ state 172
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
@@ -4625,34 +4501,34 @@ state 172
 
     $default  reduce using rule 66 (conditionContent)
 
-    stmtInner                    go to state 168
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInner                    go to state 166
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 173
+state 171
 
    65 condClause: expr conditionContent .
 
     $default  reduce using rule 65 (condClause)
 
 
-state 174
+state 172
 
    22 stmtInnerList: . stmtInnerList stmtInner
    23              | . stmtInner
@@ -4703,42 +4579,42 @@ state 174
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 222
+    TK_END           shift, and go to state 224
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInnerList                go to state 223
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 225
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 175
+state 173
 
    22 stmtInnerList: . stmtInnerList stmtInner
    23              | . stmtInner
@@ -4789,49 +4665,49 @@ state 175
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 224
+    TK_END           shift, and go to state 226
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInnerList                go to state 225
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 227
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 176
+state 174
 
    43 whileStmt: TK_WHILE expr TK_END .
 
     $default  reduce using rule 43 (whileStmt)
 
 
-state 177
+state 175
 
    22 stmtInnerList: stmtInnerList . stmtInner
    24 stmtInner: . valueDeepCopyAssignStmt
@@ -4880,48 +4756,48 @@ state 177
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 226
+    TK_END           shift, and go to state 228
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInner                    go to state 168
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInner                    go to state 166
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 178
+state 176
 
    55 multiValueLeftHandSide: TK_BRACKET_OPEN multiValueLeftHandSideList error .
 
     $default  reduce using rule 55 (multiValueLeftHandSide)
 
 
-state 179
+state 177
 
    56 multiValueLeftHandSideList: multiValueLeftHandSideList TK_COMMA . multiValueLeftHandSideClause
    58 multiValueLeftHandSideClause: . varRef
@@ -4930,68 +4806,68 @@ state 179
   147       | . TK_IDENTIFIER
 
     TK_IDENTIFIER  shift, and go to state 8
-    TK_UNDERSCORE  shift, and go to state 109
+    TK_UNDERSCORE  shift, and go to state 107
 
-    multiValueLeftHandSideClause  go to state 227
-    varRef                        go to state 112
+    multiValueLeftHandSideClause  go to state 229
+    varRef                        go to state 110
 
 
-state 180
+state 178
 
    54 multiValueLeftHandSide: TK_BRACKET_OPEN multiValueLeftHandSideList TK_BRACKET_CLOSE .
 
     $default  reduce using rule 54 (multiValueLeftHandSide)
 
 
-state 181
+state 179
 
    51 referenceCopyAssignmentStmt: assignmentLeftHandSide TK_ASSIGN_REF error .
 
     $default  reduce using rule 51 (referenceCopyAssignmentStmt)
 
 
-state 182
+state 180
 
    50 referenceCopyAssignmentStmt: assignmentLeftHandSide TK_ASSIGN_REF expr .
 
     $default  reduce using rule 50 (referenceCopyAssignmentStmt)
 
 
-state 183
+state 181
 
    49 valueDeepCopyAssignStmt: assignmentLeftHandSide TK_ASSIGN error .
 
     $default  reduce using rule 49 (valueDeepCopyAssignStmt)
 
 
-state 184
+state 182
 
    48 valueDeepCopyAssignStmt: assignmentLeftHandSide TK_ASSIGN expr .
 
     $default  reduce using rule 48 (valueDeepCopyAssignStmt)
 
 
-state 185
+state 183
 
    70 functionDefStmt: functionPrototypeDecl stmtInnerList TK_END .
 
     $default  reduce using rule 70 (functionDefStmt)
 
 
-state 186
+state 184
 
   164 functionParam: error .
 
     $default  reduce using rule 164 (functionParam)
 
 
-state 187
+state 185
 
    90 expr: . logicalExp
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -5032,12 +4908,8 @@ state 187
   165              | TK_PARAMETER_LABEL . error
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
-    error                          shift, and go to state 228
+    error                          shift, and go to state 230
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
     TK_TRUE                        shift, and go to state 42
@@ -5054,9 +4926,9 @@ state 187
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 229
+    expr                        go to state 231
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -5073,19 +4945,16 @@ state 187
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 188
+state 186
 
   156 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs . TK_PARENTHESES_CLOSE
 
-    TK_PARENTHESES_CLOSE  shift, and go to state 230
+    TK_PARENTHESES_CLOSE  shift, and go to state 232
 
 
-state 189
+state 187
 
   159 functionArgs: functionArgList .  [TK_PARENTHESES_CLOSE]
   161 functionArgList: functionArgList . functionParam
@@ -5093,22 +4962,22 @@ state 189
   164              | . error
   165              | . TK_PARAMETER_LABEL error
 
-    error               shift, and go to state 186
-    TK_PARAMETER_LABEL  shift, and go to state 187
+    error               shift, and go to state 184
+    TK_PARAMETER_LABEL  shift, and go to state 185
 
     TK_PARENTHESES_CLOSE  reduce using rule 159 (functionArgs)
 
-    functionParam  go to state 231
+    functionParam  go to state 233
 
 
-state 190
+state 188
 
   162 functionArgList: functionParam .
 
     $default  reduce using rule 162 (functionArgList)
 
 
-state 191
+state 189
 
    79 funcParamDecl: TK_IDENTIFIER . optParamSpecs2
    80 optParamSpecs2: . optParamSpecs
@@ -5118,60 +4987,60 @@ state 191
    84 optParamSpec: . TK_BYREF
    85             | . TK_OPTIONAL
 
-    TK_BYREF     shift, and go to state 232
-    TK_OPTIONAL  shift, and go to state 233
+    TK_BYREF     shift, and go to state 234
+    TK_OPTIONAL  shift, and go to state 235
 
     $default  reduce using rule 81 (optParamSpecs2)
 
-    optParamSpecs2  go to state 234
-    optParamSpecs   go to state 235
-    optParamSpec    go to state 236
+    optParamSpecs2  go to state 236
+    optParamSpecs   go to state 237
+    optParamSpec    go to state 238
 
 
-state 192
+state 190
 
    76 funcParamDecls: funcParamDecls . TK_COMMA funcParamDecl
    95 anonymousFunctionPrototype: TK_SUB TK_PARENTHESES_OPEN funcParamDecls . TK_PARENTHESES_CLOSE
 
-    TK_COMMA              shift, and go to state 237
-    TK_PARENTHESES_CLOSE  shift, and go to state 238
+    TK_COMMA              shift, and go to state 239
+    TK_PARENTHESES_CLOSE  shift, and go to state 240
 
 
-state 193
+state 191
 
    77 funcParamDecls: funcParamDecl .
 
     $default  reduce using rule 77 (funcParamDecls)
 
 
-state 194
+state 192
 
   144 primaryExp: TK_PARENTHESES_OPEN expr error .
 
     $default  reduce using rule 144 (primaryExp)
 
 
-state 195
+state 193
 
   142 primaryExp: TK_PARENTHESES_OPEN expr TK_PARENTHESES_CLOSE .
 
     $default  reduce using rule 142 (primaryExp)
 
 
-state 196
+state 194
 
   177 hashClause: expr error .
 
     $default  reduce using rule 177 (hashClause)
 
 
-state 197
+state 195
 
    90 expr: . logicalExp
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -5211,10 +5080,6 @@ state 197
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
   176 hashClause: expr TK_COLON . expr
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -5232,9 +5097,9 @@ state 197
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 239
+    expr                        go to state 241
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -5251,25 +5116,22 @@ state 197
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 198
+state 196
 
   174 hashClauseList: hashClauseList error .
 
     $default  reduce using rule 174 (hashClauseList)
 
 
-state 199
+state 197
 
    90 expr: . logicalExp
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -5311,10 +5173,6 @@ state 199
   172 hashClauseList: hashClauseList TK_COMMA . hashClause
   176 hashClause: . expr TK_COLON expr
   177           | . expr error
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -5332,9 +5190,9 @@ state 199
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 121
+    expr                        go to state 119
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -5351,33 +5209,30 @@ state 199
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    hashClause                  go to state 240
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
+    hashClause                  go to state 242
 
 
-state 200
+state 198
 
   171 hashConstructor: TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE .
 
     $default  reduce using rule 171 (hashConstructor)
 
 
-state 201
+state 199
 
   169 expressionList: expressionList error .
 
     $default  reduce using rule 169 (expressionList)
 
 
-state 202
+state 200
 
    90 expr: . logicalExp
    91     | . hashConstructor
    92     | . listConstructor
    93     | . anonymousFunction
-   94     | . parsingGrammar
+   94     | . TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM
    95 anonymousFunctionPrototype: . TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE
    96 anonymousFunction: . anonymousFunctionPrototype stmtInnerList TK_END
    97                  | . anonymousFunctionPrototype TK_END
@@ -5417,10 +5272,6 @@ state 202
   166 listConstructor: . TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE
   167 expressionList: expressionList TK_COMMA . expr
   171 hashConstructor: . TK_BRACE_OPEN hashClauseList TK_BRACE_CLOSE
-  178 parsingGrammar: . ruleList
-  179 ruleList: . ruleList rule
-  180         | . rule
-  182 rule: . TK_RULE_NAME ruleAssignment $@1 ruleElements
 
     TK_SUB                         shift, and go to state 40
     TK_EMPTY_STRING                shift, and go to state 41
@@ -5438,9 +5289,9 @@ state 202
     TK_PARENTHESES_OPEN            shift, and go to state 52
     TK_BRACE_OPEN                  shift, and go to state 53
     TK_BRACKET_OPEN                shift, and go to state 54
-    TK_RULE_NAME                   shift, and go to state 55
+    TK_GRAMMAR_DELIM               shift, and go to state 55
 
-    expr                        go to state 241
+    expr                        go to state 243
     anonymousFunctionPrototype  go to state 57
     anonymousFunction           go to state 58
     logicalExp                  go to state 59
@@ -5457,51 +5308,30 @@ state 202
     functionCallLhs             go to state 39
     listConstructor             go to state 70
     hashConstructor             go to state 71
-    parsingGrammar              go to state 72
-    ruleList                    go to state 73
-    rule                        go to state 74
 
 
-state 203
+state 201
 
   166 listConstructor: TK_BRACKET_OPEN expressionList TK_BRACKET_CLOSE .
 
     $default  reduce using rule 166 (listConstructor)
 
 
-state 204
+state 202
 
-  182 rule: TK_RULE_NAME ruleAssignment $@1 . ruleElements
-  187 ruleElements: . ruleElements ruleElementOpt
-  188             | . ruleElementOpt
-  189             | . '|'
-  190 ruleElementOpt: . ruleElement optMetaInstruction
-  192 ruleElement: . TK_PARENTHESES_OPEN $@2 ruleElements TK_PARENTHESES_CLOSE
-  193            | . TK_STRING_CONSTANT
-  194            | . TK_RULE_REFERENCE
-  195            | . rangeDef
-  208 rangeDef: . TK_OP_NUM_DIV $@3 rangeElms TK_OP_NUM_DIV
+   94 expr: TK_GRAMMAR_DELIM parsingGrammar TK_GRAMMAR_DELIM .
 
-    TK_STRING_CONSTANT   shift, and go to state 242
-    TK_OP_NUM_DIV        shift, and go to state 243
-    TK_PARENTHESES_OPEN  shift, and go to state 244
-    TK_RULE_REFERENCE    shift, and go to state 245
-    '|'                  shift, and go to state 246
-
-    ruleElements    go to state 247
-    ruleElementOpt  go to state 248
-    ruleElement     go to state 249
-    rangeDef        go to state 250
+    $default  reduce using rule 94 (expr)
 
 
-state 205
+state 203
 
    96 anonymousFunction: anonymousFunctionPrototype stmtInnerList TK_END .
 
     $default  reduce using rule 96 (anonymousFunction)
 
 
-state 206
+state 204
 
    98 logicalExp: logicalExp logExpOp compExp .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_COLON, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
   102 compExp: compExp . compExpOp powExp
@@ -5518,35 +5348,35 @@ state 206
   114          | . TK_OP_STR_LE
   115          | . TK_OP_STR_GE
 
-    TK_OP_NUM_EQ  shift, and go to state 134
-    TK_OP_NUM_NE  shift, and go to state 135
-    TK_OP_NUM_LT  shift, and go to state 136
-    TK_OP_NUM_GT  shift, and go to state 137
-    TK_OP_NUM_LE  shift, and go to state 138
-    TK_OP_NUM_GE  shift, and go to state 139
-    TK_OP_STR_EQ  shift, and go to state 140
-    TK_OP_STR_NE  shift, and go to state 141
-    TK_OP_STR_LT  shift, and go to state 142
-    TK_OP_STR_GT  shift, and go to state 143
-    TK_OP_STR_LE  shift, and go to state 144
-    TK_OP_STR_GE  shift, and go to state 145
+    TK_OP_NUM_EQ  shift, and go to state 130
+    TK_OP_NUM_NE  shift, and go to state 131
+    TK_OP_NUM_LT  shift, and go to state 132
+    TK_OP_NUM_GT  shift, and go to state 133
+    TK_OP_NUM_LE  shift, and go to state 134
+    TK_OP_NUM_GE  shift, and go to state 135
+    TK_OP_STR_EQ  shift, and go to state 136
+    TK_OP_STR_NE  shift, and go to state 137
+    TK_OP_STR_LT  shift, and go to state 138
+    TK_OP_STR_GT  shift, and go to state 139
+    TK_OP_STR_LE  shift, and go to state 140
+    TK_OP_STR_GE  shift, and go to state 141
 
     $default  reduce using rule 98 (logicalExp)
 
-    compExpOp  go to state 146
+    compExpOp  go to state 142
 
 
-state 207
+state 205
 
   102 compExp: compExp compExpOp powExp .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_COLON, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
   116 powExp: powExp . TK_OP_NUM_POW addExp
 
-    TK_OP_NUM_POW  shift, and go to state 147
+    TK_OP_NUM_POW  shift, and go to state 143
 
     $default  reduce using rule 102 (compExp)
 
 
-state 208
+state 206
 
   116 powExp: powExp TK_OP_NUM_POW addExp .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_COLON, TK_OP_NUM_POW, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
   118 addExp: addExp . addExpOp multExp
@@ -5554,16 +5384,16 @@ state 208
   121         | . TK_OP_STR_CAT
   122         | . TK_OP_NUM_ADD
 
-    TK_OP_STR_CAT    shift, and go to state 148
-    TK_OP_NUM_ADD    shift, and go to state 149
-    TK_OP_NUM_SUBST  shift, and go to state 150
+    TK_OP_STR_CAT    shift, and go to state 144
+    TK_OP_NUM_ADD    shift, and go to state 145
+    TK_OP_NUM_SUBST  shift, and go to state 146
 
     $default  reduce using rule 116 (powExp)
 
-    addExpOp  go to state 151
+    addExpOp  go to state 147
 
 
-state 209
+state 207
 
   118 addExp: addExp addExpOp multExp .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_OP_LOGICAL_AND, TK_OP_LOGICAL_OR, TK_OP_NUM_EQ, TK_OP_NUM_NE, TK_OP_NUM_LT, TK_OP_NUM_GT, TK_OP_NUM_LE, TK_OP_NUM_GE, TK_OP_STR_EQ, TK_OP_STR_NE, TK_OP_STR_LT, TK_OP_STR_GT, TK_OP_STR_LE, TK_OP_STR_GE, TK_OP_STR_CAT, TK_COLON, TK_OP_NUM_ADD, TK_OP_NUM_SUBST, TK_OP_NUM_POW, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL]
   123 multExp: multExp . multExpOp unaryExp
@@ -5571,75 +5401,106 @@ state 209
   126          | . TK_OP_NUM_MULT
   127          | . TK_OP_NUM_MOD
 
-    TK_OP_NUM_DIV   shift, and go to state 152
-    TK_OP_NUM_MULT  shift, and go to state 153
-    TK_OP_NUM_MOD   shift, and go to state 154
+    TK_OP_NUM_DIV   shift, and go to state 148
+    TK_OP_NUM_MULT  shift, and go to state 149
+    TK_OP_NUM_MOD   shift, and go to state 150
 
     $default  reduce using rule 118 (addExp)
 
-    multExpOp  go to state 155
+    multExpOp  go to state 151
 
 
-state 210
+state 208
 
   123 multExp: multExp multExpOp unaryExp .
 
     $default  reduce using rule 123 (multExp)
 
 
+state 209
+
+  184 ruleAssignment: TK_ASSIGN .
+
+    $default  reduce using rule 184 (ruleAssignment)
+
+
+state 210
+
+  185 ruleAssignment: TK_COLON .
+
+    $default  reduce using rule 185 (ruleAssignment)
+
+
 state 211
+
+  182 $@2: .
+  183 rule: TK_RULE_NAME ruleAssignment . $@2 ruleElements
+
+    $default  reduce using rule 182 ($@2)
+
+    $@2  go to state 244
+
+
+state 212
+
+  180 ruleList: ruleList rule .
+
+    $default  reduce using rule 180 (ruleList)
+
+
+state 213
 
    75 funcPDecl: TK_THREE_DOTS .
 
     $default  reduce using rule 75 (funcPDecl)
 
 
-state 212
+state 214
 
    72 functionPrototypeDecl: TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl . TK_PARENTHESES_CLOSE
 
-    TK_PARENTHESES_CLOSE  shift, and go to state 251
+    TK_PARENTHESES_CLOSE  shift, and go to state 245
 
 
-state 213
+state 215
 
    74 funcPDecl: funcParamDecls .  [TK_PARENTHESES_CLOSE]
    76 funcParamDecls: funcParamDecls . TK_COMMA funcParamDecl
 
-    TK_COMMA  shift, and go to state 237
+    TK_COMMA  shift, and go to state 239
 
     $default  reduce using rule 74 (funcPDecl)
 
 
-state 214
+state 216
 
   151 varIndex: TK_BRACE_OPEN expr error .
 
     $default  reduce using rule 151 (varIndex)
 
 
-state 215
+state 217
 
   150 varIndex: TK_BRACE_OPEN expr TK_BRACE_CLOSE .
 
     $default  reduce using rule 150 (varIndex)
 
 
-state 216
+state 218
 
   153 varIndex: TK_BRACKET_OPEN expr error .
 
     $default  reduce using rule 153 (varIndex)
 
 
-state 217
+state 219
 
   152 varIndex: TK_BRACKET_OPEN expr TK_BRACKET_CLOSE .
 
     $default  reduce using rule 152 (varIndex)
 
 
-state 218
+state 220
 
    22 stmtInnerList: . stmtInnerList stmtInner
    23              | . stmtInner
@@ -5691,14 +5552,14 @@ state 218
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 176
+    TK_END           shift, and go to state 174
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
@@ -5707,24 +5568,24 @@ state 218
 
     $default  reduce using rule 44 (doWhileStmt)
 
-    stmtInnerList                go to state 177
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 175
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
     Conflict between rule 44 and token "end of file" resolved as shift (TK_WHILE < "end of file").
@@ -5742,27 +5603,27 @@ state 218
     Conflict between rule 44 and token TK_BRACKET_OPEN resolved as shift (TK_WHILE < TK_BRACKET_OPEN).
 
 
-state 219
+state 221
 
    63 elsifClause: . TK_ELSIF condClause elsifClause
    63            | TK_ELSIF condClause . elsifClause
    64            | .  [TK_END, TK_ELSE]
 
-    TK_ELSIF  shift, and go to state 169
+    TK_ELSIF  shift, and go to state 167
 
     $default  reduce using rule 64 (elsifClause)
 
-    elsifClause  go to state 252
+    elsifClause  go to state 246
 
 
-state 220
+state 222
 
    60 ifStmt: TK_IF condClause elseClauses TK_END .
 
     $default  reduce using rule 60 (ifStmt)
 
 
-state 221
+state 223
 
    22 stmtInnerList: . stmtInnerList stmtInner
    23              | . stmtInner
@@ -5814,9 +5675,9 @@ state 221
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
@@ -5829,36 +5690,36 @@ state 221
 
     $default  reduce using rule 67 (conditionContent)
 
-    stmtInnerList                go to state 172
-    stmtInner                    go to state 91
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInnerList                go to state 170
+    stmtInner                    go to state 89
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    conditionContent             go to state 253
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    conditionContent             go to state 247
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 222
+state 224
 
    41 forStmt: TK_FOR TK_IDENTIFIER expr TK_END .
 
     $default  reduce using rule 41 (forStmt)
 
 
-state 223
+state 225
 
    22 stmtInnerList: stmtInnerList . stmtInner
    24 stmtInner: . valueDeepCopyAssignStmt
@@ -5907,48 +5768,48 @@ state 223
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 254
+    TK_END           shift, and go to state 248
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInner                    go to state 168
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInner                    go to state 166
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 224
+state 226
 
    40 forStmt: TK_FOR multiValueLeftHandSide expr TK_END .
 
     $default  reduce using rule 40 (forStmt)
 
 
-state 225
+state 227
 
    22 stmtInnerList: stmtInnerList . stmtInner
    24 stmtInner: . valueDeepCopyAssignStmt
@@ -5997,565 +5858,576 @@ state 225
   157 functionCallLhs: . varRef
   158                | . functionCallExpr
 
-    "end of file"    shift, and go to state 86
+    "end of file"    shift, and go to state 84
     TK_INCLUDE       shift, and go to state 6
-    TK_SUB           shift, and go to state 87
+    TK_SUB           shift, and go to state 85
     TK_IDENTIFIER    shift, and go to state 8
     TK_NEXT          shift, and go to state 9
     TK_BREAK         shift, and go to state 10
     TK_RETURN        shift, and go to state 11
-    TK_END           shift, and go to state 255
+    TK_END           shift, and go to state 249
     TK_LOOP          shift, and go to state 13
     TK_IF            shift, and go to state 14
     TK_FOR           shift, and go to state 15
     TK_WHILE         shift, and go to state 16
     TK_BRACKET_OPEN  shift, and go to state 17
 
-    stmtInner                    go to state 168
-    forStmt                      go to state 92
-    whileStmt                    go to state 93
-    doWhileStmt                  go to state 94
-    loopStmt                     go to state 95
-    valueDeepCopyAssignStmt      go to state 96
-    referenceCopyAssignmentStmt  go to state 97
+    stmtInner                    go to state 166
+    forStmt                      go to state 90
+    whileStmt                    go to state 91
+    doWhileStmt                  go to state 92
+    loopStmt                     go to state 93
+    valueDeepCopyAssignStmt      go to state 94
+    referenceCopyAssignmentStmt  go to state 95
     assignmentLeftHandSide       go to state 26
     multiValueLeftHandSide       go to state 27
-    ifStmt                       go to state 98
-    includeStmt                  go to state 99
-    breakStmt                    go to state 100
-    nextStmt                     go to state 101
-    returnStmt                   go to state 102
+    ifStmt                       go to state 96
+    includeStmt                  go to state 97
+    breakStmt                    go to state 98
+    nextStmt                     go to state 99
+    returnStmt                   go to state 100
     functionCallExpr             go to state 36
     varRef                       go to state 37
-    functionCallStmt             go to state 103
+    functionCallStmt             go to state 101
     functionCallLhs              go to state 39
 
 
-state 226
+state 228
 
    42 whileStmt: TK_WHILE expr stmtInnerList TK_END .
 
     $default  reduce using rule 42 (whileStmt)
 
 
-state 227
+state 229
 
    56 multiValueLeftHandSideList: multiValueLeftHandSideList TK_COMMA multiValueLeftHandSideClause .
 
     $default  reduce using rule 56 (multiValueLeftHandSideList)
 
 
-state 228
+state 230
 
   165 functionParam: TK_PARAMETER_LABEL error .
 
     $default  reduce using rule 165 (functionParam)
 
 
-state 229
+state 231
 
   163 functionParam: TK_PARAMETER_LABEL expr .
 
     $default  reduce using rule 163 (functionParam)
 
 
-state 230
+state 232
 
   156 functionCallStmt: functionCallLhs TK_PARENTHESES_OPEN functionArgs TK_PARENTHESES_CLOSE .
 
     $default  reduce using rule 156 (functionCallStmt)
 
 
-state 231
+state 233
 
   161 functionArgList: functionArgList functionParam .
 
     $default  reduce using rule 161 (functionArgList)
 
 
-state 232
+state 234
 
    84 optParamSpec: TK_BYREF .
 
     $default  reduce using rule 84 (optParamSpec)
 
 
-state 233
+state 235
 
    85 optParamSpec: TK_OPTIONAL .
 
     $default  reduce using rule 85 (optParamSpec)
 
 
-state 234
+state 236
 
    79 funcParamDecl: TK_IDENTIFIER optParamSpecs2 .
 
     $default  reduce using rule 79 (funcParamDecl)
 
 
-state 235
+state 237
 
    80 optParamSpecs2: optParamSpecs .  [TK_COMMA, TK_PARENTHESES_CLOSE]
    82 optParamSpecs: optParamSpecs . optParamSpec
    84 optParamSpec: . TK_BYREF
    85             | . TK_OPTIONAL
 
-    TK_BYREF     shift, and go to state 232
-    TK_OPTIONAL  shift, and go to state 233
+    TK_BYREF     shift, and go to state 234
+    TK_OPTIONAL  shift, and go to state 235
 
     $default  reduce using rule 80 (optParamSpecs2)
 
-    optParamSpec  go to state 256
+    optParamSpec  go to state 250
 
 
-state 236
+state 238
 
    83 optParamSpecs: optParamSpec .
 
     $default  reduce using rule 83 (optParamSpecs)
 
 
-state 237
+state 239
 
    76 funcParamDecls: funcParamDecls TK_COMMA . funcParamDecl
    79 funcParamDecl: . TK_IDENTIFIER optParamSpecs2
 
-    TK_IDENTIFIER  shift, and go to state 191
+    TK_IDENTIFIER  shift, and go to state 189
 
-    funcParamDecl  go to state 257
+    funcParamDecl  go to state 251
 
 
-state 238
+state 240
 
    95 anonymousFunctionPrototype: TK_SUB TK_PARENTHESES_OPEN funcParamDecls TK_PARENTHESES_CLOSE .
 
     $default  reduce using rule 95 (anonymousFunctionPrototype)
 
 
-state 239
+state 241
 
   176 hashClause: expr TK_COLON expr .
 
     $default  reduce using rule 176 (hashClause)
 
 
-state 240
+state 242
 
   172 hashClauseList: hashClauseList TK_COMMA hashClause .
 
     $default  reduce using rule 172 (hashClauseList)
 
 
-state 241
+state 243
 
   167 expressionList: expressionList TK_COMMA expr .
 
     $default  reduce using rule 167 (expressionList)
 
 
-state 242
-
-  193 ruleElement: TK_STRING_CONSTANT .
-
-    $default  reduce using rule 193 (ruleElement)
-
-
-state 243
-
-  207 $@3: .
-  208 rangeDef: TK_OP_NUM_DIV . $@3 rangeElms TK_OP_NUM_DIV
-
-    $default  reduce using rule 207 ($@3)
-
-    $@3  go to state 258
-
-
 state 244
 
-  191 $@2: .
-  192 ruleElement: TK_PARENTHESES_OPEN . $@2 ruleElements TK_PARENTHESES_CLOSE
+  183 rule: TK_RULE_NAME ruleAssignment $@2 . ruleElements
+  186 ruleElements: . ruleElements ruleElementOpt
+  187             | . ruleElementOpt
+  188             | . '|'
+  189 ruleElementOpt: . ruleElement optMetaInstruction
+  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  192            | . TK_STRING_CONSTANT
+  193            | . TK_RULE_REFERENCE
+  194            | . rangeDef
+  195            | . TK_CODE_SECTION
+  207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-    $default  reduce using rule 191 ($@2)
+    TK_STRING_CONSTANT   shift, and go to state 252
+    TK_OP_NUM_DIV        shift, and go to state 253
+    TK_PARENTHESES_OPEN  shift, and go to state 254
+    TK_RULE_REFERENCE    shift, and go to state 255
+    TK_CODE_SECTION      shift, and go to state 256
+    '|'                  shift, and go to state 257
 
-    $@2  go to state 259
+    ruleElements    go to state 258
+    ruleElementOpt  go to state 259
+    ruleElement     go to state 260
+    rangeDef        go to state 261
 
 
 state 245
-
-  194 ruleElement: TK_RULE_REFERENCE .
-
-    $default  reduce using rule 194 (ruleElement)
-
-
-state 246
-
-  189 ruleElements: '|' .
-
-    $default  reduce using rule 189 (ruleElements)
-
-
-state 247
-
-  182 rule: TK_RULE_NAME ruleAssignment $@1 ruleElements .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_COLON, TK_COMMA, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL, TK_RULE_NAME]
-  187 ruleElements: ruleElements . ruleElementOpt
-  190 ruleElementOpt: . ruleElement optMetaInstruction
-  192 ruleElement: . TK_PARENTHESES_OPEN $@2 ruleElements TK_PARENTHESES_CLOSE
-  193            | . TK_STRING_CONSTANT
-  194            | . TK_RULE_REFERENCE
-  195            | . rangeDef
-  208 rangeDef: . TK_OP_NUM_DIV $@3 rangeElms TK_OP_NUM_DIV
-
-    TK_STRING_CONSTANT   shift, and go to state 242
-    TK_OP_NUM_DIV        shift, and go to state 243
-    TK_PARENTHESES_OPEN  shift, and go to state 244
-    TK_RULE_REFERENCE    shift, and go to state 245
-
-    $default  reduce using rule 182 (rule)
-
-    ruleElementOpt  go to state 260
-    ruleElement     go to state 249
-    rangeDef        go to state 250
-
-
-state 248
-
-  188 ruleElements: ruleElementOpt .
-
-    $default  reduce using rule 188 (ruleElements)
-
-
-state 249
-
-  190 ruleElementOpt: ruleElement . optMetaInstruction
-  196 optMetaInstruction: . multiplicityOpt scriptOpt
-  197 multiplicityOpt: . multiplicityDef
-  198                | .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_STRING_CONSTANT, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_COLON, TK_OP_NUM_DIV, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
-  199 multiplicityDef: . TK_INTEGER_CONSTANT
-  200                | . TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
-  201                | . TK_ANY
-  202                | . TK_SOME
-  203                | . TK_NONE
-  204                | . TK_UNTIL
-  205                | . TK_OPTIONAL
-  206                | . TK_EXTRACT TK_INTEGER_CONSTANT
-
-    TK_INTEGER_CONSTANT  shift, and go to state 261
-    TK_OPTIONAL          shift, and go to state 262
-    TK_ANY               shift, and go to state 263
-    TK_SOME              shift, and go to state 264
-    TK_NONE              shift, and go to state 265
-    TK_UNTIL             shift, and go to state 266
-    TK_EXTRACT           shift, and go to state 267
-
-    $default  reduce using rule 198 (multiplicityOpt)
-
-    optMetaInstruction  go to state 268
-    multiplicityOpt     go to state 269
-    multiplicityDef     go to state 270
-
-
-state 250
-
-  195 ruleElement: rangeDef .
-
-    $default  reduce using rule 195 (ruleElement)
-
-
-state 251
 
    72 functionPrototypeDecl: TK_SUB TK_IDENTIFIER TK_PARENTHESES_OPEN funcPDecl TK_PARENTHESES_CLOSE .
 
     $default  reduce using rule 72 (functionPrototypeDecl)
 
 
-state 252
+state 246
 
    63 elsifClause: TK_ELSIF condClause elsifClause .
 
     $default  reduce using rule 63 (elsifClause)
 
 
-state 253
+state 247
 
    61 elseClauses: elsifClause TK_ELSE conditionContent .
 
     $default  reduce using rule 61 (elseClauses)
 
 
-state 254
+state 248
 
    38 forStmt: TK_FOR TK_IDENTIFIER expr stmtInnerList TK_END .
 
     $default  reduce using rule 38 (forStmt)
 
 
-state 255
+state 249
 
    39 forStmt: TK_FOR multiValueLeftHandSide expr stmtInnerList TK_END .
 
     $default  reduce using rule 39 (forStmt)
 
 
-state 256
+state 250
 
    82 optParamSpecs: optParamSpecs optParamSpec .
 
     $default  reduce using rule 82 (optParamSpecs)
 
 
-state 257
+state 251
 
    76 funcParamDecls: funcParamDecls TK_COMMA funcParamDecl .
 
     $default  reduce using rule 76 (funcParamDecls)
 
 
+state 252
+
+  192 ruleElement: TK_STRING_CONSTANT .
+
+    $default  reduce using rule 192 (ruleElement)
+
+
+state 253
+
+  206 $@4: .
+  207 rangeDef: TK_OP_NUM_DIV . $@4 rangeElms TK_OP_NUM_DIV
+
+    $default  reduce using rule 206 ($@4)
+
+    $@4  go to state 262
+
+
+state 254
+
+  190 $@3: .
+  191 ruleElement: TK_PARENTHESES_OPEN . $@3 ruleElements TK_PARENTHESES_CLOSE
+
+    $default  reduce using rule 190 ($@3)
+
+    $@3  go to state 263
+
+
+state 255
+
+  193 ruleElement: TK_RULE_REFERENCE .
+
+    $default  reduce using rule 193 (ruleElement)
+
+
+state 256
+
+  195 ruleElement: TK_CODE_SECTION .
+
+    $default  reduce using rule 195 (ruleElement)
+
+
+state 257
+
+  188 ruleElements: '|' .
+
+    $default  reduce using rule 188 (ruleElements)
+
+
 state 258
 
-  208 rangeDef: TK_OP_NUM_DIV $@3 . rangeElms TK_OP_NUM_DIV
-  209 rangeElms: . rangeElms rangeSym
-  210          | . rangeSym
-  211 rangeSym: . TK_CHARACTER
-  212         | . TK_OP_NUM_SUBST
-  213         | . TK_ESCAPE_SEQUENCE
+  183 rule: TK_RULE_NAME ruleAssignment $@2 ruleElements .  ["end of file", TK_GRAMMAR_DELIM, TK_RULE_NAME]
+  186 ruleElements: ruleElements . ruleElementOpt
+  189 ruleElementOpt: . ruleElement optMetaInstruction
+  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  192            | . TK_STRING_CONSTANT
+  193            | . TK_RULE_REFERENCE
+  194            | . rangeDef
+  195            | . TK_CODE_SECTION
+  207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-    TK_OP_NUM_SUBST     shift, and go to state 271
-    TK_CHARACTER        shift, and go to state 272
-    TK_ESCAPE_SEQUENCE  shift, and go to state 273
+    TK_STRING_CONSTANT   shift, and go to state 252
+    TK_OP_NUM_DIV        shift, and go to state 253
+    TK_PARENTHESES_OPEN  shift, and go to state 254
+    TK_RULE_REFERENCE    shift, and go to state 255
+    TK_CODE_SECTION      shift, and go to state 256
 
-    rangeElms  go to state 274
-    rangeSym   go to state 275
+    $default  reduce using rule 183 (rule)
+
+    ruleElementOpt  go to state 264
+    ruleElement     go to state 260
+    rangeDef        go to state 261
 
 
 state 259
 
-  187 ruleElements: . ruleElements ruleElementOpt
-  188             | . ruleElementOpt
-  189             | . '|'
-  190 ruleElementOpt: . ruleElement optMetaInstruction
-  192 ruleElement: . TK_PARENTHESES_OPEN $@2 ruleElements TK_PARENTHESES_CLOSE
-  192            | TK_PARENTHESES_OPEN $@2 . ruleElements TK_PARENTHESES_CLOSE
-  193            | . TK_STRING_CONSTANT
-  194            | . TK_RULE_REFERENCE
-  195            | . rangeDef
-  208 rangeDef: . TK_OP_NUM_DIV $@3 rangeElms TK_OP_NUM_DIV
-
-    TK_STRING_CONSTANT   shift, and go to state 242
-    TK_OP_NUM_DIV        shift, and go to state 243
-    TK_PARENTHESES_OPEN  shift, and go to state 244
-    TK_RULE_REFERENCE    shift, and go to state 245
-    '|'                  shift, and go to state 246
-
-    ruleElements    go to state 276
-    ruleElementOpt  go to state 248
-    ruleElement     go to state 249
-    rangeDef        go to state 250
-
-
-state 260
-
-  187 ruleElements: ruleElements ruleElementOpt .
+  187 ruleElements: ruleElementOpt .
 
     $default  reduce using rule 187 (ruleElements)
 
 
+state 260
+
+  189 ruleElementOpt: ruleElement . optMetaInstruction
+  196 optMetaInstruction: . multiplicityDef
+  197                   | .  ["end of file", TK_STRING_CONSTANT, TK_OP_NUM_DIV, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_GRAMMAR_DELIM, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
+  198 multiplicityDef: . TK_INTEGER_CONSTANT
+  199                | . TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
+  200                | . TK_ANY
+  201                | . TK_SOME
+  202                | . TK_NONE
+  203                | . TK_UNTIL
+  204                | . TK_OPTIONAL
+  205                | . TK_EXTRACT TK_INTEGER_CONSTANT
+
+    TK_INTEGER_CONSTANT  shift, and go to state 265
+    TK_OPTIONAL          shift, and go to state 266
+    TK_ANY               shift, and go to state 267
+    TK_SOME              shift, and go to state 268
+    TK_NONE              shift, and go to state 269
+    TK_UNTIL             shift, and go to state 270
+    TK_EXTRACT           shift, and go to state 271
+
+    $default  reduce using rule 197 (optMetaInstruction)
+
+    optMetaInstruction  go to state 272
+    multiplicityDef     go to state 273
+
+
 state 261
 
-  199 multiplicityDef: TK_INTEGER_CONSTANT .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_STRING_CONSTANT, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_COLON, TK_OP_NUM_DIV, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
-  200                | TK_INTEGER_CONSTANT . TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
+  194 ruleElement: rangeDef .
 
-    TK_OP_NUM_SUBST  shift, and go to state 277
-
-    $default  reduce using rule 199 (multiplicityDef)
+    $default  reduce using rule 194 (ruleElement)
 
 
 state 262
 
-  205 multiplicityDef: TK_OPTIONAL .
+  207 rangeDef: TK_OP_NUM_DIV $@4 . rangeElms TK_OP_NUM_DIV
+  208 rangeElms: . rangeElms rangeSym
+  209          | . rangeSym
+  210 rangeSym: . TK_CHARACTER
+  211         | . TK_OP_NUM_SUBST
+  212         | . TK_ESCAPE_SEQUENCE
 
-    $default  reduce using rule 205 (multiplicityDef)
+    TK_OP_NUM_SUBST     shift, and go to state 274
+    TK_CHARACTER        shift, and go to state 275
+    TK_ESCAPE_SEQUENCE  shift, and go to state 276
+
+    rangeElms  go to state 277
+    rangeSym   go to state 278
 
 
 state 263
 
-  201 multiplicityDef: TK_ANY .
+  186 ruleElements: . ruleElements ruleElementOpt
+  187             | . ruleElementOpt
+  188             | . '|'
+  189 ruleElementOpt: . ruleElement optMetaInstruction
+  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  191            | TK_PARENTHESES_OPEN $@3 . ruleElements TK_PARENTHESES_CLOSE
+  192            | . TK_STRING_CONSTANT
+  193            | . TK_RULE_REFERENCE
+  194            | . rangeDef
+  195            | . TK_CODE_SECTION
+  207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-    $default  reduce using rule 201 (multiplicityDef)
+    TK_STRING_CONSTANT   shift, and go to state 252
+    TK_OP_NUM_DIV        shift, and go to state 253
+    TK_PARENTHESES_OPEN  shift, and go to state 254
+    TK_RULE_REFERENCE    shift, and go to state 255
+    TK_CODE_SECTION      shift, and go to state 256
+    '|'                  shift, and go to state 257
+
+    ruleElements    go to state 279
+    ruleElementOpt  go to state 259
+    ruleElement     go to state 260
+    rangeDef        go to state 261
 
 
 state 264
 
-  202 multiplicityDef: TK_SOME .
+  186 ruleElements: ruleElements ruleElementOpt .
 
-    $default  reduce using rule 202 (multiplicityDef)
+    $default  reduce using rule 186 (ruleElements)
 
 
 state 265
 
-  203 multiplicityDef: TK_NONE .
+  198 multiplicityDef: TK_INTEGER_CONSTANT .  ["end of file", TK_STRING_CONSTANT, TK_OP_NUM_DIV, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_GRAMMAR_DELIM, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
+  199                | TK_INTEGER_CONSTANT . TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
 
-    $default  reduce using rule 203 (multiplicityDef)
+    TK_OP_NUM_SUBST  shift, and go to state 280
+
+    $default  reduce using rule 198 (multiplicityDef)
 
 
 state 266
 
-  204 multiplicityDef: TK_UNTIL .
+  204 multiplicityDef: TK_OPTIONAL .
 
     $default  reduce using rule 204 (multiplicityDef)
 
 
 state 267
 
-  206 multiplicityDef: TK_EXTRACT . TK_INTEGER_CONSTANT
+  200 multiplicityDef: TK_ANY .
 
-    TK_INTEGER_CONSTANT  shift, and go to state 278
+    $default  reduce using rule 200 (multiplicityDef)
 
 
 state 268
 
-  190 ruleElementOpt: ruleElement optMetaInstruction .
+  201 multiplicityDef: TK_SOME .
 
-    $default  reduce using rule 190 (ruleElementOpt)
+    $default  reduce using rule 201 (multiplicityDef)
 
 
 state 269
 
-  183 scriptOpt: . TK_CODE_SECTION
-  184          | .  ["end of file", error, TK_LOADEXTENSION, TK_INCLUDE, TK_SUB, TK_STRING_CONSTANT, TK_IDENTIFIER, TK_NEXT, TK_BREAK, TK_RETURN, TK_END, TK_ELSIF, TK_ELSE, TK_LOOP, TK_IF, TK_FOR, TK_WHILE, TK_COLON, TK_OP_NUM_DIV, TK_COMMA, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_BRACE_CLOSE, TK_BRACKET_CLOSE, TK_BRACKET_OPEN, TK_PARAMETER_LABEL, TK_RULE_NAME, TK_RULE_REFERENCE]
-  196 optMetaInstruction: multiplicityOpt . scriptOpt
+  202 multiplicityDef: TK_NONE .
 
-    TK_CODE_SECTION  shift, and go to state 279
-
-    $default  reduce using rule 184 (scriptOpt)
-
-    scriptOpt  go to state 280
+    $default  reduce using rule 202 (multiplicityDef)
 
 
 state 270
 
-  197 multiplicityOpt: multiplicityDef .
+  203 multiplicityDef: TK_UNTIL .
 
-    $default  reduce using rule 197 (multiplicityOpt)
+    $default  reduce using rule 203 (multiplicityDef)
 
 
 state 271
 
-  212 rangeSym: TK_OP_NUM_SUBST .
+  205 multiplicityDef: TK_EXTRACT . TK_INTEGER_CONSTANT
 
-    $default  reduce using rule 212 (rangeSym)
+    TK_INTEGER_CONSTANT  shift, and go to state 281
 
 
 state 272
 
-  211 rangeSym: TK_CHARACTER .
+  189 ruleElementOpt: ruleElement optMetaInstruction .
 
-    $default  reduce using rule 211 (rangeSym)
+    $default  reduce using rule 189 (ruleElementOpt)
 
 
 state 273
 
-  213 rangeSym: TK_ESCAPE_SEQUENCE .
-
-    $default  reduce using rule 213 (rangeSym)
-
-
-state 274
-
-  208 rangeDef: TK_OP_NUM_DIV $@3 rangeElms . TK_OP_NUM_DIV
-  209 rangeElms: rangeElms . rangeSym
-  211 rangeSym: . TK_CHARACTER
-  212         | . TK_OP_NUM_SUBST
-  213         | . TK_ESCAPE_SEQUENCE
-
-    TK_OP_NUM_SUBST     shift, and go to state 271
-    TK_OP_NUM_DIV       shift, and go to state 281
-    TK_CHARACTER        shift, and go to state 272
-    TK_ESCAPE_SEQUENCE  shift, and go to state 273
-
-    rangeSym  go to state 282
-
-
-state 275
-
-  210 rangeElms: rangeSym .
-
-    $default  reduce using rule 210 (rangeElms)
-
-
-state 276
-
-  187 ruleElements: ruleElements . ruleElementOpt
-  190 ruleElementOpt: . ruleElement optMetaInstruction
-  192 ruleElement: . TK_PARENTHESES_OPEN $@2 ruleElements TK_PARENTHESES_CLOSE
-  192            | TK_PARENTHESES_OPEN $@2 ruleElements . TK_PARENTHESES_CLOSE
-  193            | . TK_STRING_CONSTANT
-  194            | . TK_RULE_REFERENCE
-  195            | . rangeDef
-  208 rangeDef: . TK_OP_NUM_DIV $@3 rangeElms TK_OP_NUM_DIV
-
-    TK_STRING_CONSTANT    shift, and go to state 242
-    TK_OP_NUM_DIV         shift, and go to state 243
-    TK_PARENTHESES_OPEN   shift, and go to state 244
-    TK_PARENTHESES_CLOSE  shift, and go to state 283
-    TK_RULE_REFERENCE     shift, and go to state 245
-
-    ruleElementOpt  go to state 260
-    ruleElement     go to state 249
-    rangeDef        go to state 250
-
-
-state 277
-
-  200 multiplicityDef: TK_INTEGER_CONSTANT TK_OP_NUM_SUBST . TK_INTEGER_CONSTANT
-
-    TK_INTEGER_CONSTANT  shift, and go to state 284
-
-
-state 278
-
-  206 multiplicityDef: TK_EXTRACT TK_INTEGER_CONSTANT .
-
-    $default  reduce using rule 206 (multiplicityDef)
-
-
-state 279
-
-  183 scriptOpt: TK_CODE_SECTION .
-
-    $default  reduce using rule 183 (scriptOpt)
-
-
-state 280
-
-  196 optMetaInstruction: multiplicityOpt scriptOpt .
+  196 optMetaInstruction: multiplicityDef .
 
     $default  reduce using rule 196 (optMetaInstruction)
 
 
-state 281
+state 274
 
-  208 rangeDef: TK_OP_NUM_DIV $@3 rangeElms TK_OP_NUM_DIV .
+  211 rangeSym: TK_OP_NUM_SUBST .
 
-    $default  reduce using rule 208 (rangeDef)
+    $default  reduce using rule 211 (rangeSym)
 
 
-state 282
+state 275
 
-  209 rangeElms: rangeElms rangeSym .
+  210 rangeSym: TK_CHARACTER .
+
+    $default  reduce using rule 210 (rangeSym)
+
+
+state 276
+
+  212 rangeSym: TK_ESCAPE_SEQUENCE .
+
+    $default  reduce using rule 212 (rangeSym)
+
+
+state 277
+
+  207 rangeDef: TK_OP_NUM_DIV $@4 rangeElms . TK_OP_NUM_DIV
+  208 rangeElms: rangeElms . rangeSym
+  210 rangeSym: . TK_CHARACTER
+  211         | . TK_OP_NUM_SUBST
+  212         | . TK_ESCAPE_SEQUENCE
+
+    TK_OP_NUM_SUBST     shift, and go to state 274
+    TK_OP_NUM_DIV       shift, and go to state 282
+    TK_CHARACTER        shift, and go to state 275
+    TK_ESCAPE_SEQUENCE  shift, and go to state 276
+
+    rangeSym  go to state 283
+
+
+state 278
+
+  209 rangeElms: rangeSym .
 
     $default  reduce using rule 209 (rangeElms)
 
 
+state 279
+
+  186 ruleElements: ruleElements . ruleElementOpt
+  189 ruleElementOpt: . ruleElement optMetaInstruction
+  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  191            | TK_PARENTHESES_OPEN $@3 ruleElements . TK_PARENTHESES_CLOSE
+  192            | . TK_STRING_CONSTANT
+  193            | . TK_RULE_REFERENCE
+  194            | . rangeDef
+  195            | . TK_CODE_SECTION
+  207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
+
+    TK_STRING_CONSTANT    shift, and go to state 252
+    TK_OP_NUM_DIV         shift, and go to state 253
+    TK_PARENTHESES_OPEN   shift, and go to state 254
+    TK_PARENTHESES_CLOSE  shift, and go to state 284
+    TK_RULE_REFERENCE     shift, and go to state 255
+    TK_CODE_SECTION       shift, and go to state 256
+
+    ruleElementOpt  go to state 264
+    ruleElement     go to state 260
+    rangeDef        go to state 261
+
+
+state 280
+
+  199 multiplicityDef: TK_INTEGER_CONSTANT TK_OP_NUM_SUBST . TK_INTEGER_CONSTANT
+
+    TK_INTEGER_CONSTANT  shift, and go to state 285
+
+
+state 281
+
+  205 multiplicityDef: TK_EXTRACT TK_INTEGER_CONSTANT .
+
+    $default  reduce using rule 205 (multiplicityDef)
+
+
+state 282
+
+  207 rangeDef: TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV .
+
+    $default  reduce using rule 207 (rangeDef)
+
+
 state 283
 
-  192 ruleElement: TK_PARENTHESES_OPEN $@2 ruleElements TK_PARENTHESES_CLOSE .
+  208 rangeElms: rangeElms rangeSym .
 
-    $default  reduce using rule 192 (ruleElement)
+    $default  reduce using rule 208 (rangeElms)
 
 
 state 284
 
-  200 multiplicityDef: TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT .
+  191 ruleElement: TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE .
 
-    $default  reduce using rule 200 (multiplicityDef)
+    $default  reduce using rule 191 (ruleElement)
+
+
+state 285
+
+  199 multiplicityDef: TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT .
+
+    $default  reduce using rule 199 (multiplicityDef)

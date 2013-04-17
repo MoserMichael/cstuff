@@ -1950,6 +1950,13 @@ static void set_int_value( VALHASH *hash, const char *name, POOH_INT nvalue )
   value->b.value.long_value = nvalue;
 }
 
+static void add_int( BINDING_DATA *obj, const char *name,  POOH_INT nvalue ) 
+{
+  VALHASH *hash = BINDING_DATA_get_hash( obj );
+  assert( hash != 0 );
+  set_int_value( hash, name, nvalue );
+}
+
 static void add_member_func( BINDING_DATA *obj, const char *func_name, AST_BASE *func )
 {
   VALHASH *hash;
@@ -2005,8 +2012,22 @@ static void add_imp( BINDING_DATA *obj, void *imp )
   BINDING_DATA_init( value, S_VAR_INT );
   value->b.value_flags_val = S_VAR_HEAP_VALUE;
   value->b.value.long_value = (POOH_INT) (size_t) imp;
-
 }
+
+static void add_val( BINDING_DATA *obj, const char *name, BINDING_DATA *val )
+{
+  VALHASH *hash;
+  BINDING_DATA key,*value;
+  hash = &obj->b.value.hash_value;
+  
+  BINDING_DATA_set_tmp_string( &key, (char *) name, (size_t) -1 );
+  
+  value = VALHASH_set_entry( hash, &key );
+  BINDING_DATA_copy( value, val, CP_REF );
+}
+
+
+
 
 /* --- */
 
@@ -2395,8 +2416,9 @@ static void x_file_open( XCALL_DATA *xcall )
   add_member_func( obj, "seek",     &file_io_xlib[1].base );
   add_member_func( obj, "read",     &file_io_xlib[2].base );
   add_member_func( obj, "write",    &file_io_xlib[3].base );
-  add_member_func( obj, "close",    &file_io_xlib[4].base );
-  add_member_func( obj, "finalize", &file_io_xlib[4].base );
+  add_member_func( obj, "parse",    &file_io_xlib[4].base );
+  add_member_func( obj, "close",    &file_io_xlib[5].base );
+  add_member_func( obj, "finalize", &file_io_xlib[5].base );
   imp->fp = fp;
 
   add_imp( obj, imp );
@@ -2926,20 +2948,14 @@ int PARSER_DATA_SRC_file (struct tagCIRCBUF *buf, size_t *read, void *ctx )
 
 static void make_parse_rvalue(  XCALL_DATA *xcall, int rt, PP_BASE_INFO *pinfo )
 {
-  BINDING_DATA *rval, tmp;
-  VALARRAY *arr;
+  BINDING_DATA *rval;
+  rval = XCALL_rvalue( xcall );  
+  BINDING_DATA_init( rval, S_VAR_HASH );
 
-  rval = XCALL_rvalue( xcall ); 
-  BINDING_DATA_init( rval, S_VAR_LIST );
-  arr = &rval->b.value.array_value;
+  add_int( rval, "status",    rt );
+  add_val( rval, "returnval", pinfo->data );
 
-  BINDING_DATA_init( &tmp, S_VAR_INT );
-  tmp.b.value.long_value = rt;
-  VALARRAY_set( arr, 0, &tmp, CP_VALUE );
-
-  VALARRAY_set( arr, 1, pinfo->data, CP_REF );
-
-
+  // add error messages  ***
 }
 
 int GRAMMAR_run_implx( AST_BASE *grammar, PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo  );
@@ -2998,6 +3014,54 @@ static void x_parse( XCALL_DATA *xcall )
 
 }
 
+static void x_termtext( XCALL_DATA *xcall )
+{
+  BINDING_DATA *data;
+  EVAL_THREAD *th = xcall->thread;
+  PEG_PARSER *parse;
+  POOH_INT index;
+  PP_BASE_INFO *pinfo;
+  BINDING_DATA *rval;
+  size_t slen, spos, epos;
+  VALSTRING *str;
+
+  if (!th->parse_impl) {
+     EVAL_CONTEXT_runtime_error( xcall->thread->context , "Function may only be called from grammar action" );
+     return;
+  }
+  parse = (PEG_PARSER *) th->parse_impl;
+  
+  data = XCALL_param( xcall, 0 ); 
+  BINDING_DATA_get_int( data, &index );
+
+  if (parse->current_rhs_clause_len < index || index == 0)  {
+    return;
+  }
+  
+  pinfo = parse->current_rhs_clause + index - 1;
+  spos = pinfo->start_idx.lookahead_offset;
+  epos = pinfo->end_idx.lookahead_offset;
+
+  if (spos > epos) {
+    slen = spos  + CIRCBUF_maxsize( &parse->lookahead ) - epos;
+  } else {
+    slen = epos - spos + 1;
+  }
+
+  rval = XCALL_rvalue( xcall );  
+  BINDING_DATA_init( rval, S_VAR_STRING );
+  str = &rval->b.value.string_value;
+  VALSTRING_set_capacity( str, slen );
+
+  if (spos > epos) {
+    memcpy( str->string, parse->lookahead.data, epos );
+    memcpy( str->string + epos, parse->lookahead.data + spos , CIRCBUF_maxsize( &parse->lookahead ) - spos );
+  } else {
+    memcpy( str->string, parse->lookahead.data, slen );
+  }
+
+
+}
 
 static void x_terminfo( XCALL_DATA *xcall )
 {
@@ -3006,8 +3070,10 @@ static void x_terminfo( XCALL_DATA *xcall )
   PEG_PARSER *parse;
   POOH_INT index;
   PP_BASE_INFO *pinfo;
+  BINDING_DATA *rval;
 
   if (!th->parse_impl) {
+     EVAL_CONTEXT_runtime_error( xcall->thread->context , "Function may only be called from grammar action" );
      return;
   }
   parse = (PEG_PARSER *) th->parse_impl;
@@ -3021,13 +3087,41 @@ static void x_terminfo( XCALL_DATA *xcall )
  
   pinfo = parse->current_rhs_clause + index - 1;
 
-#if 0
-  BINDING_DATA *obj, *rval;
 
-  obj = BINDING_DATA_MEM_new( S_VAR_HASH );
-  rval = XCALL_rvalue( xcall ); 
-  BINDING_DATA_copy( rval, obj, CP_REF );
-#endif
+  rval = XCALL_rvalue( xcall );  
+  BINDING_DATA_init( rval, S_VAR_HASH );
+
+  add_int( rval, "startline", pinfo->start_idx.line );
+  add_int( rval, "startcol",  pinfo->start_idx.column );
+  add_int( rval, "endline",   pinfo->end_idx.line );
+  add_int( rval, "endcol",    pinfo->end_idx.column );
+  add_int( rval, "count",     pinfo->match_count );
+  add_val( rval, "returnval", pinfo->data );
+}
+
+
+static void x_failparsing( XCALL_DATA *xcall )
+{
+  BINDING_DATA *data;
+  EVAL_THREAD *th = xcall->thread;
+  PEG_PARSER *parse;
+  BINDING_DATA *rval;
+
+  if (!th->parse_impl) {
+     EVAL_CONTEXT_runtime_error( xcall->thread->context , "Function may only be called from grammar action" );
+     return;
+  }
+  parse = (PEG_PARSER *) th->parse_impl;
+
+  data = XCALL_param( xcall, 0 ); 
+  data = BINDING_DATA_follow_ref( data ); 
+
+
+  parse->is_fail_parsing = 1;
+  rval =  BINDING_DATA_MEM_new( S_VAR_NULL );
+  BINDING_DATA_copy( rval, data, CP_REF );
+  parse->fail_reason = rval;
+
 }
 
 
@@ -3167,6 +3261,9 @@ AST_XFUNC_DECL xlib[] = {
 /* functions for parsing */
   DEFINE_XFUNC2( "parse",     x_parse, S_VAR_HASH,	"rules",     S_VAR_GRAMMAR, "input", S_VAR_STRING | S_VAR_HASH  ), 
   DEFINE_XFUNC1( "terminfo",  x_terminfo,  S_VAR_HASH,	"num",       S_VAR_INT ), 
+  DEFINE_XFUNC1( "termtext",  x_termtext,  S_VAR_STRING|S_VAR_NULL,	"num",       S_VAR_INT ), 
+  DEFINE_XFUNC1( "failparsing",  x_failparsing,  S_VAR_NULL,  "reason", S_VAR_ANY ),
+
 
 
 /* eof */

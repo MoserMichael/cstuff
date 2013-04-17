@@ -344,6 +344,22 @@ int LEXER_open_string( LEXCONTEXT *pc, const char *string, int init_token_value,
     return 0;
 }
 
+void LEXER_set_state( LEXCONTEXT *pc, int set_state )
+{
+#ifdef IS_REENTRANT
+    yyscan_t yyscanner = pc->yyscanner;  
+    struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
+#endif
+
+    if (set_state) {
+      BEGIN(INITIAL);
+    } else {
+      BEGIN(GRAMMAR);
+    }
+
+}
+
+
 int LEXER_scan_file( LEXCONTEXT *pc, int init_token_value, const char *file_name )
 {
 	MY_YY_BUFFER_STATE state;

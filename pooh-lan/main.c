@@ -28,6 +28,7 @@ int loadRTLIB( PARSECONTEXT *ctx )
   }
   return 0;
 }
+
 int run(EVAL_OPTIONS *opts)
 {
   PARSECONTEXT *ctx;
@@ -69,12 +70,11 @@ int run(EVAL_OPTIONS *opts)
     dump_ast( opts->file_name, ctx->my_ast_root, 2 );
   }
 
- 
-  if (opts->mode == EVAL_MODE_SCRIPT) {
- 
-     if (eval( ctx, opts )) {
-	goto err;
-    }
+
+  if (eval( ctx, opts )) {
+    goto err;
+  }
+#if 0    
   } else {
     FILE *fp;
     PEG_PARSER parser; 
@@ -104,6 +104,7 @@ int run(EVAL_OPTIONS *opts)
 
     EVAL_free( &ectx );
   }
+#endif  
 ok:
   PARSER_free(ctx);
   return 0;
@@ -169,8 +170,6 @@ void print_msg(const char *msg)
 		  " -x		    Trace execution of program\n"
 		  " -v		    print syntax tree into file. the file has the same name\n"
 		  "		    as script with extension .ast.1 .ast.2\n"
-		  " -g <grammar> <input file>\n"
-		  "		    input is the grammar file, which is used to parse the input file.\n"
 		  " -h		    show this help message and exit\n" );
   exit(1);	      
 }
@@ -220,17 +219,6 @@ void parse_cmd_line( int argc, char *argv[], EVAL_OPTIONS *opts )
 	    INC_PATH_add( opts->inc_path, argv[ i + 1 ], 1 );
 
 	i += 1; // skip argument
-     } else if (strcmp( argv[ i ], "-g" ) == 0) {
-        if ((i + 2 ) < argc) {
-	  opts->file_name = argv[ i + 1 ];
-	  opts->input_file = argv[ i + 2 ];
-	} else if ((i + 1) < argc) {
-	  opts->file_name = argv[ i + 1 ];
-	  opts->input_file = 0; // from stdin
-	} else {
-	  print_msg("Missing argument of -g option");	    
-	}
-	opts->mode = EVAL_MODE_GRAMMAR;	
      } else {
         opts->file_name = argv[ i ];
 

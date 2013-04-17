@@ -52,7 +52,6 @@ typedef enum
 
 
 /* parsing grammar rules */
-
   S_PP_RULE,
 
   S_PP_RULE_REF,
@@ -63,7 +62,7 @@ typedef enum
 
   S_PP_CHAR_CLASS,
 
-
+  S_PP_SCRIPT,
 } 
   S_TYPE;
 
@@ -1077,8 +1076,6 @@ typedef struct tagAST_PP_BASE {
 
 	int from;
 	int to;
-
-        AST_BASE *rule_script;
 	
 } AST_PP_BASE;
 
@@ -1086,7 +1083,6 @@ M_INLINE void AST_PP_BASE_init( AST_PP_BASE *scl, S_TYPE type , YYLTYPE *locatio
 {
     AST_BASE_init( &scl->base, type, location );
     scl->from = scl->to = 1;
-    scl->rule_script = 0;
 }
 
 typedef struct tagAST_PP_ALTERNATIVE {
@@ -1240,6 +1236,28 @@ M_INLINE AST_PP_CHAR_CLASS * AST_PP_CHAR_CLASS_init( YYLTYPE *location )
 	AST_PP_BASE_init( &scl->base, S_PP_CHAR_CLASS, location );
 
 	ARRAY_init( &scl->ranges, sizeof( AST_PP_RANGE ), 0 );
+
+	return scl;
+}
+
+/***************************************************/
+
+typedef struct tagAST_PP_SCRIPT {
+	AST_PP_BASE base;
+	AST_BASE *rule_script;
+} AST_PP_SCRIPT;
+
+
+M_INLINE AST_PP_SCRIPT * AST_PP_SCRIPT_init( AST_BASE *rule_script, YYLTYPE *location )   
+{
+	AST_PP_SCRIPT *scl;
+
+	scl = (AST_PP_SCRIPT  *) malloc( sizeof( AST_PP_SCRIPT ) );
+	if (!scl)
+	    return 0;
+	AST_PP_BASE_init( &scl->base, S_PP_SCRIPT, location );
+
+	scl->rule_script = rule_script;	    
 
 	return scl;
 }
