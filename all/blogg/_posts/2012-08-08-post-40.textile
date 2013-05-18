@@ -1,0 +1,10 @@
+---
+layout: post
+title: <notextile>news in TCP/IP land</notextile>
+---
+h2. {{ page.title }}
+<p class="publish_date">08  2012</p>
+
+<notextile>
+<br><br>Explains the new tcp option TCP_FASTOPEN that will speed up tcp connection by allowing sending of data with first SYN packet (but only for the second, third and so on connections to a single host).<br><br><a class="ot-anchor" href="http://lwn.net/SubscriberLink/508865/0785b746321ef4f3/" rel="nofollow">http://lwn.net/SubscriberLink/508865/0785b746321ef4f3/</a><br><br>Interesting.
+</notextile>

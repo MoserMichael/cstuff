@@ -1,0 +1,10 @@
+---
+layout: post
+title: <notextile>new tricks in TCP/IP land</notextile>
+---
+h2. {{ page.title }}
+<p class="publish_date">12  2012</p>
+
+<notextile>
+<br><br>High performance Linux networking tricks - how the soft IRQ that runs the protocol processing is run on the same core as the application logic <a class="ot-anchor" href="http://www.mjmwired.net/kernel/Documentation/networking/scaling.txt" rel="nofollow">http://www.mjmwired.net/kernel/Documentation/networking/scaling.txt</a>
+</notextile>

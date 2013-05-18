@@ -1,0 +1,10 @@
+---
+layout: post
+title: <notextile>readable Lisp</notextile>
+---
+h2. {{ page.title }}
+<p class="publish_date">21  2013</p>
+
+<notextile>
+<br><br>Interesting project: they want to make Lisp usable by formatting it as if it where Python: the level of indentation would take the meaning of the level of bracket nesting.&nbsp;<br><br><a class="ot-anchor" href="http://readable.sourceforge.net" rel="nofollow">http://readable.sourceforge.net</a><br><br>Another alternative input format: Graphical boxes instead of scope delimiters (begin ... end , { .. } etc ). he concepts of graphical programming languages are not very clear ; but here the graphical element (the box) is used as a substitute for syntactic construct; this has the utility that there are fewer occasions for syntax error.<br><br><a class="ot-anchor" href="http://www.soe.berkeley.edu/boxer/20reasons.pdf" rel="nofollow">http://www.soe.berkeley.edu/boxer/20reasons.pdf</a>
+</notextile>
