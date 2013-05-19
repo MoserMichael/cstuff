@@ -16,7 +16,11 @@
 #
 #   write_post($title,$post,$year,$month,$day,$post_id);
 #
-
+# BEWARE!
+# I Have noticed a strange bug in google takout: it did not export all of my posts. I hope that this is a transient
+# bug of the system, but please check and don't be surprised if not all of your posts show up translated, they may
+# have been missing from the take out process.
+#
 use HTML::DOM;
 
 $mnames = ( 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' );
