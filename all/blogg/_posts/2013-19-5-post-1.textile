@@ -1,0 +1,18 @@
+---
+layout: post
+title: First post on the github blog
+---
+h2. {{ page.title }}
+<p class="publish_date">19 May 2013</p>
+
+I am migrating away from google+; my "stuff is now here":http://mosermichael.github.io/cstuff/blog.html
+
+I have a script that helps in migrating a google+ based blog to github blog that is based on textile: 
+
+"the script":https://github.com/MoserMichael/cstuff/blob/master/scripts/google%2B-migration.pl
+
+I did not like the latest google+ redesign; also there are some posts that the google masters classified as 'in violation of their terms of use' whatever that means; as for me that violated my terms of use, so now I am moving.
+
+Also this social network thing is increasingly about control of the customers information diet / information bubble. This functionality includes an element of filtering: the system does not want you to be overwhelmed by/spammed with frequent posts, so it filters the information and shows you a subset of the postings. How is this filter implemented? Is it keyword based, is there a bias against certain keywords? Filtering is a close relative of censorship; many aspects of those social networks are not very transparent, and I suspect that those aspects will be subject to abuse in the near future.
+
+The old internet (Wordpress blogs/RSS/lack of a controller that records the social graph) is less centralized, and better for freedom.
