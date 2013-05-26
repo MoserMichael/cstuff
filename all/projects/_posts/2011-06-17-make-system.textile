@@ -179,26 +179,36 @@ Running make will build all targets in debug mode
 This will build the code with full optimization, and with debug symbols; one issue is that 
 executables and libraries are put in the same place for both debug and release builds; However the object
 files for release and debug builds are put in separate directories and do not intersect.
+
 	make MODE=release
 
 This will build the code with less optimization (on Linux it uses gcc and -O2).
+	
 	make MODE=release2
 
 We can also specify the desired type of executable produced.
+	
 	make ARCH=x86_64
+
 This will build a 64 bit executable (on the Intel platform that is)
+	
 	make ARCH=i686
+
 This will build a 32 executable.(on the Intel platform that is)
 
 Also there are some other nice tricks in store, tricks that are sometimes very useful during development
+
 	make CPP_LISTING=1
+
 Now the source file directory will also have a file with the "C preprocessor output":http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html  for each compiled file.
 For example the source file foo.c if compiled by target bar will have the file foo.bar.i with preprocessor output.
 The preprocessor output can be priceless when you have to fix compiler errors that involve macros for instance. 
 The preprocessor listing is created prior to compilation of a source file, as it is usually needed when we try to fix a weird compiler error
 
 Also the following invocation will produce the assembly listing for each compiled file.
+
 	make ASM_LISTING=1
+
 For example the source file foo.c if compiled by target bar will have the file foo.bar.S with assembly listing.
 The assembly listing can be priceless if you have to understand what happens with advanced optimization modes, for instance.
 The assembly listing is created after compilation of a source file, when we are sure that the stuff actually compiles.
@@ -209,11 +219,15 @@ h4. make test
 
 Will first build all targets and then build all test targets 
 You can specify a prefix command that will run the test targets; for instance 
- 	make test TEST_TOOL=valgrind 
+
+	make test TEST_TOOL=valgrind 
+
 Here all test programs will be checked by "valgrind":http://valgrind.org/
 Running valgrind on unit tests is something that one definitely wants to do - on the one hand a unit test is supposed to be short, so that valgrind runtime overhead will not be that significant, on the other hand unit tests are supposed to cover a lot of functionality - so this tool will help a lot here.
 Alternatively the following command will not run any tests at all; 
+       
        make test TEST_TOOL=true
+       
 Sometimes you really want to skip running tests, like when running a test is done by a post built step, or if you build with a cross compiler, for instance.
 
 h4. make clean 
@@ -245,6 +259,7 @@ I will have to devise a way that is compatible with other make systems.
 h3. Debugging the make file
 
 	make SHOW_RULES=1
+
 This command will dump to the screen most macro expansions that are done behind the scene.  It does not show all built rules though. 
 I think any macro system should have such an option built in - to dump the output to screen, but again, life is life.
 
