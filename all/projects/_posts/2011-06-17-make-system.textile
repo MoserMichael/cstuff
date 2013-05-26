@@ -173,7 +173,16 @@ h3. Invocation of make
 
 h4. make 
 
-Running make will build all targets
+Running make will build all targets in debug mode
+
+
+This will build the code with full optimization, and with debug symbols; one issue is that 
+executables and libraries are put in the same place for both debug and release builds; However the object
+files for release and debug builds are put in separate directories and do not intersect.
+	make MODE=release
+
+This will build the code with less optimization (on Linux it uses gcc and -O2).
+	make MODE=release2
 
 We can also specify the desired type of executable produced.
 	make ARCH=x86_64
@@ -229,6 +238,9 @@ Yes, I know that this statement is killing the punch line;-)
 
 That seems to be a general rule; whenever one is using more sophisticated features of software product X the more you do rely on a specific version of the X product; 
 So the make file to end all make files does not work on older version of gmake.
+
+Another major limitation is that I did not have to deal with the problem of cross builds;
+I will have to devise a way that is compatible with other make systems.
 
 h3. Debugging the make file
 
