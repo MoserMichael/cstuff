@@ -1,0 +1,108 @@
+---
+layout: post
+title: Linguistic Relativity and Me
+---
+h2. {{ page.title }}
+<p class="publish_date">02 June 2013</p>
+
+A "very interesting article":http://www.edge.org/conversation/how-does-our-language-shape-the-way-we-think by Lera Boroditsky on how language shapes the way we think.
+
+The Pormpuraaw people in Australia express spatial relations in terms of east, west, north, south instead of right, left, up, down; They have to stay oriented all time, otherwise they have no way to express themselves. Incidentally they are also great experts at navigating in unknown terrain; simply no match to most of us in this regards.
+
+The quoted article asks if this a property of culture or a trait of the language? I gather from the article that it works both ways, although that the influence is limited; 
+
+Here are my personal observations: I am a native speaker of German and are working as a computer programmer. I think that the German language trains me at understanding "long wound sentences":http://en.wikipedia.org/wiki/German_sentence_structure ; and that such a skill is beneficial to my work.
+
+Most often my task is to fix errors and adapt an existing program to changing requirements. This means that I have to read and understand existing programs more often than I have to write new ones. The process and skills required for reading of a program are similar to those required to parse a complicated sentence.
+
+It is sometimes not easy to understand sentences with a complex structure of subordinate phrases. The first task is to listen patiently and to analyze how the sentence unfolds; keep listen patiently until one hears a closing Verb; next task is to work in reverse direction and to reconstruct the meaning of what has been said.
+
+h3. Reading programs:
+
+The very first step is to understand the new system in terms of its input and its output; If it communicates with the network then what is the details of the communication protocol that is used? If it is a program that interacts with the users, then what are entities that are manipulated? A system interacts with its environment in many ways; what are the main, most often used scenarios that characterise the system?
+
+The next step is to understand the big picture: this means the breakup of of the system into modules and sub systems; a module contains source text that it intended to implement related functionality within a program. For this stage one needs to apply some knowledge of software engineering and lots of practical experience in the field. During this stage we search for common metaphors and idioms: how is memory managed? How are events logged within the system? Architecture of How are networking events handled ? What is the paradigm of multiprocessing/multi-threading are being used?
+
+Once this is understood, search for the main entry point: How does the request, the external stimulus enter the system ? Also a program has to manipulate data: what are the data structures that represent external stimulus within the system ?
+
+Once all this is understood, read the code and mentally work through the code as the request is being processed; All this continues our attempt to understand the main use cases / the main scenario that the system is used at. While doing so search for additional clues; Of great use is to to look in parallel at the source code and at the logs produced while using the system in its main scenarios. At this stage we are actually reading the code of functions and objects that make up the program. A function often contains many nested conditional statements (if a then if b then if c else else else). Here we have our complex phrase structure; again we have to wait for the many partial statements, until there is a Verb; the action here most often is a function call that is supposed to implement a different aspect of the system.
+
+Often one has to work backwards: a new detail that is discovered adds clues as to understand preceding functions, the call of these function has got us here in the first place; it also happens that one needs to return to a previous stage in this process, as new data can often revise what was thought were established fact.
+
+It is here, I think, that a habit of backtracking, that has been trained by the habit of parsing long wound sentences, is beneficial. (The last sentence is also supposed to be a pun on the whole argument ;-)
+
+On the other hand it is impossible to know if all this was all that important. Was it my training in parsing of long wound sentences or certain other non-functional aspects of my career? I have been working mostly for well established companies, these companies have a priority to maintain existing systems. Programmers who work for start-ups need to write new code more often than me.
+
+h3. More on Long wound sentences
+
+The "German Wikipedia entry":http://de.wikipedia.org/wiki/Nebensatz says that the practice of using a complex word structures has been in lesser use since the 20ieth century; funny that this observation so far did not make it into the "English Wikipedia article":http://en.wikipedia.org/wiki/German_sentence_structure , it might be that it is harder to notice a tendency for simplification for outside observers.
+
+I can only speculate as to why this habit of expression has been flourishing in the first place.
+
+Maybe the Buerger of the 19th century where eager to ascertain themselves as being better than the aristocracy; standing on higher ground than those who held real political power throughout the 19th century. One of the ways here being "Education/Bilding":http://en.wikipedia.org/wiki/Bildungsb%C3%BCrgertum . It might be that complex language was a tool in the political struggle of the day. "Thomas Mann":http://en.wikipedia.org/wiki/Thomas_Mann , the writer of the Bildungsbuerger incidentally made a lot of use of that style.
+
+Does it also show a certain pretentiousness of the speaker? A desire to mark ones personal distinction by making his own knowledge less accessible to others? 
+
+Is is rather a clever ruse of packaging: designed to force the listener to invest more into the parsing of the sentence, along with the hope that he, the listener will care more to understand the contents?
+
+What is real reason here? I haven't the foggiest idea.
+
+The choice of style still remains the individual decision of every author, for that matter one can choose to talk in simple ways, or one can talk like the character "Owl in Winnie the Pooh":http://en.wikipedia.org/wiki/Owl_(Winnie_the_Pooh).
+
+h3. How much does it all matter?
+
+I can understand that language creates habits of expression; it also forms common idioms that are understood by a wider audience. Works of art are often based on allusions that have to be understood by a wider audience. Probably all public communications is making assumptions as to what can be understood by the intended audience.
+
+But I wonder: does this common system of associations predetermine the thoughts and mental associations of an individual ? Do the conventions of the common language place "limits on what can be thought":http://en.wikipedia.org/wiki/Sapir%E2%80%93Whorf_hypothesis ?
+
+I would argue that besides the public language many individuals are forming their own private language of idioms over the course of their live times. A system of mental association is a language - any system of signs is a language. This private customized language exists in order to better express the experience of the individual, and is sometimes shared among the close circle of associates.
+
+As a student of mathematics I noticed that the material of a course was only understood when I could create at least some basic analogies between the concepts and my realm of experience. Now I think that these analogies together were forming my own private language, one that was extending my private limits of what could be thought. (Well, I wasn't a big success as a student mathematics, but still...)
+
+I would argue that the ability to create a private system/language of associations individual escape route from the trappings of language; so that on an individual level the Saphir Worf conjecture is certainly false.
+
+Also from the quoted article:
+
+<blockquote>
+How do we know that it is language itself that creates these differences in thought and not some other aspect of their respective cultures?
+
+One way to answer this question is to teach people new ways of talking and see if that changes the way they think. In our lab, we've taught English speakers different ways of talking about time. In one such study, English speakers were taught to use size metaphors (as in Greek) to describe duration (e.g., a movie is larger than a sneeze), or vertical metaphors (as in Mandarin) to describe event order. Once the English speakers had learned to talk about time in these new ways, their cognitive performance began to resemble that of Greek or Mandarin speakers. This suggests that patterns in a language can indeed play a causal role in constructing how we think
+</blockquote>
+
+So for the purpose of the test people did adjust their own personal language the test requirements;
+
+Of course since of the private nature of the personal language of associations, it is an impossible subject for study. Alas there are many questions that are impossible to study; a similar such question is 'to what extend the placebo effect would help on an individual level'. Maybe its also good that this subject cannot be studied, so those who are looking at a person from position of powers will never have the ultimate tool of knowledge at their command. The benefit of doubt is a good thing.
+
+
+h3. The sinister politics of Linguistic relativity
+
+Somehow the concept of Linguistic relativity, the notion that language shapes though, has had some strong political implications:
+
+<blockquote>
+"Von Humboldt":http://en.wikipedia.org/wiki/Sapir%E2%80%93Whorf_hypothesis#German_Romantic_philosophers argued that languages with an inflectional morphological type, such as German, English and the other Indo-European languages were the most perfect languages and that accordingly this explained the dominance of their speakers over the speakers of less perfect languages. 
+</blockquote>
+
+Here it is: all languages are equal, but some languages are more equal than others; and the notion is invented exactly during an age of colonial expansion. Each age gets the thought that it needs.
+
+Also ever since they got the notion that thought is shaped by language, totalitarian politicians were pushing in exactly this direction. Welcome to the totalitarian language of propaganda; Both the Nazis and Soviet regarded their respective language of propaganda as a source of power.
+The Nazi language of propaganda has been analyzed by Victor Klemperer in "LTI  Lingua Tertii Imperii: Notizbuch eines Philologen":http://en.wikipedia.org/wiki/LTI_%E2%80%93_Lingua_Tertii_Imperii  - this is a "lexicon of the Nazi propaganda language":http://lti-lexikon.de/ based on this work. I think that the Soviet language of propaganda has been an inspiration to Orwell's "Newspeak":http://en.wikipedia.org/wiki/Newspeak
+
+I would also like quote an "interesting opinion":http://unishade.com/gimle/index.cgi/insomanyotherways.comments by Baldur Bjarnason
+
+<blockquote>
+Linguistic relativism is the equivalent of staring down the barrel of a gun while ignore the person whose finger is on the trigger.
+Language, linguistic dominance, are the cannons of cultural warfare. Without a language, a culture is defenseless.
+The linguistic relativists might be right in all of their observations, but they are simply staring at the bullet and mistaking it for the lock, stock, barrel and sniper all rolled into one convenient lump of lead.
+Language is wielded, formedyour arms and armour.
+It kills. Just ask the Welsh, Kenyans, Native Americans or South-American Natives.
+Linguistic relativism is a nice idea to those who belong to a dominant, still imperialistic culture (and this applies to the English, Japanese, Koreans and Germans, all cultures that are strong and on the offensive in the war of globalisation).
+But there is nothing relative about a bullet in the head.
+Or fighting for the survival of your nation and culture.
+The odds are stacked against us, in your favour.
+</blockquote>
+
+
+
+
+
+
