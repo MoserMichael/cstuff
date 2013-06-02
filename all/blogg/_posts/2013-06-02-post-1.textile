@@ -19,7 +19,7 @@ It is sometimes not easy to understand sentences with a complex structure of sub
 
 h3. Reading programs:
 
-The very first step is to understand the new system in terms of its input and its output; If it communicates with the network then what are the details of the communication protocol that is used? If it is a program that interacts with the users, then what are entities that are manipulated? A system interacts with its environment in many ways; what are the main, most often used scenarios that characterise the system?
+The very first step is to understand the new system in terms of its input and its output; If it communicates with the network then what are the details of the communication protocol that is used? If it is a program that interacts with the users, then what are entities that are manipulated? A system interacts with its environment in many ways; what are the main, most often used scenaria that characterise the system?
 
 The next step is to understand the big picture: this means the breakup of of the system into modules and sub systems; a module contains source text that it intended to implement related functionality within a program. For this stage one needs to apply some knowledge of software engineering and lots of practical experience in the field. During this stage we search for common metaphors and idioms: how is memory managed? How are events logged within the system? Architecture of How are networking events handled ? What paradigms of multiprocessing/multi-threading are being used?
 
