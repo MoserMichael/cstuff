@@ -19,9 +19,9 @@ It is sometimes not easy to understand sentences with a complex structure of sub
 
 h3. Reading programs:
 
-The very first step is to understand the new system in terms of its input and its output; If it communicates with the network then what are the details of the communication protocol that is used? If it is a program that interacts with the users, then what are entities that are manipulated? A system interacts with its environment in many ways; what are the main, most often used scenaria that characterise the system?
+The very first step is to understand the new system in terms of its input and its output; If it communicates with the network then what are the details of the communication protocol that is used? If it is a program that interacts with the users, then what entities are manipulated by the user? A system interacts with its environment in many ways; what are the main, most often used scenaria that characterise the system?
 
-The next step is to understand the big picture: this means the breakup of of the system into modules and sub systems; a module contains source text that it intended to implement related functionality within a program. For this stage one needs to apply some knowledge of software engineering and lots of practical experience in the field. During this stage we search for common metaphors and idioms: how is memory managed? How are events logged within the system? Architecture of How are networking events handled ? What paradigms of multiprocessing/multi-threading are being used?
+The next step is to understand the big picture: this means the breakup of the system into modules and sub systems; a module contains source text that it intended to implement related functionality within a program. For this stage one needs to apply some knowledge of software engineering and lots of practical experience in the field. During this stage we search for common metaphors and idioms: how is memory managed? How are events logged within the system?  How are networking events handled ? What paradigms of multiprocessing/multi-threading are being used?
 
 Once this is understood, search for the main entry point: How does the request, the external stimulus enter the system ? Also a program has to manipulate data: what are the data structures that represent the request within the system ?
 
@@ -39,11 +39,11 @@ The "German Wikipedia entry":http://de.wikipedia.org/wiki/Nebensatz says that th
 
 I can only speculate as to why this habit of expression has been flourishing in the first place.
 
-Maybe the Buerger of the 19th century where eager to ascertain themselves as being better than the aristocracy; They made a point of standing on higher ground than those who held the real political power throughout the 19th century. One of the ways to do so was "Education/Bildung":http://en.wikipedia.org/wiki/Bildungsb%C3%BCrgertum . It might be that complex language was a tool in the political struggle of the day. "Thomas Mann":http://en.wikipedia.org/wiki/Thomas_Mann , the writer of the Bildungsbuerger incidentally made a lot of use of this style.
+Maybe the Buerger of the 19th century where eager to ascertain themselves as being better than the aristocracy; They made a point of standing on higher ground than those who held the real political power throughout the 19th century. One of the ways to do so was "Education/Bildung":http://en.wikipedia.org/wiki/Bildungsb%C3%BCrgertum . It might be that complex language was a tool in the political struggle of the day. "Thomas Mann":http://en.wikipedia.org/wiki/Thomas_Mann , the writer of the Bildungsbuerger incidentally made a lot of use of this style. On the other hand this style is much older, some of the most convoluted sentences ever written in the 18th century by Kant, so go figure.
 
 Does it also show a certain pretentiousness of the speaker? Does it mark the desire of the speaker to stress his personal distinction by making his own knowledge less accessible to others? 
 
-Is this a clever ruse of packaging; is it a trick that forces the listener to invest more into the parsing of a sentence; maybe the plan is to create additional involvement, to trick the listener into investing more effort at  understand the message of what has been said?
+Or is this a clever ruse of packaging; is it a trick that forces the listener to invest more into the parsing of a sentence; maybe the plan is to create additional involvement, to trick the listener into investing more effort at understand the message of what has been said?
 
 What is real reason here? I haven't the foggiest idea.
 
