@@ -998,6 +998,7 @@ M_INLINE AST_FUNC_CALL * AST_FUNC_CALL_init( AST_EXPRESSION *f_name, AST_VECTOR 
   }
   AST_BASE_init( &scl->base, S_FUN_CALL, location );
 
+  //assert( !f_name || f_name->base.type == S_EXPRESSION );  
   assert( f_name->base.type == S_EXPRESSION );  
   scl->f_name = f_name ;
   
@@ -1076,6 +1077,7 @@ typedef struct tagAST_PP_BASE {
 
 	int from;
 	int to;
+
 	
 } AST_PP_BASE;
 
@@ -1117,6 +1119,7 @@ M_INLINE void AST_PP_ALTERNATIVE_add( AST_PP_ALTERNATIVE *alt, AST_BASE_LIST *se
     size_t cnt;
 
     DRING_push_back( &alt->alternatives, &sequence->base.entry);
+    sequence->base.parent = &alt->base.base;
 
     cnt = DRING_size( &sequence->statements );
     if (alt->max_length_sequence < cnt ) 
@@ -1129,8 +1132,8 @@ M_INLINE void AST_PP_ALTERNATIVE_add( AST_PP_ALTERNATIVE *alt, AST_BASE_LIST *se
 
 typedef enum 
 {
-	S_PP_RULE_GRAMMAR,
-	S_PP_RULE_TOKEN,
+	S_PP_RULE_GRAMMAR = 1,
+	S_PP_RULE_TOKEN = 2,
 }
 	S_PP_RULE_TYPE;
 
@@ -1162,6 +1165,7 @@ M_INLINE AST_PP_RULE *AST_PP_RULE_init( const char *rule_name, S_PP_RULE_TYPE ty
 	scl->rule_name = strdup( rule_name );
 	scl->rtype = ty;
 	AST_PP_ALTERNATIVE_init_mem( &scl->rhs, location );
+	scl->rhs.base.base.parent = &scl->base.base;
 	scl->flags = 0;
 	return scl;
 }
@@ -1173,6 +1177,7 @@ typedef struct tagAST_PP_RULE_REF {
 
 	const char *rule_name;
 	AST_PP_RULE *rule_ref_resolved;
+	int is_token;    // this one is a terminal symbol in the grammar.
 
 }	AST_PP_RULE_REF;
 
@@ -1188,7 +1193,8 @@ M_INLINE AST_PP_RULE_REF *AST_PP_RULE_REF_init( const char *rule_name, YYLTYPE *
 	AST_PP_BASE_init( &scl->base, S_PP_RULE_REF, location );
 
 	scl->rule_name = strdup( rule_name );
-	scl->rule_ref_resolved = 0;
+	scl->rule_ref_resolved = 0; // set in checke phase
+	scl->is_token = 0; // set in checker phase.
 
 	return scl;
 }
@@ -1377,13 +1383,21 @@ M_INLINE void PEG_PARSER_POS_add( PEG_PARSER_POS *pos, PP_CHAR ch )
 
 // info on a parsed clause.
 typedef struct tagPP_BASE_INFO {
-  PEG_PARSER_POS  start_idx;         // start position of match
-  PEG_PARSER_POS end_idx;           // end position of match
+  PEG_PARSER_POS  start_idx;        // position tracking: start position of match
+  PEG_PARSER_POS end_idx;           // position tracking: end position of match
   size_t match_count;               // number of repetitions of the clause
   union tagBINDING_DATA *data;      // value produced by rule.
   
 } PP_BASE_INFO;
 
+M_INLINE void PP_BASE_INFO_init( PP_BASE_INFO *info )
+{
+  PEG_PARSER_POS_init( &info->start_idx );
+  PEG_PARSER_POS_init( &info->end_idx );
+
+  info->match_count = 0;
+  info->data = 0;
+}
 
 
 #include "parsectx.h"

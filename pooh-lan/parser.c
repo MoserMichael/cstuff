@@ -390,7 +390,7 @@ PARSECONTEXT * PARSER_init( INC_PATH *inc_path )
 
   memset( ret, 0, sizeof( PARSECONTEXT ) );
 
-  if (PARSECONTEXT_init( ret, inc_path )) { 
+  if (PARSECONTEXT_init( ret, inc_path, 0 )) { 
     return 0;
   }
 

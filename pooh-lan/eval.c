@@ -112,7 +112,7 @@ void EVAL_TRACE_ENTRY_free( EVAL_TRACE_ENTRY *entry )
 
 // ========================================================================================
 
-int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on )
+int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on, int grammar_trace_flags )
 {
   size_t num_globals = ((AST_FUNC_DECL *) ctx->my_ast_root)->last_stack_offset + 1;
   if (EVAL_CONTEXT_init( &out->context, num_globals )) {
@@ -123,6 +123,7 @@ int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on )
   TRACE_OUT_init( &out->trace_out, stderr );
 
   out->context.trace_on= 1;
+  out->grammar_trace_flags = grammar_trace_flags;
 
   out->last_freed = out->top_trace = 0;
   out->ctx = ctx;
@@ -1402,7 +1403,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
  
     tracer = out->top_trace;
  
-    if (f_name->exp_type != S_EXPR_LAMBDA_RESOLVED) {
+    if (!f_name || f_name->exp_type != S_EXPR_LAMBDA_RESOLVED) {
       
       // evaluate expression that must return the function value.
       //prev_val =  out->context.trace_on; 
@@ -1433,7 +1434,9 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
       fdecl = f_name->val.fdecl;
  
       if (tracer) {
-        DBUF_add(  &tracer->text, f_name->val.ref.lhs, strlen( f_name->val.ref.lhs) );
+        char *name = f_name->val.ref.lhs;
+	if (name)
+          DBUF_add(  &tracer->text, name, strlen( name ) );
       }
     }	
      
@@ -1524,7 +1527,7 @@ int EVAL_do_function( EVAL_CTX *out , AST_FUNC_CALL *scl, int is_thread, EVAL_TH
 BINDING_DATA * EVAL_function(  EVAL_CTX *out, AST_FUNC_CALL *scl )
 {
     int show;
-    EVAL_TRACE_ENTRY *trace;
+    EVAL_TRACE_ENTRY *trace = 0;
     BINDING_DATA *data;
     EVAL_THREAD *cthread;
 
@@ -2299,7 +2302,9 @@ int EVAL_parse_func( AST_BASE *grammar,  PEG_PARSER_DATA_SRC data_cb, void *data
   if (cthread->parse_impl != 0) {
      EVAL_error( ctx , 0,  "parser already running in current thread" );
   }
+  cthread->parse_impl = &parser;
 
+  PP_BASE_INFO_init( pinfo ); 
   PEG_PARSER_init( &parser, grammar, 4096, data_cb, data_cb_ctx, ctx );
 
   rt = PEG_PARSER_run( &parser, pinfo );
@@ -2376,7 +2381,7 @@ int eval( PARSECONTEXT *ctx, EVAL_OPTIONS *opts  )
 {
   EVAL_CTX ectx;
 
-  if ( !EVAL_init( &ectx, ctx, opts->is_trace_on  )) {
+  if ( !EVAL_init( &ectx, ctx, opts->is_trace_on, opts->grammar_trace_flags )) {
 
     if (EVAL_run( &ectx, ctx->my_ast_root, opts->argv, opts->argc )) {
       return -1;

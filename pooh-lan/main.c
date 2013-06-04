@@ -197,6 +197,8 @@ void parse_cmd_line( int argc, char *argv[], EVAL_OPTIONS *opts )
         opts->is_verbose = 1;
      } else if (strcmp( argv[ i ], "-x" ) == 0) {
 	opts->is_trace_on = 1;
+	opts->grammar_trace_flags = S_PP_RULE_GRAMMAR; //S_PP_RULE_GRAMMAR | S_PP_RULE_TOKEN;
+ 
      } else if (strcmp( argv[ i ], "-i" ) == 0 || strcmp( argv[ i ], "-I" ) == 0) {
         struct stat statbuf;
 	char msg[ PATH_MAX * 2 ];

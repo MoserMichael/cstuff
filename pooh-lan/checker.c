@@ -533,11 +533,9 @@ void CHECKER_expr( PARSECONTEXT *ctx, AST_EXPRESSION *expr)
       break;
 
     case S_EXPR_CONSTANT:
-#if 0    
       if (expr->value_type == S_VAR_GRAMMAR) {
         CHECKER_pass( ctx, expr->val.const_value.grammar_value );
       }
-#endif      
       break;
 
     case S_EXPR_FUNCALL: {
@@ -822,17 +820,19 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 {
     AST_EXPRESSION *f_name;
-    const char *func_name;
+    //const char *func_name;
     AST_BASE *func_def = 0; 
    
     f_name =  fcall->f_name;
 
     ctx->chkctx.is_function_name = 1;
-    CHECKER_pass( ctx, (AST_BASE *) fcall->f_name );
+    if (fcall->f_name)
+	CHECKER_pass( ctx, (AST_BASE *) fcall->f_name );
     ctx->chkctx.is_function_name = 0;
      
     CHECKER_pass( ctx, (AST_BASE *) fcall->call_params );
 
+    if (f_name) {
     if (f_name->exp_type == S_EXPR_LAMBDA || f_name->exp_type == S_EXPR_LAMBDA_RESOLVED || f_name->exp_type == S_EXPR_LAMBDA_RESOLVED_REF ) {
       func_def = f_name->val.fdecl;
     }
@@ -841,13 +841,15 @@ int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
     if (f_name->exp_type == S_EXPR_LAMBDA_RESOLVED_REF) {
       f_name->exp_type = S_EXPR_LAMBDA_RESOLVED; // now we know it is part of function call. 
     }
+    }
 
 
     if (!func_def) {
       return 0;
     }
+#if 0    
     func_name =  ((AST_FUNC_DECL *) func_def)->f_name;
-    
+#endif    
     fcall->func_decl = func_def;
 
     CHECKER_check_func_call_params( ctx, ctx->chkctx.pass, fcall, func_def );
@@ -1224,9 +1226,11 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
     break;
 
   case S_PP_RULE_REF: {
+#if 0  
     AST_PP_RULE_REF *scl = (AST_PP_RULE_REF *) base;
     assert( scl->rule_ref_resolved != 0 ); 
     CHECKER_pass( ctx, &scl->rule_ref_resolved->base.base );
+#endif
     }
     break; 
   case S_PP_ALTERNATIVE:{
@@ -1251,15 +1255,19 @@ void  CHECKER_pass( PARSECONTEXT *ctx, AST_BASE *base )
     }
     break;
   
-  case S_PP_SCRIPT: {
+  case S_PP_SCRIPT: { 
+    AST_FUNC_CALL *fcall;
     AST_PP_SCRIPT *scl = (AST_PP_SCRIPT *) base;
     if (scl->rule_script) {
-        CHECKER_pass( ctx, scl->rule_script );
+        fcall = (AST_FUNC_CALL *) scl->rule_script;
+	CHEKCER_func_decl( ctx, (AST_FUNC_DECL *) fcall->func_decl );
+        //CHECKER_pass( ctx, fcall->func_decl );
+        CHECKER_pass( ctx, (AST_BASE *) fcall );
     }        
     }
     break;
   
-  case S_PP_RULE_CONSTANT:
+  case S_PP_RULE_CONSTANT:     
   case S_PP_CHAR_CLASS:
     break;
    

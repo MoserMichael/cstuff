@@ -2019,6 +2019,10 @@ static void add_val( BINDING_DATA *obj, const char *name, BINDING_DATA *val )
   VALHASH *hash;
   BINDING_DATA key,*value;
   hash = &obj->b.value.hash_value;
+
+  if (!val) {
+    val = get_CONST_NULL();
+  }
   
   BINDING_DATA_set_tmp_string( &key, (char *) name, (size_t) -1 );
   
@@ -2929,12 +2933,12 @@ int PARSER_DATA_SRC_file (struct tagCIRCBUF *buf, size_t *read, void *ctx )
 
    wrap_buffer = buf->read_pos < buf->write_pos;
    sz = buf->maxcount - buf->write_pos; 
-   rt = fread( buf->data + buf->write_pos, sz, 1, fl );
+   rt = fread( buf->data + buf->write_pos, 1, sz, fl );
    if (rt > 0) {
       nread += rt;
       buf->write_pos += rt;
       if (wrap_buffer && rt == sz && buf->read_pos > 0) {
-          rt = fread( buf->data, sz, 1, fl );
+          rt = fread( buf->data, 1, sz, fl );
 	  if (rt > 0) {
 	    nread += rt;
 	    buf->write_pos = rt;
@@ -3022,7 +3026,8 @@ static void x_termtext( XCALL_DATA *xcall )
   POOH_INT index;
   PP_BASE_INFO *pinfo;
   BINDING_DATA *rval;
-  size_t slen, spos, epos;
+  size_t  spos, epos;
+  DBUF copy_to;
   VALSTRING *str;
 
   if (!th->parse_impl) {
@@ -3042,25 +3047,17 @@ static void x_termtext( XCALL_DATA *xcall )
   spos = pinfo->start_idx.lookahead_offset;
   epos = pinfo->end_idx.lookahead_offset;
 
-  if (spos > epos) {
-    slen = spos  + CIRCBUF_maxsize( &parse->lookahead ) - epos;
-  } else {
-    slen = epos - spos + 1;
+  if (CIRCBUF_extract_text( &parse->lookahead, spos, epos, &copy_to )) {
+    EVAL_CONTEXT_runtime_error( xcall->thread->context , "can't allocate" );
   }
 
   rval = XCALL_rvalue( xcall );  
   BINDING_DATA_init( rval, S_VAR_STRING );
   str = &rval->b.value.string_value;
-  VALSTRING_set_capacity( str, slen );
 
-  if (spos > epos) {
-    memcpy( str->string, parse->lookahead.data, epos );
-    memcpy( str->string + epos, parse->lookahead.data + spos , CIRCBUF_maxsize( &parse->lookahead ) - spos );
-  } else {
-    memcpy( str->string, parse->lookahead.data, slen );
-  }
-
-
+  str->length = copy_to.buf_used - 1;
+  str->capacity = copy_to.buf_used;
+  str->string = (char *) copy_to.buf;
 }
 
 static void x_terminfo( XCALL_DATA *xcall )

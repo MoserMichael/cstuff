@@ -20,6 +20,7 @@ typedef struct {
   // script mode.
   char *file_name;
   int   is_trace_on;
+  S_PP_RULE_TYPE grammar_trace_flags;
   int   is_verbose;
 
   char **argv;
@@ -50,6 +51,7 @@ typedef struct tagEVAL_CTX {
   EVAL_CTX_BREAK_ACTION loop_exit;
 
   TRACE_OUT trace_out;
+  int grammar_trace_flags;
   struct tagEVAL_TRACE_ENTRY *last_freed,*top_trace;
   PARSECONTEXT *ctx; // for error messages onlya
 
@@ -57,7 +59,7 @@ typedef struct tagEVAL_CTX {
 } EVAL_CTX;
 
 
-int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on  );
+int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on, int grammar_trace_flags );
 int EVAL_run(  EVAL_CTX *out, AST_BASE *base, char **argv, int argc );
 int EVAL_free( EVAL_CTX *out );
 BINDING_DATA * EVAL_function(  EVAL_CTX *out, AST_FUNC_CALL *scl );

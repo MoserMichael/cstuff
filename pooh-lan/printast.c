@@ -44,6 +44,10 @@ void AST_print_expr( FILE *out, AST_EXPRESSION *expr)
 	case S_VAR_NULL:
 	    fprintf( out, "Null" );
 	    break;
+        case S_VAR_GRAMMAR:
+	    fprintf( out, "Grammar: " );
+            AST_print( out, expr->val.const_value.grammar_value );
+            break;
 	default:
 	    assert(0);
       }
@@ -387,6 +391,17 @@ void AST_print( FILE *out, AST_BASE *base )
     fprintf( out, "/" );
 
     print_pp_base(  out, &scl->base );
+  }
+    break;
+
+  case S_PP_SCRIPT: {
+    AST_PP_SCRIPT *scl = (AST_PP_SCRIPT *) base;
+    AST_FUNC_CALL *fcall = (AST_FUNC_CALL *) scl->rule_script;
+
+    fprintf( out, "[script], " );
+    AST_print( out, (AST_BASE *) scl->rule_script );
+    AST_print( out, (AST_BASE *) fcall->func_decl );
+
   }
     break;
 

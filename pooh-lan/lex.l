@@ -218,9 +218,9 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 		  MY_YY_RETURN(TK_ERROR);
 		}
 	        if (rt == 1) {
-	 	  return TK_STRING_CONSTANT;
+	 	  MY_YY_RETURN(TK_STRING_CONSTANT);
 		}
-	        return TK_MULTI_PART_STRING_CONSTANT;  
+	        MY_YY_RETURN(TK_MULTI_PART_STRING_CONSTANT);  
  }
 
 
@@ -231,6 +231,8 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 <GRAMMAR>")"	    { MY_YY_RETURN(TK_PARENTHESES_CLOSE); }
 
 <GRAMMAR>"="	    { MY_YY_RETURN(TK_ASSIGN); }
+
+<GRAMMAR>"\|"	    { MY_YY_RETURN( TK_ALTERNATIVE_CHOICE); }
 
 <GRAMMAR>":"	    { MY_YY_RETURN(TK_COLON); }
 
@@ -268,16 +270,14 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 		    }
 	
 <GRAMMAR>"["	    {
-
-			    STRING_PART *part;
 			    DBUF buff;
 			 
 			    DBUF_init( &buff, 0 );
-			    if (parse_expression_only( lex_context,  &buff) )
+
+			    if (parse_expression_only( lex_context, &buff ) ) 
 			    {
 				 MY_YY_RETURN(TK_ERROR);
 			    }
-			    DBUF_add_null( &buff );
 			    SET_YY_STYPE( string_value, (const char *) buff.buf );
 			    
 			    MY_YY_RETURN(TK_CODE_SECTION);
@@ -285,10 +285,10 @@ RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 		    
 <GRAMMAR>{RULEREF}  {
 			    int nlen = strlen( yytext );
-			    char *ruleref = malloc( nlen - 1 );
+			    char *ruleref = malloc( nlen );
 			
 			    memcpy( ruleref, yytext + 1, nlen - 2 );
-			    ruleref[ nlen - 1 ] = '\0';
+			    ruleref[ nlen - 2 ] = '\0';
 
 			    SET_YY_STYPE( string_value, ruleref );
 			    MY_YY_RETURN(TK_RULE_REFERENCE); 

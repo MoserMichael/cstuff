@@ -5,7 +5,6 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 -warnings	Makefile	/^		bison --warnings=error --report=all --report-file=pars.report --defines=pars.h -o $@ $< $/;"	m
-ADD_ERROR	grammar.c	326;"	d	file:
 AST_ASSIGNMENT	ast.h	/^} AST_ASSIGNMENT;$/;"	t	typeref:struct:tagAST_ASSIGNMEN
 AST_ASSIGNMENT_init	ast.h	/^M_INLINE AST_ASSIGNMENT * AST_ASSIGNMENT_init( CP_KIND type,$/;"	f	signature:( CP_KIND type, struct tagAST_EXPRESSION *lhs, struct tagAST_EXPRESSION *rhs, YYLTYPE *location )
 AST_BASE	ast.h	/^}	AST_BASE;$/;"	t	typeref:struct:tagAST_BASE
@@ -128,7 +127,6 @@ DEFINE_XFUNC6	ast.h	799;"	d
 DISCARD	eval.c	/^  DISCARD,$/;"	e	enum:__anon14	file:
 ECHO	lexer.c	140;"	d	file:
 ERROR_MSG_LEN	parser.c	18;"	d	file:
-ERROR_RESET	grammar.c	328;"	d	file:
 EVAL_CTX	eval.h	/^} EVAL_CTX;$/;"	t	typeref:struct:tagEVAL_CTX
 EVAL_CTX_BREAK_ACTION	eval.h	/^} EVAL_CTX_BREAK_ACTION;$/;"	t	typeref:enum:__anon17
 EVAL_CTX_FREE_ACTION	eval.c	/^} EVAL_CTX_FREE_ACTION;$/;"	t	typeref:enum:__anon14	file:
@@ -158,8 +156,8 @@ EVAL_free	eval.c	/^int EVAL_free( EVAL_CTX *out )$/;"	f	signature:( EVAL_CTX *ou
 EVAL_free	eval.h	/^int EVAL_free( EVAL_CTX *out );$/;"	p	signature:( EVAL_CTX *out )
 EVAL_function	eval.c	/^BINDING_DATA * EVAL_function(  EVAL_CTX *out, AST_FUNC_CALL *scl )$/;"	f	signature:( EVAL_CTX *out, AST_FUNC_CALL *scl )
 EVAL_function	eval.h	/^BINDING_DATA * EVAL_function(  EVAL_CTX *out, AST_FUNC_CALL *scl );$/;"	p	signature:( EVAL_CTX *out, AST_FUNC_CALL *scl )
-EVAL_init	eval.c	/^int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on )$/;"	f	signature:( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on )
-EVAL_init	eval.h	/^int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on  );$/;"	p	signature:( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on )
+EVAL_init	eval.c	/^int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on, int grammar_trace_flags )$/;"	f	signature:( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on, int grammar_trace_flags )
+EVAL_init	eval.h	/^int EVAL_init( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on, int grammar_trace_flags );$/;"	p	signature:( EVAL_CTX *out, PARSECONTEXT *ctx, int is_trace_on, int grammar_trace_flags )
 EVAL_int_num_op	eval.c	/^BINDING_DATA * EVAL_int_num_op( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDING_DATA *rhs )$/;"	f	signature:( EVAL_CTX *out, int op, BINDING_DATA *lhs, BINDING_DATA *rhs )
 EVAL_parse_func	eval.c	/^int EVAL_parse_func( AST_BASE *grammar,  PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo, void *eval_ctx )$/;"	f	signature:( AST_BASE *grammar, PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo, void *eval_ctx )
 EVAL_parse_func	eval.c	/^int EVAL_parse_func( AST_BASE *grammar,  PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo, void *eval_ctx );$/;"	p	file:	signature:( AST_BASE *grammar, PEG_PARSER_DATA_SRC data_cb, void *data_cb_ctx, PP_BASE_INFO *pinfo, void *eval_ctx )
@@ -193,10 +191,11 @@ FUNCTION_HASH_entry	parsectx.h	/^} FUNCTION_HASH_entry;$/;"	t	typeref:struct:tag
 GRAMMARCHECKERCTX	grammar.h	/^  GRAMMARCHECKERCTX;$/;"	t	typeref:struct:tagGRAMMARCHECKERCTX
 GRAMMAR_add_rule	grammar.c	/^int GRAMMAR_add_rule( GRAMMARCHECKERCTX *ctx,  const char *rule_name, AST_PP_RULE *rule )$/;"	f	signature:( GRAMMARCHECKERCTX *ctx, const char *rule_name, AST_PP_RULE *rule )
 GRAMMAR_add_rule	grammar.h	/^int GRAMMAR_add_rule( GRAMMARCHECKERCTX *ctx,  const char *rule_name, struct tagAST_PP_RULE *rule );$/;"	p	signature:( GRAMMARCHECKERCTX *ctx, const char *rule_name, struct tagAST_PP_RULE *rule )
-GRAMMAR_check_alt	grammar.c	/^void GRAMMAR_check_alt( GRAMMARCHECKERCTX *ctx, AST_PP_ALTERNATIVE *alt )$/;"	f	signature:( GRAMMARCHECKERCTX *ctx, AST_PP_ALTERNATIVE *alt )
+GRAMMAR_check_alt	grammar.c	/^void GRAMMAR_check_alt( GRAMMARCHECKERCTX *ctx, AST_PP_ALTERNATIVE *alt, int  is_start )$/;"	f	signature:( GRAMMARCHECKERCTX *ctx, AST_PP_ALTERNATIVE *alt, int is_start )
+GRAMMAR_check_alt	grammar.c	/^void GRAMMAR_check_alt( GRAMMARCHECKERCTX *ctx, AST_PP_ALTERNATIVE *alt, int is_start );$/;"	p	file:	signature:( GRAMMARCHECKERCTX *ctx, AST_PP_ALTERNATIVE *alt, int is_start )
 GRAMMAR_check_rule	grammar.c	/^void GRAMMAR_check_rule( GRAMMARCHECKERCTX *ctx, AST_PP_RULE *rule )$/;"	f	signature:( GRAMMARCHECKERCTX *ctx, AST_PP_RULE *rule )
 GRAMMAR_check_rule	grammar.c	/^void GRAMMAR_check_rule( GRAMMARCHECKERCTX *ctx, AST_PP_RULE *rule );$/;"	p	file:	signature:( GRAMMARCHECKERCTX *ctx, AST_PP_RULE *rule )
-GRAMMAR_check_sequence	grammar.c	/^void GRAMMAR_check_sequence( GRAMMARCHECKERCTX *ctx, AST_BASE_LIST *lst )$/;"	f	signature:( GRAMMARCHECKERCTX *ctx, AST_BASE_LIST *lst )
+GRAMMAR_check_sequence	grammar.c	/^void GRAMMAR_check_sequence( GRAMMARCHECKERCTX *ctx, AST_BASE_LIST *lst,  int is_start)$/;"	f	signature:( GRAMMARCHECKERCTX *ctx, AST_BASE_LIST *lst, int is_start)
 GRAMMAR_checker	grammar.c	/^int GRAMMAR_checker( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program) $/;"	f	signature:( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program)
 GRAMMAR_checker	grammar.h	/^int GRAMMAR_checker( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program);$/;"	p	signature:( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program)
 GRAMMAR_find_rule	grammar.c	/^AST_PP_RULE *GRAMMAR_find_rule( GRAMMARCHECKERCTX *ctx, const char *rule_name )$/;"	f	signature:( GRAMMARCHECKERCTX *ctx, const char *rule_name )
@@ -216,7 +215,7 @@ INC_PATH_resolve	inc.c	/^char * INC_PATH_resolve( INC_PATH *inc_path, const char
 INC_PATH_resolve	inc.h	/^char * INC_PATH_resolve( INC_PATH *inc_path, const char *name );$/;"	p	signature:( INC_PATH *inc_path, const char *name )
 INC_PATH_to_text	inc.c	/^char * INC_PATH_to_text( INC_PATH *inc_path )$/;"	f	signature:( INC_PATH *inc_path )
 INC_PATH_to_text	inc.h	/^char * INC_PATH_to_text( INC_PATH *inc_path );$/;"	p	signature:( INC_PATH *inc_path )
-INIT_PP_DATA	grammar.c	423;"	d	file:
+INIT_PP_DATA	grammar.c	447;"	d	file:
 IS_EXPR_TYPE_REF	ast.h	72;"	d
 IS_REENTRANT	lexer.h	15;"	d
 LEXCONTEXT	lexer.h	/^} LEXCONTEXT;$/;"	t	typeref:struct:tagLEXCONTEXT
@@ -244,6 +243,8 @@ LEXER_set_location	lexer.c	/^void LEXER_set_location( LEXCONTEXT *pc, YYLTYPE *l
 LEXER_set_location	lexer.h	/^void LEXER_set_location( LEXCONTEXT *ctx, YYLTYPE *location );$/;"	p	signature:( LEXCONTEXT *ctx, YYLTYPE *location )
 LEXER_set_next_token	lexer.c	/^void  LEXER_set_next_token( LEXCONTEXT *pc, int init_token_value )$/;"	f	signature:( LEXCONTEXT *pc, int init_token_value )
 LEXER_set_next_token	lexer.h	/^void  LEXER_set_next_token( LEXCONTEXT *pc, int init_token_value );$/;"	p	signature:( LEXCONTEXT *pc, int init_token_value )
+LEXER_set_state	lexer.c	/^void LEXER_set_state( LEXCONTEXT *pc, int set_state )$/;"	f	signature:( LEXCONTEXT *pc, int set_state )
+LEXER_set_state	lexer.h	/^void LEXER_set_state( LEXCONTEXT *pc, int set_state );$/;"	p	signature:( LEXCONTEXT *pc, int set_state )
 LOOP_BREAK	eval.h	/^  LOOP_BREAK,$/;"	e	enum:__anon17
 LOOP_CONTINUE	eval.h	/^  LOOP_CONTINUE,$/;"	e	enum:__anon17
 LOOP_INFINITE	ast.h	/^  LOOP_INFINITE$/;"	e	enum:__anon11
@@ -301,30 +302,34 @@ PARSE_CHAR_CLASS_eof	ast.c	/^void PARSE_CHAR_CLASS_eof( PARSE_CHAR_CLASS *state 
 PARSE_CHAR_CLASS_eof	ast.h	/^void PARSE_CHAR_CLASS_eof( PARSE_CHAR_CLASS *ch );$/;"	p	signature:( PARSE_CHAR_CLASS *ch )
 PARSE_CHAR_CLASS_init	ast.c	/^void PARSE_CHAR_CLASS_init( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_class )$/;"	f	signature:( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_class )
 PARSE_CHAR_CLASS_init	ast.h	/^void PARSE_CHAR_CLASS_init( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_class );$/;"	p	signature:( PARSE_CHAR_CLASS *state, AST_PP_CHAR_CLASS *char_class )
-PEG_ERROR_ENTRY	grammar.c	/^} PEG_ERROR_ENTRY;$/;"	t	typeref:struct:tagPEG_ERROR_ENTRY	file:
+PEG_ERROR_ENTRY	grammar.h	/^} PEG_ERROR_ENTRY;$/;"	t	typeref:struct:tagPEG_ERROR_ENTRY
 PEG_PARSER	grammar.h	/^} PEG_PARSER;$/;"	t	typeref:struct:tagPEG_PARSER
 PEG_PARSER_DATA_SRC	ast.h	/^typedef int (*PEG_PARSER_DATA_SRC) (struct tagCIRCBUF *buf, size_t *read, void *ctx );$/;"	t
-PEG_PARSER_ERROR	grammar.c	/^} PEG_PARSER_ERROR;$/;"	t	typeref:enum:__anon18	file:
+PEG_PARSER_ERROR	grammar.h	/^} PEG_PARSER_ERROR;$/;"	t	typeref:enum:__anon18
 PEG_PARSER_POS	ast.h	/^}  PEG_PARSER_POS;$/;"	t	typeref:struct:tagPEG_PARSER_POS
 PEG_PARSER_POS_add	ast.h	/^M_INLINE void PEG_PARSER_POS_add( PEG_PARSER_POS *pos, PP_CHAR ch )$/;"	f	signature:( PEG_PARSER_POS *pos, PP_CHAR ch )
 PEG_PARSER_POS_init	ast.h	/^M_INLINE void PEG_PARSER_POS_init( PEG_PARSER_POS *pos )$/;"	f	signature:( PEG_PARSER_POS *pos )
+PEG_PARSER_TRACE_RULES	grammar.h	72;"	d
+PEG_PARSER_TRACE_TOKENS	grammar.h	73;"	d
 PEG_PARSER_init	grammar.c	/^int PEG_PARSER_init( PEG_PARSER *parser, struct tagAST_BASE *program, size_t lookahead_size, PEG_PARSER_DATA_SRC data_source, void *data_src_ctx , EVAL_CTX *eval_ctx )$/;"	f	signature:( PEG_PARSER *parser, struct tagAST_BASE *program, size_t lookahead_size, PEG_PARSER_DATA_SRC data_source, void *data_src_ctx , EVAL_CTX *eval_ctx )
 PEG_PARSER_init	grammar.h	/^int PEG_PARSER_init( PEG_PARSER *parser, struct tagAST_BASE *program, size_t lookahead_size, PEG_PARSER_DATA_SRC data_source, void *data_src_ctx,  struct tagEVAL_CTX *eval_ctx );$/;"	p	signature:( PEG_PARSER *parser, struct tagAST_BASE *program, size_t lookahead_size, PEG_PARSER_DATA_SRC data_source, void *data_src_ctx, struct tagEVAL_CTX *eval_ctx )
 PEG_PARSER_next_char	grammar.c	/^int PEG_PARSER_next_char( PEG_PARSER *parser, PP_CHAR *rt )$/;"	f	signature:( PEG_PARSER *parser, PP_CHAR *rt )
+PEG_PARSER_print_error	grammar.c	/^void PEG_PARSER_print_error( PEG_PARSER *parser )$/;"	f	signature:( PEG_PARSER *parser )
 PEG_PARSER_run	grammar.c	/^int PEG_PARSER_run( PEG_PARSER *parser, PP_BASE_INFO *rinfo)$/;"	f	signature:( PEG_PARSER *parser, PP_BASE_INFO *rinfo)
 PEG_PARSER_run	grammar.h	/^int PEG_PARSER_run( PEG_PARSER *parser, PP_BASE_INFO *rinfo );$/;"	p	signature:( PEG_PARSER *parser, PP_BASE_INFO *rinfo )
 PEG_PARSER_run_impl	grammar.c	/^int PEG_PARSER_run_impl( PEG_PARSER *parser, AST_PP_BASE *current, PP_BASE_INFO *rinfo )$/;"	f	signature:( PEG_PARSER *parser, AST_PP_BASE *current, PP_BASE_INFO *rinfo )
 PEG_PARSER_skip_spaces	grammar.c	/^void PEG_PARSER_skip_spaces( PEG_PARSER *parser )$/;"	f	signature:( PEG_PARSER *parser )
-PERR_RULE_FAILED	grammar.c	/^  PERR_RULE_FAILED, $/;"	e	enum:__anon18	file:
-PERR_STOPPED_BY_SEMANTIC_ACTION	grammar.c	/^  PERR_STOPPED_BY_SEMANTIC_ACTION,$/;"	e	enum:__anon18	file:
-PERR_TERM_EXPECTED_HERE	grammar.c	/^  PERR_TERM_EXPECTED_HERE,$/;"	e	enum:__anon18	file:
-PERR_TERM_NOT_ENOUGH_OCCURANCES	grammar.c	/^  PERR_TERM_NOT_ENOUGH_OCCURANCES,$/;"	e	enum:__anon18	file:
-PERR_TERM_NOT_EXPECTED_HERE	grammar.c	/^  PERR_TERM_NOT_EXPECTED_HERE,$/;"	e	enum:__anon18	file:
+PERR_ALTERNATIVE_NOT_PARSED	grammar.h	/^  PERR_ALTERNATIVE_NOT_PARSED,      \/\/ none of the choices for this alternative matched.$/;"	e	enum:__anon18
+PERR_STOPPED_BY_SEMANTIC_ACTION	grammar.h	/^  PERR_STOPPED_BY_SEMANTIC_ACTION,  \/\/ semantic action stopped parsing.$/;"	e	enum:__anon18
+PERR_TERM_EXPECTED_HERE	grammar.h	/^  PERR_TERM_EXPECTED_HERE,	    \/\/ a terminal or token was expected at this position ;$/;"	e	enum:__anon18
+PERR_TERM_NOT_ENOUGH_OCCURANCES	grammar.h	/^  PERR_TERM_NOT_ENOUGH_OCCURANCES,  \/\/ multiplicity error: not enought occurances$/;"	e	enum:__anon18
+PERR_TERM_NOT_EXPECTED_HERE	grammar.h	/^  PERR_TERM_NOT_EXPECTED_HERE,	    \/\/ multiplicity error: token not expected here (multiplicity 0)$/;"	e	enum:__anon18
 POOH_INT	poohdef.h	/^typedef long long int POOH_INT;$/;"	t
 POOH_INT_SIZE	poohdef.h	8;"	d
 POSITION_RESET_ON_NEW_FILE	lexer.c	38;"	d	file:
 POSITION_RESET_ON_NEW_FILE	lexer.c	72;"	d	file:
 PP_BASE_INFO	ast.h	/^} PP_BASE_INFO;$/;"	t	typeref:struct:tagPP_BASE_INFO
+PP_BASE_INFO_init	ast.h	/^M_INLINE void PP_BASE_INFO_init( PP_BASE_INFO *info )$/;"	f	signature:( PP_BASE_INFO *info )
 PP_CHAR	ast.h	/^typedef uint32_t PP_CHAR; $/;"	t
 PREBUILD_SUBDIRS	Makefile	/^PREBUILD_SUBDIRS=rtlib extensionlib$/;"	m
 REF_SCOPE	ast.h	/^ REF_SCOPE;$/;"	t	typeref:enum:__anon5
@@ -332,9 +337,9 @@ REF_SCOPE_CLOSURE	ast.h	/^ REF_SCOPE_CLOSURE,$/;"	e	enum:__anon5
 REF_SCOPE_GLOBAL	ast.h	/^ REF_SCOPE_GLOBAL = -1,$/;"	e	enum:__anon5
 REF_SCOPE_LOCAL	ast.h	/^ REF_SCOPE_LOCAL,$/;"	e	enum:__anon5
 REF_SCOPE_THIS	ast.h	/^ REF_SCOPE_THIS = -2,$/;"	e	enum:__anon5
-RULE_FLAGS_CIRCLE_REPORTED	ast.h	1138;"	d
-RULE_FLAGS_VISITED	ast.h	1137;"	d
-SET_PP_RET_DATA	grammar.c	424;"	d	file:
+RULE_FLAGS_CIRCLE_REPORTED	ast.h	1139;"	d
+RULE_FLAGS_VISITED	ast.h	1138;"	d
+SET_PP_RET_DATA	grammar.c	448;"	d	file:
 SET_YY_STYPE	lexer.c	32;"	d	file:
 SET_YY_STYPE	lexer.c	61;"	d	file:
 SHARED_LIBRARY_EXTENSION	parser.c	425;"	d	file:
@@ -387,9 +392,9 @@ S_PP_ALTERNATIVE	ast.h	/^  S_PP_ALTERNATIVE,$/;"	e	enum:__anon2
 S_PP_CHAR_CLASS	ast.h	/^  S_PP_CHAR_CLASS,$/;"	e	enum:__anon2
 S_PP_RULE	ast.h	/^  S_PP_RULE,$/;"	e	enum:__anon2
 S_PP_RULE_CONSTANT	ast.h	/^  S_PP_RULE_CONSTANT,$/;"	e	enum:__anon2
-S_PP_RULE_GRAMMAR	ast.h	/^	S_PP_RULE_GRAMMAR,$/;"	e	enum:__anon12
+S_PP_RULE_GRAMMAR	ast.h	/^	S_PP_RULE_GRAMMAR = 1,$/;"	e	enum:__anon12
 S_PP_RULE_REF	ast.h	/^  S_PP_RULE_REF,$/;"	e	enum:__anon2
-S_PP_RULE_TOKEN	ast.h	/^	S_PP_RULE_TOKEN,$/;"	e	enum:__anon12
+S_PP_RULE_TOKEN	ast.h	/^	S_PP_RULE_TOKEN = 2,$/;"	e	enum:__anon12
 S_PP_RULE_TYPE	ast.h	/^	S_PP_RULE_TYPE;$/;"	t	typeref:enum:__anon12
 S_PP_SCRIPT	ast.h	/^  S_PP_SCRIPT,$/;"	e	enum:__anon2
 S_RETURN	ast.h	/^  S_RETURN, $/;"	e	enum:__anon2
@@ -418,7 +423,8 @@ S_WHILE	ast.h	/^  S_WHILE,$/;"	e	enum:__anon2
 S_XFUN_DECL	ast.h	/^  S_XFUN_DECL,$/;"	e	enum:__anon2
 Simple_value_type	ast.h	/^} Simple_value_type;$/;"	t	typeref:union:__anon4
 TARGETS	Makefile	/^TARGETS=pooh$/;"	m
-TK_ANY	pars.h	/^     TK_ANY = 333,$/;"	e	enum:yytokentype
+TK_ALTERNATIVE_CHOICE	pars.h	/^     TK_ALTERNATIVE_CHOICE = 324,$/;"	e	enum:yytokentype
+TK_ANY	pars.h	/^     TK_ANY = 334,$/;"	e	enum:yytokentype
 TK_ARR_DEF	pars.h	/^     TK_ARR_DEF = 309,$/;"	e	enum:yytokentype
 TK_ASSIGN	pars.h	/^     TK_ASSIGN = 278,$/;"	e	enum:yytokentype
 TK_ASSIGN_REF	pars.h	/^     TK_ASSIGN_REF = 277,$/;"	e	enum:yytokentype
@@ -428,9 +434,9 @@ TK_BRACKET_CLOSE	pars.h	/^     TK_BRACKET_CLOSE = 322,$/;"	e	enum:yytokentype
 TK_BRACKET_OPEN	pars.h	/^     TK_BRACKET_OPEN = 323,$/;"	e	enum:yytokentype
 TK_BREAK	pars.h	/^     TK_BREAK = 272,$/;"	e	enum:yytokentype
 TK_BYREF	pars.h	/^     TK_BYREF = 318,$/;"	e	enum:yytokentype
-TK_CHARACTER	pars.h	/^     TK_CHARACTER = 331,$/;"	e	enum:yytokentype
+TK_CHARACTER	pars.h	/^     TK_CHARACTER = 332,$/;"	e	enum:yytokentype
 TK_CODEREF_DEF	pars.h	/^     TK_CODEREF_DEF = 310,$/;"	e	enum:yytokentype
-TK_CODE_SECTION	pars.h	/^     TK_CODE_SECTION = 338$/;"	e	enum:yytokentype
+TK_CODE_SECTION	pars.h	/^     TK_CODE_SECTION = 339$/;"	e	enum:yytokentype
 TK_COLON	pars.h	/^     TK_COLON = 299,$/;"	e	enum:yytokentype
 TK_COMMA	pars.h	/^     TK_COMMA = 313,$/;"	e	enum:yytokentype
 TK_DOUBLE_CONSTANT	pars.h	/^     TK_DOUBLE_CONSTANT = 266,$/;"	e	enum:yytokentype
@@ -440,11 +446,11 @@ TK_EMPTY_STRING	pars.h	/^     TK_EMPTY_STRING = 262,$/;"	e	enum:yytokentype
 TK_END	pars.h	/^     TK_END = 274,$/;"	e	enum:yytokentype
 TK_END_OF_FILE	pars.h	/^     TK_END_OF_FILE = 0,$/;"	e	enum:yytokentype
 TK_ERROR	pars.h	/^     TK_ERROR = 258,$/;"	e	enum:yytokentype
-TK_ESCAPE_SEQUENCE	pars.h	/^     TK_ESCAPE_SEQUENCE = 332,$/;"	e	enum:yytokentype
-TK_EXTRACT	pars.h	/^     TK_EXTRACT = 337,$/;"	e	enum:yytokentype
+TK_ESCAPE_SEQUENCE	pars.h	/^     TK_ESCAPE_SEQUENCE = 333,$/;"	e	enum:yytokentype
+TK_EXTRACT	pars.h	/^     TK_EXTRACT = 338,$/;"	e	enum:yytokentype
 TK_FALSE	pars.h	/^     TK_FALSE = 264,$/;"	e	enum:yytokentype
 TK_FOR	pars.h	/^     TK_FOR = 281,$/;"	e	enum:yytokentype
-TK_GRAMMAR_DELIM	pars.h	/^     TK_GRAMMAR_DELIM = 328,$/;"	e	enum:yytokentype
+TK_GRAMMAR_DELIM	pars.h	/^     TK_GRAMMAR_DELIM = 329,$/;"	e	enum:yytokentype
 TK_IDENTIFIER	pars.h	/^     TK_IDENTIFIER = 270,$/;"	e	enum:yytokentype
 TK_IF	pars.h	/^     TK_IF = 280,$/;"	e	enum:yytokentype
 TK_INCLUDE	pars.h	/^     TK_INCLUDE = 260,$/;"	e	enum:yytokentype
@@ -454,7 +460,7 @@ TK_LOOP	pars.h	/^     TK_LOOP = 279,$/;"	e	enum:yytokentype
 TK_MULTI_PART_STRING_CONSTANT	pars.h	/^     TK_MULTI_PART_STRING_CONSTANT = 267,$/;"	e	enum:yytokentype
 TK_NEXT	pars.h	/^     TK_NEXT = 271,$/;"	e	enum:yytokentype
 TK_NIL	pars.h	/^     TK_NIL = 265,$/;"	e	enum:yytokentype
-TK_NONE	pars.h	/^     TK_NONE = 335,$/;"	e	enum:yytokentype
+TK_NONE	pars.h	/^     TK_NONE = 336,$/;"	e	enum:yytokentype
 TK_OPTIONAL	pars.h	/^     TK_OPTIONAL = 319,$/;"	e	enum:yytokentype
 TK_OP_DOT	pars.h	/^     TK_OP_DOT = 291,$/;"	e	enum:yytokentype
 TK_OP_LOGICAL_AND	pars.h	/^     TK_OP_LOGICAL_AND = 283,$/;"	e	enum:yytokentype
@@ -480,23 +486,23 @@ TK_OP_STR_LE	pars.h	/^     TK_OP_STR_LE = 296,$/;"	e	enum:yytokentype
 TK_OP_STR_LT	pars.h	/^     TK_OP_STR_LT = 294,$/;"	e	enum:yytokentype
 TK_OP_STR_NE	pars.h	/^     TK_OP_STR_NE = 293,$/;"	e	enum:yytokentype
 TK_OP_STR_REGEXMATCH	pars.h	/^     TK_OP_STR_REGEXMATCH = 311,$/;"	e	enum:yytokentype
-TK_PARAMETER_LABEL	pars.h	/^     TK_PARAMETER_LABEL = 327,$/;"	e	enum:yytokentype
+TK_PARAMETER_LABEL	pars.h	/^     TK_PARAMETER_LABEL = 328,$/;"	e	enum:yytokentype
 TK_PARENTHESES_CLOSE	pars.h	/^     TK_PARENTHESES_CLOSE = 315,$/;"	e	enum:yytokentype
 TK_PARENTHESES_OPEN	pars.h	/^     TK_PARENTHESES_OPEN = 314,$/;"	e	enum:yytokentype
 TK_RETURN	pars.h	/^     TK_RETURN = 273,$/;"	e	enum:yytokentype
-TK_RULE_NAME	pars.h	/^     TK_RULE_NAME = 329,$/;"	e	enum:yytokentype
-TK_RULE_REFERENCE	pars.h	/^     TK_RULE_REFERENCE = 330,$/;"	e	enum:yytokentype
+TK_RULE_NAME	pars.h	/^     TK_RULE_NAME = 330,$/;"	e	enum:yytokentype
+TK_RULE_REFERENCE	pars.h	/^     TK_RULE_REFERENCE = 331,$/;"	e	enum:yytokentype
 TK_SEMICOLON	pars.h	/^     TK_SEMICOLON = 312,$/;"	e	enum:yytokentype
-TK_SOME	pars.h	/^     TK_SOME = 334,$/;"	e	enum:yytokentype
-TK_START_EXPRESSION	pars.h	/^     TK_START_EXPRESSION = 325,$/;"	e	enum:yytokentype
-TK_START_PGRAMMAR	pars.h	/^     TK_START_PGRAMMAR = 326,$/;"	e	enum:yytokentype
-TK_START_STATEMENT	pars.h	/^     TK_START_STATEMENT = 324,$/;"	e	enum:yytokentype
+TK_SOME	pars.h	/^     TK_SOME = 335,$/;"	e	enum:yytokentype
+TK_START_EXPRESSION	pars.h	/^     TK_START_EXPRESSION = 326,$/;"	e	enum:yytokentype
+TK_START_PGRAMMAR	pars.h	/^     TK_START_PGRAMMAR = 327,$/;"	e	enum:yytokentype
+TK_START_STATEMENT	pars.h	/^     TK_START_STATEMENT = 325,$/;"	e	enum:yytokentype
 TK_STRING_CONSTANT	pars.h	/^     TK_STRING_CONSTANT = 268,$/;"	e	enum:yytokentype
 TK_SUB	pars.h	/^     TK_SUB = 261,$/;"	e	enum:yytokentype
 TK_THREE_DOTS	pars.h	/^     TK_THREE_DOTS = 320,$/;"	e	enum:yytokentype
 TK_TRUE	pars.h	/^     TK_TRUE = 263,$/;"	e	enum:yytokentype
 TK_UNDERSCORE	pars.h	/^     TK_UNDERSCORE = 321,$/;"	e	enum:yytokentype
-TK_UNTIL	pars.h	/^     TK_UNTIL = 336,$/;"	e	enum:yytokentype
+TK_UNTIL	pars.h	/^     TK_UNTIL = 337,$/;"	e	enum:yytokentype
 TK_VAR_DEF	pars.h	/^     TK_VAR_DEF = 307,$/;"	e	enum:yytokentype
 TK_VAR_UNDEF	pars.h	/^     TK_VAR_UNDEF = 308,$/;"	e	enum:yytokentype
 TK_WHILE	pars.h	/^     TK_WHILE = 282,$/;"	e	enum:yytokentype
@@ -530,11 +536,11 @@ YYLTYPE::last_column	pars.h	/^  int last_column;$/;"	m	struct:YYLTYPE	access:pub
 YYLTYPE::last_line	lexer.h	/^	int last_line;$/;"	m	struct:YYLTYPE	access:public
 YYLTYPE::last_line	pars.h	/^  int last_line;$/;"	m	struct:YYLTYPE	access:public
 YYLTYPE_IS_DECLARED	lexer.h	24;"	d
-YYLTYPE_IS_DECLARED	pars.h	146;"	d
-YYLTYPE_IS_TRIVIAL	pars.h	147;"	d
+YYLTYPE_IS_DECLARED	pars.h	147;"	d
+YYLTYPE_IS_TRIVIAL	pars.h	148;"	d
 YYLTYPE_init	lexer.h	/^M_INLINE void YYLTYPE_init( YYLTYPE *location )$/;"	f	signature:( YYLTYPE *location )
-YYSTYPE	yystype.h	/^} YYSTYPE;$/;"	t	typeref:union:__anon19
-YYSTYPE_IS_DECLARED	pars.h	132;"	d
+YYSTYPE	yystype.h	/^} YYSTYPE;$/;"	t	typeref:union:__anon21
+YYSTYPE_IS_DECLARED	pars.h	133;"	d
 YYSTYPE_IS_DECLARED	yystype.h	6;"	d
 YYTOKENTYPE	pars.h	38;"	d
 YY_EXTRA_TYPE	lexer.c	30;"	d	file:
@@ -556,23 +562,25 @@ __PRINTAST_H_	printast.h	2;"	d
 __anon16::argc	eval.h	/^  int   argc;$/;"	m	struct:__anon16	access:public
 __anon16::argv	eval.h	/^  char **argv;$/;"	m	struct:__anon16	access:public
 __anon16::file_name	eval.h	/^  char *file_name;$/;"	m	struct:__anon16	access:public
+__anon16::grammar_trace_flags	eval.h	/^  S_PP_RULE_TYPE grammar_trace_flags;$/;"	m	struct:__anon16	access:public
 __anon16::inc_path	eval.h	/^  INC_PATH *inc_path;$/;"	m	struct:__anon16	access:public
 __anon16::input_file	eval.h	/^  char *input_file;$/;"	m	struct:__anon16	access:public
 __anon16::is_trace_on	eval.h	/^  int   is_trace_on;$/;"	m	struct:__anon16	access:public
 __anon16::is_verbose	eval.h	/^  int   is_verbose;$/;"	m	struct:__anon16	access:public
 __anon16::mode	eval.h	/^  EVAL_MODE mode;$/;"	m	struct:__anon16	access:public
-__anon19::ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon19	typeref:struct:__anon19::tagAST_BASE	access:public
-__anon19::double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon19	access:public
-__anon19::int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon19	access:public
-__anon19::long_value	yystype.h	/^	POOH_INT long_value;$/;"	m	union:__anon19	access:public
-__anon19::string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon19	access:public
 __anon1::mask	ast.c	/^  unsigned  int mask;$/;"	m	struct:__anon1	file:	access:public
 __anon1::name	ast.c	/^  const char *name;$/;"	m	struct:__anon1	file:	access:public
+__anon21::ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon21	typeref:struct:__anon21::tagAST_BASE	access:public
+__anon21::double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon21	access:public
+__anon21::int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon21	access:public
+__anon21::long_value	yystype.h	/^	POOH_INT long_value;$/;"	m	union:__anon21	access:public
+__anon21::string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon21	access:public
 __anon4::double_value	ast.h	/^  double double_value;$/;"	m	union:__anon4	access:public
 __anon4::grammar_value	ast.h	/^  AST_BASE *grammar_value;$/;"	m	union:__anon4	access:public
 __anon4::long_value	ast.h	/^  POOH_INT long_value;$/;"	m	union:__anon4	access:public
 __anon4::string_value	ast.h	/^  char   *string_value;$/;"	m	union:__anon4	access:public
 __lexer_xx_yy__	lexer.h	2;"	d
+actual	grammar.h	/^	int actual;$/;"	m	struct:tagPEG_ERROR_ENTRY::__anon19::__anon20	access:public
 addExp	pars.y	/^addExp  : addExp addExpOp multExp$/;"	l
 addExp	scr.y	/^addExp  : addExp addExpOp multExp$/;"	l
 addExpOp	pars.y	/^addExpOp : TK_OP_NUM_SUBST { $<int_value>$ = TK_OP_NUM_SUBST; }  $/;"	l
@@ -587,7 +595,7 @@ argv	eval.h	/^  char **argv;$/;"	m	struct:__anon16	access:public
 assign_value	ast.c	/^void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location );$/;"	p	file:	signature:( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location )
 assign_value	checker.c	/^void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location )$/;"	f	signature:( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *location )
 assignmentLeftHandSide	pars.y	/^assignmentLeftHandSide : varRef $/;"	l
-ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon19	typeref:struct:__anon19::tagAST_BASE	access:public
+ast	yystype.h	/^	struct tagAST_BASE *ast;	$/;"	m	union:__anon21	typeref:struct:__anon21::tagAST_BASE	access:public
 base	ast.h	/^	AST_PP_BASE base;$/;"	m	struct:tagAST_PP_CHAR_CLASS	access:public
 base	ast.h	/^	AST_PP_BASE base;$/;"	m	struct:tagAST_PP_CONSTANT	access:public
 base	ast.h	/^	AST_PP_BASE base;$/;"	m	struct:tagAST_PP_RULE	access:public
@@ -640,8 +648,6 @@ const_value	ast.h	/^	Simple_value_type const_value;$/;"	m	union:tagAST_EXPRESSIO
 context	eval.h	/^  EVAL_CONTEXT context;$/;"	m	struct:tagEVAL_CTX	access:public
 copy_file_name	lexer.c	/^static char *copy_file_name(const char *file_name)$/;"	f	file:	signature:(const char *file_name)
 copy_file_name	lexer.c	/^static char *copy_file_name(const char *file_name);$/;"	p	file:	signature:(const char *file_name)
-count_actual	grammar.c	/^  int count_actual;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
-count_expected	grammar.c	/^  int count_expected;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
 ctx	eval.h	/^  PARSECONTEXT *ctx; \/\/ for error messages onlya$/;"	m	struct:tagEVAL_CTX	access:public
 ctx	grammar.h	/^  struct tagPARSECONTEXT *ctx; \/\/ for error messages only$/;"	m	struct:tagGRAMMARCHECKERCTX	typeref:struct:tagGRAMMARCHECKERCTX::tagPARSECONTEXT	access:public
 current	parsectx.h	/^  struct tagAST_FUNC_DECL *current,*root_ctx;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::tagAST_FUNC_DECL	access:public
@@ -661,6 +667,7 @@ decl	parsectx.h	/^  struct tagAST_XFUNC_DECL *decl; $/;"	m	struct:tagFUNCTION_HA
 def_location	ast.h	/^  YYLTYPE def_location;  \/\/ location where binding is defined in code.$/;"	m	struct:tagBINDING_ENTRY	access:public
 delete_temp_results	main.c	/^void  delete_temp_results(const char *file_path)$/;"	f	signature:(const char *file_path)
 delete_temp_results	main.c	/^void  delete_temp_results(const char *file_path);$/;"	p	file:	signature:(const char *file_path)
+display_trace	grammar.c	/^void display_trace( PEG_PARSER *parser, size_t from, size_t to )$/;"	f	signature:( PEG_PARSER *parser, size_t from, size_t to )
 doWhileStmt	pars.y	/^doWhileStmt : TK_LOOP stmtInnerList TK_WHILE expr$/;"	l
 do_parse_string	lexer.c	/^int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char )$/;"	f	signature:( LEXCONTEXT *pc, DBUF *parent, char start_char )
 do_parse_string	lexer.c	/^int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char );$/;"	p	file:	signature:( LEXCONTEXT *pc, DBUF *parent, char start_char )
@@ -671,23 +678,25 @@ do_yyerror	parser.h	/^void do_yyerror (YYLTYPE *loc,  PARSECONTEXT *parse_contex
 do_yywarning	parser.c	/^void do_yywarning (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format, ...)$/;"	f	signature:(YYLTYPE *loc, PARSECONTEXT *parse_context, const char *format, ...)
 do_yywarning	parser.h	/^void do_yywarning (YYLTYPE *loc, PARSECONTEXT *parse_context, const char  *format, ...);$/;"	p	signature:(YYLTYPE *loc, PARSECONTEXT *parse_context, const char *format, ...)
 double_value	ast.h	/^  double double_value;$/;"	m	union:__anon4	access:public
-double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon19	access:public
+double_value	yystype.h	/^	double  double_value;$/;"	m	union:__anon21	access:public
 dump_ast	main.c	/^void dump_ast( const char *file_path, AST_BASE *base, int idx )$/;"	f	signature:( const char *file_path, AST_BASE *base, int idx )
 dump_ast	main.c	/^void dump_ast( const char *file_path, AST_BASE *base, int idx );$/;"	p	file:	signature:( const char *file_path, AST_BASE *base, int idx )
 elseClauses	pars.y	/^elseClauses : elsifClause TK_ELSE  conditionContent$/;"	l
 elsecond	ast.h	/^  struct tagAST_COND *elsecond;$/;"	m	struct:tagAST_COND	typeref:struct:tagAST_COND::tagAST_COND	access:public
 elsifClause	pars.y	/^elsifClause : TK_ELSIF condClause elsifClause$/;"	l
-end_idx	ast.h	/^  PEG_PARSER_POS end_idx;           \/\/ end position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
+end_idx	ast.h	/^  PEG_PARSER_POS end_idx;           \/\/ position tracking: end position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
 entry	ast.h	/^	DRING entry; \/\/ this statement embedded in statement list.$/;"	m	struct:tagAST_BASE	access:public
 entry	ast.h	/^  HASH_Entry entry;$/;"	m	struct:tagBINDING_ENTRY	access:public
 entry	checker.c	/^  HASH_Entry entry;$/;"	m	struct:tagFUNCTION_ENTRY	file:	access:public
 entry	grammar.c	/^  HASH_Entry entry;$/;"	m	struct:tagGRULE_ENTRY	file:	access:public
 entry	parsectx.h	/^  HASH_Entry entry;$/;"	m	struct:tagFUNCTION_HASH_entry	access:public
-error_stack	grammar.h	/^  ARRAY	 error_stack;		\/\/ stack of error entries \/ each clause that fails leaves an entry.$/;"	m	struct:tagPEG_PARSER	access:public
+error_entry	grammar.h	/^  PEG_ERROR_ENTRY   error_entry;$/;"	m	struct:tagPEG_PARSER	access:public
+error_entry_set	grammar.h	/^  int		    error_entry_set;$/;"	m	struct:tagPEG_PARSER	access:public
 eval	eval.c	/^int eval( PARSECONTEXT *ctx, EVAL_OPTIONS *opts  )$/;"	f	signature:( PARSECONTEXT *ctx, EVAL_OPTIONS *opts )
 eval	main.c	/^int eval( PARSECONTEXT *ctx, EVAL_OPTIONS *opts );$/;"	p	file:	signature:( PARSECONTEXT *ctx, EVAL_OPTIONS *opts )
 eval_ctx	grammar.h	/^  struct tagEVAL_CTX *eval_ctx;		\/\/ needed to run associated scripts.$/;"	m	struct:tagPEG_PARSER	typeref:struct:tagPEG_PARSER::tagEVAL_CTX	access:public
 exp_type	ast.h	/^  S_EXPR_TYPE exp_type;$/;"	m	struct:tagAST_EXPRESSION	access:public
+expected	grammar.h	/^	int expected;$/;"	m	struct:tagPEG_ERROR_ENTRY::__anon19::__anon20	access:public
 expr	ast.h	/^		struct tagAST_EXPRESSION *expr;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon8	typeref:struct:tagAST_EXPRESSION::__anon6::__anon8::tagAST_EXPRESSION	access:public
 expr	ast.h	/^	} expr;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon7	access:public
 expr	ast.h	/^  AST_EXPRESSION *expr;$/;"	m	struct:tagAST_FUNC_CALL_PARAM	access:public
@@ -747,6 +756,8 @@ get_type_name2	ast.h	/^const char *get_type_name2( AST_VAR_TYPE value_type );$/;
 get_type_name_r	ast.c	/^const char *get_type_name_r( AST_VAR_TYPE value_type, char *rval)$/;"	f	signature:( AST_VAR_TYPE value_type, char *rval)
 get_type_name_r	ast.h	/^const char *get_type_name_r( AST_VAR_TYPE value_type, char *rval );$/;"	p	signature:( AST_VAR_TYPE value_type, char *rval )
 grammar_contexts	parsectx.h	/^  ARRAY grammar_contexts;$/;"	m	struct:tagPARSECONTEXT	access:public
+grammar_trace_flags	eval.h	/^  S_PP_RULE_TYPE grammar_trace_flags;$/;"	m	struct:__anon16	access:public
+grammar_trace_flags	eval.h	/^  int grammar_trace_flags;$/;"	m	struct:tagEVAL_CTX	access:public
 grammar_value	ast.h	/^  AST_BASE *grammar_value;$/;"	m	union:__anon4	access:public
 grctx	parsectx.h	/^  GRAMMARCHECKERCTX *grctx;$/;"	m	struct:tagPARSECONTEXT	access:public
 handle	ld.h	/^  void *handle;$/;"	m	struct:tagSHLIB	access:public
@@ -760,6 +771,7 @@ ifStmt	pars.y	/^ifStmt  : TK_IF condClause elseClauses TK_END$/;"	l
 inc_path	eval.h	/^  INC_PATH *inc_path;$/;"	m	struct:__anon16	access:public
 inc_path	lexer.h	/^  INC_PATH *inc_path;$/;"	m	struct:tagLEXCONTEXT	access:public
 includeStmt	pars.y	/^includeStmt : TK_INCLUDE TK_STRING_CONSTANT$/;"	l
+index_cnt	ast.h	/^  size_t  index_cnt;		    \/\/ number of current position within the current rule.$/;"	m	struct:tagPP_BASE_INFO	access:public
 index_expr	ast.h	/^        struct tagAST_EXPRESSION *index_expr;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::tagAST_EXPRESSION	access:public
 index_expressions	ast.h	/^	AST_VECTOR *index_expressions;$/;"	m	union:tagAST_EXPRESSION::__anon6	access:public
 indexes	ast.h	/^		AST_VECTOR *indexes;$/;"	m	struct:tagAST_EXPRESSION::__anon6::__anon9	access:public
@@ -768,7 +780,7 @@ init_options	main.c	/^void init_options( EVAL_OPTIONS *opts )$/;"	f	signature:( 
 init_path	inc.c	/^void init_path( INC_PATH *path, const char *exe_path )$/;"	f	signature:( INC_PATH *path, const char *exe_path )
 init_token_value	lexer.h	/^  int init_token_value;$/;"	m	struct:tagLEXCONTEXT	access:public
 input_file	eval.h	/^  char *input_file;$/;"	m	struct:__anon16	access:public
-int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon19	access:public
+int_value	yystype.h	/^	int	int_value;$/;"	m	union:__anon21	access:public
 is_collection	ast.h	/^M_INLINE int is_collection( AST_VAR_TYPE ty )$/;"	f	signature:( AST_VAR_TYPE ty )
 is_comparison_operator	ast.c	/^int is_comparison_operator( int op )$/;"	f	signature:( int op )
 is_expression	lexer.h	/^  int is_expression;$/;"	m	struct:tagSTRING_PART	access:public
@@ -823,7 +835,7 @@ location	ast.h	/^	YYLTYPE   location; $/;"	m	struct:tagAST_BASE	access:public
 logExpOp	pars.y	/^logExpOp : TK_OP_LOGICAL_AND { $<int_value>$ = TK_OP_LOGICAL_AND; }  $/;"	l
 logicalExp	pars.y	/^logicalExp : logicalExp logExpOp compExp$/;"	l
 long_value	ast.h	/^  POOH_INT long_value;$/;"	m	union:__anon4	access:public
-long_value	yystype.h	/^	POOH_INT long_value;$/;"	m	union:__anon19	access:public
+long_value	yystype.h	/^	POOH_INT long_value;$/;"	m	union:__anon21	access:public
 lookahead	grammar.h	/^  CIRCBUF lookahead;		\/\/ lookahead buffer for data.$/;"	m	struct:tagPEG_PARSER	access:public
 lookahead_offset	ast.h	/^   size_t lookahead_offset;$/;"	m	struct:tagPEG_PARSER_POS	access:public
 lookup_binding	checker.c	/^BINDING_ENTRY *lookup_binding( PARSECONTEXT *ctx, const char *name,  REF_SCOPE scope, int *rscope )$/;"	f	signature:( PARSECONTEXT *ctx, const char *name, REF_SCOPE scope, int *rscope )
@@ -850,6 +862,7 @@ multiValueLeftHandSide	pars.y	/^multiValueLeftHandSide : TK_BRACKET_OPEN multiVa
 multiValueLeftHandSideClause	pars.y	/^multiValueLeftHandSideClause : varRef$/;"	l
 multiValueLeftHandSideList	pars.y	/^multiValueLeftHandSideList :  multiValueLeftHandSideList TK_COMMA multiValueLeftHandSideClause$/;"	l
 multiplicityDef	pars.y	/^multiplicityDef : TK_INTEGER_CONSTANT$/;"	l
+multiplicty	grammar.h	/^    } multiplicty;$/;"	m	union:tagPEG_ERROR_ENTRY::__anon19	typeref:struct:tagPEG_ERROR_ENTRY::__anon19::__anon20	access:public
 my_ast_root	parsectx.h	/^  struct tagAST_BASE * my_ast_root;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::tagAST_BASE	access:public
 my_yy_is_error	parsectx.h	/^  int my_yy_is_error;$/;"	m	struct:tagPARSECONTEXT	access:public
 name	ast.c	/^  const char *name;$/;"	m	struct:__anon1	file:	access:public
@@ -929,7 +942,6 @@ root	grammar.h	/^  AST_PP_BASE *root;		\/\/ root of parsed grammar$/;"	m	struct:
 root_ctx	parsectx.h	/^  struct tagAST_FUNC_DECL *current,*root_ctx;$/;"	m	struct:tagPARSECONTEXT	typeref:struct:tagPARSECONTEXT::	access:public
 rtype	ast.h	/^	S_PP_RULE_TYPE rtype;$/;"	m	struct:tagAST_PP_RULE	access:public
 rtype	grammar.h	/^  S_PP_RULE_TYPE rtype;		\/\/ currently parsing a rule or a token.$/;"	m	struct:tagPEG_PARSER	access:public
-rule	grammar.c	/^  AST_PP_RULE *rule;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
 rule	grammar.c	/^  struct tagAST_PP_RULE *rule;$/;"	m	struct:tagGRULE_ENTRY	typeref:struct:tagGRULE_ENTRY::tagAST_PP_RULE	file:	access:public
 rule	pars.y	/^rule   : TK_RULE_NAME ruleAssignment 	$/;"	l
 ruleAssignment	pars.y	/^ruleAssignment : TK_ASSIGN	$/;"	l
@@ -943,6 +955,7 @@ rule_name	ast.h	/^	const char *rule_name;$/;"	m	struct:tagAST_PP_RULE_REF	access
 rule_name	grammar.c	/^  const char *rule_name;$/;"	m	struct:tagGRULE_ENTRY	file:	access:public
 rule_ref_resolved	ast.h	/^	AST_PP_RULE *rule_ref_resolved;$/;"	m	struct:tagAST_PP_RULE_REF	access:public
 rule_script	ast.h	/^	AST_BASE *rule_script;$/;"	m	struct:tagAST_PP_SCRIPT	access:public
+rules_list	grammar.h	/^  AST_BASE_LIST *rules_list;$/;"	m	struct:tagGRAMMARCHECKERCTX	access:public
 run	main.c	/^int run(EVAL_OPTIONS *opts)$/;"	f	signature:(EVAL_OPTIONS *opts)
 run_test_in_dir	test-it.pl	/^sub run_test_in_dir$/;"	s
 rvalue	ast.h	/^  AST_EXPRESSION *rvalue;$/;"	m	struct:tagAST_RETURN	access:public
@@ -961,8 +974,8 @@ source	ast.h	/^  struct tagBINDING_ENTRY *source;$/;"	m	struct:tagBINDING_ENTRY	
 stack_offset	ast.h	/^  int stack_offset;$/;"	m	struct:tagBINDING_ENTRY	access:public
 stacks	eval.h	/^  STACKS    stacks; \/\/ stacks for co-routines.$/;"	m	struct:tagEVAL_CTX	access:public
 start	eval.c	/^  int start;$/;"	m	struct:tagEVAL_TRACE_ENTRY	file:	access:public
-start_idx	ast.h	/^  PEG_PARSER_POS  start_idx;         \/\/ start position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
-start_pos	grammar.c	/^  PEG_PARSER_POS start_pos;  $/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
+start_idx	ast.h	/^  PEG_PARSER_POS  start_idx;        \/\/ position tracking: start position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
+start_pos	grammar.h	/^  PEG_PARSER_POS start_pos;	\/\/ position where error occured at.$/;"	m	struct:tagPEG_ERROR_ENTRY	access:public
 state	ast.h	/^	CPST_STATE state;$/;"	m	struct:tagPARSE_CHAR_CLASS	access:public
 state	lexer.c	/^	YY_BUFFER_STATE state;$/;"	m	struct:tagMY_YY_BUFFER_STATE	file:	access:public
 statements	ast.h	/^  DRING statements;$/;"	m	struct:tagAST_BASE_LIST	access:public
@@ -973,7 +986,7 @@ stmtList	pars.y	/^stmtList : stmtList stmt	$/;"	l
 stmt_not_closed	parsectx.h	/^  int stmt_not_closed;$/;"	m	struct:tagPARSECONTEXT	access:public
 string_parts	lexer.h	/^  ARRAY string_parts;   \/\/ multipart strings.$/;"	m	struct:tagLEXCONTEXT	access:public
 string_value	ast.h	/^  char   *string_value;$/;"	m	union:__anon4	access:public
-string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon19	access:public
+string_value	yystype.h	/^	char   *string_value;$/;"	m	union:__anon21	access:public
 tagAST_ASSIGNMEN	ast.h	/^typedef struct tagAST_ASSIGNMEN {$/;"	s
 tagAST_ASSIGNMEN::base	ast.h	/^  AST_BASE base;$/;"	m	struct:tagAST_ASSIGNMEN	access:public
 tagAST_ASSIGNMEN::left_side	ast.h	/^  struct tagAST_EXPRESSION *left_side;$/;"	m	struct:tagAST_ASSIGNMEN	typeref:struct:tagAST_ASSIGNMEN::tagAST_EXPRESSION	access:public
@@ -1117,6 +1130,7 @@ tagCHECKERCTX::pass	checker.h	/^  int pass;$/;"	m	struct:tagCHECKERCTX	access:pu
 tagEVAL_CTX	eval.h	/^typedef struct tagEVAL_CTX {$/;"	s
 tagEVAL_CTX::context	eval.h	/^  EVAL_CONTEXT context;$/;"	m	struct:tagEVAL_CTX	access:public
 tagEVAL_CTX::ctx	eval.h	/^  PARSECONTEXT *ctx; \/\/ for error messages onlya$/;"	m	struct:tagEVAL_CTX	access:public
+tagEVAL_CTX::grammar_trace_flags	eval.h	/^  int grammar_trace_flags;$/;"	m	struct:tagEVAL_CTX	access:public
 tagEVAL_CTX::last_freed	eval.h	/^  struct tagEVAL_TRACE_ENTRY *last_freed,*top_trace;$/;"	m	struct:tagEVAL_CTX	typeref:struct:tagEVAL_CTX::tagEVAL_TRACE_ENTRY	access:public
 tagEVAL_CTX::loop_exit	eval.h	/^  EVAL_CTX_BREAK_ACTION loop_exit;$/;"	m	struct:tagEVAL_CTX	access:public
 tagEVAL_CTX::stacks	eval.h	/^  STACKS    stacks; \/\/ stacks for co-routines.$/;"	m	struct:tagEVAL_CTX	access:public
@@ -1142,6 +1156,7 @@ tagGRAMMARCHECKERCTX::is_reporting_circle	grammar.h	/^  int is_reporting_circle;
 tagGRAMMARCHECKERCTX::parse_alt	grammar.h	/^  PARSE_ALT *parse_alt, parse_rule_alt;$/;"	m	struct:tagGRAMMARCHECKERCTX	access:public
 tagGRAMMARCHECKERCTX::parse_rule_alt	grammar.h	/^  PARSE_ALT *parse_alt, parse_rule_alt;$/;"	m	struct:tagGRAMMARCHECKERCTX	access:public
 tagGRAMMARCHECKERCTX::rule_defs	grammar.h	/^  HASH rule_defs; \/\/ maps rule name to rule definition.$/;"	m	struct:tagGRAMMARCHECKERCTX	access:public
+tagGRAMMARCHECKERCTX::rules_list	grammar.h	/^  AST_BASE_LIST *rules_list;$/;"	m	struct:tagGRAMMARCHECKERCTX	access:public
 tagGRAMMARCHECKERCTX::visited	grammar.h	/^  ARRAY visited;$/;"	m	struct:tagGRAMMARCHECKERCTX	access:public
 tagGRULE_ENTRY	grammar.c	/^typedef struct tagGRULE_ENTRY {$/;"	s	file:
 tagGRULE_ENTRY::entry	grammar.c	/^  HASH_Entry entry;$/;"	m	struct:tagGRULE_ENTRY	file:	access:public
@@ -1183,19 +1198,21 @@ tagPARSE_CHAR_CLASS	ast.h	/^typedef struct tagPARSE_CHAR_CLASS {$/;"	s
 tagPARSE_CHAR_CLASS::char_class	ast.h	/^	AST_PP_CHAR_CLASS  *char_class; $/;"	m	struct:tagPARSE_CHAR_CLASS	access:public
 tagPARSE_CHAR_CLASS::prev_char	ast.h	/^	PP_CHAR prev_char;$/;"	m	struct:tagPARSE_CHAR_CLASS	access:public
 tagPARSE_CHAR_CLASS::state	ast.h	/^	CPST_STATE state;$/;"	m	struct:tagPARSE_CHAR_CLASS	access:public
-tagPEG_ERROR_ENTRY	grammar.c	/^typedef struct tagPEG_ERROR_ENTRY {$/;"	s	file:
-tagPEG_ERROR_ENTRY::count_actual	grammar.c	/^  int count_actual;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
-tagPEG_ERROR_ENTRY::count_expected	grammar.c	/^  int count_expected;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
-tagPEG_ERROR_ENTRY::rule	grammar.c	/^  AST_PP_RULE *rule;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
-tagPEG_ERROR_ENTRY::start_pos	grammar.c	/^  PEG_PARSER_POS start_pos;  $/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
-tagPEG_ERROR_ENTRY::term	grammar.c	/^  AST_PP_BASE *term;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
-tagPEG_ERROR_ENTRY::type	grammar.c	/^  PEG_PARSER_ERROR type;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
+tagPEG_ERROR_ENTRY	grammar.h	/^typedef struct tagPEG_ERROR_ENTRY {$/;"	s
+tagPEG_ERROR_ENTRY::__anon19::__anon20::actual	grammar.h	/^	int actual;$/;"	m	struct:tagPEG_ERROR_ENTRY::__anon19::__anon20	access:public
+tagPEG_ERROR_ENTRY::__anon19::__anon20::expected	grammar.h	/^	int expected;$/;"	m	struct:tagPEG_ERROR_ENTRY::__anon19::__anon20	access:public
+tagPEG_ERROR_ENTRY::__anon19::multiplicty	grammar.h	/^    } multiplicty;$/;"	m	union:tagPEG_ERROR_ENTRY::__anon19	typeref:struct:tagPEG_ERROR_ENTRY::__anon19::__anon20	access:public
+tagPEG_ERROR_ENTRY::start_pos	grammar.h	/^  PEG_PARSER_POS start_pos;	\/\/ position where error occured at.$/;"	m	struct:tagPEG_ERROR_ENTRY	access:public
+tagPEG_ERROR_ENTRY::term	grammar.h	/^  AST_PP_BASE *term;		\/\/ term that failed parsing.$/;"	m	struct:tagPEG_ERROR_ENTRY	access:public
+tagPEG_ERROR_ENTRY::type	grammar.h	/^  PEG_PARSER_ERROR type;	\/\/ error type$/;"	m	struct:tagPEG_ERROR_ENTRY	access:public
+tagPEG_ERROR_ENTRY::u	grammar.h	/^  } u;    $/;"	m	struct:tagPEG_ERROR_ENTRY	typeref:union:tagPEG_ERROR_ENTRY::__anon19	access:public
 tagPEG_PARSER	grammar.h	/^typedef struct tagPEG_PARSER {$/;"	s
 tagPEG_PARSER::current_rhs_clause	grammar.h	/^  PP_BASE_INFO * current_rhs_clause;	\/\/ during script invocation: runtime gets righ hand side clauses from here.$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER::current_rhs_clause_len	grammar.h	/^  size_t	current_rhs_clause_len;$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER::data_src	grammar.h	/^  PEG_PARSER_DATA_SRC data_src; \/\/ data source$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER::data_src_ctx	grammar.h	/^  void *data_src_ctx;		\/\/ context data for data source.$/;"	m	struct:tagPEG_PARSER	access:public
-tagPEG_PARSER::error_stack	grammar.h	/^  ARRAY	 error_stack;		\/\/ stack of error entries \/ each clause that fails leaves an entry.$/;"	m	struct:tagPEG_PARSER	access:public
+tagPEG_PARSER::error_entry	grammar.h	/^  PEG_ERROR_ENTRY   error_entry;$/;"	m	struct:tagPEG_PARSER	access:public
+tagPEG_PARSER::error_entry_set	grammar.h	/^  int		    error_entry_set;$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER::eval_ctx	grammar.h	/^  struct tagEVAL_CTX *eval_ctx;		\/\/ needed to run associated scripts.$/;"	m	struct:tagPEG_PARSER	typeref:struct:tagPEG_PARSER::tagEVAL_CTX	access:public
 tagPEG_PARSER::fail_reason	grammar.h	/^  union tagBINDING_DATA *fail_reason;	\/\/ value set by x_failparsing.$/;"	m	struct:tagPEG_PARSER	typeref:union:tagPEG_PARSER::tagBINDING_DATA	access:public
 tagPEG_PARSER::is_fail_parsing	grammar.h	/^  int	is_fail_parsing;	\/\/ is set if semantic action has stopped the parsing (x_failparsing called)$/;"	m	struct:tagPEG_PARSER	access:public
@@ -1203,6 +1220,8 @@ tagPEG_PARSER::lookahead	grammar.h	/^  CIRCBUF lookahead;		\/\/ lookahead buffer
 tagPEG_PARSER::offset	grammar.h	/^  PEG_PARSER_POS offset;        \/\/ curren position in lookahead buffer (the current character)$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER::root	grammar.h	/^  AST_PP_BASE *root;		\/\/ root of parsed grammar$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER::rtype	grammar.h	/^  S_PP_RULE_TYPE rtype;		\/\/ currently parsing a rule or a token.$/;"	m	struct:tagPEG_PARSER	access:public
+tagPEG_PARSER::trace_clause	grammar.h	/^  DBUF trace_clause; $/;"	m	struct:tagPEG_PARSER	access:public
+tagPEG_PARSER::trace_flags	grammar.h	/^  int trace_flags;$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER::undo_nesting	grammar.h	/^  int    undo_nesting;          \/\/ is this a nested option? if yes then we must be able to backtrack.$/;"	m	struct:tagPEG_PARSER	access:public
 tagPEG_PARSER_POS	ast.h	/^typedef struct tagPEG_PARSER_POS $/;"	s
 tagPEG_PARSER_POS::column	ast.h	/^   size_t column;$/;"	m	struct:tagPEG_PARSER_POS	access:public
@@ -1210,9 +1229,10 @@ tagPEG_PARSER_POS::line	ast.h	/^   size_t line;$/;"	m	struct:tagPEG_PARSER_POS	a
 tagPEG_PARSER_POS::lookahead_offset	ast.h	/^   size_t lookahead_offset;$/;"	m	struct:tagPEG_PARSER_POS	access:public
 tagPP_BASE_INFO	ast.h	/^typedef struct tagPP_BASE_INFO {$/;"	s
 tagPP_BASE_INFO::data	ast.h	/^  union tagBINDING_DATA *data;      \/\/ value produced by rule.$/;"	m	struct:tagPP_BASE_INFO	typeref:union:tagPP_BASE_INFO::tagBINDING_DATA	access:public
-tagPP_BASE_INFO::end_idx	ast.h	/^  PEG_PARSER_POS end_idx;           \/\/ end position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
+tagPP_BASE_INFO::end_idx	ast.h	/^  PEG_PARSER_POS end_idx;           \/\/ position tracking: end position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
+tagPP_BASE_INFO::index_cnt	ast.h	/^  size_t  index_cnt;		    \/\/ number of current position within the current rule.$/;"	m	struct:tagPP_BASE_INFO	access:public
 tagPP_BASE_INFO::match_count	ast.h	/^  size_t match_count;               \/\/ number of repetitions of the clause$/;"	m	struct:tagPP_BASE_INFO	access:public
-tagPP_BASE_INFO::start_idx	ast.h	/^  PEG_PARSER_POS  start_idx;         \/\/ start position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
+tagPP_BASE_INFO::start_idx	ast.h	/^  PEG_PARSER_POS  start_idx;        \/\/ position tracking: start position of match$/;"	m	struct:tagPP_BASE_INFO	access:public
 tagSHLIB	ld.h	/^typedef struct tagSHLIB {$/;"	s
 tagSHLIB::handle	ld.h	/^  void *handle;$/;"	m	struct:tagSHLIB	access:public
 tagSHLIB::last_error	ld.h	/^  char *last_error;$/;"	m	struct:tagSHLIB	access:public
@@ -1225,7 +1245,7 @@ tagTRACE_OUT	eval.h	/^typedef struct tagTRACE_OUT {$/;"	s
 tagTRACE_OUT::level	eval.h	/^  int level;$/;"	m	struct:tagTRACE_OUT	access:public
 tagTRACE_OUT::max_level	eval.h	/^  int max_level;$/;"	m	struct:tagTRACE_OUT	access:public
 tagTRACE_OUT::out	eval.h	/^  FILE *out;$/;"	m	struct:tagTRACE_OUT	access:public
-term	grammar.c	/^  AST_PP_BASE *term;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
+term	grammar.h	/^  AST_PP_BASE *term;		\/\/ term that failed parsing.$/;"	m	struct:tagPEG_ERROR_ENTRY	access:public
 test_it	test-it.pl	/^sub test_it$/;"	s
 text	eval.c	/^  DBUF text;$/;"	m	struct:tagEVAL_TRACE_ENTRY	file:	access:public
 this_func_decl_index	ast.h	/^  int this_func_decl_index;         \/\/ if this is a nested function - this is the index of them (number of this child in parent nodes child list)$/;"	m	struct:tagAST_FUNC_DECL	access:public
@@ -1233,6 +1253,8 @@ to	ast.h	/^	PP_CHAR to;$/;"	m	struct:tagAST_PP_RANGE	access:public
 to	ast.h	/^	int to;$/;"	m	struct:tagAST_PP_BASE	access:public
 top_trace	eval.h	/^  struct tagEVAL_TRACE_ENTRY *last_freed,*top_trace;$/;"	m	struct:tagEVAL_CTX	typeref:struct:tagEVAL_CTX::	access:public
 trace_buffer_entries	eval.h	/^  ARRAY trace_buffer_entries; $/;"	m	struct:tagEVAL_CTX	access:public
+trace_clause	grammar.h	/^  DBUF trace_clause; $/;"	m	struct:tagPEG_PARSER	access:public
+trace_flags	grammar.h	/^  int trace_flags;$/;"	m	struct:tagPEG_PARSER	access:public
 trace_out	eval.h	/^  TRACE_OUT trace_out;$/;"	m	struct:tagEVAL_CTX	access:public
 tracer_add_boolean_value	eval.c	/^void tracer_add_boolean_value( EVAL_TRACE_ENTRY *tracer, int bval )$/;"	f	signature:( EVAL_TRACE_ENTRY *tracer, int bval )
 translate_message	parser.c	/^char *translate_message(const char *msg)$/;"	f	signature:(const char *msg)
@@ -1240,7 +1262,8 @@ translate_token	parser.c	/^char *translate_token(const char *msg) {$/;"	f	signat
 type	ast.h	/^	S_TYPE    type;$/;"	m	struct:tagAST_BASE	access:public
 type	ast.h	/^  CP_KIND type; $/;"	m	struct:tagAST_ASSIGNMEN	access:public
 type	ast.h	/^  LOOP_TYPE type;$/;"	m	struct:tagAST_WHILE_LOOP	access:public
-type	grammar.c	/^  PEG_PARSER_ERROR type;$/;"	m	struct:tagPEG_ERROR_ENTRY	file:	access:public
+type	grammar.h	/^  PEG_PARSER_ERROR type;	\/\/ error type$/;"	m	struct:tagPEG_ERROR_ENTRY	access:public
+u	grammar.h	/^  } u;    $/;"	m	struct:tagPEG_ERROR_ENTRY	typeref:union:tagPEG_ERROR_ENTRY::__anon19	access:public
 unary	ast.h	/^	} unary;$/;"	m	union:tagAST_EXPRESSION::__anon6	typeref:struct:tagAST_EXPRESSION::__anon6::__anon8	access:public
 unaryExp	pars.y	/^unaryExp :$/;"	l
 unaryExp	scr.y	/^unaryExp :$/;"	l
@@ -1266,8 +1289,8 @@ yyerror	lexer.c	/^void yyerror (char const *);$/;"	p	file:	signature:(char const
 yyerror	parser.c	/^void yyerror (YYLTYPE *loc, PARSECONTEXT *parse_context, char const *msg)$/;"	f	signature:(YYLTYPE *loc, PARSECONTEXT *parse_context, char const *msg)
 yyloc	lexer.c	156;"	d	file:
 yyloc	parser.c	/^YYLTYPE yyloc;$/;"	v
-yyltype	pars.h	145;"	d
+yyltype	pars.h	146;"	d
 yyscan_t	lexer.h	/^  typedef void* yyscan_t;$/;"	t
 yyscanner	lexer.h	/^  yyscan_t yyscanner; \/\/ the reentrant scanner.$/;"	m	struct:tagLEXCONTEXT	access:public
-yystype	pars.h	131;"	d
+yystype	pars.h	132;"	d
 yytokentype	pars.h	/^   enum yytokentype {$/;"	g

@@ -34,6 +34,7 @@ typedef struct tagPARSECONTEXT {
   struct tagAST_BASE * my_ast_root;
 
   struct tagAST_FUNC_DECL *current,*root_ctx;
+  struct tagAST_BASE_LIST *stmt_list;
   
   HASH map_function_defs; // maps function name to function definition. (AST_FUNC_DECL *)
 
@@ -43,7 +44,7 @@ typedef struct tagPARSECONTEXT {
 
 } PARSECONTEXT;
 
-int  PARSECONTEXT_init( PARSECONTEXT *ctx, INC_PATH *inc_path  );
+int  PARSECONTEXT_init( PARSECONTEXT *ctx, INC_PATH *inc_path , AST_FUNC_DECL *current  );
 void PARSECONTEXT_free( PARSECONTEXT *ctx );
 
 

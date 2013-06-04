@@ -97,12 +97,12 @@ void assign_value( AST_EXPRESSION *lhs, AST_VAR_TYPE value_type, YYLTYPE *locati
 int is_indexed_ref( AST_EXPRESSION *expr );
 int is_narrower_type( AST_VAR_TYPE lhs_type, AST_VAR_TYPE rhs_type  );
 
-AST_BASE *compile_string( const char *string, int init_token, const char *file_name, YYLTYPE *location, int report_errors )
+AST_BASE *compile_string( const char *string, int init_token, const char *file_name, YYLTYPE *location, int report_errors, AST_FUNC_DECL *current )
 {
    PARSECONTEXT ctx;
    AST_BASE *rval = 0;
    
-   if (PARSECONTEXT_init( &ctx, 0) ) {
+   if (PARSECONTEXT_init( &ctx, 0, current) ) {
      return 0;
    }
 
@@ -128,28 +128,55 @@ ret:
 
 AST_BASE *make_function_env(  PARSECONTEXT *pc, AST_BASE *base,  YYLTYPE *loc, int make_expr )
 {
-      AST_FUNC_DECL *fdecl;
+      AST_FUNC_DECL *fdecl,*ftmp;
       AST_FUNC_CALL *fcall;
       AST_VECTOR *fparams;
+      AST_EXPRESSION *f_name;
       AST_EXPRESSION *ret;
+
+      ftmp = pc->current;
+
+      if (base->type == S_FUN_DECL) {
+        base = (AST_BASE *) ((AST_FUNC_DECL *) base)->func_body;
+      }
+
 
       // make a function,
       fparams = AST_VECTOR_init( loc  );
       fdecl = AST_FUNC_DECL_init( 0, fparams, 0, loc  );
+
+      fdecl->funcs.parent = &ftmp->funcs;
+
       AST_FUNC_DECL_set_body( fdecl, pc, (AST_BASE_LIST *) base );
+
+      AST_BASE_LIST_add( pc->stmt_list, &fdecl->base );
 
       // make a function call
       fparams = AST_VECTOR_init( loc );
-      fcall = AST_FUNC_CALL_init( 0, fparams, loc );
+#if 1      
+
+      f_name = AST_EXPRESSION_init( S_EXPR_LAMBDA_RESOLVED, S_VAR_CODE, loc );
+      f_name->val.fdecl = (AST_BASE *) fdecl;
+      f_name->val.ref.lhs = 0;
+
+      fcall = AST_FUNC_CALL_init( f_name, fparams, loc );
       fcall->func_decl = (AST_BASE *) fdecl;
 
+	
+      // add fdecl to the current function.
+      //
+
       if (!make_expr)
-	return &fcall->base;
+        return &fcall->base;
 
-      ret = AST_EXPRESSION_init( S_FUN_CALL, S_VAR_ANY, loc  ); 
+      ret = AST_EXPRESSION_init( S_EXPR_FUNCALL, S_VAR_STRING, loc  ); 
       ret->val.fcall = fcall;
-
-      return &ret->base;
+#else
+      ret = AST_EXPRESSION_init( S_EXPR_LAMBDA, S_VAR_CODE, loc );
+      ret->val.fdecl =  (AST_BASE *) fdecl;
+#endif
+ 
+      return (AST_BASE *) ret;
 } 
 
 static AST_EXPRESSION * AST_compile_string_part( PARSECONTEXT *pc, size_t pos )
@@ -169,9 +196,9 @@ static AST_EXPRESSION * AST_compile_string_part( PARSECONTEXT *pc, size_t pos )
   current_file = LEXER_get_current_file_name( &pc->lexctx );
 
   if (cur->is_expression) {
-    base = compile_string( STRING_PART_get( cur ), TK_START_EXPRESSION,current_file, &cur->loc, 0  ); 
+    base = compile_string( STRING_PART_get( cur ), TK_START_EXPRESSION,current_file, &cur->loc, 0, pc->current  ); 
     if (!base) {
-      base = compile_string( STRING_PART_get( cur ), TK_START_STATEMENT, current_file, &cur->loc, 0 );
+      base = compile_string( STRING_PART_get( cur ), TK_START_STATEMENT, current_file, &cur->loc, 0, pc->current );
       if (!base) {
 	do_yyerror( &cur->loc, pc, "Failed to parse the following string - neither statement nor expression: %s", STRING_PART_get( cur ) );   
 	return 0;
@@ -181,6 +208,7 @@ static AST_EXPRESSION * AST_compile_string_part( PARSECONTEXT *pc, size_t pos )
     if (base->type != S_EXPRESSION) {    
       // make a function call expression
       ret = (AST_EXPRESSION *) make_function_env( pc, base, &cur->loc, 1 );
+
           
     } else {
       ret = (AST_EXPRESSION *) base;

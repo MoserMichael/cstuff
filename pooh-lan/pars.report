@@ -268,17 +268,17 @@ Grammar
 
   186 ruleElements: ruleElements ruleElementOpt
   187             | ruleElementOpt
-  188             | '|'
 
-  189 ruleElementOpt: ruleElement optMetaInstruction
+  188 ruleElementOpt: ruleElement optMetaInstruction
 
-  190 $@3: /* empty */
+  189 $@3: /* empty */
 
-  191 ruleElement: TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
-  192            | TK_STRING_CONSTANT
-  193            | TK_RULE_REFERENCE
-  194            | rangeDef
-  195            | TK_CODE_SECTION
+  190 ruleElement: TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  191            | TK_STRING_CONSTANT
+  192            | TK_RULE_REFERENCE
+  193            | rangeDef
+  194            | TK_CODE_SECTION
+  195            | TK_ALTERNATIVE_CHOICE
 
   196 optMetaInstruction: multiplicityDef
   197                   | /* empty */
@@ -307,7 +307,6 @@ Grammar
 Terminals, with rules where they appear
 
 "end of file" (0) 0 37
-'|' (124) 188
 error (256) 49 51 55 73 144 151 153 155 164 165 169 174 177
 TK_ERROR (258)
 TK_LOADEXTENSION (259) 68
@@ -319,7 +318,7 @@ TK_FALSE (264) 139
 TK_NIL (265) 138
 TK_DOUBLE_CONSTANT (266) 135
 TK_MULTI_PART_STRING_CONSTANT (267) 136
-TK_STRING_CONSTANT (268) 68 69 137 192
+TK_STRING_CONSTANT (268) 68 69 137 191
 TK_INTEGER_CONSTANT (269) 134 198 199 205
 TK_IDENTIFIER (270) 38 41 72 73 79 146 147 154
 TK_NEXT (271) 87
@@ -365,8 +364,8 @@ TK_CODEREF_DEF (310)
 TK_OP_STR_REGEXMATCH (311)
 TK_SEMICOLON (312)
 TK_COMMA (313) 56 76 167 172
-TK_PARENTHESES_OPEN (314) 72 95 142 144 156 191
-TK_PARENTHESES_CLOSE (315) 72 95 142 156 191
+TK_PARENTHESES_OPEN (314) 72 95 142 144 156 190
+TK_PARENTHESES_CLOSE (315) 72 95 142 156 190
 TK_BRACE_OPEN (316) 150 151 171
 TK_BRACE_CLOSE (317) 150 171
 TK_BYREF (318) 84
@@ -375,21 +374,22 @@ TK_THREE_DOTS (320) 75
 TK_UNDERSCORE (321) 59
 TK_BRACKET_CLOSE (322) 54 152 166
 TK_BRACKET_OPEN (323) 54 55 152 153 166
-TK_START_STATEMENT (324) 1 2
-TK_START_EXPRESSION (325) 3
-TK_START_PGRAMMAR (326) 4
-TK_PARAMETER_LABEL (327) 163 165
-TK_GRAMMAR_DELIM (328) 94
-TK_RULE_NAME (329) 183
-TK_RULE_REFERENCE (330) 193
-TK_CHARACTER (331) 210
-TK_ESCAPE_SEQUENCE (332) 212
-TK_ANY (333) 200
-TK_SOME (334) 201
-TK_NONE (335) 202
-TK_UNTIL (336) 203
-TK_EXTRACT (337) 205
-TK_CODE_SECTION (338) 195
+TK_ALTERNATIVE_CHOICE (324) 195
+TK_START_STATEMENT (325) 1 2
+TK_START_EXPRESSION (326) 3
+TK_START_PGRAMMAR (327) 4
+TK_PARAMETER_LABEL (328) 163 165
+TK_GRAMMAR_DELIM (329) 94
+TK_RULE_NAME (330) 183
+TK_RULE_REFERENCE (331) 192
+TK_CHARACTER (332) 210
+TK_ESCAPE_SEQUENCE (333) 212
+TK_ANY (334) 200
+TK_SOME (335) 201
+TK_NONE (336) 202
+TK_UNTIL (337) 203
+TK_EXTRACT (338) 205
+TK_CODE_SECTION (339) 194
 
 
 Nonterminals, with rules where they appear
@@ -538,19 +538,19 @@ $@2 (152)
 ruleAssignment (153)
     on left: 184 185, on right: 183
 ruleElements (154)
-    on left: 186 187 188, on right: 183 186 191
+    on left: 186 187, on right: 183 186 190
 ruleElementOpt (155)
-    on left: 189, on right: 186 187
+    on left: 188, on right: 186 187
 ruleElement (156)
-    on left: 191 192 193 194 195, on right: 189
+    on left: 190 191 192 193 194 195, on right: 188
 $@3 (157)
-    on left: 190, on right: 191
+    on left: 189, on right: 190
 optMetaInstruction (158)
-    on left: 196 197, on right: 189
+    on left: 196 197, on right: 188
 multiplicityDef (159)
     on left: 198 199 200 201 202 203 204 205, on right: 196
 rangeDef (160)
-    on left: 207, on right: 194
+    on left: 207, on right: 193
 $@4 (161)
     on left: 206, on right: 207
 rangeElms (162)
@@ -6020,21 +6020,21 @@ state 244
   183 rule: TK_RULE_NAME ruleAssignment $@2 . ruleElements
   186 ruleElements: . ruleElements ruleElementOpt
   187             | . ruleElementOpt
-  188             | . '|'
-  189 ruleElementOpt: . ruleElement optMetaInstruction
-  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
-  192            | . TK_STRING_CONSTANT
-  193            | . TK_RULE_REFERENCE
-  194            | . rangeDef
-  195            | . TK_CODE_SECTION
+  188 ruleElementOpt: . ruleElement optMetaInstruction
+  190 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  191            | . TK_STRING_CONSTANT
+  192            | . TK_RULE_REFERENCE
+  193            | . rangeDef
+  194            | . TK_CODE_SECTION
+  195            | . TK_ALTERNATIVE_CHOICE
   207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-    TK_STRING_CONSTANT   shift, and go to state 252
-    TK_OP_NUM_DIV        shift, and go to state 253
-    TK_PARENTHESES_OPEN  shift, and go to state 254
-    TK_RULE_REFERENCE    shift, and go to state 255
-    TK_CODE_SECTION      shift, and go to state 256
-    '|'                  shift, and go to state 257
+    TK_STRING_CONSTANT     shift, and go to state 252
+    TK_OP_NUM_DIV          shift, and go to state 253
+    TK_PARENTHESES_OPEN    shift, and go to state 254
+    TK_ALTERNATIVE_CHOICE  shift, and go to state 255
+    TK_RULE_REFERENCE      shift, and go to state 256
+    TK_CODE_SECTION        shift, and go to state 257
 
     ruleElements    go to state 258
     ruleElementOpt  go to state 259
@@ -6093,9 +6093,9 @@ state 251
 
 state 252
 
-  192 ruleElement: TK_STRING_CONSTANT .
+  191 ruleElement: TK_STRING_CONSTANT .
 
-    $default  reduce using rule 192 (ruleElement)
+    $default  reduce using rule 191 (ruleElement)
 
 
 state 253
@@ -6110,52 +6110,54 @@ state 253
 
 state 254
 
-  190 $@3: .
-  191 ruleElement: TK_PARENTHESES_OPEN . $@3 ruleElements TK_PARENTHESES_CLOSE
+  189 $@3: .
+  190 ruleElement: TK_PARENTHESES_OPEN . $@3 ruleElements TK_PARENTHESES_CLOSE
 
-    $default  reduce using rule 190 ($@3)
+    $default  reduce using rule 189 ($@3)
 
     $@3  go to state 263
 
 
 state 255
 
-  193 ruleElement: TK_RULE_REFERENCE .
-
-    $default  reduce using rule 193 (ruleElement)
-
-
-state 256
-
-  195 ruleElement: TK_CODE_SECTION .
+  195 ruleElement: TK_ALTERNATIVE_CHOICE .
 
     $default  reduce using rule 195 (ruleElement)
 
 
+state 256
+
+  192 ruleElement: TK_RULE_REFERENCE .
+
+    $default  reduce using rule 192 (ruleElement)
+
+
 state 257
 
-  188 ruleElements: '|' .
+  194 ruleElement: TK_CODE_SECTION .
 
-    $default  reduce using rule 188 (ruleElements)
+    $default  reduce using rule 194 (ruleElement)
 
 
 state 258
 
   183 rule: TK_RULE_NAME ruleAssignment $@2 ruleElements .  ["end of file", TK_GRAMMAR_DELIM, TK_RULE_NAME]
   186 ruleElements: ruleElements . ruleElementOpt
-  189 ruleElementOpt: . ruleElement optMetaInstruction
-  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
-  192            | . TK_STRING_CONSTANT
-  193            | . TK_RULE_REFERENCE
-  194            | . rangeDef
-  195            | . TK_CODE_SECTION
+  188 ruleElementOpt: . ruleElement optMetaInstruction
+  190 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  191            | . TK_STRING_CONSTANT
+  192            | . TK_RULE_REFERENCE
+  193            | . rangeDef
+  194            | . TK_CODE_SECTION
+  195            | . TK_ALTERNATIVE_CHOICE
   207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-    TK_STRING_CONSTANT   shift, and go to state 252
-    TK_OP_NUM_DIV        shift, and go to state 253
-    TK_PARENTHESES_OPEN  shift, and go to state 254
-    TK_RULE_REFERENCE    shift, and go to state 255
-    TK_CODE_SECTION      shift, and go to state 256
+    TK_STRING_CONSTANT     shift, and go to state 252
+    TK_OP_NUM_DIV          shift, and go to state 253
+    TK_PARENTHESES_OPEN    shift, and go to state 254
+    TK_ALTERNATIVE_CHOICE  shift, and go to state 255
+    TK_RULE_REFERENCE      shift, and go to state 256
+    TK_CODE_SECTION        shift, and go to state 257
 
     $default  reduce using rule 183 (rule)
 
@@ -6173,9 +6175,9 @@ state 259
 
 state 260
 
-  189 ruleElementOpt: ruleElement . optMetaInstruction
+  188 ruleElementOpt: ruleElement . optMetaInstruction
   196 optMetaInstruction: . multiplicityDef
-  197                   | .  ["end of file", TK_STRING_CONSTANT, TK_OP_NUM_DIV, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_GRAMMAR_DELIM, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
+  197                   | .  ["end of file", TK_STRING_CONSTANT, TK_OP_NUM_DIV, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_ALTERNATIVE_CHOICE, TK_GRAMMAR_DELIM, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
   198 multiplicityDef: . TK_INTEGER_CONSTANT
   199                | . TK_INTEGER_CONSTANT TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
   200                | . TK_ANY
@@ -6201,9 +6203,9 @@ state 260
 
 state 261
 
-  194 ruleElement: rangeDef .
+  193 ruleElement: rangeDef .
 
-    $default  reduce using rule 194 (ruleElement)
+    $default  reduce using rule 193 (ruleElement)
 
 
 state 262
@@ -6227,22 +6229,22 @@ state 263
 
   186 ruleElements: . ruleElements ruleElementOpt
   187             | . ruleElementOpt
-  188             | . '|'
-  189 ruleElementOpt: . ruleElement optMetaInstruction
-  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
-  191            | TK_PARENTHESES_OPEN $@3 . ruleElements TK_PARENTHESES_CLOSE
-  192            | . TK_STRING_CONSTANT
-  193            | . TK_RULE_REFERENCE
-  194            | . rangeDef
-  195            | . TK_CODE_SECTION
+  188 ruleElementOpt: . ruleElement optMetaInstruction
+  190 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  190            | TK_PARENTHESES_OPEN $@3 . ruleElements TK_PARENTHESES_CLOSE
+  191            | . TK_STRING_CONSTANT
+  192            | . TK_RULE_REFERENCE
+  193            | . rangeDef
+  194            | . TK_CODE_SECTION
+  195            | . TK_ALTERNATIVE_CHOICE
   207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-    TK_STRING_CONSTANT   shift, and go to state 252
-    TK_OP_NUM_DIV        shift, and go to state 253
-    TK_PARENTHESES_OPEN  shift, and go to state 254
-    TK_RULE_REFERENCE    shift, and go to state 255
-    TK_CODE_SECTION      shift, and go to state 256
-    '|'                  shift, and go to state 257
+    TK_STRING_CONSTANT     shift, and go to state 252
+    TK_OP_NUM_DIV          shift, and go to state 253
+    TK_PARENTHESES_OPEN    shift, and go to state 254
+    TK_ALTERNATIVE_CHOICE  shift, and go to state 255
+    TK_RULE_REFERENCE      shift, and go to state 256
+    TK_CODE_SECTION        shift, and go to state 257
 
     ruleElements    go to state 279
     ruleElementOpt  go to state 259
@@ -6259,7 +6261,7 @@ state 264
 
 state 265
 
-  198 multiplicityDef: TK_INTEGER_CONSTANT .  ["end of file", TK_STRING_CONSTANT, TK_OP_NUM_DIV, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_GRAMMAR_DELIM, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
+  198 multiplicityDef: TK_INTEGER_CONSTANT .  ["end of file", TK_STRING_CONSTANT, TK_OP_NUM_DIV, TK_PARENTHESES_OPEN, TK_PARENTHESES_CLOSE, TK_ALTERNATIVE_CHOICE, TK_GRAMMAR_DELIM, TK_RULE_NAME, TK_RULE_REFERENCE, TK_CODE_SECTION]
   199                | TK_INTEGER_CONSTANT . TK_OP_NUM_SUBST TK_INTEGER_CONSTANT
 
     TK_OP_NUM_SUBST  shift, and go to state 280
@@ -6311,9 +6313,9 @@ state 271
 
 state 272
 
-  189 ruleElementOpt: ruleElement optMetaInstruction .
+  188 ruleElementOpt: ruleElement optMetaInstruction .
 
-    $default  reduce using rule 189 (ruleElementOpt)
+    $default  reduce using rule 188 (ruleElementOpt)
 
 
 state 273
@@ -6370,21 +6372,23 @@ state 278
 state 279
 
   186 ruleElements: ruleElements . ruleElementOpt
-  189 ruleElementOpt: . ruleElement optMetaInstruction
-  191 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
-  191            | TK_PARENTHESES_OPEN $@3 ruleElements . TK_PARENTHESES_CLOSE
-  192            | . TK_STRING_CONSTANT
-  193            | . TK_RULE_REFERENCE
-  194            | . rangeDef
-  195            | . TK_CODE_SECTION
+  188 ruleElementOpt: . ruleElement optMetaInstruction
+  190 ruleElement: . TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE
+  190            | TK_PARENTHESES_OPEN $@3 ruleElements . TK_PARENTHESES_CLOSE
+  191            | . TK_STRING_CONSTANT
+  192            | . TK_RULE_REFERENCE
+  193            | . rangeDef
+  194            | . TK_CODE_SECTION
+  195            | . TK_ALTERNATIVE_CHOICE
   207 rangeDef: . TK_OP_NUM_DIV $@4 rangeElms TK_OP_NUM_DIV
 
-    TK_STRING_CONSTANT    shift, and go to state 252
-    TK_OP_NUM_DIV         shift, and go to state 253
-    TK_PARENTHESES_OPEN   shift, and go to state 254
-    TK_PARENTHESES_CLOSE  shift, and go to state 284
-    TK_RULE_REFERENCE     shift, and go to state 255
-    TK_CODE_SECTION       shift, and go to state 256
+    TK_STRING_CONSTANT     shift, and go to state 252
+    TK_OP_NUM_DIV          shift, and go to state 253
+    TK_PARENTHESES_OPEN    shift, and go to state 254
+    TK_PARENTHESES_CLOSE   shift, and go to state 284
+    TK_ALTERNATIVE_CHOICE  shift, and go to state 255
+    TK_RULE_REFERENCE      shift, and go to state 256
+    TK_CODE_SECTION        shift, and go to state 257
 
     ruleElementOpt  go to state 264
     ruleElement     go to state 260
@@ -6421,9 +6425,9 @@ state 283
 
 state 284
 
-  191 ruleElement: TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE .
+  190 ruleElement: TK_PARENTHESES_OPEN $@3 ruleElements TK_PARENTHESES_CLOSE .
 
-    $default  reduce using rule 191 (ruleElement)
+    $default  reduce using rule 190 (ruleElement)
 
 
 state 285

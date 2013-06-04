@@ -7,6 +7,8 @@
 #include <butils/strtk.h>
 #include <ctype.h>
 
+int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char );
+
 
 /* ****************************************************************************** 
 	   support for BISON Locations - declarations
@@ -563,9 +565,8 @@ void LEXER_clean_string_parts( LEXCONTEXT *ctx)
 
 //------------------------------------------------------------------------
 
-int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char );
 int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char start_char, char **token_delimiter, char **start_of_expression, char **end_of_expression );
-int parse_string_data( LEXCONTEXT *pc, DBUF *parent,  char *token_delimiter, char *start_of_expression, char *end_of_expression  );
+int parse_string_data_ex( LEXCONTEXT *pc, DBUF *parent,  char *token_delimiter, char *start_of_expression, char *end_of_expression  );
 STRING_PART * parse_string_sequence( LEXCONTEXT *pc, DBUF *parent,  const char *string_term, const char *start_of_expression, int *has_follow_up );
 STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end_of_expression );
 const char * dbuf_ends_with( DBUF *buf, const char *term_string );
@@ -633,7 +634,7 @@ int do_parse_string_no_expression( LEXCONTEXT *pc, char start_char )
     
     if (dbuf_ends_with( &part->part_data, end_of_expression ) ) {
 
-       part->part_data.buf_used  -= eof_expression.buf_used;
+       part->part_data.buf_used  -= eof_expression.buf_used - 1;
        part->loc.last_line = yylineno;
        part->loc.last_column = yycolumn;
        ARRAY_push_back( &pc->string_parts, &part, sizeof(void *) );
@@ -662,9 +663,11 @@ int do_parse_string( LEXCONTEXT *pc, DBUF *parent, char start_char )
     return -1;
   }
 
-  return parse_string_data( pc, parent, token_delimiter, start_of_expression, end_of_expression );
+  return parse_string_data_ex( pc, parent, token_delimiter, start_of_expression, end_of_expression );
  
 }
+
+
 int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char start_char, char **token_delimiter, char **start_of_expression, char **end_of_expression ) 
 {
   int c;
@@ -701,11 +704,11 @@ int parse_string_header( LEXCONTEXT *pc, DBUF *parent, DBUF *buf, char start_cha
   memset( *start_of_expression, '[', strlen( *token_delimiter ) );
   *end_of_expression = strdup( *token_delimiter );
   memset( *end_of_expression, ']', strlen( *token_delimiter ) );
-
+  
   return 0;
 } 
 
-int parse_string_data( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char *start_of_expression, char *end_of_expression  )
+int parse_string_data_ex( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char *start_of_expression, char *end_of_expression  )
 {
   int has_follow_up = 1;
   int parts = 0;
@@ -716,6 +719,8 @@ int parse_string_data( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char
 #endif	
  
   while(1) {
+
+
     cur = parse_string_sequence( pc, parent, token_delimiter, start_of_expression, &has_follow_up );
     if ( !cur ) {
       return -1;
@@ -755,7 +760,6 @@ int parse_string_data( LEXCONTEXT *pc, DBUF *parent, char *token_delimiter, char
 
 int parse_expression_only( LEXCONTEXT *pc, DBUF *parent )
 {
-  STRING_PART *part; 
   int c;
   YYLTYPE start;
   int countb = 1;
@@ -768,32 +772,20 @@ int parse_expression_only( LEXCONTEXT *pc, DBUF *parent )
   start.first_line = start.last_line = yylineno;
   start.first_column = start.last_column = yycolumn;
 
-
-	
   while ( (c =  MY_YY_input( pc->yyscanner )) != -1) {
-
-    if (parent) {
-      DBUF_add( parent, &c, sizeof(char) );
-    }
-    
-    DBUF_add(  &part->part_data, &c, sizeof(char) );
-    
     if (c == '[') {
       countb ++;
-      continue;
     }
     if (c == ']') {
+      countb--;
       if (countb == 0) {
+	DBUF_add_null( parent );
 	return 0;
       }
-      continue;
     }
-
-    if (c == '\'' || c == '"') {
-	if (do_parse_string( pc, parent, c ) ) 
-	  return -1;
-    }
+    DBUF_add( parent, &c, sizeof(char) );
   }
+  DBUF_add_null( parent );
   return  -1;
 }
 

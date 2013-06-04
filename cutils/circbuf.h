@@ -6,6 +6,8 @@ extern "C" {
 #endif
 
 #include <cutils/base.h>
+#include <cutils/dbuf.h>
+
 
 
 /**
@@ -101,6 +103,7 @@ M_INLINE void CIRCBUF_inc_read_pos( CIRCBUF *buf, size_t pos )
     buf->read_pos = (buf->read_pos + pos) % buf->maxcount;
 }
 
+int CIRCBUF_extract_text( CIRCBUF *buf, size_t spos, size_t epos, DBUF *copy_to );
 
 
 //CIRCBUF_at( CIRCBUF *buf, size_t offset, uint8_t *ch )

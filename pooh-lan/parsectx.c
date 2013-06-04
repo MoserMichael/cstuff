@@ -48,7 +48,7 @@ void STRING_PART_free( STRING_PART *part  )
 
 //------------------------------------------------------------------------
 
-int PARSECONTEXT_init(PARSECONTEXT *ctx, INC_PATH *inc_path)
+int PARSECONTEXT_init(PARSECONTEXT *ctx, INC_PATH *inc_path, AST_FUNC_DECL *current )
 {
   YYLTYPE stam;
 
@@ -77,11 +77,18 @@ int PARSECONTEXT_init(PARSECONTEXT *ctx, INC_PATH *inc_path)
   ctx->my_ast_root = 0; 
   ctx->report_errors = 1;
   ctx->stmt_not_closed = 0;
+  ctx->stmt_list = 0;
 
   YYLTYPE_init( &stam );   
-  
-  ctx->root_ctx = AST_FUNC_DECL_init( 0, 0, 0, &stam );
-  ctx->current = ctx->root_ctx;
+ 
+  if (!current)
+  {
+    ctx->root_ctx = AST_FUNC_DECL_init( 0, 0, 0, &stam );
+    ctx->current = ctx->root_ctx;
+  } else 
+  {
+    ctx->root_ctx = ctx->current = current;
+  }
  
   ARRAY_init( &ctx->extension_libs, sizeof(void *), 0 );
  
