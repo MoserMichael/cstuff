@@ -1,0 +1,40 @@
+---
+layout: post
+title: The secret policeman's Ball
+---
+h2. {{ page.title }}
+<p class="publish_date">02 June 2013</p>
+
+The NSA has a huge surveillance program called "PRISM":http://en.wikipedia.org/wiki/PRISM_(surveillance_program) ; now a key point of the program is a large "call data base":http://en.wikipedia.org/wiki/NSA_call_database (story was "first reported here":http://www.guardian.co.uk/world/2013/jun/06/nsa-phone-records-verizon-court-order ); 
+
+This call database records the calls that have been made by each telephone number, it also knows the time at which the call is made and the duration of the call.
+
+Thinks that if things are viewed from a data processing perspective then its is possible to understand the following; However my theories might also be wrong, I am not an expert in the areas of Security or law and order.
+
+The real value of a call database is that it can be used to build a "social graph":http://en.wikipedia.org/wiki/Social_graph . A social graph consists of nodes: each telephone number (standing for a person) is a node in the graph; two nodes are connected if there has been a phone call between two phone numbers; This connection between two nodes in the graph
+is called a link in the graph. The link can have different attributes: if there have been many calls then the strength of link attribute gets a higher value; timing and activity of calls can also be assigned weights, etc. etc.
+
+A social graph shows exactly how all persons that make up society as a whole are interconnected. If a political movement has a leader, then the social graph can show the following
+
+* what is the immediate circle of contacts around the leader person;
+* what is the larger cluster of persons that are influenced by the leader person; this is achieved by following the immediate circle contacts and then the contacts of the contacts, etc.
+* what is the intersection of different clusters of interest; this could mark the degree how certain movements influence one another.
+* what are the dynamics of influence: did the leader person manage to gain a wider following, what was the time frame when influence was acquired. etc. etc.
+* Malcom Gladwell's "Tipping point":http://en.wikipedia.org/wiki/The_Tipping_Point argues that mos social movements are initiated by a small set of persons, by those who tend to make a difference 
+<blockquote>
+The success of any kind of social epidemic is heavily dependent on the involvement of people with a particular and rare set of social gifts. ... the 80/20 Principle, which is the idea that in any situation roughly 80 percent of the 'work' will be done by 20 percent of the participants.
+</blockquote>
+Clustering of the social graph can identify persons with unusually high level of connectivity / activity. These persons can then be identified and could then be targeted for further influence.
+   
+Is this knowledge effective in fighting terrorism? I don't know; terrorist organizations are very sectarian; it should therefore be relatively easy to determine a wider connections of a closer nit circle of suspects,  and I guess that this would be possible without sweeping surveillance of the whole population; 
+
+It might be argued that sweeping surveillance measures are needed in order to monitor "sympathizers" of terrorist movements. I don't know, In West Germany they had the RAF terror:http://en.wikipedia.org/wiki/Red_Army_Faction , the state reacted by monitoring suspected radicals; some "3.5 million individuals were investigated and 10,000 refused employment (as civil servants)":http://en.wikipedia.org/wiki/German_student_movement#The_effect
+for a democracy, that's quite a lot of papers turned. I don't know if this is the current level of insecurity, is this the state of the union?
+
+Is it about policing grassroot organizations like the 'occupy movement':http://en.wikipedia.org/wiki/Occupy_movement ? Might be, but I guess that would not be too constitutional.
+
+Lots of questions here, not too many answers are forthcoming.
+
+In the 90ies they had rumors about the "Echelon":http://en.wikipedia.org/wiki/ECHELON program; the system was rumored to record every phone conversation, etc. etc. these rumors where bullshit; the NSA cannot have computers that are light years away from what is widely available. What they can have are storage capabilities that are the largest ones by an order of magnitude. The NSA cannot currently decode and transcribe all calls in real time on a preemptive basis; the technology to do so is probably not there. But we might get there, in the end.
+
+
