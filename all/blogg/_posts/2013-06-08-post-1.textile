@@ -9,7 +9,7 @@ The NSA has a huge surveillance program called "PRISM":http://en.wikipedia.org/w
 
 This call database records the calls that have been made by each telephone number, it also knows the time at which the call is made and the duration of the call.
 
-Thinks that if things are viewed from a data processing perspective then its is possible to understand the following; However my theories might also be wrong, I am not an expert in the areas of Security or law and order.
+If things are viewed from a data processing perspective than it is possible to understand the following; (Disclaimer: my theories might also be wrong, I am not an expert in the areas of Security or law and order)
 
 The real value of a call database is that it can be used to build a "social graph":http://en.wikipedia.org/wiki/Social_graph . A social graph consists of nodes: each telephone number (standing for a person) is a node in the graph; two nodes are connected if there has been a phone call between two phone numbers; This connection between two nodes in the graph
 is called a link in the graph. The link can have different attributes: if there have been many calls then the strength of link attribute gets a higher value; timing and activity of calls can also be assigned weights, etc. etc.
