@@ -1,5 +1,5 @@
-#ifndef _CIRCBUF_H_
-#define _CIRCBUF_H_
+#ifndef _CIRCBUFN_H_
+#define _CIRCBUFN_H_
 
 #ifdef  __cplusplus
 extern "C" {
