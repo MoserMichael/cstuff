@@ -58,6 +58,8 @@ YYLTYPE yyloc;
 #define YYDEBUG 1
 #endif
 
+// if this is defined, then the parser writes really lots of info to stderr
+#define YYPRINT  printf
 #include "pars.txt"
 
 

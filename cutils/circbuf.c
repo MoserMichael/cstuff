@@ -10,7 +10,7 @@ int CIRCBUF_resize( CIRCBUF *buf, size_t maxcount )
     if (maxcount < sz) // can't reduce size
 	return -1;
 
-    mem = (uint8_t *) malloc( maxcount );
+    mem = (uint8_t *) malloc( maxcount  );
     if (!mem) 
 	return -1;
 
@@ -22,7 +22,7 @@ int CIRCBUF_resize( CIRCBUF *buf, size_t maxcount )
       } else {
          size_t sz1 = buf->maxcount - buf->read_pos; 
 
-         memcpy( mem, buf->data + buf->read_pos, sz1  );
+         memcpy( mem, buf->data + buf->read_pos, sz1 );
          memcpy( mem + sz1, buf->data, buf->write_pos ); 
       }
     }

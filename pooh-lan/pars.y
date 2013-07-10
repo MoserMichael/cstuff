@@ -119,13 +119,22 @@ void yyerror ( YYLTYPE *loc, PARSECONTEXT *parse_context, char const *);
 %%
 
 prog : 
-	TK_START_STATEMENT stmtList	
+	TK_START_STATEMENT 
+	
+	    {
+		AST_BASE_LIST *slist;
+
+		slist = AST_BASE_LIST_init( YYLOCPTR );
+		parse_context->main_stmt_list = parse_context->stmt_list = slist;
+	    }
+	
+	    stmtList	
      	    {
 	       AST_FUNC_DECL *scl;
 
 	       // global scope is a function (so that it has context for looking up globals and function names.)
 	       scl = parse_context->root_ctx;
-	       AST_FUNC_DECL_set_body( scl, parse_context, (AST_BASE_LIST *) $<ast>2 );
+	       AST_FUNC_DECL_set_body( scl, parse_context, (AST_BASE_LIST *) parse_context->main_stmt_list ); //$<ast>2 );
 
 	       parse_context->my_ast_root = &scl->base;
 	    }
@@ -144,6 +153,13 @@ prog :
 	    {
 		parse_context->my_ast_root = $<ast>2;
 	    }
+	TK_START_PGRAMMAR parsingGrammar error
+	    {
+
+		do_yyerror( &yylloc, parse_context, "error in grammar definition" );
+		return -1;
+	    }
+	    
 	 ;
 
 stmtList : stmtList stmt	
@@ -160,8 +176,7 @@ stmtList : stmtList stmt
 	    {
 		AST_BASE_LIST *slist;
 
-		slist = AST_BASE_LIST_init( YYLOCPTR );
-		parse_context->stmt_list = slist;
+		slist =  parse_context->main_stmt_list;
                 AST_BASE_LIST_add( slist, $<ast>1 );
 	        $<ast>$ = &slist->base;
 	    }
@@ -1541,7 +1556,7 @@ ruleElement : TK_PARENTHESES_OPEN
 	{	    
 	    GRAMMARCHECKERCTX *grctx = parse_context->grctx;
 	    PARSE_ALT_eof_current_alt( grctx->parse_alt );
-	}	
+	}
     ;
 
 optMetaInstruction :  multiplicityDef

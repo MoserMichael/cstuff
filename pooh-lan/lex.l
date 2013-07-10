@@ -19,7 +19,7 @@
 INT_CONST	[0-9]+
 ID		[a-zA-Z_][a-zA-Z0-9_]*
 PARAM		"~"[a-zA-Z_][a-zA-Z0-9_]*
-DOUBLE		[0-9]+"."[0-9]+([Ee][+-][0-9]+)?
+DOUBLE		('.'[0-9]+|([0-9]+)"."([0-9]+)?)([Ee][+-]?[0-9]+)?
 RULENAME	[a-zA-Z_-][a-zA-Z0-9_-]* 
 RULEREF		"<"[a-zA-Z_-][a-zA-Z0-9_-]*">"
 

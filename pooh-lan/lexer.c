@@ -609,38 +609,20 @@ int do_parse_string_no_expression( LEXCONTEXT *pc, char start_char )
   yyscan_t yyscanner = pc->yyscanner;
   struct yyguts_t * yyg = (struct yyguts_t*) yyscanner; 
 #endif
-  DBUF eof_expression;
-  char *end_of_expression;
   YYLTYPE strdefloc = yyloc;
   STRING_PART *part;
 
   part = STRING_PART_init( 0, &strdefloc );
  
-  DBUF_init( &eof_expression, 0 );
-  DBUF_add( &eof_expression, &start_char, 1 );
- 
-  while ( (c =  MY_YY_INPUT) != -1) {
-    if (c == start_char) 
-      DBUF_add( &eof_expression, &start_char, 1 );
-    else { 
-      unput(c);
-      break;
-    }
-  }
-  DBUF_add_null( &eof_expression );
-  end_of_expression = (char *) eof_expression.buf;
-  
   while ( (c =  MY_YY_INPUT) != -1) {
     
-    if (dbuf_ends_with( &part->part_data, end_of_expression ) ) {
+    if ( c == start_char ) {
 
-       part->part_data.buf_used  -= eof_expression.buf_used - 1;
        part->loc.last_line = yylineno;
        part->loc.last_column = yycolumn;
-       ARRAY_push_back( &pc->string_parts, &part, sizeof(void *) );
-
        DBUF_add_null( &part->part_data );
-       DBUF_free( &eof_expression );
+       
+       ARRAY_push_back( &pc->string_parts, &part, sizeof(void *) );
 
        return 0;
     }

@@ -36,6 +36,7 @@ int GRAMMAR_checker( GRAMMARCHECKERCTX *ctx, struct tagAST_BASE *program);
 // ******************************************************************
 
 #include <cutils/circbuf.h>
+#include <cutils/circbufn.h>
 #include <cutils/dbuf.h>
 
 // ******************************************************************
@@ -67,6 +68,59 @@ typedef struct tagPEG_ERROR_ENTRY {
 
 int PARSER_DATA_SRC_file (struct tagCIRCBUF *buf, size_t *read, void *ctx );
 
+// ******************)************************************************
+//
+typedef struct tagPEG_MEMOIZE_TERMS_ENTRY {
+  HASH_Entry   hentry;
+  DRING	       dentry;
+  AST_PP_RULE *rule;
+  PP_BASE_INFO info;
+} PEG_MEMOIZE_TERMS_ENTRY;
+
+typedef struct tagPEG_MEMOIZE_TERMS {
+  BHASH map_offset_to_entry;	// map offset to entry
+  DRING root;	// link all entries sorted by offset (in order to discard passed parses)
+} PEG_MEMOIZE_TERMS; 
+
+// init cache
+int PEG_MEMOIZE_TERMS_init( PEG_MEMOIZE_TERMS * cache );
+
+int peg_parser_memoize_hash_compare( HASH_Entry  *entry, const void * key, ssize_t key_length)
+{
+  PEG_MEMOIZE_TERMS_ENTRY *lhs;	
+
+  (void) key_length;
+
+  lhs = (PEG_MEMOIZE_TERMS_ENTRY *) entry;
+
+  return lhs->info.start_idx.lookahead_offset == (size_t) key;
+}
+
+int PEG_MEMOIZE_TERMS_init( PEG_MEMOIZE_TERMS * cache )
+{
+  HASH_init( &cache->map_offset_to_entry, 10, 0, peg_parser_memoize_hash_compare, 0 );
+}
+
+// add memoization of parsing of given rule.
+int PEG_MEMOIZE_TERMS_add( PEG_MEMOIZE_TERMS * cache, AST_PP_RULE *rule, PP_BASE_INFO *info );
+
+int PEG_MEMOIZE_TERMS_add( PEG_MEMOIZE_TERMS * cache, AST_PP_RULE *rule, PP_BASE_INFO *info )
+{
+  PEG_MEMOIZE_TERMS_ENTRY *entry;
+
+  entry = (PEG_MEMOIZE_TERMS_ENTRY *) malloc( sizeof(PEG_MEMOIZE_TERMS_ENTRY) );
+  if (!entry)
+    return -1;
+    
+    
+  return -1;    
+}
+// lookup memoization at given offset.
+int PEG_MEMOIZE_TERMS_lookup( PEG_MEMOIZE_TERMS *cache, size_t offset, PP_BASE_INFO **info );
+
+// discards all items at offsets smaller then offset argument
+int PP_MEMOIZE_TERMS_discard( PEG_MEMOIZE_TERMS *cache, size_t offset );
+
 // ******************************************************************
 
 #define PEG_PARSER_TRACE_RULES  1
@@ -75,7 +129,9 @@ int PARSER_DATA_SRC_file (struct tagCIRCBUF *buf, size_t *read, void *ctx );
 typedef struct tagPEG_PARSER {
   AST_PP_BASE *root;		// root of parsed grammar
   
-  CIRCBUF lookahead;		// lookahead buffer for data.
+  PP_CHAR ch; 
+  CIRCBUF lookahead;		// lookahead buffer for input about to be parsed.
+  PEG_MEMOIZE_TERMS memoize;	// memoization cache - don't parse the same rule twice - try to reuse / cache parses.
   PEG_PARSER_POS offset;        // curren position in lookahead buffer (the current character)
   int    undo_nesting;          // is this a nested option? if yes then we must be able to backtrack.
   

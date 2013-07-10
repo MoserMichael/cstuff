@@ -28,7 +28,7 @@ M_INLINE void CIRCBUF_init_mem(CIRCBUF *buf, uint8_t *data, size_t maxcount)
     buf->read_pos = buf->write_pos = 0;
 }
 
-M_INLINE int CIRCBUF_init( CIRCBUF *buf, size_t maxcount )
+M_INLINE int CIRCBUF_init( CIRCBUF *buf,  size_t maxcount )
 {
    CIRCBUF_init_mem( buf, 0, 0 );
    return CIRCBUF_resize( buf, maxcount );
@@ -37,6 +37,7 @@ M_INLINE int CIRCBUF_init( CIRCBUF *buf, size_t maxcount )
 M_INLINE void CIRCBUF_free( CIRCBUF *buf )
 {
     free( buf->data );
+    buf->data = 0;
 }
 
 M_INLINE size_t CIRCBUF_maxsize( CIRCBUF *buf )
@@ -90,7 +91,7 @@ M_INLINE uint8_t CIRCBUF_at(CIRCBUF *buf, size_t offset, uint8_t *ch )
 {  
    if (offset >= CIRCBUF_size( buf )) 
      return -1;
-   *ch = buf->data[ ( buf->read_pos + offset ) % buf->maxcount ];
+   *ch = buf->data[ ( buf->read_pos + offset ) % buf->maxcount  ];
    return 0;
 }
 

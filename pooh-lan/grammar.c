@@ -98,6 +98,30 @@ void print_range_char( int ch )
    }
 }
 
+void GRAMMAR_show_multiplicity( AST_PP_BASE *base)
+{
+   if ( base->from != base->to || base->from != 1 ) {
+
+     fprintf( stderr, " " );
+     if (base->from == 0 && base->to == 1)
+	fprintf( stderr, "optional" );
+     else if (base->from == 1 && base->to == -1) 
+	fprintf( stderr, "some" );
+     else if (base->from == 0 && base->to == 0) 
+	fprintf( stderr, "none" );
+     else if (base->from == 1 && base->to == -1) 
+	fprintf( stderr, "some" );
+     else if (base->from == 0 && base->to == -1) 
+	fprintf( stderr, "any" );
+     else if (base->from != base->to) 
+	fprintf( stderr, " %d - %d ", base->from, base->to );
+     else 	
+        fprintf( stderr, "%d", base->from );
+			   
+   }
+
+}
+
 
 void GRAMMAR_show_alt( AST_PP_ALTERNATIVE *alt, int level )
 {
@@ -152,31 +176,16 @@ void GRAMMAR_show_alt( AST_PP_ALTERNATIVE *alt, int level )
 	  default: 
 	    assert(0);
 	}
+	GRAMMAR_show_multiplicity( (AST_PP_BASE *) elm );
+
      }
    }
   
    if (show_bracket)
      fprintf( stderr, " )");
 
-   if ( ! (base->from == base->to && base->from == 1) ) {
+    GRAMMAR_show_multiplicity( &alt->base );
 
-     fprintf( stderr, " " );
-     if (base->from == 0 && base->to == 1)
-	fprintf( stderr, "optional" );
-     else if (base->from == 1 && base->to == -1) 
-	fprintf( stderr, "some" );
-     else if (base->from == 0 && base->to == 0) 
-	fprintf( stderr, "none" );
-     else if (base->from == 1 && base->to == -1) 
-	fprintf( stderr, "some" );
-     else if (base->from == 0 && base->to == -1) 
-	fprintf( stderr, "any" );
-     else if (base->from != base->to) 
-	fprintf( stderr, " %d - %d ", base->from, base->to );
-     else 	
-        fprintf( stderr, "%d", base->from );
-			   
-   }
 }
 
 void GRAMMAR_on_left_recursion( GRAMMARCHECKERCTX *ctx, AST_PP_RULE *rule )
@@ -395,6 +404,12 @@ int PEG_PARSER_init( PEG_PARSER *parser, struct tagAST_BASE *program, size_t loo
     return -1;
   }
 
+  if (PEG_MEMOIZE_TERMS_init( &parser->memoize )) {
+    return -1;
+ }
+
+  parser->ch = 0;
+
   //memset( &parser->error_entry, 0, sizeof( PEG_ERROR_ENTRY ) );
   //parser->error_entry_set = 0;
   
@@ -420,14 +435,20 @@ int PEG_PARSER_init( PEG_PARSER *parser, struct tagAST_BASE *program, size_t loo
   return 0;
 }
 
-int PEG_PARSER_next_char( PEG_PARSER *parser, PP_CHAR *rt )
+
+void PEG_PARSER_next( PEG_PARSER *parser )
+{
+    PEG_PARSER_POS_add( &parser->offset, parser->ch );
+}
+
+int PEG_PARSER_char( PEG_PARSER *parser, PP_CHAR *rt )
 {
   uint8_t ch;
   size_t have_room;
   size_t has_read;
 
   if (! CIRCBUF_at( &parser->lookahead, parser->offset.lookahead_offset, &ch ) ) {
-    PEG_PARSER_POS_add( &parser->offset, ch );
+    parser->ch = ch;
     *rt = (PP_CHAR) ch;
     return 0;
   }
@@ -437,7 +458,8 @@ int PEG_PARSER_next_char( PEG_PARSER *parser, PP_CHAR *rt )
 
   if (!have_room) { 
      // resize the lookahead buffer.
-     if (CIRCBUF_resize( &parser->lookahead, CIRCBUF_maxsize( &parser->lookahead ) * 2 ) ) {
+     size_t newsize =  CIRCBUF_maxsize( &parser->lookahead ) * 2;  
+     if (CIRCBUF_resize( &parser->lookahead, newsize ) ) {
        return -1;
      }
   }
@@ -448,7 +470,7 @@ int PEG_PARSER_next_char( PEG_PARSER *parser, PP_CHAR *rt )
   }
  
   if (! CIRCBUF_at( &parser->lookahead, parser->offset.lookahead_offset, &ch ) ) {
-    PEG_PARSER_POS_add( &parser->offset, ch );
+    parser->ch = ch;
     *rt = (PP_CHAR) ch;
     return 0;
   }
@@ -459,18 +481,37 @@ int PEG_PARSER_next_char( PEG_PARSER *parser, PP_CHAR *rt )
 
 }
 
+int is_eof_data( PEG_PARSER *parser )
+{
+    PEG_PARSER_POS ps;
+    int rt;
+    PP_CHAR ch;
+
+    ps = parser->offset;
+    PEG_PARSER_next( parser );
+    rt = PEG_PARSER_char( parser, &ch );
+    parser->offset = ps;
+
+    if (rt == -1) {
+	return 1;
+    }
+    return 0;
+}
+
 void PEG_PARSER_skip_spaces( PEG_PARSER *parser )
 {
   int skip = 0;
   PP_CHAR ch;
 
-  if (PEG_PARSER_next_char( parser, &ch ) == 0)  {
+  if (PEG_PARSER_char( parser, &ch ) == 0)  {
     skip = 1;
     do {
+      PEG_PARSER_next( parser );
+
       if (!isspace( ch )) {
         break;
       }
-    } while(PEG_PARSER_next_char( parser, &ch ) == 0);  
+    } while(PEG_PARSER_char( parser, &ch ) == 0);  
   }
 
   if (skip) {
@@ -517,18 +558,47 @@ int is_non_trivial_error( ARRAY *error_stack )
     return (int) entry->type <= 2; // not very nice.
 }   
 
+
+void add_rdata( BINDING_DATA *res, BINDING_DATA **rdata, int *rdata_count )
+{
+    if (IS_NULL( res )) 
+	return;
+
+    switch( *rdata_count) {
+	case 0: {
+            //if (IS_STACK_VALUE( res )) {
+	      *rdata = BINDING_DATA_MEM_new( S_VAR_NULL );
+	      //BINDING_DATA_copy( *rdata, res, CP_REF );
+	      BINDING_DATA_move( *rdata, res );
+            //} else {
+            //  *rdata = res;
+            //}              
+	    }
+	    break;
+	case 1: {
+	    BINDING_DATA *vect = BINDING_DATA_MEM_new( S_VAR_LIST );
+	    VALARRAY_set( &vect->b.value.array_value, 0, *rdata, CP_REF );
+	    *rdata = vect;
+	    }
+	    //break;
+	default:
+	    VALARRAY_set( & (*rdata)->b.value.array_value, *rdata_count, res, CP_REF );
+	    break;
+    }		
+    *rdata_count = *rdata_count + 1;
+}	
 int PEG_PARSER_run_impl( PEG_PARSER *parser, AST_PP_BASE *current, PP_BASE_INFO *rinfo )
 {
-  PEG_PARSER_POS cursor_iteration, cursor;
+  PEG_PARSER_POS cursor_iteration, cursor_start_of_match, cursor_end_of_match;
   PP_CHAR ch;
   int repetition = 0;
-  BINDING_DATA *rdata = 0;
-  int rdata_count = 0;
-  PP_BASE_INFO cur_pp_info;
+  BINDING_DATA *rdata = 0;  // data returned by semantic action.
+  int rdata_count = 0;	    //  == 0 one or zero data items; == 1 multiple items returned; here rdata is a list
+  PP_BASE_INFO cur_pp_info; // base info for current terminal | non-terminal
   int rt;
   int is_token = 0;
 
-  cursor_iteration = cursor = parser->offset;
+  cursor_iteration = cursor_start_of_match = parser->offset;
 
 parse_start:
 
@@ -541,9 +611,13 @@ parse_start:
 
       rt = PEG_PARSER_run_impl( parser,  &scl->rule_ref_resolved->base, &cur_pp_info );
 
+      cursor_end_of_match = cur_pp_info.end_idx; 
       if (rt) {
         goto parse_error;
       }
+
+      if (cur_pp_info.data) 
+        add_rdata( cur_pp_info.data, &rdata, &rdata_count );
       
       if (scl->is_token)
 	parser->num_non_terminal ++;
@@ -574,6 +648,10 @@ parse_start:
        
       parser->rtype = rtype;
       parser->num_non_terminal = tmp;
+      cursor_end_of_match = cur_pp_info.end_idx; 
+
+      if (cur_pp_info.data) 
+        add_rdata( cur_pp_info.data, &rdata, &rdata_count );
       
       if (rt) 
       {
@@ -595,7 +673,6 @@ parse_start:
       }
 
       //ADD_ERROR( parser, PERR_RULE_FAILED, current, cursor_iteration, 0, 0 )
-      
       goto parse_ok;
       }
       break;
@@ -613,6 +690,7 @@ parse_start:
       size_t rhs_terms_info_count = (size_t) -1;
       size_t max_length_sequence = 0;
       size_t trace_pos;
+      int has_script_rvalue;
 
       max_length_sequence = scl->max_length_sequence;
       if ( max_length_sequence != 0) {
@@ -649,6 +727,9 @@ parse_start:
 	tmp_num_non_terminal = parser->num_non_terminal; 
 
 	rhs_terms_info_count = 0;
+	has_script_rvalue = 0;
+	rdata = 0;
+	rdata_count = 0;
 	
         if ( parser->trace_flags & parser->rtype ) {
           trace_pos = parser->trace_clause.buf_used ;
@@ -676,25 +757,8 @@ parse_start:
 		return -1;
 	    }
 
-	    switch( rdata_count) {
-		case 0: {
-		    rdata = BINDING_DATA_MEM_new( S_VAR_NULL );
-		    BINDING_DATA_copy( rdata, res, CP_REF );
-		    }
-		    break;
-		case 1: {
-		    BINDING_DATA *vect = BINDING_DATA_MEM_new( S_VAR_LIST );
-		    VALARRAY_set( &vect->b.value.array_value, 0, rdata, CP_REF );
-		    rdata = vect;
-		    }
-		    //break;
-		default:
-		    VALARRAY_set( &rdata->b.value.array_value, rdata_count, res, CP_REF );
-		    break;
-	    }		
-	    rdata_count++;
-
-
+	    add_rdata( res, &rdata, &rdata_count );
+	    has_script_rvalue = 1;
  	    continue;
 	  }
 
@@ -712,13 +776,31 @@ parse_start:
 	  break;
 	}
 
- 
-
       } // eof all alternatives
 
       parser->undo_nesting --;
       
       if (sequence_ok) {
+	if (rhs_terms_info_count) {
+	  cursor_end_of_match = rhs_terms_info[ rhs_terms_info_count - 1 ].end_idx;
+	} else {
+	  cursor_end_of_match = cursor_iteration;
+	}
+
+	if (!has_script_rvalue) { 
+	    size_t i;
+
+	    // make up rvalue from available data:
+	    for(i = 0; i < rhs_terms_info_count; ++i) {
+	      BINDING_DATA *term_data = rhs_terms_info[ i ] . data;
+	      if (term_data) {
+		 add_rdata( term_data, &rdata, &rdata_count );
+	      }
+	    }
+	    //assert( rdata != 0 );
+	} else {
+	    //assert( rdata != 0 );
+	}
         goto parse_ok;
       }
       // set error...ddd
@@ -732,10 +814,11 @@ parse_start:
 	is_token = 1;
 
         for( p = scl->const_string; *p != '\0'; ++p ) {
-	  if (PEG_PARSER_next_char( parser, &ch ) == -1) {
+	  if (PEG_PARSER_char( parser, &ch ) == -1) {
 	    goto parse_error;
 	  }
 	  if (*p != (char) ch) {
+            PEG_PARSER_next( parser );
 	    goto parse_error;
 	  }
 	}
@@ -746,6 +829,8 @@ parse_start:
           display_trace( parser, -1, -1 );
 	}    
 	parser->num_non_terminal ++;
+	cursor_end_of_match = parser->offset;
+        PEG_PARSER_next( parser );
 	goto parse_ok;
       }
       break;
@@ -754,17 +839,22 @@ parse_start:
       AST_PP_RANGE *cur; 
       size_t i;
 
-      if (PEG_PARSER_next_char( parser, &ch ) == -1) {
+      if (PEG_PARSER_char( parser, &ch ) == -1) {
 	// parser error; premature input.
 	goto parse_error;
       }
       for( i = 0; i < ARRAY_size( &scl->ranges ); i++ ) {
 	cur = (AST_PP_RANGE *) ARRAY_at( &scl->ranges, i ); 
 	if (cur->to == (uint32_t) -1 ) {
-	    if (cur->from == ch) 
+	    if (cur->from == ch) {
+		PEG_PARSER_next( parser );
+		cursor_end_of_match = parser->offset;
 		goto parse_ok;
+	    }		
 	} else {
 	    if (cur->from <= ch && ch <= cur->to) {
+		PEG_PARSER_next( parser );
+		cursor_end_of_match = parser->offset;
 		goto parse_ok;
 	    }		
 	}
@@ -783,7 +873,7 @@ parse_ok:
 
   
   if (current->to == 0) { // match none; but we have a match -> fail.
-     parser->offset = cursor;
+     parser->offset = cursor_start_of_match;
      if (parser->num_non_terminal != 0 && parser->error_set_enabled && parser->rtype == S_PP_RULE_GRAMMAR ) {
 	NEXT_ERROR_ENTRY( parser, cursor_iteration, current,  PERR_TERM_NOT_EXPECTED_HERE );
      }	
@@ -803,7 +893,7 @@ parse_ok:
   } 
 
   if (repetition >= current->from) {
-    SET_PP_RET_DATA( rinfo, cursor, parser->offset, repetition, rdata )
+    SET_PP_RET_DATA( rinfo, cursor_start_of_match, cursor_end_of_match, repetition, rdata )
     return 0;
   }
 
@@ -812,7 +902,7 @@ parse_ok:
 
 parse_error:
   if ( repetition >= current->from ) {
-    SET_PP_RET_DATA( rinfo, cursor, parser->offset, repetition, rdata )
+    SET_PP_RET_DATA( rinfo, cursor_start_of_match, parser->offset, repetition, rdata )
     parser->offset = cursor_iteration;
     return 0;
   }
@@ -853,9 +943,9 @@ static const char *parser_msg[] = {
 };
 #endif
 
-void PEG_PARSER_print_error( PEG_PARSER *parser )
+int PEG_PARSER_print_error( PEG_PARSER *parser, int status )
 {
-  if ( ARRAY_size( &parser->error_stack ) != 0 ) {
+  if ( status != 0 && ARRAY_size( &parser->error_stack ) != 0 ) {
      PEG_ERROR_ENTRY *entry = (PEG_ERROR_ENTRY *) ARRAY_at( &parser->error_stack, 0 );
      fprintf( stderr,"Error: ");
      switch( entry->type ) {
@@ -875,16 +965,25 @@ void PEG_PARSER_print_error( PEG_PARSER *parser )
 	    fprintf( stderr, "PERR_STOPPED_BY_SEMANTIC_ACTION\n" );
 	    break;
      }
+     return -1;
   }
+
+
+  if ( ! is_eof_data( parser ) ) {
+     fprintf( stderr, "Not all available data has been parsed; trailing data after Line: %d Column: %d " , parser->offset.line, parser->offset.column ) ;
+  }
+
+  return 0;
 }
 
 
 int PEG_PARSER_run( PEG_PARSER *parser, PP_BASE_INFO *rinfo)
 {
-  int rt = PEG_PARSER_run_impl( parser, parser->root, rinfo );
-  if (rt) {
-    PEG_PARSER_print_error( parser );
-  }
+  int rt;
+  
+  rt = PEG_PARSER_run_impl( parser, parser->root, rinfo );
+  rt = PEG_PARSER_print_error( parser, rt );
+
   return rt;
 } 
 

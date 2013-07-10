@@ -34,7 +34,7 @@ typedef struct tagPARSECONTEXT {
   struct tagAST_BASE * my_ast_root;
 
   struct tagAST_FUNC_DECL *current,*root_ctx;
-  struct tagAST_BASE_LIST *stmt_list;
+  struct tagAST_BASE_LIST *stmt_list,*main_stmt_list;
   
   HASH map_function_defs; // maps function name to function definition. (AST_FUNC_DECL *)
 

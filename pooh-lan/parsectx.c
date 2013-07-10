@@ -78,6 +78,7 @@ int PARSECONTEXT_init(PARSECONTEXT *ctx, INC_PATH *inc_path, AST_FUNC_DECL *curr
   ctx->report_errors = 1;
   ctx->stmt_not_closed = 0;
   ctx->stmt_list = 0;
+  ctx->main_stmt_list = 0;
 
   YYLTYPE_init( &stam );   
  

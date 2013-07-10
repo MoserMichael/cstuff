@@ -1141,7 +1141,22 @@ static void x_tooct( XCALL_DATA *xcall )
   ton( xcall, 8  );
 }
 
+static void x_tofloat( XCALL_DATA *xcall )
+{
+  BINDING_DATA *arg;
+  VALSTRING *sval;
+  double ret;
+  
+  arg = XCALL_param( xcall, 0 ); 
+  sval = BINDING_DATA_get_string( arg );
+  
+  VALSTRING_make_null_terminated( sval );
 
+  ret = strtod( sval->string,  0 );
+  BINDING_DATA_set_double( XCALL_rvalue( xcall ) , ret ); 
+
+}
+ 
 static void x_find( XCALL_DATA *xcall )
 {
   BINDING_DATA *arg;
@@ -2956,7 +2971,8 @@ static void make_parse_rvalue(  XCALL_DATA *xcall, int rt, PP_BASE_INFO *pinfo )
   rval = XCALL_rvalue( xcall );  
   BINDING_DATA_init( rval, S_VAR_HASH );
 
-  add_int( rval, "status",    rt );
+  add_int( rval, "status",    !rt );
+
   add_val( rval, "returnval", pinfo->data );
 
   // add error messages  ***
@@ -3040,12 +3056,15 @@ static void x_termtext( XCALL_DATA *xcall )
   BINDING_DATA_get_int( data, &index );
 
   if (parse->current_rhs_clause_len < index || index == 0)  {
-    return;
+    pinfo = parse->current_rhs_clause;
+    spos = pinfo->start_idx.lookahead_offset;
+    pinfo = parse->current_rhs_clause + parse->current_rhs_clause_len - 1 ; 
+    epos = pinfo->end_idx.lookahead_offset;
+  } else {
+    pinfo = parse->current_rhs_clause + index - 1;
+    spos = pinfo->start_idx.lookahead_offset;
+    epos = pinfo->end_idx.lookahead_offset;
   }
-  
-  pinfo = parse->current_rhs_clause + index - 1;
-  spos = pinfo->start_idx.lookahead_offset;
-  epos = pinfo->end_idx.lookahead_offset;
 
   if (CIRCBUF_extract_text( &parse->lookahead, spos, epos, &copy_to )) {
     EVAL_CONTEXT_runtime_error( xcall->thread->context , "can't allocate" );
@@ -3159,6 +3178,10 @@ AST_XFUNC_DECL xlib[] = {
   DEFINE_XFUNC1( "int",	   x_toint,     S_VAR_INT, "string", S_VAR_STRING ),
   DEFINE_XFUNC1( "hex",	   x_tohex,     S_VAR_INT, "string", S_VAR_STRING ),
   DEFINE_XFUNC1( "oct",	   x_tooct,     S_VAR_INT, "string", S_VAR_STRING ),
+  DEFINE_XFUNC1( "float",  x_tofloat,   S_VAR_DOUBLE, "string", S_VAR_STRING ),
+
+
+
   DEFINE_XFUNC0( "emptystring", x_emptystring, S_VAR_STRING ),
   DEFINE_XFUNC0( "newline",  x_newline, S_VAR_STRING ),
       
