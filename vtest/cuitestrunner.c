@@ -21,8 +21,10 @@ static void MSG( const char * format, ... )
     vfprintf( stdout, format, ap );   
   } else {
     char big_buf[ 32 * 1024 ];
+    int n;
 
-    vsnprintf( big_buf, sizeof( big_buf ), format, ap );
+    n = vsnprintf( big_buf, sizeof( big_buf ) - 1, format, ap );
+    big_buf[ n ] = '\0';
     debug_output_hook( big_buf );
     fputs( big_buf, stdout );
   }
