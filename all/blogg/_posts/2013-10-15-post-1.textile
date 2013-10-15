@@ -7,17 +7,15 @@ h2. {{ page.title }}
 
 Book review of  "Surfaces and essences / Analogy as the fuel and fire of thinking" By Douglas Hofstadter & Emmanuel Sander
 
-I am a fan of "Goedel, Escher, Bach":http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach So I was following the Author's previous works on analogy ("here":http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.307.5740 and "here on tv":http://www.youtube.com/watch?v=n8m7lFQ3njk),
-and was anticipating this book eagerly.
+I am a fan of "Goedel, Escher, Bach":http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach So I was following the Author's previous works on analogy ("here":http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.307.5740 and "here on tv":http://www.youtube.com/watch?v=n8m7lFQ3njk), and was anticipating this book eagerly.
 
 This one is a very interesting book; some of the findings presented in the book:
 - Categories are _not_ clear cut ideal boxes that describe entities clearly, usually there is no clear procedure for deciding if an entity belongs to a category; indeed each category is made up of certain core concepts (pigeons and eagles are birds) and less certain fringes (Penguins are birds ?)
- 
+
 - Analogy making has a dual role in  creating new concepts, and in assigning entities to existing concepts.
 *  creation of concepts/categories: by making repeated analogies between entities we create  categories as sets of precedent cases.
-	      * assigning an entity to an category is by means of making an analogy between entity and category.
- 
-- the mechanism is in effect for analogies between things, and analogies between simple and complex ideas;
+* assignment of an entity to a category is by means of making an analogy between entity and category.
+- this mechanism is in effect for multiple forms; analogies between things, and analogies between simple and complex ideas;
 
 If one is interested in language and thinking/cognition then this book is of much interest.
 If you expect a sequel of "Goedel, Escher, Back" then you will be a bit disappointed; though a similar effect of mind expansion is achieved when reading the first two and the last two chapters.
@@ -25,7 +23,6 @@ If you expect a sequel of "Goedel, Escher, Back" then you will be a bit disappoi
 I think there are similarities between this study of analogy and software development practices: Object Oriented design tries to divide a problem space into clear categories called classes. Now the problem is that there are many possible classifications of any problem domain; one is supposed to pick the most relevant classification that would help at solving a given problem. In practice this does not always work that way;  I find it interesting that there is another form of looking at problems in the field of programming : prototype based objects, here instances of an object are copied from a prototype object, and may be altered later on; now this is similar to the idea of categories as explained in this book.
 
 I found it a bit difficult to read the book; the book follows different types of analogy, many things are therefore similar; I would often put it down and pick it up later, but then it was hard to remember what it was all about. So I made up some notes in the process of reading it; I put them up here, so as not to loose them (and to remember what the book was about).
-
 
 ----------------------------------------------------------
 Notes on "Surfaces and essences"
@@ -42,10 +39,10 @@ Zeugmas: _in_ appears in a sentence and two meanings of the same word are used i
 
 The same sentence in different languages:
 
-- I’m going to brush my teeth and my hair - (the author says that 'brush teeth' and 'brush hair' are very different)
-- Voglio lavarmi la faccia e i denti.   (  “I want to wash my face and my teeth.” - you can say that in Italian, no problemo)
-- se laver les dents” (“to wash one’s teeth”) (this is acceptable french, but more often they say: “se brosser les dents” (“to brush one’s
-teeth”).
+- Im going to brush my teeth and my hair - (the author says that 'brush teeth' and 'brush hair' are very different)
+- Voglio lavarmi la faccia e i denti.   (  I want to wash my face and my teeth. - you can say that in Italian, no problemo)
+- se laver les dents (to wash ones teeth) (this is acceptable french, but more often they say: se brosser les dents (to brush ones
+teeth).
 
 So these Zeugmas are very much relative to the language of the speaker (Hello Linguistic relativity)
 
@@ -58,7 +55,7 @@ In German 'fressen' is by animals and 'essen' is by people, so you can't say the
 
 Many more trivia like that is presented:
 'Play' is both playing sports and music;
-In italian you have “giocare” (for sports) and “suonare” (for musical instruments)
+In italian you have giocare (for sports) and suonare (for musical instruments)
 In Chinese you have different words for playing different kinds of instrument; No general word for 'playing' and instrument at all!
 As if one has different verbs for Playing socker, playing basketball !!!
 
@@ -70,21 +67,21 @@ Categories:
 
 - in science the categories are usually well defined as sets; statement 'item' is in 'category' is either true or false
 - Hofstadter says that assignment to categories is a relationship that returns a probability ('shades of gray'):
-  therefore the decision of assigning an entity to a category is the same thing as making an analogy between entity and set of  previous analogies (that is the category) (belongs to category - is like category 
-  ('like' can be more or less certain - so this introduces the 'shades')
+ therefore the decision of assigning an entity to a category is the same thing as making an analogy between entity and set of  previous analogies (that is the category) (belongs to category - is like category 
+ ('like' can be more or less certain - so this introduces the 'shades')
 
- Explains analogy: not the proportional analogies that are employed in IQ tests:
+Explains analogy: not the proportional analogies that are employed in IQ tests:
 	tomato : red :: broccoli : X | anser X - green (?)
- (The misunderstanding is that many people reduce analogy to such relations in IQ tests)
+(The misunderstanding is that many people reduce analogy to such relations in IQ tests)
 
- The book claims:	
- - cognition is due to categorization; categorization does not come from classification - 
-  instead categorization comes from analogy making (which returns a different measure of success (non     boolean))	 
-  - this allows us to deal with similarities of data (classification does not help here)
+The book claims:	
+- cognition is due to categorization; categorization does not come from classification - 
+ instead categorization comes from analogy making (which returns a different measure of success (non     boolean))	 
+ - this allows us to deal with similarities of data (classification does not help here)
 
- The term 'inference' as used in the book: is not meant as logical induction of inference engine (as AI).
- ... a currently active concept is lifted out of dormancy and brought to one’s attention. ... For us, “inference” will simply mean the fact that some new element has been activated in our mind.
- (not necessarily logically related)
+The term 'inference' as used in the book: is not meant as logical induction of inference engine (as AI).
+... a currently active concept is lifted out of dormancy and brought to ones attention. ... For us, inference will simply mean the fact that some new element has been activated in our mind.
+(not necessarily logically related)
 
 ---
 The classics on analogy:
@@ -108,11 +105,11 @@ To bring in evolution: In order to survive Humans draw on past experience and co
 ---
 Single member categories. My Mother for a newborn
 While playing in the park this concept grows into two member concept
-"That person is taking care of her just like Mommy takes care of me.” That key moment marks the birth of the concept mommy with a small “m”. The lowercase letter is because there are two members of this new category now"
+"That person is taking care of her just like Mommy takes care of me. That key moment marks the birth of the concept mommy with a small m. The lowercase letter is because there are two members of this new category now"
 
 "What we are proposing is that the birth of any concept takes place more or less as described above. At the outset,
 there is a concrete situation with concrete components, and thus it is perceived as something unique and cleanly separable
-from the rest of the world. After a while, though — perhaps a day later, perhaps a year — one runs into another situation that one
+from the rest of the world. After a while, though  perhaps a day later, perhaps a year  one runs into another situation that one
 finds to be similar, and a link is made. From that moment onward, the mental representations of the two situations begin to be connected
 up, to be blurred together, thus giving rise to a new mental structure that, although it is less specific than either of its two sources (i.e. less detailed), is not fundamentally
 different from them."
@@ -178,12 +175,12 @@ a lawyer, at home a mother,"
 Metaphors: 
 
 Rules for metaphors: (George Lakoff, Mark Johnson)
- - time is characterized in terms of space (metaphor for time is space): a _distant_ area, from now _on_
- - space is .characterized in terms of time: the first street _after_ the traffic light, _going_ to see them tomorrow.
- - mood is characterized by 'high' and 'low': to be very _down_
- - abstract is exemplified by familiar things: a believe _dictates_ behaviour
- - complex (conflicting) situation are exemplified by conflict language: outsourcing _kills_ growth
- - many metaphors do not have their own category: it's _greek_ to me; a _cool_ idea
+- time is characterized in terms of space (metaphor for time is space): a _distant_ area, from now _on_
+- space is .characterized in terms of time: the first street _after_ the traffic light, _going_ to see them tomorrow.
+- mood is characterized by 'high' and 'low': to be very _down_
+- abstract is exemplified by familiar things: a believe _dictates_ behaviour
+- complex (conflicting) situation are exemplified by conflict language: outsourcing _kills_ growth
+- many metaphors do not have their own category: it's _greek_ to me; a _cool_ idea
 
 'Dead metaphors' - often used ones that are no longer original; no longer covering any original meaning; fall into disuse.
 Likens it to a city: area that once was a suburb is absorbed into the core, what was once a bold metaphor is absorbed into the core meaning of a concept.
@@ -244,7 +241,7 @@ Idioms/proverbs: "Jewish Mother" as denoting person who is overprotective and co
 "Once bitten twice shy" - no animals involved; all denote a wishy category of situations, analogy used to apply these utterances.
 
 Proverbs: Meaning of "He who will steal an egg will steal an ox" 
-  	1) does it mean 'small thefts are initial steps, large thefts will follow'
+ 	1) does it mean 'small thefts are initial steps, large thefts will follow'
 	2) does it mean 'small misdeed are initial steps, large misdeeds will follow'
 	3) does it mean 'small action is initial step, large action will follow'
 	4) does it mean 'one thing leads to another'
@@ -256,9 +253,9 @@ Abstraction is 'taking away the irrelevant part in order to extract the essence'
 (M.M. like in programming ;-); the question is always: is this abstraction relevant? Does it not omit too much ?
 
 Are fables also just names for sets of situations that are applied by means of analogies ? Yes! 'Sour grapes' : failure followed by belittling the original goal.
-'Sour Grapes' is similar to "Cognitive Dissonance" - if there is a conflict between expectations and what is possible then psychologist tell you to 'regain a peaceful frame of mind by distorting one’s perception of a troubling situation'
+'Sour Grapes' is similar to "Cognitive Dissonance" - if there is a conflict between expectations and what is possible then psychologist tell you to 'regain a peaceful frame of mind by distorting ones perception of a troubling situation'
 
-'Sour Grapes' situation: in which disappointment turns a person into an intellectual opportunist — that is, into someone who tries to paint a failure in rosy colors
+'Sour Grapes' situation: in which disappointment turns a person into an intellectual opportunist  that is, into someone who tries to paint a failure in rosy colors
 
 -----
 
@@ -289,7 +286,7 @@ Finding similarities between stories: And now to the problem of encoding - we ar
 Often an emotional aspect central to the 'skeleton' ; emotions often make up the core of an experience.
 - Part of understanding a situation is recall of past precedents 'that remind us of the situation' (Roger Schank)
 - Is deep essence/category extracted when a situation is experienced for the first time, and later recognition is only a recall of that encoding/past insight ? 
-  The book says that repeated recognition of themes based on analogies is what is creating essences/categories.
+ The book says that repeated recognition of themes based on analogies is what is creating essences/categories.
 
 
 ------
@@ -316,7 +313,7 @@ Of concept of waves (of water) has been extended many times in physics;
 ----
 Different types of metaphora:
 - completely standardized metaphorical expression, understood by native speakers; an abstract category is clearly understood by native speakers.
-  Jacks house is a dump(2); Dump(1) unpleasant place,garbage dump ; Dump(2) - messy place.
+ Jacks house is a dump(2); Dump(1) unpleasant place,garbage dump ; Dump(2) - messy place.
 - standardized expression where the source of the abstract category is no longer known (lost in time?) - but still understood by native speakers.
 - abstract category is not standardized; listeners is supposed to construct one; No standardized usage exists, but is dependent on the context.
 
@@ -365,10 +362,10 @@ After having attended a friends 60ieth birthday, A notices fleeting occurrences 
 - the mind constantly is looking for familiar patterns; many analogies just happen and do not server any purpose (such as problem solving)
 
 - words denoting Sensory perception are often used to denote emotions/ideas; 
-  Visual perception -> understanding
-  touch/struck/moved -> emotion
-  cleanliness  -> morality (Macbeth effect)
-  sensing - the word has double meaning of perception and cognition.
+ Visual perception -> understanding
+ touch/struck/moved -> emotion
+ cleanliness  -> morality (Macbeth effect)
+ sensing - the word has double meaning of perception and cognition.
 
 these similarities lead to theory of "embodyment" - all our senses lead to perception <-> emotion / thought.
 The author says we are thinking 'through the medium of our concepts, which are built up through constant analogy making, which is in response to sensory stimulus/
@@ -383,31 +380,31 @@ Abstracting 'Moving' as 'State change' (without transiting intermediate steps) i
 
 --------
 Analogies that exert influence:
- 
-- analogies to 9/11; comparing events to 9/11 creates a category '9/11 events'; 
-  by comparing an event to '9/11', it is assigned to a category and the category paints back on the event.
-  (small crash of a plane on 9/11/2004 made the stock market crash)
-  (Or by comparing x to the Nazis, the assigned category paints back on X, since the Nazis where evil in many ways, x is now perceived as more evil)
-  
-- If you recently have seen X at your friends home, then you are more likely to notice X in any other settings.
-  If one has experienced X then one is more likely to notice X in everyday situations, one is likely to search for X and one will find it)
-  This is a 'filter'/bias of sorts, it's a good thing because it helps us to focus on recent things/relevant to us things.
 
-  (M.M. like in OSX menu, the items near the mouse are displayed bigger then what is further away)
+- analogies to 9/11; comparing events to 9/11 creates a category '9/11 events'; 
+ by comparing an event to '9/11', it is assigned to a category and the category paints back on the event.
+ (small crash of a plane on 9/11/2004 made the stock market crash)
+ (Or by comparing x to the Nazis, the assigned category paints back on X, since the Nazis where evil in many ways, x is now perceived as more evil)
+ 
+- If you recently have seen X at your friends home, then you are more likely to notice X in any other settings.
+ If one has experienced X then one is more likely to notice X in everyday situations, one is likely to search for X and one will find it)
+ This is a 'filter'/bias of sorts, it's a good thing because it helps us to focus on recent things/relevant to us things.
+
+ (M.M. like in OSX menu, the items near the mouse are displayed bigger then what is further away)
 
 - Obsessions: if one is obsessed by an event, then one will see analogies to this event in almost everything;
-  this forced search for analogies can be a source of new insights "Chance favors the prepared mind"
-  (M.M. and a source of suffering, depends on the setting)
-  People obsessed by a hobby will often explain the world in terms of the hobby; even Pac Man can inspire a Philosophy of life.
-  (M.M. Philosophical Relativists/Logical positivists say that areas of knowledge are isomorphic, it isn't but one can find lots of isomorphisms, if one tries hard)
- 
+ this forced search for analogies can be a source of new insights "Chance favors the prepared mind"
+ (M.M. and a source of suffering, depends on the setting)
+ People obsessed by a hobby will often explain the world in terms of the hobby; even Pac Man can inspire a Philosophy of life.
+ (M.M. Philosophical Relativists/Logical positivists say that areas of knowledge are isomorphic, it isn't but one can find lots of isomorphisms, if one tries hard)
+
 - 'Induction' - extrapolating from past experience is done with more confidence if there were lots of sample points.
 
 ------
 Chapter 6 - how we manipulate analogies
 
 - Puns often work by creating 'caricature analogies': "Fighting for peace is like fucking for virginity"
-  the analogy has to a bit remote from the original situation, otherwise it does not work(not funny)
+ the analogy has to a bit remote from the original situation, otherwise it does not work(not funny)
 - such 'caricature analogies' can explain things by puting them into different perspective, this is done by reducing an experience ot its core/conceptual skeleton.
 
 - is it possible to reason without analogies?
@@ -460,11 +457,11 @@ Plausible but inacurate analogies with prior knowledge, made on the spot with in
 are made spontaneously/automatic, the speaker is often unaware that he made an anlogy.
 
 Naive analogies are often made by learners; so their study is important in education. 
- - Kids make analogies from what they learn into their domain; this can help them to learn/remember knowledge
- - naive analogies often coexist with the learned knowledge
+- Kids make analogies from what they learn into their domain; this can help them to learn/remember knowledge
+- naive analogies often coexist with the learned knowledge
 
 Lance Rips: inference of trait from typical member of category to atypical member of category is more common then 
-            inference of trait from atypical member to typical member.
+           inference of trait from atypical member to typical member.
 
 
 Does not like the notion that stuff learned in school is independent/separate from everyday knowledge / links to what we know
@@ -518,9 +515,9 @@ can turn into something very concrete.
 Mechanical manipulation in math:
 
 Moving variables to the second side
- 3x - 5 = 6x + 3
- -3x = 8  
-  x = -8/3
+3x - 5 = 6x + 3
+-3x = 8  
+ x = -8/3
 Two tricks; moving variable to the second side; dividing by the factor.
 Recognizing this situation as being applicable means making an analogy to the 'bag of tricks' that one has learned.
 Even more so as one goes along...
@@ -566,7 +563,7 @@ How did he get there?
 
 <Some stuff about General relativity that is not quite clear>
 
-Stanislaw Ulam: “Good mathematicians see analogies between theorems or theories, but the very best ones see analogies between analogies.”
+Stanislaw Ulam: Good mathematicians see analogies between theorems or theories, but the very best ones see analogies between analogies.
 	
 
 
