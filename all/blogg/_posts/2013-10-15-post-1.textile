@@ -1,0 +1,582 @@
+---
+layout: post
+title: Book review of  "Surfaces and essences / Analogy as the fuel and fire of thinking"
+ 
+---
+h2. {{ page.title }}
+<p class="publish_date">14 October 2013</p>
+
+Book review of  "Surfaces and essences / Analogy as the fuel and fire of thinking" By Douglas Hofstadter & Emmanuel Sander
+
+I am a fan of "Goedel, Escher, Bach":http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach So I was following the Author's previous works on analogy ("here":http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.307.5740 and "here on tv":http://www.youtube.com/watch?v=n8m7lFQ3njk),
+and was anticipating this book eagerly.
+
+This one is a very interesting book; some of the findings presented in the book:
+- Categories are _not_ clear cut ideal boxes that describe entities clearly, usually there is no clear procedure for deciding if an entity belongs to a category; indeed each category is made up of certain core concepts (pigeons and eagles are birds) and less certain fringes (Penguins are birds ?)
+ 
+- Analogy making has a dual role in  creating new concepts, and in assigning entities to existing concepts.
+*  creation of concepts/categories: by making repeated analogies between entities we create  categories as sets of precedent cases.
+	      * assigning an entity to an category is by means of making an analogy between entity and category.
+ 
+- the mechanism is in effect for analogies between things, and analogies between simple and complex ideas;
+
+If one is interested in language and thinking/cognition then this book is of much interest.
+If you expect a sequel of "Goedel, Escher, Back" then you will be a bit disappointed; though a similar effect of mind expansion is achieved when reading the first two and the last two chapters.
+
+I think there are similarities between this study of analogy and software development practices: Object Oriented design tries to divide a problem space into clear categories called classes. Now the problem is that there are many possible classifications of any problem domain; one is supposed to pick the most relevant classification that would help at solving a given problem. In practice this does not always work that way;  I find it interesting that there is another form of looking at problems in the field of programming : prototype based objects, here instances of an object are copied from a prototype object, and may be altered later on; now this is similar to the idea of categories as explained in this book.
+
+I found it a bit difficult to read the book; the book follows different types of analogy, many things are therefore similar; I would often put it down and pick it up later, but then it was hard to remember what it was all about. So I made up some notes in the process of reading it; I put them up here, so as not to loose them (and to remember what the book was about).
+
+
+----------------------------------------------------------
+Notes on "Surfaces and essences"
+
+Chapter 1.
+
+Dictionary entries for words do not describe the word (any word) fully; cannot fully describe all variations of each particular definition.
+
+(1) Meeting _in_ five minutes and the garden 
+(2) Meeting _in_ the garden
+(3) Meeting _in_ five minutes
+
+Zeugmas: _in_ appears in a sentence and two meanings of the same word are used in sentence (1).
+
+The same sentence in different languages:
+
+- I’m going to brush my teeth and my hair - (the author says that 'brush teeth' and 'brush hair' are very different)
+- Voglio lavarmi la faccia e i denti.   (  “I want to wash my face and my teeth.” - you can say that in Italian, no problemo)
+- se laver les dents” (“to wash one’s teeth”) (this is acceptable french, but more often they say: “se brosser les dents” (“to brush one’s
+teeth”).
+
+So these Zeugmas are very much relative to the language of the speaker (Hello Linguistic relativity)
+
+Sometimes I go to work by car, and other times on foot.
+In German you have 'Fahren' for 'going by car' and 'gehen' for going by foot, so you can't say the same sentence the same way in German.
+
+Or
+The boy and the dog were eating bread - no problem in English,
+In German 'fressen' is by animals and 'essen' is by people, so you can't say the same thing in German (the same way)
+
+Many more trivia like that is presented:
+'Play' is both playing sports and music;
+In italian you have “giocare” (for sports) and “suonare” (for musical instruments)
+In Chinese you have different words for playing different kinds of instrument; No general word for 'playing' and instrument at all!
+As if one has different verbs for Playing socker, playing basketball !!!
+
+'You will enjoy this zeugma as much as a piece of chocolate or of music.'
+funny play on the meaning of 'enjoy'; he says that we can parse/assign words to concepts this in fractions of a second !!!
+
+---
+Categories:
+
+- in science the categories are usually well defined as sets; statement 'item' is in 'category' is either true or false
+- Hofstadter says that assignment to categories is a relationship that returns a probability ('shades of gray'):
+  therefore the decision of assigning an entity to a category is the same thing as making an analogy between entity and set of  previous analogies (that is the category) (belongs to category - is like category 
+  ('like' can be more or less certain - so this introduces the 'shades')
+
+ Explains analogy: not the proportional analogies that are employed in IQ tests:
+	tomato : red :: broccoli : X | anser X - green (?)
+ (The misunderstanding is that many people reduce analogy to such relations in IQ tests)
+
+ The book claims:	
+ - cognition is due to categorization; categorization does not come from classification - 
+  instead categorization comes from analogy making (which returns a different measure of success (non     boolean))	 
+  - this allows us to deal with similarities of data (classification does not help here)
+
+ The term 'inference' as used in the book: is not meant as logical induction of inference engine (as AI).
+ ... a currently active concept is lifted out of dormancy and brought to one’s attention. ... For us, “inference” will simply mean the fact that some new element has been activated in our mind.
+ (not necessarily logically related)
+
+---
+The classics on analogy:
+
+Plato and Aristotle: analogy and metaphor are important mechanism in thinking, but its use can lead astray]
+Kant and Nizsche follow this tradition.
+
+Positivists: Hobbes and Locke: they like clear words and scorn analogy and metaphor as bullshit. science is supposedly clear and without ambiguities.
+(interestingly in their writing they invoke metaphor in order to scorn it).
+
+He asks: are metaphors any use? Well we draw upon experience by making analogies with past events;
+'experience' is based on the making of analogies with past situations. 
+
+---
+Computers and Man: 
+
+Humans think by categorization through analogy, that's why a Human can /infer from past events/gain insight/adapt to situations/, a computer only follows orders.
+
+To bring in evolution: In order to survive Humans draw on past experience and compare/apply it to present situations. This comparison is made my means of analogy.
+
+---
+Single member categories. My Mother for a newborn
+While playing in the park this concept grows into two member concept
+"That person is taking care of her just like Mommy takes care of me.” That key moment marks the birth of the concept mommy with a small “m”. The lowercase letter is because there are two members of this new category now"
+
+"What we are proposing is that the birth of any concept takes place more or less as described above. At the outset,
+there is a concrete situation with concrete components, and thus it is perceived as something unique and cleanly separable
+from the rest of the world. After a while, though — perhaps a day later, perhaps a year — one runs into another situation that one
+finds to be similar, and a link is made. From that moment onward, the mental representations of the two situations begin to be connected
+up, to be blurred together, thus giving rise to a new mental structure that, although it is less specific than either of its two sources (i.e. less detailed), is not fundamentally
+different from them."
+
+Then we learn that every person has a Mother, making the concept still larger;
+
+Then there are even more abstract usages: The Queen bee is the Mother of all bees in the hive; a Mother doll to a child doll; Mother nature ... 
+
+So the book says that Categories are formed by applying analogies; categorization (decision if a belongs to concept b) is done by means of analogy.
+The act of applying analogies is extending simple concepts/categories into more complex concepts/categories.
+
+Often funny things that children say come because in the child's mind are more inclusive then in the mind of adults:
+So tom says "I want to eat some water" because 'eating' for him is more general than the standard usage.
+.. all this is the same mechanisms as metaphorical usage of adults.
+
+---
+
+In science: Galileo saw the moons on Jupiter and made the analogy onto the planets moving around the sun;
+
+---
+Hubs: first seen as in a wheel: a center with spikes that lead out of it. 
+Transportation hub: an airport with lots of routes that go out of it ( concept formed by analogy with the wheel )
+
+---
+Philosophers thought that things divide into natural/clearly defined/unambiguous categories, and that all we have to do is classify things correctly. Philosophers like to deal with platonic/supposedly objective - categories and how they relate to each other,  not concerned with the procedure that can decide if instance a is a member of category b.
+
+
+What about birds? 
+Wittgenstein says: a category should have
+	- necessary conditions for membership
+	- sufficient conditions for membership
+Definition:
+	the set of membership criteria are the Intention category
+	Instances that are in category are extension of the category
+
+Problem:
+	words to describe the Intention are not very exact; there is no algorithmic procedure for deciding if something is in a category.
+	By making up an abstract category you will get many exceptions:
+	If having feathers are criteria for being a bird: is a plucked bird still a bird?
+
+So Hofstadter likens categories to fleeting clouds, that doe not have clear boundaries
+(M.M. Ha ha: in Object Oriented programming they once had clouds for class notation (Booch))
+
+---
+If categories are rejected: some now use the notion of Prototypes / the complete set of exemplars that one encounters;
+
+(M.M. like in programming: they have prototype classes as Objects in scripting languages)
+
+Another idea are mental stimulators of experiences that activate other sections of the brain.
+
+Common theme: categories have stronger and weaker members; and cats. are not clearly defined. (That was a pun!)
+So: Pigeons are clearly birds (near the core of the concept), and ostriches/penguins are barely birds (at the fringes of the concept)
+
+Also a lot depends on context, current context has some role to play in how things are 'categorized' at the current moment; 
+(or which categories become relevant at the current moment)
+
+"When Ann had to be hospitalized on an emergency basis and a transfusion was
+needed, her membership in the category blood-type A+ dominated all her other category
+memberships, but in a restaurant she is above all a vegetarian, while at work she is
+a lawyer, at home a mother,"
+	
+---
+Metaphors: 
+
+Rules for metaphors: (George Lakoff, Mark Johnson)
+ - time is characterized in terms of space (metaphor for time is space): a _distant_ area, from now _on_
+ - space is .characterized in terms of time: the first street _after_ the traffic light, _going_ to see them tomorrow.
+ - mood is characterized by 'high' and 'low': to be very _down_
+ - abstract is exemplified by familiar things: a believe _dictates_ behaviour
+ - complex (conflicting) situation are exemplified by conflict language: outsourcing _kills_ growth
+ - many metaphors do not have their own category: it's _greek_ to me; a _cool_ idea
+
+'Dead metaphors' - often used ones that are no longer original; no longer covering any original meaning; fall into disuse.
+Likens it to a city: area that once was a suburb is absorbed into the core, what was once a bold metaphor is absorbed into the core meaning of a concept.
+
+---
+
+Verbs and Nouns;
+
+Same word is often used both as nouns and as verbs; some verbs are more abstract than others;
+to snow - snow is falling
+to bridge - bridge ideas; bridge between places; 
+
+Much - (opposite of somewhat) 
+comparison: much more than 
+quantify: wanted it so much
+expectations: didn't give me much
+degree of gratitude: thank you so much 
+.... and lots of other situations as well.
+
+Is there a clear distinction between syntax and semantics?
+Maybe recognizing syntactic structures is the same mechanism as building analogies to previous experiences?
+in this case analogies to previous sets of utterances are built. 
+
+'I like Paris but I like Parisians' - does not make sense, there is no conflict that but should be denoting.
+
+so but might mean: however; nonetheless; an yet; still; on the other hand; ... all a kind of zigzag of discourse;
+and the premise is that we learn from examples to the categories/sets that explain these utterances. analogy both forms these categories
+and decides when to apply them onto a given situation.
+
+even a/the ;  as grammatical devices they are devoid of meaning, but there is a difference between 'a suns third planet' and 'the suns third planet'
+
+----
+
+Linguistic relativity:
+For siblings the English language has: brother and sister
+In Indonesian there is: kakak - older sibling; adik - younger sibling;
+
+Is it that Indoneasian has a different notion of 'natural order' ? One still can say 'older sister' or 'female kakak'.
+He says if there is single word utterance then this is more significant then multi word utterances; Well...
+
+(M.M: ? Is a frequent 2-gram instance less significant then a one word utterance ?)
+
+Speculative concept spaces: n-dimensional space where axis are basic measures (color, taste, shape)
+He speculates that the same concepts in different languages will cover somehow different spaces;
+
+Like 'Pattern' in English has no single word translation into French; or French 'normalement' has not single word translation into English.
+
+-----
+Chapter 2: composite words and proverbs (compositie entities)
+
+Compound words - are learnt as a whole, nobody thinks of the etymology of words - where the word comes from.
+the components of a compound word are often not 'heard' as part of the compound word (understand, wardrobe )
+sometimes more (gentlemen) sometimes are heard more - that's when you don't know how to pluralize a word (teaspoonsful - teaspoonfuls)
+Using a compound word does not mean that one has to understand it as a compound. 
+Same as with acronyms - these compress a longer utterance into something short but recognizable (?)
+
+Idioms/proverbs: "Jewish Mother" as denoting person who is overprotective and complains a lot; meaning that one does not need to be Jewish or a mother in order to be "Jewish Mother".
+"Once bitten twice shy" - no animals involved; all denote a wishy category of situations, analogy used to apply these utterances.
+
+Proverbs: Meaning of "He who will steal an egg will steal an ox" 
+  	1) does it mean 'small thefts are initial steps, large thefts will follow'
+	2) does it mean 'small misdeed are initial steps, large misdeeds will follow'
+	3) does it mean 'small action is initial step, large action will follow'
+	4) does it mean 'one thing leads to another'
+
+3) probably not, because part of the message is to be on the guard against even small misdeeds; this message is lost if you allow positive actions.
+Problem with abstraction: 
+
+Abstraction is 'taking away the irrelevant part in order to extract the essence' if taken to far you get out of touch.
+(M.M. like in programming ;-); the question is always: is this abstraction relevant? Does it not omit too much ?
+
+Are fables also just names for sets of situations that are applied by means of analogies ? Yes! 'Sour grapes' : failure followed by belittling the original goal.
+'Sour Grapes' is similar to "Cognitive Dissonance" - if there is a conflict between expectations and what is possible then psychologist tell you to 'regain a peaceful frame of mind by distorting one’s perception of a troubling situation'
+
+'Sour Grapes' situation: in which disappointment turns a person into an intellectual opportunist — that is, into someone who tries to paint a failure in rosy colors
+
+-----
+
+Intelligence: defined here as ability to quickly analyze a given situation and abstract the essence out of it; and to apply the gained insight efficiently.
+Lots of analogy making here.
+
+------
+Chapter 3 - scope of analogy that have no one label (made up of many words)
+
+
+Temporary categories (without a name?) : often used as queries to formulate and solve a goal; 
+example Category: 'Possible birthday presents for a seven year old' - very specific nature; no common name applies to such situations.
+
+Lots of hand waving/gesturing (there - accompanied by gesture) may be used to express these temporary categories ;-)
+
+And 'Me too' is a situation when one wants to show /some sort of/ compassion with a speaker, by making an analogy to ones own experience.
+and 'Don't worry /that/ happens to me all the time' - and the speaker has again made an analogy.
+Now /that/ is not clear at all; (it may be in the eye of the speaker) very very ambiguous.	
+
+We create context by comparing an input to our own system of experiences.
+
+Finding similarities between stories: And now to the problem of encoding - we are very efficient at recalling long past experiences; how are the 'stored'/encoded in the brain?
+(The brain can't store the video of all past scenes as is (out of disk space) - it has to extract some essence; hence a need for a format / encoding of information).
+
+- In stories a 'skeleton' story is abstracted so that similarities are found between skeleton stories (?)
+- the skeleton stories are already made up and stored when we need to recall them.
+- there are multiple 'skeletons' each of different generality that one may extract from a story.
+Often an emotional aspect central to the 'skeleton' ; emotions often make up the core of an experience.
+- Part of understanding a situation is recall of past precedents 'that remind us of the situation' (Roger Schank)
+- Is deep essence/category extracted when a situation is experienced for the first time, and later recognition is only a recall of that encoding/past insight ? 
+  The book says that repeated recognition of themes based on analogies is what is creating essences/categories.
+
+
+------
+Chapter 4
+
+Generalizing abstraction: A is more abstract than B if set of B included in set of A.
+Each thing is at the same time a member in multiple categories: Am I a man, father, human, animal ? Depends on the relevance defined by the situation/context.
+
+marking: a single word can express both narrow (category a) and broader category (category b); category a is contained in category b.
+Example: coffee - the drink; having coffee - might mean drinking something or eating something in a coffee house while having a conversation; 
+define: Marked meaning - If word used in broader sense
+define: Unmarked meaning - if word used in narrow sense.
+
+grow(1) - to become larger
+grow(2) - to change over time
+
+'Watch out for cars' means 'cars' in the wider sense, including trucks and any moving vehicles.
+
+Desks: once upon a time it was a piece of furniture; with "Windows desktop metaphor" now a desk can be defined as a 'work space' - now desk is more general/abstract that is.
+The metaphor of the "Windows Desktop" is not included back into the concept "Desk".
+
+Of concept of waves (of water) has been extended many times in physics;
+
+----
+Different types of metaphora:
+- completely standardized metaphorical expression, understood by native speakers; an abstract category is clearly understood by native speakers.
+  Jacks house is a dump(2); Dump(1) unpleasant place,garbage dump ; Dump(2) - messy place.
+- standardized expression where the source of the abstract category is no longer known (lost in time?) - but still understood by native speakers.
+- abstract category is not standardized; listeners is supposed to construct one; No standardized usage exists, but is dependent on the context.
+
+
+------
+Chapter 5 - analogies that manipulate us.
+
+analogies that force decisions : analogies to past events that convince us that situation will be repeated in the future.
+
+Speech errors: can reflect subconscious mental processes
+
+(M.M. Freud says the same thing on slippages in "The interpretation of dreams":http://en.wikipedia.org/wiki/The_Interpretation_of_Dreams)
+
+- here some speech errors are interpreted as 'revealing facets of analogy making' --
+
+Lexical blending := mixing together of stock lexical items.
+When trying to express a thought: two competing expressions (each is standing for its category) come to mind; as a result both are blended into one.
+
+The clerk would just turn the other eye.
+turn a blind eye | turn the other cheek | turn away
+
+What gets mixed up are phrases within conceptual proximity or phonetic proximity.
+
+I don't want to dwelve upon that
+dwelve := dwell | delve
+
+Sometimes two thoughts get mixed up (? How is that different from previous blending ?)
+"I hope my package got there in one shape"
+(In one piece | in good shape)
+
+Mixing up concepts that are in semantic proximity:
+It is easy to mix up Scandinavian countries; though difficult to mix up Finnland and Vietnam.
+Or A Goose and Turkey are easy to mix up, but you wil not mix them up with a Hummingbird.
+
+Or: people mix up times; or mixing up time and space ('look at the map' when meaning calendar)
+
+Or: people mix up opposites (big/small read/write )
+
+Or: concrete analogy (visual/auditory) and abstract analogy (functional/role based) reinforce each other; 
+
+--------
+'Pointless' analogies
+
+After having attended a friends 60ieth birthday, A notices fleeting occurrences of the numeral 60 and it reminds him of the birthday.
+
+- the mind constantly is looking for familiar patterns; many analogies just happen and do not server any purpose (such as problem solving)
+
+- words denoting Sensory perception are often used to denote emotions/ideas; 
+  Visual perception -> understanding
+  touch/struck/moved -> emotion
+  cleanliness  -> morality (Macbeth effect)
+  sensing - the word has double meaning of perception and cognition.
+
+these similarities lead to theory of "embodyment" - all our senses lead to perception <-> emotion / thought.
+The author says we are thinking 'through the medium of our concepts, which are built up through constant analogy making, which is in response to sensory stimulus/
+
+Where is abstraction here? abstraction := recognizing and isolating what different concepts have in common.
+Many metaphora are 'embodied' / based on sensory experience somehow; so they are based on abstraction grounded in/based on sensory experience.
+
+- default assumptions: often can lead astray, situation becomes difficult to solve, because default assumptions are not usually questioned
+Example: Tower of Hanoi puzzle; Children tend to solve this in 27 steps, that's because when moving from A to C the child assumes that one has to transit via B.
+Abstracting 'Moving' as 'State change' (without transiting intermediate steps) is too complicated at this stage.
+
+
+--------
+Analogies that exert influence:
+ 
+- analogies to 9/11; comparing events to 9/11 creates a category '9/11 events'; 
+  by comparing an event to '9/11', it is assigned to a category and the category paints back on the event.
+  (small crash of a plane on 9/11/2004 made the stock market crash)
+  (Or by comparing x to the Nazis, the assigned category paints back on X, since the Nazis where evil in many ways, x is now perceived as more evil)
+  
+- If you recently have seen X at your friends home, then you are more likely to notice X in any other settings.
+  If one has experienced X then one is more likely to notice X in everyday situations, one is likely to search for X and one will find it)
+  This is a 'filter'/bias of sorts, it's a good thing because it helps us to focus on recent things/relevant to us things.
+
+  (M.M. like in OSX menu, the items near the mouse are displayed bigger then what is further away)
+
+- Obsessions: if one is obsessed by an event, then one will see analogies to this event in almost everything;
+  this forced search for analogies can be a source of new insights "Chance favors the prepared mind"
+  (M.M. and a source of suffering, depends on the setting)
+  People obsessed by a hobby will often explain the world in terms of the hobby; even Pac Man can inspire a Philosophy of life.
+  (M.M. Philosophical Relativists/Logical positivists say that areas of knowledge are isomorphic, it isn't but one can find lots of isomorphisms, if one tries hard)
+ 
+- 'Induction' - extrapolating from past experience is done with more confidence if there were lots of sample points.
+
+------
+Chapter 6 - how we manipulate analogies
+
+- Puns often work by creating 'caricature analogies': "Fighting for peace is like fucking for virginity"
+  the analogy has to a bit remote from the original situation, otherwise it does not work(not funny)
+- such 'caricature analogies' can explain things by puting them into different perspective, this is done by reducing an experience ot its core/conceptual skeleton.
+
+- is it possible to reason without analogies?
+
+Examining the question how the US got into Vietnam; transcripts of meetings show that they indeed used the analogies with historical precedents in internal debates, not just in order to explain the decision to the people.
+The main arguments for the war where, 'containment of communism', 'domino theory'; both where based on analogy with appeasement/Munich/Chamberlain, this in turn reinforced the argument for war.
+Then argues with Mr Khong and says that one always uses analogies of some sort while reasoning...
+Khong rules out analogy making because psychologists say that in order to find analogy, we need 'surface level' resemblance (some common non obvious trait).
+These experiments are easy to construct, but lack context, so they do not prove the general case;
+Also do not distinguish between domain experts and domain novices; 
+Each one compares as deep as his experience allows him to do; the importance assigned to trait x varies with experience in the domain.
+
+Now he argues with the psychologists, so the argument gets psychological: experimenting with letter strings and similarities between them (aka the "copycat domain")
+Is abc <-> efg ?
+Is abd <->  hik ?
+Is aabbcc <->  abc ?
+Is aabbcc <->  efg ?
+Gestalt psychology says we do 'conceptual chunking' so aa is perceived similar to a, therefor aabbcc <-> abc
+We are supposed to remember the rules how letter string is made up (encoding), as a matter of compression.
+Many times choice of which analogy is more appropriate is based on matters of taste/esthetic perception.
+
+Then he lost me talking about the esthetic choices between string analogies ;-)
+
+Frame blends/mixing up analogies (in copycat);
+How to distinguish frame blend from other categories?
+In copycat: transormation aabc->aabd; what would be the similar transformation for pqrr?
+pqrs? oqrr - this one blends two -> reversing the string + outmost letter and next to outmost letter are one removed.
+
+Another one: this one was sitting right there (pointing) / Blending this frame (over there) with past frame of what happened.
+
+Frame blends are analogies, analogies are often frame blends (lots of examples from past chapters)
+
+Frame blends in translations:
+
+early machine translation was like deconding a cipher: translate the word, and rearrange the result, so that syntax of source language
+matches syntax of target language; Any higher level analogies are thereby lost.
+Many examples show that this is not reasonable, translation is hard.
+Translation is about making analogies that map concepts of the source language to that of the target language.
+
+- Are we manipulating or are we manipulated by analogies ?
+
+To choose one analogy over another is to choose one viewpoint over another.
+Even carefully crafted analogies come from spontaneously made up analogical links (unconscious search process).
+So even the manipulator is manipulated by unconscious analogies & search for similarities.
+
+
+Chapter 7 - naive analogies
+
+Plausible but inacurate analogies with prior knowledge, made on the spot with incomplete knowledge; serve in order to make some sense of the world around; 
+are made spontaneously/automatic, the speaker is often unaware that he made an anlogy.
+
+Naive analogies are often made by learners; so their study is important in education. 
+ - Kids make analogies from what they learn into their domain; this can help them to learn/remember knowledge
+ - naive analogies often coexist with the learned knowledge
+
+Lance Rips: inference of trait from typical member of category to atypical member of category is more common then 
+            inference of trait from atypical member to typical member.
+
+
+Does not like the notion that stuff learned in school is independent/separate from everyday knowledge / links to what we know
+help to acquire stuff; Educators like to limit analogies (cause they are regarded as dangerous/leading astray), otherwise school knowledge has to build upon previously taught school knowledge.
+So deduction is favored and analogy making neglected.
+
+He wants to refute the notion that learned stuff is in its own realm, all recursively built up on other learned stuff: computer UI
+is made up of analogies with everyday things, otherwise it would not have been adopted by a wide audience.
+User interface designers try to achieve "transparency" - the illusion that the user is manipulating every-day objects;
+this can only be achieved by building up analogies between the computer realm and everyday things (examples: Menus,desktop,folders,shopping carts) 
+
+Later, as the computer terms become familiar, they server as sources for analogies: the icon for saving stuff to disk features a diskette 
+(ironic because those are no longer used today)
+Or: multitasking, now one hears this word to describe that a person is doing several tasks at once (on step at a time, while shifting between tasks)
+
+Back to education: = sign means equivalence of left hand side and right hand side.
+
+It is often understand as naive analogy: <operation> = <result> analogy; make something with the left hand in order to get the right hand side.
+The <operation> = <result> analogy is often used in advertising (bye 1 = get another one for free); means that the naive analogy coexists with equivalence concept.
+
+Another example: addition, often understood as 3 * 4 = 3 + 3 + 3 + 3 (which does not work if the numbers are not natural)
+So naive analogy does not work with 3 * 0.5 ;
+Also people don't always know that a * b = b * a; even if they do they can't explain why ;-)
+Also the naive concept is that multiplication makes things bigger (what about multiplying with 0.5)
+
+Situation is even worse for division; Naive concept for division is sharing n among m parties; if m < 1 then that beats the naive analogy.
+Naive concept remains, if you have luck then you get a new concept that stays with the naive one, namely a/b/c/d = a/b*d/c
+
+Also world problems that do 10 * 4 (done by simulating 10+10+10+10) are easier then than 4 * 10 (if one does not know about commutativity)
+That is true even if you know arithmetic ! That's because the naive way is preferred,even if the more complex one is known.
+He says because in English language division implies to divide, to share; (don't buy that)
+
+(M.M. ... Or pointers, lots of programmers don't get them)
+
+When solving word problem one does not immediately abstract away from it, the formal structure is not recognized right on, 
+so the naive concepts are also tried, if deemed appropriate those are chosen.
+
+
+Chapter 8 - analogies that shook the world
+
+we are constantly extending our categories; negative numbers are very non intuitive, so when looking for a solution to
+2x+6=0; for many centuries people said that there is none; 
+The change came when it was found that negative numbers simplify the resolution of quadratic equations.
+Even greater extension came with irrational numbers.
+And n-dimensional (n>3)spaces where not quite accepted when the idea was brought up, no spatial analogy.
+
+In the end things got complicated with Galois groups ;-) ever and every more abstract, the once concrete becomes an analogy to the more abstract,
+then the once abstract becomes the familiar concrete, and so it goes. Physics find and application, so a very abstract concept
+can turn into something very concrete.
+
+Mechanical manipulation in math:
+
+Moving variables to the second side
+ 3x - 5 = 6x + 3
+ -3x = 8  
+  x = -8/3
+Two tricks; moving variable to the second side; dividing by the factor.
+Recognizing this situation as being applicable means making an analogy to the 'bag of tricks' that one has learned.
+Even more so as one goes along...
+
+Physics is an area of study that values analogies; most practitioners even acknowledge its importance, and like to explain new insights in terms of everyday analogies.
+
+
+- How Einsteins analogies changed the face of Physics
+
+
+
+Noticed similarity between formula for black body spectrum and formula of ideal gas in a container; and whee they were identical but for the following factor
+
+Ideal gas   =  Black body spectrum 
+N (number of molecules) = E (total energy) / h v
+So Einstein infers by analogy that there are is a light quantum; even if all of physics is sure that light is all about waves.
+! And he goes for it !
+So based on this Einstein finds formula for describing photoelectric effect; and o wonder, different parts of physics got unified, all this in 1905;
+Nobody believed him, until 1923;
+
+Now about special relativity: 
+Einstein looks at Galilean relativity (all centers of coordinates are equivalent) and instead of looking at mechanisms he extends
+the formalism slightly: See if it holds for Mechanics + Electromagnetic (including light of course)
+(Now this needs some math so he skips it).
+
+E=mc^2 ; Looking at train with flashlight in same direction as movement of the train and a flashlight shining in direction opposite direction.
+Einstein computes the Doppler effect based on Special relativity (Doppler effect: waves that go in same direction as train are of higher frequency, and in opposite direction are of lower frequency).
+Now the thought experiment: if by emitting the light the train is loosing some energy (because of leaving photons); then a tiny amount of energy has been removed from the train;
+So the total energy of the train is now a bit less; so 
+Kinetic energy = (mv^2) / 2 ; train moves at constant energy so mass must have changed. Wow.
+So in 1905 Einstein says: M = E/c^2
+In 1907 he realized that electromagnetic radiation/light has mass;  that outgoing radiation takes away some mass; 
+In 1907 he realized that energy (in any form!) has mass; that mass and energy 
+are equivalent.
+(this is another miraculous category extension)
+
+How did he get there?
+
+1905: Notion of true mass (om absolute zero) and apparent mass; the movement of atoms contribute to the total mass; difference is called 'strange mass'
+(this notion is derived from special relativity); so he thought that by emitting energy, a body is loosing some if its strange mass;
+(Analogy: frozen assets in bank = strange mass; liquid assets in bank = apparent mass)
+1907: Einstein does away with strange mass; any mass can potentially be converted into energy; (like in physics energy can change form)
+
+<Some stuff about General relativity that is not quite clear>
+
+Stanislaw Ulam: “Good mathematicians see analogies between theorems or theories, but the very best ones see analogies between analogies.”
+	
+
+
+
+(M.M. More easy to think about tiny photons leaving, if you think about their energy in terms of E=mv^2/2 then you get to E=mc^2)
+
+
+
+
+Chapter 9 - Epidialog
+No use to sum it up, one has to read it.
+
