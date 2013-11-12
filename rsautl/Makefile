@@ -1,0 +1,40 @@
+TOPDIR=..
+
+TARGETS=rsaenc rsadec
+
+# ---------------------------------------
+
+rsaenc_TYPE=exe
+
+rsaenc_SRC_EXTENSION=c
+
+rsaenc_SRC=rsautl.c
+
+rsaenc_CFLAGS=-I/usr/local/ssl/include -DENCRYPT
+
+rsaenc_LDFLAGS=-L/usr/local/ssl/lib/ 
+
+rsaenc_LIBS=ssl crypto dl
+
+
+# ---------------------------------------
+
+rsadec_TYPE=exe
+
+rsadec_SRC=rsautl.c
+
+rsadec_CFLAGS=-I/usr/local/ssl/include
+
+rsadec_LDFLAGS=-L/usr/local/ssl/lib/ 
+
+rsadec_LIBS=ssl crypto dl
+
+# ---------------------------------------
+
+
+include $(TOPDIR)/rules.make
+
+.PHONY: test
+test :
+	./test.sh
+
