@@ -139,9 +139,9 @@ uint32_t fill_header( FILE *fp, ENC_HEADER *hdr )
 
 void header_to_host( ENC_HEADER *hdr )
 {
-   hdr->file_magic =   htobe32( hdr->file_magic );
-   hdr->file_version = htobe32( hdr->file_version );
-   hdr->data_length  = htobe64( hdr->data_length );
+   hdr->file_magic =   be32toh( hdr->file_magic );
+   hdr->file_version = be32toh( hdr->file_version );
+   hdr->data_length  = be64toh( hdr->data_length );
 }
 
 int encrypt_file( RSA *key, FILE *fpin, FILE *fpout )
