@@ -106,12 +106,14 @@ RSA *read_PEM_priv_key(const char *fname)
 
 #define PKCS_PADDING_SIZE 42
 
+#pragma pack(1)
 typedef struct {
   uint32_t file_magic;
   uint32_t file_version;
   uint64_t data_length;
 
 } ENC_HEADER;
+#pragma pack()
 
 #define FILE_MAGIC	0xABCDEF
 #define FILE_VERSION_1  0x1
@@ -384,7 +386,7 @@ void print_help()
 {
     fprintf( stderr, "rsaenc -k <private key file> -i <input file> [-o <output file>]\n"
 		     "---------------------------------------------------------------\n"
-		     "RSA decrypts and signs the input file, verifies signatures,    \n"
+		     "RSA decrypts and input file, verifies signature.\n"
 		     "writes the output file\n" 
 		     " -k		public key file in PEM format\n"
 		     " -i <input file>	file to be encrypted\n"
