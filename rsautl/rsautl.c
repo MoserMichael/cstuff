@@ -1,3 +1,6 @@
+#define _BSD_SOURCE 
+#include <endian.h>
+
 #include <unistd.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -7,7 +10,6 @@
 #include <openssl/rsa.h>
 #include <openssl/ssl.h>
 #include <openssl/sha.h>
-
 
 static const char *key_file_name, *in_file_name, *out_file_name;
 static int verbose;
@@ -128,11 +130,18 @@ uint32_t fill_header( FILE *fp, ENC_HEADER *hdr )
    length = ftell( fp );
    fseek( fp, 0L, SEEK_SET);
 
-   hdr->file_magic = FILE_MAGIC;
-   hdr->file_version = FILE_VERSION_1;
-   hdr->data_length  = length + sizeof(ENC_HEADER);
+   hdr->file_magic =   htobe32( FILE_MAGIC );
+   hdr->file_version = htobe32( FILE_VERSION_1 );
+   hdr->data_length  = htobe64( length + sizeof(ENC_HEADER) );
 
-   return hdr->data_length;
+   return length + sizeof(ENC_HEADER); 
+}
+
+void header_to_host( ENC_HEADER *hdr )
+{
+   hdr->file_magic =   htobe32( hdr->file_magic );
+   hdr->file_version = htobe32( hdr->file_version );
+   hdr->data_length  = htobe64( hdr->data_length );
 }
 
 int encrypt_file( RSA *key, FILE *fpin, FILE *fpout )
@@ -279,7 +288,8 @@ int decrypt_file( RSA *key, FILE *fpin, FILE *fpout )
 
       if (first) {
 	memcpy( &hdr, out_buf, sizeof(ENC_HEADER) );
-    
+	header_to_host( &hdr ); 	
+
 	if (hdr.file_magic != FILE_MAGIC) {
 	    fprintf( stderr, "Error: decryption key does not match the encryption key; after decryption the file header is invalid\n" );
 	    rt = -1;
