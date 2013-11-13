@@ -12,7 +12,7 @@
 #include <openssl/sha.h>
 
 static const char *key_file_name, *in_file_name, *out_file_name;
-static int verbose;
+static int verbose = 1;
 
 char * read_file( const char *fname )
 {
@@ -150,13 +150,13 @@ int encrypt_file( RSA *key, FILE *fpin, FILE *fpout )
    uint32_t key_size = RSA_size(key);
    uint8_t *in_buf, *out_buf;
    uint32_t in_buf_size, in_read, out_len, file_size, file_pos = 0;
-   SHA_CTX sha;
-   uint8_t hash[SHA_DIGEST_LENGTH];
+   SHA256_CTX sha;
+   uint8_t hash[SHA256_DIGEST_LENGTH];
    size_t nwritten;
    int first = 1;
    int prev_percent = 0, new_percent;
 
-   SHA1_Init(&sha);
+   SHA256_Init(&sha);
 
    in_buf_size = key_size - PKCS_PADDING_SIZE; 
    in_buf = (uint8_t *) malloc( in_buf_size ); 
@@ -197,7 +197,7 @@ int encrypt_file( RSA *key, FILE *fpin, FILE *fpout )
 	goto err;
       }	
  
-      SHA1_Update(&sha, out_buf, out_len);
+      SHA256_Update(&sha, out_buf, out_len);
      
       nwritten = fwrite( out_buf, 1, out_len, fpout );
       if (nwritten != (size_t) out_len || ferror(fpout)) {
@@ -219,7 +219,7 @@ int encrypt_file( RSA *key, FILE *fpin, FILE *fpout )
       }
    }
 
-   SHA1_Final(hash, &sha);
+   SHA256_Final(hash, &sha);
    out_len = RSA_public_encrypt((int) sizeof(hash), hash, out_buf, key, RSA_PKCS1_OAEP_PADDING);
    if ( out_len != key_size ) {
       fprintf( stderr, "Error: failed to encrypt;\n ");   
@@ -248,13 +248,13 @@ int decrypt_file( RSA *key, FILE *fpin, FILE *fpout )
    uint32_t in_buf_size, in_read, out_len;
    uint32_t file_pos = 0 , file_size = 0;
    ENC_HEADER hdr;
-   SHA_CTX sha;
-   uint8_t hash[SHA_DIGEST_LENGTH];
+   SHA256_CTX sha;
+   uint8_t hash[SHA256_DIGEST_LENGTH];
    uint64_t data_len;
    int first = 1;
    int prev_percent = 0, new_percent;
 
-   SHA1_Init(&sha);
+   SHA256_Init(&sha);
 
    in_buf_size = key_size; // - PKCS_PADDING_SIZE; 
    in_buf = (uint8_t *) malloc( in_buf_size ); 
@@ -276,7 +276,7 @@ int decrypt_file( RSA *key, FILE *fpin, FILE *fpout )
 	goto err;
       }
     
-      SHA1_Update(&sha, in_buf, in_read);
+      SHA256_Update(&sha, in_buf, in_read);
   
       out_len = RSA_private_decrypt((int) in_read, in_buf, out_buf, key, RSA_PKCS1_OAEP_PADDING);
    
@@ -359,7 +359,7 @@ int decrypt_file( RSA *key, FILE *fpin, FILE *fpout )
 	goto err;
    }
 
-   SHA1_Final(hash, &sha);
+   SHA256_Final(hash, &sha);
 
    if (out_len != sizeof(hash) || memcmp( &hash, out_buf, sizeof(hash) ) != 0) {
         fprintf(stderr, "Error: message authentication failed; hash over encrypted message does not match the stored hash %d %d.\n", out_len, sizeof(hash)  );
@@ -401,7 +401,7 @@ void print_help()
 		     " -k		public key file in PEM format\n"
 		     " -i <input file>	file to be encrypted\n"
 		     " -o <output file> encrypted results\n"
-		     " -v		verbose output (progress indicator)\n"
+		     " -s		silent mode - no progress indicator.\n"
  
 		     );
     exit(1);			
@@ -413,7 +413,7 @@ int parse_cmd_line(int argc, char *argv[])
 {
     int c;
 
-    while ( (c = getopt(argc, argv, "k:i:o:hv")) != -1) {
+    while ( (c = getopt(argc, argv, "k:i:o:hs")) != -1) {
       switch(c) {
 	case 'k':
 	  key_file_name = strdup( optarg );
@@ -427,8 +427,8 @@ int parse_cmd_line(int argc, char *argv[])
 	  out_file_name = strdup( optarg );
 	  break;
 
-	case 'v':
-	  verbose = 1;
+	case 's':
+	  verbose = 0;
 	  break;
 
 	case 'h':
@@ -498,4 +498,4 @@ int main(int argc, char *argv[])
     }      
 
     return 0;
-}
+    }

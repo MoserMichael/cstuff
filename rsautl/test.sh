@@ -1,12 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 set -x
 
-dd if=/dev/urandom of=100K.bin count=1 bs=100K
+TEST_DATA="testdata"
+
+if [ ! -d $TEST_DATA ]; then
+  mkdir $TEST_DATA
+fi  
+
+dd if=/dev/urandom of=$TEST_DATA/100K.bin count=1 bs=100K
 
 make_key_pair()
 {
+  pushd $TEST_DATA
   if [ ! -f private$1.pem ]; then
     openssl genrsa $1 >private$1.pem
   fi
@@ -15,17 +22,18 @@ make_key_pair()
   if [ ! -f public$1.pem ]; then
     openssl rsa -in private$1.pem -out public$1.pem -pubout
   fi
+  popd
 }  
 
 test_it()
 {
   # encrypt with 4096 public key
-  time $BIN_ROOT_DIR/bin/rsaenc -k public$1.pem -i 100K.bin -o 100K.enc -v
+  time $BIN_ROOT_DIR/bin/rsaenc -k $TEST_DATA/public$1.pem -i $TEST_DATA/100K.bin -o $TEST_DATA/100K.enc 
 
   # decrypt with 4096 public key
-  time $BIN_ROOT_DIR/bin/rsadec -k private$1.pem -i 100K.enc -o 100K.bin2 -v
+  time $BIN_ROOT_DIR/bin/rsadec -k $TEST_DATA/private$1.pem -i $TEST_DATA/100K.enc -o $TEST_DATA/100K.bin2 
 
-  diff -b 100K.bin 100K.bin2
+  diff -b $TEST_DATA/100K.bin $TEST_DATA/100K.bin2
 }
 
 make_key_pair 4096 
