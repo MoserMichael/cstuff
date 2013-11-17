@@ -1,7 +1,7 @@
 #include "tpool.h"
 #include <butils/errorp.h>
 #include <pthread.h>
-
+#include <tstart.h>
 
 //---
 
@@ -59,12 +59,13 @@ THREADPOOL *THREADPOOL_init( RUNNABLE_HANDLER process_result, int queue_size, in
   TQUEUE_init( &pool->request_queue, queue_size );
 
   pthread_attr_init( &attr );
-  pthread_attr_setdetachstate( &attr, PTHREAD_CREATE_DETACHED );
-  pthread_attr_setstacksize( &attr, stack_size_kb * 1024 );
+  if (stack_size_kb > 0) {
+    pthread_attr_setstacksize( &attr, stack_size_kb * 1024 );
+  }    
 
   for( i = 0; i < num_threads; i++) {
 
-     if ((rt = pthread_create( &pth, &attr, worker_thread, pool ) )  != 0) {
+     if ((rt = pthread_create_detached( &pth, &attr, worker_thread, pool ) )  != 0) {
         break;
      }
   }
