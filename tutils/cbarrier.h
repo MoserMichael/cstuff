@@ -4,6 +4,7 @@
 #define __CBARRIER_UTIL_X_Y_Z_
 
 #include <pthread.h>
+#include <semaphore.h>
 
 /**
  @defgroup CBARRIER
@@ -23,12 +24,15 @@
  @{
  */
 typedef struct {
+
   pthread_mutex_t mutex;
-  pthread_cond_t cond;
-  int initial_count;
-  int tcount;
-  int is_finished;
-  int left;
+  sem_t blocked;
+  sem_t in_await_blocked;
+
+  int  parties;  // number of threads that take part (set in init method).
+  int left;	 // how many parties still have to call 'await'
+  int is_broken; // reset has been called; the instance is in 'broken state'.
+  int in_await;	 // are we finished ?
 } CYCLIC_BARRIER;
 
 
@@ -36,10 +40,12 @@ typedef struct {
 
   @brief initialises a new cyclic barrier
 
+  Returns 0 on success -1 on failure.
+
   @param cond object to initialise
   @param num number of parties (threads) to synchronze.
  */
-void CYCLIC_BARRIER_init(CYCLIC_BARRIER *cond, int num);
+int CYCLIC_BARRIER_init(CYCLIC_BARRIER *cond, int num);
 
 /**
 

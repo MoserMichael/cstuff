@@ -81,6 +81,11 @@ void errorp(int rval, const char *fmt, ... )
   n = snprintf(p, eof - p - 1, ". returns %d errno %d\n", rval, errno );
   p += n;
 
+  rt = write( FD_OUT , buff, strlen( buff ) );
+  if (rt == -1)
+    return;
+ 
+
 #if __linux__
   nframes = backtrace( sframes, STACK_FRAMES + 1); \
   rt = write( FD_OUT, STACK_START, strlen( STACK_START ) );

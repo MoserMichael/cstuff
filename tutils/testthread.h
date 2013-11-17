@@ -3,8 +3,6 @@
 
 #include "cbarrier.h"
 
-typedef void  * (* TEST_FUNC_INIT) (void  *ctx);
-typedef void    (* TEST_FUNC) (void *ctx, void *thread_ctx );
 
 
 /**
@@ -35,6 +33,29 @@ typedef void    (* TEST_FUNC) (void *ctx, void *thread_ctx );
  @{
  */
 
+
+/**
+ * @brief test initialization callback; is called by each test thread once so that it can do per thread initializations.
+ *
+ * returns the per thread data of this test.
+ *
+ * @param  ctx global context passed to test
+ * @param thread_idx the sequence number of the thread - enumeration 0..n
+ * @param num_thread number of test threads
+ */
+typedef void  * (* TEST_FUNC_INIT) (void  *ctx, int thread_idx, int num_thread);
+
+/**
+ * @brief test run callback; is called by each test thread to perform the test
+ *
+ * @param  ctx global context passed to test
+ * @param  thread_ctx (optional) per thread data
+ * @param thread_idx the sequence number of the thread - enumeration 0..n
+ * @param num_thread number of test threads
+ */
+typedef void    (* TEST_FUNC) (void *ctx, void *thread_ctx, int thread_idx, int num_thread );
+
+
 typedef struct tagTEST_THREAD {
   CYCLIC_BARRIER start; 
   CYCLIC_BARRIER finish;
@@ -49,8 +70,14 @@ typedef struct tagTEST_THREAD {
 
 } TEST_THREAD;
 
+/**
+ * @brief initialize the pool of test threads
+ */
 int TEST_THREAD_init (TEST_THREAD *thread, int num_threads,  TEST_FUNC_INIT test_init, TEST_FUNC test_func, TEST_FUNC cleanup, void *test_ctx );
 
+/**
+ * @brief run all threads that are part of the pool of test threads
+ */
 int TEST_THREAD_run( TEST_THREAD *thread );
 
 #endif

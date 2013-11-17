@@ -5,51 +5,122 @@
 
 #include "cbarrier.h"
 #include <butils/errorp.h>
+#include <unistd.h>
 #include <stdio.h>
-
-static int CYCLIC_BARRIER_wait_for_all_to_finish(CYCLIC_BARRIER *cond);
+#include <errno.h>
 
 //------------------------------------------------------------------
-void CYCLIC_BARRIER_init(CYCLIC_BARRIER *cond, int num)
+int CYCLIC_BARRIER_init(CYCLIC_BARRIER *cond, int num)
 {
     int rt;
 
-    cond->initial_count = num;
-    cond->tcount = num;
-    cond->is_finished = 0;
+    cond->parties = num;
     cond->left = num;
- 
-    if ((rt = pthread_mutex_init(&cond->mutex,0)) != 0) {
+    cond->is_broken = 0;
+    cond->in_await = 0;
+
+    if ((rt = sem_init( &cond->blocked, 0, 0 )) != 0 ) {
+       errorp( rt, "sem_init init failed");
+       return -1;
+    }
+
+    if ((rt = sem_init( &cond->in_await_blocked, 0, 0 )) != 0 ) {
+       errorp( rt, "sem_init init failed");
+       return -1;
+    }
+
+
+    rt = pthread_mutex_init(&cond->mutex,0);
+    if (rt != 0) {
        errorp( rt, "pthread_mutex init failed");
+       return -1;
     }
-    if ((rt = pthread_cond_init(&cond->cond, 0)) != 0) {
-       errorp( rt, "pthread_cond init failed");
-    }
+
+    return 0;
 }
 
+int CYCLIC_BARRIER_await(CYCLIC_BARRIER *cond)
+{
+    int rt = 0;
+    int finished = 0;
+    int in_harms_way;
+
+    if ((rt = pthread_mutex_lock(&cond->mutex)) != 0) {
+      errorp(rt, "CYCLIC_BARRIER: pthread_mutex lock failed");
+      return -1;
+    }
+
+    cond->in_await ++;
+    if (cond->left > 0) {
+      cond->left --;
+    }
+
+    finished = cond->left == 0;
+
+    if ((rt = pthread_mutex_unlock(&cond->mutex)) != 0) {
+      errorp(rt, "CYCLIC_BARRIER: pthread_mutex_unlock failed");
+      return -1;
+    }
+
+    if (!finished) {
+	while( sem_wait( &cond->blocked ) == -1 && errno == EINTR);
+    } else {
+        int i;
+
+	if (!cond->is_broken) {
+	
+	    for( i = 0; i < (cond->parties - 1); i++ ) {
+		if (sem_post( &cond->blocked ) ) {
+		    errorp( -1 , "CYCLIC_BARRIER: sem_post failed %d", i );
+		}
+	    }
+	}	    
+    }
+
+    if ((rt = pthread_mutex_lock(&cond->mutex)) != 0) {
+      errorp(rt, "CYCLIC_BARRIER: pthread_mutex lock failed");
+      return -1;
+    }
+
+    -- cond->in_await;
+    in_harms_way = cond->in_await == 0;
+
+    if ((rt = pthread_mutex_unlock(&cond->mutex)) != 0) {
+      errorp(rt, "CYCLIC_BARRIER: pthread_mutex_unlock failed");
+      return -1;
+    }
+
+    if (in_harms_way) {
+	sem_post( &cond->in_await_blocked ); 
+    }
+
+    
+
+    return rt;
+}
 
 
 int  CYCLIC_BARRIER_reset(CYCLIC_BARRIER *cond)
 {
     int rt;
-
-    if (CYCLIC_BARRIER_wait_for_all_to_finish(cond)) {
-      return -1;
-    }
-  
+    int i;
+	
     if ((rt = pthread_mutex_lock(&cond->mutex)) != 0) {
       errorp(rt, "CYCLIC_BARRIER: pthread_mutex lock failed");
       return -1;
     }
+
+    cond->left = 0;
+    cond->is_broken = 1;
     
-    cond->tcount = cond->initial_count;
-    cond->left = cond->initial_count;
-    cond->is_finished = 0;
-   
     if ((rt = pthread_mutex_unlock(&cond->mutex)) != 0) {
       errorp(rt, "CYCLIC_BARRIER: pthread_mutex_unlock failed");
       return -1;
     }
+
+    for( i=0; i < cond->parties - 1 ; i++ ) {
+	sem_post( &cond->blocked );
+    }	
 
     return 0;
 }
@@ -58,99 +129,18 @@ int CYCLIC_BARRIER_free(CYCLIC_BARRIER*cond)
 {
     int rt = 0;
    
-    if (CYCLIC_BARRIER_wait_for_all_to_finish(cond)) {
-      return -1;
-    }
-    
-    if ((rt = pthread_cond_destroy( &cond->cond )) != 0 ) {
-      errorp(rt, "CYCLIC_BARRIER: pthread_cond_destroy failed");
-    }
-    if ((rt = pthread_mutex_destroy( &cond->mutex )) != 0 ) {
-      errorp(rt, "CYCLIC_BARRIER: pthread_mutext destroy failed");
-    }
+    CYCLIC_BARRIER_reset( cond );
+
+    // wait till everybody is out of await.
+    while( sem_wait( &cond->in_await_blocked ) == -1 && errno == EINTR);
+
+    sem_destroy( &cond->blocked );
+    pthread_mutex_destroy(&cond->mutex);
  
     return rt;
 }
 
 
- int CYCLIC_BARRIER_await(CYCLIC_BARRIER *cond)
-{
-    int rt = 0;
-
-
-    if ((rt = pthread_mutex_lock(&cond->mutex)) != 0) {
-      errorp(rt, "CYCLIC_BARRIER: pthread_mutex lock failed");
-      return -1;
-    }
-    if (! cond->is_finished ) {
-      --cond->tcount;
-      if (cond->tcount > 0) {
-         if ((rt = pthread_cond_wait(&cond->cond,&cond->mutex)) != 0) {
-	   errorp(rt, "CYCLIC_BARRIER: pthread_cond_wait failed");
-	 }
-      } else {
-	 cond-> is_finished = 1;
-         if ((rt = pthread_cond_broadcast(&cond->cond)) != 0) {
-           errorp(rt, "CYCLIC_BARRIER: pthread_cond_broadcast failed");
-	 }
-      }
-    }
-
-    cond->left--;
-    
-    if ((rt = pthread_mutex_unlock(&cond->mutex)) != 0) {
-      errorp(rt, "CYCLIC_BARRIER: pthread_mutex_unlock failed");
-    }
-
-    return rt;
- }
-
-
-static int CYCLIC_BARRIER_wait_for_all_to_finish(CYCLIC_BARRIER *cond)
-{
-    int rt, left;
-    int finished, count, init_count;
-   
-    if ((rt = pthread_mutex_lock(&cond->mutex)) != 0) {
-      errorp(rt, "CYCLIC_BARRIER: pthread_mutex lock failed");
-      return -1;
-    }
-    
-    finished = cond->is_finished;
-    count = cond->tcount;
-    init_count = cond->initial_count;
-    
-    if ((rt = pthread_mutex_unlock(&cond->mutex)) != 0) {
-      errorp(rt, "CYCLIC_BARRIER: pthread_mutex_unlock failed");
-    }
-
-    if (!finished) {
-      errorp(-1,"Can't finish, not all parties have reached common synchronisation point, %d parties out of %d not finished", count, init_count);
-      return -1;
-    }
-
-
-   do {
-      if ((rt = pthread_mutex_lock(&cond->mutex)) != 0) {
-        errorp(rt, "CYCLIC_BARRIER: pthread_mutex lock failed");
-        return -1;
-      }
-    
-      left = cond->left;
-    
-      if ((rt = pthread_mutex_unlock(&cond->mutex)) != 0) {
-        errorp(rt, "CYCLIC_BARRIER: pthread_mutex_unlock failed");
-	return -1;
-      }
-
-      if (left != 0) {
-        sched_yield();
-      }
-
-    } while ( left != 0);
-
-    return 0;
-}
 
 
 

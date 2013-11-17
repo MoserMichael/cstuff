@@ -2,6 +2,8 @@
 
 #include <tutils/tqueue.h>
 #include <tutils/cbarrier.h>
+#include <tutils/tstart.h>
+
 #include <vtest/vtest.h>
 #include <malloc.h>
 #include <stdio.h>
@@ -43,7 +45,7 @@ void TQUEUE_test()
   CYCLIC_BARRIER_init( &cbarrier, THREAD_NUM  + 1 );
 
   for( i=0; i < THREAD_NUM; i++) {
-    pthread_create( &th[ i ], 0, test_thread, &sum[i] );
+    pthread_create_detached( &th[ i ], 0, test_thread, &sum[i] );
   }
 
   for( i = 1; i <= 1000000; i++ ) { // 10000
