@@ -40,7 +40,7 @@ lexer.c_CFLAGS=-Wno-error
 
 parser.c_CFLAGS=-Wno-error
 
-pooh_LIBS=$(TLIB) pthread cutils butils m rtlib nutils dl
+pooh_LIBS=$(TLIB) pthread cutils butils m rtlib nutils dl pthread
 
 pooh_POSTBUILD=./test-it.pl $(BIN_ROOT_DIR)/bin/pooh test-error test lib .
 

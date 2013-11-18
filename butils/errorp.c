@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <pthread.h>
 #ifdef __linux__
 #include <execinfo.h>
 #endif
@@ -19,6 +20,9 @@
 
 #define STACK_START "*** start stack ***\n"
 #define STACK_EOF   "\n*** eof stack ***\n\n"
+
+
+static pthread_mutex_t counter_mutex  = PTHREAD_MUTEX_INITIALIZER;
 
 
 static int FD_OUT  = 2;
@@ -54,9 +58,10 @@ void errorp_close_file()
   }
 }
 
+static char buff[ 8192 ];
+
 void errorp(int rval, const char *fmt, ... ) 
 {
-  char buff[ 512 ];
   char *p, *eof;
   va_list ap;
   int len, n;
@@ -66,7 +71,8 @@ void errorp(int rval, const char *fmt, ... )
   int nframes, i;
 #endif
 
- 
+  pthread_mutex_lock( &counter_mutex );
+  
   p = buff;
   eof = p + sizeof( buff );
 
@@ -78,32 +84,38 @@ void errorp(int rval, const char *fmt, ... )
   va_end( ap );
   p += len;
 
-  n = snprintf(p, eof - p - 1, ". returns %d errno %d\n", rval, errno );
-  p += n;
+  if (p < eof) {
+    n = snprintf(p, eof - p - 1, ". returns %d errno %d\n", rval, errno );
+    p += n;
+  }    
 
   rt = write( FD_OUT , buff, strlen( buff ) );
   if (rt == -1)
-    return;
+    goto err;
  
 
 #if __linux__
   nframes = backtrace( sframes, STACK_FRAMES + 1); \
   rt = write( FD_OUT, STACK_START, strlen( STACK_START ) );
   if (rt == -1)
-    return;
+    goto err;
   nframes =  backtrace( sframes, STACK_FRAMES );
   for (i=0; i<nframes; i++) {
-    snprintf( buff, sizeof(buff),  "frame %d ip: %p\n", i, sframes[ i ]);
+    snprintf( buff, sizeof(buff) - 1,  "frame %d ip: %p\n", i, sframes[ i ]);
     rt = write( FD_OUT , buff, strlen( buff ) );
     if (rt == -1)
-      return;
+      goto err;
   }
 
   dump_modules( buff, sizeof(buff) );
   rt = write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
   if (rt == -1)
-    return;
+    goto err;
 #endif
+
+err:
+   pthread_mutex_unlock( &counter_mutex );
+  
 }
 
 void error_dump_string( const char *msg, char *buff, size_t buff_size)
@@ -116,7 +128,6 @@ void error_dump_string( const char *msg, char *buff, size_t buff_size)
   (void) buff;
   (void) buff_size;
 #endif
-
 
 
   rt = write( FD_OUT , msg , strlen( msg ) );
@@ -140,7 +151,7 @@ void error_dump_string( const char *msg, char *buff, size_t buff_size)
   rt = write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
   if (rt == -1)
      return;
- #endif
+#endif
 }
 
 #define TOKENS_COUNT	    6
@@ -153,7 +164,7 @@ void error_dump_string( const char *msg, char *buff, size_t buff_size)
 static void dump_modules(char *buf, size_t buff_size)
 {
   int fd, n, i, buf_start;
-  char line[30];
+  char line[40];
   char *pos, *eof_line, *tokens[ TOKENS_COUNT ];
   int rt;
 
@@ -206,9 +217,11 @@ static void dump_modules(char *buf, size_t buff_size)
     }
 
     buf_start = 0;
-    if (pos < (buf + buff_size - 1)) {
+    if (pos > buf && pos < (buf + buff_size - 1)) {
       buf_start = buf + buff_size - pos;
       memmove( buf, pos, buf_start ); 
+    } else {
+      break;
     }
   }
   close(fd);

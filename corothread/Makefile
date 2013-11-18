@@ -15,7 +15,7 @@ corothructx_TYPE=lib
 
 corothructx_SRC_EXTENSION=c
 
-corothructx_LIBS=cutils butils 
+corothructx_LIBS=cutils butils pthread
 
 corothructx_CFLAGS=-DHAS_UCONTEXT
 

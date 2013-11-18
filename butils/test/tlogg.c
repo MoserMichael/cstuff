@@ -1,8 +1,29 @@
 #include <vtest/vtest.h>
 #include <butils/logg.h>
+#include <butils/fn.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <string.h>
 
 #define LOG_FILE "logg.log"
+
+void LOGG_test0()
+{	
+    char buf[512];
+    char fname[512], *base;
+    pid_t pid;
+    
+    pid = getpid();
+
+    memset(fname, 0, sizeof(fname));
+    readlink("/proc/self/exe",fname,sizeof(fname));
+    base = FN_file_name( fname );
+
+    sprintf(buf,"cat /proc/%d/maps >maps_%s.txt", pid, base);
+
+    system(buf);
+    free(base);
+}
 
 void LOGG_test()
 {

@@ -17,7 +17,7 @@ OS_TYPE:=$(shell uname -o | sed -e 's\#/\#-\#g' -e 's\#(\#-\#g' -e 's\#)\#-\#g' 
 export OS_TYPE
 endif
 
-extlibexample_LIBS-Cygwin=rtlib cutils butils nutils
+extlibexample_LIBS-Cygwin=rtlib cutils butils nutils pthread
 extlibexample_LIBS-GNU-Linux=
 
 extlibexample_LIBS=$(extlibexample_LIBS-$(OS_TYPE))

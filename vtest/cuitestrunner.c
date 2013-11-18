@@ -20,11 +20,15 @@ static void MSG( const char * format, ... )
   if (!debug_output_hook) {
     vfprintf( stdout, format, ap );   
   } else {
-    char big_buf[ 32 * 1024 ];
+    char big_buf[ 4 * 1024 ];
     int n;
 
     n = vsnprintf( big_buf, sizeof( big_buf ) - 1, format, ap );
-    big_buf[ n ] = '\0';
+    if (n > 0)
+      big_buf[ n ] = '\0';
+    else 
+      big_buf[ 0 ] = '\0';
+
     debug_output_hook( big_buf );
     fputs( big_buf, stdout );
   }

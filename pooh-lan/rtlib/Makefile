@@ -17,7 +17,7 @@ rtlibsh_TYPE=shlib
 
 rtlibsh_SRC_EXTENSION=c
 
-rtlibsh_LIBS=cutils butils nutils m  
+rtlibsh_LIBS=cutils butils nutils m pthread
 
 
 include $(TOPDIR)/rules.make
