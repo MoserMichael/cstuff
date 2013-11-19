@@ -8,8 +8,10 @@
 #include "errorp.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <signal.h>
 #ifdef __linux__
 #include <execinfo.h>
 #endif
@@ -60,17 +62,35 @@ void errorp_close_file()
 
 static char buff[ 8192 ];
 
-void errorp(int rval, const char *fmt, ... ) 
+
+static void print_stack_trace()
 {
-  char *p, *eof;
-  va_list ap;
-  int len, n;
 #if __linux__
   int rt;
   void *sframes[ STACK_FRAMES + 1 ];
   int nframes, i;
-#endif
 
+  nframes = backtrace( sframes, STACK_FRAMES + 1); \
+  rt = write( FD_OUT, STACK_START, strlen( STACK_START ) );
+  if (rt == -1)
+    return;;
+  nframes =  backtrace( sframes, STACK_FRAMES );
+  for (i=0; i<nframes; i++) {
+    snprintf( buff, sizeof(buff) - 1,  "frame %d ip: %p\n", i, sframes[ i ]);
+    write( FD_OUT , buff, strlen( buff ) );
+  }
+
+  dump_modules( buff, sizeof(buff) );
+  write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
+#endif
+}
+
+
+void errorp(int rval, const char *fmt, ... ) 
+{
+  char *p, *eof;
+  va_list ap;
+  int len, n, rt;
   pthread_mutex_lock( &counter_mutex );
   
   p = buff;
@@ -93,25 +113,7 @@ void errorp(int rval, const char *fmt, ... )
   if (rt == -1)
     goto err;
  
-
-#if __linux__
-  nframes = backtrace( sframes, STACK_FRAMES + 1); \
-  rt = write( FD_OUT, STACK_START, strlen( STACK_START ) );
-  if (rt == -1)
-    goto err;
-  nframes =  backtrace( sframes, STACK_FRAMES );
-  for (i=0; i<nframes; i++) {
-    snprintf( buff, sizeof(buff) - 1,  "frame %d ip: %p\n", i, sframes[ i ]);
-    rt = write( FD_OUT , buff, strlen( buff ) );
-    if (rt == -1)
-      goto err;
-  }
-
-  dump_modules( buff, sizeof(buff) );
-  rt = write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
-  if (rt == -1)
-    goto err;
-#endif
+  print_stack_trace();
 
 err:
    pthread_mutex_unlock( &counter_mutex );
@@ -228,3 +230,63 @@ static void dump_modules(char *buf, size_t buff_size)
 
 }
 #endif
+
+
+#define DO_SIGACTTION
+
+#ifndef WIN32
+
+#ifdef DO_SIGACTTION
+static void crash_handler( int signal, siginfo_t *siginfo, void *context )
+{
+    char msg[50];
+    
+    (void) siginfo;
+    (void) context;
+#else
+static void crash_handler( int signal )
+{
+    char msg[50];
+#endif
+
+    switch( signal ) {
+     case SIGSEGV:
+	sprintf(msg, "ERROR : Crash! SIGSEGV occured\n" );
+	break;
+     case SIGILL:
+	sprintf(msg, "ERROR : Crash! SIGILL occured\n" );
+	break;
+     case SIGBUS:
+	sprintf(msg, "ERROR : Crash! SIGBUS occured\n" );
+	break;
+    default:
+	sprintf(msg, "ERROR : Crash! signal %d\n", signal);
+    }
+
+    write( FD_OUT , msg , strlen( msg ) );
+    print_stack_trace();
+    exit(1);
+}
+#endif
+
+void install_crash_handler()
+{
+#ifndef WIN32
+#ifdef DO_SIGACTTION
+    struct sigaction act;
+     
+    memset (&act, '\0', sizeof(act));
+	 
+    act.sa_sigaction = &crash_handler;
+    act.sa_flags = SA_SIGINFO;
+			 
+    sigaction( SIGSEGV, &act, NULL );
+    sigaction( SIGILL,  &act, NULL );
+    sigaction( SIGBUS,  &act, NULL );
+#else
+    signal( SIGSEGV, crash_handler );
+    signal( SIGILL,  crash_handler );
+    signal( SIGBUS, crash_handler );
+#endif
+#endif
+}

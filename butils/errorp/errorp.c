@@ -6,12 +6,13 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdint.h>
-
+#include <time.h>
 
 int fact(int num) {
 
   if (num == 0) {
-    errorp(-1,"recursion bottom");
+    //errorp(-1,"recursion bottom");
+    strftime( (char *) num, (size_t) num, (const char *)  num, (const struct tm *) num );
     return 1;
   }
   return num * fact(num-1);
@@ -26,6 +27,7 @@ int main()
 
 
   errorp_open_file("errors.log");
+  install_crash_handler();
   
   fprintf(stderr,"%d", fact(20) );
 

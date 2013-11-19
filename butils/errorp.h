@@ -18,6 +18,11 @@ void errorp_close_file();
 
 void errorp(int rval, const char *fmt, ... );
 
+/**
+ * @brief install crash handler; crash handler prints stack trace and exits
+ */
+void install_crash_handler();
+
 
 /**
  * @}
