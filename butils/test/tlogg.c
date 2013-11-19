@@ -19,12 +19,12 @@ void LOGG_test0()
     pid = getpid();
 
     memset(fname, 0, sizeof(fname));
-    readlink("/proc/self/exe",fname,sizeof(fname));
+    VASSERT( readlink("/proc/self/exe",fname,sizeof(fname)) != -1 );
     base = FN_file_name( fname );
 
     sprintf(buf,"cat /proc/%d/maps >maps_%s.txt", pid, base);
 
-    system(buf);
+    VASSERT( system(buf) == 0 );
     free(base);
 #endif    
 }
@@ -46,6 +46,5 @@ void LOGG_test()
 
   sprintf( buf, "${BIN_ROOT_DIR}/../scripts/readerrors.pl %s", ERR_FILE );
   printf("%s\n",buf);
-  system( buf );
-
+  VASSERT( system(buf) == 0 );
 }

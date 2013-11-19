@@ -63,25 +63,28 @@ void errorp_close_file()
 static char buff[ 8192 ];
 
 
-static void print_stack_trace()
+static int print_stack_trace()
 {
 #if __linux__
-  int rt;
+  int rt = 0;
   void *sframes[ STACK_FRAMES + 1 ];
   int nframes, i;
 
   nframes = backtrace( sframes, STACK_FRAMES + 1); \
   rt = write( FD_OUT, STACK_START, strlen( STACK_START ) );
   if (rt == -1)
-    return;;
+    return -1;
   nframes =  backtrace( sframes, STACK_FRAMES );
   for (i=0; i<nframes; i++) {
     snprintf( buff, sizeof(buff) - 1,  "frame %d ip: %p\n", i, sframes[ i ]);
-    write( FD_OUT , buff, strlen( buff ) );
+    rt += write( FD_OUT , buff, strlen( buff ) );
   }
 
   dump_modules( buff, sizeof(buff) );
-  write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
+  rt += write( FD_OUT, STACK_EOF, strlen( STACK_EOF ) );
+  return rt;
+#else
+  return -1;
 #endif
 }
 
@@ -240,6 +243,7 @@ static void dump_modules(char *buf, size_t buff_size)
 static void crash_handler( int signal, siginfo_t *siginfo, void *context )
 {
     char msg[50];
+    int rt;
     
     (void) siginfo;
     (void) context;
@@ -247,6 +251,7 @@ static void crash_handler( int signal, siginfo_t *siginfo, void *context )
 static void crash_handler( int signal )
 {
     char msg[50];
+    rt;
 #endif
 
     switch( signal ) {
@@ -263,7 +268,7 @@ static void crash_handler( int signal )
 	sprintf(msg, "ERROR : Crash! signal %d\n", signal);
     }
 
-    write( FD_OUT , msg , strlen( msg ) );
+    rt = write( FD_OUT , msg , strlen( msg ) );
     print_stack_trace();
     exit(1);
 }
