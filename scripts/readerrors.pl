@@ -73,12 +73,11 @@ sub parse_log_file
     chomp($line);
 
     if ($state == 0) {
-	 if ($line =~ /ERROR:/) {
-	    push (@errors, $line );
+	if ($line =~ /ERROR/) {
+	   push (@errors, $line );
 	}
 
-
-	    if (index($line,"*** start stack ***") != -1) {
+	if (index($line,"*** start stack ***") != -1) {
 	   $state = 1;
 	}
     } elsif ($state == 1) {

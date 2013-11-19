@@ -6,6 +6,8 @@
 #include <string.h>
 
 #define LOG_FILE "logg.log"
+#define ERR_FILE "err.log"
+
 
 void LOGG_test0()
 {	
@@ -29,8 +31,10 @@ void LOGG_test0()
 
 void LOGG_test()
 {
-  unlink( LOG_FILE );
+  char buf[512];
 
+  unlink( LOG_FILE );
+  unlink( ERR_FILE );
   MLOG_init( MLOG_LEVEL_DEBUG, MLOG_ACTION_TO_FILE, LOG_FILE);
   MLOG_alloc_option( MLOG_ALLOC_TLS_HEAP, 1024 );
 
@@ -38,6 +42,10 @@ void LOGG_test()
   MLOG_DEBUG("First post %d", 42 );
   MLOG_INFO("Important message %d %d %d", 42, 42, 42);
   MLOG_ERROR("ERROR ERROR ERROR");
+
+
+  sprintf( buf, "${BIN_ROOT_DIR}/../scripts/readerrors.pl %s", ERR_FILE );
+  printf("%s\n",buf);
+  system( buf );
+
 }
-
-
