@@ -9,6 +9,7 @@
 
 void LOGG_test0()
 {	
+#ifndef WIN32
     char buf[512];
     char fname[512], *base;
     pid_t pid;
@@ -23,6 +24,7 @@ void LOGG_test0()
 
     system(buf);
     free(base);
+#endif    
 }
 
 void LOGG_test()

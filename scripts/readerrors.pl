@@ -134,17 +134,24 @@ sub process_stack_trace
       my $offset = @{ $r } [2];  
       my $path = @{ $r } [3];  
 
-      if (hex($ip_start) <= hex($ip) && hex($ip_end) >= hex($ip)) {
+      if (hex($ip_start) <= hex($ip) && hex($ip) < hex($ip_end)) {
         $have_source_of_ip = 1;
         print "ip $ip from $path\n";
     	
 	if (-f $path) {
-	  my $addr = sprintf("0x%lx", hex($ip) + hex($offset) );
-#	  my $cmd = "addr2line -e $path -C -i -p -f -s $addr"; 
-	  my $cmd = "addr2line -e $path -C -i -f -s $addr"; 
+	  my ($addr, $cmd, $res);
+
+          $addr = sprintf("0x%lx", hex($ip) );
+	  $cmd = "addr2line -e $path -C -i -f -s -p $addr"; 
+	  $res = `$cmd`;
+
+	  if (index($res,"??") != -1) {
+	    $addr = sprintf("0x%lx", hex($ip) - hex($ip_start) );
+	    $cmd = "addr2line -e $path -C -i -f -s $addr"; 
+	    $res = `$cmd`;
+	  }	    
 
 #	  print($cmd."\n");
-	  my $res = `$cmd`;
 	  if ($?) {
 	    print "\tError: addr2line failed\n";
 	  } else {

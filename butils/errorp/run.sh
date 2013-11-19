@@ -2,6 +2,8 @@
 
 set -x
 
+rm -f errors.log
+
 EXE_FILE=$1 
 
 $EXE_FILE 
