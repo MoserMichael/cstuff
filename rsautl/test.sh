@@ -43,3 +43,5 @@ make_key_pair 1024
 test_it 4096
 test_it 2048
 test_it 1024 
+
+echo "*** test ok ***"

@@ -45,7 +45,7 @@ RSA *read_PEM_pub_key(const char *fname)
 {   
   char *skey;
   BIO *bio;   
-  RSA *key;
+  RSA *key = 0;
   int rt = 0;
 
   skey = read_file( fname );
@@ -78,7 +78,7 @@ RSA *read_PEM_priv_key(const char *fname)
 {   
   char *skey;
   BIO *bio;   
-  RSA *key;
+  RSA *key = 0;
   int rt = 0;
 
   skey = read_file( fname );
@@ -250,7 +250,7 @@ int decrypt_file( RSA *key, FILE *fpin, FILE *fpout )
    ENC_HEADER hdr;
    SHA256_CTX sha;
    uint8_t hash[SHA256_DIGEST_LENGTH];
-   uint64_t data_len;
+   uint64_t data_len = 0;
    int first = 1;
    int prev_percent = 0, new_percent;
 
@@ -448,7 +448,7 @@ int main(int argc, char *argv[])
 {
     RSA *pkey;
     FILE *fpin, *fpout;
-    int rt, open_out = 0;
+    int rt = -1, open_out = 0;
 
     parse_cmd_line( argc, argv );
 
@@ -471,9 +471,9 @@ int main(int argc, char *argv[])
     SSL_library_init();
 
 #ifdef ENCRYPT
-    pkey = read_PEM_pub_key(key_file_name);
+    pkey = read_PEM_pub_key( key_file_name );
 #else    
-    pkey = read_PEM_priv_key(key_file_name);
+    pkey = read_PEM_priv_key( key_file_name );
 #endif  
 
     if (pkey) {
