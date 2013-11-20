@@ -18,7 +18,6 @@ So each piece of software should start with a list of requirements, here is my l
 * A build target can add its specific compiler/linker settings.
 * Track source file dependencies; use trick that avoids reparsing of make file.
 * A target can declare dependent libraries; 
-* Object files for each target placed into separate subdirectory; so that the same source can be built with different compiler options.
 * Each make file has optional pre build and post build steps that can do code generation for instance.
 * Display banner on building of each target; (what is the target, type of target + directory)
 * Ability to add compiler and linker options from environment to each target (environment variables EXTERNAL_CFLAGS , EXTERNAL_CXXFLAGS ,  EXTERNAL_LDFLAGS ).
