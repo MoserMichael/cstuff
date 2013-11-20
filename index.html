@@ -7,7 +7,7 @@ title: Michael Moser's blog
   <h2 class="fade">Read:</h2>
   <ul class="posts">
     {% for post in site.posts %}
-      <li><span style="display:block; float:left; clear: left; width: 120px;">&laquo; {{post.categories}}</span> | <a href="{{ post.url | replace_first:'/all','/cstuff/all' }}"> {{ post.title }}</a><span>{{ post.date | date_to_string }}</span></li>
+      <li><span style="display:block; float:left; clear: left; width: 120px;">&laquo; {{post.categories | replace:'all',}}</span> | <a href="{{ post.url | replace_first:'/all','/cstuff/all' }}"> {{ post.title }}</a><span>{{ post.date | date_to_string }}</span></li>
     {% endfor %}
   </ul>
   
