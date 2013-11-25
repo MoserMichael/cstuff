@@ -71,13 +71,6 @@ void * test_thread_runner( void * arg)
   return 0;
 }
 
-#if 0
-static int get_num_cores()
-{
-  return  (int) sysconf( _SC_NPROCESSORS_ONLN );
-}
-#endif
-
 int TEST_THREAD_run( TEST_THREAD *thread )
 {
   pthread_t pth;
