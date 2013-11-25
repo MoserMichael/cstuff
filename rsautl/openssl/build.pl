@@ -51,7 +51,7 @@ chdir( $dirname );
 my $dirname = `pwd`;
 chomp($dirname);
 
-system("/bin/sh -c \"./config no-shared --prefix=$curdir\">config.log 2>&1");
+system("/bin/sh -c \"./config threads -D_REENTRANT no-shared --prefix=$curdir\">config.log 2>&1");
 if ($? != 0) {
     print("Error: Make failed. see ${dirname}config.log\n");
     exit(1);
