@@ -19,6 +19,8 @@ typedef struct tagTQUEUE {
   DLIST  dlist;
   size_t max_count;
   size_t waiting_empty;
+  size_t waiting_full;
+
 
   pthread_mutex_t mutex;
   pthread_cond_t  cond_empty;
