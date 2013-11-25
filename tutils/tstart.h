@@ -11,4 +11,11 @@
 int pthread_create_detached(pthread_t *thread, pthread_attr_t *attr,
                                  void *(*start_routine) (void *), void *arg);
 
+
+
+/**
+ * &brief returns number of cores on the system
+ */
+int get_num_cores();
+
 #endif

@@ -1,4 +1,5 @@
 #include "tstart.h"
+#include <unistd.h>
 
 int pthread_create_detached(pthread_t *thread, pthread_attr_t *attr,
                                  void *(*start_routine) (void *), void *arg)
@@ -23,4 +24,10 @@ int pthread_create_detached(pthread_t *thread, pthread_attr_t *attr,
 
     return rt;
 }
+
+int get_num_cores()
+{
+  return  (int) sysconf( _SC_NPROCESSORS_ONLN );
+}
+
 
