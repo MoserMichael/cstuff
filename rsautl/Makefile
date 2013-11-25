@@ -1,7 +1,9 @@
 TOPDIR=..
 
 PREBUILD_SUBDIRS=openssl
-TARGETS=rsaenc rsadec
+
+#TARGETS=rsaencmt rsadecmt
+TARGETS=rsaenc rsadec rsaencmt rsadecmt
 
 # ---------------------------------------
 
@@ -15,7 +17,7 @@ rsaenc_CFLAGS=-Iopenssl/include -DENCRYPT
 
 rsaenc_LDFLAGS=-Lopenssl/lib
 
-rsaenc_LIBS=ssl crypto dl
+rsaenc_LIBS=butils ssl crypto dl
 
 
 # ---------------------------------------
@@ -28,7 +30,38 @@ rsadec_CFLAGS=-Iopenssl/include
 
 rsadec_LDFLAGS=-Lopenssl/lib/ 
 
-rsadec_LIBS=ssl crypto dl
+rsadec_LIBS=butils cutils tutils butils pthread ssl crypto dl
+
+# ---------------------------------------
+
+rsaencmt_TYPE=exe
+
+rsaencmt_SRC_EXTENSION=c
+
+rsaencmt_SRC=rsautl.c
+
+rsaencmt_CFLAGS=-Iopenssl/include -DENCRYPT -DMULTI 
+#rsaencmt_CFLAGS=-Iopenssl/include -DENCRYPT -DMULTI -D_TRACE
+ 
+
+rsaencmt_LDFLAGS=-Lopenssl/lib
+
+rsaencmt_LIBS=cutils tutils butils pthread ssl crypto dl
+
+
+# ---------------------------------------
+
+rsadecmt_TYPE=exe
+
+rsadecmt_SRC=rsautl.c
+
+rsadecmt_CFLAGS=-Iopenssl/include -DMULTI 
+#rsadecmt_CFLAGS=-Iopenssl/include -DMULTI -D_TRACE 
+
+
+rsadecmt_LDFLAGS=-Lopenssl/lib/ 
+
+rsadecmt_LIBS=cutils tutils butils pthread ssl crypto dl
 
 # ---------------------------------------
 

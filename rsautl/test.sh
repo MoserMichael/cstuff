@@ -27,13 +27,22 @@ make_key_pair()
 
 test_it()
 {
-  # encrypt with 4096 public key
+  # encrypt with 4096 public key (single threaded tool)
   time $BIN_ROOT_DIR/bin/rsaenc -k $TEST_DATA/public$1.pem -i $TEST_DATA/100K.bin -o $TEST_DATA/100K.enc 
 
-  # decrypt with 4096 public key
+  # decrypt with 4096 public key (single threaded tool) 
   time $BIN_ROOT_DIR/bin/rsadec -k $TEST_DATA/private$1.pem -i $TEST_DATA/100K.enc -o $TEST_DATA/100K.bin2 
 
   diff -b $TEST_DATA/100K.bin $TEST_DATA/100K.bin2
+
+  # encrypt with 4096 public key (multi threaded tool)
+  time $BIN_ROOT_DIR/bin/rsaencmt -k $TEST_DATA/public$1.pem -i $TEST_DATA/100K.bin -o $TEST_DATA/100K.enc 
+
+  # decrypt with 4096 public key (multi threaded tool) 
+  time $BIN_ROOT_DIR/bin/rsadecmt -k $TEST_DATA/private$1.pem -i $TEST_DATA/100K.enc -o $TEST_DATA/100K.bin2 
+
+  diff -b $TEST_DATA/100K.bin $TEST_DATA/100K.bin2
+
 }
 
 make_key_pair 4096 
