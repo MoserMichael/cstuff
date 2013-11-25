@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-TARGETS="rsautl"
+TARGETS="vtest cutils butils tutils rsautl"
 
 DIR=`dirname $0`
 
