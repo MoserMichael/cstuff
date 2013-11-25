@@ -29,7 +29,9 @@ static void * worker_thread( void * arg)
 
   while ( (req = TQUEUE_pop( &pool->request_queue ) ) != 0 ) {
      
-     req->handle_request( req );
+     if (req->handle_request) {
+       req->handle_request( req );
+     }
      if (pool->process_result != 0) {
         pool->process_result( req ); 
      }
@@ -54,6 +56,9 @@ THREADPOOL *THREADPOOL_init( RUNNABLE_HANDLER process_result, int queue_size, in
   }
 
   pool->process_result = process_result;
+  if (num_threads < 0)  {
+    num_threads = -num_threads * get_num_cores();
+  } 
   pool->num_threads = num_threads;
 
   TQUEUE_init( &pool->request_queue, queue_size );
