@@ -20,8 +20,11 @@ void do_adder(ADDER *arg)
    arg->res = arg->arg + 1;
 }
 
-void handle_response (RUNNABLE *request)
+void handle_response (RUNNABLE *request, void *tcontext, void *poolctx)
 {
+  (void) tcontext;
+  (void) poolctx;
+
   VASSERT( TQUEUE_push_fail_on_queue_full( &rqueue, request ) == 0 );
 }
 
@@ -37,7 +40,7 @@ void TPOOL_test()
 
   TQUEUE_init(&rqueue, -1 );
   
-  pool = THREADPOOL_init( handle_response , 100, 10, 100 );
+  pool = THREADPOOL_init_ext( handle_response , NULL, NULL,  100, 10, 100, NULL );
   
 
   for(i = 0; i < NUM_REQUESTS; i++ ) {
@@ -59,7 +62,7 @@ void TPOOL_test()
      tmp = (ADDER *) TQUEUE_pop( &rqueue );
      VASSERT( tmp->res > 0 && tmp->res <= NUM_REQUESTS );
      res_numbers[ tmp->res - 1 ] = tmp->res;
-     RUNNABLE_free( &tmp->base );
+     RUNNABLE_free( &tmp->base, NULL, NULL );
    }
 
    for(i = 0; i <  NUM_REQUESTS;  i++ ) {

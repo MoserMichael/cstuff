@@ -12,10 +12,10 @@ void RUNNABLE_init(RUNNABLE *runnable, RUNNABLE_HANDLER handler, RUNNABLE_HANDLE
 }
 
 
-void RUNNABLE_free(RUNNABLE *runnable )
+void RUNNABLE_free(RUNNABLE *runnable, void *tcontext, void *poolctx )
 {
   if (runnable->free_request) {
-    runnable->free_request( runnable );
+    runnable->free_request( runnable, tcontext, poolctx );
   }
   free( runnable );
 }
@@ -26,15 +26,24 @@ static void * worker_thread( void * arg)
 {
   THREADPOOL *pool = (THREADPOOL *) arg;
   RUNNABLE *req;
+  void *tcontext = 0;
+
+  if (pool->thread_init) {
+    tcontext =  pool->thread_init( pool->pool_ctx );
+  }
 
   while ( (req = TQUEUE_pop( &pool->request_queue ) ) != 0 ) {
      
      if (req->handle_request) {
-       req->handle_request( req );
+       req->handle_request( req, tcontext, pool->pool_ctx );
      }
      if (pool->process_result != 0) {
-        pool->process_result( req ); 
+        pool->process_result( req, tcontext, pool->pool_ctx ); 
      }
+  }
+
+  if (pool->thread_finish) {
+    pool->thread_finish( tcontext, pool->pool_ctx );
   }
 
   CYCLIC_BARRIER_await( &pool->all_finished );
@@ -45,6 +54,12 @@ static void * worker_thread( void * arg)
 
 THREADPOOL *THREADPOOL_init( RUNNABLE_HANDLER process_result, int queue_size, int num_threads, int stack_size_kb )
 {
+  return THREADPOOL_init_ext( process_result, NULL, NULL, queue_size, num_threads, stack_size_kb, NULL );
+}  
+ 
+
+THREADPOOL *THREADPOOL_init_ext( RUNNABLE_HANDLER process_result, THREAD_INIT thread_init, THREAD_FINISH thread_finish, int queue_size, int num_threads, int stack_size_kb, void *pool_ctx )
+{
   THREADPOOL *pool;
   pthread_t pth;
   pthread_attr_t attr;
@@ -54,8 +69,12 @@ THREADPOOL *THREADPOOL_init( RUNNABLE_HANDLER process_result, int queue_size, in
   if (!pool) {
     return 0;
   }
-
+ 
+  pool->thread_init = thread_init;
   pool->process_result = process_result;
+  pool->thread_finish = thread_finish;
+  pool->pool_ctx = pool_ctx;
+
   if (num_threads < 0)  {
     num_threads = -num_threads * get_num_cores();
   } 
