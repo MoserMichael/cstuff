@@ -57,6 +57,15 @@ if ($? != 0) {
     exit(1);
 }
 
+# uncomment next line to compile with debug info.
+#system("find . -name Makefile | xargs sed -i -e 's#-O3#-g#g'");
+
+#
+## no locking for bn_mont.c - we promise that all RSA structs only used by one thread.
+#
+system("find . -name bn_mont.c | xargs sed -i 1i'#define OPENSSL_NO_LOCKIN'" );
+
+
 print( ">make\n" );
 system("/bin/sh -c \"make\" >make.log 2>&1");
 if ($? != 0) {
