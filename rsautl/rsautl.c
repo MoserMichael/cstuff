@@ -397,7 +397,6 @@ err:
    return rt;
 }
 #else 
-
 //
 // multi threaded case.
 //
@@ -432,8 +431,6 @@ typedef struct tagCRYPT_REQUEST {
   uint32_t out_len; // size of data
   
   int action_status;
-  RSA *key;
-  int *cancelled;
  
 } CRYPT_REQUEST;
 
@@ -442,6 +439,7 @@ typedef struct tagRESULT_HANDLER_DATA {
   sem_t finish_notify;
   FILE *fpout;
   size_t file_size;
+  EAction role;
   RSA *key;
   uint32_t key_size;
   TQUEUE response_queue;
@@ -472,7 +470,7 @@ int heap_compare( void *a, void *b, size_t entry )
   return 0;
 }
 
-CRYPT_REQUEST *request_new( EAction action, int seq_no, TQUEUE *queue, RSA *key, uint32_t in_buf_size, uint32_t out_buf_size )
+CRYPT_REQUEST *request_new( EAction action, int seq_no, TQUEUE *queue, uint32_t in_buf_size, uint32_t out_buf_size )
 {
    CRYPT_REQUEST *req;
 
@@ -491,10 +489,8 @@ CRYPT_REQUEST *request_new( EAction action, int seq_no, TQUEUE *queue, RSA *key,
    req->action_status = 0;
 
    req->action = action; //Encrypt_act;
-   req->key = key;
    req->response_queue = queue; //&result_data.response_queue;
    req->sequence_no = seq_no;
-   req->cancelled = 0;
 
    RUNNABLE_init( &req->base, NULL, NULL );
 
@@ -511,24 +507,46 @@ void request_free(CRYPT_REQUEST *req)
 }
 
 
+void *tpool_init( void *tpool_ctx )
+{
+  RESULT_HANDLER_DATA *data = (RESULT_HANDLER_DATA *) tpool_ctx;
+  RSA *res;
+
+  if (data->role == Encrypt_act)
+    res = RSAPublicKey_dup( data->key );
+  else
+    res = RSAPrivateKey_dup( data->key ); 
+  RSA_blinding_off( res );
+  return res;
+}
+
+void tpool_cleanup( void *thread_ctx, void *tpool_ctx )
+{
+  RSA *thread_key = (RSA *) thread_ctx;
+  (void) tpool_ctx;
+  RSA_free( thread_key );
+}
+
 // worker thread - encrypt or decrypt stuff.
-void handle_request( struct tagRUNNABLE *request )
+void tpool_handle_request( struct tagRUNNABLE *request, void *thread_ctx, void *pool_ctx )
 {
   CRYPT_REQUEST *r = (CRYPT_REQUEST *) request;
+  RESULT_HANDLER_DATA *data = (RESULT_HANDLER_DATA *) pool_ctx;
+  RSA *key = (RSA *) thread_ctx;
 
   TRACE("Worker start req %p-%d\n", r, r->sequence_no );
   
-  if (!r->cancelled || *r->cancelled == 0) {
+  if (data->result_status == 0) {
    switch( r->action ) {
     case Encrypt_act:
-      r->out_len =  RSA_public_encrypt( (int) r->in_len, r->in_buf, r->out_buf, r->key, RSA_PKCS1_OAEP_PADDING);
+      r->out_len =  RSA_public_encrypt( (int) r->in_len, r->in_buf, r->out_buf, key, RSA_PKCS1_OAEP_PADDING);
       if (r->out_len != r->out_buf_len) {
 	r->action_status = -1;
         fprintf( stderr, "Error: failed to encrypt seq=%d in-len=%d\n", r->sequence_no, r->in_len);   
       }	
       break;
     case Decrypt_act:
-      r->out_len = RSA_private_decrypt( (int) r->in_len, r->in_buf, r->out_buf, r->key, RSA_PKCS1_OAEP_PADDING);
+      r->out_len = RSA_private_decrypt( (int) r->in_len, r->in_buf, r->out_buf, key, RSA_PKCS1_OAEP_PADDING);
       if (r->out_len == (uint32_t) -1) {
 	r->action_status = -1;
         fprintf( stderr, "Error: failed to decrypt seq=%d in-len=%d\n", r->sequence_no, r->in_len);   
@@ -540,7 +558,7 @@ void handle_request( struct tagRUNNABLE *request )
   } else {
     r->action_status = -1;
     request_free( r );
-    TRACE("Worker cancelled req %p-%d status %d\n", r, r->sequence_no, r->action_status );
+    TRACE("request cancelled req %p-%d status %d\n", r, r->sequence_no, r->action_status );
     return;
   }
   
@@ -581,7 +599,7 @@ int do_handle_result( RESULT_HANDLER_DATA *data, int is_decrypt, uint8_t *hash, 
      TRACE("result handler: req %p-%d status %d cur-seq %d\n", r, r->sequence_no, r->action_status, sequence_no );
 
      if (r->action_status == -1) {
-	fprintf(stderr,"Error: Failed to encrypt\n");
+	fprintf(stderr,"Error: Failed to %s\n", is_decrypt ? "decrypt" : "encrypt" );
 	rt = -1;
 	break;
      }
@@ -826,12 +844,6 @@ int encrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   key_size = RSA_size(key);
   in_buf_size = key_size - PKCS_PADDING_SIZE; 
   
-  pool = THREADPOOL_init( handle_request, 100, -2, -1 );
-  if (!pool) {
-    fprintf(stderr, "Error: Can't initialize thread pool\n" );
-    return -1;
-  }
-  TRACE("worker thread pool started\n" );
  
   file_size = fill_header( fpin, &enc_header );
   file_pos = 0;
@@ -839,11 +851,19 @@ int encrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   // create result handling thread
   res_data.result_status = 0;
   res_data.fpout = fpout;
+  res_data.role = Encrypt_act;
   res_data.key = key;
   res_data.key_size = key_size;
   res_data.file_size = file_size;
   TQUEUE_init( &res_data.response_queue, MAX_PENDING_REQUEST );
   sem_init( &res_data.finish_notify, 0, 0 );
+  
+  pool = THREADPOOL_init_ext( tpool_handle_request, tpool_init, tpool_cleanup, 100, -2, -1, &res_data );
+  if (!pool) {
+    fprintf(stderr, "Error: Can't initialize thread pool\n" );
+    return -1;
+  }
+  TRACE("worker thread pool started\n" );
   
   pthread_create_detached( &result_thread, 0, handle_encrypt_output, &res_data );
   TRACE("result thread started\n" );
@@ -853,13 +873,12 @@ int encrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   while( ! feof( fpin ) && res_data.result_status  == 0 ) {
     CRYPT_REQUEST *req;
 
-    req = request_new( Encrypt_act, seq_no++, &res_data.response_queue, key, in_buf_size, key_size );
+    req = request_new( Encrypt_act, seq_no++, &res_data.response_queue, in_buf_size, key_size );
     if  (!req) {
       fprintf( stderr, "Error: failed to allocate request sequence_no=%d\n", seq_no);
       rt = -1;
       break;
     }
-    req->cancelled = &res_data.result_status;
 
     if (first) {
 	memcpy( req->in_buf, &enc_header, sizeof(ENC_HEADER) ); 
@@ -906,12 +925,6 @@ int decrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   int rt = 0;
   int seq_no = 1;
 
-  pool = THREADPOOL_init( handle_request, 1000, -2, -1 );
-  if (!pool) {
-    fprintf(stderr, "Error: Can't initialize thread pool\n" );
-    return -1;
-  }
-  TRACE("worker thread pool started\n" );
  
   file_size = get_file_size( fpin );
   file_pos = 0;
@@ -919,6 +932,7 @@ int decrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   // create result handling thread
   res_data.result_status = 0;
   res_data.fpout = fpout;
+  res_data.role = Decrypt_act;
   res_data.key = key;
   res_data.key_size = key_size;
   res_data.file_size = file_size;
@@ -928,16 +942,22 @@ int decrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   pthread_create_detached( &result_thread, 0, handle_decrypt_output, &res_data );
   TRACE("result thread started\n" );
 
+  pool = THREADPOOL_init_ext( tpool_handle_request, tpool_init, tpool_cleanup, 100, -2, -1, &res_data );
+  if (!pool) {
+    fprintf(stderr, "Error: Can't initialize thread pool\n" );
+    return -1;
+  }
+  TRACE("worker thread pool started\n" );
+ 
   while(  ! feof( fpin ) && res_data.result_status  == 0 && rt == 0 ) {
      CRYPT_REQUEST *req;
   
-     req = request_new( Decrypt_act, seq_no++, &res_data.response_queue, key, key_size, key_size );
+     req = request_new( Decrypt_act, seq_no++, &res_data.response_queue, key_size, key_size );
      if  (!req) {
        fprintf( stderr, "Error: failed to allocate request sequence_no=%d\n", seq_no);
        rt = -1;
        break;
      }
-     req->cancelled = &res_data.result_status;
 
      in_read = fread( req->in_buf, 1 , key_size, fpin ); 
 
@@ -1020,7 +1040,7 @@ void thread_setup(void)
 	lock_count=OPENSSL_malloc(CRYPTO_num_locks() * sizeof(long));
 	for (i=0; i<CRYPTO_num_locks(); i++)
 		{
-		lock_count[i]=0;
+		    lock_count[i]=0;
 		pthread_mutex_init(&(lock_cs[i]),NULL);
 		}
 
@@ -1149,9 +1169,6 @@ int main(int argc, char *argv[])
     }      
 
     SSL_library_init();
-#ifdef MULTI    
-    thread_setup();
-#endif    
 
 #ifdef ENCRYPT
     pkey = read_PEM_pub_key( key_file_name );
@@ -1168,10 +1185,17 @@ int main(int argc, char *argv[])
 	rt = decrypt_file( pkey, fpin, fpout );
     #endif  
 #else
+    // don't want locks, but adds timing attach possibility
+    //RSA_blinding_off( pkey );
+
     #ifdef ENCRYPT
+        thread_setup();
 	rt = encrypt_file_multi( pkey, fpin, fpout );
+	thread_cleanup();
     #else    
+        thread_setup();
 	rt = decrypt_file_multi( pkey, fpin, fpout );
+	thread_cleanup();
     #endif  
 #endif
 
@@ -1180,10 +1204,7 @@ int main(int argc, char *argv[])
     }
 
     RSA_free( pkey );
-#ifdef MULTI    
-    thread_cleanup();
-#endif
-    fclose(fpin);
+   fclose(fpin);
     if (open_out) {
       fclose(fpout);
       if (rt) {
