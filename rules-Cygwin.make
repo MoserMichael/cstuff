@@ -51,14 +51,6 @@ PREPROCESSOR_FLAG=-E
 ASM_LISTING_FLAG=-S
 
 
-#-
-#  Compile with draconic error level by default. Skipped if OPT_NOSTRICT environment is set.
-#-
-ifndef NOSTRICT
-CFLAGS+=-Wall -Werror -Wextra
-CXXFLAGS+=-Wall -Werror -Wextra
-endif
-
 
 #-
 # Add optimization
@@ -72,6 +64,22 @@ ifeq "$(strip $(MODE))" "release2"
     CFLAGS+=-O2
     CXXFLAGS+=-O2
 endif
+
+ifeq "$(strip $(MODE))" "releaseBuild"
+    CFLAGS+=-O3 -Wall
+    CXXFLAGS+=-O3 -Wall
+    NOSTRICT:=1
+endif
+
+
+#-
+#  Compile with draconic error level by default. Skipped if OPT_NOSTRICT environment is set.
+#-
+ifndef NOSTRICT
+CFLAGS+=-Wall -Werror -Wextra
+CXXFLAGS+=-Wall -Werror -Wextra
+endif
+
 
 #-
 # Add architecture specific options
