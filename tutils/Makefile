@@ -16,6 +16,9 @@ tutilssh_TYPE=shlib
 
 tutilssh_SRC_EXTENSION=c
 
+tutilssh_LIBS=cutils butils pthread
+
+
 
 
 include $(TOPDIR)/rules.make

@@ -53,7 +53,6 @@ RSA *read_PEM_pub_key(const char *fname)
   char *skey;
   BIO *bio;   
   RSA *key = 0;
-  int rt = 0;
 
   skey = read_file( fname );
   if (!skey) {
@@ -68,12 +67,7 @@ RSA *read_PEM_pub_key(const char *fname)
 
   if (BIO_set_buffer_read_data(bio, (void *) skey, strlen( skey )) == 1) {
     key = (void *) PEM_read_bio_RSA_PUBKEY( bio, NULL, NULL, NULL);
-    if (key == 0) {
-	rt = -1;
-    }
-  } else {
-    rt = -1;
-  }	
+  }
             
   BIO_free_all(bio);
   free( skey );
@@ -86,7 +80,6 @@ RSA *read_PEM_priv_key(const char *fname)
   char *skey;
   BIO *bio;   
   RSA *key = 0;
-  int rt = 0;
 
   skey = read_file( fname );
   if (!skey) {
@@ -100,12 +93,7 @@ RSA *read_PEM_priv_key(const char *fname)
 
   if (BIO_set_buffer_read_data(bio, (void *) skey, strlen( skey )) == 1) {
     key = (void *) PEM_read_bio_RSAPrivateKey( bio, NULL, NULL, NULL);
-    if (key == 0) {
-	rt = -1;
-    }
-  } else {
-    rt = -1;
-  }	
+  }
             
   BIO_free_all(bio);
   free( skey );
@@ -751,11 +739,8 @@ void *handle_decrypt_output( void *arg )
 {
   RESULT_HANDLER_DATA *data = (RESULT_HANDLER_DATA *) arg;
   uint8_t hash[SHA256_DIGEST_LENGTH];
-  FILE *fpout;
   int rt = 0;
  
-  fpout = data->fpout;
-
   rt = do_handle_result( data, 1, hash, sizeof( hash ) );
 
   TRACE("result handler: EOF status=%d\n", rt );

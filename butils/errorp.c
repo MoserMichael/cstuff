@@ -251,7 +251,7 @@ static void crash_handler( int signal, siginfo_t *siginfo, void *context )
 static void crash_handler( int signal )
 {
     char msg[50];
-    rt;
+    int rt;
 #endif
 
     switch( signal ) {
