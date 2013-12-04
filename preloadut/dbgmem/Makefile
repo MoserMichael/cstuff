@@ -1,5 +1,9 @@
 TOPDIR=../..
 
+# prebuild step - configure
+PREBUILD_SUBDIRS=config
+
+# postbuild step - run tests
 POSTBUILD_SUBDIRS=test
 
 TARGETS:=dmemc dmems dbgmemutil dmemccpp dmemscpp dbgmemutilcpp
