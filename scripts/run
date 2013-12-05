@@ -1,0 +1,1129 @@
+#!/usr/bin/perl
+
+
+# * 
+# * DBGMEM - memory allocation leak tracker and debugging tool.
+# *
+# *  (c) 2008 by Michael Moser
+# * 
+# * 3-clause BSD License applies  
+# *
+# * See LICENSE file for the full copy of the license
+# *
+# * 
+
+
+use strict;
+use Cwd;
+use Cwd 'realpath';
+use Config;
+
+my $ENGINE="simple";
+my $CMD="";
+my $FNAME="dbgmemlog.log";
+my $STACK_ENTRIES=5;
+my $ATTACH_ON_ERRORS="0";
+my $PARANOIA_MODE_DEPTH="0";
+my $VERBOSE_MODE = "0";  
+my $FILL_BYTE = 0;
+my $FATAL_ERROR_HANDLER = 0;
+my $FOLLOW_FORKS = 0;
+my $LEAK_SIGNAL_NEXT_GEN = 0;
+my $LEAK_SIGNAL_DUMP_MEM = 0;
+my $CPP_WARNINGS_OFF = 0;
+my $SYMBOL_GENERATION_WITH = 0;
+
+my $SYMBOL_FILE;
+my @OUT_FILES;
+
+my $RUN_TOP_DELAY;
+my $RUN_TOP_LOG;
+my $LIBPATH;
+
+my $debugged_process_pid;
+
+
+&parse;
+&run;
+
+
+my $dir;
+my $image;
+my $parameter_file_name;
+
+
+
+sub get_lib_path
+{
+   my ($os_type,$os_version,$arch);
+
+   $os_type=`uname -o | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_type);
+
+   $os_version=`uname -r | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_version);
+
+   $arch=`uname -m`;
+   chomp($arch);
+
+   return get_install_dir()."/${os_type}-${os_version}-${arch}/lib";
+}
+
+sub run
+{
+ 
+  print <<EOF
+debug engine:	    $ENGINE
+output report:	    $FNAME
+frames per entry:   $STACK_ENTRIES
+command:	    $CMD
+
+DBGMEM: running command with memory debugger...
+DBGMEM: Please stop debuged process by means of Ctl+C - signals SIGINT or SIGHUP
+DBGMEM: the process should finish by calling exit(3)
+EOF
+;
+
+  #set_core_unlimited();
+   
+  $dir = get_install_dir();
+
+  $ENGINE = substr($ENGINE,0,1);
+
+  my @params = split(" ",$CMD);
+  $image = $params[0];
+
+  set_opts( 
+    is_debugger($image), 
+    $STACK_ENTRIES, 
+    $PARANOIA_MODE_DEPTH, 
+    $ATTACH_ON_ERRORS, 
+    $FILL_BYTE, 
+    $FATAL_ERROR_HANDLER, 
+    $VERBOSE_MODE, 
+    $LEAK_SIGNAL_NEXT_GEN,  
+    $LEAK_SIGNAL_DUMP_MEM, 
+    $FOLLOW_FORKS,
+    $CPP_WARNINGS_OFF,
+    cwd());
+
+  
+  $ENV{'DBGMEM_ENGINE'} = $ENGINE;
+
+  $LIBPATH=get_lib_path();
+
+  my $lib = "${LIBPATH}/libdmem${ENGINE}.so";
+  if (! -f $lib) {
+    print "DBGMEM: ERROR file $lib does not exist. no libraries installed";
+    exit(1);
+  }
+  
+  run_process( $CMD );
+
+  print "DBGMEM: Running analyser script, please wait...\n";
+
+  &check_gdb();
+  
+  if ($FOLLOW_FORKS) {
+   &process_all_raw_reports();
+  } else { 
+   &process_raw_reports();
+  }
+
+}
+
+sub set_opts
+{
+  my $ignore_pid = shift;
+  my $frames = shift;
+  my $check_adj = shift;
+  my $attach_dbg = shift;
+  my $fill_bytes = shift;
+  my $fatal_error = shift;
+  my $verbose = shift;
+  my $dosignal1 = shift;
+  my $dosignal2 = shift;
+  my $follow_forks = shift;
+  my $cpp_warnings_off = shift;
+  my $dir = shift;
+ 
+  $parameter_file_name = "/tmp/dbgmem_param_$$";
+  if (! open(OF,">$parameter_file_name")) {
+     $parameter_file_name = "/var/dbgmem_param_$$";
+     if (! open(OF,">$parameter_file_name")) {
+        $parameter_file_name = "~/dbgmem_param_$$";
+	open( OF, ">$parameter_file_name") || die "DBGMEM: Can't write parameter file, failed in /tmp and int /var/tmp and in ~\n";
+     }
+  }
+  
+  my $opts="$ignore_pid,$frames,$attach_dbg,$check_adj,$fill_bytes,$fatal_error,$verbose,$dosignal1,$dosignal2,$follow_forks,$cpp_warnings_off,$dir"; 
+
+  #print "\n>$opts<\n";
+
+  print OF $opts;
+# print $opts;
+  close(OF);
+
+}
+
+sub run_process
+{
+  my $cmdline = shift;
+  my $is_cpp;
+  my $exe;
+
+  $debugged_process_pid =  fork( );
+
+ 
+  if ($debugged_process_pid == 0) {
+
+     $exe = $ARGV[0];
+     $is_cpp=`ldd $exe | grep stdc++ | wc -l`;
+
+     chomp($is_cpp);
+
+     if ($is_cpp) {
+       $is_cpp="cpp";
+     } else {
+       $is_cpp="";
+     } 
+
+     my $lib = "${LIBPATH}/libdmem${ENGINE}${is_cpp}.so";
+     my $prev = $ENV{'LD_PRELOAD'};
+     $ENV{'LD_PRELOAD'}="$lib:$prev";
+  
+     exec(@ARGV) || print "DBGMEM: failed to start debugee. errno $!\n";
+     exit(1);
+  } elsif ($debugged_process_pid > 0) {
+     my $TOP_PID;
+ 
+     print "DBGMEM: debugee started with process id $debugged_process_pid\n\n";
+  
+     if ($RUN_TOP_DELAY ne "") {
+	$TOP_PID = fork( );
+
+	if ($TOP_PID  == 0) {
+	  my @args = ( "/bin/sh", "-c", "/usr/bin/top -d $RUN_TOP_DELAY -p $debugged_process_pid -b >>$RUN_TOP_LOG" );
+	  exec(@args) || print "DBGMEM: failed to start top to monitor debugee. errno $!\n";
+	  exit(1);
+	}
+	print "DBGMEM: top started to monitor debugee. see $RUN_TOP_LOG file for details.";
+     }
+     
+     $SIG{INT} = 'IGNORE';
+     $SIG{QUIT} = 'IGNORE';
+     
+     my $status;
+     do {
+       $status = waitpid( $debugged_process_pid, 0); 
+     } until( $status > 0 );
+     
+     $SIG{INT} = 'DEFAULT';
+     $SIG{QUIT} = 'DEFAULT';
+    
+     if ($TOP_PID ne "") {
+       kill(9, $TOP_PID);
+     }
+   
+     my $tmp = $?;
+     my $coredumped  = $tmp & 128;	
+     my $signalno = $tmp & 127;
+     my $st = $tmp >> 8;
+     
+     print "\n\nDBGMEM: debugee exit code is $st\n";     
+     
+     if ($coredumped) {
+      	print "DBGMEM: debugee dumped core; the 'on process exit report' may not contain leak reports, see snapshot file \n";
+     }
+
+     if ($signalno) {
+        my $sname =  sig_name( $signalno );
+	print "DBGMEM: debugee exits due to signal $signalno ($sname)\n";
+	if ($sname eq "KILL") {
+	   print "DBGMEM: debugee killed due to SIGKILL, the 'on process exit report' is not very informative\n";
+        }   
+     }	
+   
+     # in case that parameter file was not cleared by debugee 
+     `rm -f $parameter_file_name 2>/dev/null`;
+      
+  } else {
+     print "DBGMEM: can't start debuggee. fork failed $!\n";
+     exit(1);
+  }
+  return -1;
+}
+
+sub process_raw_reports
+{
+  my $pattern="DBGMEM_report_$debugged_process_pid*.log"; 
+  my @files =  glob($pattern); #<$pattern>;
+  my $f;
+  my $suffix;
+
+ 
+  for $f (@files) {
+    $f =~ /DBGMEM_report_${debugged_process_pid}(\S+)\.log/;
+    $suffix = $1; 
+    
+    &run_annotate($f,$FNAME.$suffix, $debugged_process_pid);
+  }
+
+   
+  print "DBGMEM: created report files: ".join(" ", @OUT_FILES)."\n"; 
+}
+
+sub process_all_raw_reports
+{
+  my $pattern="DBGMEM_report_*.log"; 
+  my @files =  glob($pattern); #<$pattern>;
+  my $f;
+  my $pid;
+  my $suffix;
+  
+  
+  for $f (@files) {
+    $f =~ /DBGMEM_report_(\d+)(\S+)\.log/;
+    $pid = $1;
+    $suffix = "_".$2; 
+    
+    &run_annotate($f,"${FNAME}_$pid$suffix",$pid);
+  }
+}
+
+sub check_gdb
+{
+  `which gdb`;
+  if ($? != 0) {
+    print "DBGMEM: gdb is not in specified path, can't analyse raw report DBGMEM_report.log";
+    exit(1);
+  }
+}
+
+sub run_annotate
+{
+  my $afile = shift;
+  my $ofile = shift;
+  my $pid = shift;
+  my $rt;
+
+  if (-f $afile) {
+    $rt = do_run_annotate( $image, $afile, "maps$pid", $ofile, $SYMBOL_GENERATION_WITH, $SYMBOL_FILE);
+    if ($rt != 0) {
+      print "DBGMEM: failed to run analyser on $afile\n";
+    } else {
+      push(@OUT_FILES, $ofile);
+    }
+
+    # delete raw report files.
+    `rm -f maps$pid`;
+    `rm -f $afile`;
+  }
+}
+
+sub is_debugger
+{
+  my $arg = shift;
+  if ($arg eq "gdb" || $arg eq "valgrind" || $arg eq "strace") {
+    return ??;
+  }
+  return 0;
+}
+
+sub set_core_unlimited
+{
+  my $limit_value = ~ 0; #unlimited
+  my $limit_type = 4;  #RLIMIT_CORE
+
+  my $s = pack( 'LL',  $limit_value,  $limit_value );
+    
+  $! = 0;
+    
+  # yeah, sort of a hack; really. system call number can differ among versions. yeah.
+  if ( syscall( 75,  4, $s ) == -1 )  # SYS_setrlimit, 
+  {
+    print "DBGMEM: WARNING: can't set core limit to unlimited\n";
+    return -1;
+  }
+  return 0;
+}
+
+sub get_script_path
+{
+  my $cmd = `cat /proc/$$/cmdline`;
+  my @tok = split("\0", $cmd);
+
+  #return $tok[1];
+  
+  return realpath($tok[1]);
+}
+
+sub get_install_dir
+{
+  my $PRG;
+
+
+  $PRG=get_script_path();
+ 
+  $PRG=`dirname $PRG`;
+  chomp($PRG);
+
+  $PRG=`dirname $PRG`;
+  chomp($PRG);
+
+  return $PRG;
+}
+
+sub sig_name
+{
+  my $sig = shift;
+  my @sigs =  split(" ", $Config{sig_name} );
+
+  return $sigs[ $sig ];
+}
+
+sub parse
+{
+  while( substr($ARGV[0],0,1) eq "-") { 
+    
+    my $cmd = $ARGV[0];
+    shift(@ARGV);
+
+  
+    if ($cmd eq "-d") {
+      
+      $ENGINE=$ARGV[0];
+      shift(@ARGV);
+  
+      if ($ENGINE ne "check" && $ENGINE ne "simple") {
+        usage("-d option values must be one of following: check simple");
+      }
+    
+    } elsif ($cmd eq "-f") {
+      
+      $FNAME=$ARGV[0];
+      shift(@ARGV); 
+
+    } elsif ($cmd eq "-b") {
+      $FILL_BYTE = 1; #0xDD;	
+
+    } elsif ($cmd eq "-F") {
+      $FOLLOW_FORKS = 1; 
+      
+    } elsif ($cmd eq "-s") {
+      
+      $STACK_ENTRIES = scalar( $ARGV[0] );
+      shift(@ARGV); 
+ 
+      if ($STACK_ENTRIES <= 0) {
+        usage("-s option must be with positive argument");
+      }
+    
+    } elsif ($cmd eq "-a") {
+      my $arg;
+
+      $arg = $ARGV[0];
+      shift(@ARGV);
+      
+      if ($arg eq "core") {
+	$ATTACH_ON_ERRORS = "1";
+      } elsif ($arg eq "gdb") {
+	$ATTACH_ON_ERRORS = "2";
+      } elsif ($arg eq "skip") {
+	$ATTACH_ON_ERRORS = "3";
+      } else {
+        usage("Illegal values of -a option.");
+      }
+    } elsif ($cmd eq "-e") {
+      $FATAL_ERROR_HANDLER = "1";  
+    
+    } elsif ($cmd eq "-leak") {
+
+      $LEAK_SIGNAL_NEXT_GEN = $ARGV[0];
+      shift(@ARGV);
+      $LEAK_SIGNAL_DUMP_MEM = $ARGV[0];
+      shift(@ARGV);
+
+    } elsif ($cmd eq "-y") {
+
+      $SYMBOL_FILE = $ARGV[0]; 
+      
+    } elsif ($cmd eq "-m") {
+
+      $SYMBOL_GENERATION_WITH = $ARGV[0];
+      shift(@ARGV);
+
+    } elsif ($cmd eq "-t") {
+      $RUN_TOP_DELAY = $ARGV[0];
+      shift(@ARGV);
+    
+    } elsif ($cmd eq "-p") {
+
+      $PARANOIA_MODE_DEPTH = $ARGV[0];
+      
+      shift(@ARGV);
+    } elsif ($cmd eq "-g") {
+      $CPP_WARNINGS_OFF = 1;
+      shift(@ARGV);
+    } elsif ($cmd eq "-v") {
+      $VERBOSE_MODE = "1";
+    } elsif ($cmd eq "-version") {
+      show_version();
+    } elsif ($cmd eq "-h") {
+	usage();
+    } else {
+        usage("Unknown option $cmd");
+    }
+    
+  }
+  $CMD = join(' ',@ARGV);
+  
+  if ( $RUN_TOP_DELAY ne "") {
+    $RUN_TOP_LOG="$FNAME.top";
+  }
+  usage("no command is specified") if ($CMD eq "");
+}
+
+sub show_version
+{
+  my $pos;
+  my $line;
+
+  $dir = get_install_dir();
+  
+  open(VERSION,"$dir/VERSION") || die "No version file available";
+  $line = <VERSION>;
+  close(VERSION);
+
+  $pos = index($line,"\"");
+  if ($pos != -1) {
+     $line =~ s/\"//g;
+     print substr($line,$pos);
+  }
+  exit(0);
+}
+
+
+sub usage()
+{
+my $msg = shift;
+
+if ($msg ne "") {
+  print <<HLP
+Error: $msg
+
+HLP
+;
+}
+
+print <<HLP
+$0 [-d simple|check] [-f log_file] [-a] [-s NUMBER] [-b] [-e] [-snext <signum>] [-sdump <signum>] <cmd-to-debug>
+
+DBGMEM Memory debugger; 
+
+Starts a process with the DBGMEM memory debugger. Please run your test sequence and then terminate
+the process with any signal other than SIGKILL, use SIGHUP or SIGINT instead. 
+Be friendly to the environment ;-)
+
+Options:
+
+-d simple|check	    choice of debug engine. possible values for this options are:
+			simple - mainly good for detecting memory leaks, has smaller memory overhead.
+			check  - memory leaks detection + check for pointers in common library functions
+
+		    The default value is simple.
+		    the overhead of check engine is quite large.			
+			
+-f outputfile	    set output logfile. if not set then the name is dbgmemlog.log 
+
+-F		    follow fork and exec and calls; each process gets its own log file
+		    in this case the new processes will all be traced / debugged.
+		    (note doesn't work as intended if clone(2) used instead of fork(2))
+
+-s NUMBER	    number of stack frames that are kept per memory allocation record. 
+		    we record the stack where allocation did happen.
+		    The default value is five.
+			
+-a core|gdb|skip    what to do when memory error is detected. depending on the value 
+		       core  generate core 
+		       gdb   attach the gnu debugger
+		       skip  continue as if nothing happened
+		    default value is skip.
+ 
+-b		    fill byte is set - uninitialised memory is set to 0xDD, freed memory set to 0xEE 
+		    slows thing down but helps to find errors due to accessing uninitialised or freed memory. 
+		    default is off.
+
+-p <n>		    whenever an allocated block is checked for overwrites, then adjacent <n> memory
+                    blocks are checked too.
+                    (this is called healthy paranoia mode)
+		    default value is none, only one block is checked for validity at a time.
+
+-e		    Install signal handler for SIGSEGV and SIGBUS.  
+		    the signal handler checks if heap is corrupted so that all bad memory blocks are printed out.
+		    and then dumps core.
+		    this option is off by default
+		    
+-leak <n1> <n2>	    install signal handlers that will help with leak detection
+		    <n1> if number is not null then installs signal handler to signal number <n1> which
+		       advances generation tag
+		       also checks if heap is corrupted
+		    <n2> if number is not null then installs signal handler to signal number <n2> which
+		       dumps all memory blocks to a raw log file.
+		    this option is off by default
+
+-m <number>	    Symbolic stack traces are generated for leak reports with generation tag bigger or equal to <number>
+		    Usually post processing of report file can take a long time, in order to speed things up this
+		    option limits the main work of post processing - resolving function addresses to function names - to
+		    report leaks with generation tag bigger or equal to argument.
+		    
+
+-g		    disable check for C++ specific errors, namely correct pairing of malloc / new / new [] and
+		    free / delete / delete []
+
+		       
+-t <seconds>	    run top command to print memory statistics of debugee; the statistics 
+		    are gathered every <seconds> seconds. The output file is <outputfile>.top  
+		    this option is off by default
+            
+-y symfile	    use argument symbol file in order to resolve addresses of functions in stack trace.
+
+-v		    verbose mode; the debugee process prints options received to stdandard error.
+
+-version	    print version of this software
+
+-h		    print this help message
+ 
+[cmd-to-debug]	    command line of process that will be started and debugged.
+
+Note: this debugged process will set its core limit to unlimited.  
+
+HLP
+;
+  exit(1);
+
+}
+
+#---- annotate script -----
+
+use strict;
+use FileHandle;
+use IPC::Open2;
+
+my $exe_file; # = $ARGV[0];
+my $log_file; # = $ARGV[1];
+my $map_file; # = $ARGV[2];
+my $ofile; #    = $ARGV[3];
+my $min_generation; # = $ARGV[4];
+my $symfile; #  = $ARGV[5];
+my $SO_OBJ_LOAD;
+my %REPORT;
+my $MAX_GENERATION = -1;
+my $arena_size;
+my $VERBOSE = 0;
+
+
+sub do_run_annotate
+{
+    $exe_file = shift; # = $ARGV[0];
+    $log_file = shift;; # = $ARGV[1];
+    $map_file = shift; # = $ARGV[2];
+    $ofile = shift; #    = $ARGV[3];
+    $min_generation = shift; # = $ARGV[4];
+    $symfile = shift; #  = $ARGV[5];
+
+    #------------
+    # the script
+    #------------
+
+    show_args() if ($VERBOSE);
+
+    parse_maps($map_file) if ($map_file ne "");
+
+    open(OFILE,">$ofile") || die("Can't write report file $ofile");
+
+    &parse_raw_report();
+    &write_report; 
+
+    return 0;
+}
+
+
+sub show_args
+{
+  my $arg;
+
+  print "Command line:\n";
+  foreach $arg (@ARGV) {
+    print "$arg\n";
+  }
+  print "EOF Command line:\n";
+}
+
+#-----------
+# parsing
+#-----------
+sub parse_raw_report
+{
+  open(LOGFILE,"$log_file") || die("Can't read logfile $log_file");
+  
+  my $rep_line =  "";
+  my $hdr_line = "";
+  my $header_state = 0;
+  
+  &start_gdb;
+
+  while(<LOGFILE>) {
+    my $line = $_;
+
+    if ($header_state != 1) {
+
+      if ($line =~ /MALLINFO START/) {
+ 
+        print OFILE <<EOF
+======================
+MALLOC INFO (MALLINFO)
+======================
+EOF
+;
+        $header_state = 1;
+        next;
+      }
+
+      if ($line =~/\tframe (\S+) : (\S+)/ ||
+        substr($line,0,1) eq "-" ) {
+
+        $rep_line = $rep_line.$line;
+    
+      } else {
+
+        if ($rep_line ne "") {
+          &emit_report($hdr_line,$rep_line);
+	  $rep_line = "";
+	  $hdr_line = "";
+        } 
+        chomp($line);
+        $hdr_line = $hdr_line." ".$line;
+      }
+ 
+    } else {
+
+      if ($line =~ /MEMALLOC: /) { 
+        $header_state = 2;
+        print OFILE "\n\n";
+      } else {
+        if ($line =~ /DBGMEM arena size: (\d+)/)  {
+          $arena_size = $1;
+        } 
+        print OFILE $line;
+      }
+  
+    } 
+    
+  } 
+  &emit_report($hdr_line,$rep_line);
+
+  close(LOGFILE);
+}
+
+#-----------
+# reporting
+#-----------
+sub write_report
+{
+  print OFILE <<EOF
+
+
+============
+LEAK SUMMARY
+============
+EOF
+;
+
+
+  my $sum = 0;
+  
+  my @line_keys = sort {
+		     my $obj_a = \$REPORT{$a};
+		     my $obj_b = \$REPORT{$b};
+	
+		     # sort by generation and within generation by size of entry.
+		     ($$obj_a->[1] == $$obj_b->[1] ? $$obj_b->[2] <=> $$obj_a->[2] : $$obj_a->[1] <=> $$obj_b->[1]);
+
+		   } (keys %REPORT); 
+
+  my $last_gen = -1;
+  my $allocs_per_gen = 0; 
+  my $rep_line;
+
+  foreach $rep_line (@line_keys) {
+      
+      my $obj = \$REPORT{ $rep_line };
+
+      if ($last_gen != $$obj->[1]) {
+        my $gen = $$obj->[1];
+	
+	&show_gen_sum($last_gen, $allocs_per_gen, $sum) if ($last_gen != -1);
+	
+	print OFILE <<EOF
+
+===============
+GENERATION \[$gen\]
+===============
+
+EOF
+;
+        $last_gen = $gen; 
+	$allocs_per_gen = 0; 
+      }
+      
+
+      print OFILE "\nAll-size: ". $$obj->[2] . " | ". $$obj->[0] . "\n";
+
+      if ($last_gen >= $min_generation) {
+          show_report( $rep_line, 1 );
+      } else {
+         print $rep_line;
+      }
+
+      $sum += $$obj->[2]; 
+      $allocs_per_gen += 1; 
+  }
+
+  &show_gen_sum($last_gen, $allocs_per_gen, $sum); 
+  
+  close(OFILE);
+}
+
+sub show_gen_sum
+{
+    my $gen = shift;
+    my $allocs_per_gen = shift; 
+    my $sum = shift;
+
+    if ($gen != -1) {
+	  my $overhead = $arena_size *  $allocs_per_gen;
+	  print OFILE <<ALL
+
+-----------------------------------
+Sum of all user memory blocks for generation [$gen]:  $sum
+Number of blocks this generation: $allocs_per_gen 
+DBGMEM overhead: $overhead
+ALL
+;
+    }
+}
+
+my $HAS_ERRORS = 0;
+
+#---------------
+# Report entries
+#---------------
+sub emit_report
+{
+   #get size of this like report
+   my $idx;
+   my $sz  = 0;
+   my $gen = -1;
+   my $hdr = shift;
+   my $rep = shift;
+
+ 
+   $sz = find_size( $hdr );
+   $gen = find_gen( $hdr );
+   
+   if ($gen > $MAX_GENERATION) {
+     $MAX_GENERATION = $gen;
+   }
+
+   if (index($hdr, "status OK") == -1) {
+
+     if (! $HAS_ERRORS) {
+       print OFILE <<EOF
+=============
+MEMORY ERRORS
+=============
+EOF
+;
+       $HAS_ERRORS = 1;
+     }
+
+     # error reports are shown immedeately
+     print OFILE $hdr;
+     show_report( $rep, 0 );
+
+   } else {
+
+     # put in generation into stack report, so that no two stacks from different generation tags are grouped togather.
+     $rep = $gen."\n".$rep;
+     
+     $idx = index($hdr,"generation:");
+     if ($idx != -1) {
+       $hdr = substr($hdr,0,$idx);
+     }
+     
+     # create report entry object 
+     if (!exists $REPORT{$rep} ) {
+      $REPORT{$rep} = [ $hdr, $gen, scalar($sz) ];
+     } else {
+      my $obj = \$REPORT{ $rep };
+
+      $$obj->[0] = $$obj->[0].$hdr;
+      $$obj->[2] += scalar($sz);
+     } 
+   }
+}  
+
+# turn address into symbol name 
+sub show_report
+{
+  my $rep_line = shift;  
+  my $skip_first = shift;
+  my $line;
+  my $ln_num = 0;
+
+  foreach $line (split("\n", $rep_line)) {
+     if ($ln_num == 0 && $skip_first) {
+       ++$ln_num;
+       next;
+     }
+     ++$ln_num;
+  
+     if ($line =~/\tframe (\S+) : (\S+)/) {
+
+        my $fnum = $1;
+        my $addr = $2;
+
+        #print ">$line\n";
+        #print ">$addr\n";
+     
+        my $ret =  &get_sym_for_addr($addr); 
+        print OFILE "\tframe: $fnum : $ret\n";
+
+      } else {
+        print OFILE "$line\n"; 
+      }
+   }    
+}
+
+sub find_gen
+{
+   my $hdr = shift; 
+   my $idx;
+   my $idx2;
+   my $gen = -1;
+
+   $idx = index($hdr,"generation: ");
+   if ($idx != -1) {
+     $idx2 = index($hdr," ",$idx+12);
+     $gen = substr($hdr, $idx+12,$idx2-$idx-12);
+   }
+   return scalar($gen);  
+}
+
+sub find_size
+{
+   my $hdr = shift; 
+   my $idx;
+   my $idx2;
+   my $gen = "0";
+
+   $idx = index($hdr,"size: ");
+   if ($idx != -1) {
+     $idx2 = index($hdr," ",$idx+6);
+     $gen = substr($hdr, $idx+6,$idx2-$idx-6);
+   }
+   return scalar($gen);  
+}
+
+#=====================
+# Interfacing with gdb
+#=====================
+
+
+# read gdb output till prompt 
+sub read_till_prompt
+{
+    # read till prompt appears
+    my $in;
+    my $ret = "";
+
+    while(<GDBOUT>) {
+      my $line = $_;
+      chomp($line);
+  
+      #print "[$line]\n";
+    
+      last if (index($line,"(gdb)") != -1);
+
+      if ($ret ne "") { 
+        $ret = "${ret}\n${line}";
+      } else {
+        $ret = $line;
+      }	
+
+    }
+    return $ret;
+}
+
+# given symbol address the symbol name is returned
+sub get_sym_for_addr
+{
+   my $arg = shift;
+   my $ret;
+   
+   print GDBIN "info symbol $arg\n";
+   my $res = &read_till_prompt();
+   chomp($res);
+   
+   my @ln = split("\n",$res);
+   my $ret = $ln[1];
+   
+   if (index($ret,"No symbol matches") != -1) {
+     my $fname = find_map_entry($arg);
+     $ret = "$arg - $fname" if ($fname ne "");
+   }
+   $ret = "($arg) $ret ";
+
+   print GDBIN "info line *$arg\n";
+   $res = &read_till_prompt();
+   chomp($res);
+
+   @ln = split("\n",$res);
+ 
+   if (index($ln[1],"No line number information") == -1) {
+
+     my $pos;
+     $pos = index($ln[1],"\\\"");
+     if ($pos != -1) {
+        $pos = index($ln[1],"\\\"",$pos+1);
+
+	if ($pos != -1) {
+	  $ret = $ret.substr($ln[1],0,$pos);
+	}
+     }
+   }
+
+   return $ret;
+}
+
+# start gdb so that we can pipe commands from it.
+sub start_gdb
+{
+   my $arg;
+   my $scr;
+   
+   if ($SO_OBJ_LOAD ne "") {
+
+     if (open(GDBSCRIPT,">.gdbscript")) {
+	print GDBSCRIPT $SO_OBJ_LOAD;
+	close(GDBSCRIPT);
+	$scr = "-x .gdbscript";
+     }
+   }
+
+   $arg = "--symbols=$symfile" if ($symfile ne "");
+   open2(*GDBOUT, *GDBIN, "gdb --interpreter=mi $arg $scr $exe_file");
+   &read_till_prompt();
+   #print "GDB ready\n";
+
+}
+
+#=========================================================================
+# find name of module by analysing map file if no symbol is found by gdb.
+#=========================================================================
+
+
+my $MAP_MAX_IDX=0;
+my @MAP_FROM;
+my @MAP_TO;
+my @MAP_FNAME;
+
+sub parse_maps
+{
+   my $fname = shift;
+   
+   if (open(MAPFILE,$fname)) {
+     while(<MAPFILE>) {
+
+       my @cols = split( " ", $_);
+
+             
+       if ($cols[5] ne "") {
+         my $idx = index($cols[0],"-");  
+         if ($idx != -1) {
+
+	    $MAP_FROM[  $MAP_MAX_IDX ] = hex( substr($cols[0],0,$idx) );
+            $MAP_TO[    $MAP_MAX_IDX ] = hex( substr($cols[0],$idx+1) ); 
+	    $MAP_FNAME[ $MAP_MAX_IDX ] = $cols[5];
+	    
+	    
+	    if (substr($cols[1],0,2) eq "r-") {
+
+	        my $fname = $MAP_FNAME[ $MAP_MAX_IDX ];
+		if (-f $fname) {
+		  my $text_offset =get_text_section_offset( $fname );
+		  my $load_at = $text_offset  + $MAP_FROM[  $MAP_MAX_IDX ]; 
+
+		  print "$fname - map: " . $MAP_FROM[ $MAP_MAX_IDX ] . " - text: " . $text_offset . " - gdb: " . $load_at. "\n" if ($VERBOSE);
+		  
+		  $SO_OBJ_LOAD = $SO_OBJ_LOAD.sprintf("add-symbol-file %s 0x%X\n", $fname, $load_at ); 
+		}
+	    }
+ 
+	    
+	    $MAP_MAX_IDX ++;    
+         }
+       }
+     }
+     close(MAPFILE);
+  }
+
+  #my $i;
+  #
+  #for($i=0;$i<$MAP_MAX_IDX;$i++) {
+  #   print "> $MAP_FROM[$i] : $MAP_TO[$i] - $MAP_FNAME[$i] \n";
+  #}
+}
+
+sub get_text_section_offset
+{
+  my $fname = shift;
+  my $cmd = "objdump --section-headers $fname | grep ' \.text' | awk '{ print \$6 }'";
+  
+  print ">$cmd\n" if ($VERBOSE); 
+  my $res = `$cmd`;
+  if ($?) {
+    print "WARNING: objdump utility did not work, check that it is instlalled here\n";
+  }
+  
+  chomp($res);
+  print "$res\n" if ($VERBOSE);
+
+  
+  return hex( $res );
+}
+
+
+sub find_map_entry
+{
+   my $addr = shift ;
+   my $i;
+  
+   #die " $addr : ".hex($addr) ;
+
+   $addr = hex($addr);
+
+   for( $i = 0; $i < $MAP_MAX_IDX; $i++) {
+      if ($addr >= $MAP_FROM[ $i ] && $addr <= $MAP_TO[ $i ]) {
+        
+        my $rva = $addr -  $MAP_FROM[ $i ];
+ 
+	return "(rva: $rva) ".$MAP_FNAME[ $i ];
+      }
+   }
+   return "($addr) <unknown file>";
+}
+
+
+#close(GDB);

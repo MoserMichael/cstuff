@@ -4,9 +4,9 @@ TOPDIR=../..
 PREBUILD_SUBDIRS=config
 
 # postbuild step - run tests
-POSTBUILD_SUBDIRS=test
+POSTBUILD_SUBDIRS=test systest
 
-TARGETS:=dmemc dmems dbgmemutil dmemccpp dmemscpp dbgmemutilcpp
+TARGETS:=dmems dmemc dbgmemutil dmemccpp dmemscpp dbgmemutilcpp
 
 #---
 

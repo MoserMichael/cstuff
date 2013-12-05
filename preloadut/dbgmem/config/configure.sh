@@ -17,8 +17,17 @@ EOF
 # -- test for thread local keyword --
 gcc $CFLAGS  configure_has_thread.c -o config 
 if [ "x$?" = "x0" ]; then 
+ echo "/*** has tls ***/" >>${FILE} 
  echo "#define  __RECURSIVE_MALLOC " >>${FILE}
 fi
+
+# -- test for sigaction
+gcc $CFLAGS  configure_sigaction.c -o config 
+if [ "x$?" = "x0" ]; then 
+ echo "/*** has sigaction ***/"  >>${FILE} 
+ echo "#define  HAVE_SIGACTION " >>${FILE}
+fi
+
 
 cat <<EOF >>${FILE}
 
