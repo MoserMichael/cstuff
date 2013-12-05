@@ -10,7 +10,7 @@ $FILE_CACHE_LIMIT = 100;
 
 my %options;
 
-sgetopt( [ 'h', 'i:', 'd', 'o:' ], \%options);
+sgetopt( [ 'h', 'i:', 'd:', 'o:' ], \%options);
 
 if ($options{'h'}) {
   print_help();
@@ -74,6 +74,9 @@ sub process_cpp_file
 
   open(INFILE,$pfile) || die "Can't open $pfile";
   open(OUTFILE,">$ofile") || die "Can't open $ofile for writing";
+  
+  print OUTFILE "<html><head><title>cppbeautifier - decode preprocessor output for $in_file</title></head><body><pre>\n";
+
   while(<INFILE>) {
   
     my $line = $_;
@@ -89,7 +92,7 @@ sub process_cpp_file
        if ($add_file_info) {
 	 set_src_file( $src_file );      
        }
-       print OUTFILE $line;
+       #print OUTFILE $line;
        next;
     }
     
