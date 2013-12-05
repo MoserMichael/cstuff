@@ -1,1 +1,1 @@
-#define DBG_VERSION "DBGMEM Version 1.7"
+#define DBG_VERSION "DBGMEM Version 1.8"
