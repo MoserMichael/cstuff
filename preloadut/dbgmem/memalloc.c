@@ -131,6 +131,25 @@ typedef struct tagMMAP_MEM_ENTRY {
   MMAP_MEM_ENTRY;
 
 
+typedef void (*MY_SIGHANDLER_T) (int);
+
+static int set_signal( int signum, MY_SIGHANDLER_T handler_func )
+{
+#ifdef HAVE_SIGACTION
+	struct sigaction sa;
+
+	sa.sa_handler = handler_func;
+	sa.sa_flags = 0x0;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(signum, &sa, NULL) == -1)
+	    return -1;
+#else
+	if (signal(signum, handler) == SIG_ERR)
+	    return -1;
+#endif
+	return 0;
+}
+
 //------------------------------------------------
 // globals
 //------------------------------------------------
@@ -344,7 +363,7 @@ static void next_generation_signal(int sig)
   mallopt(INC_GENERATION_VAL,0);
  
   // those apps that block SIGINT - now is the evil undone.
-  signal(SIGINT,SIG_DFL);
+  //signal(SIGINT,SIG_DFL);
 }
 
 static void dump_blocks_signal(int sig)
@@ -354,7 +373,7 @@ static void dump_blocks_signal(int sig)
   mallopt(DUMP_MEMORY,0); 
   
   // those apps that block SIGINT - now is the evil undone.
-  signal(SIGINT,SIG_DFL);
+  // signal(SIGINT,SIG_DFL);
   
 }
 
@@ -371,6 +390,12 @@ static void fatal_error(int sig)
   signal(sig, SIG_DFL);
   kill(getpid(), sig);
 
+}
+
+static void int_handler(int sig)
+{
+  (void) sig;
+  exit(0);
 }
 
 static const char *get_allocator_mode_name()
@@ -454,17 +479,27 @@ static void init_memdbg(const char *event_name)
 
     init_alloc();
 
+    set_signal( SIGINT, int_handler);
+    set_signal( SIGHUP, int_handler);
+    set_signal( SIGPIPE, int_handler);
+    set_signal( SIGALRM, int_handler);
+    set_signal( SIGTERM, int_handler);
+ 
     if (set_segv_handler) {
-      signal(SIGSEGV, fatal_error);
-      signal(SIGBUS, fatal_error);
+      //signal(SIGSEGV, fatal_error);
+      //signal(SIGBUS, fatal_error);
+
+      set_signal( SIGSEGV, fatal_error);
+      set_signal( SIGBUS, fatal_error);
     }
 
     if (set_next_generation_signal) {
-      signal( set_next_generation_signal, next_generation_signal);
+      set_signal( set_next_generation_signal, next_generation_signal);
     }
     if (set_dump_blocks_signal) {
-      signal( set_dump_blocks_signal, dump_blocks_signal);
+      set_signal( set_dump_blocks_signal, dump_blocks_signal);
     }
+
 
   }
 }
