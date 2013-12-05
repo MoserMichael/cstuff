@@ -35,3 +35,6 @@ print("*** wait for report to be written ***\n");
 waitpid($pid,0);
 print("*** test eof, see report.log ***\n");
 
+unlink($pid_file);
+
+

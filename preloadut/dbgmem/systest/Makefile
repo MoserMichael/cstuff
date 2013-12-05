@@ -1,8 +1,8 @@
 TOPDIR=../../..
 
 
-#TESTS= mdbgtest3 mdbgleaklib mdbgleaksrv
-TESTS= mdbgleaklib mdbgleaksrv
+TESTS= mdbgtest3 mdbgleaklib mdbgleaksrv
+#TESTS= mdbgleaklib mdbgleaksrv
 
 
 TEST_TOOL=true
