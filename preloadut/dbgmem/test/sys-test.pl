@@ -25,16 +25,19 @@ require "perltest.pl";
 my $LDIR=realpath($ARGV[0]);
 my $EDIR=realpath($ARGV[1]);
 my $ENGINE=$ARGV[2];
-
+my $TEST_LOG_FILE="test-engine-${ENGINE}.log";
 print <<EOF
 
 ***
 Engine: $ENGINE
 ExeDir: $EDIR
 LibDir: $LDIR
+TstLog: $TEST_LOG_FILE
 ***
 EOF
 ;
+
+set_test_log_file($TEST_LOG_FILE);
 
 $ENV{'LD_LIBRARY_PATH'}=$ENV{'LD_LIBRARY_PATH'}.":".$LDIR;
 $ENV{'DBGMEM_ENGINE'}=${ENGINE};

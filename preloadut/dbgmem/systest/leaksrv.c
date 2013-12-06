@@ -13,7 +13,7 @@ void *handle_conn(void *arg)
     int fd = * (int*) arg;
     ssize_t ret;
 
-    while( (ret = recv( fd, buf, sizeof(buf) - 1, 0)) != 0 ) {
+    while( (ret = recv( fd, buf, sizeof(buf) - 1, 0)) > 0 ) {
 	char *resp;
 	size_t len;
 	

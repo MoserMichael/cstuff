@@ -63,8 +63,7 @@ int main()
    FILE *fp;
 
    fp = fopen("test3.pid","w");
-   if (fp)
-   {
+   if (fp) {
      fprintf(fp,"%u",getpid());
      fclose(fp);
    }

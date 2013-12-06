@@ -197,3 +197,13 @@ sub Readfile
   return $ret;
 }
 
+
+###
+# set name of test log
+###
+sub set_test_log_file
+{
+  $TEST_LOGFILE=shift;
+}
+
+
