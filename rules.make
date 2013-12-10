@@ -9,6 +9,10 @@ ifeq "$(strip $(MODE))" ""
 MODE:=debug
 endif
 
+# check if MODE is an allowed mode
+ifeq "$(strip $(findstring $(MODE),debug release release2 releaseBuild))" ""
+     $(error "MODE must be either debug release releaseBuild")
+endif
 
 
 #-
