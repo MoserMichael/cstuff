@@ -10,8 +10,9 @@ MODE:=debug
 endif
 
 # check if MODE is an allowed mode
-ifeq "$(strip $(findstring $(MODE),debug release release2 releaseBuild))" ""
-     $(error "MODE must be either debug release releaseBuild")
+VALID_CFG="debug release release2 releaseBuild"
+ifeq "$(strip $(findstring $(MODE),$(VALID_CFG)))" ""
+     $(error "MODE must be either $(VALID_CFG)")
 endif
 
 
