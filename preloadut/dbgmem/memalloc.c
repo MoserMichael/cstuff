@@ -1,4 +1,3 @@
-
 /* 
  * DBGMEM - memory allocation leak tracker and debugging tool.
  *
@@ -19,11 +18,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <limits.h>
-
-#ifndef __USE_GNU
-#define __USE_GNU
-#endif
-
+#include <wchar.h>
 #include <string.h>
 #include <dlfcn.h>
 #include <sys/resource.h>
@@ -38,6 +33,7 @@
 
 #include "version.h"
 
+
 STATIC_C const char *VERSION = DBG_VERSION;
 
 /* *** thunks *** */
@@ -48,9 +44,13 @@ MAKE_FUNC( calloc );
 MAKE_FUNC( realloc );
 MAKE_FUNC( free );
 MAKE_FUNC( getcwd );
+MAKE_FUNC( __getcwd_chk );
 MAKE_FUNC( mallopt );
 MAKE_FUNC( strdup );
+MAKE_FUNC( __strdup );
+MAKE_FUNC( wcsdup );
 MAKE_FUNC( strndup );
+MAKE_FUNC( __strndup );
 
 /* *** parameters *** */
 static int	STACK_FRAMES = 3;
@@ -109,12 +109,13 @@ static void dump_maps();
 
 #include "mem_arena.c"
 
-#include "mem_check.c"
+//#include "mem_check.c"
+//
+STATIC_C void init_alloc();
 
 #include "area_alloc.c"
 
 #endif
-
 
 
 //------------------------------------------------
@@ -201,10 +202,18 @@ static void init_libs()
   get_calloc();
   get_free();
   get_realloc();
-  get_getcwd();
   get_mallopt();
+  
+  get_getcwd();
+  get___getcwd_chk();
+
   get_strdup();
+  get___strdup();
+  
+  get_wcsdup();
+  
   get_strndup();
+  get___strndup();
  
   if (!ignore_this_process) {
      mmap_init();
@@ -807,6 +816,11 @@ EXPORT_C void free(void *ptr)
   }
 } 
 
+#ifdef strdup
+#define save_strdup strdup
+#undef strdup
+#endif
+
 EXPORT_C char * strdup(const char *arg) 
 {
   char *cpy;
@@ -830,6 +844,50 @@ EXPORT_C char * strdup(const char *arg)
   }
   
 }
+
+#ifdef save_strdup 
+#define strdup save_strdup
+#endif
+
+
+#ifdef __strdup
+#define save_strdup2 __strdup
+#undef __strdup
+#endif
+
+
+EXPORT_C char * __strdup(const char *arg) 
+{
+  char *cpy;
+  size_t len;
+
+  if (dlsym_nesting) {
+    return 0;
+  }
+
+  if (!ignore_this_process) {
+    len = strlen(arg);
+    cpy = (char *) CUSTOM_MALLOC(len+1,1, ALLOC_MALLOC);
+    if (!cpy) {
+      return 0;
+    } 
+    strcpy( cpy, arg );
+    return cpy; 
+  
+  } else {
+    return get___strdup()(arg); 
+  }
+}
+
+#ifdef save_strdup2
+#define __strdup save_strdup2
+#endif
+
+
+#ifdef strndup
+#define save_strndup strndup
+#undef strndup
+#endif
 
 EXPORT_C char *strndup( const char *arg, size_t nlen)
 {
@@ -855,6 +913,82 @@ EXPORT_C char *strndup( const char *arg, size_t nlen)
   return cpy;
 }
 
+#ifdef save_strndup
+#define strndup save_strndup
+#endif
+
+
+#ifdef __strndup
+#define save_strndup2 __strndup
+#undef __strndup
+#endif
+
+
+EXPORT_C char * __strndup(const char *arg, size_t nlen) 
+{
+  char *cpy;
+  size_t len;
+
+  if (dlsym_nesting) {
+    return 0;
+  }
+
+  if (!ignore_this_process) {
+
+    len = strnlen( arg, nlen );
+    cpy = (char *) CUSTOM_MALLOC( len + 1 , 1 , ALLOC_MALLOC);
+    if (!cpy) {
+      return 0;
+    }
+    strncpy(cpy,arg,len);
+    cpy[ len ] = '\0';
+  } else {
+    return get___strndup()(arg,nlen);
+  }
+  return cpy;
+}
+
+#ifdef save_strndup2
+#define __strndup save_strndup2
+#endif
+
+
+
+#ifdef wcsdup
+#define save_wcsdup wcsdup
+#undef wcsdup
+#endif
+
+
+EXPORT_C wchar_t *wcsdup( const wchar_t *arg )
+{
+  wchar_t *cpy;
+  size_t len;
+
+  if (dlsym_nesting) {
+    return 0;
+  }
+
+  if (!ignore_this_process) {
+
+    len = wcslen( arg );
+    cpy = (wchar_t *) CUSTOM_MALLOC( sizeof(wchar_t) * (len + 1) , 1 , ALLOC_MALLOC);
+    if (!cpy) {
+      return 0;
+    }
+    wcscpy(cpy,arg);
+  } else {
+    return get_wcsdup()(arg);
+  }
+  return cpy;
+}
+
+#ifdef save_wcsdup
+#define wcsdup save_wcsdup
+#endif
+
+
+
 EXPORT_C char * getcwd( char *buf, size_t nlen )
 {
   if (dlsym_nesting) {
@@ -869,6 +1003,32 @@ EXPORT_C char * getcwd( char *buf, size_t nlen )
   return get_getcwd() ( buf, nlen);
 }
 
+#ifdef __getcwd_chk
+#define save_getcwd __getcwd_chk
+#undef __getcwd_chk
+#endif
+
+
+EXPORT_C char * __getcwd_chk( char *buf, size_t nlen, size_t nlen2 )
+{
+  if (dlsym_nesting) {
+    return 0;
+  }
+
+  if (!ignore_this_process) {
+    if (!buf) {
+      buf = (char *) CUSTOM_MALLOC( PATH_MAX, 1, ALLOC_MALLOC);
+    }
+  }
+  return get___getcwd_chk() ( buf, nlen, nlen2 );
+}
+
+#ifdef save_getcwd
+#define __getcwd_chk save_getcwd
+#endif
+
+
+ 
 EXPORT_C void *memalign(size_t boundary, size_t size)
 {
   if (dlsym_nesting) {
@@ -976,7 +1136,6 @@ EXPORT_C int mallopt(int arg, int value )
 //------------------------------------------------
 
 #ifdef  __cplusplus
-
 void* operator new(size_t sz) 
 {
   if (!ignore_this_process) {
@@ -1251,4 +1410,11 @@ pid_t fork(void)
   }
   return ret;
 }
+
+#ifndef  _SIMPLE_TOOL_
+
+#include "mem_check.c"
+
+#endif
+
 

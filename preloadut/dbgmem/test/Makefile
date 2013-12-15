@@ -10,7 +10,7 @@ TEST_TOOL=true
 
 mdbgtest_TYPE=exe
 
-mdbgtest_SRC=test.c
+mdbgtest_SRC=test.c testm.c
 
 mdbgtest_CFLAGS=-I..
 
@@ -20,7 +20,7 @@ mdbgtest_LIBS=dbgmemutil
 
 mdbgtest2_TYPE=exe
 
-mdbgtest2_SRC=test.c
+mdbgtest2_SRC=test.c testm.c 
 
 mdbgtest2_CFLAGS=-I.. -x c++ 
 

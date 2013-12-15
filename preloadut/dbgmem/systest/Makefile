@@ -15,7 +15,7 @@ mdbgtest3_SRC=test3.cpp
 
 mdbgtest3_CFLAGS=-I..
 
-mdbgtest3_LIBS=dbgmemutil stdc++
+mdbgtest3_LIBS=dbgmemutil stdc++  
 
 mdbgtest3_POSTBUILD=./mdbgtest3.pl ${ROOT_DIR}/scripts
  

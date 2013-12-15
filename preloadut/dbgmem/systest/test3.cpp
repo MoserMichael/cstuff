@@ -53,8 +53,8 @@ static void sigint_handler(int sig)
 
   (void) sig;
 
-  write(2, MESSAGE, strlen(MESSAGE) );
-  exit(0);
+  int wr = write(2, MESSAGE, strlen(MESSAGE) );
+  exit(wr & ~wr);
 }
 
 int main()

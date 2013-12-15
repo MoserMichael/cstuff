@@ -28,7 +28,6 @@ if [ "x$?" = "x0" ]; then
  echo "#define  HAVE_SIGACTION " >>${FILE}
 fi
 
-
 cat <<EOF >>${FILE}
 
 #include <limits.h>
@@ -40,5 +39,7 @@ cat <<EOF >>${FILE}
 #endif
 
 EOF
+
+rm -f config
 
 

@@ -50,6 +50,9 @@ if ($ENGINE eq "s") {
     $all_tests="cpp_test uninitialized_memory uninitialized_free_memory generation_test leak_test sigsegv_test follow_fork_test2 " ;
 } else {
     $all_tests="cpp_test uninitialized_memory uninitialized_free_memory mem_underwrite mem_overwrite overlap_copy string_check stack_smash illegal_free free_twice api_test generation_test leak_test sigsegv_test follow_fork_test2 " ;
+
+    #$all_tests="mem_underwrite mem_overwrite" ;
+
 }    
 
 
@@ -216,11 +219,9 @@ sub string_check
 
   assert_regex($out, "DBGMEM: Error in strcpy: will overwrite target, writing 4 bytes, target buffer is 3 bytes long at 0x(\\S+) \\[allocated block 0x(\\S+) length 3\\]" );
 
-  assert_regex($out, "DBGMEM: Error in strcat: will now overwrite target, writing 5 bytes, target buffer is 3 bytes long at 0x(\\S+) \\[allocated block 0x(\\S+) length 3\\]" );
+  #assert_regex($out, "DBGMEM: Error in strcat: will now overwrite target, writing 5 bytes, target buffer is 3 bytes long at 0x(\\S+) \\[allocated block 0x(\\S+) length 3\\]" );
 
-  #assert_regex($out, "DBGMEM: Warning in strnpy: result is not null terminated string. writing 3 bytes into target length of equal size at 0x(\\S+) \\[allocated block 0x(\\S+) length 3]" );
-  
-  assert_regex($out, "DBGMEM: Error in strncat: will now overwrite target, writing 5 bytes, target buffer is 3 bytes long at 0x(\\S+) \\[allocated block 0x(\\S+) length 3\\]" );
+  #assert_regex($out, "DBGMEM: Error in strncat: will now overwrite target, writing 5 bytes, target buffer is 3 bytes long at 0x(\\S+) \\[allocated block 0x(\\S+) length 3\\]" );
 
 }
 
@@ -282,7 +283,7 @@ sub run_test
 
   my $prev = $ENV{'LD_PRELOAD'};
 
-  if ($is_cpp) {
+  if ($is_cpp ne "0") {
     $ENV{'LD_PRELOAD'}=$LDIR."/libdmem${ENGINE}cpp.so:$prev";
   } else {
     $ENV{'LD_PRELOAD'}=$LDIR."/libdmem${ENGINE}.so:$prev";

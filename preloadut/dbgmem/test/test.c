@@ -23,22 +23,9 @@
 #include <sys/wait.h>
 
 void  * test_malloc(int num);
-
-void * test_malloc2(int num)
-{
-  if (num <= 0) {
-    return  (void *) malloc(8);
-
-  } else {
-    return test_malloc( num - 1 );
-  }
-
-}
-
-void * test_malloc(int num)
-{
-  return test_malloc2(num);
-}
+void consume_tdata(void *);
+void memset_wrap( void *trg, int ch, size_t n);
+void memcpy_wrap( void *trg, void *src, size_t n);
 
 void no_core()
 {
@@ -56,7 +43,7 @@ void smash_stack()
 {
   char buf[1];
 
-  memset(buf, 100, 100);
+  memset_wrap(buf, 100, 100);
 }
 
 #if 0
@@ -75,15 +62,19 @@ int main(int argc, char *argv[])
   int tst_num,num_ch;
   void *tst,*val;
 
+
 #if 1 
   no_core();
 #endif  
   tst_num = argc > 1 ? atoi(argv[1]) : 0;
   num_ch = argc > 2 ? atoi(argv[2]) : 0;
   
-  
+
+  mallopt(M_CHECK_ACTION, tst_num != 13 ? 1 : 0); // on memory errors - print error but malloc does not call exit.
+
   tst = test_malloc(4);
 
+  fprintf(stderr,"start test %d\n",tst_num);
   switch(tst_num) {
 
    case 0: {
@@ -94,7 +85,7 @@ int main(int argc, char *argv[])
    break;
     
    case 1: {
-     memset(tst,0,8);
+     memset_wrap(tst,0,8);
      free(tst);
      
      memcpy(&val,tst,sizeof(void *));
@@ -105,20 +96,20 @@ int main(int argc, char *argv[])
    break;
     
    case 2: {
-     // memory underwrite in checked function
-     memset( ((char *) tst) - 5, 10, 10);
+        // memory underwrite in checked function
+     memset_wrap( ((char *) tst) - 5, 10, 10);
    }
    break;
 
    case 3: {
      // memory overwrite in checked function 
-     memset( ((char *) tst) + 5 , 10, 10);
+     memset_wrap( ((char *) tst) + 5 , 10, 10);
    }
    break;
 
    case 4: {
      // overlapped copy
-     memcpy( tst, ((char *)tst) + 2, 4 );
+     memcpy_wrap( tst, ((char *)tst) + 2, 4 );
    }
    break;
 
@@ -247,14 +238,21 @@ int main(int argc, char *argv[])
 
       // overwrite
       strcpy(ptr1, ptr2);
-  
-       	
+
+      // glibc in release mode exits here.
+#if 0
+fprintf(stderr,"chk2\n");
+
       ptr1 = (char *) malloc(3);
       strcpy(ptr1,"a");
+
+
+fprintf(stderr,"chk3\n");
 
       // overwrite
       strcat(ptr1,ptr2);  
 
+fprintf(stderr,"chk4\n");
 
       ptr1 = (char *) malloc(3);
       strcpy(ptr1,"");
@@ -267,7 +265,7 @@ int main(int argc, char *argv[])
  
       //overwrite	 
       strncat(ptr1, ptr2, 2);
-
+#endif
    }
    break;
 
@@ -307,15 +305,22 @@ ag:
    break;
 
   }
+  fprintf(stderr,"eof test %d\n",tst_num);
+
 
   if (num_ch > 0) {
+    int rt;
 
     char cmd[30];
 
     sprintf(cmd,"./test %d %d", tst_num, num_ch-1);
     fprintf(stderr,">system(%s)\n",cmd);
-    system(cmd);
+    rt = system(cmd);
+    if ( rt != 0 ) {
+      printf("System failed!\n");
+      exit(1);
+    }
   }
-  
+  consume_tdata( tst );
   return 0;
 }

@@ -1,7 +1,9 @@
+#define _GNU_SOURCE
 #include "tpool.h"
 #include <butils/errorp.h>
 #include <pthread.h>
 #include <tstart.h>
+#include <sched.h>
 
 //---
 
@@ -63,7 +65,7 @@ THREADPOOL *THREADPOOL_init_ext( RUNNABLE_HANDLER process_result, THREAD_INIT th
   THREADPOOL *pool;
   pthread_t pth;
   pthread_attr_t attr;
-  int i, rt;
+  int i, rt, num_cores;
 
   pool = (THREADPOOL *) malloc( sizeof(THREADPOOL) );
   if (!pool) {
@@ -75,23 +77,39 @@ THREADPOOL *THREADPOOL_init_ext( RUNNABLE_HANDLER process_result, THREAD_INIT th
   pool->thread_finish = thread_finish;
   pool->pool_ctx = pool_ctx;
 
+  num_cores = get_num_cores();
+
   if (num_threads < 0)  {
-    num_threads = -num_threads * get_num_cores();
+    num_threads = -num_threads * num_cores;
   } 
   pool->num_threads = num_threads;
 
   TQUEUE_init( &pool->request_queue, queue_size );
 
-  pthread_attr_init( &attr );
-  if (stack_size_kb > 0) {
-    pthread_attr_setstacksize( &attr, stack_size_kb * 1024 );
-  }    
-
   for( i = 0; i < num_threads; i++) {
+     pthread_attr_init( &attr );
+     if (stack_size_kb > 0) {
+       pthread_attr_setstacksize( &attr, stack_size_kb * 1024 );
+     }
+
+// is this a good idea? not quite clear.
+#ifdef _linux
+     if (num_threads < 0)  {
+       cpu_set_t *pcpuset;
+    
+       pcpuset = CPU_ALLOC( num_cores ); // does pthread_attr_destroy free this ?
+
+       CPU_SET( i % num_cores, pcpuset );
+
+       pthread_attr_setaffinity_np( &attr, CPU_ALLOC_SIZE( num_cores ), pcpuset);
+     }
+#endif
 
      if ((rt = pthread_create_detached( &pth, &attr, worker_thread, pool ) )  != 0) {
         break;
      }
+
+     pthread_attr_destroy( &attr );
   }
   if ( i < num_threads) {
      errorp(rt, "Can't create thread # %d", i);

@@ -34,6 +34,7 @@ sub run_tests
     
      if ($this_test_failed) {
        Print(" [FAIL]\n");
+       $test_fail_count ++;
      } else {
        Print(" [ok]\n"); 
      }
@@ -56,7 +57,6 @@ sub test_fail
 {
   Print_log( shift );
 
-  $test_fail_count ++;
   $this_test_failed = 1;
 }
 

@@ -362,11 +362,10 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
     }
   
     ptr = MEM_ENTRY_find( arg_ptr, arg_ptr );
-    if (!ptr) {
-      if (atype == MSTRREAD) {
+    if (!ptr) { // No entry is covering argument pointer
+      if (atype == MSTRREAD) { // read only access
         void *rs;
 	
-#if 1
 	if (str_bound == (size_t) -1) {
 	  return (size_t) strlen((const char *) arg_ptr);
 	}
@@ -375,13 +374,10 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
 	if (rs) {
 	  return (size_t) rs - (size_t) arg_ptr;
 	}
-	  
-#endif
-	return (size_t) -1;
+	return (size_t) str_bound;
 	
-      }	else {
-
-	  if (check_stack_pointer( arg_ptr, string_length )) {   
+      }	else { // modify accesss (string_length not -1 in this case)
+	  if (check_stack_pointer( arg_ptr, string_length )) {    // check if stack overwrite.
 	     dbgmem_log_err("DBGMEM: Error in %s: access is overwriting stack frame [argument pointer %p argument size %zd]\n",
 	       function_name,
 	       arg_ptr,
@@ -392,6 +388,7 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
       return 0;
     }
     
+    // have entry that covers this pointer
     status = is_entry_ok( ptr );
     if (status == 1) {
 
@@ -404,7 +401,7 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
     }
 
     if (status == 2 )  {
-	    dbgmem_log_err("DBGMEM: Error in %s: lower bound of memory block is overwritten. [allocated block %p length %zd]\n",
+	    dbgmem_log_err("DBGMEM: Error in %s: higher bound of memory block is overwritten. [allocated block %p length %zd]\n",
 	         function_name,
   	         ptr->ptr,
 	         ptr->udata_size);
@@ -417,9 +414,9 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
    
 
     switch(atype) {
-     case MSTRREAD: { 
+     case MSTRREAD: {  // source argument of str functions
         rt = (unsigned char *) memchr( arg_ptr, '\0', max_size );
-	if (str_bound != (size_t) -1) { // src of strncpy
+	if (str_bound != (size_t) -1) { // src of strncpy ; n in strncpy is equal to str_bound
 	  if (rt == 0) {
 	     if (max_size < str_bound) {
 	       dbgmem_log_err("DBGMEM: Error in %s: argument string %p is not null terminated. will read past heap block! [allocated block %p length %zd]\n", 
@@ -447,7 +444,7 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
     }
     break;
  
-    case MSTRNCPY:{ 
+    case MSTRNCPY:{  // target argument of strncpy
  
 	 if (max_size < str_bound ) { // overwriting the target string.
 	    dbgmem_log_err("DBGMEM: Error in %s: will overwrite buffer. writing %zd bytes, target buffer is %zd bytes long at %p [allocated block %p length %zd]\n",
@@ -474,7 +471,7 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
 	}
 	break;
 
-    case MSTRCPY: {	
+    case MSTRCPY: { // target of strcpy
          if (max_size <  (string_length + 1) ) { // will overwrite target buffer.
 	    dbgmem_log_err("DBGMEM: Error in %s: will overwrite target, writing %zd bytes, target buffer is %zd bytes long at %p [allocated block %p length %zd]\n",
 	         function_name,
@@ -489,7 +486,7 @@ EXPORT_C size_t  DBGMEM_CHECK_STRING_RANGE(const void *arg_ptr, size_t str_bound
 	return 0;
     } break;
 
-    case MSTRCAT: {
+    case MSTRCAT: { // target of strcat or strncat
       size_t nsz,new_string;
       
       rt = (unsigned char *) memchr( arg_ptr, '\0', max_size ); 
@@ -525,6 +522,182 @@ eof_error:
     DBG_ERRROR_REPORT(ptr,2); 
     return 1;
 }
+
+
+EXPORT_C size_t  DBGMEM_CHECK_WSTRING_RANGE(const wchar_t *arg_ptr, size_t str_bound, size_t string_length, MACCESS_TYPE_STR atype, const char *function_name)
+{
+    MEM_ENTRY *ptr;
+    wchar_t *ptr_eof;
+    const wchar_t *rt;
+    size_t max_size;
+    int status;
+
+    if (!g_mem_entry_alloc) {
+      return (size_t) -1;   
+    }
+  
+    ptr = MEM_ENTRY_find( arg_ptr, arg_ptr );
+    if (!ptr) { // No entry is covering argument pointer
+      if (atype == MSTRREAD) { // read only access
+        const wchar_t *rs;
+	
+	if (str_bound == (size_t) -1) {
+	  return (size_t) wcslen(arg_ptr);
+	}
+
+	rs = wmemchr( arg_ptr, 0, str_bound );
+	if (rs) {
+	  return rs - arg_ptr;
+	}
+	return (size_t) str_bound;
+	
+      }	else { // modify accesss (string_length not -1 in this case)
+	  if (check_stack_pointer( arg_ptr, string_length * sizeof(wchar_t))) {    // check if stack overwrite.
+	     dbgmem_log_err("DBGMEM: Error in %s: access is overwriting stack frame [argument pointer %p argument size %zd]\n",
+	       function_name,
+	       arg_ptr,
+	       str_bound);
+	     goto eof_error;
+ 	  }
+      }
+      return 0;
+    }
+    
+    // have entry that covers this pointer
+    status = is_entry_ok( ptr );
+    if (status == 1) {
+
+	    dbgmem_log_err("DBGMEM: Error in %s: lower bound of memory block is overwritten. [allocated block %p length %zd]\n",
+	         function_name,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	    goto eof_error;
+
+    }
+
+    if (status == 2 )  {
+	    dbgmem_log_err("DBGMEM: Error in %s: higher bound of memory block is overwritten. [allocated block %p length %zd]\n",
+	         function_name,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	    goto eof_error;
+    }
+
+    
+    ptr_eof = (wchar_t *) BPTR_AT( ptr->ptr, ptr->udata_size );
+    max_size = ((size_t) ptr_eof - (size_t) arg_ptr) / sizeof(wchar_t);
+   
+
+    switch(atype) {
+     case MSTRREAD: {  // source argument of str functions
+        rt = wmemchr( arg_ptr, '\0', max_size  );
+	if (str_bound != (size_t) -1) { // src of strncpy ; n in strncpy is equal to str_bound
+	  if (rt == 0) {
+	     if (max_size < str_bound) {
+	       dbgmem_log_err("DBGMEM: Error in %s: argument string %p is not null terminated. will read past heap block! [allocated block %p length %zd]\n", 
+	         function_name,
+		 arg_ptr,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	       goto eof_error;
+	     }
+	     return str_bound;
+	  } 
+	  return rt - arg_ptr; // real string length
+ 	
+	} else { // src of strcpy
+
+          if (rt == 0) {
+	    dbgmem_log_err("DBGMEM: Error in %s: argument string %p is not null terminated. will read past heap block! [allocated block %p length %zd]\n", 
+	         function_name,
+		 arg_ptr,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	   goto eof_error;
+	}
+        return BPTR_DIFF(rt, arg_ptr) / sizeof(wchar_t); // real string length
+    }
+    break;
+ 
+    case MSTRNCPY:{  // target argument of strncpy
+ 
+	 if (max_size < str_bound ) { // overwriting the target string.
+	    dbgmem_log_err("DBGMEM: Error in %s: will overwrite buffer. writing %zd bytes, target buffer is %zd bytes long at %p [allocated block %p length %zd]\n",
+	         function_name,
+		 str_bound, 
+		 max_size,
+		 arg_ptr,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	    goto eof_error;
+	 }
+
+#if 0
+	 if (str_bound == string_length) { // strcpy will leave target non null terminated
+	    dbgmem_log_err("DBGMEM: Warning in %s: result is not null terminated string. writing %zd bytes into target length of equal size at %p [allocated block %p length %zd]\n",
+	         function_name,
+		 str_bound,
+		 arg_ptr,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	    goto eof_error;
+	} 
+#endif
+	}
+	break;
+
+    case MSTRCPY: { // target of strcpy
+         if (max_size <  (string_length + 1) ) { // will overwrite target buffer.
+	    dbgmem_log_err("DBGMEM: Error in %s: will overwrite target, writing %zd bytes, target buffer is %zd bytes long at %p [allocated block %p length %zd]\n",
+	         function_name,
+		 string_length+1,
+		 max_size * sizeof(wchar_t),
+		 arg_ptr,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	    goto eof_error;
+	 }
+	}
+	return 0;
+    } break;
+
+    case MSTRCAT: { // target of strcat or strncat
+      size_t nsz,new_string;
+      
+      rt = wmemchr( arg_ptr, '\0', max_size ); 
+      if (rt == 0) { //target buffer not null terminated, will now overwrite target.
+	dbgmem_log_err("DBGMEM: Error in %s: will overwrite buffer %p that is not null terminated within allocated block! [allocated block %p length %zd]\n", 
+	         function_name,
+
+		 arg_ptr,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	goto eof_error;
+      }
+      nsz  = BPTR_DIFF(rt, arg_ptr);
+      new_string = nsz  + string_length + 1; 
+      if ( new_string > max_size) {
+	dbgmem_log_err("DBGMEM: Error in %s: will now overwrite target, writing %zd bytes, target buffer is %zd bytes long at %p [allocated block %p length %zd]\n", 
+	         function_name,
+		 new_string,
+	         max_size,
+		 arg_ptr,
+  	         ptr->ptr,
+	         ptr->udata_size);
+	goto eof_error;
+	
+      }
+      return 0;
+   }
+   break;
+   }
+   return 0;
+
+eof_error:
+    DBG_ERRROR_REPORT(ptr,2); 
+    return 1;
+}
+
 
 static int is_in_range(const void *test, const void *from, size_t length)
 {

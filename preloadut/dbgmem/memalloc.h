@@ -73,6 +73,9 @@ STATIC_C pthread_mutex_t memlock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 //----------------------------------------------------------
 // thunked functions from runtime library.
 //----------------------------------------------------------
+#define TRACE_TRACE(msg) \
+  write(1, msg, strlen(msg));
+
 #define LOAD_TRACE(msg) \
   write(2, msg, strlen(msg));
 

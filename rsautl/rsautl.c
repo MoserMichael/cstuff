@@ -843,7 +843,7 @@ int encrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   TQUEUE_init( &res_data.response_queue, MAX_PENDING_REQUEST );
   sem_init( &res_data.finish_notify, 0, 0 );
   
-  pool = THREADPOOL_init_ext( tpool_handle_request, tpool_init, tpool_cleanup, 100, -2, -1, &res_data );
+  pool = THREADPOOL_init_ext( tpool_handle_request, tpool_init, tpool_cleanup, 100, -1, -1, &res_data );
   if (!pool) {
     fprintf(stderr, "Error: Can't initialize thread pool\n" );
     return -1;
@@ -927,7 +927,7 @@ int decrypt_file_multi( RSA *key, FILE *fpin, FILE *fpout )
   pthread_create_detached( &result_thread, 0, handle_decrypt_output, &res_data );
   TRACE("result thread started\n" );
 
-  pool = THREADPOOL_init_ext( tpool_handle_request, tpool_init, tpool_cleanup, 100, -2, -1, &res_data );
+  pool = THREADPOOL_init_ext( tpool_handle_request, tpool_init, tpool_cleanup, 100, -1, -1, &res_data );
   if (!pool) {
     fprintf(stderr, "Error: Can't initialize thread pool\n" );
     return -1;
