@@ -29,12 +29,11 @@ for n  r . eachnode()
   println( ~msg ''node [[ n ]] data [ [[ join( ~array d ~separator ' ' ) ]] ]'' )
 end
 
-println( ~msg '** the nodes with data  **' )
-
-dump( ~arg r )
-for nd  r . eachnodewithdata()
-  println( ~msg nd[1] .. ' ' .. nd[2] )
-end
+#println( ~msg '** the nodes with data  **' )
+#dump( ~arg r )
+#for nd  r . eachnodewithdata()
+#  println( ~msg nd[1] .. ' ' .. nd[2] )
+#end
 
 println( ~msg 'out edges for node 1' )
 for e  r . outedges( ~from 1 )
