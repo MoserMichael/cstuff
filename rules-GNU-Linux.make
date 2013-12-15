@@ -48,7 +48,7 @@ endef
 PREPROCESSOR_FLAG=-E
 
 # flag for producing assembly listing
-ASM_LISTING_FLAG=-S
+ASM_LISTING_FLAG=-S -fverbose-asm
 
 
 #-
