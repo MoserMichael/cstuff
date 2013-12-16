@@ -1,0 +1,125 @@
+#!/usr/bin/perl
+
+use strict;
+use Cwd;
+use Cwd 'realpath';
+
+sub get_script_path
+{
+  my $cmd = `cat /proc/$$/cmdline`;
+  my @tok = split("\0", $cmd);
+
+  return realpath($tok[1]);
+}
+
+sub get_install_dir
+{
+  my $PRG;
+
+
+  $PRG=get_script_path();
+ 
+  $PRG=`dirname $PRG`;
+  chomp($PRG);
+
+  $PRG=`dirname $PRG`;
+  chomp($PRG);
+
+  return $PRG;
+}
+
+sub get_lib_path
+{
+   my ($os_type,$os_version,$arch);
+
+   $os_type=`uname -o | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_type);
+
+   $os_version=`uname -r | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_version);
+
+   $arch=`uname -m`;
+   chomp($arch);
+
+   return get_install_dir()."/${os_type}-${os_version}-${arch}/lib";
+}
+
+sub get_lib_path
+{
+   my ($os_type,$os_version,$arch);
+
+   $os_type=`uname -o | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_type);
+
+   $os_version=`uname -r | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_version);
+
+   $arch=`uname -m`;
+   chomp($arch);
+
+   return get_install_dir()."/${os_type}-${os_version}-${arch}/lib";
+}
+
+
+sub run
+{
+
+  my ($exe,$is_cpp);
+
+  $exe = $ARGV[0];
+  $is_cpp=`ldd $exe | grep stdc++ | wc -l`;
+
+  chomp($is_cpp);
+
+  if ($is_cpp) {
+    $is_cpp="cpp";
+  } else {
+    $is_cpp="";
+  } 
+
+
+  my $LIBPATH=get_lib_path();
+
+  my $lib = "${LIBPATH}/libinitmem${is_cpp}.so";
+  my $prev = $ENV{'LD_PRELOAD'};
+  $ENV{'LD_PRELOAD'}="$lib:$prev";
+  
+  exec(@ARGV) || print "INITMEM: failed to start debugee. errno $!\n";
+  exit(1);
+}
+
+sub usage
+{
+  print <<EOF
+Usage:
+initmem <cmdline>
+
+Runs command line while initmem is enabled; 
+inititmem hooks glibc memory allocation functions; newly allocated
+memory is initialised with 0xDD freed memory is set to 0xFF
+Tool may be used during testing and debugging;
+  
+Hooked glibc functions are:
+    malloc
+    realloc
+    posix_memalign
+    memalign
+    free
+
+If executable depends on std++ then additionally it hooks
+   operator new
+   operator new[]
+   operator delete
+   operator delete[]
+
+EOF
+;
+  exit(1);
+}
+
+if (scalar(@ARGV) == 0)
+{
+    usage();
+}
+
+run();
