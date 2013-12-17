@@ -25,6 +25,9 @@
  At the time of writing this code I did not know this, so this is implemented by means of semaphores and mutexes.
  Another lesson learned: always look at the header files, not at the man pages ;-)
 
+ However pthread_barrier has no way to cancel/reset blocked thread; this one has this feature (CYCLIC_BARRIER_reset);
+ Feature of canceling barrier is needed if there was a failure and we have to wrap up.
+
  @{
  */
 typedef struct {
