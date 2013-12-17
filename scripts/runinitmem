@@ -96,7 +96,7 @@ initmem <cmdline>
 
 Runs command line while initmem is enabled; 
 inititmem hooks glibc memory allocation functions; newly allocated
-memory is initialised with 0xDD freed memory is set to 0xFF
+memory is initialised with 0xDD freed memory is set to 0xEE value.
 Tool may be used during testing and debugging;
   
 Hooked glibc functions are:
@@ -111,6 +111,14 @@ If executable depends on std++ then additionally it hooks
    operator new[]
    operator delete
    operator delete[]
+
+Warning:
+This utility is somewhat obsolete on newer systems; glibc mallopt can be called
+with M_PERTURB options; if set then newly allocated and about to be freed
+memory is set to the same byte value;
+
+However i think it is useful to set allocated and freed memory to different
+values; so it is easier to spot if you have uninitialised or freed memory.
 
 EOF
 ;
