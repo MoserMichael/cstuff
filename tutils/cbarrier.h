@@ -21,6 +21,10 @@
 
  Idea is taken from java.util.concurrent.CyclicBarier - without waiting with timeouts that is.
  
+ Funny that pthread already seems to have it: there is pthread_barrier_init / etc. 
+ At the time of writing this code I did not know this, so this is implemented by means of semaphores and mutexes.
+ Another lesson learned: always look at the header files, not at the man pages ;-)
+
  @{
  */
 typedef struct {
