@@ -13,9 +13,7 @@ Then they asked about how it could be that the "Voyager":http://en.wikipedia.org
 
 very interesting "article":http://history.nasa.gov/computers/Ch6-2.html  on the computer system of the Voyager. It turns out most of the systems is not powered for most of the time, even the component that is doing the health checks - its called CCS.
 
-<pre>
 "The frequency of the heartbeat, roughly 30 times per minute, caused concern [176] that the CCS would be worn out processing it. Mission Operations estimated that the CCS would have to be active 3% to 4% of the time, whereas the Viking Orbiter computer had trouble if it was more than 0.2% active15. As it turns out, this worry was unwarranted."
-</pre>
 
 They are using "DMA":http://en.wikipedia.org/wiki/Direct_memory_access a lot; instruments write to memory, occasionally the CPU is turned on and picks up the new values. Also they had to manage with the fact that memory is degrading, so the system needs to adapt to working with less memory. The bus is 16 bits wide, but actually they are processing 4 bits at a time, so addition takes 4 cycles. CPU registers are stored in RAM, so probably they can reassign them if a memory cell fails.
 Parts of the system were reused from the Viking mission. Also they where reprogramming the system in flight during the eighties ! That's the reason why they could start the the mission, even without having the full software on board, the mission was extended thanks to reprogramming. Just for the Jupiter visit they had 18 software updates, think about that next time that a software update breaks something on your system.
