@@ -16,7 +16,7 @@ tutilssh_TYPE=shlib
 
 tutilssh_SRC_EXTENSION=c
 
-tutilssh_LIBS=cutils butils pthread
+tutilssh_LIBS=cutilssh butilssh pthread
 
 
 
