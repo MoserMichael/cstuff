@@ -3,10 +3,13 @@
 #include <string.h>
 #include <limits.h>
 #include <malloc.h>
+#include <stdio.h>
 #include "fn.h"
-
 #define SEP_CHAR '/'
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 
 char *FN_dir_name( const char *path_name  )
@@ -182,15 +185,96 @@ char *FN_set_extension( const char *fname_or_path, const char *extension )
   return ret;
 }
 
+
+//#ifdef __CYGWIN__
+// cygwin function does not work for whatever reaso, so do it here
+static char *my_normalize( const char *arg )
+{
+  const char *pos, *last;
+  struct stat stat_buf;
+  char *res;
+  size_t len = 0;
+  size_t max_len = PATH_MAX;
+
+  //printf("my_normalize %s\n", arg);
+
+  res = malloc( max_len + 1 );
+  if (!res) {
+     //printf("my ass\n");
+     return 0;
+  }
+
+  if (getcwd( res, max_len ) == 0) {
+    //printf("no cwd?\n");
+    goto err;
+  }
+  len = strlen( res );
+  //printf("cwd %s\n", res );
+
+  for(last = pos = arg; ; ++pos) {
+     if (*pos == '/' || *pos == '\0') {
+        if (last[0] == '.' && (pos - last) == 1) {
+	   // nothing to do
+        } else if ((pos - last) == 2 && last[0] == '.' && last[1] == '.') {
+	   // one dir up.
+	   int len; 
+	   
+	   for( len = strlen( res ) - 1; len > 0 && res[ len ] != '/'; --len);
+	   res[ len ] = '\0';  	       
+
+	   //printf("Up - cwd %s\n", res );
+        } else {
+	   // is this a symlink?
+           if ( stat( res, &stat_buf ) ) {
+              goto add;
+ 	   }
+	   if (S_ISLNK( stat_buf.st_mode )) {
+	     char tmpbuf[ PATH_MAX + 1 ];
+	     
+	     if (readlink(res, tmpbuf, sizeof(tmpbuf)) < 0) {
+		goto err;
+	     }
+	     strcpy(res, tmpbuf);
+	     len = strlen( res );
+
+	   } else if (!S_ISDIR( stat_buf.st_mode ) && *pos != '\0') {
+	     //printf("Ups %s\n", pos );
+	     goto err;
+	   } else {
+add:	   
+	     if ( (len + 1 + (pos - last)) > max_len) {
+		goto err;
+	     }
+	     strcat( res, "/" );
+	     strncat( res, last, pos - last); 
+	     len = strlen( res );
+	     //printf("add %s\n", res );
+	   }	   
+        }
+        last = pos + 1;
+     }
+     if (*pos == '\0') {
+	break;
+     }
+  }
+  
+  return res;
+err:
+  free(res);
+  return 0;
+}
+//#endif
+
 char *FN_normalize( const char *relpath )
 {
-  char tmp[ PATH_MAX + 1];
-  char *rtp;
+  char *tmp;
 
-  strcpy( tmp, "" );
-  rtp = realpath( relpath, tmp );
-  if (strcmp(tmp,"") == 0)
-    return 0;
-
-  return strdup( tmp );
+//#ifdef __CYGWIN__ 
+  tmp = my_normalize( relpath );
+//#else
+//  tmp = realpath( relpath, 0 );
+//#endif
+                  
+  //fprintf(stderr,"%s -> %s\n", relpath, tmp);
+  return tmp;
 }

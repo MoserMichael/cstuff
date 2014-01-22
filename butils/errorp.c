@@ -234,6 +234,10 @@ static void dump_modules(char *buf, size_t buff_size)
 }
 #endif
 
+int Write(int fd, const void *buf, size_t size)
+{
+    return write(fd, buf, size);
+}    
 
 #define DO_SIGACTTION
 
@@ -243,7 +247,6 @@ static void dump_modules(char *buf, size_t buff_size)
 static void crash_handler( int signal, siginfo_t *siginfo, void *context )
 {
     char msg[50];
-    int rt;
     
     (void) siginfo;
     (void) context;
@@ -251,7 +254,6 @@ static void crash_handler( int signal, siginfo_t *siginfo, void *context )
 static void crash_handler( int signal )
 {
     char msg[50];
-    int rt;
 #endif
 
     switch( signal ) {
@@ -268,7 +270,7 @@ static void crash_handler( int signal )
 	sprintf(msg, "ERROR : Crash! signal %d\n", signal);
     }
 
-    rt = write( FD_OUT , msg , strlen( msg ) );
+    Write( FD_OUT , msg , strlen( msg ) );
     print_stack_trace();
     exit(1);
 }

@@ -14,7 +14,7 @@ void FN_test()
 #ifndef WIN32
   char *tmp;
 
-  tmp = FN_normalize(".././abcd");
+  tmp = FN_normalize(".././abcd/efg");
 
   VASSERT( tmp != 0 );
   VASSERT( strchr(tmp,'.') == 0 );
