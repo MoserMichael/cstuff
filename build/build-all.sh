@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-TARGETS="make-system-test vtest cutils butils nutils tutils stack corothread pooh-lan evcorothread hutils webby iptools dbgmem"
+TARGETS="make-system-test vtest cutils butils nutils tutils stack corothread pooh-lan evcorothread hutils webby iptools preloadut/dbgmem"
 
 DIR=`dirname $0`
 
