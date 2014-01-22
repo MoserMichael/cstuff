@@ -38,6 +38,10 @@ typedef struct tagTHREAD_ENTRY {
 } THREAD_ENTRY;
 
 
+int Write(int fd, void *buf, size_t sz)
+{
+    return write(fd, buf, sz);
+}    
 
 static __thread THREAD_ENTRY  * thread_entry;
 
@@ -74,7 +78,7 @@ static void show_msg( const char *fmt, ... )
   len =  vsnprintf( msg,  sizeof(msg) - 1,   fmt, ap );
   va_end( ap );
 
-  write(1, msg, len );
+  Write(1, msg, len );
   exit(1);
 }
 #endif
@@ -189,7 +193,6 @@ static void pop_frame( void *func_addr, void *frame_addr )
   THREAD_ENTRY *entry;
   int i,j;
   char buff[64];
-  int stat = 0;
 
   entry = thread_entry;
   if (entry == 0) {
@@ -236,9 +239,7 @@ static void pop_frame( void *func_addr, void *frame_addr )
       }
     }
     dump_modules();
-    if (write( FD_OUT, STACK_EOF, strlen(STACK_EOF) ) == -1) {
-      stat = -1;
-    }
+    Write( FD_OUT, STACK_EOF, strlen(STACK_EOF) );
 
 #ifdef FIX_STACK_AND_CORE_DUMP
     // here we put back recorded values into stack, so that core dump will

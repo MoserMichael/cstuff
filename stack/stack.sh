@@ -9,7 +9,14 @@ TST_NAME=`basename $EXE_FILE`
 OUT_DIR=out
 
 ROOT_DIR=`readlink -f $BIN_ROOT_DIR` 
-export LD_PRELOAD=$ROOT_DIR/lib/libstack.so
+
+ONAME=$(uname -o)
+
+if [[ "x$ONAME" == "xCygwin" ]]; then
+  export LD_PRELOAD=$ROOT_DIR/lib/libstack.dll
+else
+  export LD_PRELOAD=$ROOT_DIR/lib/libstack.so
+fi
 
 mkdir -p $OUT_DIR
 
