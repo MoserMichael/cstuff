@@ -163,7 +163,7 @@ void EVAL_CTX_show( EVAL_CTX *ctx, EVAL_TRACE_ENTRY *entry, const char *suffix )
 
 void EVAL_CTX_free_trace( EVAL_CTX *ctx, EVAL_CTX_FREE_ACTION show )
 {
-  EVAL_TRACE_ENTRY *trace;
+  EVAL_TRACE_ENTRY *trace = 0;
 
   ARRAY_pop_back( &ctx->trace_buffer_entries, &trace, sizeof(void *));
  if (show  == SHOW) {
@@ -186,12 +186,12 @@ void EVAL_CTX_free_trace( EVAL_CTX *ctx, EVAL_CTX_FREE_ACTION show )
 void EVAL_error( EVAL_CTX *out, AST_BASE *ast, const char *format, ... )
 {
   char msg[RUNTIME_ERROR_MSG_LEN];
-  int len;
+  //int len;
   va_list ap;
   EVAL_THREAD *cthread;
 
   va_start(ap, format);
-  len = vsnprintf( msg, sizeof(msg) - 1, format, ap );
+  vsnprintf( msg, sizeof(msg) - 1, format, ap );
 
   if (ast == 0) {
      cthread = out->context.current_thread;
@@ -679,13 +679,13 @@ BINDING_DATA *EVAL_reference_scalar( EVAL_CTX *out, AST_EXPRESSION *expr, BINDIN
 void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue, EVAL_REF_KIND copy_type,  VALFUNC_PRINT_MODE rval_method_hide_sig)
 {
   EVAL_THREAD *cthread;
-  BINDING_ENTRY *entry;
+  //BINDING_ENTRY *entry;
   BINDING_DATA *data;
   EVAL_TRACE_ENTRY *tracer = 0;
   AST_VECTOR *vect;
   int in_assignment = (int) copy_type >= (int) COPY_SINGLE_ASSIGN_BY_VAL;
   
-  entry = expr->val.ref.binding;
+  //entry = expr->val.ref.binding;
   cthread = out->context.current_thread;
   
   if (EVAL_trace_on(out) ) {
@@ -717,7 +717,7 @@ void EVAL_reference( EVAL_CTX *out, AST_EXPRESSION *expr,  BINDING_DATA *nvalue,
   }
 #endif  
 
-  entry = expr->val.ref.binding;
+  //entry = expr->val.ref.binding;
   vect = expr->val.ref.indexes;
 
   if (expr->val.ref.indexes == 0 ) { // scalars
@@ -2185,11 +2185,11 @@ void EVAL_thread( VALUES *arg )
   EVAL_THREAD *thread = 0;
   AST_BASE *fdcl = 0;
   AST_FUNC_DECL *fdecl;
-  EVAL_CONTEXT *rctx;
+  //EVAL_CONTEXT *rctx;
 
   VALUES_scan(arg, "%p%p%p", &out, &thread, &fdcl );
 
-  rctx = &out->context;
+  //rctx = &out->context;
   
   EVAL_THREAD_set_current_thread( thread );
 

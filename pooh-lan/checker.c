@@ -817,7 +817,7 @@ int  CHECKER_check_func_call_params( PARSECONTEXT *ctx, int pass, AST_FUNC_CALL 
 int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
 {
     AST_EXPRESSION *f_name;
-    const char *func_name;
+    //const char *func_name;
     AST_BASE *func_def = 0; 
    
     f_name =  fcall->f_name;
@@ -841,7 +841,7 @@ int  CHECKER_check_func_call( PARSECONTEXT *ctx, AST_FUNC_CALL *fcall )
     if (!func_def) {
       return 0;
     }
-    func_name =  ((AST_FUNC_DECL *) func_def)->f_name;
+    //func_name =  ((AST_FUNC_DECL *) func_def)->f_name;
     
     fcall->func_decl = func_def;
 
