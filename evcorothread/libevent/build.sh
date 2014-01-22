@@ -31,8 +31,18 @@ if [ ! -d install ]; then
 fi
 INSTALL=$(readlink -f install)
 
-export CFLAGS="-m32 -g -fno-omit-frame-pointer -O2" 
-export LDFLAGS=-m32
+MARCH=`uname -m`
+
+if [[ "x$MARCH" == "xi686" ]]; then
+	export CFLAGS="-m32 -g -fno-omit-frame-pointer -O2" 
+	export LDFLAGS=-m32
+fi	
+
+if [[ "x$MARCH" == "xx86_64" ]]; then
+	export CFLAGS="-m64 -g -fno-omit-frame-pointer -O2" 
+	export LDFLAGS=-m64
+fi	
+
 
 pwd
 cp  -rf patch/* libevent/
