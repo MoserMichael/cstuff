@@ -16,7 +16,10 @@ hutilssh_TYPE=shlib
 
 hutilssh_SRC_EXTENSION=c
 
-hutilssh_LIBS=cutils
+hutilssh_LIBS=$(hutilssh_LIBS-$(OS_TYPE))  
+
+hutilssh_LIBS-Cygwin=cutilssh nutilssh
+hutilssh_LIBS-GNU-Linux=
 
 
 
