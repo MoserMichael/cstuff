@@ -41,6 +41,12 @@ void no_core()
 
 void smash_stack(void *prev) 
 {
+  (void)prev;
+  char buf[1];
+  memset_wrap(buf, 100, 100);
+
+#if 0
+
   char buf[1];
   void *now = &buf;
 
@@ -50,6 +56,7 @@ void smash_stack(void *prev)
 	memset_wrap(now, 100, (size_t) prev - (size_t) now);
 	
   }
+#endif  
 }
 
 #if 0
