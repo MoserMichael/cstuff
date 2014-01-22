@@ -37,7 +37,6 @@ cat <<EOF >>${FILE}
 #endif
 
 #endif
-
 EOF
 
 rm -f config

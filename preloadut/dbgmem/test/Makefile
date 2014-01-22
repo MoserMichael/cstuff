@@ -26,7 +26,8 @@ mdbgtest2_CFLAGS=-I.. -x c++
 
 mdbgtest2_LIBS=dbgmemutil stdc++
 
-mdbgtest2_POSTBUILD=/bin/sh -c "set -e ; ./sys-test.pl $(BIN_ROOT_DIR)/lib $(BIN_ROOT_DIR)/test c ; ./sys-test.pl $(BIN_ROOT_DIR)/lib $(BIN_ROOT_DIR)/test s" 
+#mdbgtest2_POSTBUILD=/bin/sh -c "set -e ; ./sys-test.pl $(BIN_ROOT_DIR)/lib $(BIN_ROOT_DIR)/test s" 
+mdbgtest2_POSTBUILD=/bin/sh -c "set -e ; ./sys-test.pl $(BIN_ROOT_DIR)/lib $(BIN_ROOT_DIR)/test s ; ./sys-test.pl $(BIN_ROOT_DIR)/lib $(BIN_ROOT_DIR)/test c" 
  
 #--
  

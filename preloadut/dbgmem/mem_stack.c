@@ -164,14 +164,14 @@ static size_t _libsafe_stackVariableP(const void *addr) {
 	/*
 	 * Make sure frame pointers are word aligned.
 	 */
-	if ((size_t)nextfp & 0x03) {
+
 #if 0
+	if ((size_t)nextfp & 0x03) {
 	    LOG(2, "fp not word aligned; bypass enabled\n");
 	    _libsafe_exclude = 1;
-#endif
 	    return 0;
 	}
-
+#endif	
 	/*
 	 * Make sure frame pointers are monotonically increasing.
 	 */

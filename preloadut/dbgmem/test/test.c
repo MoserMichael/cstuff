@@ -39,11 +39,17 @@ void no_core()
   }
 }
 
-void smash_stack() 
+void smash_stack(void *prev) 
 {
   char buf[1];
+  void *now = &buf;
 
-  memset_wrap(buf, 100, 100);
+  if (prev < now) {
+	memset_wrap(prev, 100, (size_t) now - (size_t) prev);
+  } else {
+	memset_wrap(now, 100, (size_t) prev - (size_t) now);
+	
+  }
 }
 
 #if 0
@@ -62,21 +68,18 @@ int main(int argc, char *argv[])
   int tst_num,num_ch;
   void *tst,*val;
 
-
 #if 1 
   no_core();
 #endif  
   tst_num = argc > 1 ? atoi(argv[1]) : 0;
   num_ch = argc > 2 ? atoi(argv[2]) : 0;
   
-
   mallopt(M_CHECK_ACTION, tst_num != 13 ? 1 : 0); // on memory errors - print error but malloc does not call exit.
 
   tst = test_malloc(4);
-
+  
   fprintf(stderr,"start test %d\n",tst_num);
   switch(tst_num) {
-
    case 0: {
      memcpy(&val,tst,sizeof(void *));
      // use uninitialised memory (printout 0xDDDDDDDD expected)
@@ -112,13 +115,11 @@ int main(int argc, char *argv[])
      memcpy_wrap( tst, ((char *)tst) + 2, 4 );
    }
    break;
-
    case 5: {
      // stack smashed
-     smash_stack();
+     smash_stack((void *) &num_ch);
    }
    break;
-
    case 6: {
      // illegal free
      free( ((char *) tst) + 5);
@@ -303,7 +304,6 @@ ag:
 
    }
    break;
-
   }
   fprintf(stderr,"eof test %d\n",tst_num);
 

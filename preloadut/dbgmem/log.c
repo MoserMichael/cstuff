@@ -122,9 +122,8 @@ STATIC_C void log_pop_current_file()
 static void do_log(int is_err, const char *format, va_list *args)
 {
   char line[500];
-  int nline;
 
-  nline = vsnprintf(line, sizeof(line) - 1, format, *args);
+  vsnprintf(line, sizeof(line) - 1, format, *args);
   va_end(*args);
  
   if (log_file != -1) {
