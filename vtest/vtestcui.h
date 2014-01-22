@@ -11,6 +11,7 @@ int VTEST_CUI_test_runner(VTEST_TEST_SUITE *suite);
 
 int VTEST_CUI_test_runner_cmdline(VTEST_TEST_SUITE *suite, int argc,  char *argv[]);
 
+void VTEST_CUI_ignore_test_failure();
 
 typedef void (*PFN_DEBUG_FUNCTION) (const char *msg);
 

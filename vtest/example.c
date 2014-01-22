@@ -2,6 +2,7 @@
 
 #include "vtest.h"
 #include "vtestcui.h"
+#include <stdio.h>
 
 void always_fails()
 { 
@@ -41,7 +42,8 @@ VTEST_END_SUITE
 
 int main(int argc, char *argv[])
 {
+  VTEST_CUI_ignore_test_failure(); // here: tell next function not to exit on failure
   VTEST_CUI_test_runner_cmdline( VTEST_SUITE_GET(FIRSTTEST), argc-1, argv+1 );
-  // normally main would return the return value of the function. don't do this in this case so that this test will not fail.
+  printf("*** Please ignore the previous message ***\n");
   return 0; 
 }

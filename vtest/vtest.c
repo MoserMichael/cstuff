@@ -401,7 +401,7 @@ int VTEST_test_runner_cmdline(VTEST_TEST_SUITE *suite, VTEST_RUNNER_IMPL *impl, 
 	vtest_impl->wrapup( suitesinitfailed, suitesteardownfailed,
 					    testspassed, testsfailed, testnotrun);
 
-	return suitesinitfailed == 0 && suitesteardownfailed == 0 && testspassed == 0 && testsfailed == 0;
+	return suitesinitfailed == 0 && suitesteardownfailed == 0 && testsfailed == 0;
 }
 
 

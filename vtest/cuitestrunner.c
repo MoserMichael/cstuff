@@ -6,11 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-
+#include <stdlib.h>
 
 
 static PFN_DEBUG_FUNCTION  debug_output_hook = 0;
-
+static int ignore_test_failure = 0;
 
 static void MSG( const char * format, ... )
 {
@@ -161,15 +161,25 @@ int VTEST_CUI_test_runner(VTEST_TEST_SUITE *suite)
 int VTEST_CUI_test_runner_cmdline(VTEST_TEST_SUITE *suite, int argc, char *argv[])
 {
   VTEST_RUNNER_IMPL impl;
-
+  int rt;
   impl.suite_start			= CUI_report_suite_start;
   impl.test_start			= CUI_report_test_start;
   impl.results				= CUI_report_results;
   impl.wrapup				= CUI_report_wrapup;
 
-  return VTEST_test_runner_cmdline( suite, &impl, argc, argv);
+  rt = VTEST_test_runner_cmdline( suite, &impl, argc, argv);
+  if (!rt && !ignore_test_failure) {
+    exit(1);
+  }
+  return rt;
 
 }
+
+void VTEST_CUI_ignore_test_failure()
+{
+  ignore_test_failure = 1;
+}
+
 
 void VTEST_CUI_list_suite(VTEST_TEST_SUITE *suite)
 {
