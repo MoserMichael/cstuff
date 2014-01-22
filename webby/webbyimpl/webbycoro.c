@@ -148,5 +148,18 @@ int WEBBY_impl_response_completed( void *impl, int connection_close )
   return 0;
 }
 
+WEBBY *WEBBY_init( WEBBY_CONFIG * cfg )
+{
+  WEBBY_impl_interface  iface;
+
+  iface.impl_new = WEBBY_impl_new;
+  iface.impl_shutdown =  WEBBY_impl_shutdown;
+  iface.impl_run = WEBBY_impl_run;
+  iface.impl_send_data =  WEBBY_impl_send_data  ;
+  iface.impl_response_completed  = WEBBY_impl_response_completed; 
+
+  return WEBBY_init_internal( cfg, &iface );
+}
+
 //------------------------------------------------------------
 

@@ -26,7 +26,7 @@ webbythread_TYPE=exe
 
 webbythread_SRC=webbymain.c webbymain_blurb.c
 
-webbythread_LIBS=webbylibsh webbythreadlib hutils tutils nutils butils cutils dl pthread
+webbythread_LIBS=webbylib webbythreadlib hutils tutils nutils butils cutils dl pthread
 
 webbythread_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 
@@ -38,12 +38,10 @@ webbycoro_TYPE=exe
 
 webbycoro_SRC=webbymain.c webbymain_blurb.c
 
+webbycoro_LIBS=$(webbycoro_LIBS-$(OS_TYPE))
 
-ifeq "$(shell uname -o)" "Cygwin"
-webbycoro_LIBS=webbylibsh webbycorolib evcorothread corothrjmp event hutils nutils butils cutils dl rt pthread
-else
-webbycoro_LIBS=webbylibsh webbycorolib evcorothread corothructx event hutils nutils butils cutils dl rt pthread
-endif
+webbycoro_LIBS-Cygwin=webbylib webbycorolib evcorothread corothrjmp event hutils nutils butils cutils dl rt pthread
+webbycoro_LIBS-GNU-Linux=webbylib webbycorolib evcorothread corothructx event hutils nutils butils cutils dl rt pthread
 
 webbycoro_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 

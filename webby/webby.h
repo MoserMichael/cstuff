@@ -11,6 +11,8 @@
 struct tagHTTP_FILTER; 
 struct tagHTTP_SERVLET;
 
+#include <webby/webbyimpl.h>
+
 // =============================================================================================
 
 /**
@@ -504,10 +506,15 @@ typedef struct tagWEBBY {
   /** configuration */
   WEBBY_CONFIG *cfg;		      
 
+  /** implementation */
+
 } WEBBY;
 
 
-WEBBY *WEBBY_init( WEBBY_CONFIG * );
+/** acually implemented in implementation library, calls into WEBBY_init_internal */
+WEBBY *WEBBY_init( WEBBY_CONFIG * cfg );
+
+WEBBY *WEBBY_init_internal( WEBBY_CONFIG * cfg, WEBBY_impl_interface *iface_  );
 
 int WEBBY_add_vhost( WEBBY *server, const char *host, int port_num, size_t * vhost_idx );
 

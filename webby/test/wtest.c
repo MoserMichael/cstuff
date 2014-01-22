@@ -116,6 +116,7 @@ void WEBBY_one_test(const char *in_file_name, const char *out_file_name, int con
   HTTP_SERVLET counter_servlet;
   WEBBY_CONFIG cfg;
   WEBBY_CONNECTION *conn;
+  WEBBY_impl_interface  iface;
   FILE *fp_in,*fp_out;
   int ch,rt, error_processing; 
   char tmp_out[ 512 ], cmd[ 512 ];
@@ -127,7 +128,13 @@ void WEBBY_one_test(const char *in_file_name, const char *out_file_name, int con
 
   VASSERT( WEBBY_CONFIG_load( &cfg, "data/tconfig.props" ) == 0 );
 
-  server = WEBBY_init( &cfg );
+  iface.impl_new = WEBBY_impl_new;
+  iface.impl_shutdown =  WEBBY_impl_shutdown;
+  iface.impl_run = WEBBY_impl_run;
+  iface.impl_send_data =  WEBBY_impl_send_data  ;
+  iface.impl_response_completed  = WEBBY_impl_response_completed; 
+
+  server = WEBBY_init_internal( &cfg, &iface );
   VASSERT( server != 0 );
 
   HTTP_SERVLET_init( &counter_servlet, 0, 0, servlet_action, 0 );

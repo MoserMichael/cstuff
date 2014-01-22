@@ -28,6 +28,8 @@
 #define HTTP_500_SERVER_ERROR "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\n\r\n"
 #define HTTP_500_SERVER_ERROR_LEN 57
 
+static WEBBY_impl_interface iface;
+
 
 // ====================================================================
 typedef struct tagVIRTUAL_HOST_DEFINITION {
@@ -180,14 +182,14 @@ static int    sink_on_response_header       (HTTP_RESPONSE *response,  FILTER_CO
         MLOG_INFO( "Failed to format response header" );
         return -1;
       case PARSER_STATUS_COMPLETED:
-        if (WEBBY_impl_send_data( sink->impl_connection_ctx, bf->get_pos, BF_get_size( bf ) ) ) {
+        if (iface.impl_send_data( sink->impl_connection_ctx, bf->get_pos, BF_get_size( bf ) ) ) {
 	  MLOG_INFO( "Failed to send response header" );
 	  return -1;
 	}
 	return 0;
 
       case PARSER_STATUS_NEED_MORE_DATA:
-        if (WEBBY_impl_send_data( sink->impl_connection_ctx, bf->get_pos, BF_get_size( bf ) ) ) {
+        if (iface.impl_send_data( sink->impl_connection_ctx, bf->get_pos, BF_get_size( bf ) ) ) {
 	  MLOG_INFO( "Failed to send response header" );
 	  return -1;
 	}
@@ -209,7 +211,7 @@ static int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chu
   M_UNUSED( response );
 
   if (!is_chunk) {
-    return WEBBY_impl_send_data( sink->impl_connection_ctx, rdata.no_chunk.data, rdata.no_chunk.data_size );
+    return iface.impl_send_data( sink->impl_connection_ctx, rdata.no_chunk.data, rdata.no_chunk.data_size );
   }
   
   bf = rdata.chunk.bf;
@@ -226,7 +228,7 @@ static int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chu
     bf->start -= len;
     strncpy( (char *) bf->start, chunk_header, len );
  
-    if (WEBBY_impl_send_data( sink->impl_connection_ctx, bf->start, bf->put_pos - bf->start  )) {
+    if (iface.impl_send_data( sink->impl_connection_ctx, bf->start, bf->put_pos - bf->start  )) {
      MLOG_INFO( "Failed to send chunk data" );
     }
  
@@ -239,7 +241,7 @@ static int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chu
       data = LAST_CHUNK_FIRST;
       size = LAST_CHUNK_FIRST_SIZE;
     }
-    if (WEBBY_impl_send_data( sink->impl_connection_ctx, data, size  )) {
+    if (iface.impl_send_data( sink->impl_connection_ctx, data, size  )) {
       MLOG_INFO( "Failed to send chunk data" );
     }
  
@@ -254,7 +256,7 @@ static int    sink_on_response_complete     (HTTP_RESPONSE *response, FILTER_CON
 
   M_UNUSED( response );
  
-  return WEBBY_impl_response_completed( sink->impl_connection_ctx, response->base.flags & HTTP_MESSAGE_FLAG_CONNECTION_CLOSE );
+  return iface.impl_response_completed( sink->impl_connection_ctx, response->base.flags & HTTP_MESSAGE_FLAG_CONNECTION_CLOSE );
 }
 
 static int sink_connection_close( FILTER_CONTEXT *context )
@@ -649,7 +651,7 @@ int WEBBY_CONFIG_load( WEBBY_CONFIG *cfg, const char *file)
 
 // ====================================================================
 
-WEBBY *WEBBY_init( WEBBY_CONFIG * cfg )
+WEBBY *WEBBY_init_internal( WEBBY_CONFIG * cfg, WEBBY_impl_interface *iface_  )
 { 
   WEBBY *ret;
   DATA_SINK_FILTER *data_sink; 
@@ -660,7 +662,7 @@ WEBBY *WEBBY_init( WEBBY_CONFIG * cfg )
     return 0;
   }
   ret->cfg = cfg;
- 
+  iface = *iface_;
  
   if ( ARRAY_init( &ret->filters, sizeof( HTTP_FILTER * ), 10 ) ) {
     return 0;
@@ -680,7 +682,7 @@ WEBBY *WEBBY_init( WEBBY_CONFIG * cfg )
   }
 
   // get the implementation object.
-  if (WEBBY_impl_new( ret, cfg, &ret->impl ) ) {
+  if (iface.impl_new( ret, cfg, &ret->impl ) ) {
     return 0;
   }
   return ret;
@@ -728,12 +730,12 @@ int WEBBY_run( WEBBY *server )
      cur->next_response_filter_idx = i - cur->filter->next_response_filter_idx;
   }
  
-  return WEBBY_impl_run( server->impl );
+  return iface.impl_run( server->impl );
 }
 
 int WEBBY_shutdown( WEBBY *server )
 {
-  return WEBBY_impl_shutdown( server->impl ); 
+  return iface.impl_shutdown( server->impl ); 
 }
 
 static int http_header_parsed	   (HTTP_REQUEST *request, void *ctx)

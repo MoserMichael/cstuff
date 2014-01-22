@@ -45,6 +45,12 @@ showheaderservlet_SRC=showheaderservlet.c
 
 showheaderservlet_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
 
+showheaderservlet_LIBS=$(showheaderservlet_LIBS-$(OS_TYPE))
+
+showheaderservlet_LIBS-Cygwin=webbylibsh
+
+showheaderservlet_LIBS-GNU-Linux= 
+
 
 # ---------------------------------------
 # example servlet shared library
@@ -55,6 +61,13 @@ helloworldservlet_TYPE=shlib
 helloworldservlet_SRC=helloworld.c
 
 helloworldservlet_CFLAGS=-I$(ROOT_DIR)/evcorothread/libevent/install/include
+
+helloworldservlet_LIBS=$(helloworldservlet_LIBS-$(OS_TYPE))
+
+helloworldservlet_LIBS-Cygwin=webbylibsh
+
+helloworldservlet_LIBS-GNU-Linux= 
+
 
 # ---------------------------------------
 

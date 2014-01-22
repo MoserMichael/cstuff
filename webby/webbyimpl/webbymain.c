@@ -156,7 +156,7 @@ int  parse_servlet_definition( char *arg,  char **lib_name, char **fact_function
 int is_digits( char *str )
 {
   for(;*str != '\0'; ++str) {
-    if (! isdigit( *str) ) {
+    if (! isdigit( (unsigned char) *str) ) {
       return 0;
     }
   }
