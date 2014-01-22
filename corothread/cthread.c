@@ -92,17 +92,18 @@ static jmp_buf buf_probe_a_before, buf_probe_a_after;
 static int index_of_stack_in_jmpbuf = -1;
 static jmp_buf buf_probe_b_before, buf_probe_b_after;
 
-void fill_buff_probe_a()
+size_t fill_buff_probe_a()
 {
   static jmp_buf tmp_buf;
   int r;
+  size_t rbuf;
 
-  alloca( 8 );
+  rbuf = (size_t) alloca( 8 );
 
   r = setjmp( tmp_buf );
 
   if ( r ) {
-    alloca( PROBE_A_STACK_SIZE );
+    rbuf += (size_t) alloca( PROBE_A_STACK_SIZE );
   }  
     
   setjmp( buf_probe_a_after );
@@ -113,18 +114,20 @@ void fill_buff_probe_a()
     fprintf(stderr,"fill_buf_probe_a - longjmp failed\n");
     exit(1);
   }
+  return rbuf;
 }
 
-void fill_buff_probe_b()
+size_t fill_buff_probe_b()
 {
   static jmp_buf tmp_buf;
   int r;
+  size_t rbuf;
 
-  alloca( 8 );
+  rbuf = (size_t) alloca( 8 );
 
   r = setjmp( tmp_buf );
   if ( r ) {
-    alloca( PROBE_B_STACK_SIZE );
+    rbuf += (size_t) alloca( PROBE_B_STACK_SIZE );
   }  
     
   setjmp( buf_probe_b_after );
@@ -135,6 +138,7 @@ void fill_buff_probe_b()
     fprintf(stderr,"fill_buf_probe_b - longjmp failed\n");
     exit(1);
   } 
+  return rbuf;
 }
 
 
@@ -187,6 +191,7 @@ int find_index_of_stack_in_jmpbuf()
    idx_probe_b = diff_buf( &buf_probe_b_before, &buf_probe_b_after, PROBE_B_STACK_SIZE );
   
    if (idx_probe_a != idx_probe_b || idx_probe_a == -1) {
+       //printf("idx_probe_a %d idx_probe_b %d\n", idx_probe_a, idx_probe_b);
        MLOG_ERROR("Failed to get index in jmp_buf that points to stack size. very sorry");
        exit(-1);
    }
