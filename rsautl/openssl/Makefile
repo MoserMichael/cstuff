@@ -5,6 +5,7 @@ TOPDIR=../..
 all :
 	./build.pl
 test :
+	./build.pl
 
 clean :
 

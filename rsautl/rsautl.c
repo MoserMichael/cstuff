@@ -225,7 +225,7 @@ int encrypt_file( RSA *key, FILE *fpin, FILE *fpout )
    }
 
    if (file_pos != file_size) {
-      fprintf( stderr, "Error: did not read the whole file, File length %d, read %d\n", file_size - sizeof(ENC_HEADER), file_pos - sizeof(ENC_HEADER) );
+      fprintf( stderr, "Error: did not read the whole file, File length %lu, read %lu\n", (unsigned long) (file_size - sizeof(ENC_HEADER)), (unsigned long) (file_pos - sizeof(ENC_HEADER)) );
       rt = -1;
       goto err;
    }
@@ -373,7 +373,7 @@ int decrypt_file( RSA *key, FILE *fpin, FILE *fpout )
    SHA256_Final(hash, &sha);
 
    if (out_len != sizeof(hash) || memcmp( &hash, out_buf, sizeof(hash) ) != 0) {
-        fprintf(stderr, "Error: message authentication failed; hash over encrypted message does not match the stored hash %d %d.\n", out_len, sizeof(hash)  );
+        fprintf(stderr, "Error: message authentication failed; hash over encrypted message does not match the stored hash %u %d.\n", out_len, (int) sizeof(hash)  );
 	rt = -1;
 	goto err;
     }	
@@ -723,7 +723,7 @@ int do_handle_result( RESULT_HANDLER_DATA *data, int is_decrypt, uint8_t *hash, 
 	 fprintf(stderr, "Error: missing message authentication\n" ) ;
 	 rt = -1;
       } else if (r->out_len != hash_len || memcmp( hash, r->out_buf, hash_len ) != 0) {
-	 fprintf(stderr, "Error: message authentication failed; hash over encrypted message does not match the stored hash %d %d.\n", r->out_len, hash_len  );
+	 fprintf(stderr, "Error: message authentication failed; hash over encrypted message does not match the stored hash %u %d.\n", r->out_len, (int) hash_len  );
 	 rt = -1;
          request_free( r );
        }
