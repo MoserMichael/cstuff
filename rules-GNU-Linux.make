@@ -31,6 +31,7 @@ make_shared_lib_name=$(BIN_ROOT_DIR)/$(2)/lib$(1).so
 # Macro adds option for compiling shared library code
 #-
 add-solib-compiler-flags=CFLAGS+=-fPIC 
+add-solib-compiler-flags-cpp=CPPFLAGS+=-fPIC
 
 #-
 # Macro installs a file.

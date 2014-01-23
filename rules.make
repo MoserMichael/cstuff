@@ -268,6 +268,8 @@ build_xxx__$(1) : PRJ_NAME:=$(1)
 
 build_xxx__$(1) : $(call add-solib-compiler-flags) 
 
+build_xxx__$(1) : $(call add-solib-compiler-flags-cpp) 
+
 build_xxx__$(1) : PRJ_TYPE_NAME:=Shared library
 
 build_xxx__$(1) : PRJ_RESULT_FILE=$(call make_shared_lib_name,$(1),$(2))

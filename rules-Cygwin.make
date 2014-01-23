@@ -29,6 +29,8 @@ make_shared_lib_name=$(BIN_ROOT_DIR)/$(2)/lib$(1).dll
 #  with CYGWIN: don't add -fPIC to compiler options for shared library.
 #- 
 add-solib-compiler-flags=
+add-solib-compiler-flags-cpp=
+
 
 
 #-

@@ -2737,8 +2737,9 @@ BINDING_DATA *EVAL_THREAD_push_stack( EVAL_THREAD *thread , AST_VAR_TYPE vtype)
 int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
 {
   VALACTIVATION *arecord;
-  YYLTYPE *location;
-  AST_BASE *ret_instr, *fdcl;
+  //YYLTYPE *location;
+  AST_BASE *fdcl;
+  //AST_BASE *ret_instr;
   AST_XFUNC_DECL *xfdecl;
   AST_FUNC_DECL *fdecl;
   AST_EXPRESSION *expr;
@@ -2775,8 +2776,8 @@ int EVAL_THREAD_print_stack_trace( FILE *out, EVAL_THREAD *thread)
 
          fprintf( out, "#%d\t%s(", frame, fdecl->f_name );
  
-	 ret_instr = frame == 1 ? thread->instr : arecord->ret_instr;
-         location = &ret_instr->location;
+	 //ret_instr = frame == 1 ? thread->instr : arecord->ret_instr;
+         //location = &ret_instr->location;
 	 
 	 for (i = 0; i < AST_VECTOR_size( fdecl->func_params ); i++ ) {
 	   expr = (AST_EXPRESSION *) AST_VECTOR_get( fdecl->func_params, i );
@@ -3206,13 +3207,12 @@ void EVAL_CONTEXT_gc( EVAL_CONTEXT *context )
 void EVAL_CONTEXT_runtime_error( EVAL_CONTEXT *context, const char *format, ... )
 {
   char msg[RUNTIME_ERROR_MSG_LEN];
-  int len;
   va_list ap;
 
   if (format != 0)
   {
     va_start(ap, format);
-    len = vsnprintf( msg, sizeof(msg) - 1, format, ap );
+    vsnprintf( msg, sizeof(msg) - 1, format, ap );
     fprintf( stderr, "%s\n", msg );
   }
 

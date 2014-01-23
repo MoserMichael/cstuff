@@ -10,7 +10,7 @@ void ARRAY_test()
 	ARRAY arr;
 	int  elm;
 
-	VASSERT( ! ARRAY_init( &arr, sizeof(int *), 0 ) );
+	VASSERT( ! ARRAY_init( &arr, sizeof(int), 0 ) );
 
 	elm = 1;
 	VASSERT( ! ARRAY_push_back( &arr, &elm, sizeof(elm) ) );

@@ -2246,12 +2246,11 @@ static void read_imp( TRANSPORT_TYPE transport, TRANSPORT trans, XCALL_DATA *xca
 
 static void write_imp( TRANSPORT_TYPE transport, TRANSPORT trans, XCALL_DATA *xcall )
 {
-    BINDING_DATA *obj, *towrite, *tmp;
+    BINDING_DATA *towrite, *tmp;
     size_t nlen = 0;
     int has_len = 0;
     size_t nret;
 
-    obj = XCALL_this( xcall ); 
  
     towrite =  XCALL_param( xcall, 0 ); 
     towrite = BINDING_DATA_follow_ref( towrite ); 
