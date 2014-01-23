@@ -11,6 +11,8 @@ cpplib_TYPE=lib
 
 cpplib_SRC_EXTENSION=cpp
 
+# --
+
 cpplibso_TYPE=shlib
 
 cpplibso_SRC_EXTENSION=cpp
