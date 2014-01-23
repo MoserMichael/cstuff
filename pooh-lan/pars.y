@@ -1003,9 +1003,8 @@ primaryExp : varRef
 	{
 	   do_yyerror( & @2, parse_context,  "Closing ) expected after expression" );
 	   $<ast>$ = $<ast>2;
-	   YYERROR
+	   YYERROR;
 	}
-
 	   ;
 
 
@@ -1017,7 +1016,7 @@ functionCallExpr : functionCallStmt
 
 	  $<ast>$ = &scl->base;
 	}
-
+	;
 		
 varRef : TK_IDENTIFIER varIndexes
        	{
@@ -1127,9 +1126,6 @@ varIndex :
 
 	  $<ast>$ = 0;
  	}
-
-
-
 	;
 
 /** function calls **/
