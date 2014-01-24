@@ -148,178 +148,51 @@ The test encrypts and decrypts a 100kb file with keys of various length; here ar
 h4. Laptop, one processor with eight cores | (intel Core i7-2720QM - 2.20 GHZ); | on Windows under Cygwin - program is 32 bit 
 
 Key length: 2048 bits
-<notextile>
-  <table>
-     <tr>
-	<th></th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td>0.154</td>
-	<td>3.463</td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td>0.116</td>
-	<td>0.850</td>
-     </tr>
-  </table>
-</notextile>
+	|Mode|Encryption|Decryption|
+	|Single thread|0.154|3.463|
+	|Multithreaded|0.116|0.850|
 
 Key length: 4096 bits
-<notextile>
-  <table>
-     <tr>
-	<th>Mode</th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td>0.347 sec</td>
-	<td>11.905 sec</td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td>0.287 sec</td>
-	<td>3.0222 sec</td>
-     </tr>
-  </table>
-</notextile>
+	|Mode|Encryption|Decryption|
+	|Single thread|0.347 sec|11.905 sec|
+	|Multithreaded|0.287 sec|3.0222 sec|
 
 h4. Eight cores (two cpu's) | Intel(R) Xeon(R) CPU E5-2609 0 @ 2.40GHz | (Linux on x86_64)
 
 Key length: 2048 bits
-<notextile>                                    	
-  <table>
-     <tr>
-	<th></th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td>0.038</td>
-	<td>0.898</td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td>0.013</td>
-	<td>0.115</td>
-     </tr>
-  </table>
-</notextile>
+	|Mode|Encryption|Decryption|
+	|Single thread|0.038|0.898|
+	|Multithreaded|0.013|0.115|
 
 Key length: 4096 bits
-<notextile>
-  <table>
-     <tr>
-	<th></th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td>0.053</td>
-	<td>2.936</td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td>0.017</td>
-	<td>0.382</td>
-     </tr>
-  </table>
-</notextile>
+	|Mode|Encryption|Decryption|
+	|Single thread|0.053|2.936|
+	|Multithreaded|0.017|0.382|
 
 h4. 24 cores (2 cpus) | Intel(R) Xeon(R) CPU E5-2630 0 @ 2.30GHz | (Linux on x86_64)
 
 Key length: 2048 bits
-<notextile>
-  <table>
-     <tr>
-	<th></th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td>0.042</td>
-	<td>0.790</td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td>0.023</td>
-	<td>0.087</td>
-     </tr>
-  </table>
-</notextile>
+	|Mode|Encryption|Decryption|
+	|Single thread|0.042|0.790|
+	|Multithreaded|0.023|0.087|
 
 Key length: 4096 bits
-<notextile>
-  <table>
-     <tr>
-	<th></th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td>0.057</td>
-	<td>2.527</td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td>0.024</td>
-	<td>0.223</td>
-     </tr>
-  </table>
-</notextile>
+	|Mode|Encryption|Decryption|
+	|Single thread|0.057|2.527|
+	|Multithreaded|0.024|0.223|
 
 h4. On VMWare virtual machine that utilizes two core (Linux on i686) 
 
 Key length: 2048 bits
-<notextile>
-  <table>
-     <tr>
-	<th></th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td>0.931</td>
-	<td>53.61</td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td>0.897</td>
-	<td>29.773</td>
-     </tr>
-  </table>
-</notextile>
+
+	|Mode|Encryption|Decryption|
+	|Single thread|0.573|14.645|
+	|Multithreaded|0.521|9.297|
 
 Key length: 4096 bits
-<notextile>
-  <table>
-     <tr>
-	<th></th>
-	<th>Encryption</th>
-	<th>Decryption</th
-     </tr>
-     <tr>
-	<td>Single thread</td>
-	<td></td>
-	<td></td>
-     </tr>
-     <tr>
-	<td>Multithreaded</td>
-	<td></td>
-	<td></td>
-     </tr>
-  </table>
-</notextile>
+	|Mode|Encryption|Decryption|
+	|Single thread|0.931|53.61|
+	|Multithreaded|0.897|29.773|
 
 h4. Summary of results / more internals
 Results are consistent with predictions.
