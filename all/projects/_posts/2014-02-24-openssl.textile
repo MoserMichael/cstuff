@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  Encryption utility with openssl
+title:  Wholesale encryption with RSA and openssl
 ---
 
 h2. {{ page.title }}
 <p class="publish_date">24 February 2014</p>
 
-h3. Wholesale encryption with RSA 
+h3. Very short introduction to cryptography
 
 The following schema is used when large data set are encrypted/decrypted.
 
@@ -196,7 +196,9 @@ Key length: 4096 bits
 
 h4. Summary of results / more internals
 
-Results are consistent with predictions. Now I could have achieved a greater speedup if I were to use the GPU of the graphics card, but this a bit too complex for an evening of work.
+Results are consistent with predictions. Encrypting everything with RSA may still not be good enough for bulk data that spans many megabytes, but for shorter text it seems good enough.
+
+Now I could have achieved a greater speedup if I were to use the GPU of the graphics card, but this a bit too complex for an evening of work.
 
 h4. Epilogue
 
