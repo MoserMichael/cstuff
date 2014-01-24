@@ -26,7 +26,7 @@ The problem with this approach is that this takes a lot of time to decrypt the m
 
 Another thing is that while it is currently practically impossible to break RSA encryption with reasonably strong key, theoretically this might change once they have a working quantum computer; However there are serious doubts that we are anywhere near the development of such a breakthrough, but things might change, you never know.
 
-Also please note that RSA encryption is choose for this utility because there are "serious doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of ecliptic cryptography (given all those recent revelations)
+Also please note that "RSA algorithm":http://en.wikipedia.org/wiki/RSA_(cryptosystem) is choose for this utility because there are "serious doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of elliptic curve cryptography (given all those recent revelations)
 
 h3. The tools used in this study and how to use them
 
