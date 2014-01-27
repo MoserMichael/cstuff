@@ -24,7 +24,7 @@ The secret of the private key is generated only once, and everything is secure i
 
 The problem with this approach is that this takes a lot of time to decrypt the message and slightly less time to encrypt the message; however modern computers have an increasing number of processors. This little project explores how multi processing can help to speed up the encryption and decryption of larger messages.
 
-Another thing is that while it is currently practically impossible to break RSA encryption with reasonably strong key, theoretically this might change once they have a working quantum computer; However there are serious doubts that we are anywhere near the development of such a breakthrough, but things might change, you never know.
+Another thing is that while it is currently practically impossible to break RSA encryption with reasonably strong key, theoretically this might change once they have a working quantum computer; However there are "serious doubts":http://www.scottaaronson.com/blog/ that we are anywhere near the development of such a breakthrough, but things might change, you never know.
 
 Also please note that "RSA algorithm":http://en.wikipedia.org/wiki/RSA_(cryptosystem) is choose for this utility because there are "serious doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of elliptic curve cryptography (given all those recent revelations)
 
@@ -206,5 +206,5 @@ Looking at the details of cryptography one can see to what extent technology did
 The "Enigma":http://en.wikipedia.org/wiki/Enigma_machine and "Lorenz":http://en.wikipedia.org/wiki/Lorenz_cipher machines used electrio-mechanical tricks, several hundreds of moving parts, in its complexity that was very similar to the typewriter that my father was using back when I was a kid.
 Now compare this complexity to the number of circuits in a modern computer. Amazing, Science fiction ! Also remember that back then everything related to cryptography was very tightly regulated.
 
-...  and the only way to break it is by cheating with the random number generator, by means of "side channel attacks":http://en.wikipedia.org/wiki/Side_channel_attack ; or by building the mythical beast - the quantum computer.
+...  and the only way to break it is by cheating with the random number generator, by means of "side channel attacks":http://en.wikipedia.org/wiki/Side_channel_attack (such as watching "power consumption":http://en.wikipedia.org/wiki/Differential_power_analysis#Differential_power_analysis directly  ) ; or by the mythical beast - the quantum computer.
 
