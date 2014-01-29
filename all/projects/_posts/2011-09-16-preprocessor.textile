@@ -1,15 +1,14 @@
 ---
 layout: post
-title:  Fixing tricky C/C++ compilation errors by digging into the preprocessor output.
+title:  Fixing tricky C/C++ compilation errors
 ---
 
 h2. {{ page.title }}
 <p class="publish_date">17 July 2011</p>
 
-Both C and C++ share the same preprocessor; a preprocessor transforms the source code before it is compiled; 
-Now many compilation errors are due to the programmer having misunderstood how the preprocessor changed the program in this vital step.
+Both C and C++ share the same preprocessor; a preprocessor transforms the source code before it is compiled; Now many compilation errors are due to the programmer having misunderstood how the preprocessor changed the text of the source file. 
 
-Luckily with GCC and other compilers (aCC for instanct), it is possible to see the preprocessor output as is, before it is passed on to the compiler.
+Luckily with GCC and other compilers (aCC for instance), it is possible to see the preprocessor output as is, before it is passed on to the compiler.
 
 * On both gcc and aCC (the HP C compiler) you can just add the -E option to the compiler ; now the compiler will not compile the program, only preprocessor does something, and the output of the preprocessor step is written to standard output.
 * With gcc you can use compiler option -save-temps;  with this option all intermediate results (preprocessor result, assembly listing) will be stored into separate files; For example
