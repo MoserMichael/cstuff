@@ -9,7 +9,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <time.h>
+#ifdef USE_GLOB
 #include <glob.h>
+#else
+#include <wordexp.h>
+#endif
 
 //#include <values.h>
 
@@ -2935,7 +2939,11 @@ char * join_strings( VALARRAY *arr )
 
 static void x_listdir( XCALL_DATA *xcall )
 {
+#ifdef USE_GLOB
   glob_t gl;
+#else
+  wordexp_t wexp;
+#endif  
   BINDING_DATA *arg, *ret, *tmps;
   VALSTRING *str;
   VALARRAY *aret = 0;
@@ -2953,13 +2961,19 @@ static void x_listdir( XCALL_DATA *xcall )
 
   arg = BINDING_DATA_follow_ref( arg );
 
+#ifdef USE_GLOB
   memset( &gl, 0, sizeof( glob_t ) );
+#endif
 
   if (arg->b.value_type & S_VAR_STRING) {
     str = BINDING_DATA_get_string( arg );
     if (str) {
       VALSTRING_make_null_terminated( str ); 
+#ifdef USE_GLOB
       glob( str->string , GLOB_TILDE | GLOB_MARK, 0, &gl ) ;
+#else
+      wordexp( str->string, &wexp, 0);
+#endif      
     }      
 
   } else {
@@ -2973,22 +2987,38 @@ static void x_listdir( XCALL_DATA *xcall )
       str = BINDING_DATA_get_string( data );
       if ( str ) {
         VALSTRING_make_null_terminated( str ); 
+
+#ifdef USE_GLOB
 	if (i == 0)
-	  glob( str->string, GLOB_TILDE | GLOB_MARK, 0, &gl );
+          glob( str->string , GLOB_TILDE | GLOB_MARK, 0, &gl ) ;
         else
 	  glob( str->string, GLOB_TILDE | GLOB_MARK | GLOB_APPEND, 0, &gl );
+#else
+	if (i == 0)
+	  wordexp( str->string, &wexp, 0);
+        else
+	  wordexp( str->string, &wexp, WRDE_APPEND);
+#endif	  
       }
     }      
   }
 
  
+#ifdef USE_GLOB
   for (i = 0; i < gl.gl_pathc; i++) {
+#else
+  for (i = 0; i < wexp.we_wordc; i++) {
+#endif
     char *s;
     
     if (top) {
 
        tmps = BINDING_DATA_MEM_new( S_VAR_STRING );
-       s = gl.gl_pathv[ i ]; 
+#ifdef USE_GLOB
+       s = gl.gl_pathv[ i ];
+#else
+       s = wexp.we_wordv[ i ]; 
+#endif       
        VALSTRING_set( &tmps->b.value.string_value, s, strlen( s ) );
        dothreadyield( tmps, &force_exit );
        if (force_exit) {
@@ -2997,11 +3027,19 @@ static void x_listdir( XCALL_DATA *xcall )
     } else {
        tmps = VALARRAY_set_entry( aret, i );
        BINDING_DATA_init( tmps, S_VAR_STRING );
-       s = gl.gl_pathv[ i ]; 
+#ifdef USE_GLOB
+       s = gl.gl_pathv[ i ];
+#else       
+       s = wexp.we_wordv[ i ]; 
+#endif       
        VALSTRING_set( &tmps->b.value.string_value, s, strlen( s ) );
     }
   }
-  globfree( &gl );
+#ifdef USE_GLOB
+  gobfree(&gl);
+#else  
+  wordfree(&wexp);
+#endif  
 }
 
 
