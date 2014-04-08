@@ -178,6 +178,14 @@ sub run_process
   if ($debugged_process_pid == 0) {
 
      $exe = $ARGV[0];
+     if (! -e $exe) {
+	$exe = `which $exe`;
+	chomp($exe);
+	if ($exe eq "") {
+	    print "INITMEM: executable $exe not found in the current path\n";
+	    exit(1);
+	}
+     }
      $is_cpp=`ldd $exe | grep stdc++ | wc -l`;
 
      chomp($is_cpp);

@@ -67,6 +67,15 @@ sub run
   my ($exe,$is_cpp);
 
   $exe = $ARGV[0];
+
+  if (! -e $exe) {
+    $exe = `which $exe`;
+    chomp($exe);
+    if ($exe eq "") {
+	print "INITMEM: executable $exe not found in the current path\n";
+	exit(1);
+    }
+  }
   $is_cpp=`ldd $exe | grep stdc++ | wc -l`;
 
   chomp($is_cpp);
@@ -127,7 +136,7 @@ values; so it is easier to spot if you have uninitialised or freed memory.
 Bugs:
 
 Realloc may have to move the argument pointer - free the old pointer and allocate a new one;
-here the freed memory is not initialised; can't access memory after it has been freed;
+here the freed memory is not overwritten; can't access memory after it has been freed;
 it may have been already reused.
 
 EOF
