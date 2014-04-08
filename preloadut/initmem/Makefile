@@ -14,7 +14,7 @@ TARGETS:=initmem initmemcpp
 
 initmem_TYPE=shlib
 
-initmem_SRC=meminit.c
+initmem_SRC=initmem.c
 
 initmem_CFLAGS=
 
@@ -24,7 +24,7 @@ initmem_LIBS=dl
 
 initmemcpp_TYPE=shlib
 
-initmemcpp_SRC=meminit.c
+initmemcpp_SRC=initmem.c
 
 initmemcpp_CFLAGS=-x c++ -fno-check-new
  
