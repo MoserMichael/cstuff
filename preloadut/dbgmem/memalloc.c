@@ -1411,6 +1411,16 @@ pid_t fork(void)
   return ret;
 }
 
+
+// intercept dlclose - unloading of shared libraries; don't want to have a situation where stack trace instruction pointer was pointing to an address in library A and later the same adddress would refer to another library.
+// disable dlclose, so that shared libraries always stay in memory, this may have adverse effects on memory footprint.
+int dlclose(void *arg)
+{
+    (void) arg;
+    return 1;
+}
+
+
 #ifndef  _SIMPLE_TOOL_
 
 #include "mem_check.c"
