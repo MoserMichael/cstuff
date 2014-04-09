@@ -1,17 +1,9 @@
+#ifndef __COMMON_PRELOAD_H_
+#define __COMMON_PRELOAD_H_
 
-/* 
- * DBGMEM - memory allocation leak tracker and debugging tool.
- *
- *  (c) 2008 by Michael Moser
- * 
- * This code is available under the GNU Lesser Public License version 2.1
- *
- * See LICENSE file for the full copy of the license
- *
- */
 
-#ifndef _MEMALLOC_H_
-#define _MEMALLOC_H_
+#include <sys/resource.h>
+#include <limits.h>
 
 #ifndef WIN32
 
@@ -127,5 +119,29 @@ STATIC_C pthread_mutex_t memlock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 #define DO_ALIGN( num, align) TO_NUM( TO_NUM( TO_NUM(num)  + (align) - 1 ) & (~((align) - 1)) )
 
 
+static void set_core_unlimited()
+{
+  struct rlimit l;
+
+  getrlimit( RLIMIT_CORE, &l);
  
+  if (l.rlim_cur == RLIM_INFINITY) {
+    return; 
+  }
+  
+  if (getuid()==0 || geteuid() == 0) {
+    l.rlim_cur = l.rlim_max = RLIM_INFINITY;
+  } else {
+    if (l.rlim_cur == l.rlim_max) {
+      return; // nothing left to do.
+    }
+    l.rlim_cur = l.rlim_max;
+  }
+
+  if (setrlimit( RLIMIT_CORE, &l )) {
+    LOAD_TRACE("DBGMEM: Warning: Failed to remove core limit errno \n");
+  }
+}
+
 #endif
+

@@ -11,7 +11,6 @@
 
 #include "config.h"
 #include <execinfo.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <malloc.h>
 #include <stdio.h>
@@ -21,10 +20,8 @@
 #include <wchar.h>
 #include <string.h>
 #include <dlfcn.h>
-#include <sys/resource.h>
-#include <limits.h>
 
-
+#include "../common.h"
 #include "memalloc.h"
 #include "load.h"
 
@@ -340,29 +337,6 @@ static int  get_params(const char *event)
   return -1;
 }
 
-static void set_core_unlimited()
-{
-  struct rlimit l;
-
-  getrlimit( RLIMIT_CORE, &l);
- 
-  if (l.rlim_cur == RLIM_INFINITY) {
-    return; 
-  }
-  
-  if (getuid()==0 || geteuid() == 0) {
-    l.rlim_cur = l.rlim_max = RLIM_INFINITY;
-  } else {
-    if (l.rlim_cur == l.rlim_max) {
-      return; // nothing left to do.
-    }
-    l.rlim_cur = l.rlim_max;
-  }
-
-  if (setrlimit( RLIMIT_CORE, &l )) {
-    LOAD_TRACE("DBGMEM: Warning: Failed to remove core limit errno \n");
-  }
-}
 
 static void next_generation_signal(int sig)
 {

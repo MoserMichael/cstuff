@@ -19,7 +19,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "memalloc.h"
+#include "../common.h"
 #include "load.h"
 #include "sbuf.c"
 
@@ -83,6 +83,7 @@ EXPORT_C void __attribute__((constructor)) mdbg_init_mem_alloc(void)
 #if 0  
   get_valign();
 #endif
+  set_core_unlimited();
 }
 
 EXPORT_C void __attribute((destructor)) mdbg_cleanup_mem_alloc(void)
