@@ -63,11 +63,9 @@ sub get_lib_path
 
 sub run
 {
-
-  my ($exe,$is_cpp);
+  my ($exe,$is_cpp,@pathcomp,$sname,$opt);
 
   $exe = $ARGV[0];
-
   if (! -e $exe) {
     $exe = `which $exe`;
     chomp($exe);
@@ -76,22 +74,34 @@ sub run
 	exit(1);
     }
   }
-  $is_cpp=`ldd $exe | grep stdc++ | wc -l`;
 
+  # script name
+  @pathcomp = split('/', $0);
+  $sname = $pathcomp[ scalar(@pathcomp) - 1 ];
+
+  $opt = "";
+  if ($sname eq "runinitmeme"){
+    $opt = "e";
+  }
+
+  # check if program uses c++
+  $is_cpp=`ldd $exe | grep stdc++ | wc -l`;
   chomp($is_cpp);
 
   if ($is_cpp) {
     $is_cpp="cpp";
   } else {
     $is_cpp="";
-  } 
+  }
 
 
+  # make library path.
   my $LIBPATH=get_lib_path();
-
-  my $lib = "${LIBPATH}/libinitmem${is_cpp}.so";
+  my $lib = "${LIBPATH}/libinitmem${opt}${is_cpp}.so";
   my $prev = $ENV{'LD_PRELOAD'};
   $ENV{'LD_PRELOAD'}="$lib:$prev";
+
+  die $lib;
   
   exec(@ARGV) || print "INITMEM: failed to start debugee. errno $!\n";
   exit(1);
@@ -101,12 +111,17 @@ sub usage
 {
   print <<EOF
 Usage:
-initmem <cmdline>
+runinitmem <cmdline>
+runinitmeme <cmdline>
 
 Runs command line while initmem is enabled; 
 
 inititmem hooks glibc memory allocation functions; newly allocated
 memory is initialised with 0xDD memory about to be freed is set to 0xEE value.
+
+runinitmem - for newly allocated memory all usable memory is set 
+	     Note that usable memory may be larger than what was requested.
+runinitmeme - only memory requested by the user is set 
 
 Tool may be used during testing and debugging; allows to test an
 executable without changing the source.
@@ -128,8 +143,7 @@ If executable depends on std++ then additionally it hooks
 Warning:
 
 You can get similar functionality if you are ready to change source code + recompile;
-glibc mallopt can be called with M_PERTURB options; if set then newly allocated and about to be freed
-memory is set to the same byte value;
+glibc mallopt can be called with M_PERTURB options; if set then newly allocated and about to be freed memory is set to the same byte value; also the glibc features used malloc hooks, these have their own problems.
 
 However i think it is useful to set allocated and freed memory to different
 values; so it is easier to spot if you have uninitialised or freed memory.
