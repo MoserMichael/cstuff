@@ -76,7 +76,7 @@ static void    *pthread_high_address;
 static void dump_maps();
 
 
-#include "log.c"
+#include "../log.c"
 
 #include "fixed_size_alloc.c"
 
@@ -502,20 +502,6 @@ static void do_init()
 
 }
 
-static void dump_maps()
-{
-  char mapName[ 120 ];
-  char path[ PATH_MAX ];
-  char mname[ 30];
-  
-  snprintf( mapName, sizeof(mapName), "/proc/%d/maps", getpid() );
-
-  snprintf( mname, sizeof(mname), "maps%d", getpid() );
-  
-  log_get_path( mname, path, sizeof(path) );
-
-  copy_file( mapName, path, 0);
-}
 
 void filter_cmd(unsigned char *buf, int len)
 {
@@ -1016,7 +1002,7 @@ EXPORT_C void *memalign(size_t boundary, size_t size)
   }
 }
 
-EXPORT_C void *valign(size_t size)
+EXPORT_C void *valloc(size_t size)
 {
   return memalign( getpagesize(), size);
 }

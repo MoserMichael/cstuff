@@ -29,21 +29,13 @@ static int dlsym_nesting;
 #define FILL_BYTE_MALLOCED_MEMORY 0xDD
 #define FILL_BYTE_FREED_MEMORY    0xEE
 
-typedef int    (*PFN_posix_memalign) (void **m, size_t boundary, size_t size);
-
-typedef void * (*PFN_memalign) (size_t boundary, size_t size);
-
-typedef void * (*PFN_valign) (size_t size);
-
 
 MAKE_FUNC( malloc );
 MAKE_FUNC( realloc );
 MAKE_FUNC( free );
 MAKE_FUNC( posix_memalign );
 MAKE_FUNC( memalign );
-#if 0
-MAKE_FUNC( valign );
-#endif
+MAKE_FUNC( valloc );
 
 EXPORT_C void __attribute__((constructor)) mdbg_init_mem_alloc(void)
 {
@@ -52,9 +44,7 @@ EXPORT_C void __attribute__((constructor)) mdbg_init_mem_alloc(void)
   get_free();
   get_posix_memalign();
   get_memalign();
-#if 0  
-  get_valign();
-#endif
+  get_valloc();
   set_core_unlimited();
 }
 
@@ -62,7 +52,21 @@ EXPORT_C void __attribute((destructor)) mdbg_cleanup_mem_alloc(void)
 {
 }
 
-void init( void *ptr )
+#ifdef EXACT_SIZE
+
+static void init( void *ptr, size_t sz )
+{
+    if (ptr)
+    {
+	memset( ptr, FILL_BYTE_MALLOCED_MEMORY, sz );
+    }
+}
+
+#define INIT(ptr,sz) init(ptr, sz);
+
+#else
+
+static void init( void *ptr )
 {
     if (ptr)
     {
@@ -70,6 +74,10 @@ void init( void *ptr )
 	memset( ptr, FILL_BYTE_MALLOCED_MEMORY, asz );
     }
 }
+
+#define INIT(ptr,sz) init(ptr);
+
+#endif	
 
 static void deinit( void *ptr )
 {
@@ -92,7 +100,7 @@ EXPORT_C void *malloc(size_t sz)
 
   ret = get_malloc() (sz);
 
-  init( ret );
+  INIT( ret, sz );
 
   return ret;
 }
@@ -121,7 +129,13 @@ EXPORT_C void *realloc( void *ptr, size_t sz )
   
   // same memory pointer
   if (ret) {
-     size_t nsz = malloc_usable_size(ret);
+     size_t nsz;
+
+#ifdef EXACT_SIZE  
+     nsz = malloc_usable_size(ret);
+#else
+     nsz = sz;
+#endif     
      
      // if size increased - alloc new memory. (probably incorrect, since old_size is larger than requested memory.
      if (nsz > old_size && ret) {
@@ -158,11 +172,28 @@ EXPORT_C int posix_memalign(void **memptr, size_t boundary, size_t size)
 
   ret = get_posix_memalign() (memptr, boundary, size);
   if (!ret) {
-    init( *memptr );
+    INIT( *memptr, size );
   }
 
   return 0;  
 }
+
+EXPORT_C void *valloc(size_t size)
+{
+  void *ret;
+
+  if (dlsym_nesting) {
+     return 0;
+  }
+
+  ret = get_valloc() (size);
+  if (!ret) {
+    INIT( ret, size );
+  }
+  
+  return ret;  
+}
+
 
 EXPORT_C void *memalign(size_t boundary, size_t size)
 {
@@ -175,7 +206,7 @@ EXPORT_C void *memalign(size_t boundary, size_t size)
   ret = get_memalign() (boundary, size);
   
   if (ret) {
-    init( ret );
+    INIT( ret, size );
   }
 
   return ret;  
@@ -189,9 +220,7 @@ void* operator new(size_t sz)
 
   ret = get_malloc() (sz);
 
-  if (ret) {
-    memset(ret, FILL_BYTE_MALLOCED_MEMORY, malloc_usable_size(ret) );
-  }
+  INIT(ret, sz);
 
   return ret;
 }
@@ -203,7 +232,7 @@ void* operator new[] (size_t sz)
 
   ret = get_malloc() (sz);
 
-  init( ret );
+  INIT( ret, sz );
 
   return ret;
 }

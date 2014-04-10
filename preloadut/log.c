@@ -228,6 +228,22 @@ STATIC_C int copy_file(const char *in_file,const char *out_file,FILTER_DATA  fil
   return ret;
 }
 
+STATIC_C void dump_maps()
+{
+  char mapName[ 120 ];
+  char path[ PATH_MAX ];
+  char mname[ 30];
+  
+  snprintf( mapName, sizeof(mapName), "/proc/%d/maps", getpid() );
+
+  snprintf( mname, sizeof(mname), "maps%d", getpid() );
+  
+  log_get_path( mname, path, sizeof(path) );
+
+  copy_file( mapName, path, 0);
+}
+
+
 #define DBG_TRACE_HERE(offset_frames) \
     dbgmem_log_err("-current stack while calling this function\n"); \
     { \

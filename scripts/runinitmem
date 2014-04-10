@@ -116,6 +116,7 @@ Hooked glibc functions are:
     realloc
     posix_memalign
     memalign
+    valloc
     free
 
 If executable depends on std++ then additionally it hooks

@@ -22,20 +22,22 @@
 #include "../common.h"
 #include "load.h"
 #include "sbuf.c"
+#include "../log.c"
 
 static int dlsym_nesting;
 
 #define MSG_LEN  512
-#define TRACE_FD 2
 #define STACK_FRAMES 3
 #define FILL_BYTE_MALLOCED_MEMORY 0xDD
 #define FILL_BYTE_FREED_MEMORY    0xEE
+static int TRACE_FD = 2;
+
 
 typedef int    (*PFN_posix_memalign) (void **m, size_t boundary, size_t size);
 
 typedef void * (*PFN_memalign) (size_t boundary, size_t size);
 
-typedef void * (*PFN_valign) (size_t size);
+typedef void * (*PFN_valloc) (size_t size);
 
 
 MAKE_FUNC( malloc );
@@ -43,9 +45,7 @@ MAKE_FUNC( realloc );
 MAKE_FUNC( free );
 MAKE_FUNC( posix_memalign );
 MAKE_FUNC( memalign );
-#if 0
-MAKE_FUNC( valign );
-#endif
+MAKE_FUNC( valloc );
 
 #if 1
 static __thread int is_in_malloc = 0;
@@ -80,14 +80,15 @@ EXPORT_C void __attribute__((constructor)) mdbg_init_mem_alloc(void)
   get_free();
   get_posix_memalign();
   get_memalign();
-#if 0  
-  get_valign();
-#endif
+  get_valloc();
+
   set_core_unlimited();
 }
 
+
 EXPORT_C void __attribute((destructor)) mdbg_cleanup_mem_alloc(void)
 {
+    dump_maps();
 }
 
 static void init( void *ptr )
@@ -148,6 +149,32 @@ EXPORT_C void *malloc(size_t sz)
 
   return ret;
 }
+
+EXPORT_C void *valloc(size_t sz)
+{
+  void *ret;
+  SBUF sbuf;
+  char sbuf_mem[ MSG_LEN ];
+
+  ret = get_valloc() (sz);
+
+  init( ret );
+
+  SBUF_init( &sbuf, sbuf_mem, sizeof(sbuf_mem) );
+  SBUF_add_s(&sbuf, "valloc size=");
+  SBUF_fmt_size_t(&sbuf, sz );
+  SBUF_add_s(&sbuf, " ptr=0x");
+  SBUF_fmt_ptr(&sbuf, ret );
+  SBUF_add_s(&sbuf, "\n" );
+
+  TRACE_STACK
+
+  write(TRACE_FD, sbuf.buf, sbuf.pos );
+
+
+  return ret;
+}
+
 
 
 EXPORT_C void *realloc( void *ptr, size_t sz )

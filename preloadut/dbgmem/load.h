@@ -18,6 +18,7 @@ typedef void * (*PFN_malloc) (size_t sz);
 typedef void   (*PFN_free) (void *ptr);
 typedef void * (*PFN_calloc) (size_t count, size_t size );
 typedef void * (*PFN_realloc) ( void *ptr, size_t size );
+typedef void * (*PFN_valloc) ( void *ptr, size_t size );
 
 typedef char * (*PFN_strdup) (const char *arg);
 typedef char * (*PFN___strdup) (const char *arg);

@@ -57,7 +57,6 @@
 //----------------------------------------------------------
 #ifndef WIN32
 
-STATIC_C pthread_mutex_t memlock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP; 
 
 #define MT_LOCK(x) pthread_mutex_lock(x)
 #define MT_UNLOCK(x) pthread_mutex_unlock(x)
