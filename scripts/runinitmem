@@ -121,7 +121,7 @@ memory is initialised with 0xDD memory about to be freed is set to 0xEE value.
 
 runinitmem - for newly allocated memory all usable memory is set 
 	     Note that usable memory may be larger than what was requested.
-runinitmeme - only memory requested by the user is set 
+runinitmeme - only memory requested by the user is set  (will be faster (on average) than runinitmem)
 
 Tool may be used during testing and debugging; allows to test an
 executable without changing the source.
@@ -142,19 +142,17 @@ If executable depends on std++ then additionally it hooks
 
 Warning:
 
-You can get similar functionality if you are ready to change source code + recompile;
-glibc mallopt can be called with M_PERTURB options; if set then newly allocated and about to be freed memory is set to the same byte value; also the glibc features used malloc hooks, these have their own problems.
+You can get similar functionality by setting environment variable MALLOC_PERTURB_ ;
 
-However i think it is useful to set allocated and freed memory to different
-values; so it is easier to spot if you have uninitialised or freed memory.
+Note: the debugged process will set core to unlimited, so that if it crashes you will not miss the core fila (after all this is a debugging aid)
+
+Note: a process will be slower under this utility: setting all allocated / freed memory does take its time.
 
 Bugs:
 
 Realloc may have to move the argument pointer - free the old pointer and allocate a new one;
 here the freed memory is not overwritten; can't access memory after it has been freed;
-it may have been already reused.
-
-Note: the debugged process will set core to unlimited, so that if it crashes you will not miss the core file.
+it may have been already reused. That is not that bad: if freed memory has been resused, then its conent will have been reset by the allocation function. (actually MALLOC_PERTURB_ does not have this problem).
 
 EOF
 ;
