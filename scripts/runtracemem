@@ -1,0 +1,679 @@
+#!/usr/bin/perl
+
+use strict;
+use Cwd;
+use Cwd 'realpath';
+use Config;
+
+use FileHandle;
+use IPC::Open2;
+
+
+my $FNAME="tracememlog.html";
+my $STACK_ENTRIES=3;
+my $TRACING_ACTIVE=1; 
+my $TOGGLE_TRACE_SIG=-1;
+my $CMD;
+my $parameter_file_name;
+my $debugged_process_pid;
+my %ADDR2NAME; 
+my %ADDRENTRY;
+
+my $SO_OBJ_LOAD;
+my $symfile;
+my $VERBOSE = 0;
+my $exe_file;
+
+sub get_script_path
+{
+  my $cmd = `cat /proc/$$/cmdline`;
+  my @tok = split("\0", $cmd);
+
+  #return $tok[1];
+  
+  return realpath($tok[1]);
+}
+
+
+sub get_install_dir
+{
+  my $PRG;
+
+
+  $PRG=get_script_path();
+ 
+  $PRG=`dirname $PRG`;
+  chomp($PRG);
+
+  $PRG=`dirname $PRG`;
+  chomp($PRG);
+
+  return $PRG;
+}
+
+
+sub get_lib_path
+{
+   my ($os_type,$os_version,$arch);
+
+   $os_type=`uname -o | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_type);
+
+   $os_version=`uname -r | sed -e 's#/#-#g' -e 's#(#-#g' -e 's#)#-#g'`;
+   chomp($os_version);
+
+   $arch=`uname -m`;
+   chomp($arch);
+
+   return get_install_dir()."/${os_type}-${os_version}-${arch}/lib";
+}
+
+sub ShowUsage
+{
+my $msg = shift;
+
+if ($msg ne "") {
+  print <<HLP
+Error: $msg
+
+HLP
+;
+}
+
+print <<HLP
+
+ [-f log_file] [-s NUMBER] [-a on|off] [-r <sig_num>] <cmd-to-debug>
+
+Starts a process with TRACEMEM memory allocation tracer. Each memory allocation is traced.
+
+Options:
+
+-f outputfile	    set output logfile. if not set then the name is $FNAME
+
+-s NUMBER	    number of stack frames displayed. (default 3)
+
+-a on
+-a off		    if tracing is enabled when process starts (on) or disabled (off); (default on)
+
+-r <sig_num>	    sets a signal handler; the signal handler toggles tracing mode; (example: if tracing was on then it stops upon signal)
+
+[cmd-to-debug]	    command line of process that will be started and debugged.
+
+Note: this debugged process will set its core limit to unlimited.  
+
+HLP
+;
+}
+
+sub parse
+{
+  while( substr($ARGV[0],0,1) eq "-") { 
+    
+    my $cmd = $ARGV[0];
+    shift(@ARGV);
+
+  
+    if ($cmd eq "-f") {
+      
+      $FNAME=$ARGV[0];
+      shift(@ARGV); 
+
+    } elsif ($cmd eq "-s") {
+      
+      $STACK_ENTRIES = scalar( $ARGV[0] );
+      shift(@ARGV); 
+ 
+      if ($STACK_ENTRIES <= 0) {
+        ShowUsage("-s option must be with positive argument");
+      }
+    
+    } elsif ($cmd eq "-a") {
+      my $arg;
+
+      $arg = $ARGV[0];
+      shift(@ARGV);
+      
+      if ($arg eq "on") {
+	$TRACING_ACTIVE = 1;
+      } elsif ($arg eq "off") {
+	$TRACING_ACTIVE = 0;
+      } else {
+        ShowUsage("Illegal values of -a option.");
+      }
+    } elsif ($cmd eq "-r") {
+      $TOGGLE_TRACE_SIG = $ARGV[0];
+      shift(@ARGV);
+
+    } else {
+        ShowUsage("Unknown option $cmd");
+    }
+    
+  }
+  $CMD = join(' ',@ARGV);
+
+  ShowUsage() if ($CMD eq "");
+}
+
+sub set_opts
+{
+
+  $parameter_file_name = "/tmp/tracemem_param_$$";
+  if (! open(OF,">$parameter_file_name")) {
+     $parameter_file_name = "/var/tracemem_param_$$";
+     if (! open(OF,">$parameter_file_name")) {
+        $parameter_file_name = "~/tracemem_param_$$";
+	open( OF, ">$parameter_file_name") || die "TRACEMEM: Can't write parameter file, failed in /tmp and int /var/tmp and in ~\n";
+     }
+  }
+
+  #print "cfg-file " . $parameter_file_name . "\n"; 
+  
+  my $opts="$TRACING_ACTIVE,$STACK_ENTRIES,$TOGGLE_TRACE_SIG";
+
+  print OF $opts;
+  close(OF);
+}
+
+
+sub run
+{
+  my ($is_cpp);
+
+  my $exe = $ARGV[ 0 ];
+     
+  if (! -e $exe) {
+    $exe = `which $exe`;
+    chomp($exe);
+    if ($exe eq "") {
+	print "MEMTRACE: executable $exe not found in the current path\n";
+	exit(1);
+    }
+  }
+
+  $exe_file = $exe;
+
+  # check if program uses c++
+  $is_cpp=`ldd $exe | grep stdc++ | wc -l`;
+  chomp($is_cpp);
+
+  if ($is_cpp) {
+    $is_cpp="cpp";
+  } else {
+    $is_cpp="";
+  }
+
+  set_opts();
+
+  my $lib = get_lib_path() . "/libtracemem${is_cpp}.so";
+
+
+  $debugged_process_pid = fork();
+
+  if ($debugged_process_pid == 0)
+  {
+
+    my $prev = $ENV{'LD_PRELOAD'};
+    if ($prev ne "")
+    {
+	$ENV{'LD_PRELOAD'}="$lib:$prev";
+    }
+    else
+    {
+	$ENV{'LD_PRELOAD'}="$lib";
+    }
+  
+    exec(@ARGV) || print "MEMTRACE: failed to start debugee. errno $!\n";
+    exit(1);
+  }
+  elsif ($debugged_process_pid > 0)
+  {
+     $SIG{INT} = 'IGNORE';
+     $SIG{QUIT} = 'IGNORE';
+     
+     my $status;
+     do {
+       $status = waitpid( $debugged_process_pid, 0); 
+     } until( $status > 0 );
+     
+     $SIG{INT} = 'DEFAULT';
+     $SIG{QUIT} = 'DEFAULT';
+ 
+     my $tmp = $?;
+     my $coredumped  = $tmp & 128;	
+     my $signalno = $tmp & 127;
+     my $st = $tmp >> 8;
+     
+     print "\n\nMEMTRACE: debugee exit code is $st\n";     
+     
+     if ($coredumped) {
+      	print "MEMTRACE: process dumped core; the 'on process exit report' may not contain leak reports, see snapshot file \n";
+     }
+
+     if ($signalno) {
+        my $sname =  sig_name( $signalno );
+	print "MEMTRACE: process exits due to signal $signalno ($sname)\n";
+	if ($sname eq "KILL") {
+	   print "MEMTRACE: process killed due to SIGKILL, the 'on process exit report' is not very informative\n";
+        }   
+     }	
+   
+     # in case that parameter file was not cleared by debugee 
+     `rm -f $parameter_file_name 2>/dev/null`;
+
+  } else {
+     print "MEMTRACE: can't start debuggee. fork failed $!\n";
+     exit(1);
+  }
+}
+
+
+# translate addresses.
+# find leaks 
+# report leaks
+# no summaries like in DBGMEM
+sub analyse
+{
+  my $raw_file = "TRACEMEM_report_" . $debugged_process_pid . ".log";
+  my $map_file = "maps" . $debugged_process_pid;
+  my $line;
+  my $entryno = 1;
+
+  print "MEMTRACE: analysing allocation log, please wait...\n";
+
+  parse_maps($map_file);
+  &start_gdb;
+
+  open(IF, $raw_file) || die "Missing raw report file $raw_file";
+
+  open(OF, ">${FNAME}") || die "Can't open output file $FNAME for writing";
+
+  print OF <<EOF
+<html>
+<head>
+<title>Report by tracemem</title>
+</head>
+<body>
+<pre>
+<ol>
+<li> <a href="#tm">Timeline of all allocations</a>
+<li> <a href="#lk">Memory Leaks</a>
+</ol>
+
+<a name="cm"></a>
+
+<h3>Command line of test<h3>
+
+<table border=1><tr><td>
+EOF
+;
+
+  my $c;
+
+  
+  foreach $c (@ARGV) {
+     printf OF $c;
+  } 
+
+  print OF <<EOF
+
+</td></tr></table>
+
+<a name="tm"></a>
+
+<h3>Timeline of all allocations</h3>
+
+Reative occurence of each allocation; as recorded by TRACEMEM;
+
+<ol>
+EOF
+;
+
+
+
+  my ($idx, $ch, $start, $sztok, $addrtok, $inptrtok);
+
+  while(<IF>)
+  {
+    $line = $_;
+    chomp($line);
+
+    if (substr($line,0,7) eq "|newptr") {
+	$idx = index($line, " ptr=");
+	if ($idx != -1) {   
+	    $idx += 5;
+	    $start = $idx;
+
+	    do
+	    {
+	       $ch = substr($line, $idx, 1 );
+	       $idx ++;
+	    }
+	    while( $ch ne "" && $ch ne " ");
+	    $addrtok = substr($line, $start, $idx - $start );
+	} else {
+	    die;
+	}
+
+	$idx = index($line, "inptr=");
+	if ($idx != -1) {   
+	    $idx += 6;
+	    $start = $idx;
+
+	    do
+	    {
+	       $ch = substr($line, $idx, 1 );
+	       $idx ++;
+	    }
+	    while( $ch ne "" && $ch ne " ");
+	    $inptrtok = substr($line, $start, $idx - $start );
+	}
+	else 
+	{
+	    $inptrtok = "";
+	}
+
+
+	$idx = index($line, "size=");
+	if ($idx != -1) {
+	    $idx += 5;
+	    $start = $idx;
+
+	    do
+	    {
+	       $ch = substr($line, $idx, 1 );
+	       $idx ++;
+	    }
+	    while( $ch ne ""  && $ch ne " " );
+	    $sztok = substr($line, $start, $idx - $start );
+	} else {
+	    die;
+	}
+
+	if ($inptrtok ne "")
+	{
+	    delete $ADDRENTRY{ $inptrtok };
+	}
+
+	$ADDRENTRY{ $addrtok } = [ $entryno, scalar( $sztok ) ];
+	print OF "<li><a name=\"$entryno\"></a><b>" . substr($line,7) . "</b>\n";
+	$entryno ++;
+
+    } elsif (substr($line, 0, 8) eq "|freeptr") {
+	$idx = index($line, " ptr=");
+	if ($idx != -1) {   
+	    $idx += 5;
+	    $start = $idx;
+
+	    do
+	    {
+	       $ch = substr($line, $idx, 1 );
+	       $idx ++;
+	    }
+	    while( $ch ne "" && $ch ne " ");
+	    $addrtok = substr($line, $start, $idx - $start );
+	}
+
+	delete $ADDRENTRY{ $addrtok };
+
+	print OF "<li><b>" . substr($line,8) . "</b>\n";
+	
+    } elsif ($line =~ /Frame: (\d+) (\S+)/) {
+        my $idx = $1;
+	my $addr = "0x" . $2;
+
+	print OF "Frame: $idx " . get_sym_for_addr( $addr ) . "\n";
+
+    } else {
+	print OF $_;
+    }
+  }
+
+
+  print OF <<EOF
+</ol>  
+<a name="lk"></a> 
+<h3>Memory leaks</h3>
+
+</pre>
+A block that is not freed is classified as a leak; reports are sorted in reverse order of allocation size. Each link leads to a more detailed entry that describes the allocation - with some stack frames that describe where it was allocated.
+<pre>
+
+EOF
+;
+
+  my $k;
+  my $sumleak = 0;
+
+  foreach $k (sort { $ADDRENTRY{$b}->[1] <=> $ADDRENTRY{$a}->[1] } keys( %ADDRENTRY )) {
+     my $entry = $ADDRENTRY{ $k };
+
+     #use Data::Dumper;
+     #print Dumper($entry);
+     #exit(1);
+     print OF "Leak: <a href=\"#" . $entry->[0] . "\"> ptr=" . $k . " size=" . $entry->[1] . "</a>\n";
+     $sumleak += $entry->[1];
+  }
+
+  print OF "<hr><br/>Sum of leaked memory: $sumleak\n";
+  close(IF);
+  close(OF);
+
+  unlink($raw_file);
+  unlink($map_file);
+}
+
+&parse;
+&run;
+&analyse;
+
+
+#=====================
+# Interfacing with gdb
+#=====================
+
+
+# read gdb output till prompt 
+sub read_till_prompt
+{
+    # read till prompt appears
+    my $in;
+    my $ret = "";
+
+    while(<GDBOUT>) {
+      my $line = $_;
+      chomp($line);
+  
+      #print "[$line]\n";
+    
+      last if (index($line,"(gdb)") != -1);
+
+      if ($ret ne "") { 
+        $ret = "${ret}\n${line}";
+      } else {
+        $ret = $line;
+      }	
+
+    }
+    return $ret;
+}
+
+sub get_sym_for_addr
+{
+    my $addr = shift;
+
+    if (exists $ADDR2NAME{ $addr } )
+    {
+	    return $ADDR2NAME{ $addr };  
+    }
+    else
+    {
+	    my $name = get_sym_for_addr_internal( $addr );
+
+	    $ADDR2NAME{ $addr } = $name;
+
+	    return $name;
+    }
+
+}
+
+# given symbol address the symbol name is returned
+sub get_sym_for_addr_internal
+{
+   my $arg = shift;
+   my $ret;
+   
+   print GDBIN "info symbol $arg\n";
+   my $res = &read_till_prompt();
+   chomp($res);
+   
+   my @ln = split("\n",$res);
+   my $ret = $ln[1];
+   
+   if (index($ret,"No symbol matches") != -1) {
+     my $fname = find_map_entry($arg);
+     $ret = "$arg - $fname" if ($fname ne "");
+   }
+   $ret = "($arg) $ret ";
+
+   print GDBIN "info line *$arg\n";
+   $res = &read_till_prompt();
+   chomp($res);
+
+   @ln = split("\n",$res);
+ 
+   if (index($ln[1],"No line number information") == -1) {
+
+     my $pos;
+     $pos = index($ln[1],"\\\"");
+     if ($pos != -1) {
+        $pos = index($ln[1],"\\\"",$pos+1);
+
+	if ($pos != -1) {
+	  $ret = $ret.substr($ln[1],0,$pos);
+	}
+     }
+   }
+
+   return $ret;
+}
+
+# start gdb so that we can pipe commands from it.
+sub start_gdb
+{
+   my $arg;
+   my $scr;
+   
+   if ($SO_OBJ_LOAD ne "") {
+
+     if (open(GDBSCRIPT,">.gdbscript")) {
+	print GDBSCRIPT $SO_OBJ_LOAD;
+	close(GDBSCRIPT);
+	$scr = "-x .gdbscript";
+     }
+   }
+
+   $arg = "--symbols=$symfile" if ($symfile ne "");
+   open2(*GDBOUT, *GDBIN, "gdb --interpreter=mi $arg $scr $exe_file");
+   &read_till_prompt();
+   #print "GDB ready\n";
+
+}
+
+#=========================================================================
+# find name of module by analysing map file if no symbol is found by gdb.
+#=========================================================================
+
+
+my $MAP_MAX_IDX=0;
+my @MAP_FROM;
+my @MAP_TO;
+my @MAP_FNAME;
+
+sub parse_maps
+{
+   my $fname = shift;
+   
+   if (open(MAPFILE,$fname)) {
+     while(<MAPFILE>) {
+
+       my @cols = split( " ", $_);
+
+             
+       if ($cols[5] ne "") {
+         my $idx = index($cols[0],"-");  
+         if ($idx != -1) {
+
+	    $MAP_FROM[  $MAP_MAX_IDX ] = hex( substr($cols[0],0,$idx) );
+            $MAP_TO[    $MAP_MAX_IDX ] = hex( substr($cols[0],$idx+1) ); 
+	    $MAP_FNAME[ $MAP_MAX_IDX ] = $cols[5];
+	    
+	    
+	    if (substr($cols[1],0,2) eq "r-") {
+
+	        my $fname = $MAP_FNAME[ $MAP_MAX_IDX ];
+		if (-f $fname) {
+		  my $text_offset =get_text_section_offset( $fname );
+		  my $load_at = $text_offset  + $MAP_FROM[  $MAP_MAX_IDX ]; 
+
+		  print "$fname - map: " . $MAP_FROM[ $MAP_MAX_IDX ] . " - text: " . $text_offset . " - gdb: " . $load_at. "\n" if ($VERBOSE);
+		  
+		  $SO_OBJ_LOAD = $SO_OBJ_LOAD.sprintf("add-symbol-file %s 0x%X\n", $fname, $load_at ); 
+		}
+	    }
+ 
+	    
+	    $MAP_MAX_IDX ++;    
+         }
+       }
+     }
+     close(MAPFILE);
+  }
+
+  #my $i;
+  #
+  #for($i=0;$i<$MAP_MAX_IDX;$i++) {
+  #   print "> $MAP_FROM[$i] : $MAP_TO[$i] - $MAP_FNAME[$i] \n";
+  #}
+}
+
+sub get_text_section_offset
+{
+  my $fname = shift;
+  my $cmd = "objdump --section-headers $fname | grep ' \.text' | awk '{ print \$6 }'";
+  
+  print ">$cmd\n" if ($VERBOSE); 
+  my $res = `$cmd`;
+  if ($?) {
+    print "WARNING: objdump utility did not work, check that it is instlalled here\n";
+  }
+  
+  chomp($res);
+  print "$res\n" if ($VERBOSE);
+
+  
+  return hex( $res );
+}
+
+
+sub find_map_entry
+{
+   my $addr = shift ;
+   my $i;
+  
+   #die " $addr : ".hex($addr) ;
+
+   $addr = hex($addr);
+
+   for( $i = 0; $i < $MAP_MAX_IDX; $i++) {
+      if ($addr >= $MAP_FROM[ $i ] && $addr <= $MAP_TO[ $i ]) {
+        
+        my $rva = $addr -  $MAP_FROM[ $i ];
+ 
+	return "(rva: $rva) ".$MAP_FNAME[ $i ];
+      }
+   }
+   return "($addr) <unknown file>";
+}
+
+
+#close(GDB);

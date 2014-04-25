@@ -129,24 +129,7 @@ typedef struct tagMMAP_MEM_ENTRY {
   MMAP_MEM_ENTRY;
 
 
-typedef void (*MY_SIGHANDLER_T) (int);
 
-static int set_signal( int signum, MY_SIGHANDLER_T handler_func )
-{
-#ifdef HAVE_SIGACTION
-	struct sigaction sa;
-
-	sa.sa_handler = handler_func;
-	sa.sa_flags = 0x0;
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(signum, &sa, NULL) == -1)
-	    return -1;
-#else
-	if (signal(signum, handler) == SIG_ERR)
-	    return -1;
-#endif
-	return 0;
-}
 
 //------------------------------------------------
 // globals

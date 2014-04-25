@@ -101,7 +101,7 @@ sub run
   my $prev = $ENV{'LD_PRELOAD'};
   $ENV{'LD_PRELOAD'}="$lib:$prev";
 
-  die $lib;
+  #die $lib;
   
   exec(@ARGV) || print "INITMEM: failed to start debugee. errno $!\n";
   exit(1);
@@ -140,13 +140,19 @@ If executable depends on std++ then additionally it hooks
    operator delete
    operator delete[]
 
+Note: 
+  the debugged process will set core to unlimited, so that if it crashes you will not miss 
+  the core file (after all this is a debugging aid).
+
+  Note: a process will be slower under this utility: 
+  setting all allocated / freed memory does take its time.
+
+
 Warning:
 
-You can get similar functionality by setting environment variable MALLOC_PERTURB_ ;
-
-Note: the debugged process will set core to unlimited, so that if it crashes you will not miss the core fila (after all this is a debugging aid)
-
-Note: a process will be slower under this utility: setting all allocated / freed memory does take its time.
+actually GLIBC can do that by either:
+  set environment variable MALLOC_PERTURB_ to byte value set by newly allocated/freed memory
+  from process set mallopt with M_PERTURB
 
 Bugs:
 
