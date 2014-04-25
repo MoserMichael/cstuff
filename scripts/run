@@ -41,6 +41,7 @@ my $RUN_TOP_LOG;
 my $LIBPATH;
 
 my $debugged_process_pid;
+my %ADDR2NAME; 
 
 
 &parse;
@@ -974,8 +975,28 @@ sub read_till_prompt
     return $ret;
 }
 
-# given symbol address the symbol name is returned
 sub get_sym_for_addr
+{
+    my $addr = shift;
+
+    if (exists $ADDR2NAME{ $addr } )
+    {
+	    return $ADDR2NAME{ $addr };  
+    }
+    else
+    {
+	    my $name = get_sym_for_addr_internal( $addr );
+
+	    $ADDR2NAME{ $addr } = $name;
+
+	    return $name;
+    }
+
+}
+
+
+# given symbol address the symbol name is returned
+sub get_sym_for_addr_internal
 {
    my $arg = shift;
    my $ret;
