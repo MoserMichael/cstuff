@@ -65,7 +65,7 @@ make_file $TARGETS
 cd ..
 
 if [ "x$1" != "x" ]; then
-  make MODE=$1
+  make MODE=$1 $@
 else
   make cleanall $@
   make MODE=releaseBuild test $@
