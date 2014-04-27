@@ -20,6 +20,9 @@ tracemem_CFLAGS=
 
 tracemem_LIBS=dl
 
+tracemem_INSTALL:
+	$(call install-a-file,../../scripts/runtracemem,$(PREFIX)/etc)
+
 #---
 
 tracememcpp_TYPE=shlib
