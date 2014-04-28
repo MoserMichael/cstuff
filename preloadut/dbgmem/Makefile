@@ -20,6 +20,10 @@ dmemc_CFLAGS=-D_ADVANCED_TOOL_ -Wno-unused-result -fno-inline
 
 dmemc_LIBS=dl
 
+dmemc_INSTALL:
+	$(call install-a-file,../../scripts/run,$(PREFIX)/etc)
+
+
 #---
 
 dmems_TYPE=shlib

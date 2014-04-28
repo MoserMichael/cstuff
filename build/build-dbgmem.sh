@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-TARGETS="vtest cutils butils nutils tutils preloadut/dbgmem"
+TARGETS="vtest cutils butils nutils tutils preloadut/dbgmem preloadut/tracemem"
 
 DIR=`dirname $0`
 
