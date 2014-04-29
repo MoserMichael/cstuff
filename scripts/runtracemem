@@ -88,13 +88,13 @@ HLP
 
 print <<HLP
 
- [-f log_file] [-s NUMBER] [-a on|off] [-r <sig_num>] <cmd-to-debug>
+ [-f reportfile] [-s NUMBER] [-a on|off] [-r <sig_num>] <cmd-to-debug>
 
 Starts a process with TRACEMEM memory allocation tracer. Each memory allocation is traced.
 
 Options:
 
--f outputfile	    set output logfile. if not set then the name is $FNAME
+-f reportfile	    set name of report file. if not set then the name is $FNAME
 
 -s NUMBER	    number of stack frames displayed. (default 3)
 
