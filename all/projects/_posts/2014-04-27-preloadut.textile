@@ -80,8 +80,8 @@ DBGMEM in simple mode also adds a word of memory before and after the memory blo
   ----------------------------------------------------------------
   |								 |
   V                                                              V
-[DBGMEM header][guard word][user memory][guard word]		[DBGMEM header][guard byte][user memory][guard byte]
-[-- memory returned by glibc ----------------------]		[-- memory returned by glibc ----------------------]
+[DBGMEM header][guard word][user memory][guard word] [DBGMEM header][guard byte][user memory][guard byte]
+[-- memory returned by glibc ----------------------] [-- memory returned by glibc ----------------------]
 
 </pre>
 
