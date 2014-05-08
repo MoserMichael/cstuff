@@ -21,7 +21,7 @@ One can always do Objects in C with abstract data types and function pointers in
 
 C++ templates are sort of awful; D seems to have a better template facility ( "link":http://dlang.org/template.html )
 
-another big gripe about C++ are header files - the feature inherited from C; every type or function defintion must be defined before use, so one has to include the text of the definition into the currently compiled source file; One of the nicer points of Java as a language is that it gets rid of header files; 
+another big gripe about C++ are header files - the feature inherited from C; every type or function defintion must be defined before use, so one has to include the text of the definition into the currently compiled source file; One of the nicer points of Java (and C#) as a language is that it gets rid of header files; 
 
 No that is because of the preprocessor; with C it gathers one source file with all included headers into one text, compiles it and type checks everything against the intermediate representation;
 
