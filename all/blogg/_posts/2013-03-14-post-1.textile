@@ -5,6 +5,19 @@ title: <notextile>a bold project</notextile>
 h2. {{ page.title }}
 <p class="publish_date">14 March 2013</p>
 
-<notextile>
-<br><br>Oooo! Object oriented programming in Bash shell; what a bold project.<br><br><a class="ot-anchor" href="http://sourceforge.net/p/oobash/code/937/tree/oobash/docs/" rel="nofollow">http://sourceforge.net/p/oobash/code/937/tree/oobash/docs/</a><br><br>every programming language can have its own object system (maybe with the exception for qbasic :-)
-</notextile>
+Oooo! Object oriented programming in Bash shell; what a bold project.
+
+"oobash project":http://sourceforge.net/p/oobash/code/937/tree/oobash/docs/
+
+every programming language can have its own object system (maybe with the exception for qbasic :-)
+
+Lisp has the common lisp object system ("CLOS":http://en.wikipedia.org/wiki/Common_Lisp_Object_System )
+
+-----
+
+some people wonder if C++ is worth the effort ( "C++ FQA":http://yosefk.com/c++fqa/ )
+
+One can always do Objects in C with abstract data types and function pointers instead of virtual functions; i suspect that the real 'killer feature' of C++ is that one can do objects with fewer keystrokes. 
+
+C++ templates are sort of awful; D seems to have a better template definition ( "link":http://dlang.org/template.html )
+
