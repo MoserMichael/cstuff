@@ -57,7 +57,7 @@ An example of this trick is the INITMEM project ( "see here":https://github.com/
 
 h3. Overview of the tools
 
-bh4. TRACEMEM - tracing memory allocations
+h4. TRACEMEM - tracing memory allocations
 
 One approach is to trace all memory allocations as they happen; a shared library intercepts all call to the memory allocation functions; it directs them to GLIBC memory allocator, however a log entry is written to a file for each call to malloc/free/etc. The log file entry contains pointer value allocated or freed, the size of the memory block, and a few stack frames that describe what part of the program caused the logged even. This is the raw information, when the process exists this information is analyzed, if a memory allocation is not paired with a call to free then this event is reported as a leak.
 
