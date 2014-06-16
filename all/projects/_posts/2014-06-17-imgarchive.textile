@@ -49,7 +49,7 @@ img-archive.pl --import --source &lt;dir&gt; [ --source &lt;dir2&gt; ] --dest &l
 
 	Images are ordered into a directory hierarchy
 
-	 <year the picture was taken>/<month picture was taken>/<day picture was taken>/<file name>
+	 &lt;year the picture was taken&lt;/&gt;month picture was taken&lt;/&lt;day picture was taken&gt;/&lt;file name&gt;
 
 	The date of picture taken is extracted from the image file (where possible) - 
 	this is enabled by the ExifTool, written by Phil Harvey.
