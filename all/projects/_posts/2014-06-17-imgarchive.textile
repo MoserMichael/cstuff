@@ -96,12 +96,13 @@ h3. How to install it
 The program is written as a perl script (caugh caugh). It can be used on both Linux and Windows;
 
 So on Linux you need
+- the "img-archive.pl":https://raw.githubusercontent.com/MoserMichael/cstuff/master/img-archive/img-archive.pl script
 - perl installed
 - perl package Exif
 - jpeginfo program (depends on jpeglib)
 - openssl installed (comes with most distros default installation)
 
-To simplify things you can just download and unzip "this archive":...   The archive includes:
+To simplify things you can just download and unzip "this archive":https://github.com/MoserMichael/cstuff/raw/master/img-archive/img-archive.zip   The archive includes:
 - the program
 - perl package Exif
 - jpeginfo program compiled on windows for Cygwin (if that stops you can just build it by going to jpeginfo_prog directory and run make).
@@ -147,8 +148,10 @@ h4. Integrity check
 * Save the modified index.
 
 
-h3. An Ode to perl;
+h3. An ode to Perl
 
 Perl is like an old friend that is always there for you; whenever there is a problem it comes in with a huge set of libraries that seem to cover almost all areas, whenever there is a problem one can easily make up a program to automate the process. For example during the recession of 2001 it helped me to make up a program to spam prospective employees with my CV, the script would parse job boards for adds, build a database of adds and send out the CV; somehow that helped me and some of my friend; 
 Things like that create brand loyalty, at least for me ;-)
+
+Perl the duct tape of more than the early internet !
 
