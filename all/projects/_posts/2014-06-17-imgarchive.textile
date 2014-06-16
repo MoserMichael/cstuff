@@ -98,9 +98,9 @@ The program is written as a perl script (caugh caugh). It can be used on both Li
 So on Linux you need
 - the "img-archive.pl":https://raw.githubusercontent.com/MoserMichael/cstuff/master/img-archive/img-archive.pl script
 - perl installed
-- perl package Exif
-- jpeginfo program (depends on jpeglib)
-- openssl installed (comes with most distros default installation)
+- perl package Exif, written by Phil Harvey. ("here":http://cpansearch.perl.org/src/EXIFTOOL/Image-ExifTool-9.60/html/ExifTool.html and "here":http://www.sno.phy.queensu.ca/~phil/exiftool/ExifTool.html
+- jpeginfo program written by Timo Kokonnen ("here":https://github.com/tjko/jpeginfo )
+- openssl must be installed (comes with most distros default installation)
 
 To simplify things you can just download and unzip "this archive":https://github.com/MoserMichael/cstuff/raw/master/img-archive/img-archive.zip   The archive includes:
 - the program
