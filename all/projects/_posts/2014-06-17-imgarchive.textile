@@ -41,10 +41,10 @@ A short description of that functionality:
 
 <notextile>
 <pre>
-img-archive.pl -i -s <dir> [ -s <dir2> ] -d <dir>   [ --noprogress ]
-img-archive.pl --import --source <dir> [ --source <dir2> ] --dest <dir>
+img-archive.pl -i -s &lt;dir> [ -s &lt;dir2&gt; ] -d &lt;dir&gt;   [ --noprogress ]
+img-archive.pl --import --source &lt;dir&gt; [ --source &lt;dir2&gt; ] --dest &lt;dir&gt;
 
-	import images from source directory (specified by -s <dir>) to archive (specified  by -d <dir>)
+	import images from source directory (specified by -s &lt;dir&gt;) to archive (specified  by -d &lt;dir&gt;)
 	Multiple source directories can be specified by repeating option -s
 
 	Images are ordered into a directory hierarchy
@@ -68,8 +68,8 @@ A short description of that functionality:
 
 <notextile>
 <pre>
-img-archive.pl -m -s <dir> [ -s <dir2> ]    [ --noprogress ]
-img-archive.pl --merge --source <dir> [ --source <dir2> ] 
+img-archive.pl -m -s &lt;dir&gt; [ -s &lt;dir2&gt; ]    [ --noprogress ]
+img-archive.pl --merge --source &lt;dir&gt; [ --source &lt;dir2&gt; ] 
 
 	Merge a number of archives; after merging every archive should have the same set of data;
 	However the file names may differ.
@@ -83,8 +83,8 @@ A short description of that functionality:
 
 <notextile>
 <pre>
-img-archive.pl -c -s <dir> [ -s <dir2> ] [ --noprogress ]
-img-archive.pl --check --source <dir> [ --source <dir2> ]  [ --noprogress ]
+img-archive.pl -c -s &lt;dir&gt; [ -s &lt;dir2&gt; ] [ --noprogress ]
+img-archive.pl --check --source &lt;dir&gt; [ --source &lt;dir2&gt; ]  [ --noprogress ]
 	
 	checks an existing archive for consistency; 
 
