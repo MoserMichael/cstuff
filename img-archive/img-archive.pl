@@ -11,12 +11,9 @@ use Cwd 'abs_path';
 use Getopt::Long;
 
 
-if (-d "./exif")
-{
-	use lib abs_path("./exif/lib");
-}
+eval "use lib abs_path(\"./exif/lib\");use Image::ExifTool  qw(:Public);";
 
-use Image::ExifTool  qw(:Public);
+#use Image::ExifTool  qw(:Public);
 
 our ($opt_h, $opt_d, @opt_s, $opt_c, $opt_i, $opt_m, $DEBUG, $NOPROGRESS );
 our ($the_index, $tf, $has_jpeginfo);
