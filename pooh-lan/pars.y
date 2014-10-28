@@ -2,7 +2,7 @@
 %debug
 %pure-parser
 %parse-param { PARSECONTEXT *parse_context }
-%lex-param { LEX_PARAMS }
+%lex-param { YYLEX_PARAM } 
 
 
 %{
