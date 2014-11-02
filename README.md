@@ -1,7 +1,7 @@
 cstuff
 ======
 
-My C projects as explained here 
+My C projects as explained here http://mosermichael.github.io/cstuff
 
 inludes the following projects: 
 
