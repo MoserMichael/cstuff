@@ -7,7 +7,7 @@ inludes the following projects:
 
 /vtest  - unit testing library in C
 
-/cutils  - collections and data structures in C
+/cutils  - collections and data structures in C (docs here http://mosermichael.github.io/cstuff/docs.html )
 
 /nutils - utilities for socket programming and buffer handling
 
@@ -23,6 +23,6 @@ inludes the following projects:
 
 /preloadut - memory/leak debugger (overloads memory allocation and tracks memory blocks) (see http://mosermichael.github.io/cstuff/all/projects/2014/04/27/preloadut.html )
 
-/stack - tool to track stack smashing (more here http://mosermichael.github.io/cstuff/all/projects/2011/06/19/stack-mirror.html )bbbbbbbb
+/stack - tool to track stack smashing (here http://mosermichael.github.io/cstuff/all/projects/2011/06/19/stack-mirror.html )
 
 
