@@ -23,6 +23,5 @@ inludes the following projects:
 
 /preloadut - memory/leak debugger (overloads memory allocation and tracks memory blocks) (see http://mosermichael.github.io/cstuff/all/projects/2014/04/27/preloadut.html )
 
-/stack - tool to track stack smashing (here http://mosermichael.github.io/cstuff/all/projects/2011/06/19/stack-mirror.html )
-
-
+/stack - detect stack smashing (here http://mosermichael.github.io/cstuff/all/projects/2011/06/19/stack-mirror.html )
+h
