@@ -1,0 +1,59 @@
+---
+layout: post
+title: <notextile>readable Lisp</notextile>
+---
+h2. {{ page.title }}
+<p class="publish_date">9 November 2014</p>
+
+
+Steve Yegge "says here":https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz that there are two types of 
+approaches to software development.
+
+The 'conservative' (risk averse) approach: bugs are not allowed to happen, quality comes first; Statically type checked 
+languages are preferred
+
+The 'liberal' approach (flexible design and speed to change come first): bugs are a fact of live so lets face them as 
+they happen; Dynamic languages are tolerated,
+
+- are real world politics connected to this? Not significantly; says that more important are - colleges and teachers; early (formative ?) experience as a programmer 
+
+software 'conservatives' say
+
+- bugs must be fixed before launch (like software specs, UML modeling and unit tests)
+- limit syntax to 'safe' features ('central committee' approves style guide that forbids code generation/internal DSL, dynamic RTTI, exceptions, etc).
+- static type checking a must
+- data must be stored according to well defined schema (in third normal form)
+- no debugging features on production system (to avoid back-doors) (??? isn't that common sense ???) 
+- fast is better then slow
+
+software 'liberals' say
+
+- bugs are not a big deal; fix them as they happen
+- fewer rules, so that there is a short learning period for new programmers (not one year like in Google)
+- don't need protection from language features; 
+- code should be small (shortness conveys expressiveness / 'power' of an abstraction )
+- requirement of data schema slows down development  (????) Schema should follow the code - when nature of data is 
+better understood.
+- interfaces: Modeling is just guessing how interface will look like (???) Possibility to evolve an interface is 
+valued (also backward and forward compatibility ????)
+-  Public interfaces should always do the simplest thing that could possibly work, and grow only as needed. '
+- System flexibility can mean the difference between you getting the customer (or contract) vs. your competitor nabbing 
+it instead. Security and safety risks in run time production systems can be mitigated and controlled by logging, 
+monitoring and auditing. There are plenty of existence-proofs of large systems with root-access backdoor and shells 
+(e.g. RDBMS, online game servers) whose risk is controlled while still giving them world-class run time flexibility. 
+(??????)
+- Premature optimization is the root of all evil. Get the code working first.
+
+
+Examples of 'software conservative' companies: Google and Microsoft (very conservative)
+Examples of 'liberal' companies: Facebook and Amazon
+
+----------------------------------
+
+I think the vision/business model of a company has a big role at defining the politics of a company; this factor is pushing a companies into the camp of 'software liberals'  or 'software conservatives'.
+
+- Facebook had to climb to the top of the very dynamic 'social' heap, this extensive growth model made them very 'progressive'. (well they need to stay on top in order to stay relevant, but apparently the founders are still dominating)
+- Amazon has the vision of becoming the number one retailer and everything is subordinate to this vision (still did not make a profit in ten years  or so), so they also opt for extensive growth.
+
+- Google and Microsoft must preserve their relative positions, so they are more defensive and have more to loose/fear to loose their relative positions, so they are more 'software conservative'. (also both Google and Microsoft both have this one great product that everything else depends on)?
+
