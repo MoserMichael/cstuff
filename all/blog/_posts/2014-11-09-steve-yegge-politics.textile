@@ -29,10 +29,10 @@ software 'liberals' say
 - fewer rules, so that there is a short learning period for new programmers (not one year like in Google)
 - don't need protection from language features; 
 - code should be small (shortness conveys expressiveness / 'power' of an abstraction )
-- requirement of data schema slows down development  (????) Schema should follow the code - when nature of data is better understood.
-- interfaces: Modeling is just guessing how interface will look like (???) Possibility to evolve an interface is valued (also backward and forward compatibility ????)
+- requirement of data schema slows down development. Schema should follow the code - when nature of data is better understood.
+- interfaces: Modeling is just guessing how interface will look like. Possibility to evolve an interface is valued (also backward and forward compatibility
 -  Public interfaces should always do the simplest thing that could possibly work, and grow only as needed. '
-- System flexibility can mean the difference between you getting the customer (or contract) vs. your competitor nabbing it instead. Security and safety risks in run time production systems can be mitigated and controlled by logging, monitoring and auditing. There are plenty of existence-proofs of large systems with root-access backdoor and shells (e.g. RDBMS, online game servers) whose risk is controlled while still giving them world-class run time flexibility.  (??????)
+- System flexibility can mean the difference between you getting the customer (or contract) vs. your competitor nabbing it instead. Security and safety risks in run time production systems can be mitigated and controlled by logging, monitoring and auditing. There are plenty of existence-proofs of large systems with root-access backdoor and shells (e.g. RDBMS, online game servers) whose risk is controlled while still giving them world-class run time flexibility. 
 - Premature optimization is the root of all evil. Get the code working first.
 
 
