@@ -41,7 +41,7 @@ On the plus side of things c++11 and later standards address real pressing probl
   however this feature comes at the cost of great complexity. at least half of this book is about r-value references and move semantics.
 * auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of c++, but it was later dropped !!! Later it got adopted by languages   like D and Java (since version 7); so the pressure was on C++ standard committee to make the language more 'powerful'.
 * there is some form of function invocation/computation at compile time. (but it can't be used for meta-programming)
-* lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over iterators.
+* lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over std::algoritm .
   also keep figuring when captured variable is copied by value or by reference (you can even move stuff into the capture !)
 * a richer standard library; std::uniqe_ptr is nice (shared_ptr & reference counting is messy and it always uses atomic/lockless reference count, no way to customize that); they added atomic(lockless) integer types, which is nice; the new  concurrency API. STL collections add emplace - avoids creation of temporary values in some cases.
 
