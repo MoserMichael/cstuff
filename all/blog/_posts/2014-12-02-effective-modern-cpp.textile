@@ -31,24 +31,22 @@ A good high-level language allows you to forget about many small details of prog
 C++ fans:
 
 * application programmers really seem to value the expressiveness of C++; 
-* 'conservative' approach to software engineering (as Steve Yegge put it) in these quarters they don't like text based meta programming; however templates are considered to be powerful enough (somehow they don't mind the convoluted nature of C++ templates)
-* in most shops they have coding guidelines that pick the desired C++ features and formulate 'best practices'; the stated aim here is to create a 'manageable subset' of the language. Well results are mixed (it's usually like this for codified instructions ...)
-
+* 'conservative' approach to software engineering (as Steve Yegge put it "more here":http://mosermichael.github.io/cstuff/all/blog/2014/11/09/steve-yegge-politics.html ) in these quarters they don't like text based meta programming; however templates are considered to be powerful enough (somehow they don't mind the convoluted nature of C++ templates)
+* in most shops they have coding guidelines that pick the desired C++ features and formulate 'best practices'; the stated aim here is to create a 'manageable subset' of the language. Well results are mixed (it's usually like this with standardized regulations ...)
 
 On the plus side of things c++11 and later standards address real pressing problems of C++98:
 
-- the override specifier makes it hard to make errors while overriding virtual functions (Java had this  feature for a long time)
+- the override specifier makes it hard to make errors while overriding virtual functions; now one constructor can call another one (Java had these feature for a long time)
 - move semantics can avoid unnecessary creation of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy.) 
   however this feature comes at the cost of great complexity. at least half of this book is about r-value references and move semantics.
-- auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of c++, but it was later dropped !!! Later it got adopted by languages   like D and Java (since version 7); so the pressure was on C++ committee to make the language more 'powerful'.
-- lambda functions are supposed to make stl::algorithms usable, but i doubt that these will be used: try to debug this code; i guess people will still prefer loops over iterators.
+- auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of c++, but it was later dropped !!! Later it got adopted by languages   like D and Java (since version 7); so the pressure was on C++ the committee to make the language more 'powerful'.
+- lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over iterators.
   also keep figuring when captured variable is copied by value or by reference (you can even move stuff into the capture !)
 - a richer standard library; std::uniqe_ptr is nice (shared_ptr & reference counting is messy and it always uses atomic/lockless reference count, no way to customize that); they added atomic(lockless) integer types, which is nice; the new  concurrency API. STL collections add emplace - avoids creation of temporary values in some cases.
 
 I guess C++11 is the result of 'evolutionary pressure' - over time other programming languages added a lot of features (some sort of type deduction and lambda functions) and the C++ central committee decided that it had to catch up in order to stay relevant.
 
 the bottom line: for me it is advisable to read this mess in order to remain employable. 
-
 
 Also here is a nice overview of "C++11":https://en.wikipedia.org/wiki/C++14 and "c++14":https://en.wikipedia.org/wiki/C++14 from wikipedia.
 
