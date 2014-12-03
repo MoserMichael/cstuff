@@ -492,7 +492,7 @@ class Base
 
 New in C++11 - stl collections have cbegin and cend - to return const iterators  (and crbegin/crend - for const reverse iterators). (before that usage of const iterators was difficult)
 
-For maximum generality (for example in templates) use std::cbegin(container) - for build in arrays these are provided as global functions !) (in C++14 std::cbegin(c)/std::cend(c) were added, but they already had std::begin(c)/std:end(c) in c++11 !!!)
+For maximum generality (for example in templates) use std::cbegin(container) - for build in arrays these are provided as global functions !) (in C++14 std::cbegin(c)/std::cend(c) were added, but they already had std::begin(c)/std::end(c) in c++11 !!!)
 
 this one would add cbegin for C++11 too:
 
@@ -579,7 +579,7 @@ std::lock_guard<std::mutex> guard(m);
 </pre></blockquote>
 
 
-std:atomic<int> cnt; // for atomic, non locking primitives. (has overloaded ++,--, +=(int) and int operator())
+std::atomic<int> cnt; // for atomic, non locking primitives. (has overloaded ++,--, +=(int) and int operator())
 
 
 (item 16) noexcept
@@ -924,7 +924,7 @@ class Foo
 {
   template<typename T>
   void setName(T &&newName) { name = std::move(newName); }
-  std:sting name;
+  std::sting name;
 }
 </pre></blockquote>
 
@@ -932,7 +932,7 @@ here is a bug:
 
 auto n = get_string_value();
 Foo foo;
-foo.setName(n); // after the call n has been moved and its value is empty !!!!!! the lvalue arg should have been copied; std:forward can take care of it.
+foo.setName(n); // after the call n has been moved and its value is empty !!!!!! the lvalue arg should have been copied; std::forward can take care of it.
 
 
 <blockquote><pre>
@@ -940,7 +940,7 @@ class Foo
 {
   template<typename T>
   void setName(T &&newName) { name = std::forward<T>(newName); } // correct form; copies where l-value reference, moves where r-value reference.
-  std:sting name;
+  std::string name;
 }
 
 </pre></blockquote>
@@ -1283,7 +1283,8 @@ public:
 
     printf("val_ptr=%p\n", &vall);
 
-    //auto e = [] (int c) { return c * vall; }; // does not compile, must specify the imported variable
+    //auto e = [] (int c) { return c * vall; }; 
+    // does not compile, must specify the imported variable
 
     // value vall is copied
     auto e = [vall] (int c) { printf("v=%p\n", &vall); return c * vall; };
@@ -1315,7 +1316,7 @@ public:
 
 <blockquote><pre>
 
-auto pw = std:make_unique<Foo>();
+auto pw = std::make_unique<Foo>();
 
 auto func = [ pw = std::move(pw) ]  // init capture has expression to initalize captured variables (here move unique_ptr into capture)
 	    { return pw->foo(); }x
@@ -1326,9 +1327,9 @@ auto func = [ pw = std::move(pw) ]  // init capture has expression to initalize 
 
 <blockquote><pre>
 
-auto pw = std:make_unique<Foo>();
+auto pw = std::make_unique<Foo>();
 
-auto pw = std:make_unique<Foo>();
+auto pw = std::make_unique<Foo>();
 	std::bind( // C++11 emulation
 		[](std::unique_ptr<Foo> & data) // of init capture
 		{ return pw->foo() },
