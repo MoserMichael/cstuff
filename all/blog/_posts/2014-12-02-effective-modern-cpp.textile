@@ -1225,7 +1225,7 @@ auto e = [=] (int c) { return c * val_; };
 
 ----  
 <blockquote>
-
+<pre>
 #include <stdio.h>
 
 class Foo
@@ -1289,6 +1289,7 @@ public:
     auto d = [&] (int c) { printf("v=%p\n", &vall); return c * vall; };
     printf("res=%d\n", d( arg ) );
   }
+</pre>
 </blockquote>
 
 (item 34) init capture in C++14
