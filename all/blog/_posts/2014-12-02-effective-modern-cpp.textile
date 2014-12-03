@@ -37,7 +37,7 @@ C++ fans:
 On the plus side of things c++11 and later standards address real pressing problems of C++98:
 
 * the override specifier makes it hard to make errors while overriding virtual functions; now one constructor can call another one (Java had these feature for a long time)
-* move semantics can avoid unnecessary creation of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy.)
+* move semantics can avoid unnecessary deletion of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy, nowadays the data of this copy is moved right into a.
   however this feature comes at the cost of great complexity. at least half of this book is about r-value references and move semantics.
 * auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of c++, but it was later dropped !!! Later it got adopted by languages   like D and Java (since version 7); so the pressure was on C++ standard committee to make the language more 'powerful'.
 * lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over iterators.
