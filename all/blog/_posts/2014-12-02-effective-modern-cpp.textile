@@ -15,7 +15,7 @@ Luckily there is Scott Meyers who can explain the resulting mess of regulations;
 is the added complexity worth it? I don't know, there are two opinions here:
 
 
-C++ critics: 
+C++ critics:
 
 * many system programmers do not like the exception feature, because it makes it almost impossible to handle error conditions without some kind of subtle leaks.
 * system programmers often decry the a loss of control that comes with C++; compared to C it is harder to tell what code is being generated. (See Linus Thorvalds famous "C++ rant":http://harmful.cat-v.org/software/c++/linus )
@@ -30,14 +30,14 @@ A good high-level language allows you to forget about many small details of prog
 
 C++ fans:
 
-* application programmers really seem to value the expressiveness of C++; 
+* application programmers really seem to value the expressiveness of C++;
 * 'conservative' approach to software engineering (as Steve Yegge put it "more here":http://mosermichael.github.io/cstuff/all/blog/2014/11/09/steve-yegge-politics.html ) in these quarters they don't like text based meta programming; however templates are considered to be powerful enough (somehow they don't mind the convoluted nature of C++ templates)
 * in most shops they have coding guidelines that pick the desired C++ features and formulate 'best practices'; the stated aim here is to create a 'manageable subset' of the language. Well results are mixed (it's usually like this with standardized regulations ...)
 
 On the plus side of things c++11 and later standards address real pressing problems of C++98:
 
 * the override specifier makes it hard to make errors while overriding virtual functions; now one constructor can call another one (Java had these feature for a long time)
-* move semantics can avoid unnecessary creation of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy.) 
+* move semantics can avoid unnecessary creation of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy.)
   however this feature comes at the cost of great complexity. at least half of this book is about r-value references and move semantics.
 * auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of c++, but it was later dropped !!! Later it got adopted by languages   like D and Java (since version 7); so the pressure was on C++ standard committee to make the language more 'powerful'.
 * lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over iterators.
@@ -46,7 +46,7 @@ On the plus side of things c++11 and later standards address real pressing probl
 
 I guess C++11 is the result of 'evolutionary pressure' - over time other programming languages added a lot of features (some sort of type deduction and lambda functions) and the C++ central committee decided that it had to catch up in order to stay relevant.
 
-the bottom line: for me it is advisable to read this mess in order to remain employable. 
+the bottom line: for me it is advisable to read this mess in order to remain employable.
 
 Also here is a nice overview of "C++11":https://en.wikipedia.org/wiki/C++14 and "c++14":https://en.wikipedia.org/wiki/C++14 from wikipedia.
 
@@ -64,12 +64,12 @@ c++98 deduction for template<> member functions (like template<typename T> void 
 c++11 auto and decltypeg
 sc++14 decltype can be used with auto
 
-- the same mechanism for type deduction applies to all three cases. 
+- the same mechanism for type deduction applies to all three cases.
 
 1) (template is reference (or point))
 
 <blockquote><pre>
-template<typename T> 
+template<typename T>
 void f(const T  &arg)
 </pre></blockquote>
 
@@ -79,7 +79,7 @@ void f(const T  &arg)
 2) (template type is universal reference)
 
 <blockquote><pre>
-template<typename T> 
+template<typename T>
 void f(const T  && arg)
 </pre></blockquote>
 
@@ -90,23 +90,23 @@ void f(const T  && arg)
 
 
 <blockquote><pre>
-template<typename T> 
+template<typename T>
 void f(const T   arg)
 </pre></blockquote>
 
-* copy by value; if pointer then the pointer value is copied 
+* copy by value; if pointer then the pointer value is copied
 * function pointers turn to signature of function (not suprising)
 * arrays treated as pointers (not suprising)
 
-But: 
+But:
 
 <blockquote><pre>
 // return size of array as a compile time constant
 
-template<typename T, std::size_t N> 
-constexpr std::size_t arraySize(T (&)[N]) 
-{ 
-	return N; 
+template<typename T, std::size_t N>
+constexpr std::size_t arraySize(T (&)[N])
+{
+	return N;
 }
 
 int a[10];
@@ -121,9 +121,9 @@ arraySize(a); // returns 10 !!!
 auto x = 27;	     // x is int
 
 
-const auto cx = x;   
+const auto cx = x;
 // cx is const int  (same deduction as in: template<typename t> void f(T param))
-const auto &rx = x;  
+const auto &rx = x;
 // rx is const int (same deduction as in: template<typename t> void f(const T &param))
 
 auto &&u1 = x;       // u1 is int &
@@ -142,38 +142,38 @@ auto &arr2 = name;   // arr is const char (&) [13]; (arraySize function trick in
 auto type deduction != template type deduction) (special kind for :Universal initializer: (why?))
 
 <blockquote><pre>
-auto x = { 1 };	     
+auto x = { 1 };
 // x is a std::initializer_list<int> and has an instance with value 27
 
-auto x = { 1, 2 };	     
+auto x = { 1, 2 };
 // x is a std::initializer_list<int> and has an instance with values 1 and 2
 
-auto x = { 1, 2, 3.0 };	     
+auto x = { 1, 2, 3.0 };
 // error: values in initializer list must be of the same type.
 
-//C++14 allows function return types to be deduced with auto, 
+//C++14 allows function return types to be deduced with auto,
 // but that does not work for this case !!! (why ???)
 
 
-//C++ function type can create generic lambda expression !!!! 
+//C++ function type can create generic lambda expression !!!!
 //(but you can't instantiate with initializer list (?!))
 </pre></blockquote>
 
 
-(Item3): decltype	
+(Item3): decltype
 
 decltype returns type of argument expression.
 
 auto lambda_template = [&v] (const auto &newValue) { v = newvalue; }
 
-		     
-C++11: decltype can be used in trailing return type specifications: 
+
+C++11: decltype can be used in trailing return type specifications:
 allows to specify return type as returned type of decltype !!!
 
 
 <blockquote><pre>
 template<typename Container, typename index>
-auto foo(Container &c, Index &n) -> decltype(c[i]) 
+auto foo(Container &c, Index &n) -> decltype(c[i])
 </pre></blockquote>
 
 !!!! that's only way to have return type conditional on parameter types (as parameter types must have already been parsed when return type is set ! !!!
@@ -199,7 +199,7 @@ const Widget &b = a;
 auto rr = b; 	       // rr is Widget &
 decltype(auto) r = b;  // r is const Widget &  - same as the right hand side.
 </pre></blockquote>
-	
+
 
 Therefore the return value of foo is const reference to element of c.
 
@@ -216,12 +216,12 @@ decltype(auto) foo(Container &c, Index &n)
 
 
 
-in C++11 this looks like 
+in C++11 this looks like
 
 <blockquote><pre>
 
 template<typename Container, typename index>
-auto foo(Container &c, Index &n) -> decltype(std::forward<Container>(c) [i]) 
+auto foo(Container &c, Index &n) -> decltype(std::forward<Container>(c) [i])
 {
 	return c[i];
 }
@@ -239,7 +239,7 @@ decltype(auto) f1()  // returns an int
 
 
 // returns an int & (!!!oh my, this will crash when used!!!)
-decltype(auto) f1()  
+decltype(auto) f1()
 {
    int x = 2;
    return (x);       // watch the parenthesis !!!!
@@ -294,7 +294,7 @@ public: Widget(std::initializer_list<bool> il)
 
 }
 
-Widget w{ 3, 4.0 }; 
+Widget w{ 3, 4.0 };
 // Now the constructor with init list is called; AND IT DOES TYPE CONVERSION !@#@!
 </pre></blockquote>
 
@@ -311,22 +311,22 @@ public:
 };
 
 // calls con #2 (exact mach of parameter types)
-Widget w1(10, true); Widget w3(10, 5.0);  
+Widget w1(10, true); Widget w3(10, 5.0);
 
 // Can't call #3 - no implicit conversion to std::string. Call con #1 !!!@#@!!
-Widget w2{10, true}; 
+Widget w2{10, true};
 
 // Can't call #3 - no implicit conversion to std::string. Call con #2 !!!@#@!!
-Widget w4{10, 5.0};  
+Widget w4{10, 5.0};
 
 // calls default con; there is no empty std::initializer_list !!
-Widget w5{};	     
+Widget w5{};
 
 // forces creation of empty std::initializer_list !@#!\
-Widget w5({});	     
+Widget w5({});
 
 // same here
-Widget w5({});	     
+Widget w5({});
 </pre></blockquote>
 
 ! principle: if initializer list constr. is there then it is preferred one; (even if implicit type conversion is required) !
@@ -353,7 +353,7 @@ foo(nullptr) // does not convert to int; so calls #fun2
 
 (item 9) alias declarations better than typedef
 
-instead of 
+instead of
 typedef std::vector<int> IntVector;
 
 do
@@ -380,7 +380,7 @@ class MyHack
 				       // so Vect is a 'dependent type' (oh my)
 
   // if you want to use the template this way you have to use typename.
-  Vect imp_; 
+  Vect imp_;
 };
 </pre></blockquote>
 
@@ -408,9 +408,9 @@ enums in c++98
 <blockquote><pre>
 enum Color { red, green };
 
-// values visible in the same scope as enum declaration ('namespace pollution'). 
+// values visible in the same scope as enum declaration ('namespace pollution').
 // Also cast from enum to int value.
-int x = red; 
+int x = red;
 // downside: more to type and name is longer (have to do scope::)
 
 //in c++11
@@ -418,15 +418,15 @@ int x = red;
 
 enum class Color = { red, green };
 
-Color x = Color::red; 
-// now must qualify enum value with class name (no namespace pollution); 
+Color x = Color::red;
+// now must qualify enum value with class name (no namespace pollution);
 //also no implicit type conversion to integer not possible !! (but you can cast explicitly)
 // C++98: comiler will choose the smallest type that can hold the number
 // (based on maximum value); so type can change if maximum value changes !
 // C++11: type to represent enum is always int. (allows for better forwarding of enum;
 
 // C++11 also alows to change the representation type explicitly. (after : )
-enum class Color : std::uint32_t; 
+enum class Color : std::uint32_t;
 
 </pre></blockquote>
 
@@ -454,10 +454,10 @@ void doIt(char *) = deleted.
 (item 12) override qualifier.
 
 
-C++98: Overriding virtual function works if 
- 
-* override marked as virtual 
-* function name, arguments types and return types are identical 
+C++98: Overriding virtual function works if
+
+* override marked as virtual
+* function name, arguments types and return types are identical
 * same const specification.
 
 C++11: adds requirement that 'reference qualifiers are the same' (OMG) (can say that virtual function is only good for r-value or l-value)
@@ -473,9 +473,9 @@ class Base
 
 class Derived
 {
-  // this will not compile; override says that foo 
+  // this will not compile; override says that foo
   // name must override -> comply with the rules.
-  virtual foo(int a); 
+  virtual foo(int a);
 
 //Now more about 'reference qualifiers'
 
@@ -510,10 +510,10 @@ auto cbegin(const C& container) -> decltype(std::begin(container))
 - constexpr specifies value known during compilation (so that it can be placed into read only memory)
 
 <blockquote><pre>
-constexpr auto arraySize = 10; 
+constexpr auto arraySize = 10;
 // arraySize is constant known during compilation
 
-std::array<int, arraySize> data; 
+std::array<int, arraySize> data;
 // the size of an array must be known during compilation, so constexpr is fine
 </pre></blockquote>
 
@@ -542,7 +542,7 @@ public:
    constexpr int getX() { return y_; }
 </pre></blockquote>
 
-And so that 
+And so that
 
 constexpr Point x{1.1}; // all happens during compilatioN! and these constexpr point objects can be used in constexpr functions returning constexpr results !!!
 
@@ -550,31 +550,31 @@ However setter functions would break constexpr magic..
 
 (item 15) thread safe const members
 
-In C++98 you can have const member functions that modify state of an object;: example 
+In C++98 you can have const member functions that modify state of an object;: example
 
 <blockquote><pre>
 class Polynomial
 {
   const float getRoots() const
-  {	
+  {
 	if (cacheValid) {
 		return cachedValue;
 	}
 	// compute cachedValue and set cachedValid
-	return cachedValue	
+	return cachedValue
   }
- 
+
   mutable bool cacheValid { false };
   mutable bool cachedValue;
 }
 </pre></blockquote>
 
 this item tells you to properly lock access to mutable variables (if accessed from multiple threads)
-C++11 std library adds 
+C++11 std library adds
 
 <blockquote><pre>
 std::mutex a;
-std::lock_guard<std::mutex> guard(m); 
+std::lock_guard<std::mutex> guard(m);
 //automatic lock in constructor, unlock in destructor.
 </pre></blockquote>
 
@@ -586,7 +586,7 @@ std:atomic<int> cnt; // for atomic, non locking primitives. (has overloaded ++,-
 
 C++98 added exception specification; this was part of signature and would break linkage if it was changed.
 
-C++11 aproach: function either throws exception or none at all (for these specify noexcept); with noexcept 
+C++11 aproach: function either throws exception or none at all (for these specify noexcept); with noexcept
 
 if exception leaves function marked by noexcept (only if exceptions not disabled)
 
@@ -604,10 +604,10 @@ if exception leaves function marked by noexcept (only if exceptions not disabled
 class Widget {
 public:
   // copy lvalue; cost: one copy
-  void setName(const std::string& newName){  name = newName; } 
+  void setName(const std::string& newName){  name = newName; }
 
-  // copy rvalue; cost: one move 
-  void setName(std::string&& newName) { name = std::move(newName); } 
+  // copy rvalue; cost: one move
+  void setName(std::string&& newName) { name = std::move(newName); }
 
   // PROBLEM: now two functions instead of one.
 
@@ -617,23 +617,23 @@ public:
 class Widget {
 
 
-  // use universal references; forward: copies l-values and moves r=values; 
+  // use universal references; forward: copies l-values and moves r=values;
   // problem: bloated object code, still two implementations (but setter coded once)
   template<typename T>
-  void setName(T&& newName) { name = std::forward<T>(newName); }  
+  void setName(T&& newName) { name = std::forward<T>(newName); }
 
-									 
+
 
 class Widget {
 
-  // since std::string has a move constructor that is fast: 
+  // since std::string has a move constructor that is fast:
   // cost for rvalue: one move constructor + one move operation; (two moves)
   // cost for lvalues: one copy constructor + one move operation
-  // problem: slicing problem - in case there are derived classes from std::string, 
-  // passing derived class inst. will do implicit type conversion to string 
+  // problem: slicing problem - in case there are derived classes from std::string,
+  // passing derived class inst. will do implicit type conversion to string
   // (and loose derived stuff)
 
-  void setName(std::string newName) { name = std::move(newName); } 
+  void setName(std::string newName) { name = std::move(newName); }
 </pre></blockquote>
 
 
@@ -647,12 +647,12 @@ class Widget {
 std::list<string> lst;
 lst.push_back("aaaa"); // "aaa" does not match std::string; type conversion creates a temporary instance.
 
-// this one does the same: just that no temporary is created (used 'perfect' forwarding 
+// this one does the same: just that no temporary is created (used 'perfect' forwarding
 // instead of objects this takes constructor arguments that will be used to construct the instance 'in place' (by placement new)
-lst.emplace_back("aaa"); 
+lst.emplace_back("aaa");
 
 
-lst.emplace_front("bbb"); // the same treatment as push_front; 
+lst.emplace_front("bbb"); // the same treatment as push_front;
 lst.emplace(lst.begin(),"ccc"); // same as insert
 </pre></blockquote>
 
@@ -681,9 +681,9 @@ Law of three: if you declare any one of the three (copy constr; assignment op or
 C++11: adds default move constructor and move assignment op. these try to move each member (with std::move) if possible (if a member has no move action then it is copied by value).
 Unlike copy constr; If move constructor is declared but no move assignment op, then no move assignment op is created !!! (justification: they learned from the law of three)
 
-So default move op is created 
+So default move op is created
 * no copy op declared in class
-* no move op is declared in class 
+* no move op is declared in class
 * no destructor is declared in class (important detail !!!)
 
 Still: possible to specify that a default implementation should be created
@@ -692,12 +692,12 @@ Still: possible to specify that a default implementation should be created
 class Widget
 {
   ~Widget();
- 
-  // tell it to do a default move constr 
-  Widget(const Widget &&arg) = default; 
+
+  // tell it to do a default move constr
+  Widget(const Widget &&arg) = default;
 
   // and move assignment despite specified destructor
-  Widget &operator=(Widget &&rhs) = default; 
+  Widget &operator=(Widget &&rhs) = default;
 </pre></blockquote>
 
 
@@ -729,7 +729,7 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
   (example see further down)
 * size of smart pointer without custom deleter is equal to sizeof(void*).
   create these with: std::<Foo *>::make_unique(); // now New any more !!!!
-* size of smart pointer with this deleter adds a second pointer data member (does delete to dispose of Foo when smart pointer obj. is destroyed)	
+* size of smart pointer with this deleter adds a second pointer data member (does delete to dispose of Foo when smart pointer obj. is destroyed)
 
 <blockquote><pre>
    void deleteF(Foo *foo) { delete foo; printf("deleted foo %p\n", foo); }
@@ -741,7 +741,7 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
 
 <blockquote><pre>
    auto delF =[] (Foo *foo) { delete foo; printf("deleted foo\n",foo); }
-   
+
     std::unique<foo, decltype(delF)> ptr( new Foo, delf );
 
 </pre></blockquote>
@@ -749,7 +749,7 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
 (item 21) std::shared_ptr - smart pointer with reference counting (aka shared resource management)
 
 * reference counter is dynamically allocated (because it is shared between instances), and is on the stack.
-* uses atomic increment/decrement to manage reference counter (for thread safety, but inerlocked exchange is slower)  
+* uses atomic increment/decrement to manage reference counter (for thread safety, but inerlocked exchange is slower)
 * when custom deleter is specified, pointer to deleter is placed in dynamic memory right next to the reference count (no tricks like with unique_ptr)/.
 * shared_ptr has a move constructor/assignment op (so moving is without increment/decrement of ref count)
 * sizeof(shardpt_t) - two pointers; one to owned object, the other to the control block (which consists of ref count and possibly the pointer to custom deleter)
@@ -762,7 +762,7 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
 
 <blockquote><pre>
 
-    // the base class always has pointer to the controll block; 
+    // the base class always has pointer to the controll block;
     // so it can be asked repeatedly to create smart ptr instance using the same controll block
     // by means of  std::enable_shared_from_this<Foo>::shared_from_this()
 
@@ -779,7 +779,7 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
 - you can't take ownership away from shared from shared_ptr (even if ref_count is 1); no way to do that.
 
 
-(item22) std::weak_ptr 
+(item22) std::weak_ptr
 
 - weak pointer can dangle, but you have a chance to detect that.
 
@@ -792,7 +792,7 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
 - used to break refrence cycles (these create impossible problems with reference counting) a->b (pointer via shared pointer); b->a (pointer via weak pointer)
 
 - example usage: a cache holds weakptrs, but returns shared_ptrs; (what about exploding size of cache with invalid entries?)
-	
+
 
 (item 23) use std::make_unique (to create unique smart ptr) and std::make_shared (to create shared smart ptr) instead of doing new directly
 
@@ -818,7 +818,7 @@ std::unique_ptr<T> make_unique(Args&&... args)
 - problem: memory is not freed when you think it is; control block has reference count and counter of outstanding weak references.
   if refcount == 0 then destructor of owned object (Foo) is invoked, but control block has to exists while counter of weak references is != 0 ;
   when refcount == 0 and counter of weak refs is 0 then they can free the chunk that includes both the control block and the memory for Foo instance.
-  
+
 
 - better for exception safety (!@#)
 
@@ -827,11 +827,11 @@ std::unique_ptr<T> make_unique(Args&&... args)
   userofptr( std::shard_ptr<Foo>(new Foo), call_another_fun() );
 
   possible timeline (alowed by standard): new Foo, call_another_func(), constructor of shared_ptr; if call_another_fun throws an exception then Foo * is left dangling and is not cleaned up.
- 
+
   this problem is so;ved by usage of std::make_shared<Foo() instead
 
 (item 24) -- i did not understand it too much ---
-	
+
 (Item 25) std::move and std::forward the gory details
 
 - std::move casts unconditionally casts argument to rvalue
@@ -847,25 +847,25 @@ std::unique_ptr<T> make_unique(Args&&... args)
 	// never use const argument when expecting to move them !!!
 </pre></blockquote>
 
-- std::forward is a conditional cast to rvalue; 
+- std::forward is a conditional cast to rvalue;
 
 <blockquote><pre>
   template<typename T>
   void forward(T &&param)
   {
 	printf("got here\n");
-	process(  std::forward<T>(param) );   
+	process(  std::forward<T>(param) );
   }
-  
+
   Fooo f;
 
-  forward( f );			
-  // called with lvalue; now std::forward does not cast; 
+  forward( f );
+  // called with lvalue; now std::forward does not cast;
   //forwarding an lvalue creates copies each time that the argument is forwarded.
-  
-  forward( std::move(f) );	
-  // called with rvalue: std::forward casts to rvalue only 
-  // if forward was called with rvalue !!!! 
+
+  forward( std::move(f) );
+  // called with rvalue: std::forward casts to rvalue only
+  // if forward was called with rvalue !!!!
   // (this is done by clever type deduction and is explained later)
 </pre></blockquote>
 
@@ -874,7 +874,7 @@ std::unique_ptr<T> make_unique(Args&&... args)
 
 bFoo && ref = new Foo(); // ref is an rvalue reference
 
-void FooMove(Foo && rvalue); // another rvalue reference 
+void FooMove(Foo && rvalue); // another rvalue reference
 
 
 Universal reference is a different case: caller can be rvalue or lvalue, const or non const
@@ -882,7 +882,7 @@ Universal reference is a different case: caller can be rvalue or lvalue, const o
 template<T>
 void foo(t &&arg); // arg is universal reference; caller can be rvalue or lvalue, const or non const !!!
 
-auto &&val = value; //val is also a universal reference.	
+auto &&val = value; //val is also a universal reference.
 
 
 !! The difference: universal reference arises when type deduction comes in. when type is specified it is just a rvalue reference. !!
@@ -900,7 +900,7 @@ void foo(const T && arg ); // also rvalue reference; as const T is specified.
 template<T>
 class Foo
 {
-	void add(T && arg ); 
+	void add(T && arg );
 	// also rvalue reference: this is add of a specific template instance !
 </pre></blockquote>
 
@@ -916,7 +916,7 @@ std::forward - conditional cast of reference depending on use, makes sense only 
 So it is clearer to do std::move on rvalue references and std::forward on universal references.
 
 
-example setter: 
+example setter:
 
 <blockquote><pre>
 
@@ -997,7 +997,7 @@ class Person {
 public:
    template<typename T> // this does not prevent the compiler from adding default move ctor !!!
    explicit Person(T&& n);
-  
+
    explicit Person(int idx);
 }
 </pre></blockquote>
@@ -1026,18 +1026,18 @@ void logAndAdd(T&& name)
 		std::is_integral<typename std::remove_reference<T>::type>()
 }
 
-template<typename T> 
+template<typename T>
 void logAndAddImpl(T&& name, std::false_type)  // non-integral types of logAndAdd
-{ 
-  auto now = std::chrono::system_clock::now(); 
+{
+  auto now = std::chrono::system_clock::now();
   log(now, "logAndAdd"); // structure
   names.emplace_back(std::forward<T>(name));
 }
 
 void logAndAddImpl(int idx, std::true_type) // for integral types of logAndAdd
-{ 
+{
    logAndAdd(anyFromIdx(idx)); // up name and
-} 
+}
 </pre></blockquote>
 
 The same shit can be done to constructors, but what the fuck ??
@@ -1047,7 +1047,7 @@ The same shit can be done to constructors, but what the fuck ??
 
 
 - you can't take reference of reference;
- 
+
 <blockquote><pre>
   int x;
   auto & & R = x; // will not compile.
@@ -1160,7 +1160,7 @@ forwarding fails if fwd(<expression>) is not compatible with f(<expression>)
 
   void f(void *); fwd(0); // T deduced as int; can't be forwarded to void *.
 
-- void f(std::list<int> arg); 
+- void f(std::list<int> arg);
   fwd({1, 2, 3}); // ambiguous: converts to std::initializer_list only if fwd would be known to have signature fwd(std::initializer_list<int> arg); this is not the case; otherwise would be parsed as f(1,2,3)
 
   workaround:
@@ -1168,7 +1168,7 @@ forwarding fails if fwd(<expression>) is not compatible with f(<expression>)
   auto a = {1,2,3}; // a is std::initializer_list - unambiguous
   f(a); // no compilation errors.
 
-- static const 	
+- static const
 
   static const std::size Maxsize = 42; // compiler turns this into constant without memory location.
 
@@ -1177,7 +1177,7 @@ forwarding fails if fwd(<expression>) is not compatible with f(<expression>)
 
 - void f(void (*fptr) (int) );// f receives function pointer to function with one int argument
 
-  
+
   void print(int ); // #1
   void print(char *,int); // #2
 
@@ -1200,11 +1200,11 @@ forwarding fails if fwd(<expression>) is not compatible with f(<expression>)
 
    - closure class := each lambda expression generates a class that holds the lambda expression as member function. Note: captured variables are data members of the closure class.
    - closure := instance of a closure class
-    
+
    can copy closures (aka instances of closure class)
 
 <blockquote><pre>
-    
+
    int x = 42;
    auto c1 = [x] (int y) { return x + y; } // c1 is closure instance ( 'captures' the value of x as data member)
 
@@ -1225,21 +1225,21 @@ Different capture modes:
 <blockquote><pre>
 
 int aaa;
-auto e = [aaa] (int c) { return c * val_; };   
+auto e = [aaa] (int c) { return c * val_; };
 // must specify captured variables by name in []; copied by value; can only visible locals.
 
 
-auto e = [=] (int c) { return c * val_; };   
+auto e = [=] (int c) { return c * val_; };
 // copy by value (also ptrs copied by value); can access data member of enclosing class + locals in enclosing scope
- 
-auto e = [=] (int c) { return c * val_; };   
+
+auto e = [=] (int c) { return c * val_; };
 // copy by ref; can access data member of enclosing class + locals in enclosing scope.
 
 </pre></blockquote>
 
 ! static variables can be used inside lambda's but these are not 'captured' (not copied by value or reference into closure) !
 
-----  
+----
 <blockquote><pre>
 <pre>
 #include <stdio.h>
@@ -1260,7 +1260,7 @@ public:
     printf("val_ptr=%p\n", &val_);
 
     // does not compile; can capture only locals.
-    //auto e = [val_] (int c) { return c * val_; };    
+    //auto e = [val_] (int c) { return c * val_; };
 
     // reference of vall_ copied; capture points to class member
     auto c = [=] (int c) { printf("v=%p\n", &val_);  return c * val_; }; //f-> val_; };
@@ -1318,7 +1318,7 @@ public:
 auto pw = std:make_unique<Foo>();
 
 auto func = [ pw = std::move(pw) ]  // init capture has expression to initalize captured variables (here move unique_ptr into capture)
-	    { return pw->foo(); }x	
+	    { return pw->foo(); }x
 </pre></blockquote>
 
 
@@ -1332,13 +1332,13 @@ auto pw = std:make_unique<Foo>();
 	std::bind( // C++11 emulation
 		[](std::unique_ptr<Foo> & data) // of init capture
 		{ return pw->foo() },
-		
+
 		std::move(data)
 	) ;
 </pre></blockquote>
 
 * std::bind returns function object, first part is the 'callable' (lambda); second part argument to be evaluated on call.
-* so when func is called, it copies the vector<double> data from outer scope into captured variable data (it is a member of the closure instance) 
+* so when func is called, it copies the vector<double> data from outer scope into captured variable data (it is a member of the closure instance)
 * works because closure has the same lifetime as bind object.
 
 
