@@ -44,7 +44,7 @@ On the plus side of things c++11 and later standards address real pressing probl
   also keep figuring when captured variable is copied by value or by reference (you can even move stuff into the capture !)
 * a richer standard library; std::uniqe_ptr is nice (shared_ptr & reference counting is messy and it always uses atomic/lockless reference count, no way to customize that); they added atomic(lockless) integer types, which is nice; the new  concurrency API. STL collections add emplace - avoids creation of temporary values in some cases.
 
-I guess C++11 is the result of 'evolutionary pressure' - over time other programming languages added a lot of features (some sort of type deduction and lambda functions) and the C++ central committee decided that it had to catch up in order to stay relevant.
+I guess C++11 is the result of 'evolutionary pressure' - over time other programming languages added a lot of features (some sort of type deduction and lambda functions) and the C++ central committee decided that it had to catch up in order to stay relevant. It is funny that this multitude of features creates many ways of expressing the same thing - just like in Perl, the "postmodern programming language":http://www.wall.org/~larry/pm.html
 
 the bottom line: for me it is advisable to read this mess in order to remain employable.
 
