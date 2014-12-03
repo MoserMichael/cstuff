@@ -73,8 +73,8 @@ template<typename T>
 void f(const T  &arg)
 </blockquote>
 
- - can call f with references and value types (ignores if it is reference)
- - if called with reference T is deduced to be type on the left of &.
+* can call f with references and value types (ignores if it is reference)
+* if called with reference T is deduced to be type on the left of &.
 
 2) (template type is universal reference)
 
@@ -83,8 +83,8 @@ template<typename T>
 void f(const T  && arg)
 </blockquote>
 
-- called with value type (int); T is inferred to be int &
-- called with rvalue (like constant literal) ; T is inferred to be int &&
+* called with value type (int); T is inferred to be int &
+* called with rvalue (like constant literal) ; T is inferred to be int &&
 
 3) (template type is value type)
 
@@ -94,9 +94,9 @@ template<typename T>
 void f(const T   arg)
 </blockquote>
 
-- copy by value; if pointer then the pointer value is copied 
-- function pointers turn to signature of function (not suprising)
-- arrays treated as pointers (not suprising)
+* copy by value; if pointer then the pointer value is copied 
+* function pointers turn to signature of function (not suprising)
+* arrays treated as pointers (not suprising)
 
 But: 
 
@@ -247,27 +247,24 @@ decltype(auto) f1()  // returns an int & (!!!oh my, this will crash when used!!!
 
 (item 3) how to know what has been deduced
 
-- during runtime: typeid(x).name() - gcc returns mangled name (convert with c++filt) ; however it is not the exact type  (ha ha ha)
-- IDE gives hints (if you use one) - but it relies on typeid so its not reliable too.
-- platform dependent: gcc has macro: __PRETTY_FUNCTION__ , MSVC has __FUNCSIG__
-- compiler error message includes deduced type; now that is reliable ;-)
+* during runtime: typeid(x).name() - gcc returns mangled name (convert with c++filt) ; however it is not the exact type  (ha ha ha)
+* IDE gives hints (if you use one) - but it relies on typeid so its not reliable too.
+* platform dependent: gcc has macro: __PRETTY_FUNCTION__ , MSVC has __FUNCSIG__
+* compiler error message includes deduced type; now that is reliable ;-)
 
 
 (item 5) prefer auto
 
-- trivia: in 1983 C++ had auto, but it was not accepted ! in C++11 it came back
-- (did not mention that Java and D also have auto ;-)
-
-- advise: always use auto, this way you don't have uninitialized variables (well compiler would tell you that in any case, with optimization ;-)
-- use of auto will avoid downcasting (if lhs type is narrower than actual type); or copying if automatic type conversion is invoked (due to declared type being different to actual type)
-	
-- in c++14: can have auto arguments to functions and assign result to auto - template lambdas !
+* trivia: in 1983 C++ had auto, but it was not accepted ! in C++11 it came back
+* (did not mention that Java and D also have auto ;-)
+* advise: always use auto, this way you don't have uninitialized variables (well compiler would tell you that in any case, with optimization ;-)
+* use of auto will avoid downcasting (if lhs type is narrower than actual type); or copying if automatic type conversion is invoked (due to declared type being different to actual type)
+* in c++14: can have auto arguments to functions and assign result to auto - template lambdas !
 
 auto derefLess =  [](const auto& p1, const auto& p2) { return *p1 < *p2; }; // pointer-like
 
-- auto for lambda types is preferable to std::function; std::function allocates memory and is slower to invoke.
-
-- auto use is more difficult to read; but is flexible and less error prone.
+* auto for lambda types is preferable to std::function; std::function allocates memory and is slower to invoke.
+* auto use is more difficult to read; but is flexible and less error prone.
 
 -----------------------------
 
@@ -340,9 +337,8 @@ foo(NULL); // NULL is 0; therfore calls #fun1
 foo(nullptr) // does not convert to int; so calls #fun2
 </blockquote>
 
-- nullptr helps to read code when variable is declared as auto; with nullptr you know that's supposed to be a pointer.
-
-- if template argument requires a pointer type, then you have to pass nullptr; 0/NULL would not compiler (type mismatch)
+* nullptr helps to read code when variable is declared as auto; with nullptr you know that's supposed to be a pointer.
+* if template argument requires a pointer type, then you have to pass nullptr; 0/NULL would not compiler (type mismatch)
 
 
 (item 9) alias declarations better than typedef
@@ -438,9 +434,10 @@ void doIt(char *) = deleted.
 
 
 C++98: Overriding virtual function works if 
-  - override marked as virtual 
-  - function name, arguments types and return types are identical 
-  - same const specification.
+ 
+* override marked as virtual 
+* function name, arguments types and return types are identical 
+* same const specification.
 
 C++11: adds requirement that 'reference qualifiers are the same' (OMG) (can say that virtual function is only good for r-value or l-value)
 
@@ -616,10 +613,10 @@ class Widget {
 
 
 
-v(item 18) emplace_insert in stl collections
+(item 18) emplace_insert in stl collections
 
-- rvalues do a good job of getting rid of temporary values.
-- problem remains: argument type does not match the parameter type of a function.
+* rvalues do a good job of getting rid of temporary values.
+* problem remains: argument type does not match the parameter type of a function.
 
 <blockquote>
 std::list<string> lst;
@@ -697,17 +694,13 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
 
 (item 20) std::unique_ptr this is the only owner of the resource (meaning need to delete the managed object)
 
-- copy of std::unique_ptr not allowed (can't have two owners); no copy constructor from pointer to smart pointer (avoids implicit type conversion)
-
-- but you can transfer ownership to a different instance of the smart pointer.
-
-- when smart pointe is deleted and it owns something, then owned pointer is deleted too; but if you want different treatment then custom deleter can be supplied.
+* copy of std::unique_ptr not allowed (can't have two owners); no copy constructor from pointer to smart pointer (avoids implicit type conversion)
+* but you can transfer ownership to a different instance of the smart pointer.
+* when smart pointe is deleted and it owns something, then owned pointer is deleted too; but if you want different treatment then custom deleter can be supplied.
   (example see further down)
-
-- size of smart pointer without custom deleter is equal to sizeof(void*).
+* size of smart pointer without custom deleter is equal to sizeof(void*).
   create these with: std::<Foo *>::make_unique(); // now New any more !!!!
-
-- size of smart pointer with this deleter adds a second pointer data member (does delete to dispose of Foo when smart pointer obj. is destroyed)	
+* size of smart pointer with this deleter adds a second pointer data member (does delete to dispose of Foo when smart pointer obj. is destroyed)	
 
 <blockquote>
    void deleteF(Foo *foo) { delete foo; printf("deleted foo %p\n", foo); }
@@ -726,22 +719,17 @@ in C++11: std::auto_ptr is deprecated (because it is stupid and did move in copy
 
 (item 21) std::shared_ptr - smart pointer with reference counting (aka shared resource management)
 
- - reference counter is dynamically allocated (because it is shared between instances), and is on the stack.
- - uses atomic increment/decrement to manage reference counter (for thread safety, but inerlocked exchange is slower)  
- - when custom deleter is specified, pointer to deleter is placed in dynamic memory right next to the reference count (no tricks like with unique_ptr)/.
- - shared_ptr has a move constructor/assignment op (so moving is without increment/decrement of ref count)
-
- - sizeof(shardpt_t) - two pointers; one to owned object, the other to the control block (which consists of ref count and possibly the pointer to custom deleter)
-
- - control block in addition to that also has a virtual function (WTF ! ); so each control block has ptr to vtable (didn't explain why that is too well)
-
- - idiom for constructing smart_ptr without deleter
-    auto ptr = std::make_shared<Foo>();
-
- - idiom for constructing smart_ptr with deleter
-    std::smart_ptr<Foo> ptr( new Foo(), deleterFun ); // thie way ptr is never passed to two instances of shared_ptr -> which would result to twice deletion.
-
- - if you don't like this rule:
+* reference counter is dynamically allocated (because it is shared between instances), and is on the stack.
+* uses atomic increment/decrement to manage reference counter (for thread safety, but inerlocked exchange is slower)  
+* when custom deleter is specified, pointer to deleter is placed in dynamic memory right next to the reference count (no tricks like with unique_ptr)/.
+* shared_ptr has a move constructor/assignment op (so moving is without increment/decrement of ref count)
+* sizeof(shardpt_t) - two pointers; one to owned object, the other to the control block (which consists of ref count and possibly the pointer to custom deleter)
+* control block in addition to that also has a virtual function (WTF ! ); so each control block has ptr to vtable (didn't explain why that is too well)
+* idiom for constructing smart_ptr without deleter
+  auto ptr = std::make_shared<Foo>();
+* idiom for constructing smart_ptr with deleter
+   std::smart_ptr<Foo> ptr( new Foo(), deleterFun ); // thie way ptr is never passed to two instances of shared_ptr -> which would result to twice deletion.
+* if you don't like this rule:
 
 <blockquote>
 
@@ -792,10 +780,9 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 </blockquote>
 
-- it is shorter to type
-
-- std::make_shared<Foo>( new Foo() ); // two allocations: one for Foo and one for control block
-- std::make_shared<Foo>(); // both Foo and control block allocated in the same allocation (next in memory)
+* it is shorter to type
+* std::make_shared<Foo>( new Foo() ); // two allocations: one for Foo and one for control block
+* std::make_shared<Foo>(); // both Foo and control block allocated in the same allocation (next in memory)
 
   this does not work if Foo has class specific new/delete; (because make_shared does placement new on its own chunk that includes both Foo and control block !)
 
@@ -1294,8 +1281,8 @@ public:
 
 (item 34) init capture in C++14
 
-- c++11 no way to move anything into closur (either copy by val or copy by ref(
-- C++14 has more flexible mechanism for specifying capture: 'init captures'
+* c++11 no way to move stuff into closure (either copy by val or copy by ref)
+* C++14 has more flexible mechanism for specifying capture: 'init captures'
 
 <blockquote>
 
@@ -1321,9 +1308,9 @@ auto pw = std:make_unique<Foo>();
 	) ;
 </blockquote>
 
-- std::bind returns function object, first part is the 'callable' (lambda); second part argument to be evaluated on call.
-- so when func is called, it copies the vector<double> data from outer scope into captured variable data (it is a member of the closure instance) 
-- works because closure has the same lifetime as bind object.
+* std::bind returns function object, first part is the 'callable' (lambda); second part argument to be evaluated on call.
+* so when func is called, it copies the vector<double> data from outer scope into captured variable data (it is a member of the closure instance) 
+* works because closure has the same lifetime as bind object.
 
 
 (item 35) '
