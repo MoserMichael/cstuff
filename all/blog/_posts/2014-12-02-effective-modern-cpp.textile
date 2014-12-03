@@ -34,7 +34,7 @@ C++ fans:
 * 'conservative' approach to software engineering (as Steve Yegge put it "more here":http://mosermichael.github.io/cstuff/all/blog/2014/11/09/steve-yegge-politics.html ) in these quarters they don't like text based meta programming; however templates are considered to be powerful enough (somehow they don't mind the convoluted nature of C++ templates)
 * in most shops they have coding guidelines that pick the desired C++ features and formulate 'best practices'; the stated aim here is to create a 'manageable subset' of the language. Well results are mixed (it's usually like this with standardized regulations ...)
 
-On the plus side of things c++11 and later standards address real pressing problems of C++98:
+On the plus side of things c++11 and C++14 do address real pressing problems of C++98:
 
 * the override specifier makes it hard to make errors while overriding virtual functions; now one constructor can call another one (Java had these feature for a long time)
 * move semantics can avoid unnecessary deletion of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy, nowadays the data of this copy is moved right into a.
