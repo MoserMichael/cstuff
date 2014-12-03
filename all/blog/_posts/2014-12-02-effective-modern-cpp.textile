@@ -36,13 +36,13 @@ C++ fans:
 
 On the plus side of things c++11 and later standards address real pressing problems of C++98:
 
-- the override specifier makes it hard to make errors while overriding virtual functions; now one constructor can call another one (Java had these feature for a long time)
-- move semantics can avoid unnecessary creation of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy.) 
+* the override specifier makes it hard to make errors while overriding virtual functions; now one constructor can call another one (Java had these feature for a long time)
+* move semantics can avoid unnecessary creation of temporary objects (in C++98: void foo(string  &b,string &c) { string a = b + c; } // b + c used to be a wasted temporary copy.) 
   however this feature comes at the cost of great complexity. at least half of this book is about r-value references and move semantics.
-- auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of c++, but it was later dropped !!! Later it got adopted by languages   like D and Java (since version 7); so the pressure was on C++ the committee to make the language more 'powerful'.
-- lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over iterators.
+* auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of c++, but it was later dropped !!! Later it got adopted by languages   like D and Java (since version 7); so the pressure was on C++ the committee to make the language more 'powerful'.
+* lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over iterators.
   also keep figuring when captured variable is copied by value or by reference (you can even move stuff into the capture !)
-- a richer standard library; std::uniqe_ptr is nice (shared_ptr & reference counting is messy and it always uses atomic/lockless reference count, no way to customize that); they added atomic(lockless) integer types, which is nice; the new  concurrency API. STL collections add emplace - avoids creation of temporary values in some cases.
+* a richer standard library; std::uniqe_ptr is nice (shared_ptr & reference counting is messy and it always uses atomic/lockless reference count, no way to customize that); they added atomic(lockless) integer types, which is nice; the new  concurrency API. STL collections add emplace - avoids creation of temporary values in some cases.
 
 I guess C++11 is the result of 'evolutionary pressure' - over time other programming languages added a lot of features (some sort of type deduction and lambda functions) and the C++ central committee decided that it had to catch up in order to stay relevant.
 
