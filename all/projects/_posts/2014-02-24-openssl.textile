@@ -26,18 +26,6 @@ The problem with this approach is that this takes a lot of time to decrypt the m
 
 Another thing is that while it is currently practically impossible to break RSA encryption with reasonably strong key, theoretically this might change once they have a working quantum computer; However there are "serious doubts":http://www.scottaaronson.com/blog/ that we are anywhere near the development of such a breakthrough, but things might change, you never know.
 
-h3. is it any good?
-
-The "RSA algorithm":http://en.wikipedia.org/wiki/RSA_(cryptosystem) is for this utility because there are "some doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of elliptic curve cryptography (given all those recent revelations); also they seem to know how to break at least some variants of AES cipher ("here":http://www.spiegel.de/international/germany/inside-the-nsa-s-war-on-internet-security-a-1010361.html )
-
-However RSA has problems of its own: there are known side-channel attacks; if the computer that is encrypting the message has been compromised then you can break RSA encryption if you can measure fluctuations of the power consumption while encrypting/decrypting; Still this program does make side channel attacks more difficult: encryption/decryption is delegated to multiple cores on the system, to the best of my knowledge it is impossible to measure the power consumption of individual hardware cores/hardware threads.
-
-Maybe for practical encryption systems you would better use several encryption step, each step is applied on the input of the previous step. Each encryption step would use a different symmetric cipher with its own key. The keys would be still encrypted with the some kind of asymmetric encryption like RSA - so you still have the problem of possible side channel attacks.
-
-Chaining of several the following advantage: if at least one of the steps has not been compromised then the end result is still safe (given that the encryption keys have not been compromised), also it is harder to apply side channel attacks if all steps are made concurrently - because it is harder to measuring the time of the encryption steps.
-
-the tool described in this text does not do this kind of chaining.
-
 h3. The tools used in this study and how to use them
 
 For this study command line programs were written that encrypts/sign and decrypt/verify longer data all with a public/private key pair.
@@ -76,6 +64,18 @@ Also two programs where written that do all the work serially (not in parallell)
   rsadec -k private.pem -i encrypted_file.file -o decrypted_file.file
 </pre>
                                         
+h3. is it any good?
+
+The "RSA algorithm":http://en.wikipedia.org/wiki/RSA_(cryptosystem) is for this utility because there are "some doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of elliptic curve cryptography (given all those recent revelations); also they seem to know how to break at least some variants of AES cipher ("here":http://www.spiegel.de/international/germany/inside-the-nsa-s-war-on-internet-security-a-1010361.html )
+
+However RSA has problems of its own: there are known side-channel attacks; if the computer that is encrypting the message has been compromised then you can break RSA encryption if you can measure fluctuations of the power consumption while encrypting/decrypting; Still this program does make side channel attacks more difficult: encryption/decryption is delegated to multiple cores on the system, to the best of my knowledge it is impossible to measure the power consumption of individual hardware cores/hardware threads.
+
+Maybe for practical encryption systems you would better use several encryption step, each step is applied on the input of the previous step. Each encryption step would use a different symmetric cipher with its own key. The keys would be still encrypted with the some kind of asymmetric encryption like RSA - so you still have the problem of possible side channel attacks.
+
+Chaining of several the following advantage: if at least one of the steps has not been compromised then the end result is still safe (given that the encryption keys have not been compromised), also it is harder to apply side channel attacks if all steps are made concurrently - because it is harder to measuring the time of the encryption steps.
+
+the tool described in this text does not do this kind of chaining.
+
 h3. how to download the sources & build the tools 
 
 Sources can be downloaded as "zip archive":https://github.com/MoserMichael/cstuff/zipball/master
