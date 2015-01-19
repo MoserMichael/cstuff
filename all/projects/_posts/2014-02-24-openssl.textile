@@ -28,7 +28,7 @@ Another thing is that while it is currently practically impossible to break RSA 
 
 h3. is it any good?
 
-The "RSA algorithm":http://en.wikipedia.org/wiki/RSA_(cryptosystem) is choose for this utility because there are "serious doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of elliptic curve cryptography (given all those recent revelations)
+The "RSA algorithm":http://en.wikipedia.org/wiki/RSA_(cryptosystem) is for this utility because there are "some doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of elliptic curve cryptography (given all those recent revelations); also they seem to know how to break at least some variants of AES cipher ("here":http://www.spiegel.de/international/germany/inside-the-nsa-s-war-on-internet-security-a-1010361.html )
 
 However RSA has problems of its own: there are known side-channel attacks; if the computer that is encrypting the message has been compromised then you can break RSA encryption if you can measure fluctuations of the power consumption while encrypting/decrypting. 
 
