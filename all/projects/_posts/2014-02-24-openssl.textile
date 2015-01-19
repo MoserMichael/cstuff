@@ -30,7 +30,7 @@ h3. is it any good?
 
 The "RSA algorithm":http://en.wikipedia.org/wiki/RSA_(cryptosystem) is for this utility because there are "some doubts":http://www.theguardian.com/world/2013/sep/05/nsa-how-to-remain-secure-surveillance in the validity of elliptic curve cryptography (given all those recent revelations); also they seem to know how to break at least some variants of AES cipher ("here":http://www.spiegel.de/international/germany/inside-the-nsa-s-war-on-internet-security-a-1010361.html )
 
-However RSA has problems of its own: there are known side-channel attacks; if the computer that is encrypting the message has been compromised then you can break RSA encryption if you can measure fluctuations of the power consumption while encrypting/decrypting. 
+However RSA has problems of its own: there are known side-channel attacks; if the computer that is encrypting the message has been compromised then you can break RSA encryption if you can measure fluctuations of the power consumption while encrypting/decrypting; Still this program does make side channel attacks more difficult: encryption/decryption is delegated to multiple cores on the system, to the best of my knowledge it is impossible to measure the power consumption of individual hardware cores/hardware threads.
 
 Maybe for practical encryption systems you would better use several encryption step, each step is applied on the input of the previous step. Each encryption step would use a different symmetric cipher with its own key. The keys would be still encrypted with the some kind of asymmetric encryption like RSA - so you still have the problem of possible side channel attacks.
 
