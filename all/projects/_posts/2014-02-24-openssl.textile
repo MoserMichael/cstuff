@@ -36,7 +36,7 @@ Maybe for practical encryption systems you would better use several encryption s
 
 Chaining of several the following advantage: if at least one of the steps has not been compromised then the end result is still safe (given that the encryption keys have not been compromised), also it is harder to apply side channel attacks if all steps are made concurrently - because it is harder to measuring the time of the encryption steps.
 
-This article does not do this kind of chaining.
+the tool described in this text does not do this kind of chaining.
 
 h3. The tools used in this study and how to use them
 
