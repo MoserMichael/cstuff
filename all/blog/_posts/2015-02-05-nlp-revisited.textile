@@ -48,7 +48,7 @@ The user of the program enters phrases in English that talk about geometric obje
 
 Like this one
 
-!shrdlu-1.png!
+!/cstuff/images/shrdlu-1.png!
 
 The program creates a database entry for each geometric object that is mentioned, this database bentry lists properties of each object, like color, shape, position of the object relative to other objects 
 on the table. It can change the properties of its database entries according to the requests that are typed in in English; it also answers question in English .
@@ -1293,7 +1293,7 @@ NP@ -> NP PP
 
 Please note 
 
-!nlp-cky1.png!
+!/cstuff/images/nlp-cky1.png!
 
 
 
@@ -1517,7 +1517,7 @@ the verb interacts indicate relations; dependencies indicate subjects and object
 	- collapsing nodes (based (in (LA)) -> (based (LA-prepIn))
 conjunction: both makes and distributes point to subject (now it's a graph and not a tree)
 
-!dep-2.png!
+!/cstuff/images/dep-2.png!
 	
 - looking at results of BioNLP (competiton of relation extraction in bio):
 - Most relations are 1-3 dependencies away; but linear distance between the subject and object is up to 5-6 words;
