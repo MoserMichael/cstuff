@@ -67,45 +67,44 @@ who could formulate a general approach to his area of studies (like the "Syntact
 
 Terry Winograd in this interview "here":http://conservancy.umn.edu/bitstream/handle/11299/107717/oh237taw.pdf?sequence=1&isAllowed=y
 
-
-<quote>
-
+<blockquote>
 TW: And of course at MIT, there was a huge amount of syntax, but that was another one of these sort of feuding worlds; you couldn't talk to Chomsky and Minsky both, it was impossible. The one contact I had is I went and took a course from Chomsky, wrote a term paper saying why I thought this AI-ish approach would work, and he gave me a 'C' on the term paper. That was the end of my contact with the Linguistics Department.
-</quote>
+</blockquote>
 
 Also "here":http://openarchive.cbs.dk/bitstream/handle/10398/6460/2002-7.pdf?sequence=1
 
+<blockquote>
 TW: Minsky and Chomsky were both very strong personalities. You could go to one or the other but you couldn't be in the middle. That is how MIT is, it has strong boundaries between its departments.
 MV: But you were allowed to do computers and linguistics?
 TW: Minsky wanted me to do linguistics and prove that his students could do better linguistics than Chomsky's. I was not the first. Dave Waltz, who eventually went on to do work in vision, was 
 doing a research project on linguistics when I got there, as was Gene Charniak. And in the prior generation Daniel Bobrow and Bertram Raphael had both done language projects. So it was a major 
 stream of work in the AI Lab."
-</quote>
+</blockquote>
 
 One would have expected that this setting would lead to personal fiefdoms, one of the features of such an organization is that everyone is protecting his own turf and not eager to cooperate.
 Now what they had at MIT's AI lab was just the opposite; Researchers had a lot of autonomy with regards to their projects; the people who were in esteem where the programmers/Lisp hackers; also they developed a culture of information sharing and cross boundary cooperation.
 
-<quote>
+<blockquote>
 "WINOGRAD: It was people who were basically working on their own and then knowing enough about what each other was doing to join up. So, for example, this stuff on Micro-Planner was useful for all three of the people who did it, so we got together and did that. And to comment, and so on. I probably saw Marvin - well, he wasn't actually my official advisor, Seymour was, but I don't think I saw either of them to talk about my dissertation more than once every few months. It wasn't like they were directing the project."
-</quote>
+</blockquote>
 
 another point is that the research departments were producing demonstration systems of simplified domains (like the block world in SHRDLU), not actual products:
 
 
-<quote>
+<blockquote>
 Implementation meant something you could show off. It didn't mean something that somebody
 else could use. So - I mean, my thesis was certainly that way. I mean, you know, the famous dialogue with SHRDLU where you could pick up a block, and so on, I very carefully worked through, line by line. If you sat down in front of it, and asked it a question that wasn't in the dialogue, there was some probability it would answer it. I mean, if it was reasonably close to one of the questions that was there in form and in content, it would probably get it. But there was no attempt to get it to the point where you could actually hand it to somebody and they could use it to move blocks around. And there was no pressure for that whatsoever. Pressure was for something you could demo. Take a recent example, Negroponte's Media Lab, where instead of "perish or publish" it's "demo or die." I think that's a problem. I think AI suffered from that a lot, because it led to "Potemkin villages", things which - for the things they actually did in the demo looked good, but when you looked behind that there wasn't enough structure to make it really work more generally.
-</quote>
+</blockquote>
 
 This changed: the personal computer and wide spread adoption of the Internet created many commercial applications of natural language processing; the result was that a lot of focus shifted 
 towards the research divisions of Microsoft, IBM and Bells Labs.
 
 These applications were:
-spelling checkers for word processors
-spam detection for email systems
-information retrieval systems for WEB search.
-speech recognition
-question answering / text classification /sentiment analysis / relationship extraction / etc. etc.
+- spelling checkers for word processors
+- spam detection for email systems
+- information retrieval systems for WEB search.
+- speech recognition
+- question answering / text classification /sentiment analysis / relationship extraction / etc. etc.
 
 I guess that these new requirements generated a shift in priorities: now the dominant explanation would be the one that could be used to build a working system, not the ones who would correspond to preset notions of how things were to be explained.
 
