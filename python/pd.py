@@ -167,38 +167,37 @@ except BaseException:
 
 	example stack trace:
 
-
 Exception: got it
 
-#1  def kuku2(self = <__main__.Node instance at 0x6ffffe5cd40>, depth = 1) at test_pd.py:29
+#1  def kuku2(self = {'a': 42, 'b': [1, 2, 3, 4]}, depth = 1) at test_pd.py:29
 Calls next frame at:
 	raise Exception('got it') at: test_pd.py:29
 
-#2  def kuku2(self = <__main__.Node instance at 0x6ffffe5cd40>, depth = 2) at test_pd.py:28
+#2  def kuku2(self = {'a': 42, 'b': [1, 2, 3, 4]}, depth = 2) at test_pd.py:28
 Calls next frame at:
 	self.kuku2( depth - 1 ) at: test_pd.py:28
 
-#3  def kuku2(self = <__main__.Node instance at 0x6ffffe5cd40>, depth = 3) at test_pd.py:28
+#3  def kuku2(self = {'a': 42, 'b': [1, 2, 3, 4]}, depth = 3) at test_pd.py:28
 Calls next frame at:
 	self.kuku2( depth - 1 ) at: test_pd.py:28
 
-#4  def kuku2(self = <__main__.Node instance at 0x6ffffe5cd40>, depth = 4) at test_pd.py:28
+#4  def kuku2(self = {'a': 42, 'b': [1, 2, 3, 4]}, depth = 4) at test_pd.py:28
 Calls next frame at:
 	self.kuku2( depth - 1 ) at: test_pd.py:28
 
-#5  def kuku2(self = <__main__.Node instance at 0x6ffffe5cd40>, depth = 5) at test_pd.py:28
+#5  def kuku2(self = {'a': 42, 'b': [1, 2, 3, 4]}, depth = 5) at test_pd.py:28
 Calls next frame at:
 	self.kuku2( depth - 1 ) at: test_pd.py:28
 
-#6  def kuku2(self = <__main__.Node instance at 0x6ffffe5cd40>, depth = 6) at test_pd.py:28
+#6  def kuku2(self = {'a': 42, 'b': [1, 2, 3, 4]}, depth = 6) at test_pd.py:28
 Calls next frame at:
 	self.kuku2( depth - 1 ) at: test_pd.py:28
 
 #7  def main() at test_pd.py:44
 Local variables:
-n <__main__.Node instance at 0x6ffffe5cd40>
+n = {'a': 42, 'b': [1, 2, 3, 4]}
 Calls next frame at:
-	pd.print_exception_ex() at: test_pd.py:44
+	pd.print_exception_ex( follow_objects = 1 ) at: test_pd.py:44
 
     '''
     if file == None:

@@ -41,7 +41,7 @@ def main():
 	try:
 	    n.kuku2(6)
 	except BaseException: 		
-	    pd.print_exception_ex()
+	    pd.print_exception_ex( follow_objects = 1 )
 	    #pd.print_stack_ex( follow_objects = 1, frame = sys.exc_info()[2].tb_frame.f_back )
 	sys.stderr.write( "-----------\n" )
 	m =  [1, 2, 3 ]
