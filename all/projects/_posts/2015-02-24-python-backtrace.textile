@@ -1,0 +1,99 @@
+---
+layout: post
+title:  better stack trace for python 2.7
+---
+
+h2. {{ page.title }}
+<p class="publish_date">24 February 2015</p>
+
+
+I have been learning python lately; So far i would use Perl 5 as my scripting language of choice, but at work they seem to have a tendency lately to phase out usage of Perl.
+
+Learning a new programming language is always an aggravating business; I did not quite like is the format of the stack backtrack that python 2.7 produces when it encounters a run-time error.
+
+So I wrote a module that produces a better backtrace that looks like the one that gdb produces with gdb commands 'bt' and 'bt all', 
+
+Here is an example:
+
+<code>
+#1 def fact(n = 1) at test_pd.py:10
+Local variables:
+loc 2
+loc2 [0]
+Calls next frame at:
+	pd.print_stack_ex() at: test_pd.py:10
+
+#2 def fact(n = 2) at test_pd.py:8
+Local variables:
+loc 4
+loc2 [0, 1]
+Calls next frame at:
+	return n * fact( n - 1 ) at: test_pd.py:8
+
+#3 def fact(n = 3) at test_pd.py:8
+Local variables:
+loc 6
+loc2 [0, 1, 2]
+Calls next frame at:
+	return n * fact( n - 1 ) at: test_pd.py:8
+
+#4 def fact(n = 4) at test_pd.py:8
+Local variables:
+loc 8
+loc2 [0, 1, 2, 3]
+Calls next frame at:
+	return n * fact( n - 1 ) at: test_pd.py:8
+
+#5 def main() at test_pd.py:36
+Local variables:
+Calls next frame at:
+	print fact(4) at: test_pd.py:36
+
+#6 def <module>() at test_pd.py:53
+Calls next frame at:
+	main() at: test_pd.py:53
+</code>
+
+This module is called pd and that stands for python debugging module.
+
+The pd module also exports the die and die2 functions, these print an error message and exit the program, they also print out a stack trace (die2 with a more detailed stack that prints out object references)
+
+So these are similar to the built in die function in Perl;
+ 
+
+h3. how to use the module
+
+The module file is "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/pd.py ; the test is "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/test_pd.py
+
+Online documentation is "here":http://mosermichael.github.io/cstuff/docs/html/python/pd.html ; 
+
+Links for easier viewing: the "module file":https://github.com/MoserMichael/cstuff/blob/master/python/pd.py  and the "test program":https://github.com/MoserMichael/cstuff/blob/master/python/test_pd.py
+
+.h3 comparing Perl and Python
+
+Now here comes some subjective ranting on the subject of Perl vs. python.
+
+I did like the following in python:
+
+* it is not allowed to access an undefined variable (unlike ruby where this is allowed);
+* there is lots of support for python on sites like "stack overflow":http://stackoverflow.com ; whenever i had a question there was an answer ready.
+* also lots of libraries are available in python, and using the pip installer is quite easy.
+* doing classes in python is mostly intuitive
+* in python every object is a reference, (in Perl you have values and references); i guess that makes it easier to use.
+
+here are some bad parts of python and things i miss from Perl; in any event it took me some time to get used to these features.
+
+* the syntax of python is a bit aggravating  - writing a colon at the end of some statements (like if, for, def, try, etc); the problem is that this is not a universal feature - assignments do not need a colon at the end, so i often omit the colon by error when it is needed.
+* when an undefined (not assigned) variable is used this is a run time error, this means that the program has to run until it encounters this error; in Perl Strict mode this is a check that is done while parsing the script, so that these kinds of errors are reported much earlier.
+* when appending an integer value to a string we do have to convert it to string format with the str built in.
+* in PERL i miss the way that online documentation is structured; especially perlfunc "here":http://perldoc.perl.org/perlfunc.html#Perl-Functions-by-Category where links to specific functions are clustered around the way (similar to headwords in Roget thesaurus)
+* i am septic about exceptions in scripting languages - i still think that doing exceptions for scripting is an overkill.
+* the way they do getter and setter functions in classes by means of property declarations is a bit non intuitive 
+* Perl has a better integration of regular expressions into the languages; in python we have to get the match object, and then extract the match groupings; in Perl you just write $1 and there you have the sub group.
+* "cpan":http://www.cpan.org/ is better organized than the "pip":https://pip.pypa.io/ archive.
+* in Perl they have references, i guess that makes it less easy to use, still this feature is powerful.
+
+it seems to be a longer term trend: each generation of programmers has its favorite scripting language, and so I guess that in another twenty years we will see a different prevalent scripting language.
+Lets hope i will still be around to witness this change. I guess that this future scripting language will also have its good points and also have its own aggravations. 
+
+
