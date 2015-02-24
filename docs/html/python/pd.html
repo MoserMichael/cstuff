@@ -1,0 +1,162 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module pd</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>pd</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/cygdrive/d/stuff/roget/pd.py">/cygdrive/d/stuff/roget/pd.py</a></font></td></tr></table>
+    <p><tt>utilities&nbsp;for&nbsp;debugging&nbsp;of&nbsp;python&nbsp;scripts.&nbsp;prints&nbsp;stack&nbsp;backtraces&nbsp;that&nbsp;look&nbsp;similar&nbsp;to&nbsp;gdb&nbsp;stacktrace&nbsp;(gdb&nbsp;commands&nbsp;bt&nbsp;and&nbsp;bt&nbsp;full);&nbsp;<br>
+can&nbsp;be&nbsp;used&nbsp;instead&nbsp;of&nbsp;traceback.<br>
+&nbsp;<br>
+Written&nbsp;by&nbsp;Michael&nbsp;Moser&nbsp;(c)&nbsp;2015</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="inspect.html">inspect</a><br>
+<a href="linecache.html">linecache</a><br>
+</td><td width="25%" valign=top><a href="pprint.html">pprint</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top><a href="traceback.html">traceback</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-die"><strong>die</strong></a>(*msg)</dt><dd><tt>receives&nbsp;a&nbsp;variable&nbsp;number&nbsp;of&nbsp;arguments;&nbsp;prints&nbsp;each&nbsp;argument&nbsp;(with&nbsp;pprint)&nbsp;to&nbsp;standard&nbsp;error&nbsp;stream,&nbsp;<br>
+shows&nbsp;a&nbsp;detailed&nbsp;stack&nbsp;trace&nbsp;(also&nbsp;to&nbsp;standard&nbsp;error,&nbsp;see&nbsp;print_stack_ex,&nbsp;does&nbsp;not&nbsp;follow&nbsp;objects&nbsp;(follow_objects&nbsp;=&nbsp;0);&nbsp;<br>
+exit&nbsp;program&nbsp;with&nbsp;error&nbsp;(status&nbsp;1)<br>
+this&nbsp;is&nbsp;similar&nbsp;to&nbsp;die&nbsp;built&nbsp;in&nbsp;function&nbsp;in&nbsp;perl</tt></dd></dl>
+ <dl><dt><a name="-die2"><strong>die2</strong></a>(*msg)</dt><dd><tt>receives&nbsp;a&nbsp;variable&nbsp;number&nbsp;of&nbsp;arguments;&nbsp;prints&nbsp;each&nbsp;argument&nbsp;(with&nbsp;pprint)&nbsp;to&nbsp;standard&nbsp;error&nbsp;stream,&nbsp;<br>
+shows&nbsp;a&nbsp;detailed&nbsp;stack&nbsp;trace&nbsp;(also&nbsp;to&nbsp;standard&nbsp;error,&nbsp;see&nbsp;print_stack_ex,&nbsp;does&nbsp;follow&nbsp;objects&nbsp;(follow_objects&nbsp;=&nbsp;1);&nbsp;<br>
+exit&nbsp;program&nbsp;with&nbsp;error&nbsp;(status&nbsp;1)<br>
+this&nbsp;is&nbsp;similar&nbsp;to&nbsp;die&nbsp;built&nbsp;in&nbsp;function&nbsp;in&nbsp;perl</tt></dd></dl>
+ <dl><dt><a name="-print_exception_ex"><strong>print_exception_ex</strong></a>(follow_objects<font color="#909090">=0</font>, file<font color="#909090">=None</font>)</dt><dd><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prints&nbsp;an&nbsp;exception&nbsp;with&nbsp;more&nbsp;detailed&nbsp;stack&nbsp;trace,&nbsp;is&nbsp;used&nbsp;as&nbsp;follows:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;function&nbsp;is&nbsp;similar&nbsp;to&nbsp;traceback.print_exception&nbsp;,&nbsp;just&nbsp;with&nbsp;more&nbsp;detailed&nbsp;stack&nbsp;trace<br>
+&nbsp;<br>
+import&nbsp;pd<br>
+&nbsp;<br>
+try:<br>
+&nbsp;&nbsp;&nbsp;&lt;python&nbsp;code&gt;<br>
+except&nbsp;BaseException:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pd.<a href="#-print_exception_ex">print_exception_ex</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_objects&nbsp;-&nbsp;if&nbsp;not&nbsp;0&nbsp;then&nbsp;representation&nbsp;of&nbsp;object&nbsp;values&nbsp;is&nbsp;printed&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please&nbsp;note&nbsp;that&nbsp;follow_objects=1&nbsp;can&nbsp;generate&nbsp;a&nbsp;lot&nbsp;of&nbsp;output,&nbsp;and&nbsp;can&nbsp;take&nbsp;a&nbsp;lot&nbsp;of&nbsp;time.&nbsp;(default&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;-&nbsp;&nbsp;print&nbsp;to&nbsp;file&nbsp;(default&nbsp;value&nbsp;None&nbsp;-&nbsp;print&nbsp;to&nbsp;standard&nbsp;error&nbsp;stream)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;example&nbsp;stack&nbsp;trace:<br>
+&nbsp;<br>
+Exception:&nbsp;got&nbsp;it<br>
+&nbsp;<br>
+Exception:&nbsp;got&nbsp;it<br>
+&nbsp;<br>
+#1&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;1)&nbsp;at&nbsp;test_pd.py:29<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise&nbsp;Exception('got&nbsp;it')&nbsp;at:&nbsp;test_pd.py:29<br>
+&nbsp;<br>
+#2&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;2)&nbsp;at&nbsp;test_pd.py:28<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;<br>
+#3&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;3)&nbsp;at&nbsp;test_pd.py:28<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;<br>
+#4&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;4)&nbsp;at&nbsp;test_pd.py:28<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;<br>
+#5&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;5)&nbsp;at&nbsp;test_pd.py:28<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;<br>
+#6&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;6)&nbsp;at&nbsp;test_pd.py:28<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;<br>
+#7&nbsp;&nbsp;def&nbsp;main()&nbsp;at&nbsp;test_pd.py:44<br>
+Local&nbsp;variables:<br>
+n&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pd.<a href="#-print_exception_ex">print_exception_ex</a>()&nbsp;at:&nbsp;test_pd.py:44</tt></dd></dl>
+ <dl><dt><a name="-print_stack_ex"><strong>print_stack_ex</strong></a>(skipframes<font color="#909090">=0</font>, follow_objects<font color="#909090">=0</font>, file<font color="#909090">=None</font>, frame<font color="#909090">=None</font>)</dt><dd><tt>print&nbsp;stack&nbsp;trace&nbsp;from&nbsp;an&nbsp;arbitrary&nbsp;point&nbsp;in&nbsp;the&nbsp;program;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;function&nbsp;is&nbsp;similar&nbsp;to&nbsp;traceback.print_stack&nbsp;,&nbsp;just&nbsp;with&nbsp;more&nbsp;detailed&nbsp;stack&nbsp;trace<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;stack&nbsp;trace&nbsp;includes&nbsp;function&nbsp;names,&nbsp;values&nbsp;of&nbsp;parameters&nbsp;and&nbsp;values&nbsp;of&nbsp;local&nbsp;variables.&nbsp;i&nbsp;find&nbsp;it&nbsp;easier&nbsp;to&nbsp;debug&nbsp;with&nbsp;this&nbsp;stack&nbsp;trace.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;skipframes&nbsp;-&nbsp;skip&nbsp;a&nbsp;number&nbsp;of&nbsp;frames&nbsp;if&nbsp;is&nbsp;not&nbsp;0&nbsp;(default&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_objects&nbsp;-&nbsp;if&nbsp;not&nbsp;0&nbsp;then&nbsp;representation&nbsp;of&nbsp;object&nbsp;values&nbsp;is&nbsp;printed&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please&nbsp;note&nbsp;that&nbsp;follow_objects=1&nbsp;can&nbsp;generate&nbsp;a&nbsp;lot&nbsp;of&nbsp;output,&nbsp;and&nbsp;can&nbsp;take&nbsp;a&nbsp;lot&nbsp;of&nbsp;time.&nbsp;(default&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;-&nbsp;&nbsp;print&nbsp;to&nbsp;file&nbsp;(default&nbsp;value&nbsp;None&nbsp;-&nbsp;print&nbsp;to&nbsp;standard&nbsp;error&nbsp;stream)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame&nbsp;-&nbsp;specify&nbsp;a&nbsp;start&nbsp;frame&nbsp;(default&nbsp;None&nbsp;-&nbsp;show&nbsp;from&nbsp;calling&nbsp;function;&nbsp;deepest&nbsp;frame&nbsp;on&nbsp;top&nbsp;marked&nbsp;with&nbsp;#1)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;function&nbsp;is&nbsp;similar&nbsp;to&nbsp;traceback.print_stack&nbsp;,&nbsp;just&nbsp;with&nbsp;more&nbsp;detailed&nbsp;stack&nbsp;trace.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;works&nbsp;for&nbsp;python&nbsp;2.7,&nbsp;should&nbsp;work&nbsp;for&nbsp;other&nbsp;versions&nbsp;as&nbsp;well<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;example&nbsp;stack&nbsp;trace:<br>
+&nbsp;<br>
+#1&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;1)&nbsp;at&nbsp;test_pd.py:10<br>
+Local&nbsp;variables:<br>
+loc&nbsp;2<br>
+loc2&nbsp;[0]<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pd.<a href="#-print_stack_ex">print_stack_ex</a>()&nbsp;at:&nbsp;test_pd.py:10<br>
+&nbsp;<br>
+#2&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;2)&nbsp;at&nbsp;test_pd.py:8<br>
+Local&nbsp;variables:<br>
+loc&nbsp;4<br>
+loc2&nbsp;[0,&nbsp;1]<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;n&nbsp;*&nbsp;fact(&nbsp;n&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:8<br>
+&nbsp;<br>
+#3&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;3)&nbsp;at&nbsp;test_pd.py:8<br>
+Local&nbsp;variables:<br>
+loc&nbsp;6<br>
+loc2&nbsp;[0,&nbsp;1,&nbsp;2]<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;n&nbsp;*&nbsp;fact(&nbsp;n&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:8<br>
+&nbsp;<br>
+#4&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;4)&nbsp;at&nbsp;test_pd.py:8<br>
+Local&nbsp;variables:<br>
+loc&nbsp;8<br>
+loc2&nbsp;[0,&nbsp;1,&nbsp;2,&nbsp;3]<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;n&nbsp;*&nbsp;fact(&nbsp;n&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:8<br>
+&nbsp;<br>
+#5&nbsp;def&nbsp;main()&nbsp;at&nbsp;test_pd.py:36<br>
+Local&nbsp;variables:<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;fact(4)&nbsp;at:&nbsp;test_pd.py:36<br>
+&nbsp;<br>
+#6&nbsp;def&nbsp;&lt;module&gt;()&nbsp;at&nbsp;test_pd.py:53<br>
+Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main()&nbsp;at:&nbsp;test_pd.py:53</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>__all__</strong> = ['print_stack_ex', 'print_exception_ex', 'die', 'die2']</td></tr></table>
+</body></html>
