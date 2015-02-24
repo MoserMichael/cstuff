@@ -17,40 +17,40 @@ Here is an example:
 
 <blockquote><pre><code>
 
-&#35;1 def fact(n = 1) at test_pd.py:10
+#1 def fact(n = 1) at test_pd.py:10
 Local variables:
 loc = 2
 loc2 = [0]
 Calls next frame at:
 	pd.print_stack_ex() at: test_pd.py:10
 
-&#35;2 def fact(n = 2) at test_pd.py:8
+#2 def fact(n = 2) at test_pd.py:8
 Local variables:
 loc = 4
 loc2 = [0, 1]
 Calls next frame at:
 	return n * fact( n - 1 ) at: test_pd.py:8
 
-&#35;3 def fact(n = 3) at test_pd.py:8
+#3 def fact(n = 3) at test_pd.py:8
 Local variables:
 loc = 6
-loc2 = &#91;0, 1, 2 &#93;
+loc2 = [ 0, 1, 2 ]
 Calls next frame at:
 	return n * fact( n - 1 ) at: test_pd.py:8
 
-&#35;4 def fact(n = 4) at test_pd.py:8
+#4 def fact(n = 4) at test_pd.py:8
 Local variables:
 loc = 8
-loc2 = &#91;0, 1, 2, 3 &#93;
+loc2 = [ 0, 1, 2, 3 ]
 Calls next frame at:
 	return n * fact( n - 1 ) at: test_pd.py:8
 
-&#35;5 def main() at test_pd.py:36
+#5 def main() at test_pd.py:36
 Local variables:
 Calls next frame at:
 	print fact(4) at: test_pd.py:36
 
-&#35;6 def &lt;module&gt;() at test_pd.py:53
+#6 def <module>() at test_pd.py:53
 Calls next frame at:
 	main() at: test_pd.py:53
 
