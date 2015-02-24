@@ -51,7 +51,7 @@ def format_frame( nframe, frame, follow_objects ):
 	    except Exception as e:
 		varvalue = '<error while formatting>'
 	    if varname != None:		    
-		ret += varname + ' ' + varvalue  + "\n"  #   
+		ret += varname + ' = ' + varvalue  + "\n"  #   
 	    n += 1
     else:
 	ret += "\n"
