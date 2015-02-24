@@ -18,29 +18,29 @@ Here is an example:
 <code>
 #1 def fact(n = 1) at test_pd.py:10
 Local variables:
-loc 2
-loc2 [0]
+loc = 2
+loc2 = [0]
 Calls next frame at:
 	pd.print_stack_ex() at: test_pd.py:10
 
 #2 def fact(n = 2) at test_pd.py:8
 Local variables:
-loc 4
-loc2 [0, 1]
+loc = 4
+loc2 = [0, 1]
 Calls next frame at:
 	return n * fact( n - 1 ) at: test_pd.py:8
 
 #3 def fact(n = 3) at test_pd.py:8
 Local variables:
-loc 6
-loc2 [0, 1, 2]
+loc = 6
+loc2 = [0, 1, 2]
 Calls next frame at:
 	return n * fact( n - 1 ) at: test_pd.py:8
 
 #4 def fact(n = 4) at test_pd.py:8
 Local variables:
-loc 8
-loc2 [0, 1, 2, 3]
+loc = 8
+loc2 = [0, 1, 2, 3]
 Calls next frame at:
 	return n * fact( n - 1 ) at: test_pd.py:8
 
