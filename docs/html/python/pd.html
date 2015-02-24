@@ -63,37 +63,35 @@ except&nbsp;BaseException:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;<br>
 Exception:&nbsp;got&nbsp;it<br>
 &nbsp;<br>
-Exception:&nbsp;got&nbsp;it<br>
-&nbsp;<br>
-#1&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;1)&nbsp;at&nbsp;test_pd.py:29<br>
+#1&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;1)&nbsp;at&nbsp;test_pd.py:29<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise&nbsp;Exception('got&nbsp;it')&nbsp;at:&nbsp;test_pd.py:29<br>
 &nbsp;<br>
-#2&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;2)&nbsp;at&nbsp;test_pd.py:28<br>
+#2&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;2)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
-#3&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;3)&nbsp;at&nbsp;test_pd.py:28<br>
+#3&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;3)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
-#4&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;4)&nbsp;at&nbsp;test_pd.py:28<br>
+#4&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;4)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
-#5&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;5)&nbsp;at&nbsp;test_pd.py:28<br>
+#5&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;5)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
-#6&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;,&nbsp;depth&nbsp;=&nbsp;6)&nbsp;at&nbsp;test_pd.py:28<br>
+#6&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;6)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
 #7&nbsp;&nbsp;def&nbsp;main()&nbsp;at&nbsp;test_pd.py:44<br>
 Local&nbsp;variables:<br>
-n&nbsp;&lt;__main__.Node&nbsp;instance&nbsp;at&nbsp;0x6ffffe5cd40&gt;<br>
+n&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]}<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pd.<a href="#-print_exception_ex">print_exception_ex</a>()&nbsp;at:&nbsp;test_pd.py:44</tt></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pd.<a href="#-print_exception_ex">print_exception_ex</a>(&nbsp;follow_objects&nbsp;=&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:44</tt></dd></dl>
  <dl><dt><a name="-print_stack_ex"><strong>print_stack_ex</strong></a>(skipframes<font color="#909090">=0</font>, follow_objects<font color="#909090">=0</font>, file<font color="#909090">=None</font>, frame<font color="#909090">=None</font>)</dt><dd><tt>print&nbsp;stack&nbsp;trace&nbsp;from&nbsp;an&nbsp;arbitrary&nbsp;point&nbsp;in&nbsp;the&nbsp;program;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;function&nbsp;is&nbsp;similar&nbsp;to&nbsp;traceback.print_stack&nbsp;,&nbsp;just&nbsp;with&nbsp;more&nbsp;detailed&nbsp;stack&nbsp;trace<br>
 &nbsp;<br>
