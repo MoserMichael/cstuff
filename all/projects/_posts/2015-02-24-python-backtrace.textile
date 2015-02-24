@@ -16,6 +16,7 @@ So I wrote a module that produces a better backtrace that looks like the one tha
 Here is an example:
 
 <code>
+<notextile>
 <pre>
 #1 def fact(n = 1) at test_pd.py:10
 Local variables:
@@ -55,6 +56,7 @@ Calls next frame at:
 	main() at: test_pd.py:53
 
 </pre>	
+</notextile>
 </code>
 
 This module is called pd and that stands for python debugging module.
