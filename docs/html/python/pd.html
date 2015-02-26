@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>pd</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/cygdrive/d/stuff/roget/pd.py">/cygdrive/d/stuff/roget/pd.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/user/cstuff/python/pd.py">/home/user/cstuff/python/pd.py</a></font></td></tr></table>
     <p><tt>utilities&nbsp;for&nbsp;debugging&nbsp;of&nbsp;python&nbsp;scripts.&nbsp;prints&nbsp;stack&nbsp;backtraces&nbsp;that&nbsp;look&nbsp;similar&nbsp;to&nbsp;gdb&nbsp;stacktrace&nbsp;(gdb&nbsp;commands&nbsp;bt&nbsp;and&nbsp;bt&nbsp;full);&nbsp;<br>
 can&nbsp;be&nbsp;used&nbsp;instead&nbsp;of&nbsp;traceback.<br>
 &nbsp;<br>
@@ -69,23 +69,23 @@ Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;<br>
 #2&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;2)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
 #3&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;3)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
 #4&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;4)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
 #5&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;5)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
 #6&nbsp;&nbsp;def&nbsp;kuku2(self&nbsp;=&nbsp;{'a':&nbsp;42,&nbsp;'b':&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4]},&nbsp;depth&nbsp;=&nbsp;6)&nbsp;at&nbsp;test_pd.py:28<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kuku2(&nbsp;depth&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:28<br>
 &nbsp;<br>
 #7&nbsp;&nbsp;def&nbsp;main()&nbsp;at&nbsp;test_pd.py:44<br>
 Local&nbsp;variables:<br>
@@ -115,29 +115,29 @@ Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;<br>
 #1&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;1)&nbsp;at&nbsp;test_pd.py:10<br>
 Local&nbsp;variables:<br>
-loc&nbsp;=&nbsp;2<br>
-loc2&nbsp;=&nbsp;[0]<br>
+loc&nbsp;2<br>
+loc2&nbsp;[0]<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pd.<a href="#-print_stack_ex">print_stack_ex</a>()&nbsp;at:&nbsp;test_pd.py:10<br>
 &nbsp;<br>
 #2&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;2)&nbsp;at&nbsp;test_pd.py:8<br>
 Local&nbsp;variables:<br>
-loc&nbsp;=&nbsp;4<br>
-loc2&nbsp;=&nbsp;[0,&nbsp;1]<br>
+loc&nbsp;4<br>
+loc2&nbsp;[0,&nbsp;1]<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;n&nbsp;*&nbsp;fact(&nbsp;n&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:8<br>
 &nbsp;<br>
 #3&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;3)&nbsp;at&nbsp;test_pd.py:8<br>
 Local&nbsp;variables:<br>
-loc&nbsp;=&nbsp;6<br>
-loc2&nbsp;=&nbsp;[0,&nbsp;1,&nbsp;2]<br>
+loc&nbsp;6<br>
+loc2&nbsp;[0,&nbsp;1,&nbsp;2]<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;n&nbsp;*&nbsp;fact(&nbsp;n&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:8<br>
 &nbsp;<br>
 #4&nbsp;def&nbsp;fact(n&nbsp;=&nbsp;4)&nbsp;at&nbsp;test_pd.py:8<br>
 Local&nbsp;variables:<br>
-loc&nbsp;=&nbsp;8<br>
-loc2&nbsp;=&nbsp;[0,&nbsp;1,&nbsp;2,&nbsp;3]<br>
+loc&nbsp;8<br>
+loc2&nbsp;[0,&nbsp;1,&nbsp;2,&nbsp;3]<br>
 Calls&nbsp;next&nbsp;frame&nbsp;at:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;n&nbsp;*&nbsp;fact(&nbsp;n&nbsp;-&nbsp;1&nbsp;)&nbsp;at:&nbsp;test_pd.py:8<br>
 &nbsp;<br>
