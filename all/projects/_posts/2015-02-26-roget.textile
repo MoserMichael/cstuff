@@ -1,0 +1,469 @@
+---
+layout: post
+title:  Roget Thesaurus parser
+---
+
+h2. {{ page.title }}
+<p class="publish_date">26 February 2015</p>
+
+The Roget thesaurus does not seem to be widely used in natural language processing, for example the Stanford NLP course does not even mention it at all; instead they seem to focus on the "Wordnet":http://wordnetweb.princeton.edu/perl/webwn thesaurus.
+
+I think that the Roget thesaurus has a lot to offer here:
+
+* the thesaurus is in the public domain, so it can be used for free
+* The ontology/classification of Roget is more shallow than that of Wordnet, i think that would makes it easier to work with
+* In Roget thesaurus the word senses are grouped around Head words; each of these head words is also classified within the ontology
+
+the structure of the Roget thesaurus would be of advantages for such task as finding word similarities; two words or expressions that share the same head word would count as similar words. 
+
+In this project i have written a module in the python program language that parses the text of the Roget thesaurus from project Gutenberg, as a result it creates a data structure that represents the Roget thesaurus in memory. This data structure tries to preserve all information that is contained in the text of the thesaurus,
+, it allows a program to look up the word senses and to navigate through the ontology.
+
+The text that is parsed is based on the following source ( "here":https://archive.org/details/rogetsthesauruso10681gut )
+I am not quite sure as to which edition of the Roget thesaurus that is;
+
+
+h3. Obtaining the program
+
+Please download the roget.py script "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/roget.py 
+ ; you also have to download this "text of the Roget thesaurus "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/10681-body.txt and place this file into the same directory as the roget.py file. Please note that I had to edit the text of the Roget thesaurus  and remove some ambiguous constructs so that it is better suited for parsing.
+
+One of the results of this study is the Roget thesaurus in machine readable xml "see here":http://mosermichael.github.io/cstuff/docs/html/python/roget-out.xml (warning if you click on the last link then that will open the xml file for viewing, that will take about a minute)
+
+The html reference for the roget.py python module is "here":http://mosermichael.github.io/cstuff/docs/html/python/roget.html
+
+h3. the Roget Thesaurus
+
+The Thesaurus classifies word senses into the following ontology
+
+Each category is represented by a Node of type Category, this hierarchy is represented by a tree structure of nodes, each of them is of type Category.
+
+<blockquote><pre><code>
+Category - root ()
+	Category - CLASS I (WORDS EXPRESSING ABSTRACT RELATIONS)
+		Category - SECTION I. (EXISTENCE)
+			Category (1. BEING, IN THE ABSTRACT)
+			Category (2. BEING, IN THE CONCRETE)
+			Category (3. FORMAL EXISTENCE)
+				Category (Internal conditions)
+				Category (External conditions)
+			Category (4. MODAL EXISTENCE)
+				Category (Absolute)
+				Category (Relative)
+		Category - SECTION II. (RELATION)
+			Category (1. ABSOLUTE RELATION)
+			Category (2. CONTINUOUS RELATION)
+			Category (3. PARTIAL RELATION)
+			Category (4. GENERAL RELATION)
+		Category - SECTION III. (QUANTITY)
+			Category (1. SIMPLE QUANTITY)
+			Category (2. COMPARATIVE QUANTITY)
+				Category (1 QUANTITY BY COMPARISON WITH A STANDARD)
+				Category (2 QUANTITY BY COMPARISON WITH A SIMILAR OBJECT)
+				Category (3 CHANGES IN QUANTITY)
+			Category (3. CONJUNCTIVE QUANTITY)
+			Category (4. CONCRETE QUANTITY)
+		Category - SECTION IV. (ORDER)
+			Category (1. ORDER IN GENERAL)
+			Category (2. CONSECUTIVE ORDER)
+			Category (3. COLLECTIVE ORDER)
+			Category (4. DISTRIBUTIVE ORDER)
+			Category (5. ORDER AS REGARDS CATEGORIES)
+		Category - SECTION V. (NUMBER)
+			Category (1. NUMBER, IN THE ABSTRACT)
+			Category (2. DETERMINATE NUMBER)
+			Category (3. INDETERMINATE NUMBER)
+		Category - SECTION VI. (TIME)
+			Category (1. ABSOLUTE TIME)
+			Category (2. RELATIVE TIME)
+				Category (1. Time with reference to Succession)
+			Category (3. RECURRENT TIME)
+		Category - SECTION VII. (CHANGE)
+			Category (1. SIMPLE CHANGE)
+			Category (2. COMPLEX CHANGE)
+				Category (Present Events)
+				Category (Future Events)
+		Category - SECTION VIII. (CAUSATION)
+			Category (1. CONSTANCY OF SEQUENCE IN EVENTS)
+			Category (2. CONNECTION BETWEEN CAUSE AND EFFECT)
+			Category (3. POWER IN OPERATION)
+			Category (4. INDIRECT POWER)
+			Category (5. COMBINATIONS OF CAUSES)
+	Category - CLASS II (WORDS RELATING TO SPACE)
+		Category - SECTION I. (SPACE IN GENERAL)
+			Category (1. ABSTRACT SPACE)
+			Category (2. RELATIVE SPACE)
+			Category (3. EXISTENCE IN SPACE)
+		Category - SECTION II. (DIMENSIONS)
+			Category (1. GENERAL DIMENSIONS)
+			Category (2. LINEAR DIMENSIONS)
+			Category (3. CENTRICAL DIMENSIONS)
+				Category (1. General.)
+				Category (2. Special)
+		Category - SECTION III. (FORM)
+			Category (1. GENERAL FORM)
+			Category (2. SPECIAL FORM)
+			Category (3. SUPERFICIAL FORM)
+		Category - SECTION IV. (MOTION)
+			Category (1. MOTION IN GENERAL)
+			Category (2. DEGREES OF MOTION)
+			Category (3. MOTION CONJOINED WITH FORCE)
+			Category (4. MOTION WITH REFERENCE TO DIRECTION)
+	Category - CLASS III (WORDS RELATING TO MATTER)
+		Category - SECTION I. (MATTER IN GENERAL)
+		Category - SECTION II. (INORGANIC MATTER)
+			Category (1. SOLID MATTER)
+			Category (2. FLUID MATTER)
+			Category (3. IMPERFECT FLUIDS)
+		Category - SECTION III. (ORGANIC MATTER)
+			Category (1. VITALITY)
+				Category (1. Vitality in general)
+				Category (2. Special Vitality)
+			Category (2. SENSATION)
+				Category (1. Sensation in general)
+				Category (2. Special Sensation)
+				Category ((1) Touch)
+				Category ((2) Heat)
+				Category ((4) Odor)
+				Category ((5) Sound)
+				Category ((i) SOUND IN GENERAL)
+				Category ((ii) SPECIFIC SOUNDS)
+				Category ((iii) MUSICAL SOUNDS)
+				Category ((iv) PERCEPTION OF SOUND)
+				Category ((6) Light)
+				Category ((i) LIGHT IN GENERAL)
+				Category ((ii) SPECIFIC LIGHT)
+				Category (Primitive Colors)
+				Category (Complementary Colors)
+				Category ((iii) PERCEPTIONS OF LIGHT)
+	Category - CLASS IV (WORDS RELATING TO THE INTELLECTUAL FACULTIES)
+		Category - DIVISION I (FORMATION OF IDEAS)
+			Category - SECTION I. (OPERATIONS OF INTELLECT IN GENERAL)
+			Category - SECTION II. (PRECURSORY CONDITIONS AND OPERATIONS)
+			Category - SECTION III. (MATERIALS FOR REASONING)
+				Category (Evidence for, against, and in mitigation)
+			Category - SECTION IV. (REASONING PROCESSES)
+			Category - SECTION V. (RESULTS OF REASONING)
+			Category - SECTION VI (EXTENSION OF THOUGHT)
+				Category (1. To the Past)
+			Category - SECTION VII. (CREATIVE THOUGHT)
+		Category - DIVISION II (COMMUNICATION OF IDEAS)
+			Category - SECTION I. (NATURE OF IDEAS COMMUNICATED)
+			Category - SECTION II. (MODES OF COMMUNICATION)
+			Category - SECTION III. (MEANS OF COMMUNICATING IDEAS)
+				Category (1. NATURAL MEANS)
+				Category (2. CONVENTIONAL MEANS)
+					Category (1. Language generally)
+					Category (2. Spoken Language)
+					Category (3. Written Language)
+	Category - CLASS V (WORDS RELATING TO THE VOLUNTARY POWERS)
+		Category - DIVISION I (INDIVIDUAL VOLITION)
+			Category - SECTION I. (VOLITION IN GENERAL)
+				Category (1. Acts of Volition)
+				Category (2. Causes of Volition)
+				Category (3. Objects of Volition)
+			Category - SECTION II. (PROSPECTIVE VOLITION)
+				Category (1. CONCEPTIONAL VOLITION)
+				Category (2. SUBSERVIENCE TO ENDS)
+					Category (1. Actual Subservience)
+				Category (3. PRECURSORY MEASURES)
+			Category - SECTION III. (VOLUNTARY ACTION)
+				Category (1. Simple voluntary Action)
+				Category (2. Complex Voluntary Action)
+			Category - SECTION IV. (ANTAGONISM)
+				Category (1. Conditional Antagonism)
+				Category (2. Active Antagonism)
+			Category - SECTION V. (RESULTS OF VOLUNTARY ACTION)
+		Category - DIVISION II (INTERSOCIAL VOLITION)
+			Category - SECTION I. (GENERAL INTERSOCIAL VOLITION)
+			Category - SECTION II. (SPECIAL INTERSOCIAL VOLITION)
+			Category - SECTION III. (CONDITIONAL INTERSOCIAL VOLITION)
+			Category - SECTION IV. (POSSESSIVE RELATIONS)
+				Category (1. Property in general)
+				Category (2. Transfer of Property)
+				Category (3. Interchange of Property)
+				Category (4. Monetary Relations)
+	Category - CLASS VI (WORDS RELATING TO THE SENTIENT AND MORAL POWERS)
+		Category - SECTION I. (AFFECTIONS IN GENERAL)
+		Category - SECTION II (PERSONAL AFFECTIONS)
+			Category (1. PASSIVE AFFECTIONS)
+			Category (2. DISCRIMINATIVE AFFECTIONS)
+			Category (3. PROSPECTIVE AFFECTIONS)
+			Category (4. CONTEMPLATIVE AFFECTIONS)
+			Category (5. EXTRINSIC AFFECTIONS)
+		Category - SECTION III. (SYMPATHETIC AFFECTIONS)
+			Category (1. SOCIAL AFFECTIONS)
+			Category (2. DIFFUSIVE SYMPATHETIC AFFECTIONS)
+				Category (3. SPECIAL SYMPATHETIC AFFECTIONS)
+				Category (4. RETROSPECTIVE SYMPATHETIC AFFECTIONS)
+				Category (1. MORAL OBLIGATIONS)
+				Category (2. MORAL SENTIMENTS)
+				Category (3. MORAL CONDITIONS)
+				Category (4. MORAL PRACTICE)
+				Category (5. MORAL INSTITUTIONS)
+				Category (1. SUPERHUMAN BEINGS AND REGIONS)
+				Category (2. RELIGIOUS DOCTRINES)
+				Category (3. RELIGIOUS SENTIMENTS)
+				Category (4. ACTS OF RELIGION)
+				Category (5. RELIGIOUS INSTITUTIONS)
+
+</code></pre></blockquote>
+
+
+
+In this tree there or leaf categories (an example of a leaf category is '1. BEING, IN THE ABSTRACT') the next level are head words;
+Word senses cluster around this head word.
+
+<blockquote><pre><code>
+Category - root ()
+	Category - CLASS I (WORDS EXPRESSING ABSTRACT RELATIONS)
+		Category - SECTION I. (EXISTENCE)
+			Category (1. BEING, IN THE ABSTRACT)
+				#1 Headword (Existence)
+				#2 Headword (Inexistence)
+			Category (2. BEING, IN THE CONCRETE)
+				#3 Headword (Substantiality)
+				#4 Headword (Unsubstantiality)
+			Category (3. FORMAL EXISTENCE)
+				Category (Internal conditions)
+					#5 Headword (Intrinsicality)
+				Category (External conditions)
+					#6 Headword (Extrinsicality)
+			Category (4. MODAL EXISTENCE)
+				Category (Absolute)
+					#7 Headword (State)
+				Category (Relative)
+					#8 Headword (Circumstance)
+		Category - SECTION II. (RELATION)
+			Category (1. ABSOLUTE RELATION)
+				#9 Headword (Relation)
+				#10 Headword (Irrelation)
+				#11 Headword (Consanguinity)
+				#12 Headword (Correlation)
+				#13 Headword (Identity)
+				#14 Headword (Contrariety)
+				#15 Headword (Difference)
+
+. . . (lots more )
+</code></pre></blockquote>
+
+
+Here is one example head word from the text of the Thesaurus.
+
+<blockquote>
+CLASS I
+WORDS EXPRESSING ABSTRACT RELATIONS
+
+SECTION I.
+EXISTENCE
+
+1. BEING, IN THE ABSTRACT
+
+1. Existence -- N. existence, being, entity, ens [Lat.], esse [Lat.],
+subsistence.
+     reality, actuality; positiveness &amp;c adj.; fact, matter of fact,
+sober reality; truth &amp;c 494; actual existence.
+     presence &amp;c (existence in space) 186; coexistence &amp;c 120.
+     stubborn fact, hard fact; not a dream &amp;c 515; no joke.
+     center of life, essence, inmost nature, inner reality, vital
+principle [Science of existence], ontology.
+V. exist, be; have being &amp;c n.; subsist, live, breathe, stand, obtain,
+be the case; occur &amp;c (event) 151; have place, prevail; find oneself,
+pass the time, vegetate.
+     consist in, lie in; be comprised in, be contained in, be
+constituted by.
+     come into existence &amp;c n.; arise &amp;c (begin) 66; come forth &amp;c
+(appear) 446.
+     become &amp;c (be converted) 144; bring into existence &amp;c 161.
+     abide, continue, endure, last, remain, stay.
+Adj. existing &amp;c v.; existent, under the sun; in existence &amp;c n.;
+extant; afloat, afoot, on foot, current, prevalent; undestroyed.
+     real, actual, positive, absolute; true &amp;c 494; substantial,
+substantive; self-existing, self-existent; essential.
+     well-founded, well-grounded; unideal, unimagined; not potential &amp;c
+2; authentic.
+Adv. actually &amp;c adj.; in fact, in point of fact, in reality; indeed;
+de facto, ipso facto.
+Phr. ens rationis [Lat.]; ergo sum cogito [Lat.], thinkest thou
+existence doth depend on time? [Byron].
+
+</blockquote>
+
+let us look at the head word Existence ; after the head words there is a set of word senses, where each word sense is separated by a comma or semicolon.
+it seems that more closely related word senses are separated by comma, so the data structure will group these closely related senses under a Sense node
+More loosely related word senses are separated by semicolon.
+
+In the data structure each set of comma separated word senses has its own parent node of type SenseGroup; 
+if a single word sense is followed by a semicolon then this is represented by a node that is placed directly under the head word node.
+
+Note that some word senses have optional links to other head words.
+
+
+Now here is a text report that describes this structure:
+
+<blockquote><pre><code>
+Category - root ()
+	Category - CLASS I (WORDS EXPRESSING ABSTRACT RELATIONS)
+		Category - SECTION I. (EXISTENCE)
+			Category (1. BEING, IN THE ABSTRACT)
+				#1 Headword (Existence)
+					SenseGroup ()
+						Sense (existence) /N/ 
+						Sense (being)
+						Sense (entity)
+						Sense (ens) comment: Lat.
+						Sense (esse) comment: Lat.
+						Sense (subsistence)
+					SenseGroup ()
+						Sense (reality)
+						Sense (actuality)
+					Sense (positiveness) /Adj/ 
+					SenseGroup ()
+						Sense (fact)
+						Sense (matter of fact)
+						Sense (sober reality)
+					Sense (truth) [link: #494 (Truth) ]
+					Sense (actual existence)
+					Sense (presence) [link: #186 (Presence) ]
+					Sense (coexistence) [link: #120 (Synchronism) ]
+					SenseGroup ()
+						Sense (stubborn fact)
+						Sense (hard fact)
+					Sense (not a dream) [link: #515 (Imagination) ]
+					Sense (no joke)
+					SenseGroup ()
+						Sense (center of life)
+						Sense (essence)
+						Sense (inmost nature)
+						Sense (inner reality)
+						Sense (vital principle) comment: Science of existence
+						Sense (ontology)
+					SenseGroup ()
+						Sense (exist) /V/ 
+						Sense (be)
+					Sense (have being) /N/ 
+					SenseGroup ()
+						Sense (subsist)
+						Sense (live)
+						Sense (breathe)
+						Sense (stand)
+						Sense (obtain)
+						Sense (be the case)
+					Sense (occur) [link: #151 (Eventuality) ]
+					SenseGroup ()
+						Sense (have place)
+						Sense (prevail)
+					SenseGroup ()
+						Sense (find oneself)
+						Sense (pass the time)
+						Sense (vegetate)
+					SenseGroup ()
+						Sense (consist in)
+						Sense (lie in)
+					SenseGroup ()
+						Sense (be comprised in)
+						Sense (be contained in)
+						Sense (be constituted by)
+					Sense (come into existence) /N/ 
+					Sense (arise) [link: #66 (Beginning) ]
+					Sense (come forth) [link: #446 (Visibility) ]
+					Sense (become) [link: #144 (Conversion) ]
+					Sense (bring into existence) [link: #161 (Production) ]
+					SenseGroup ()
+						Sense (abide)
+						Sense (continue)
+						Sense (endure)
+						Sense (last)
+						Sense (remain)
+						Sense (stay)
+					Sense (existing) /Adj/ 
+					SenseGroup ()
+						Sense (existent)
+						Sense (under the sun)
+					Sense (in existence) /N/ 
+					Sense (extant)
+					SenseGroup ()
+						Sense (afloat)
+						Sense (afoot)
+						Sense (on foot)
+						Sense (current)
+						Sense (prevalent)
+					Sense (undestroyed)
+					SenseGroup ()
+						Sense (real)
+						Sense (actual)
+						Sense (positive)
+						Sense (absolute)
+					Sense (true) [link: #494 (Truth) ]
+					SenseGroup ()
+						Sense (substantial)
+						Sense (substantive)
+					SenseGroup ()
+						Sense (self-existing)
+						Sense (self-existent)
+					Sense (essential)
+					SenseGroup ()
+						Sense (well-founded)
+						Sense (well-grounded)
+					SenseGroup ()
+						Sense (unideal)
+						Sense (unimagined)
+					Sense (not potential) [link: #2 (Inexistence) ]
+					Sense (authentic)
+					Sense (actually) /Adv/ 
+					SenseGroup ()
+						Sense (in fact)
+						Sense (in point of fact)
+						Sense (in reality)
+					Sense (indeed)
+					SenseGroup ()
+						Sense (de facto)
+						Sense (ipso facto)
+					Sense (ens rationis) /Phr/  comment: Lat.
+					SenseGroup ()
+						Sense (ergo sum cogito) comment: Lat.
+						Sense (thinkest thou existence doth depend on time?) comment: Byron
+</code></pre></blockquote>
+
+
+
+h3. The programming interface
+
+The html reference for the roget.py python module is "here":http://mosermichael.github.io/cstuff/docs/html/python/roget.html
+
+In order to create an instance of the Roget Thesaurus class first construct an instance of RogetBuilder and then call the method parse - please note that the file 10681-body.txt  must be in the same directory as the script roget.py .
+
+<blockquote><pre><code>	
+import roget				 
+
+builder = roget.RogetBuilder( 1 )
+rogetThesaurus = builder.parse()
+</code></pre></blockquote>
+
+
+The following function will look up a word in the index of this class;  the word sense index is mapping the text of the word sense to a list of reference - each reference refers to the word sense as it appears in the Roget thesaurus. Given the node we can examine the node properties and navigate to the parent node, etc.
+
+<blockquote><pre><code>	
+
+def lookupWord( rogetThesaurus, word ):
+    idx = rogetThesaurus.senseIndex
+    wordSenses = idx[ word ]
+    if wordSenses != None:	
+	for s in wordSenses:
+	    while s != None:
+		print s.toString(), " / ",
+		s = s.parent
+	    print "\n"		
+    else:
+	print "no word senses found\n"
+
+
+
+    lookupWord(rogetThesaurus, "fact")
+    lookupWord(rogetThesaurus, "fiction")
+    lookupWord(rogetThesaurus, "love")
+    lookupWord(rogetThesaurus, "hate")
+
+</code></pre></blockquote>
+
+
