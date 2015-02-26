@@ -6,7 +6,7 @@ title:  Roget Thesaurus parser
 h2. {{ page.title }}
 <p class="publish_date">26 February 2015</p>
 
-The Roget thesaurus does not seem to be widely used in natural language processing, for example the "Stanford NLP course ":https://www.youtube.com/watch?v=nfoudtpBV68&list=PL6397E4B26D00A269 does not even mention it at all; instead they seem to focus on the "Wordnet":http://wordnetweb.princeton.edu/perl/webwn thesaurus.
+The Roget thesaurus does not seem to be widely used in natural language processing, for example the "Stanford NLP course":https://www.youtube.com/watch?v=nfoudtpBV68&list=PL6397E4B26D00A269 does not even mention it at all; instead they seem to focus on the "Wordnet":http://wordnetweb.princeton.edu/perl/webwn thesaurus.
 
 I think that the Roget thesaurus has a lot to offer here:
 
@@ -248,7 +248,7 @@ Category - root ()
 
 Here is one example head word from the text of the Thesaurus.
 
-<blockquote>
+<blockquote><pre><code>
 CLASS I
 WORDS EXPRESSING ABSTRACT RELATIONS
 
@@ -285,7 +285,7 @@ de facto, ipso facto.
 Phr. ens rationis [Lat.]; ergo sum cogito [Lat.], thinkest thou
 existence doth depend on time? [Byron].
 
-</blockquote>
+</code></pre></blockquote>
 
 let us look at the head word Existence ; after the head words there is a set of word senses, where each word sense is separated by a comma or semicolon.
 it seems that more closely related word senses are separated by comma, so the data structure will group these closely related senses under a Sense node
