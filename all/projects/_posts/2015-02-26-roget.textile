@@ -6,7 +6,7 @@ title:  Roget Thesaurus parser
 h2. {{ page.title }}
 <p class="publish_date">26 February 2015</p>
 
-The Roget thesaurus does not seem to be widely used in natural language processing, for example the Stanford NLP course does not even mention it at all; instead they seem to focus on the "Wordnet":http://wordnetweb.princeton.edu/perl/webwn thesaurus.
+The Roget thesaurus does not seem to be widely used in natural language processing, for example the "Stanford NLP course ":https://www.youtube.com/watch?v=nfoudtpBV68&list=PL6397E4B26D00A269 does not even mention it at all; instead they seem to focus on the "Wordnet":http://wordnetweb.princeton.edu/perl/webwn thesaurus.
 
 I think that the Roget thesaurus has a lot to offer here:
 
@@ -14,13 +14,11 @@ I think that the Roget thesaurus has a lot to offer here:
 * The ontology/classification of Roget is more shallow than that of Wordnet, i think that would makes it easier to work with
 * In Roget thesaurus the word senses are grouped around Head words; each of these head words is also classified within the ontology
 
-the structure of the Roget thesaurus would be of advantages for such task as finding word similarities; two words or expressions that share the same head word would count as similar words. 
+The structure of the Roget thesaurus would be of great for such task as finding word similarities; two words or expressions that share the same head word would count as similar words. 
 
-In this project i have written a module in the python program language that parses the text of the Roget thesaurus from project Gutenberg, as a result it creates a data structure that represents the Roget thesaurus in memory. This data structure tries to preserve all information that is contained in the text of the thesaurus,
-, it allows a program to look up the word senses and to navigate through the ontology.
+In this project i have written a module in the python program language that parses the text of the Roget thesaurus, it also creates a data structure that represents the Roget thesaurus in memory. This data structure tries to preserve all information that is contained in the text of the Roget Thesaurus, it allows a program to look up the word senses and to navigate through the ontology.
 
-The text that is parsed is based on the following source ( "here":https://archive.org/details/rogetsthesauruso10681gut )
-I am not quite sure as to which edition of the Roget thesaurus that is;
+The text that is parsed is based on the text of the Roget Thesaurus from archive.org ( "here":https://archive.org/details/rogetsthesauruso10681gut ) I am not quite sure as to which edition of the Roget thesaurus that is; the text does not mention it.
 
 
 h3. Obtaining the program
