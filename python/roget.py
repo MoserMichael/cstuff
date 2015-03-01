@@ -591,11 +591,19 @@ class RogetThesaurus:
 	return ret
 	
     def semanticSimilarity( self, seq1, seq2 ):
-        ''' computes the semantic similarity between two terms, returns the following scores
+        ''' computes the semantic similarity between two terms, 
+	    
+	    returns the following tuple (similarity-score, common-node-in-roget-thesaurus)
+
+	    
+	    the similarity score:
                 100 - both terms appear in the same SenseGroup node
                  90 - both terms he the same head word
                  80 - both terms appear in the same leaf category
                   0 - everything else
+
+	    common-node-in-roget-thesaurus: is None if the score is 0; 
+	    otherwise it is the common node that the score is based on		    
         '''                  
 	arr1 = self._semHelpSortedSet( seq1 )
 	arr2 = self._semHelpSortedSet( seq2 )
