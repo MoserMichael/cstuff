@@ -190,11 +190,19 @@ Data descriptors defined here:<br>
 <td width="100%">Methods defined here:<br>
 <dl><dt><a name="RogetThesaurus-__init__"><strong>__init__</strong></a>(self, rootNode<font color="#909090">=None</font>, headWordIndex<font color="#909090">=None</font>, senseIndex<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="RogetThesaurus-semanticSimilarity"><strong>semanticSimilarity</strong></a>(self, seq1, seq2)</dt><dd><tt>computes&nbsp;the&nbsp;semantic&nbsp;similarity&nbsp;between&nbsp;two&nbsp;terms,&nbsp;returns&nbsp;the&nbsp;following&nbsp;scores<br>
-100&nbsp;-&nbsp;both&nbsp;terms&nbsp;appear&nbsp;in&nbsp;the&nbsp;same&nbsp;SenseGroup&nbsp;node<br>
-&nbsp;90&nbsp;-&nbsp;both&nbsp;terms&nbsp;he&nbsp;the&nbsp;same&nbsp;head&nbsp;word<br>
-&nbsp;80&nbsp;-&nbsp;both&nbsp;terms&nbsp;appear&nbsp;in&nbsp;the&nbsp;same&nbsp;leaf&nbsp;category<br>
-&nbsp;&nbsp;0&nbsp;-&nbsp;everything&nbsp;else</tt></dd></dl>
+<dl><dt><a name="RogetThesaurus-semanticSimilarity"><strong>semanticSimilarity</strong></a>(self, seq1, seq2)</dt><dd><tt>computes&nbsp;the&nbsp;semantic&nbsp;similarity&nbsp;between&nbsp;two&nbsp;terms,&nbsp;<br>
+&nbsp;<br>
+returns&nbsp;the&nbsp;following&nbsp;tuple&nbsp;(similarity-score,&nbsp;common-node-in-roget-thesaurus)<br>
+&nbsp;<br>
+&nbsp;<br>
+the&nbsp;similarity&nbsp;score:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;100&nbsp;-&nbsp;both&nbsp;terms&nbsp;appear&nbsp;in&nbsp;the&nbsp;same&nbsp;SenseGroup&nbsp;node<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;90&nbsp;-&nbsp;both&nbsp;terms&nbsp;he&nbsp;the&nbsp;same&nbsp;head&nbsp;word<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80&nbsp;-&nbsp;both&nbsp;terms&nbsp;appear&nbsp;in&nbsp;the&nbsp;same&nbsp;leaf&nbsp;category<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;-&nbsp;everything&nbsp;else<br>
+&nbsp;<br>
+common-node-in-roget-thesaurus:&nbsp;is&nbsp;None&nbsp;if&nbsp;the&nbsp;score&nbsp;is&nbsp;0;&nbsp;<br>
+otherwise&nbsp;it&nbsp;is&nbsp;the&nbsp;common&nbsp;node&nbsp;that&nbsp;the&nbsp;score&nbsp;is&nbsp;based&nbsp;on</tt></dd></dl>
 
 <hr>
 Data descriptors defined here:<br>
