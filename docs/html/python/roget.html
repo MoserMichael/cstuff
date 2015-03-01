@@ -1,7 +1,6 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: module roget</title>
-<meta charset="utf-8">
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
@@ -9,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>roget</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/user/cstuff/python/roget.py">/home/user/cstuff/python/roget.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/user/official/cstuff/python/roget.py">/home/user/official/cstuff/python/roget.py</a></font></td></tr></table>
     <p><tt>Parses&nbsp;the&nbsp;roget&nbsp;thesaurus&nbsp;and&nbsp;makes&nbsp;it&nbsp;accessible&nbsp;through&nbsp;an&nbsp;API.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -20,11 +19,12 @@
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="cgi.html">cgi</a><br>
 <a href="os.html">os</a><br>
-</td><td width="25%" valign=top><a href="cPickle.html">cPickle</a><br>
-<a href="re.html">re</a><br>
-</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
-<a href="time.html">time</a><br>
-</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top><a href="pd.html">pd</a><br>
+<a href="cPickle.html">cPickle</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -99,6 +99,9 @@ Data descriptors inherited from <a href="roget.html#RogetNode">RogetNode</a>:<br
 <dl><dt><strong>description</strong></dt>
 <dd><tt>returns&nbsp;an&nbsp;optional&nbsp;description&nbsp;(in&nbsp;the&nbsp;text&nbsp;this&nbsp;appears&nbsp;as&nbsp;[&nbsp;....&nbsp;]&nbsp;)</tt></dd>
 </dl>
+<dl><dt><strong>internalId</strong></dt>
+<dd><tt>each&nbsp;node&nbsp;has&nbsp;its&nbsp;own&nbsp;internal&nbsp;id</tt></dd>
+</dl>
 <dl><dt><strong>key</strong></dt>
 <dd><tt>the&nbsp;meaning/key&nbsp;of&nbsp;this&nbsp;node</tt></dd>
 </dl>
@@ -165,6 +168,9 @@ Data descriptors defined here:<br>
 <dl><dt><strong>description</strong></dt>
 <dd><tt>returns&nbsp;an&nbsp;optional&nbsp;description&nbsp;(in&nbsp;the&nbsp;text&nbsp;this&nbsp;appears&nbsp;as&nbsp;[&nbsp;....&nbsp;]&nbsp;)</tt></dd>
 </dl>
+<dl><dt><strong>internalId</strong></dt>
+<dd><tt>each&nbsp;node&nbsp;has&nbsp;its&nbsp;own&nbsp;internal&nbsp;id</tt></dd>
+</dl>
 <dl><dt><strong>key</strong></dt>
 <dd><tt>the&nbsp;meaning/key&nbsp;of&nbsp;this&nbsp;node</tt></dd>
 </dl>
@@ -183,6 +189,12 @@ Data descriptors defined here:<br>
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
 <dl><dt><a name="RogetThesaurus-__init__"><strong>__init__</strong></a>(self, rootNode<font color="#909090">=None</font>, headWordIndex<font color="#909090">=None</font>, senseIndex<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="RogetThesaurus-semanticSimilarity"><strong>semanticSimilarity</strong></a>(self, seq1, seq2)</dt><dd><tt>computes&nbsp;the&nbsp;semantic&nbsp;similarity&nbsp;between&nbsp;two&nbsp;terms,&nbsp;returns&nbsp;the&nbsp;following&nbsp;scores<br>
+100&nbsp;-&nbsp;both&nbsp;terms&nbsp;appear&nbsp;in&nbsp;the&nbsp;same&nbsp;SenseGroup&nbsp;node<br>
+&nbsp;90&nbsp;-&nbsp;both&nbsp;terms&nbsp;he&nbsp;the&nbsp;same&nbsp;head&nbsp;word<br>
+&nbsp;80&nbsp;-&nbsp;both&nbsp;terms&nbsp;appear&nbsp;in&nbsp;the&nbsp;same&nbsp;leaf&nbsp;category<br>
+&nbsp;&nbsp;0&nbsp;-&nbsp;everything&nbsp;else</tt></dd></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -258,6 +270,9 @@ Data descriptors inherited from <a href="roget.html#RogetNode">RogetNode</a>:<br
 </dl>
 <dl><dt><strong>description</strong></dt>
 <dd><tt>returns&nbsp;an&nbsp;optional&nbsp;description&nbsp;(in&nbsp;the&nbsp;text&nbsp;this&nbsp;appears&nbsp;as&nbsp;[&nbsp;....&nbsp;]&nbsp;)</tt></dd>
+</dl>
+<dl><dt><strong>internalId</strong></dt>
+<dd><tt>each&nbsp;node&nbsp;has&nbsp;its&nbsp;own&nbsp;internal&nbsp;id</tt></dd>
 </dl>
 <dl><dt><strong>key</strong></dt>
 <dd><tt>the&nbsp;meaning/key&nbsp;of&nbsp;this&nbsp;node</tt></dd>
