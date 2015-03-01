@@ -5,6 +5,7 @@ import re
 import os
 import time
 import cgi
+import pd
 
 __all__ = [ 'RogetBuilder', 'RogetThesaurus', 'RogetNode', 'Sense', 'HeadWord', 'RogetThesaususFormatterText', 'RogetThesaurusFormatterXML'  ]
 
@@ -13,6 +14,25 @@ try:
     import cPickle as pickle
 except Exception:
     print 'failed to load cPicle'
+
+''' types of nodes in tree '''
+ROGET_NODE_CATEGORY = 1
+ROGET_NODE_HEADWORD = 2
+ROGET_NODE_SENSE_GROUP = 4
+ROGET_NODE_SENSE     = 8
+
+
+''' types of words '''
+WORD_TYPE_NONE = 0
+WORD_TYPE_VERB = 1
+WORD_TYPE_NOUN = 2
+WORD_TYPE_ADJ  = 3
+WORD_TYPE_ADVERB  =  4
+WORD_TYPE_PHRASE = 5
+
+''' last counter of nodes '''
+_lastInternalId = 1
+
 
 
 class RogetBuilder:
@@ -44,7 +64,7 @@ class RogetBuilder:
 	if node.type == ROGET_NODE_HEADWORD or node.type == ROGET_NODE_SENSE:
 	    if node.link != None:
 		if not node.link in self._headWordIndex:
-		    die("word: " + node.key   + " unresolved link: " + str( node.link ) )
+		    pd.die("word: " + node.key   + " unresolved link: " + str( node.link ) )
 		node.link = self._headWordIndex[ node.link ]		    
 
 	if node.type == ROGET_NODE_HEADWORD or node.type == ROGET_NODE_SENSE:
@@ -73,7 +93,7 @@ class RogetBuilder:
 	    linkValue = n.group(2)
 
 	    if attribValue == None and linkValue == None:
-		die('Bad link: ' + text)
+		pd.die('Bad link: ' + text)
 
 	    if attribValue == None:
 		attribValue = linkValue
@@ -112,7 +132,7 @@ class RogetBuilder:
 	    elif val == 'Phr.':
 		word.wordType = WORD_TYPE_PHRASE
 	    else:
-		die(val + " -- " + text)
+		pd.die(val + " -- " + text)
 	    text = self._attributeRe.sub( '', text )
 
 	#n = self.linkType2.search( text )
@@ -129,7 +149,7 @@ class RogetBuilder:
 	word.key = text.strip()
 
 	if word.key == '' and word.link == '':
-	    die('empty word : ' + textCopy)
+	    pd.die('empty word : ' + textCopy)
 	#print word.key
 
     def _parseHeadWords(self, node, passage ):
@@ -156,7 +176,7 @@ class RogetBuilder:
 		    n = self._numRe.match( headWord.index )
 		    if n != None: 
 			if self._lastHeadIndex != None and (int(n.group(1)) - int(self._lastHeadIndex)) > 1:
-			    die('last index ' + self._lastHeadIndex + 'current index: ' + n.group(1) )
+			    pd.die('last index ' + self._lastHeadIndex + 'current index: ' + n.group(1) )
 			self._lastHeadIndex = n.group(1)
 
 		    #parse word groups
@@ -194,7 +214,7 @@ class RogetBuilder:
 	fpath = os.path.split( __file__ )
 	rpath = os.path.join( fpath[0], '10681-body.txt' )
 	if os.access( rpath, os.F_OK | os.R_OK ) ==  0:
-	    die("Roget thesaursus text file rpath has not been found")
+	    pd.die("Roget thesaursus text file rpath has not been found")
 
 	if self._VERBOSE != 0:
 	   print "parsing file: ", rpath
@@ -361,16 +381,13 @@ class RogetBuilder:
 	    return None
 
 
-ROGET_NODE_CATEGORY = 1
-ROGET_NODE_HEADWORD = 2
-ROGET_NODE_SENSE_GROUP = 4
-ROGET_NODE_SENSE     = 8
-
 class RogetNode:
     ''' 
 	RogetNode - the base class of all nodes maintained by Roget thesaurus
     '''    
     def __init__(self, type, description, parent = None):
+	global _lastInternalId 
+
 	self._type = type 
 	if description != None:
 	    self._description = description.strip()
@@ -379,6 +396,8 @@ class RogetNode:
 	self._parent = parent
 	self._child = []
 	self._key = ''
+	self._internalId = _lastInternalId
+	_lastInternalId += 1 
 	if parent != None:
 	    parent._addChild( self )
 	    #print "addChild ", description, "parent ",parent.description
@@ -429,14 +448,10 @@ class RogetNode:
 	''' returns the array of child nodes '''
 	return self._child
 
-	
-
-WORD_TYPE_NONE = 0
-WORD_TYPE_VERB = 1
-WORD_TYPE_NOUN = 2
-WORD_TYPE_ADJ  = 3
-WORD_TYPE_ADVERB  =  4
-WORD_TYPE_PHRASE = 5
+    @property 
+    def internalId(self):
+	''' each node has its own internal id '''
+	return self._internalId
 
 
  
@@ -549,8 +564,76 @@ class RogetThesaurus:
 	''' the index of word senses - maps the word sense to a list of nodes in the ontology '''
 	return self._senseIndex
 
+    # add all parent nodes to array (up to first category); adds the 
 
-   
+    def _semHelpAddParents( self, s, ret):
+	while s != None:
+	    ret.append( s )
+	    if s.type == ROGET_NODE_CATEGORY:
+		break
+	    s = s.parent
+
+    def _semHelpSortedSet( self, word ):
+	senses = self.senseIndex
+	wordSenses = senses[ word ]
+	ret = []
+	if wordSenses != None:	
+	    for s in wordSenses:
+		self._semHelpAddParents( s, ret )
+		if s.link != None:
+		    self._semHelpAddParents( s.link, ret )
+	    ret.sort( key=lambda elm: elm.internalId ) # sort by internal id
+
+	#print "[",
+	#for s in ret:
+	#    print s.internalId, "," , 
+	#print "]"	    
+	return ret
+	
+    def semanticSimilarity( self, seq1, seq2 ):
+        ''' computes the semantic similarity between two terms, returns the following scores
+                100 - both terms appear in the same SenseGroup node
+                 90 - both terms he the same head word
+                 80 - both terms appear in the same leaf category
+                  0 - everything else
+        '''                  
+	arr1 = self._semHelpSortedSet( seq1 )
+	arr2 = self._semHelpSortedSet( seq2 )
+	    
+
+	# merging two sorted arrays
+	score = 0
+	rnode = None
+	
+	pos1 = 0
+	pos2 = 0
+	if arr1 == None or arr2 == None:
+	    return (0, None)
+
+	while pos1 < len( arr1 ) and pos2 < len( arr2 ):
+	    if arr1[ pos1 ].internalId == arr2[ pos2 ].internalId: 
+		node = arr1[ pos1 ] 
+		if node.type == ROGET_NODE_CATEGORY:
+		    nscore = 80
+		elif node.type == ROGET_NODE_HEADWORD:
+		    nscore = 90
+ 		elif node.type == ROGET_NODE_SENSE_GROUP: 
+		    nscore = 100
+
+		if score < nscore:
+		    score = nscore
+		    rnode = node
+		    if score == 100:
+			break
+		pos1 += 1
+		pos2 += 1
+	    elif arr1[ pos1 ].internalId < arr2[ pos2 ].internalId:
+		pos1 += 1
+	    else:
+		pos2 += 1
+
+	return (score, rnode)		
+		
 class RogetThesaususFormatterText:
     '''
 	class for formatting of Roget thesaurus as text report
