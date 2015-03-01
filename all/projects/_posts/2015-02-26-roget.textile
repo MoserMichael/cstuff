@@ -464,4 +464,108 @@ def lookupWord( rogetThesaurus, word ):
 
 </code></pre></blockquote>
 
+h3. Computing the semantic similarities between two terms;
 
+class RogetThesaurus has a method for computing a score for the semantic similarity of two terms;
+
+The algorithm used by this function is as follows:
+	produce an array of nodes for each search term
+	for each node in the sense index
+		add the node and its parent nodes (until reaching the first category node)
+		if the node has a link to another node, then also add the link target and its parent nodes
+	sort the array by internal node id (each node in the ontology has its unique node id)
+
+	merge the two arrays: if a node with identical unique node id is found then 
+		if the node is a sense group then report a score of 100
+		if the node is a head word then set the best score to 90
+		if the node is a category then set the best score to 80
+
+	return the best score
+
+This algorithm is implemented by the following function:
+
+<blockquote><pre><code>
+    # add all parent nodes to array (up to first category); adds the 
+    def _semHelpAddParents( self, s, ret):
+	while s != None:
+	    ret.append( s )
+	    if s.type == ROGET_NODE_CATEGORY:
+		break
+	    s = s.parent
+
+    def _semHelpSortedSet( self, word ):
+	senses = self.senseIndex
+	wordSenses = senses[ word ]
+	ret = []
+	if wordSenses != None:	
+	    for s in wordSenses:
+		self._semHelpAddParents( s, ret )
+		if s.link != None:
+		    self._semHelpAddParents( s.link, ret )
+	    ret.sort( key=lambda elm: elm.internalId ) # sort by internal id
+
+	#print "[",
+	#for s in ret:
+	#    print s.internalId, "," , 
+	#print "]"	    
+	return ret
+	
+    def semanticSimilarity( self, seq1, seq2 ):
+        ''' computes the semantic similarity between two terms, 
+	    
+	    returns the following tuple (similarity-score, common-node-in-roget-thesaurus)
+
+	    
+	    the similarity score:
+                100 - both terms appear in the same SenseGroup node
+                 90 - both terms he the same head word
+                 80 - both terms appear in the same leaf category
+                  0 - everything else
+
+	    common-node-in-roget-thesaurus: is None if the score is 0; 
+	    otherwise it is the common node that the score is based on		    
+        '''                  
+	arr1 = self._semHelpSortedSet( seq1 )
+	arr2 = self._semHelpSortedSet( seq2 )
+	    
+
+	# merging two sorted arrays
+	score = 0
+	rnode = None
+	
+	pos1 = 0
+	pos2 = 0
+	if arr1 == None or arr2 == None:
+	    return (0, None)
+
+	while pos1 < len( arr1 ) and pos2 < len( arr2 ):
+	    if arr1[ pos1 ].internalId == arr2[ pos2 ].internalId: 
+		node = arr1[ pos1 ] 
+		if node.type == ROGET_NODE_CATEGORY:
+		    nscore = 80
+		elif node.type == ROGET_NODE_HEADWORD:
+		    nscore = 90
+ 		elif node.type == ROGET_NODE_SENSE_GROUP: 
+		    nscore = 100
+
+		if score < nscore:
+		    score = nscore
+		    rnode = node
+		    if score == 100:
+			break
+		pos1 += 1
+		pos2 += 1
+	    elif arr1[ pos1 ].internalId < arr2[ pos2 ].internalId:
+		pos1 += 1
+	    else:
+		pos2 += 1
+
+	return (score, rnode)		
+
+</code></pre></blockquote>
+
+I could not evaluate accuracy of the results, as I don't have the test data used by other studies/.
+
+h3.  Acknowledgment
+
+Thanks to my father Ilja Moser for teaching me about the properties of the Roget Thesaurus.			
