@@ -23,7 +23,7 @@ The text that is parsed is based on the text of the Roget Thesaurus from archive
 
 h3. Obtaining the program
 
-Please download the roget.py script "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/roget.py 
+Please download the roget.py script "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/roget.py ; you also need to download the pd module "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/pd.py and place it into the same directory.
  ; you also have to download this "text of the Roget thesaurus "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/10681-body.txt and place this file into the same directory as the roget.py file. Please note that I had to edit the text of the Roget thesaurus  and remove some ambiguous constructs so that it is better suited for parsing.
 
 One of the results of this study is the Roget thesaurus in machine readable xml "see here":http://mosermichael.github.io/cstuff/docs/html/python/roget-out.xml (warning if you click on the last link then that will open the xml file for viewing, that will take about a minute)
