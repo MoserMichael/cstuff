@@ -19,7 +19,11 @@ set shm=I
 
 "next line will causes colors to look like good ol' norton editor
 "blue background is making people friendlier and better. Serious.
-colorscheme blue
+"colorscheme blue
+
+"morning is the better colorschema for ssh via cygwin or putty.
+colorscheme morning
+syntax on
 
 "show current file name in title bar
 set title
@@ -42,6 +46,15 @@ set laststatus=2
 "show cursor pos.
 :set ru
 
+"======================================================
+"search customization
+"======================================================
+
+"Case sensitive search    
+":set noignorecase
+
+"Case insensitive search
+:set ignorecase 
 
 "======================================================
 "key assignments for grep (find in files) script
@@ -570,7 +583,11 @@ function! s:RunGrep()
     if pattern == ""
         return
     endif
+
+    call histadd( "search", pattern )
+    
     let pattern = g:Grep_Shell_Quote_Char . pattern . g:Grep_Shell_Quote_Char
+    
 
     let filenames = input("Grep in files: ", g:Grep_Default_Filelist)
     if filenames == ""
@@ -709,20 +726,4 @@ endfunction
 "############################################
 set nocp
 filetype plugin on
-
-"======================================================
-"search customization
-"======================================================
-
-"Case sensitive search    
-":set noignorecase
-
-"Case insensitive search
-:set ignorecase 
-
-"highlight search.
-:set hlsearch
-
-hi Search  term=reverse ctermfg=255 ctermbg=3 guifg=black guibg=orange
-
-
+set hlsearch
