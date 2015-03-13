@@ -274,7 +274,7 @@ build_xxx__$(1) : PRJ_TYPE_NAME:=Shared library
 
 build_xxx__$(1) : PRJ_RESULT_FILE=$(call make_shared_lib_name,$(1),$(2))
 
-build_xxx__$(1) : directory_setup $(1)_objdir_create banner_xxx_$(1)  $(call make_shared_lib_name,$(1),$(2))
+build_xxx__$(1) : directory_setup $(1)_objdir_create banner_xxx_$(1)  $(call make_shared_lib_name,$(1),$(2))  $(1)_post_build 
 
 $(call make_shared_lib_name,$(1),$(2)) : $$(objects_$(1)) 
 	$$(eval $$(call display_build_banner,$(1),$$(PRJ_TYPE_NAME),$$(CURWD)))
