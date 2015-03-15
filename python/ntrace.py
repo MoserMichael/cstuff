@@ -34,7 +34,13 @@ Options:
 
 By default the following options are on: -l -f -r
 
-can be invoked as an api
+can be invoked as an api; example:
+
+
+    import ntrace
+
+    t = ntrace.NTracer(ntrace.TO_FUNCTION_ARGUMENTS | ntrace.TO_FUNCTION_RVALUES | ntrace.TO_TRACE_SRC_LINES )
+    t.trace( 'test_ntrace2.py' , False)
 
 Written by Michael Moser (c) 2015
 """
