@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 """ utilities for tracing of python scripts; works similar to trace.py, it can also print out function parameters and return values
 as well as modification of global and local variables.
 
