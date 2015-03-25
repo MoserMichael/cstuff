@@ -1,0 +1,75 @@
+utilities for tracing of python scripts; works similar to trace.py, it can also print out function parameters and return values
+as well as modification of global and local variables.
+ 
+can be invoked as a script (after installing the package)
+ 
+python -m trace/ntrace [options] <python-file-to-trace> [command line of python file to trace]
+ 
+By default it shows function parameters and function return values
+ 
+Options:
+    -f              trace function parameter calls (default: on)
+    -F              do not trace function parameters
+ 
+    -r              trace function return values  (default: on)
+    -R              do not trace function return values
+ 
+    -l              trace source lines before they are executed (default: on)
+    -L              do not trace source lines before they are executed
+ 
+    -s              trace setting of variablesa (default: off)
+    -S              do not trace setting of variables
+ 
+    -g              trace getting of variables (default: off)
+    -G              do not trace getting of variables
+ 
+    -o              print out object content (default: off)
+    -O              do not print out object content
+ 
+    -t              show the current thread id in prefix for each source line (default on)
+    -T              hide the current thread id  
+ 
+    -n              show the nesting level, how many levels down the call stack (default on)
+    -N              hide the nesting level
+ 
+By default the following options are on: -l -f -r
+ 
+can be invoked as an api
+ 
+-----
+
+class NTraceFromCommandLine
+    command line parser for ntrace
+ 
+    Methods defined here:
+	__init__(self, argv)
+
+---- 
+
+class NTracer
+    the tracer object; invoke this class to run a python file with tracing
+ 
+    Methods defined here:
+	__init__(self, traceOptions=31, follow_objects=False)
+	    object constructor; options are passed as bit mask values via traceOptions parameter, available options:
+ 
+    TO_FUNCTION_ARGUMENTS       argument flag: print function arguments
+    TO_FUNCTION_RVALUES         argument flag: print function return values
+    TO_SET_VARS                 argument flag: print modification of variables
+    TO_GET_VARS                 argument flag: print variable access
+    TO_TRACE_SRC_LINES          argument flag: show souce lines before they are executed
+    TO_SHOW_PREFIX_TID          show thread id in prefix string of lines traced 
+    TO_SHOW_PREFIX_NESTING      show call strack nesting in prefix string of lines traced 
+ 
+    follow_objects parameter is true if object references are to be printed
+    trace(self, progname, tracingenabled=True)
+    tracer invocation
+    progname - python file to be traced
+    tracingenabled - if tracing is initially on (True by default)
+
+
+ 
+Functions
+      	 	
+    enabletrace(on)
+	enable/disable tracing, can be called from the traced program
