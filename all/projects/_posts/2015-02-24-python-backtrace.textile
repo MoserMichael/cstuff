@@ -209,6 +209,8 @@ Local variables are more tricky: prior to calling python method the python funct
 
 Unfortunately we can't modify or substitute this dictionary from python code, but of course we can do so from a native library. That's exactly what is being done by the ntrace package.
 
+(PS: Personally I think that it is a bit wasteful that Python is handling all variable accesses as hash lookup by variable name; for example the "Pooh programming language":http://mosermichael.github.io/cstuff/all/pooh-lan/2012/12/11/pooh-intro.html translates variables into indexes on the stack/heap objects).
+
 ------
 
 h3. comparing Perl and Python
