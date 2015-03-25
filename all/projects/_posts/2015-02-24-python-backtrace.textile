@@ -139,7 +139,8 @@ h3. how to use the tracer
 
 after installing the module you can invoke the command line program as a module
 
-<code>
+<blockquote><pre><code>
+
 python -m ntrace/trace
 
 this will give you the following help message:
@@ -178,17 +179,18 @@ Options:
 
 By default the following options are on: -l -f -r
 
-</code>
+</code></pre></blockquote>
 
 The functionality can also be accessed from an class: here the Ntracer clsas is used to run the program test_ntrace2.py with tracing..
 
-<code>
-bimport ntrace
+<blockquote><pre><code>
+
+import ntrace
 
     t = ntrace.NTracer(ntrace.TO_FUNCTION_ARGUMENTS | ntrace.TO_FUNCTION_RVALUES | ntrace.TO_TRACE_SRC_LINES )
     t.trace( 'test_ntrace2.py' , False)
 
-</code>
+</code></pre></blockquote>
 
 h3. how it works
 
