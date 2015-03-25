@@ -71,7 +71,7 @@ h3. how to install the pd module
 you can obtain the module from pypi
 
 <code>
-pypi install pd
+sudo pip install pd
 </code>
 
 quite easy if it works.
@@ -110,7 +110,7 @@ h3. how to install the pd module
 you can obtain the module from pypi
 
 <code>
-pypi install ntrace
+sudo pip install ntrace
 </code>
 
 quite easy if it works.
@@ -221,7 +221,7 @@ I did like the following in python:
 
 * it is not allowed to access an undefined variable (unlike ruby where this is allowed);
 * there is lots of support for python on sites like "stack overflow":http://stackoverflow.com ; whenever i had a question there was an answer ready.
-* also lots of libraries are available in python, and using the pip installer is quite easy.
+* also lots of libraries are available in python, and using the pypi installer is quite easy.
 * doing classes in python is mostly intuitive
 * in python every object is a reference, (in Perl you have values and references); i guess that makes it easier to use.
 
