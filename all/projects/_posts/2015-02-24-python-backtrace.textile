@@ -1,13 +1,16 @@
 ---
 layout: post
-title:  better stack trace for python 2.7
+title:  Python debugging tools
 ---
 
 h2. {{ page.title }}
 <p class="publish_date">24 February 2015</p>
 
+I have been learning python lately; So far i would use Perl 5 as my scripting language of choice, but at work they start to phase out usage of Perl. This article presents some debugging tools that I wrote in the process
 
-I have been learning python lately; So far i would use Perl 5 as my scripting language of choice, but at work they start to phase out usage of Perl ...
+------
+
+h3. better python stack trace
 
 Learning a new programming language is always an aggravating business; I did not quite like is the format of the stack backtrack that python 2.7 produces when it encounters a run-time error.
 
@@ -63,13 +66,132 @@ The pd module also exports the die and die2 functions, these print an error mess
 So these are similar to the built in die function in Perl;
  
 
-h3. how to use the module
+h3. how to install the pd module
 
-The module file is "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/pd.py ; the test is "here":https://raw.githubusercontent.com/MoserMichael/cstuff/master/python/test_pd.py
+you can obtain the module from pypi
 
-Online documentation is "here":http://mosermichael.github.io/cstuff/docs/html/python/pd.html ; 
+<code>
+pypi install pd
+</code>
 
-Links for easier viewing: the "module file":https://github.com/MoserMichael/cstuff/blob/master/python/pd.py  and the "test program":https://github.com/MoserMichael/cstuff/blob/master/python/test_pd.py
+quite easy if it works.
+
+An alternative is to get the sources from the github repository:
+
+<code>
+git clone https://github.com/MoserMichael/cstuff.git
+</code>
+
+One can then install it from the sources
+
+<code>
+
+cd cstuff/python-pypi/pd
+
+on unix/linux:
+	sudo python setup.py  install
+
+on windows:
+	python setup.py install
+</code>
+
+h3. python tracing with ntrace
+
+The python program trace.py runs a program and displays  source lines before they are executed (it can also do basic coverage report, but my ntrace.py module does only tracing)
+
+The ntrace.py program presented here can also print out additional information:
+	- it can show function arguments and return values
+	- it can display variables when they are modified
+	- it can display the value of accessed variables
+
+
+h3. how to install the pd module
+
+you can obtain the module from pypi
+
+<code>
+pypi install ntrace
+</code>
+
+quite easy if it works.
+
+An alternative is to get the sources from the github repository:
+
+<code>
+git clone https://github.com/MoserMichael/cstuff.git
+</code>
+
+One can then install it from the sources
+
+<code>
+
+cd cstuff/python-pypi/ntrace
+
+on unix/linux:
+	sudo python setup.py  install
+
+on windows:
+	python setup.py install
+</code>
+
+
+h3. how to use the tracer
+
+after installing the module you can invoke the command line program as a module
+
+<code>
+python -m ntrace/trace
+
+this will give you the following help message:
+
+
+Usage: /usr/local/lib/python2.7/dist-packages/ntrace-0.0.1-py2.7-linux-i686.egg/ntrace/trace.py [OPTIONS] <file> [ARGS}
+
+Traces execution of python program; 
+
+By default it shows function parameters and function return values
+
+Options:
+    -f		    trace function parameter calls (default: on)
+    -F		    do not trace function parameters
+
+    -r		    trace function return values  (default: on)
+    -R		    do not trace function return values
+
+    -l		    trace source lines before they are executed (default: on)
+    -L		    do not trace source lines before they are executed
+
+    -s		    trace setting of variablesa (default: off)
+    -S		    do not trace setting of variables
+
+    -g		    trace getting of variables (default: off)
+    -G		    do not trace getting of variables
+
+    -o		    print out object content (default: off)
+    -O		    do not print out object content
+
+    -t		    show the current thread id in prefix for each source line (default on)
+    -T		    hide the current thread id	
+
+    -n		    show the nesting level, how many levels down the call stack (default on)
+    -N		    hide the nesting level
+
+By default the following options are on: -l -f -r
+
+</code>
+
+The functionality can also be accessed from an class: here the Ntracer clsas is used to run the program test_ntrace2.py with tracing.
+
+<code>
+import ntrace
+
+    #t = ntrace.NTracer(ntrace.TO_FUNCTION_ARGUMENTS | ntrace.TO_FUNCTION_RVALUES | ntrace.TO_SET_VARS | ntrace.TO_GET_VARS | ntrace.TO_TRACE_SRC_LINES )
+    t = ntrace.NTracer(ntrace.TO_FUNCTION_ARGUMENTS | ntrace.TO_FUNCTION_RVALUES | ntrace.TO_TRACE_SRC_LINES )
+    t.trace( 'test_ntrace2.py' , False)
+
+</code>
+
+------
 
 h3. comparing Perl and Python
 
