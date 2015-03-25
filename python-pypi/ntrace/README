@@ -3,7 +3,7 @@ as well as modification of global and local variables.
  
 can be invoked as a script (after installing the package)
  
-python -m trace/ntrace [options] <python-file-to-trace> [command line of python file to trace]
+python -m ntrace/trace [options] <python-file-to-trace> [command line of python file to trace]
  
 By default it shows function parameters and function return values
  
