@@ -180,16 +180,29 @@ By default the following options are on: -l -f -r
 
 </code>
 
-The functionality can also be accessed from an class: here the Ntracer clsas is used to run the program test_ntrace2.py with tracing.
+The functionality can also be accessed from an class: here the Ntracer clsas is used to run the program test_ntrace2.py with tracing..
 
 <code>
-import ntrace
+bimport ntrace
 
-    #t = ntrace.NTracer(ntrace.TO_FUNCTION_ARGUMENTS | ntrace.TO_FUNCTION_RVALUES | ntrace.TO_SET_VARS | ntrace.TO_GET_VARS | ntrace.TO_TRACE_SRC_LINES )
     t = ntrace.NTracer(ntrace.TO_FUNCTION_ARGUMENTS | ntrace.TO_FUNCTION_RVALUES | ntrace.TO_TRACE_SRC_LINES )
     t.trace( 'test_ntrace2.py' , False)
 
 </code>
+
+h3. how it works
+
+One can start another python program;  first the build in python function "compile":https://docs.python.org/2.7/library/functions.html#compile is used to compile source code has to be compiled into an abstract syntax tree (AST);  next the "exec statement":https://docs.python.org/2/reference/simple_stmts.html#grammar-token-exec_stmt takes this internal representation and runs it.
+
+Python debuggers (and tracers) add the installation of a callback function between these two step by means of "sys.settrace":https://docs.python.org/2/library/sys.html#sys.settrace ( it is installed prior to invoking the exec statement); the supplied callback is called upon a python function call and prior to returning from a function.
+leaving 
+
+How then can we trace the assignments of variables in python?
+For access to global variables this is relatively easy: the exec statement returns a dictionary that represents the global namespace - setting a global variable with the name aaaa will result into insertion of the key 'aaaa' into this dictionary. Luckily we can subclass a custom dictionary class, this subclass that will override insertion and lookup of entries. The overriden insertion/lookup function are now able to trace global variable modification/access.
+
+Local variables are more tricky: prior to calling python method the python function, the python interpreter must create a stack frame object . This stack frame object has a dictionary for the local namespace; again,  setting a local variable with the name bbbb will result into insertion of the key 'bbbb' into this dictionary that is owned by the frame object. The solution for local variables will again substitute the python dictionary with an object that is derived from class Dict.
+
+Unfortunately we can't modify or substitute this dictionary from python code, but of course we can do so from a native library. That's exactly what is being done by the ntrace package.
 
 ------
 
