@@ -139,12 +139,15 @@ h3. how to use the tracer
 
 after installing the module you can invoke the command line program as a module
 
-<blockquote><pre><code>
+<code>
 
 python -m ntrace/trace
 
+</code>
+
 this will give you the following help message:
 
+<blockquote><pre><code>
 
 Usage: /usr/local/lib/python2.7/dist-packages/ntrace-0.0.1-py2.7-linux-i686.egg/ntrace/trace.py [OPTIONS] <file> [ARGS}
 
@@ -181,7 +184,7 @@ By default the following options are on: -l -f -r
 
 </code></pre></blockquote>
 
-The functionality can also be accessed from an class: here the Ntracer clsas is used to run the program test_ntrace2.py with tracing..
+The functionality can also be accessed from an class: here the Ntracer class is used to run the program test_ntrace2.py with tracing.
 
 <blockquote><pre><code>
 
