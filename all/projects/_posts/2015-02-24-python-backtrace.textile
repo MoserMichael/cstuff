@@ -104,10 +104,23 @@ The ntrace.py program presented here can also print out additional information:
 	- it can display variables when they are modified
 	- it can display the value of accessed variables
 
+(Note: the ntrace program needs an extension module for part of its functionality; i have tested that on python2.7 only)
 
 h3. how to install the pd module
 
-you can obtain the module from pypi
+First check that the python headers are installed on the system; for debian based systems that is (this program has its own extension module, so installation wiill compile the module)
+
+<code>
+apt-get install libpython2.7-dev
+</code>
+
+also you would need a c compiler installed on the system
+
+<code>
+apt-get install gcc
+</code>
+
+now you can obtain the module from pypi
 
 <code>
 sudo pip install ntrace
