@@ -1233,7 +1233,7 @@ auto e = [aaa] (int c) { return c * val_; };
 auto e = [=] (int c) { return c * val_; };
 // copy by value (also ptrs copied by value); can access data member of enclosing class + locals in enclosing scope
 
-auto e = [=] (int c) { return c * val_; };
+auto e = [&] (int c) { return c * val_; };
 // copy by ref; can access data member of enclosing class + locals in enclosing scope.
 
 </code></pre></blockquote>
