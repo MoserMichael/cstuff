@@ -21,6 +21,7 @@ Things that changed are
 * renewed interest in dependency grammars 
 * strong focus on commercial applications, previously the focus was on demonstration systems; demonstration systems are build with the limited purpose of demonstrating the feasibility of a concept, so they are much less robust than commercial applications ; 
 * nowadays there is a strong interest in models that are based on probability 
+* corpus based approach to evaluation of result
  
 Natural language processing is a very interesting field of study as it combines some linguistics, statistics/information theory/machine learning, programming and AI tricks.
 
@@ -129,6 +130,13 @@ Now Chomsky is trying to identify and understand these Universal principles by m
 
 However nowadays it is more important to produce working systems, and theoretical considerations of this kind seem to be less important than that.
 
+h3. corpus based approach to evaluation of result
+
+Now every algorithm is tuned over a hand classified text set (corpus). For parsers there is always a tree bank -  a set of sentences that has been parsed into either a constituency tree or dependency graph. Part of this data is used as the training set - the set of data to tune the performance of an algorithm; the other part of this data is used for evaluation of performance.
+
+One practical problem is that this data costs a lot of money - so they do maintain some artificial barriers of entry; however some of the data for some languages is available with an open source license ("see here":http://en.wikipedia.org/wiki/Treebank )
+
+Another problem is that the selection of the test data may also constitute some form of bias on its own; for example parser treebanks are not that large because the task of hand parsing of the text is a bit complex; POS pre-tagged corpus is larger; as the task of hand tagging is easier.
 
 -----------------
 
