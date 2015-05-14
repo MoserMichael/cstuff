@@ -77,5 +77,6 @@ include $(TOPDIR)/rules.make
 .PHONY:
 dmemc_INSTALL:
 	$(call install-a-file,../../scripts/run,$(PREFIX)/etc)
+	$(call install-a-file,../../scripts/dbgmems-read-core.py,$(PREFIX)/etc)
 
 
