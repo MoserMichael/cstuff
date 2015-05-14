@@ -20,9 +20,6 @@ dmemc_CFLAGS=-D_ADVANCED_TOOL_ -Wno-unused-result -fno-inline
 
 dmemc_LIBS=dl
 
-dmemc_INSTALL:
-	$(call install-a-file,../../scripts/run,$(PREFIX)/etc)
-
 
 #---
 
@@ -76,3 +73,9 @@ dbgmemutilcpp_CFLAGS=-x c++
 #---
 
 include $(TOPDIR)/rules.make
+
+.PHONY:
+dmemc_INSTALL:
+	$(call install-a-file,../../scripts/run,$(PREFIX)/etc)
+
+
