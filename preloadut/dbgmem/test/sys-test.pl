@@ -49,7 +49,8 @@ my $all_tests;
 if ($ENGINE eq "s") {
     $all_tests="cpp_test uninitialized_memory uninitialized_free_memory generation_test leak_test sigsegv_test follow_fork_test2 " ;
 } else {
-    $all_tests="cpp_test uninitialized_memory uninitialized_free_memory mem_underwrite mem_overwrite overlap_copy string_check stack_smash illegal_free free_twice api_test generation_test leak_test sigsegv_test follow_fork_test2 " ;
+#   $all_tests="cpp_test uninitialized_memory uninitialized_free_memory mem_underwrite mem_overwrite overlap_copy string_check stack_smash illegal_free free_twice api_test generation_test leak_test sigsegv_test follow_fork_test2 " ;
+    $all_tests="cpp_test uninitialized_memory uninitialized_free_memory mem_underwrite mem_overwrite overlap_copy string_check illegal_free free_twice api_test generation_test leak_test sigsegv_test follow_fork_test2 " ;
 
     #$all_tests="mem_underwrite mem_overwrite" ;
 
