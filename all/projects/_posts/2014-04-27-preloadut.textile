@@ -136,3 +136,28 @@ Please note that the generated HTML is best opened with Chrome.
 h4. Using DBGMEM
 
 this topic has its own help file: please see "here":/cstuff/dbgmem/Introduction.htm
+
+h4. Using DBGMEM (simple allocator) to debug cores
+
+a core file that is produced while using DBGMEM with the simple tool can be analysed for memory corruptions.
+This check follows the chain of all alocations and checks if the magic marker at the start and end of the allocation have been overwritten. 
+In case that a corrupted memory block has been detected, a stack trace that describes where the block has been allocated is shown.
+
+
+This magic is done by scripting gdb (requires gdb to be compiled with python support). Please be patient, this check takes a lot of time for larger core files.
+
+<pre>
+    gdb <executable file> <core file>
+    
+    (from gdb promt)
+
+    source /etc/dbgmems-read-core.py  
+</pre>
+
+in one command that would be as follows:
+
+
+<pre>
+gdb --batch -ex='core-file <path to core file>' -ex='source /etc/dbgmems-read-core.py' <executable program path>
+</pre>
+
