@@ -202,12 +202,15 @@ fi
 
 export EDITOR=vim
 
-alias m=make
+alias m="make -j"
 alias e=vim 
 alias lsd='ls -al | grep ^d'
 alias lsa="ls -al"
 
 alias diffsrc="diff -rpu"
+
+alias eg="egrep -a -e"
+
 
 ###
 # git
