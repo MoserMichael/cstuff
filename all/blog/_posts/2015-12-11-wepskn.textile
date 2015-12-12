@@ -116,6 +116,7 @@ What programmers can do/optimizing memory access patterns
 
 
 <blockquote>
+<pre><code>
 #include <emmintrin.h>
 void setbytes(char *p, int c)
 {
@@ -123,6 +124,7 @@ __m128i i = _mm_set_epi8(c, c, c, c, c, c, c, c, c, c, c, c, c, c, c, c);
 _mm_stream_si128((__m128i *)&p[0], i); _mm_stream_si128((__m128i *)&p[16], i);
 _mm_stream_si128((__m128i *)&p[32], i); _mm_stream_si128((__m128i *)&p[48], i);
 }
+</pre></code>
 </blockquote>
 
 
@@ -149,8 +151,8 @@ _mm_stream_si128((__m128i *)&p[32], i); _mm_stream_si128((__m128i *)&p[48], i);
 *** hardware prefetching : is done when CPU detects an access pattern (two cache hits of a sequence of pages (or pages at the same gap, or linear access pattern (!)) – then CPU decides to prefetch the third one;  each cache (L1d,L1i,L2) can have a special circuit that detects patterns and decides on prefetching (!).  Prefetching limited to the same virtual memory page (don't want to trigger swapping). Can stop Hw prefetch by emitting ud2 instruction (hints that we will jump to another location shortly)
 *** software prefetching – not limited to the same virtual memory page ; must call function to explicitly load a cache line (helps a bit (8-10% with large working set sizes – larger than cache; can make matters worse, must be tested; different machines will have differently – behavior : hard to do). gcc -fprefetch-loop-arrays : does emit prefetch on loop iteration
 
-
 <blockquote>
+<pre><code>
 #include <xmmintrin.h>
 enum _mm_hint
 {
@@ -160,6 +162,7 @@ _MM_HINT_T2 = 1, /* put into L3 */
 _MM_HINT_NTA = 0 // non temporal write; on eviction write to RAM.
 };
 void _mm_prefetch(void *p, enum _mm_hint h); // p – ptr; invalid values are ignored (alignment?)
+</pre></code>
 </blockquote>
 
 
@@ -174,11 +177,15 @@ void _mm_prefetch(void *p, enum _mm_hint h); // p – ptr; invalid values are ig
 ** atomic access; not result is guaranteed if two threads access the same memory – atomic operations do (always sync with RAM – so it takes at least 200 CPU cycles); these can be subdivided further,
 *** compare and swap (CAS) ; most common atomic operation - does the following atomically:
 
-
+<blockquote>
+<pre><code>
 template<type T> bool CAS(T newValue,T *locationPtr, T expectedValue)  {
         if (*locationPtr == expectedValue) { *locationPtr = newValue; return true; } 
         return false;
 }
+</pre></code>
+</blockquote>
+
 
 *** load lock/load store (LL/SC) load lock operation starts transaction; load store – store memory on condition that load lock returned true. (have either CAS or LL/SC – CAS is more common)
 *** atomic arithmetic  (use these if available instead of CAS – its faster)
@@ -222,6 +229,7 @@ The Lost Art of C Structure Packing by Eric S Raymond  ( "here":http://www.catb.
 I wrote a short C program that sums up the article; the output of the program on a 32 bit processor is as follows (program is "here":https://github.com/MoserMichael/cstuff/blob/master/training/align.c)
 
 <blockquote>
+<pre><code>
 ! Purpose: #pragma(pack) produces small structures, but slow code to access them! (interrupt to handle misaligned access)
 ! Purpose: want to use unaligned structs in a space efficient way
 
@@ -264,7 +272,7 @@ sizeof({ int a:31; uint8_t b:2; })=8
 ! double or long double fields can have surprising behavior
 
 ! thank you !
-
+</pre></code>
 </blockquote>
 
 
