@@ -1,0 +1,276 @@
+---
+layout: post
+title: What every pr0grammer should know about ….
+---
+
+h2. {{ page.title }}
+<p class="publish_date">11 December 2015</p>
+
+
+There is a set of deep technical papers, it takes some time to read them, but the effort is rewarding. Sometimes there is a  problem with the generally condescending tone of the author(s) (see the common title 'What Every Programmer Should Know About ... – WEPSKA, we like to make up acronyms), but that seems to be a common feature in some quarters;  Maybe some day I will write my own text on an interesting subject, but I guess the challenge is still out there to write clearly and less condescendingly.
+
+Maybe the title is supposed to say that the content of the article should have rather have been taught in school... The first article is about what happens when DRAM memory is accessed and how to optimize the programs usage of memory; it explains memory from the hardware up (quite complex hardware that is); part of this article is currently taught in the 'Computer Organization' course; but I doubt they go into this level of detail; it took me quite some time to parse this article. 
+
+It is funny that back in 2007 the x86 architecture was the only significant player (the focus of the article is on Linux OS on x86;x86_64), while in 2015 things like ARM are becoming more relevant; things do change over time. I guess some details might be outdated by now, but on the whole it will stay relevant for quite some time: 
+
+
+<notextile><hr/></notextile>
+
+What Every Programmer Should Know About Memory by Ulrich Drepper ( "here":http://www.akkadia.org/drepper/cpumemory.pdf )
+
+
+* in the eighties memory access was as fast as register access; (hi Sinclair and TI99/4A). In the nineties the CPU got much faster than main memory, on CPU caches are supposed to help, and must be understood in the wider context of hardware architecture. 
+
+* Article focus on OS: linux  + commodity hardware (Intel x86); standard Hardware architecture (as of 2007):
+** CPU connect via Front side bus (FSB) to Northpbridge
+*** Data between two CPU's and CPU to main RAM access goes through Northbridge;
+*** DMA (copy from device to memory without CPU) goes through Northbridge
+*** the Northbridge is point of contention.
+*** Connection from Northbridge to RAM:
+**** Norm (2007) DDR2 has two buses(aka channels); access is interleaved (!); Memory controller is part of Northbridge
+**** High end: four memory controllers are connected to northbridge each one connecting to its portion of the RAM via its own bus (increases bandwith – multiple memory buses.)
+*** Northbridge communicates with Southbridge (which communicates with peripherials via specialized buses such as PCI/PCIE, SATA, etc)
+
+RAM chips
+
+* SRAM (S=static) is faster than (and more expensive than) dynamic DRAM (D=dynamic); that's why a machine has both of them.
+** SRAM: 4 transistors to do one BIT of memory; does not need refresh cycles to renew content (keeps information while power is on) ; (SRAM is used for fast cache memory within processor or device)
+** DRAM: 
+*** information is kept by capacitator, so need refresh cycles to renew content. One transistor to access (access line raises signal and the Data line gets the output: has bit or no bit); When read the output of data line is also used to recharge the capacitator (clever).
+*** Refresh cycle required – ones per 64 milliseconds (half of the time is refresh cycle (!)); can't access memory during refresh.
+*** Memory cells are on a 2-d matrix – fewer access lines are needed this way; downside: additional limit of access: one row and column line must be needed to access a bit – because of this it is easier to read a whole row of the matrix rather than addressing individual bits (!!). Row size is 32 or 64 bytes.
+*** Long on the gory details of protocol to access a DRAM bit is in Section 2.2 (didn't sit this one out); throughput: 10GB/second on DDR2 (two channels); and 40GB/second on FB-DRAM (six channels). Speed didn't change much over time due to physics.
+
+
+CPU Caches
+
+
+* fast SRAM is used for on CPU cache; uses the fact that we access the same data over and over again (loops in code – spatial locality; a program also works on related/same data structures – temporal locality)
+* Author says: CPU cache size is (typically) Main memory size / 1000; still need to keep program's data access limited and local – because there is parallelism, and we all want to fit in.
+* Kinds of cache:
+** code cache: holds decoded instructions (decoding takes some time on intel cpu's)
+** three cache layers today: CPU talks to small L1I (layer one instruction) and L1D (layer one data caches) - (access costs around 3 CPU cycles); if no hit then go to bigger L2 cache (access costs around 14 CPU cycles); if no hit then go to L3 cache; if no hit then go to main memory via Front side bus (access is around 240 CPU cycles)… 
+** accessing the cache: multiple core (each core a logical processor); a core has up to two hyperthreads (if one hyperthread stalls, the other tries to be run run – so a hyperthread has its register set (for almost all registers); most frequent cause for switch between hyperthreads is delay due to memory access)
+** Intel: each core on the same CPU has its own L1d cache (hyperthreads share the same L1d cache); but L2 cache is shared between cores (for quad core CPU one L2 cache is shared by two cores); shared L3 core. AMD: only L3 is shared. L2 caches are separate. (Lots of possibilities here)
+* Cache organization
+** each entry is called 'Cache line' – run of 32 (nowadays 64) bytes of memory; each cache entry is identified by its 'Tag'  (conveniently this addresses a single row of DRAM cells (!!)
+** When reading in cache line: must make room in L1d – evict existing line from L1d to L2 (in Intel  each L1 line is in L2 – inclusive cache; in AMD not – exclusive cache). Eviction from L3 means copy to RAM (expensive).
+** the tag: 64 address: - 6 lower bits are masked away (offset within tag); remaining bits are split: lower part is the cache set (cache is further subdivided); higher bits are the tag
+* cache designs:
+** fully associative cache: cache set is empty – each cache line can hold arbitrary tag; good for very small caches with several dozen entries – for indexing HW needs full comparator for each cache line (lots of transistors)
+** direct associative cache: the cache set is index into array of equal sized small caches; the tag value is treated as the offset into a particular cache area. Problem: heavily used cache set indexes will see a lot of swap-in swap-out activity.
+** Set associative cache:  again cache set is index into array of equal sized small caches; the tag lookup within a small cache is like with fully associated cache.  Best option: address collision will not result in swap-out of heavily used cache line. N-way set associative cache := each small cache is N bytes large (N is a power of two). (says that larger than 8-way offers little improvement – however with more cores it will need still more N values – due to cache collisions between hardware threads).
+* Evaluation (lots of interesting tests that will probably look totally different on slightly different hardware), tests check different access patterns (linear, random) + different working set sizes; see how memory access times differ – jumps respectively in access time when the relevant cache size is exceeded.
+* Writing: 
+** Write-through cache each modified cache-line is immediately written to RAM (inefficient – each modification of a local variable is very slow)
+** write-back cache each modified cache line marked as modified(dirty); when it is removed from cache it is written to RAM; problem: syncing cache of two processors (cache coherence – both CPU's have same picture of RAM).
+** Special modes (only kernel code can do this – sets MTTR register for a given address range)
+*** uncacheable – acts like a write-through cache-line
+*** write-combining – only goes to write when flushed explicitly (for memory mapped devices).
+** Cache coherence: MESI protocol – the CPU's synch each other on the status of cache lines.
+*** Modified – cache line status: modified; no other processor has cached this line. (CPU that modified it had to send RFO messages to other cpu's, so that they mark this cache line as Invalid)
+*** Exclusive – cache line status: not modified; know that no other cache has this line. (no need to send RFO when modifying it)
+*** Shared – cache line status: not modified; know that other caches can have it. (CPU1 hash sent Modified cache line to other processors when he wants to read the cache line and to memory controller)
+*** Invalid  - cache line not used.    (CPU1 has sent modified cache line to other processors CPU2 (CPU2 has sent RFO (Request for ownership) message to CPU1) when he wants to write to the cache line)
+** Summary: need RFO messages when (1) data is shared between threads on different cores (2) thread migrates to another core. RFO messages are slow as sender has to wait till they have been delivered via FSB  (as a prerequisite for transiting to another stage)
+** One thread reads the other thread can modify: this doesn't scale beyond two threads; four threads as fast as two – all due to RFO syncing !
+* Which address is used as tag value? In L1 lookup they use the virtual address (? how, it is ambiguous, in two processes it can  mean different things ?) because it is faster (address translation takes time); L2,L3 lookup is done with physical address (after address translation); Even more complicated: with HW virtualization the VMM is doing virtual address translation – not the processor (???)
+* Cache replacement strategy: Least recently used cache line is out (LRU) (? how is LRU list maintained ?); 
+* instruction cache: L1i holds decoded instruction (decoding stage takes time); L2,L3 holds non decoded instructions; does branch prediction and pre-fetching (of both possible branches?); also instruction cache does not use MESI protocol (but simplified version) – it assumes that code is not self modifying
+
+
+Virtual memory 
+
+
+* Address translation
+** Address translation is done by HW (MMU – memory management unit in x86); but OS has to fill in the page tables. Page table forms a tree; highest order node is an array; each entry points to next level (which is also an array); etc. (each process has its own page table tree)
+** Virtual address is divided into parts [Level N index][Level N-1 Index]...[page offset].
+** Lookup: first the root node of page table is looked up (Level N index); this points to next level where [Level N-1 Index] is used to look up the next level. At the end you have the phys. memory page: here [offset] is used to find the physical address.
+** CPU: caches the result of page table walking (locality of reference says that most addresses are accessed within a few virt. Memory pages); the cache: TLB – translation look-aside buffer. So there is a L1TLB, L2TLB …) For L1TLB there is one for instruction L1ITLB and one for data L1DTLB)
+** On context switch the old TLB cache is no longer relevant and must be flushed (therefore each cache entry tag also includes the tree root as part; to make flushing easier) Flushing is done on exiting kernel space (!even though it could be used on return from kernel – if it did not switch contexts) (context switch is done by kernel); (Also virtual machine monitor that don't share address space with host OS need to do that); 
+** TLB cache is small because of frequent flushing.
+** Optimizations: if TLB tag has root of page table then CPU can invalidate only part of the cache that refers to given page table root.
+** Optimization: fewer page walks if pages are larger (problem: wasted physical space if page is not full). X86 has option of 2MB pages.
+** Virtualization: VMM (monitor) and guest OS have separate page tables (this protects against rogue guest OS). This makes for another TLB cache flush every time that control passes between kernel of guest OS and VMM. Now there are tricks to avoid this
+*** processors virtualization extensions:
+*** KVM (a VMM project) KVM is a linux kernel that is running guest OS (also linux); but the guest OS is not running in separate ring/virtual machine – it is running along VMM,
+
+
+NUMA (non uniform memory architecture)
+
+
+* Problem multiple processors in the same machine access the same memory – all memory access is via Northbridge, so we must manage how this is done. The trick is that CPU's have their own local memory (access not via Northbridge).
+** Hypercubes: all CPU's form an n-dimensional cube; one CPU (one node) is connected to northbridge. (can have 2,4,8 processors – more dimensions of the cube means more hops until it gets to node connected to northbridge
+** costs of access (estimate based on AMD machine) same node: read-100%, write-115%; one hop: read- 105%, write-130%; two hops: read-130%, write-150%
+* OS support: should use local memory for processes code and data section (minimize use of Northbridge to get to RAM);
+* info that reveals NUM configuration in linux: access /sys file system (like /proc but more organized)
+** /sys/devices/system/cpu/cpu[n]/cache – n is #of core. Describes core/processor caches (L1,L2)  shared_cpu_map column is bitmap – (each core #n gets its – the nth bit set) tells if the cache is shared with another core (means two cores are part of the same processor). (libNUMA accesses all this /sys and /proc goodness as a API)
+** /sys/devices/system/cpu/cpu[n]/topology – says which processors the cores belong to?: core_siblings – bitmap OR - which cores are on the same CPU. physical_package_id – which # CPU does this core belong to.
+** /sys/devices/system/node[n] – more about NUMA architecture (n is #processor) distance – array of values, distances in hops to other CPU's (in hypercube). Distance=1 – means local.
+** /proc/<pid>/numa_maps – for shared memory regions – what is its status? (dirty-modified or not) and on what numa mode does memory for it come from?
+
+
+What programmers can do/optimizing memory access patterns
+
+*setting memory only – problem that cache line is brought in, modified – stays in cache until flushed out; now it uses up valuable cache; better to bring in cache line, modify it and swap it out immediately - with sfence barrier instruction. (also called non temporal write) ;  writes must be aligned to 16 bytes – all multimedia extension stuff needs this alignment. Example to set a cache line to zero (used to set big array in row wise access ( no improvement - write combining; CPU is good at optimizing sequential access by prefetching !) and column wise access (some improvement; but column wise access is three time slower by itself !) 
+
+
+<blockquote>
+#include <emmintrin.h>
+void setbytes(char *p, int c)
+{
+__m128i i = _mm_set_epi8(c, c, c, c, c, c, c, c, c, c, c, c, c, c, c, c);
+_mm_stream_si128((__m128i *)&p[0], i); _mm_stream_si128((__m128i *)&p[16], i);
+_mm_stream_si128((__m128i *)&p[32], i); _mm_stream_si128((__m128i *)&p[48], i);
+}
+</blockquote>
+
+
+* Optimizing access patterns: matrix multiplication; transpose second matrix before multiplication to optimize mem. Access (to avoid column wise iteration) – this cuts time to 23.4% - five times faster !)
+* Outer loop iterates over cache line; inner loop multiplies sub matrix within a cache line (more complicated code) – cuts time to 17.3%
+* unrolling inner loops of multiplying cache-line sized sub matrix + prefetching by means of magical instruction – down to 9.47 !
+* trick: passing level 1 cache size to program: gcc -DCLS=$(getconf LEVEL1_DCACHE_LINESIZE)
+* L1 Data structure accesses
+** structure layout is displayed by pahole ; can optimize by minimizing holes between structure members (pahole –reorganize : recommends what to do)
+** layout of struct: put members that is accessed first as first struct member; access struct members in order that they are defined; If a structure spans two cache lines (misaligned) then it takes more cache line loads/stores to work with it – that makes misaligned access between 40%-400% slower (depending on size of working set – difference is smaller for large working sets)
+** structure elements used together should be close together – this minimizes conflict misses (the same cache set swaps out lines due to heavy usage)  (cache set index is encoded in lower bits of the address)
+** Another trick: group data that is frequently used together into the same struct – stuff that is not frequently used can be put into a different structure (more effective prefetching on common use cases)
+** stack alignment – compiler tries to align stack frame to some known value (default 16 on gcc with x86) (but alloca messes things up). Stack must be initially aligned 
+** Alignment: can force struct to be aligned to cache line size (careful – may take up more memory)
+*** posix_memalign – memory allocation with requested alignment (but will consume more memory).
+*** __attribute((aligned(64)) for static data
+** L1 Instruction cache
+*** processors do branch prediction – predict the address of jumps so that they can prefetch the code at target of jump. Moving branches out of inner loops is a good idea.
+*** Code size should be kept small – inlining and loop unrolling may not give much (and make things worse!) gcc -Os : optimize for size ; it does do less inlining but attribute(always_inline) would force it to inline in any case (OMG, what about C++ inline ?).
+*** Give hint to CPU about which branch is more likely: __builtin_expect (often wrapped by macro likely, unlikely) ; hash an effect if -freorder-blocks is set (is off in -Os but is on by -02) ; -freorder block will move the frequently used code right after the conditional jump, so that prefetching is likely to pick it up. The infrequent choice will jump further away.
+*** Code alignment. -falign-functions=N : start of function is aligned to  > 2 ^ N bytes ; to make prefetching the start of a function easier. -falign-jumps=N : same for start of basic blocks that are only reached by jump; -falign-loops=N : for start of loops (may be wasteful)
+** L2,L3 caches; consider: L2 caches are shared between cores/hyperthreads; so a program can make use only of a subset; should match the working set size to cache set (like matrix multiplication should subdivide into small matrix so that it fit the cache). Compute available cache size: /sys/devicces/system/cpu[n]/cache – find the L2 size cache and subdivide it by n of bits in shared_cpu_map
+** prefetching of data : 
+*** hardware prefetching : is done when CPU detects an access pattern (two cache hits of a sequence of pages (or pages at the same gap, or linear access pattern (!)) – then CPU decides to prefetch the third one;  each cache (L1d,L1i,L2) can have a special circuit that detects patterns and decides on prefetching (!).  Prefetching limited to the same virtual memory page (don't want to trigger swapping). Can stop Hw prefetch by emitting ud2 instruction (hints that we will jump to another location shortly)
+*** software prefetching – not limited to the same virtual memory page ; must call function to explicitly load a cache line (helps a bit (8-10% with large working set sizes – larger than cache; can make matters worse, must be tested; different machines will have differently – behavior : hard to do). gcc -fprefetch-loop-arrays : does emit prefetch on loop iteration
+
+
+<blockquote>
+#include <xmmintrin.h>
+enum _mm_hint
+{
+_MM_HINT_T0 = 3, /*put into all caches*/
+_MM_HINT_T1 = 2, /* put into L2 */ 
+_MM_HINT_T2 = 1, /* put into L3 */
+_MM_HINT_NTA = 0 // non temporal write; on eviction write to RAM.
+};
+void _mm_prefetch(void *p, enum _mm_hint h); // p – ptr; invalid values are ignored (alignment?)
+</blockquote>
+
+
+* OOO – out of order execution : the processor reorders instructions – it still has to evaluate instructions that produce the output for the next instruction, but there are several queues of dependencies, so it can switch to evaluate an instruction from a different/non conflicting queue if it would have otherwise stalled to wait for an additional operand be read from RAM. It gets complicated: the cpu tries to predict things – speculative loads …. (too complicated).
+* Prefetching by thread: can schedule special thread on the same core (but different hyperthread) (need to set affinity for that – libNUMA can help here !) – it does prefetching of the next 100 list nodes; speed up between 10-50% (depending on working set).
+* Device DMA (network device copies incoming packet into RAM – without CPU. Problem: CPU has to parse packet header this results in cache miss. The technique to fix that: devices pushes to cache of CPU that is about to be notified of packet arrival : DMA transfer has DCA flag; CPU sees this flag raised on Northbridge and puts header data into lowest level CPU cache.
+* Multi-threading
+** Concurrency problems: false sharing – the same cache line has two variables; two threads are writing each one to its variable; both thread caches need exclusive access to the cache line – a lot of RFO messages are send. Access time goes slower with more threads (on different cores). How to avoid false sharing for global variables?
+*** Put shared read only variables into read only data section, make sure it is aligned . (declaring const)
+*** thread specific variables into TLS (__thread specifier)
+*** move data accessed together into its own struct; if there is contention between threads then make this struct  aligned to a cache line __attribute((alined( CACHE_LINE_SIZE )) - (cache line size is preprocessor define set in cmd line)
+** atomic access; not result is guaranteed if two threads access the same memory – atomic operations do (always sync with RAM – so it takes at least 200 CPU cycles); these can be subdivided further,
+*** compare and swap (CAS) ; most common atomic operation - does the following atomically:
+
+
+template<type T> bool CAS(T newValue,T *locationPtr, T expectedValue)  {
+        if (*locationPtr == expectedValue) { *locationPtr = newValue; return true; } 
+        return false;
+}
+
+*** load lock/load store (LL/SC) load lock operation starts transaction; load store – store memory on condition that load lock returned true. (have either CAS or LL/SC – CAS is more common)
+*** atomic arithmetic  (use these if available instead of CAS – its faster)
+*** bit test – modify a bit of the value and return if it was set before.
+** Memory bandwidth : more cores that can address memory you will use the full memory bandwidth to full potential (FSB bus speed is the limiting factor). What can be done?
+*** Identify problem: CPU counter NUS_BNR_DRV – counts cycles that core was waiting for FSB bus to get ready.
+*** Prevent threads from moving between cores (such migration incurs unneeded memory copy) – thread should stay on same core (set thread affinity – pthread_setaffinity, pthread_getaffinity) ; threads working on same data set should work on cores of the same processor (if cores on same CPU have shared L2 or L3 cache they can profit from this); threads working on disjunct data sets should not.
+** NUMA considerations:
+
+
+Tools
+
+* diagnostics, measuring, profiling
+** oprofile records CPU counters (measures counters once per time period; counter value not always 100%  accurate ) – problem: hard to interpret these correctly (and different CPU models have different counters) ; here you must look at multiple counters and their dynamics to get a sense of what is going on : L1D_REPL (l1d misses per instruction) ; DTLB_MISSES, L2_LINES_IN  (consult Appendix B – or CPU manual)
+** Page fault counter – maintained by OS : Major page fault – needs to read disk to get virtual memory page; Minor page fault – caused with anonymous shared memory mapping that was not backed by file. time(1) reports these numbers; getrusage for the same process; wait4 – for a stopped child process. Also see /proc/<pid>/stat
+** learning more about CPU cache : valgrind –tool=cachegrind  <cmd line> (needs debug info): simulates the CPU cache, counts cache usage per function;  advantage: more accurate than periodic measurements; can simulate size of L2 cache and n-way. disadvantage: it does not simulate context switches, so cache flushes are not considered = actual numbers of cache misses will be larger. Also valgrind introduces order of magnitude slow down...
+* profiling memory usage: valgrind –tool=massif <cmd line> ; records memory allocations and stack us	age - per function over time; memusage – displays total of heap size and (optional) sum of sizes of shared memory mappings ; displays dynamics over time
+* Branch prediction – can do better than __builtin_expect . PGO – program guided optimization
+** build the executable with profiling info (gcc: add -fprofile-generate - similar to coverage analysis – build creates .gcno files); 
+** run a few tests – during runtime it records which choice for if .. else … is more common (at program exit if writes .gcda file for each object file) ;
+** Build the program again  (with -fprofile-use ) – this time apply the gathered information to produce code with correct branch hint.
+* Optimizing page faults
+** measure: valgrind –pagein : records page fault as they happen.
+** possible to reorder functions so that those used together are adjacent – reduces load time by up to 5% (tools?) 
+** mmap can tell the OS to do a page fault on all pages (very expensive); but can be useful if the memory will be used soon (???) posix_madvise with flag POSIX_MADV_WILNEED can bring in all pages within a virtual address range (more fine grained).
+** Larger pages – less page faults (but more unused physical memory).
+*** (architecture specific) On Intel the page size is 4k ; there are larger page sizes available and it is a linker option that affects the output binary to choose another format (?)
+*** Huge page sizes: 2MB page size is available – but this lead to very high fragmentation; set of huge pages is manged as OS resource ; during boot (when continuous physical memory is still available)  one can reserve 5 huge memory pages by echo “5” > /proc/sys/vm/nr_hugepages  (needs root access).
+**** To get a huge page : shmget( “aa”, HUGE_TABLE_ENTRY_SIZE * n, SHM_HUGETBL|SHM_R|SHM_W|IPC_CREAT); // size must be multiple of huge table page; fkag SHM_HUGETBL indicates to use a huge page
+**** each huge page is represented as a pseudofile in the hugetabl file system (/proc pseudo file system); So we can mount this file system and then get the file name of an available huge page and map it to memory with mmap.
+**** Test program with huge table was 57 faster – illustrates that a large cost is TLB misses + VM paging.
+
+
+<notextile><hr/></notextile>
+
+
+The Lost Art of C Structure Packing by Eric S Raymond  ( "here":http://www.catb.org/esr/structure-packing/ )
+
+
+
+I wrote a short C program that sums up the article; the output of the program on a 32 bit processor is as follows (program is "here":https://github.com/MoserMichael/cstuff/blob/master/training/align.c)
+
+<blockquote>
+! Purpose: #pragma(pack) produces small structures, but slow code to access them! (interrupt to handle misaligned access)
+! Purpose: want to use unaligned structs in a space efficient way
+
+! a structure field of uint8_t  can be on any address
+! a structure field of uint16_t must be on address divisible by two.
+! a structure field of uint32_t must be on address divisible by four. (etc)
+
+sizeof({ uint16_t, uint8_t })=4 (0,2) sizeof({ uint8_t, uint16_t })=4 (0,2)
+
+! to minimize space: try to pack more than one structure field into the holes between the structure fields
+
+sizeof({ char8_t , uint16_t, void* })=8 (0,2,4)  sizeof({void *, uint16_t, uint8_t })=8 (0,4,6)  sizeof({uint8, void *, uint16 })=12 (0,4,8)
+
+! an array of uint8_t can be on any address (same as uint8_t field)
+! an array of uint16_t must start on an address divisibe by two
+
+sizeof({uint8[sizeof(void*)+1], uint8_t})=6 (0,5) sizeof({uint8_t, uint8_t[sizeof(void*)+1]})=6 (0,1)
+sizeof({uint16_t[3], uint8_t})=8 (0,6) sizeof({uint8_t,uint16_t[3]})=8 (0,2)
+
+! nested structures are a source of some waste of memory due to padding/alignment (hi c++)
+! One way is to reorder the structure to fit into a smaller size
+
+sizeof({uint8_t, { void *, uint16_t }})=12  sizeof({void *, {uint8_t, uint16_t }})=8
+
+! bitfields: a series of bitfields is aligned to word size (sizeof(int)=4)
+! because bitwise instructions are used to implement them (these work on ints)
+! common convention to have a padding field that pads up to word size
+! also: always use unsigned type for bitfield values
+! still: they try to pack them as close as possible (!)
+
+sizeof({ uint_t a:3; uint_t b:4; uint8_t c:2; }) = 2 (!!!)
+sizeof({ uint16_t a:15; uint8_t b:2; })=4; sizeof(int)=4
+
+! bitfield member that does not fit the current word is moved to the next word
+
+sizeof({ int a:31; uint8_t b:2; })=8
+
+! When in doubt obtain the layout of a struct by means of offsetof (can't take offsetof bitfield members)
+! or use clang's -Wpadding or use pahole.
+! double or long double fields can have surprising behavior
+
+! thank you !
+
+</blockquote>
+
+
+<notextile><hr/></notextile>
+
+More to follow ...
+
+
+<notextile><hr/></notextile>
