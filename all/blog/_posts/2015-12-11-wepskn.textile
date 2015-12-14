@@ -279,7 +279,10 @@ Now it seems that unaligned memory access on new Intel processors (Sandy bridge 
 
 Compilers will not change all structures to packed - after all on other platforms such as ARM/RISC you still can't work with unaligned access, but if the program works on new Intel processors only, then you are fine with packed structures.
 
+In fact packed structures may help - more data fits into one cache line, so that fewer cache lines are accessed.
+
 Interesting how old assumptions do have a habbit of turnout out wrong ...
+
 <notextile><hr/></notextile>
 
 More to follow ...
