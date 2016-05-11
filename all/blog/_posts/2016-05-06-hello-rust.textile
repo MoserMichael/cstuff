@@ -293,7 +293,7 @@ struct Rectangle<T>
 
 impl<T : PartialEq> Rectable<T> { // require T to support Partial Eq (? why is this requirement not in the type definition ?)
 
-	fn is_square(&self) ? bool {
+	fn is_square(&self) -> bool {
 		self.width == self.height // if T supports ParialEq then it has a overloaded == operator.
 	}
 
@@ -315,8 +315,8 @@ impl Circle {  // member functions are added in one or more impl  blocks.
 	{
 		return Circle{ x : x, y : y, radius : radius );
 	}
-	f64 x(&self) ?f64 { return x.x } // member function  self reference
-	Circle x(mut &xelf, x : f64 } ? mut & Circle{ self.x = x; return x; } // mutable reference to self. Returning ref to self allows you to chain calls.
+	f64 x(&self) -> f64 { return x.x } // member function  self reference
+	Circle x(mut &xelf, x : f64 } -> mut & Circle{ self.x = x; return x; } // mutable reference to self. Returning ref to self allows you to chain calls.
 }
 </code></pre></blockquote>
 
@@ -342,7 +342,7 @@ impl Circle {  // member functions are added in one or more impl  blocks.
 		T : y,
 	}
 	impl<T> Point<T> {
-		fn (&mut self, T x } ? Point<T> { self.x = x; return x }
+		fn (&mut self, T x } -> Point<T> { self.x = x; return x }
 	}
 </code></pre></blockquote>
 
@@ -458,7 +458,7 @@ but no, you can emulate fields that can be modified in non mutable bindings !!! 
 	impl Point 
 	{
 		// each new member function can be in its own impl block (or several grouped together) 
-		fn distance(&self, Point other) ? f64
+		fn distance(&self, Point other) -> f64
 		{
 			(self.x  other.x) * (self.x  other.x) + (self.y  other.y) * (self.y  other.y) 
 		}
@@ -574,8 +574,8 @@ struct Foo<'a,'b> {
  }
 
 impl Foo<'a,'b> Foo<'a>  {
-	fn x(&self) ? & 'a  i32 { return self.x }
-	fn y(&self) ? & 'b i32 { return self.y }
+	fn x(&self) -> & 'a  i32 { return self.x }
+	fn y(&self) -> & 'b i32 { return self.y }
 }
 </code></pre></blockquote>
 
