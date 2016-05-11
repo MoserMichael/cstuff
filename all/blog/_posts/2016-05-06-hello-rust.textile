@@ -58,7 +58,7 @@ Variables. values / simple types
 	{
 		let x = 5
 	}
-	println!( {} , x ) // can't do that ; x is used out of its scope so x is no longer visible.''
+	println!(" {} ", x ) // can't do that ; x is used out of its scope so x is no longer visible.''
 </code></pre></blockquote>
 
 also a variable can be redefined (shadowed) in its nested scope, but only the last scope is valid
@@ -121,7 +121,7 @@ rust program must have a main function (like C); every statement must be in a fu
 
 <blockquote><pre><code>
 	let num = 5
-	let plus_num	 |x : i32 | { x + num } // | <parameter list > | <body> ; also references num  another binding.
+	let plus_num = |x : i32 | { x + num } // | <parameter list > | <body> ; also references num  another binding.
 </code></pre></blockquote>
 
 - closers can mutate captured variables (but they have to be marked as mutable)
@@ -147,7 +147,7 @@ data / more complex data structures
 <blockquote><pre><code>
 	let v = [1,2,3];
 
-	println!( the first one {} number of entries {}, vec[0], vec.len() ); // prinln! Is a macro call, first {} puts in the string for second param, etc.
+	println!( "the first one {} number of entries {}", vec[0], vec.len() ); // prinln! Is a macro call, first {} puts in the string for second param, etc.
 
 	let n = [ 1 ; 20 ];  // twenty entries of value 1
 </code></pre></blockquote>
@@ -160,13 +160,13 @@ data / more complex data structures
 
 - out of bound access will result in panic (program abort)
 <blockquote><pre><code>
-	println(will panic ! {} , v[4] )
+	println!("will panic ! {}" , v[4] )
 </code></pre></blockquote>
 
 - fixed size string (unicode string UTF8) (string constants on initialized data section)
 <blockquote><pre><code>
-	let a = can span 
-		multiple lines
+	let a = "can span 
+		multiple lines"
 </code></pre></blockquote>
 
 - can't access n'th element directly but have to convert to chars
@@ -197,7 +197,7 @@ data / more complex data structures
 		y : i32,
 	}
 	let point = Point { y : 5 , x ; 4  } // any order of the fields can do  as long as all  fields (name : value pairs) are specified
-	println!( x {} y {}, point.x, point.y )
+	println!(" x {} y {}", point.x, point.y )
 </code></pre></blockquote>
 
 - tuples: a struct with fields/members that have no name
@@ -212,7 +212,7 @@ data / more complex data structures
 <blockquote><pre><code>
 	let IntPair encoded = IntPair( 15, 20 )
 	let IntPair( x, y ) =  encoded // assigning with pattern matching
-	println!( x {} y {} , x, y );
+	println!( "x {} y {} " , x, y );
 </code></pre></blockquote>
 
 - interfaces are called traits
@@ -232,7 +232,7 @@ struct Circle {
 impl Printable for Circle {
 	fn print( &self )
 	{
-		println!( x {} y {} , self.x, self.y )
+		println!(" x {} y {} ", self.x, self.y )
 	}
 }
 </code></pre></blockquote>
@@ -300,7 +300,7 @@ impl<T : PartialEq> Rectable<T> { // require T to support Partial Eq (? why is t
 // 
 </code></pre></blockquote>
 
-- OO with structs (member functions and constructors)
+- Object Oriented p. with structs (member functions and constructors)
 
 
 <blockquote><pre><code>
@@ -357,7 +357,7 @@ struct HasDTor {
 
 impl Drop for HasDTor {
 	fn drop(&mut self) {
-		println!( calling the dtor );
+		println!("calling the dtor ");
 	}
 }
 </code></pre></blockquote>
@@ -367,11 +367,11 @@ control structures:
 rust has its own switch statement (called pattern)
 <blockquote><pre><code>
 	match x {
-		1 => println!(1\n),
-		2 | 3 => println!(2 or 3\n),
-		4 .. 7 => println!( 4 or 5 or 6 or 7  a range as selector\n),
-		 e @ 8 .. 12 => println!( for range you can get value of the match {} \n, e )
-		_  => println!(something else  default\n),  // _ => matches all other values  
+		1 => println!( "1\n" ),
+		2 | 3 => println!( "2 or 3\n" ),
+		4 .. 7 => println!( "4 or 5 or 6 or 7  a range as selector\n" ),
+		 e @ 8 .. 12 => println!( "for range you can get value of the match {} \n", e )
+		_  => println!("something else  default\n" ),  // _ => matches all other values  
 	}
 </code></pre></blockquote>
 
@@ -385,7 +385,7 @@ this match thing most cover all values ; so without _ => it gives error that not
 	p = new Point{ x: 1 , y : 2 }
 
 	match p  {
-		Point{ x, y } =>  println!( x={} y={}\n, x, y ),	
+		Point{ x, y } =>  println!("x={} y={}\n", x, y ),	
 	}
 </code></pre></blockquote>
 
@@ -404,8 +404,8 @@ this match thing most cover all values ; so without _ => it gives error that not
 - each case deconstructs the type value (fields are extracted in right hand side)
 <blockquote><pre><code>
 	match m {
-		MoveIt( x, y ) => { println!( x{} y {} , x, y ) // this case handles MoveIt type
-		ChangeColor( x, y, z ) => println( x {} y {} z {},  x, y, z)
+		MoveIt( x, y ) => { println!( "x{} y {}" , x, y ) // this case handles MoveIt type
+		ChangeColor( x, y, z ) => println( "x {} y {} z {}",  x, y, z)
 	}
 </code></pre></blockquote>
 
@@ -503,7 +503,7 @@ Memory management / Ownership
 <blockquote><pre><code>
 	let v = vec![ 1, 2, 3]
 	let u = v  // for vector this moves ownership to u; can't use v afterwards
-	println!({}, v[0]) // compiler error: acessing moved value !!!
+	println!("{}", v[0]) // compiler error: acessing moved value !!!
 </code></pre></blockquote>
 
 
@@ -511,7 +511,7 @@ move semantics are the default: but if type implements Copy trait then it is cop
 <blockquote><pre><code>
 	let n = 1
 	let m = n
-	println!( still can use n {} because n was copied not moved, n )
+	println!("still can use n {} because n was copied not moved", n )
 </code></pre></blockquote>
 
 - also passing a vector to a function also moves ownership from caller of function to function implementation (like assignment); so use references for every function argument that is not easily copied.
@@ -525,7 +525,7 @@ move semantics are the default: but if type implements Copy trait then it is cop
 	let refToNum = &num
 	let anotherRefToNum = &num
 
-	println(get a value from ref , *refToNum ) // dereference
+	println("get a value from ref {}" , *refToNum ) // dereference
 </code></pre></blockquote>
 
 
@@ -537,7 +537,7 @@ move semantics are the default: but if type implements Copy trait then it is cop
 
 	   *mutRef += 1 // now value of num is 33, you need * only with Mutable references. !!!
 	}
-	println!( the value is now {}, num ); // can create new 'const' reference only when there is no active mutable reference !!!
+	println!( "the value is now {}", num ); // can create new 'const' reference only when there is no active mutable reference !!!
 </code></pre></blockquote>
 
 
