@@ -53,11 +53,13 @@ Obligatory Jethro Tull song: heavy horses
 
 <iframe width="420" height="345" src="https://www.youtube.com/embed/_GL6F2M7-gA" frameborder="0" allowfullscreen></iframe> 
 
+<pre>
 “Heavy Horses, move the land under me
 Behind the plough gliding - slipping and sliding free
 Now you’re down to the few
 And there’s no work to do
 The tractor’s on its way”
+</pre>
 
 My Questions while reading this text:
 
@@ -394,7 +396,7 @@ necessarily collapse of population numbers (? But not after Rome?) (that’s wha
 warfare with population movement also move disease vectors (like the Romans were did in by plagues,
 and the Mongol realm with its silk road).
 \* other factors: soil salinization, erosion and deforestation (wood needs to be transportable, deletion
-within that range leads to scarcity) The more charcoal is found in a layer ~~the more deforestation
+within that range leads to scarcity) The more charcoal is found in a layer - the more deforestation
 occurred
 \* land clearance/deforestation leads to malaria
 \* diminishing yields due to problems may lead to ‘fading away’ of the state
