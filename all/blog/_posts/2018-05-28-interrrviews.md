@@ -45,7 +45,7 @@ These questions can be solved by applying the following pattern:
   
 For me: If the interviewer wants to trick you too much during the process than that is a very bad sign, may be a personal attitude problem or speak about the organizational culture at the place.
 
-* code us a known problem (hash table, runlength encoding, etc.) on paper and explain the result.
+### code us a known problem (hash table, runlength encoding, etc.) on paper and explain the result.
 
 Attention to detail is checked - better think of the algorithm and as many examples and edge cases before starting to code, these pesky edge cases will come back to haunt you when the answer is being reviewed.
 
