@@ -12,14 +12,12 @@ title: On the dreaded subject of programming interviews
 
 </p> 
 
-On the dreaded subject of programming interviews
-====================================
 
-# Hiring rituals of high tech companies are analyzed in this document
+### Hiring rituals of high tech companies
 
 Software companies invest a lot of thought into the interview process - it is supposed to determine the character of the workforce and by extension to shape the culture of the company. On the receiving side: the nature of the questions may give the interviewee some hints about the company / work culture at the place; The way they ask questions may also provide for some hints on the character of an interviewer; However, be warned: this guesswork may also lead to exactly the wrong conclusions - for example in larger companies one may not end up working for an interviewer, however a lot may depend on the personality of your future supervisor.
 
-In any event: beware, all the information in this text should be taken with a grain of salt: people are imperfect - it may be that your interviewer is a swell person and the job is the job of your dreams; it's just that they don't know better. In any event take the job that pays your bills.
+In any event: beware, all the information in this text should be taken with a grain of salt: people are imperfect - it may be that your interviewer is a swell person and the job is the job of your dreams; it's just that they don't know better. In any event take the job that pays your bills and don't believe any advise you read on the internet.
 
 Approaches: there are potentially different priorities at evaluating prospective employees
 * testing knowledge
@@ -103,9 +101,9 @@ These are very rare - only very bureaucratic organizations do that nowadays.  I 
  
 The reminder of this document reviews some interesting material that can be used as preparation for the interview process. Nowadays there are lots of interesting movies on YouTube, lots of books that cover the issue, lots of sites with interview questions in use by the major companies (those big three guys that are the pride of the industry and emulated by most places of interest).
 
-# open ended design questions
+### open ended design questions
 
-## [Design a parking lot](https://www.youtube.com/watch?v=DSGsa0pu8-k)
+[Design a parking lot](https://www.youtube.com/watch?v=DSGsa0pu8-k)
 
 
 Task: interviewer wants to know how you handle ambiguity
@@ -149,12 +147,12 @@ class ParkingSpot
 	id
 	enum SizeClass
 
-the service ParkingLot::placeVehicle(Vehicle *v) assigns and attaches a ParkingSpot from the lot
+the service `ParkingLot::placeVehicle(Vehicle *v)` assigns and attaches a ParkingSpot from the lot
 
  
 =========
 
-## [Design a messaging service like whatsapp] (https://www.youtube.com/watch?v=5m0L0k8ZtEs)
+[Design a messaging service like whatsapp] (https://www.youtube.com/watch?v=5m0L0k8ZtEs)
 
 Identify features (scope):
 
