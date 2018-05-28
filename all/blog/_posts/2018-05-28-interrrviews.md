@@ -105,9 +105,9 @@ The reminder of this document reviews some interesting material that can be used
 
 ### open ended design questions
 
-There are several great guys who are offering their service as coaches on interviews, and so it goes that they offer their talks on youtube with great passion: Ramon Lopesz - his youtube channel [Success in Tech]( https://www.youtube.com/channel/UC-vYrOAmtrx9sBzJAf3x_xw) is a great place to learn about design interview questions 
+There are several great guys who are offering their service as coaches on interviews, and so it goes that they offer their talks on youtube with great passion: Ramon Lopesz - his youtube channel [Success in Tech](https://www.youtube.com/channel/UC-vYrOAmtrx9sBzJAf3x_xw) is a great place to learn about design interview questions 
 
-[Design a parking lot](https://www.youtube.com/watch?v=DSGsa0pu8-k)
+Talk: Success in tech: [Design a parking lot](https://www.youtube.com/watch?v=DSGsa0pu8-k)
 
 
 Task: interviewer wants to know how you handle ambiguity
@@ -116,23 +116,19 @@ Q: is it a system design/class design/coding question?
 
 Task: interviewer wants to know if you approach things systematically. Ask for details
 
-- How is this designed? Open space - multiple buildings / are there floors / how to move between floors / multiple entrances?
-
-- optimize to fill certain areas first? fill in floors - priorities? Display how many free spots are in a given floor?
-
-- different sized slots? Different sized cars? Different prices for each size slot?
-
-- once a car is let in: assign a specific spot with directions on how to get there or let driver figure out?
-
-- premium parking spots? reserved slots for drivers with disabilities?
+* How is this designed? Open space - multiple buildings / are there floors / how to move between floors / multiple entrances?
+* optimize to fill certain areas first? fill in floors - priorities? Display how many free spots are in a given floor?
+* different sized slots? Different sized cars? Different prices for each size slot?
+* once a car is let in: assign a specific spot with directions on how to get there or let driver figure out?
+* premium parking spots? reserved slots for drivers with disabilities?
 
 
 Important: on open ended tasks many questions? Shows your grasp of the problem and that customers matter.
 
-
 Start:
 
-four sized slots := (each different size class of vehicle: motor cycle / car / lorry / bus).
+four sized slots = (each different size class of vehicle: motor cycle / car / lorry / bus).
+
 Q: Can we put a car into a slot of a lorry?
 
 
@@ -140,23 +136,22 @@ Class hierarchy question?
 
 start with vehicles:
 
-Vehicle base class : license plate (for id) ,
+Vehicle base class : license plate (for id)
 
 Four derived classes - each one representing a vehicle size class.
 
 class for ParkingLot
 	- attribute zipCode (to identify several parking lots)
 
-class ParkingSpot
+`class ParkingSpot
 	id
-	enum SizeClass
+	enum SizeClass`
 
 the service `ParkingLot::placeVehicle(Vehicle *v)` assigns and attaches a ParkingSpot from the lot
 
- 
-=========
+---
 
-[Design a messaging service like whatsapp] (https://www.youtube.com/watch?v=5m0L0k8ZtEs)
+Talk: Success in tech: [Design a messaging service like whatsapp](https://www.youtube.com/watch?v=5m0L0k8ZtEs)
 
 Identify features (scope):
 
@@ -194,9 +189,10 @@ different order. (Can solve this by client maintaining an incremented message id
 Questions of representation:
 - SQL table for persistence or in memory list? How to get first suitable spot? Several lists in memory or one ?
 
+
 ---
 
-[How to design twitter?] (https://www.youtube.com/watch?v=KmAyPUv9gOY)
+Talk: Success in Tech: [How to design twitter](https://www.youtube.com/watch?v=KmAyPUv9gOY)
 
 
 + not expected to design the whole frigging thing; identify a few key features and talk about them.
@@ -210,12 +206,12 @@ chronological order.
 
 
 Naive solution: Use relational databases (good for developing an initial model)
-User table :== <user_id>,<List followed by this user>
+`User table :== <user_id>,<List followed by this user>`
 
-Tweet_table:=  <Tweed_id_primary_key>, <user_ref>
-,<date when posted>,<text of tweet>
+`Tweet_table:=  <Tweed_id_primary_key>, <user_ref>
+,<date when posted>,<text of tweet>`
 
-Home timeleline of user u1 : SELECT * from  TweetTable WHERE user_id =<user id followed by user u1> AND user_id =<user id followed by user u1>
+Home timeleline of user u1 : `SELECT * from  TweetTable WHERE user_id =<user id followed by user u1> AND user_id =<user id followed by user u1>`
 ...
 
 Problem: this is too slow, not scalable; what to do now?
@@ -225,9 +221,7 @@ Features of optimized solution:
 
 * Know that twitter is read heavy with fewer writes (by an order of magnitude) - need to optimize for many many reads.
 * Availability - no interruption in service, ability to handle peak loads.
-
 * Consistency - need to see all tweets of others
-
 * Priorities: care most about availability - consistency is important but this is a less important concern (it is possible that your tweets will
 appear on another's home timeline with delays) aka eventual consistency.
 
@@ -255,31 +249,23 @@ Here use sharding: take user id and apply a hash -> drive the three servers that
 
 Possible things to talk about: search, push notifications, advertising.
 
-==
-
-## Me: How to design a DRM system.
-
-
-Entities:
-	- there are media files M1....Mn that are being sold, more exactly access to the file is being sold.
-
-	- an owner of a device Di can purchase access rights for a media item Mj.
-
-	- only the device of the client can access the purchased media item	
-	  There are devices d1... dn.
-
-	- the purchased media item also defines usage scenaroi for the item (for example ebook has verbs like 'can print', 'can copy', etc).
-
-	- there is a content server that prepares a media items upon purchase so that it can only be viewed per device.
 ---
 
-DRM system:
+Me: How to design a DRM system.
 
-Features:
+Entities:
+* there are media files M1....Mn that are being sold, more exactly access to the file is being sold.
+* an owner of a device Di can purchase access rights for a media item Mj.
+* only the device of the client can access the purchased media item	
+  There are devices d1... dn.
+* the purchased media item also defines usage scenaroi for the item (for example ebook has verbs like 'can print', 'can copy', etc).
+* there is a content server that prepares a media items upon purchase so that it can only be viewed per device.
 
-- Main principle: the system specifies how media items can be used and who can use them.
-- Examples: DRM service for books (can print, can copy, can display); distributed book can only be viewed on a specific book viewer device.
-- access restriction is usually achieved by encrypting the content, so that it can't be used without decryption key, where only the specific
+Features of DRM system:
+
+* Main principle: the system specifies how media items can be used and who can use them.
+* Examples: DRM service for books (can print, can copy, can display); distributed book can only be viewed on a specific book viewer device.
+* access restriction is usually achieved by encrypting the content, so that it cant be used without decryption key, where only the specific
 customer device has the means to decrypt the content.
 
 
@@ -292,25 +278,21 @@ is generated per media file. all this data is stored on the DRM server.
 
 E(k1)(M1) - the media file content will be distributed in encrypted form. - also stored on the DRM server.
 
-So we have a table := <media item id> <description> <encryption key> <ref to encrypted file>
-
+`So we have a table := <media item id> <description> <encryption key> <ref to encrypted file>`
 
 what about the symetric key? can't send the encryption key as plaintext (would allow everyone to use the file). so there is a trick that must
 bind it to the identity of the device.
 
-----
-
 There are devices d1....dn
 each device has a Private key d1-Priv1.
 The private key is established when the device is registered.
-It ensures the identity of the device.
+It ensures the identity of the device
 
-Device table := <device id>, <device private key-stored at device>, <device public key - used by DRM server to prepre ticket>
------
+`Device table := <device id>, <device private key-stored at device>, <device public key - used by DRM server to prepre ticket>`
 
 The server: once a media item is purchased for device d1 - the server looks up the PubKey(d1)
 
-MessageToDevice := RsaEnc(PubKey(d1)) (DRM-access-token + k1) . E(k1)(M)
+`MessageToDevice := RsaEnc(PubKey(d1)) (DRM-access-token + k1) . E(k1)(M)`
 
 - only the device must decrypt the access token + k1.
 - now the device can decrypt the media file.''
