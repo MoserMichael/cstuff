@@ -17,13 +17,15 @@ On the dreaded subject of programming interviews
 
 # Hiring rituals of high tech companies are analyzed in this document
 
-Software companies invest a lot of thought into the interview process – it is supposed to determine the character of the workforce and by extension to shape the culture of the company. On the receiving side: the nature of the questions may give the interviewee some hints about the company / work culture at the place; The way they ask questions may also provide for some hints on the character of an interviewer; However, be warned: this guesswork may also lead to exactly the wrong conclusions – for example in larger companies one may not end up working for an interviewer, however a lot may depend on the personality of your future supervisor.
+Software companies invest a lot of thought into the interview process - it is supposed to determine the character of the workforce and by extension to shape the culture of the company. On the receiving side: the nature of the questions may give the interviewee some hints about the company / work culture at the place; The way they ask questions may also provide for some hints on the character of an interviewer; However, be warned: this guesswork may also lead to exactly the wrong conclusions - for example in larger companies one may not end up working for an interviewer, however a lot may depend on the personality of your future supervisor.
+
+In any event: beware, all the information in this text should be taken with a grain of salt: people are imperfect - it may be that your interviewer is a swell person and the job is the job of your dreams; it's just that they don't know better. In any event take the job that pays your bills.
 
 Approaches: there are potentially different priorities at evaluating prospective employees
 * testing knowledge
 * focus on testing particular skills needed for the job
 * some say that skill/knowledge is secondary, but general problem-solving skills + soft skills is primary.
-* background – how do colleagues assess your performance at previous companies?
+* background - how do colleagues assess your performance at previous companies?
 * some want all of the above, and want it now (then they might become upset there are very few qualified enough to fill in vacancies)
  
 Now of course there are lots of different means to test a candidate -
@@ -32,13 +34,13 @@ Now of course there are lots of different means to test a candidate -
 
 ### whiteboard interview: simulation of coding and code review processes
 
-Basically this is a reasonable simulation of the work process – the candidate gets a problem that is not entirely defined, the first task is to clarify details (they listen and evaluate that); Then you have to explain the algorithm and define some examples where edge cases are worked out, then you need to code the stuff (while talking and answering review questions); finally you need to make sure that the darn thing works (code review) – explicitly they watch for how you react and incorporate feedback, etc.
+Basically this is a reasonable simulation of the work process - the candidate gets a problem that is not entirely defined, the first task is to clarify details (they listen and evaluate that); Then you have to explain the algorithm and define some examples where edge cases are worked out, then you need to code the stuff (while talking and answering review questions); finally you need to make sure that the darn thing works (code review) - explicitly they watch for how you react and incorporate feedback, etc.
 
 Often the questions do involve coding a task with a graph or a tree; some recursion and some dynamic programming; I guess this is designed to give people out of university a good chance, and in order to test how good a person is at learning stuff (relearning stuff if you are long out of college).
 
 These questions can be solved by applying the following pattern:
 * clarify the conditions
-* make up several examples (example need to be not too trivial – so that edge cases appear)
+* make up several examples (example need to be not too trivial - so that edge cases appear)
 * come up with a naive recursive solution
 * dynamic programming problems: the recursive solution can be refined by applying memorization (storing intermediate results and using them where appropriate)
 * if requested: find an iterative solution (trick question)
@@ -47,25 +49,25 @@ For me: If the interviewer wants to trick you too much during the process than t
 
 * code us a known problem (hash table, runlength encoding, etc.) on paper and explain the result.
 
-Attention to detail is checked – better think of the algorithm and as many examples and edge cases before starting to code, these pesky edge cases will come back to haunt you when the answer is being reviewed.
+Attention to detail is checked - better think of the algorithm and as many examples and edge cases before starting to code, these pesky edge cases will come back to haunt you when the answer is being reviewed.
 
-To me a question like this signals that the company has a clear distinction between designers and coders – and that the ideal worker is a coder with a limited set of responsibilities (that’s also not true universally – because this way the organization has a hard time to struggle with its tasks, however there is a tendency…). One should try to figure out to what extent personal initiative is asked for at this place.
+To me a question like this signals that the company has a clear distinction between designers and coders - and that the ideal worker is a coder with a limited set of responsibilities (that's also not true universally - because this way the organization has a hard time to struggle with its tasks, however there is a tendency?). One should try to figure out to what extent personal initiative is asked for at this place.
 
 ### code in an IDE environment; the tasks are well defined, and you are expected to produce the exact same output as specified within the specified time frame
 
-That one is bad – they want to signal that we are sharp and mean and that we really know how to drive people, often these are probably not the most pleasant people to work for.
+That one is bad - they want to signal that we are sharp and mean and that we really know how to drive people, often these are probably not the most pleasant people to work for.
 
 ### given a code listing find some glaring problems in the code by looking at it.
 
-Actually, this is a very infrequent question, but I think it is a very good one – it shows if a person is not just good at writing code, but also inclined to maintain an existing code base. However, it speaks of testing for existing skill rather than testing for problem solving skills, so this methodology is infrequently used.
+Actually, this is a very infrequent question, but I think it is a very good one - it shows if a person is not just good at writing code, but also inclined to maintain an existing code base. However, it speaks of testing for existing skill rather than testing for problem solving skills, so this methodology is infrequently used.
 
 ## Talking questions
 
 ### open ended design question
 
-First part of the interview – one is supposed to figure out the scope of the design question; key features of a system; provide for a simplified solution then refine gradually refine it.
+First part of the interview - one is supposed to figure out the scope of the design question; key features of a system; provide for a simplified solution then refine gradually refine it.
 
-The question is sort of a background check – one is often asked to design a system that is similar to your previous work experience, or one that is similar to the industry of the company that is hiring. Practically this favors people with detailed domain knowledge (but is not supposed to be this way).
+The question is sort of a background check - one is often asked to design a system that is similar to your previous work experience, or one that is similar to the industry of the company that is hiring. Practically this favors people with detailed domain knowledge (but is not supposed to be this way).
 
 ### tell us of a successful project of yours
 
@@ -77,25 +79,25 @@ Hard to test these in an effective manner, often stupid open-ended questions are
 
 ### knowledge quiz on some technical question
 
-Often asked at screening interviews – sort of a substitute for technical background check – designed to figure out if you really had some hands-on experience with the technologies of interest?
+Often asked at screening interviews - sort of a substitute for technical background check - designed to figure out if you really had some hands-on experience with the technologies of interest?
 
 ### open ended discussion of some technical questions
 
-this starts with some stuff and gradually gets deeper (depending on the knowledge of the interviewer – they often like to show off with their knowledge). Don't know what that says about the interviewer (I am a bit like that too ;-)
+this starts with some stuff and gradually gets deeper (depending on the knowledge of the interviewer - they often like to show off with their knowledge). Don't know what that says about the interviewer (I am a bit like that too ;-)
 
 Soft interview
 
 ### tell us about your work experience.
 
-Very important to get your story right: concise description of you and your winning traits, followed by brief review of your jobs – then longer coverage of each job.
+Very important to get your story right: concise description of you and your winning traits, followed by brief review of your jobs - then longer coverage of each job.
 
 ### simulated discussion among a group of job applicants
 
-This is rare – designed to figure out if you fit into a leadership role – key question: who is the one who starts to take notes and starts to organize the discussion? Who is able to dominate the discussion?
+This is rare - designed to figure out if you fit into a leadership role - key question: who is the one who starts to take notes and starts to organize the discussion? Who is able to dominate the discussion?
 
 ### IQ tests
 
-These are very rare – only very bureaucratic organizations do that nowadays.  I think these tests are mainly bullshit – but there are some believers left, Organizations where HR has a disproportionate deal of influence might consider this course of actions.
+These are very rare - only very bureaucratic organizations do that nowadays.  I think these tests are mainly bullshit - but there are some believers left, Organizations where HR has a disproportionate deal of influence might consider this course of actions.
 
 ---
  
@@ -178,7 +180,8 @@ different order. (Can solve this by client maintaining an incremented message id
 
 - how to do indications of status of message:
 
-  Once message has been sent you get an ack message (sent status will be updated on client)
+  Once message
+ has been sent you get an ack message (sent status will be updated on client)
 
   delivered message -> server can connect to sender and send this indication (or can be reply message that is queued like regular message)
 
@@ -224,7 +227,7 @@ Features of optimized solution:
 * Consistency - need to see all tweets of others
 
 * Priorities: care most about availability - consistency is important but this is a less important concern (it is possible that your tweets will
-appear on another’s home timeline with delays) aka eventual consistency.
+appear on another's home timeline with delays) aka eventual consistency.
 
 
 Solution: every time a new tweet is received for user u1 the user timeline of all the users subscribed to u1.
@@ -242,7 +245,7 @@ Also u1 and u2 follow user u3 with millions of followers; update takes a long ti
 gets original tweet.
 
 Possible solution: for user u1 with millions of followers - do not update each followers timeline; when follower accesses his timeline then
-perform SQL query to get the heavy ones update on demand and merge it with each follower’s timeline on demand.
+perform SQL query to get the heavy ones update on demand and merge it with each follower's timeline on demand.
 
 Horizontal scalability: have a set of thousands of redis servers, need to know the three machines that store the timeline.
 Here use sharding: take user id and apply a hash -> drive the three servers that store the timeline from the has of the user id.
@@ -313,7 +316,7 @@ MessageToDevice := RsaEnc(PubKey(d1)) (DRM-access-token + k1) . E(k1)(M)
 
 ## Service oriented architecture
 
-there are a lot of Service oriented architecture companies, so some exposure to SOA design patterns may be advantages: the problem – unlike the Gang of Four book (OOP design patterns) there is no one defining books, instead there are lots and lots of patterns that do mostly obvious stuff and no standardized vocabulary of design patterns, Still there are some principles:
+there are a lot of Service oriented architecture companies, so some exposure to SOA design patterns may be advantages: the problem - unlike the Gang of Four book (OOP design patterns) there is no one defining books, instead there are lots and lots of patterns that do mostly obvious stuff and no standardized vocabulary of design patterns, Still there are some principles:
 
 * again: always start your discussion with a primitive solution that consists of a series of SQL like tables, then try to scale it up.
 * messages should be indempotent (that means stateless as far as possible). State is bad because handling connections is complicated, and load balancers need to do sticky sessions (route related requests to the same machine), etc.
@@ -323,3 +326,4 @@ there are a lot of Service oriented architecture companies, so some exposure to 
 * eventual consistency rules https://en.wikipedia.org/wiki/Eventual_consistency
 * wherever you can put in a redis in memory cache that is fed by multiple related data sources.
  
+
