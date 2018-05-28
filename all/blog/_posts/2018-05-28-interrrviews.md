@@ -105,6 +105,8 @@ The reminder of this document reviews some interesting material that can be used
 
 ### open ended design questions
 
+There are several great guys who are offering their service as coaches on interviews, and so it goes that they offer their talks on youtube with great passion: Ramon Lopesz - his youtube channel [Success in Tech]( https://www.youtube.com/channel/UC-vYrOAmtrx9sBzJAf3x_xw) is a great place to learn about design interview questions 
+
 [Design a parking lot](https://www.youtube.com/watch?v=DSGsa0pu8-k)
 
 
