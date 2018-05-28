@@ -288,7 +288,7 @@ each device has a Private key d1-Priv1.
 The private key is established when the device is registered.
 It ensures the identity of the device
 
-`Device table := <device id>, <device private key-stored at device>, <device public key - used by DRM server to prepre ticket>`
+`Device table := <device id>, <device private key-stored at device>, <device public key - used by DRM server to prepare ticket>`
 
 The server: once a media item is purchased for device d1 - the server looks up the PubKey(d1)
 
@@ -304,10 +304,10 @@ there are a lot of Service oriented architecture companies, so some exposure to 
 
 * again: always start your discussion with a primitive solution that consists of a series of SQL like tables, then try to scale it up.
 * messages should be indempotent (that means stateless as far as possible). State is bad because handling connections is complicated, and load balancers need to do sticky sessions (route related requests to the same machine), etc.
-* scaling: tricks for horizontal scaling like (sharding) [https://en.wikipedia.org/wiki/Shard_(database_architecture)]
+* scaling: tricks for horizontal scaling like [sharding](https://en.wikipedia.org/wiki/Shard_(database_architecture))
 * don't forget to put in load balancers for high availability
 * when in doubt: delegate to another proxy (lots of small services win).
-* eventual consistency rules https://en.wikipedia.org/wiki/Eventual_consistency
+* [eventual consistency rules](https://en.wikipedia.org/wiki/Eventual_consistency)
 * wherever you can put in a redis in memory cache that is fed by multiple related data sources.
  
 
