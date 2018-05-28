@@ -85,7 +85,7 @@ Often asked at screening interviews - sort of a substitute for technical backgro
 
 this starts with some stuff and gradually gets deeper (depending on the knowledge of the interviewer - they often like to show off with their knowledge). Don't know what that says about the interviewer (I am a bit like that too ;-)
 
-Soft interview
+## Soft interview
 
 ### tell us about your work experience.
 
