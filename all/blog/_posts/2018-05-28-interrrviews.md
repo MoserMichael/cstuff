@@ -15,9 +15,9 @@ title: On the dreaded subject of programming interviews
 
 ### Hiring rituals of high tech companies
 
-Software companies invest a lot of thought into the interview process - it is supposed to determine the character of the workforce and by extension to shape the culture of the company. On the receiving side: the nature of the questions may give the interviewee some hints about the company / work culture at the place; The way they ask questions may also provide for some hints on the character of an interviewer; However, be warned: this guesswork may also lead to exactly the wrong conclusions - for example in larger companies one may not end up working for an interviewer, however a lot may depend on the personality of your future supervisor.
+Software companies invest a lot of thought into the interview process - it is supposed to determine the character of the workforce and by extension to shape the culture of a company. On the receiving side: the nature of the questions may give the interviewee some hints about the company / work culture at the place; The way they ask questions may also provide for some hints on the character of an interviewer; However, be warned: this guesswork may also lead to exactly the wrong conclusions - for example in larger companies one may not end up working for an interviewer, however a lot may depend on the personality of your future supervisor.
 
-In any event: beware, all the information in this text should be taken with a grain of salt: people are imperfect - it may be that your interviewer is a swell person and the job is the job of your dreams; it's just that they don't know better. In any event take the job that pays your bills and don't believe any advise you read on the internet.
+In any event: beware, all the information in this text should be taken with a grain of salt: people are imperfect - it may be that your interviewer is a swell person and the job is the job of your dreams; it's just that they don't know any better. In any event take the job that pays your bills and don't believe any advise you read on the internet.
 
 Approaches: there are potentially different priorities at evaluating prospective employees
 * testing knowledge
@@ -26,6 +26,8 @@ Approaches: there are potentially different priorities at evaluating prospective
 * background - how do colleagues assess your performance at previous companies?
 * some want all of the above, and want it now (then they might become upset there are very few qualified enough to fill in vacancies)
  
+I think that the focus can either be on testing for knowledge/skills or on testing for problem solving/soft skills + background checks.
+
 Now of course there are lots of different means to test a candidate -
 
 ## Coding questions
