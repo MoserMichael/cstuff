@@ -24,7 +24,8 @@ Here is an example stack trace:
 
 <blockquote>
     <code>
-
+    <pre>
+	
     #1 def fact(n = 1) at test_pd.py:10
     Local variables:
     loc = 2
@@ -58,12 +59,12 @@ Here is an example stack trace:
     Calls next frame at:
         print fact(4) at: test_pd.py:36
 
-    #6 def <module>() at test_pd.py:53
+    #6 def &lt;module>() at test_pd.py:53
     Calls next frame at:
         main() at: test_pd.py:53
 
+    </pre>
     </code>
-
 </blockquote>
 This module is called pd and that stands for python debugging module. It is similar to the standard traceback module that comes with the python libraries.
 
@@ -166,8 +167,9 @@ this will give you the following help message:
 
 <blockquote>
     <code>
+    <pre>
 
-    Usage: /usr/local/lib/python2.7/dist-packages/ntrace-0.0.1-py2.7-linux-i686.egg/ntrace/trace.py [OPTIONS] <file> [ARGS}
+    Usage: /usr/local/lib/python2.7/dist-packages/ntrace-0.0.1-py2.7-linux-i686.egg/ntrace/trace.py [OPTIONS] &lt;file> [ARGS}
 
     Traces execution of python program; 
 
@@ -200,19 +202,21 @@ this will give you the following help message:
 
     By default the following options are on: -l -f -r
 
+    </pre>
     </code>
-
 </blockquote>
 The functionality can also be accessed from an class: here the Ntracer class is used to run the program test\_ntrace2.py with tracing.
 
 <blockquote>
     <code>
+    <pre>
 
-    import ntrace
+	import ntrace
 
         t = ntrace.NTracer(ntrace.TO_FUNCTION_ARGUMENTS | ntrace.TO_FUNCTION_RVALUES | ntrace.TO_TRACE_SRC_LINES )
         t.trace( 'test_ntrace2.py' , False)
 
+    </pre>
     </code>
 
 </blockquote>
