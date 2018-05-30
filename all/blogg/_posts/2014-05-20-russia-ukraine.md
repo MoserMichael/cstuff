@@ -10,11 +10,11 @@ title: Trouble in the ex-USSR
 20 May 2014
 
 </p>
-I am trying to make some sense of the news that come out of Russia and the Ukraine. I have been listening a lot to radio: [Echo of Moscow](http://echo.msk.ru/) and other news outlets. Now this is my attempt to sum up what i have heard: .
+I am trying to make some sense of the news that come out of Russia and (the) Ukraine. I have been listening a lot to radio: [Echo of Moscow](http://echo.msk.ru/) and other news outlets. Now this is my attempt to sum up what i have heard: .
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Rw0KeJdAZkY" frameborder="0" allowfullscreen></iframe>
 
-In some way this shoots Russia in the foot – if one combines the population and the economy of both Russia and Ukraine then that would make a superpower, whereas taken separately you have two regional powers only. However after the annexation of the Crimea a stronger integration is mostly unlikely to happen within this generation.
+In some way this meddling is shooting Russia in the foot – if one combines the population and the economy of both Russia and Ukraine then that would make a superpower, whereas taken separately you have two regional powers only. However after the annexation of the Crimea a stronger integration is mostly unlikely to happen within this generation.
 
 How was it possible to initiate this civil war?  the population of Easter Ukraine probably feared a stronger integration with the EU – the industrial infrastructure of this region is inherited from the Soviet Union; all the factories are tied to Soviet/Russian industry standards that do not make any sense within the framework of European norms. Germany had a similar problem upon unification and the solution there was to close all East German factories down.
 
