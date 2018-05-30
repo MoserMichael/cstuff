@@ -60,7 +60,7 @@ Another lesson is that the [PISA](http://en.wikipedia.org/wiki/Programme_for_Int
 
 As a measure of performance PISA does not measure such things as intellectual independence or ability to work in groups. Prof. Simola seems to be quite fond of the Swedish effort here. In the more individualistic society of Sweden they seem to have put a lot of effort into this direction; these are the traits valued by Swedish society, so they train their kids accordingly.
 
-<iframe width="420" height="315" src="//www.youtube.com/embed/ZTKu-L1b--o" frameborder="0" allowfullscreen>
+<iframe width="420" height="315" src="//www.youtube.com/embed/hhXpGRJQV4Y" frameborder="0" allowfullscreen>
 </iframe>
 In the words of Jethro Tull:
 
