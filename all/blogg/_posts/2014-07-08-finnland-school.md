@@ -70,6 +70,10 @@ one day you'll wake up in the Present Day ---
 a million generations removed from expectations
 of being who you really want to be."
 
+all together now: 
+
+"skating way on the thin ice of a new daaaaaaay".
+
 The problem is that 'creative thinking' and 'ability to work in groups' are categories that are impossible to measure objectively; if an education system focuses on such things then it becomes impossible to measure its performance in any meaningful way.
 
 By focusing on objective criteria the Finns seem to be giving their education system a good shake up, of course it serves them well to have well trained teachers to address this challenge; I guess without this stimulus it would have been easy for Finish teachers to become complacent and inefficient.
