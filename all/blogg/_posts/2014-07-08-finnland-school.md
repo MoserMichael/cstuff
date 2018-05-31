@@ -9,6 +9,7 @@ title: <notextile>Finnland's schools</notextile>
 <p class="publish_date">
 04 May 2013
 
+
 </p>
 Phil Greenspun reviews the book [The Smartest Kids in the World: And How They Got That Way](http://www.amazon.com/gp/product/B0061NT61Y/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B0061NT61Y&linkCode=as2&tag=pgreenspun-20&linkId=VSNDYSKRJD72L4ZD) by Amanda Ripley, his review is [here](http://blogs.law.harvard.edu/philg/2014/06/25/smartest-kids-in-the-world-finland)
 ; it is full of praise for Finland's schools - the [PISA](http://en.wikipedia.org/wiki/Programme_for_International_Student_Assessment) test compares student performance between countries and here Finland used to be [very good](http://en.wikipedia.org/wiki/Programme_for_International_Student_Assessment#Results) .
@@ -60,7 +61,7 @@ Another lesson is that the [PISA](http://en.wikipedia.org/wiki/Programme_for_Int
 
 As a measure of performance PISA does not measure such things as intellectual independence or ability to work in groups. Prof. Simola seems to be quite fond of the Swedish effort here. In the more individualistic society of Sweden they seem to have put a lot of effort into this direction; these are the traits valued by Swedish society, so they train their kids accordingly.
 
-<iframe width="420" height="315" src="//www.youtube.com/embed/hhXpGRJQV4Y" frameborder="0" allowfullscreen>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/hhXpGRJQV4Y" frameborder="0" allowfullscreen>
 </iframe>
 In the words of Jethro Tull:
 
