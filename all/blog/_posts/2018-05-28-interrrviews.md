@@ -322,8 +322,9 @@ https://blog.codinghorror.com/the-infinite-space-between-words/
 * Hardware virtualization reboot	40 s	
 * Physical system reboot	        5 m	
 
-
-* Main takeaways: L3 cache hit is ten times slower than L1 cache hit; 	
+Main takeaways: 
+ 
+* L3 cache hit is ten times slower than L1 cache hit; 	
 * Main memory access 10 times slower than L3 cache hit
 * SSD disk access is 10-50 times slower than main memory access
 * Spinning disk acccess is 100 times slower than SSD disk.
