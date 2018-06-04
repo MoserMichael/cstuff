@@ -299,6 +299,36 @@ The server: once a media item is purchased for device d1 - the server looks up t
 - only the device must decrypt the access token + k1.
 - now the device can decrypt the media file.''
 
+## performance evaluations
+
+Table of performance (relative) - they like you to memorize the key facts for performance evaluations:
+
+Always remember your big O stuff you learned in school!
+
+https://blog.codinghorror.com/the-infinite-space-between-words/
+
+1 CPU cycle			0.3 ns	 (ns - nanosecond = 1/1000.000.000 second)
+Level 1 cache access		0.9 ns	
+Level 2 cache access		2.8 ns	
+Level 3 cache access		12.9 ns	
+Main memory access		120 ns	   
+Solid-state disk I/O		50-150 μs (μs - microsecond = 1/1000.000 second)	
+Rotational disk I/O		1-10 ms
+Internet: SF to NYC		40 ms	
+Internet: SF to UK		81 ms	
+Internet: SF to Australia 	183 ms	 (millisecond = 1/1000 second)
+OS virtualization reboot   	4 s	
+SCSI command time-out		30 s	
+Hardware virtualization reboot	40 s	
+Physical system reboot	        5 m	
+
+
+Main takeaways: L3 cache hit is ten times slower than L1 cache hit; 	
+Main memory access 10 times slower than L3 cache hit
+SSD disk access is 10-50 times slower than main memory access
+Spinning disk acccess is 100 times slower than SSD disk.
+Local network access is about the same time as spinning disk.
+
 
 ## Service oriented architecture
 
