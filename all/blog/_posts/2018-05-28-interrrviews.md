@@ -69,6 +69,8 @@ First part of the interview - one is supposed to figure out the scope of the des
 
 The question is sort of a background check - one is often asked to design a system that is similar to your previous work experience, or one that is similar to the industry of the company that is hiring. Practically this favors people with detailed domain knowledge (but is not supposed to be this way).
 
+Interesting to note that in some companies the design questions are harder than the coding questions!
+
 ### tell us of a successful project of yours
 
 Now it is important to get your story ready for this task: this test communication skills; It also checks to what degree one is in tune with the culture of the place (one really needs to get some background information on the organization that you apply for),
