@@ -343,7 +343,7 @@ there are a lot of Service oriented architecture companies, so some exposure to 
 * [eventual consistency rules](https://en.wikipedia.org/wiki/Eventual_consistency)
 * wherever you can put in a redis in memory cache that is fed by multiple related data sources.
  
-=== 
+--- 
 ### Me: design an NoSQL like cache 
 
 * hosts in memory key to value maps / does the server host multiple instances of hash objects? (most likely)
@@ -380,9 +380,9 @@ Enterprise usage
 Server model:
 * event based
    
+--------
 
-=========
-
+Some important papers that can help to understand the thinking behind these large systems (hint: it helps a lot to understand some basic infrastructure components, as these are providing the basic concepts)
 
 ## Google file system 
 
@@ -702,4 +702,3 @@ Leader server of each region can also talk directly to leader of each other regi
 * for associations: must have range queries to that association table has an index based on (id,atype,time)
 * cache Sharding? (multiple follower caches for each Shard)
 
-=
