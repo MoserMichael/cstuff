@@ -299,51 +299,8 @@ The server: once a media item is purchased for device d1 - the server looks up t
 - only the device must decrypt the access token + k1.
 - now the device can decrypt the media file.''
 
-## performance evaluations
-
-Table of performance (relative) - they like you to memorize the key facts for performance evaluations:
-
-Always remember your big O stuff you learned in school!
-
-https://blog.codinghorror.com/the-infinite-space-between-words/
-
-* 1 CPU cycle			0.3 ns	 (ns - nanosecond = 1/1000.000.000 second)
-* Level 1 cache access		0.9 ns	
-* Level 2 cache access		2.8 ns	
-* Level 3 cache access		12.9 ns	
-* Main memory access		120 ns	   
-* Solid-state disk I/O		50-150 μs (μs - microsecond = 1/1000.000 second)	
-* Rotational disk I/O		1-10 ms
-* Internet: SF to NYC		40 ms	
-* Internet: SF to UK		81 ms	
-* Internet: SF to Australia 	183 ms	 (millisecond = 1/1000 second)
-* OS virtualization reboot   	4 s	
-* SCSI command time-out		30 s	
-* Hardware virtualization reboot	40 s	
-* Physical system reboot	        5 m	
-
-Main takeaways: 
- 
-* L3 cache hit is ten times slower than L1 cache hit; 	
-* Main memory access 10 times slower than L3 cache hit
-* SSD disk access is 10-50 times slower than main memory access
-* Spinning disk acccess is 100 times slower than SSD disk.
-* Local network access is about the same time as spinning disk.
-
-
-## Service oriented architecture
-
-there are a lot of Service oriented architecture companies, so some exposure to SOA design patterns may be advantages: the problem - unlike the Gang of Four book (OOP design patterns) there is no one defining books, instead there are lots and lots of patterns that do mostly obvious stuff and no standardized vocabulary of design patterns, Still there are some principles:
-
-* again: always start your discussion with a primitive solution that consists of a series of SQL like tables, then try to scale it up.
-* messages should be indempotent (that means stateless as far as possible). State is bad because handling connections is complicated, and load balancers need to do sticky sessions (route related requests to the same machine), etc.
-* scaling: tricks for horizontal scaling like [sharding](https://en.wikipedia.org/wiki/Shard_(database_architecture))
-* don't forget to put in load balancers for high availability
-* when in doubt: delegate to another proxy (lots of small services win).
-* [eventual consistency rules](https://en.wikipedia.org/wiki/Eventual_consistency)
-* wherever you can put in a redis in memory cache that is fed by multiple related data sources.
- 
 --- 
+
 ### Me: design an NoSQL like cache 
 
 * hosts in memory key to value maps / does the server host multiple instances of hash objects? (most likely)
@@ -379,7 +336,55 @@ Enterprise usage
 
 Server model:
 * event based
-   
+
+
+## performance evaluations
+
+Some data items that can be useful during discussions of performance:
+
+Table of performance (relative) - they like you to memorize the key facts for performance evaluations:
+
+(also: always remember your big O stuff you learned in school!)
+
+https://blog.codinghorror.com/the-infinite-space-between-words/
+
+* 1 CPU cycle			0.3 ns	 (ns - nanosecond = 1/1000.000.000 second)
+* Level 1 cache access		0.9 ns	
+* Level 2 cache access		2.8 ns	
+* Level 3 cache access		12.9 ns	
+* Main memory access		120 ns	   
+* Solid-state disk I/O		50-150 μs (μs - microsecond = 1/1000.000 second)	
+* Rotational disk I/O		1-10 ms
+* Internet: SF to NYC		40 ms	
+* Internet: SF to UK		81 ms	
+* Internet: SF to Australia 	183 ms	 (millisecond = 1/1000 second)
+* OS virtualization reboot   	4 s	
+* SCSI command time-out		30 s	
+* Hardware virtualization reboot	40 s	
+* Physical system reboot	        5 m	
+
+Main takeaways: 
+ 
+* L3 cache hit is ten times slower than L1 cache hit; 	
+* Main memory access 10 times slower than L3 cache hit
+* SSD disk access is 10-50 times slower than main memory access (the memory bus that talks to external devices is of realy low priority) 
+* Spinning disk acccess is 100 times slower than SSD disk.
+* Local network access is about the same time as spinning disk (?)
+
+
+## Service oriented architecture
+
+there are a lot of Service oriented architecture companies, so some exposure to SOA design patterns may be advantages: the problem - unlike the Gang of Four book (OOP design patterns) there is no one defining books, instead there are lots and lots of patterns that do mostly obvious stuff and no standardized vocabulary of design patterns, Still there are some principles:
+
+* again: always start your discussion with a primitive solution that consists of a series of SQL like tables, then try to scale it up.
+* messages should be indempotent (that means stateless as far as possible). State is bad because handling connections is complicated, and load balancers need to do sticky sessions (route related requests to the same machine), etc.
+* scaling: tricks for horizontal scaling like [sharding](https://en.wikipedia.org/wiki/Shard_(database_architecture))
+* don't forget to put in load balancers for high availability
+* when in doubt: delegate to another proxy (lots of small services win).
+* [eventual consistency rules](https://en.wikipedia.org/wiki/Eventual_consistency)
+* wherever you can put in a redis in memory cache that is fed by multiple related data sources.
+ 
+  
 --------
 
 Some important papers that can help to understand the thinking behind these large systems (hint: it helps a lot to understand some basic infrastructure components, as these are providing the terms and definition used later on, also it explains the context of things and operations)
@@ -550,8 +555,7 @@ write of new data is easy, overwrite of existing data needs to check the checksu
 
 
 
-
-=================
+---------------
 
 ## Map-reduce
 
@@ -598,7 +602,7 @@ Data structures
 
 * reader: standard modes for interpreting input: key/value pairs, treat each line as input record, etc. cam specify additional optional component for customized parsing of input file.
 
-======
+-------
 
 ## TAO: Facebook distributed data store for social graph 
 https://www.usenix.org/system/files/conference/atc13/atc13-bronson.pdf
