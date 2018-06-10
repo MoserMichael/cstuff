@@ -255,28 +255,31 @@ Possible things to talk about: search, push notifications, advertising.
 
 Me: How to design a DRM system.
 
+Features of DRM system:
+
+* Main principle: the system specifies how media items can be used and who can use them.
+* Examples: DRM service for books (can print, can copy, can display); distributed book can only be viewed on a specific book viewer device.
+* access restriction is usually achieved by encrypting the content, so that it cant be used without decryption key, where only the specific customer device has the means to decrypt the content.
+
 Entities:
+
 * there are media files M1....Mn that are being sold, more exactly access to the file is being sold.
 * an owner of a device Di can purchase access rights for a media item Mj.
 * only the device of the client can access the purchased media item	
   There are devices d1... dn.
 * the purchased media item also defines usage scenaroi for the item (for example ebook has verbs like 'can print', 'can copy', etc).
-* there is a content server that prepares a media items upon purchase so that it can only be viewed per device.
-
-Features of DRM system:
-
-* Main principle: the system specifies how media items can be used and who can use them.
-* Examples: DRM service for books (can print, can copy, can display); distributed book can only be viewed on a specific book viewer device.
-* access restriction is usually achieved by encrypting the content, so that it cant be used without decryption key, where only the specific
-customer device has the means to decrypt the content.
+* These ends are achieved by passing a Ticket - an encrypted entity with the definition of rights + symetric key for decryption of media file; this Ticket is tied to the identity of the client device (also by means of encryption)
+ 
+* there is a content server that 
+** creates Ticket object (per sale)
+** prepares media files so that they can be used with a sale 
 
 
-Specifics:
+Processes
 
 there are media files M1....Mn
 
-each media file is sold multiple times, must be encrypted for each sale - therefore media item must be 'prepared' : a symetric encryption key k1
-is generated per media file. all this data is stored on the DRM server.
+each media file is sold multiple times, must be encrypted, but don't want to do that for for each sale - therefore media item must be 'prepared' : a symetric encryption key k1 is generated per media file and the media file is encrypted with that key all this data is stored on the DRM server.
 
 E(k1)(M1) - the media file content will be distributed in encrypted form. - also stored on the DRM server.
 
