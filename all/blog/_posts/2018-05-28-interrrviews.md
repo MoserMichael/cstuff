@@ -307,6 +307,10 @@ The server: once a media item is purchased for device d1 - the server looks up t
 ### Me: design an NoSQL like cache 
 
 * hosts in memory key to value maps / does the server host multiple instances of hash objects? (most likely)
+* Types of maps
+    * hash map! problem: time to rebuild map when it is filling up (must specify capacity & load factor)
+    * Btree index? 
+    * Balanced search tree?
 * multiple map instances (schema or dynamic create request?)
     * createMap : (numBuckets, kindOfMap) -> tableID # for create request
     * findMap : tableName -> tableID # for schema
