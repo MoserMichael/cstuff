@@ -271,8 +271,8 @@ Entities:
 * These ends are achieved by passing a Ticket - an encrypted entity with the definition of rights + symetric key for decryption of media file; this Ticket is tied to the identity of the client device (also by means of encryption)
  
 * there is a content server that 
-** creates Ticket object (per sale)
-** prepares media files so that they can be used with a sale 
+    * creates Ticket object (per sale)
+    * prepares media files so that they can be used with a sale 
 
 
 Processes
@@ -308,18 +308,18 @@ The server: once a media item is purchased for device d1 - the server looks up t
 
 * hosts in memory key to value maps / does the server host multiple instances of hash objects? (most likely)
 * multiple map instances (schema or dynamic create request?)
-** createMap : (numBuckets, kindOfMap) -> tableID # for create request
-** findMap : tableName -> tableID # for schema
+    * createMap : (numBuckets, kindOfMap) -> tableID # for create request
+    * findMap : tableName -> tableID # for schema
 
 * data model: a map
-** lookup: tableId, key -> Maybe value 
-** insert: (tableId, key, value) -> Bool
-** atomictestAndSet: (tableId, key, oldValue, newValue) -> Bool
+    * lookup: tableId, key -> Maybe value 
+    * insert: (tableId, key, value) -> Bool
+    * atomictestAndSet: (tableId, key, oldValue, newValue) -> Bool
 
 * types of key: (string? other basic types?)
 * types of value upon insert: (string?, sets?, list?, reference to other map instances?)
-** type enforcement? (in this case type must be specified in type definition of table)
-** can we modify value in place? (while entry is within a map?)
+    * type enforcement? (in this case type must be specified in type definition of table)
+    * can we modify value in place? (while entry is within a map?)
 
 Questions on data model:
 * map: multipmap? single key map?
@@ -647,10 +647,10 @@ Assoc.: (id1, atype, id2) -> (time, (key  value)?)
 * creation of new object/find & delete object by id 
 * creation of link (also provides automatic creation/update/deletion of an inverse relationship instance - if inverse relationship is asked for/defined in schema)
 * no atomic compare and set (they do eventual consistency)
-
-** assoc-add(id1, atype, id2, time, (k->v)*)
-** assoc-delete(id1, atype, id2)
-** assoc-change-type(id1, atype, id2, newtype)
+* manipulating associations
+    * assoc-add(id1, atype, id2, time, (k->v)*)
+    * assoc-delete(id1, atype, id2)
+    * assoc-change-type(id1, atype, id2, newtype)
 
 ### Query interface
 
