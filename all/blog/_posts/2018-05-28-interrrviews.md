@@ -382,7 +382,7 @@ Server model:
    
 --------
 
-Some important papers that can help to understand the thinking behind these large systems (hint: it helps a lot to understand some basic infrastructure components, as these are providing the basic concepts)
+Some important papers that can help to understand the thinking behind these large systems (hint: it helps a lot to understand some basic infrastructure components, as these are providing the terms and definition used later on, also it explains the context of things and operations)
 
 ## Google file system 
 
