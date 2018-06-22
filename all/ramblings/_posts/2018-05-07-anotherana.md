@@ -14,7 +14,8 @@ Reviewing “Against the Grain - a deep history of the earliest states” by Jam
 
 What is the nature of a state and where did it come from? Is it primarily a benevolent framework that
 enables civilization or is it a mechanism of suppression? I guess you will get different answers
-depending on whom you ask.
+depending on whom you ask. Most Intellectuals are the heirs of the ancient scribes - for them the state is the source of order and personal income and therefore a blessing; however, there are those who do not concur, for Intellectuals are supposed to have their own independent opinion!
+
 This book tries to explain the state by looking at it from the position of the outsider - the nomad.
 Interactions between nomads and the state are quite complex (the author states that both the elites
 within a state and nomads are benefiting from the surpluses produced by agriculture - one by
