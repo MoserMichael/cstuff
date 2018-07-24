@@ -125,8 +125,9 @@ This table lists some example programs, they make up the test suite of the proje
 | [18-sort.p](/cstuff/docs/html/pooh/example/18-sort.p.html)                                             | use standard library sort procedure - with callback for comparison                                                     |
 | [18-sort-anonymous.p](/cstuff/docs/html/pooh/example/18-sort-anonymous.p.html)                         | use standard library sort procedure - with anonymous function as callback for comparison                               |
 
-</p>
+
 The next table lists some libraries that can be included - all written in pooh
+
 
 |                                                                         |                                                        |
 |-------------------------------------------------------------------------|--------------------------------------------------------|
