@@ -89,7 +89,7 @@ Examines the history of women movement
     - low level of skill specialization - so that people become interchangeable (no one may be indispensable (why?)
 - conflicts between multiple informal groups remain hidden (because the group do not want to go public - and are unable to acknowledge their own existence; the ideal is after all structurelessness)
 
-- principles for 'doing it right'
+- principles for 'doing it right' (all copied from the text "
 
     - Delegation of specific authority to specific individuals for specific tasks by democratic procedures. Letting people assume jobs or tasks only by default means they are not dependably done. If people are selected to do a task, preferably after expressing an interest or willingness to do it, they have made a commitment which cannot so easily be ignored.
     - Requiring all those to whom authority has been delegated to be responsible to those who selected them. This is how the group has control over people in positions of authority. Individuals may exercise power, but it is the group that has ultimate say over how the power is exercised.
@@ -98,4 +98,4 @@ Examines the history of women movement
     - Allocation of tasks along rational criteria. Selecting someone for a position because they are liked by the group or giving them hard work because they are disliked serves neither the group nor the person in the long run. Ability, interest, and responsibility have got to be the major concerns in such selection. People should be given an opportunity to learn skills they do not have, but this is best done through some sort of "apprenticeship" program rather than the "sink or swim" method. Having a responsibility one can't handle well is demoralizing. Conversely, being blacklisted from doing what one can do well does not encourage one to develop one's skills. Women have been punished for being competent throughout most of human history; the movement does not need to repeat this process.
     - Diffusion of information to everyone as frequently as possible. Information is power. Access to information enhances one's power. When an informal network spreads new ideas and information among themselves outside the group, they are already engaged in the process of forming an opinion -- without the group participating. The more one knows about how things work and what is happening, the more politically effective one can be.
     - Equal access to resources needed by the group. This is not always perfectly possible, but should be striven for. A member who maintains a monopoly over a needed resource (like a printing press owned by a husband, or a darkroom) can unduly influence the use of that resource. Skills and information are also resources. Members' skills can be equitably available only when members are willing to teach what they know to others."
-
+    "
