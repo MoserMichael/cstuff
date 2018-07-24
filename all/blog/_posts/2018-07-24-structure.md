@@ -1,5 +1,18 @@
+---
+layout: post
+title: Informal structures
 
-Informal structures
+---
+
+{{ page.title }}
+----------------
+
+<p class="publish_date">
+24 July 2018
+
+</p> 
+
+## Informal structures
 
 A very interesting discussion of structure-less organizations ( [here](https://news.ycombinator.com/item?id=17584563) ). Some software companies (noteable examples - valve and facebook - to some extent) try to break with the traditional forms of hierarchical organization structures and try to go with a more flat/self-organizing system. However this is quite tricky: the problem is that in the absence of formal hierarchies there will be informal ones.
 
