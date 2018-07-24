@@ -46,7 +46,7 @@ From the position of an individual: given all this information, I think the cruc
  
 -------
 
-notes om [ THE TYRANNY of STRUCTURELESSNESS ] (https://www.jofreeman.com/joreen/tyranny.htm)
+notes om [ THE TYRANNY of STRUCTURELESSNESS ](https://www.jofreeman.com/joreen/tyranny.htm)
 
 by Jo Freeman aka Joreen 
 
