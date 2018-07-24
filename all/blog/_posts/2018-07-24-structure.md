@@ -12,8 +12,6 @@ title: Informal structures
 
 </p> 
 
-## Informal structures
-
 A very interesting discussion of structure-less organizations ( [here](https://news.ycombinator.com/item?id=17584563) ). Some software companies (noteable examples - valve and facebook - to some extent) try to break with the traditional forms of hierarchical organization structures and try to go with a more flat/self-organizing system. However this is quite tricky: the problem is that in the absence of formal hierarchies there will be informal ones.
 
 The politics of weakly structured/structure-less organizations can be quite complex, Jo Freemain examines the experience of the feminist movement to this respect and explains the difficulties [here](https://www.jofreeman.com/joreen/tyranny.htm)
