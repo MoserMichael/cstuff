@@ -70,11 +70,10 @@ sc++14 decltype can be used with auto
 1) (template is reference (or point))
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T>
     void f(const T  &arg)
-    </code>
-
+    </pre></code>
 </blockquote>
 -   can call f with references and value types (ignores if it is reference)
 -   if called with reference T is deduced to be type on the left of &.
@@ -82,11 +81,10 @@ sc++14 decltype can be used with auto
 2) (template type is universal reference)
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T>
     void f(const T  && arg)
-    </code>
-
+    </pre></code>
 </blockquote>
 -   called with value type (int); T is inferred to be int &
 -   called with rvalue (like constant literal) ; T is inferred to be int &&
@@ -94,11 +92,10 @@ sc++14 decltype can be used with auto
 3) (template type is value type)
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T>
     void f(const T   arg)
-    </code>
-
+    </pre></code>
 </blockquote>
 -   copy by value; if pointer then the pointer value is copied
 -   function pointers turn to signature of function (not suprising)
@@ -107,7 +104,7 @@ sc++14 decltype can be used with auto
 But:
 
 <blockquote>
-    <code>
+    <code><pre>
     // return size of array as a compile time constant
 
     template<typename T, std::size_t N>
@@ -119,13 +116,13 @@ But:
     int a[10];
 
     arraySize(a); // returns 10 !!!
-    </code>
+    </pre></code>
 
 </blockquote>
 (Item2) different kinds of auto type deduction
 
 <blockquote>
-    <code>
+    <code><pre>
     auto x = 27;         // x is int
 
 
@@ -144,13 +141,13 @@ But:
     auto arr = name ;    // arr is const char *
     auto &arr2 = name;   // arr is const char (&) [13]; (arraySize function trick in item#1)
 
-    </code>
+    </pre></code>
 
 </blockquote>
 auto type deduction != template type deduction) (special kind for :Universal initializer: (why?))
 
 <blockquote>
-    <code>
+    <code><pre>
     auto x = { 1 };
     // x is a std::initializer_list<int> and has an instance with value 27
 
@@ -166,9 +163,9 @@ auto type deduction != template type deduction) (special kind for :Universal ini
 
     //C++ function type can create generic lambda expression !!!!
     //(but you can't instantiate with initializer list (?!))
-    </code>
-
+    </pre></code>
 </blockquote>
+
 (Item3): decltype
 
 decltype returns type of argument expression.
@@ -179,10 +176,10 @@ C++11: decltype can be used in trailing return type specifications:
 allows to specify return type as returned type of decltype !!!
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename Container, typename index>
     auto foo(Container &c, Index &n) -> decltype(c[i])
-    </code>
+    </pre></code>
 
 </blockquote>
 !!!! that's only way to have return type conditional on parameter types (as parameter types must have already been parsed when return type is set ! !!!
@@ -192,25 +189,25 @@ again, notype deduction for :universal initializers: {1, 2, 3}
 C++14: the same trick can be done more concise:
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename Container, typename index>
     decltype(auto) foo(Container &c, Index &n)
     {
         return c[n];
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 So what is the return value?
 
 <blockquote>
-    <code>
+    <code><pre>
     Widget a;
     const Widget &b = a;
 
     auto rr = b;           // rr is Widget &
     decltype(auto) r = b;  // r is const Widget &  - same as the right hand side.
-    </code>
+    </pre></code>
 
 </blockquote>
 Therefore the return value of foo is const reference to element of c.
@@ -218,32 +215,32 @@ Therefore the return value of foo is const reference to element of c.
 What if you want foo to receive r-value references (to temporary objects?); reference to element here will not outlive the argument; so the return value must be a copy of the contained element.
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename Container, typename index>
     decltype(auto) foo(Container &c, Index &n)
     {
        return std::forward<Container>(c) [n]; // don't we love C++ ?
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 in C++11 this looks like
 
 <blockquote>
-    <code>
+    <code><pre>
 
     template<typename Container, typename index>
     auto foo(Container &c, Index &n) -> decltype(std::forward<Container>(c) [i])
     {
         return c[i];
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 watch this in C++14 !!!!
 
 <blockquote>
-    <code>
+    <code><pre>
 
     decltype(auto) f1()  // returns an int
     {
@@ -258,7 +255,7 @@ watch this in C++14 !!!!
        int x = 2;
        return (x);       // watch the parenthesis !!!!
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 3) how to know what has been deduced
@@ -300,7 +297,7 @@ auto v4 = {-1}; // same here
 But! if class Widget has this constructor
 
 <blockquote>
-    <code>
+    <code><pre>
     class Widget
     {
     public: Widget(std::initializer_list<bool> il)
@@ -309,13 +306,13 @@ But! if class Widget has this constructor
 
     Widget w{ 3, 4.0 };
     // Now the constructor with init list is called; AND IT DOES TYPE CONVERSION !@#@!
-    </code>
+    </pre></code>
 
 </blockquote>
 It gets worse:
 
 <blockquote>
-    <code>
+    <code><pre>
 
     class Widget {
     public:
@@ -341,7 +338,7 @@ It gets worse:
 
     // same here
     Widget w5({});
-    </code>
+    </pre></code>
 
 </blockquote>
 ! principle: if initializer list constr. is there then it is preferred one; (even if implicit type conversion is required) !
@@ -354,13 +351,13 @@ Also with {} copy const and move constr. are called when they are most appropria
 - nullptr is not integral type, but it can convert to pointer types;
 
 <blockquote>
-    <code>
+    <code><pre>
     void foo(int);      // #fun1
     void foo(void *a);  // #fun2
 
     foo(NULL); // NULL is 0; therfore calls #fun1
     foo(nullptr) // does not convert to int; so calls #fun2
-    </code>
+    </pre></code>
 
 </blockquote>
 -   nullptr helps to read code when variable is declared as auto; with nullptr you know that's supposed to be a pointer.
@@ -378,10 +375,10 @@ using IntVector = std::vector<int>;
 Now with using you can also do templated declarations
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T>
     using MyVec = std::vector<T, MyAlloc<T>>
-    </code>
+    </pre></code>
 
 </blockquote>
 then can use MyVec<int> instead of std::vector<int> ; (good for nested templates, but oh my)
@@ -389,7 +386,7 @@ then can use MyVec<int> instead of std::vector<int> ; (good for nested templates
 - and for template writers it helps to get rid of typename:
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T>
     class MyHack
     {
@@ -399,13 +396,13 @@ then can use MyVec<int> instead of std::vector<int> ; (good for nested templates
       // if you want to use the template this way you have to use typename.
       Vect imp_;
     };
-    </code>
+    </pre></code>
 
 </blockquote>
 Now using can help you to get rid of this !!!
 
 <blockquote>
-    <code>
+    <code><pre>
 
     template<typename T>
     using MyVec = std::vector<T, MyAlloc<T>>
@@ -417,7 +414,7 @@ Now using can help you to get rid of this !!!
 
        MyVec<T> imp_; // works without typename
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 10) scoped enums
@@ -425,7 +422,7 @@ Now using can help you to get rid of this !!!
 enums in c++98
 
 <blockquote>
-    <code>
+    <code><pre>
     enum Color { red, green };
 
     // values visible in the same scope as enum declaration ('namespace pollution').
@@ -448,7 +445,7 @@ enums in c++98
     // C++11 also alows to change the representation type explicitly. (after : )
     enum class Color : std::uint32_t;
 
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 11) functions marked as deleted (prevent declared function from being called)
@@ -463,14 +460,14 @@ basic\_ios( const basic\_ios & ) = delete; // c** way to mark the function as no
 &gt; Want to prevent some template instantiation for some specific types from happening? use deleted
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T>
     void doIt(T *);
 
     //but not for char *
     template<>
     void doIt(char *) = deleted.
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 12) override qualifier.
@@ -486,7 +483,7 @@ C++11: adds requirement that 'reference qualifiers are the same' (OMG) (can say 
 Now a small difference in type specs will create new overloaded function instead of doing virtual function overriding.
 
 <blockquote>
-    <code>
+    <code><pre>
     class Base
     {
       virtual foo() override;
@@ -505,7 +502,7 @@ Now a small difference in type specs will create new overloaded function instead
        void foo() &; // only callable if this is lvalue
        void foo() &&; // only callable if this is rvalue (OMG)
 
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 13) prefer const iterators
@@ -517,14 +514,14 @@ For maximum generality (for example in templates) use std::cbegin(container) - f
 this one would add cbegin for C++11 too:
 
 <blockquote>
-    <code>
+    <code><pre>
     template <class C>
     auto cbegin(const C& container) -> decltype(std::begin(container))
     {
        /// works because const C& returns const iterator !!! (used to work in c++98)
        return std::begin(container);
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 14) constexpr - magic during compilation
@@ -532,13 +529,13 @@ this one would add cbegin for C++11 too:
 - constexpr specifies value known during compilation (so that it can be placed into read only memory)
 
 <blockquote>
-    <code>
+    <code><pre>
     constexpr auto arraySize = 10;
     // arraySize is constant known during compilation
 
     std::array<int, arraySize> data;
     // the size of an array must be known during compilation, so constexpr is fine
-    </code>
+    </pre></code>
 
 </blockquote>
 constexpr int pow(int base, int exp); // functions with contexpr specifier: if called with values known during compilations (constexpr) these functions will create constexpr values !!! (that is the function is invoked during compilation and not during runtime) !!!
@@ -546,12 +543,12 @@ constexpr int pow(int base, int exp); // functions with contexpr specifier: if c
 in C++11 constexpr function must consist of one return statement only; but we can use recursion.
 
 <blockquote>
-    <code>
+    <code><pre>
     constexpr int pow(int base, int exp)
     {
        return exp<=0 ? 1 : base * pow(base, exp-1);
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 in C++14 there are less restrictions on implementation of const expression, so they look like normal functions (as long as no non constexpr data is accessed)
@@ -559,14 +556,14 @@ in C++14 there are less restrictions on implementation of const expression, so t
 Even classes can look like that!!
 
 <blockquote>
-    <code>
+    <code><pre>
     class Point
     {
     public:
        constexpr Point(intx, y) : x_(x), y_(y) {}
        constexpr int getX() { return X_; }
        constexpr int getX() { return y_; }
-    </code>
+    </pre></code>
 
 </blockquote>
 And so that
@@ -580,7 +577,7 @@ However setter functions would break constexpr magic..
 In C++98 you can have const member functions that modify state of an object;: example
 
 <blockquote>
-    <code>
+    <code><pre>
     class Polynomial
     {
       const float getRoots() const
@@ -595,18 +592,18 @@ In C++98 you can have const member functions that modify state of an object;: ex
       mutable bool cacheValid { false };
       mutable bool cachedValue;
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 this item tells you to properly lock access to mutable variables (if accessed from multiple threads)
 C++11 std library adds
 
 <blockquote>
-    <code>
+    <code><pre>
     std::mutex a;
     std::lock_guard<std::mutex> guard(m);
     //automatic lock in constructor, unlock in destructor.
-    </code>
+    </pre></code>
 
 </blockquote>
 std::atomic<int> cnt; // for atomic, non locking primitives. (has overloaded **,--, +=(int) and int operator())
@@ -627,7 +624,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
 (Item 17) how to do setter methods?
 
 <blockquote>
-    <code>
+    <code><pre>
 
     class Widget {
     public:
@@ -662,7 +659,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
       // (and loose derived stuff)
 
       void setName(std::string newName) { name = std::move(newName); }
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 18) emplace\_insert in stl collections
@@ -671,7 +668,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
 -   problem remains: argument type does not match the parameter type of a function.
 
 <blockquote>
-    <code>
+    <code><pre>
     std::list<string> lst;
     lst.push_back("aaaa"); // "aaa" does not match std::string; type conversion creates a temporary instance.
 
@@ -682,7 +679,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
 
     lst.emplace_front("bbb"); // the same treatment as push_front;
     lst.emplace(lst.begin(),"ccc"); // same as insert
-    </code>
+    </pre></code>
 
 </blockquote>
 any problems?
@@ -713,7 +710,7 @@ So default move op is created
 Still: possible to specify that a default implementation should be created
 
 <blockquote>
-    <code>
+    <code><pre>
     class Widget
     {
       ~Widget();
@@ -723,13 +720,13 @@ Still: possible to specify that a default implementation should be created
 
       // and move assignment despite specified destructor
       Widget &operator=(Widget &&rhs) = default;
-    </code>
+    </pre></code>
 
 </blockquote>
 Catch22: a templated constructor would not prevent the compiler to put in a default move constructor/assignment op !!!
 
 <blockquote>
-    <code>
+    <code><pre>
     class Widget {
       template<typename T> // copy-construct Widget
       Widget(const T& rhs); // from anything
@@ -737,7 +734,7 @@ Catch22: a templated constructor would not prevent the compiler to put in a defa
       template<typename T> // copy-assign Widget
       Widget& operator=(const T& rhs);
 
-    </code>
+    </pre></code>
 
 </blockquote>
 .h3 smart pointers
@@ -757,22 +754,22 @@ in C+*11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
 -   size of smart pointer with this deleter adds a second pointer data member (does delete to dispose of Foo when smart pointer obj. is destroyed)
 
 <blockquote>
-    <code>
+    <code><pre>
        void deleteF(Foo *foo) { delete foo; printf("deleted foo %p\n", foo); }
 
        std::unique<Foo, decltype(deleteF)> ptr( new Foo(), deleteF );
-    </code>
+    </pre></code>
 
 </blockquote>
 - but std::unique\_ptr with deleteras lambdas without data (withoug captured variables) is also of sizeof(void\*) !!!!
 
 <blockquote>
-    <code>
+    <code><pre>
        auto delF =[] (Foo *foo) { delete foo; printf("deleted foo\n",foo); }
 
         std::unique<foo, decltype(delF)> ptr( new Foo, delf );
 
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 21) std::shared\_ptr - smart pointer with reference counting (aka shared resource management)
@@ -790,7 +787,7 @@ in C+*11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
 -   if you don't like this rule:
 
 <blockquote>
-    <code>
+    <code><pre>
 
         // the base class always has pointer to the controll block;
         // so it can be asked repeatedly to create smart ptr instance using the same controll block
@@ -804,7 +801,7 @@ in C+*11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
         // both ptr1 and ptr2 will point to the same control block; so ptr is deleted only once.
         auto ptr1 = ptr->shard_from_this();
         auto ptr2 = ptr->shared_from_this();
-    </code>
+    </pre></code>
 
 </blockquote>
 - you can't take ownership away from shared from shared\_ptr (even if ref\_count is 1); no way to do that.
@@ -831,13 +828,13 @@ C++11: add std::make\_shared
 C+*14: adds std::make\_unique (oversight that it was not in C11); so it is easy to add for C*+11
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T, typename... Args>
     std::unique_ptr<T> make_unique(Args&&... args)
     {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 -   it is shorter to type
@@ -868,7 +865,7 @@ this problem is so;ved by usage of std::make\_shared<Foo() instead
 
 <blockquote>
 
-    <code>
+    <code><pre>
       std::string another_string; // global variable.
 
       void foo(const std::string arg )
@@ -877,13 +874,13 @@ this problem is so;ved by usage of std::make\_shared<Foo() instead
         // arg is cast to const std::string && ; now string has operator= that receives string && not const string &&
         // therefore assignment results in a full copy and not in a move !!!!
         // never use const argument when expecting to move them !!!
-    </code>
+    </pre></code>
 
 </blockquote>
 - std::forward is a conditional cast to rvalue;
 
 <blockquote>
-    <code>
+    <code><pre>
       template<typename T>
       void forward(T &&param)
       {
@@ -901,7 +898,7 @@ this problem is so;ved by usage of std::make\_shared<Foo() instead
       // called with rvalue: std::forward casts to rvalue only
       // if forward was called with rvalue !!!!
       // (this is done by clever type deduction and is explained later)
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 26) universal references and rvalue references
@@ -922,7 +919,7 @@ auto &&val = value; //val is also a universal reference.
 However this example is an rvalue reference
 
 <blockquote>
-    <code>
+    <code><pre>
     template<T>
     void foo(std::vector<T> && arg ); // rvalue reference; as type must be vector.
 
@@ -935,7 +932,7 @@ However this example is an rvalue reference
     {
         void add(T && arg );
         // also rvalue reference: this is add of a specific template instance !
-    </code>
+    </pre></code>
 
 </blockquote>
 so universal reference arises when type deduction to unspecified type T in member template or auto. !!! (very specific case)
@@ -951,7 +948,7 @@ So it is clearer to do std::move on rvalue references and std::forward on univer
 example setter:
 
 <blockquote>
-    <code>
+    <code><pre>
 
     class Foo
     {
@@ -959,7 +956,7 @@ example setter:
       void setName(T &&newName) { name = std::move(newName); }
       std::sting name;
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 here is a bug:
@@ -969,7 +966,7 @@ Foo foo;
 foo.setName(n); // after the call n has been moved and its value is empty !!!!!! the lvalue arg should have been copied; std::forward can take care of it.
 
 <blockquote>
-    <code>
+    <code><pre>
     class Foo
     {
       template<typename T>
@@ -977,7 +974,7 @@ foo.setName(n); // after the call n has been moved and its value is empty !!!!!!
       std::string name;
     }
 
-    </code>
+    </pre></code>
 
 </blockquote>
 ?when is it advisable to move into the return value?
@@ -985,7 +982,7 @@ foo.setName(n); // after the call n has been moved and its value is empty !!!!!!
 - when not: if temporary value is returned AND it is the same value as return value then compiler already allocates the temporary in place of the return value.
 
 <blockquote>
-    <code>
+    <code><pre>
     Foo makeFoo()
     {
        Foo a;
@@ -999,7 +996,7 @@ foo.setName(n); // after the call n has been moved and its value is empty !!!!!!
       lhs += rhs;
       return std::forward<Matrix>(lhs); // here move makes sense (no RVO takes place); lhs is argument.
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 28) when to avoid universal references
@@ -1007,7 +1004,7 @@ foo.setName(n); // after the call n has been moved and its value is empty !!!!!!
 there are problems if the sane function is overloaded on universal ref and different argument.
 
 <blockquote>
-    <code>
+    <code><pre>
 
     template<typename T>
     void logAndAdd(T&& name)
@@ -1022,7 +1019,7 @@ there are problems if the sane function is overloaded on universal ref and diffe
         log(now, "logAndAdd");
         names.emplace(nameFromIdx(idx)); // nameFromIdx returns std::string
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 Now calling logAndIndex with int is ok; but with ushort argument it will go to the first version (universal ref matches better - without type conversion from uint to int)
@@ -1031,7 +1028,7 @@ Now calling logAndIndex with int is ok; but with ushort argument it will go to t
 it does not help to add a class that does conversion
 
 <blockquote>
-    <code>
+    <code><pre>
     class Person {
     public:
        template<typename T> // this does not prevent the compiler from adding default move ctor !!!
@@ -1039,7 +1036,7 @@ it does not help to add a class that does conversion
 
        explicit Person(int idx);
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 29) how to fix the previous problem.
@@ -1049,18 +1046,18 @@ it does not help to add a class that does conversion
 - avoid universal ref. do only const references (not quite as efficient)
 
 <blockquote>
-    <code>
+    <code><pre>
        template<typename T>
        void logAndAdd(const T &ref);;
 
        void logAndAdd(int idx);
-    </code>
+    </pre></code>
 
 </blockquote>
 - tag dispatch (aka. total brainfuck)
 
 <blockquote>
-    <code>
+    <code><pre>
 
     template<typename T>
     void logAndAdd(T&& name)
@@ -1081,7 +1078,7 @@ it does not help to add a class that does conversion
     {
        logAndAdd(anyFromIdx(idx)); // up name and
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 The same shit can be done to constructors, but what the fuck ??
@@ -1091,10 +1088,10 @@ The same shit can be done to constructors, but what the fuck ??
 - you can't take reference of reference;
 
 <blockquote>
-    <code>
+    <code><pre>
       int x;
       auto & & R = x; // will not compile.
-    </code>
+    </pre></code>
 
 </blockquote>
 - but references to references can appear in type deduction
@@ -1114,14 +1111,14 @@ void func(Foo & && param); // reference to reference
 - how does std::forward look like?
 
 <blockquote>
-    <code>
+    <code><pre>
 
     template<typename T>
     T&& forward(T&& param)
     {
         return static_cast<T&&>(param);
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 How does this work?
@@ -1129,7 +1126,7 @@ How does this work?
 if T is Foo & (l-value ref)
 
 <blockquote>
-    <code>
+    <code><pre>
     Foo& && forward(Foo& &&param)
     {
         return static_cast<Foo& &&>(param);
@@ -1141,13 +1138,13 @@ if T is Foo & (l-value ref)
     {
         return static_cast<Foo&>(param);
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 if T is Foo && (r-value ref)
 
 <blockquote>
-    <code>
+    <code><pre>
     Foo&& && forward(Foo&& &&param)
     {
         return static_cast<Foo&& &&>(param);
@@ -1159,7 +1156,7 @@ if T is Foo && (r-value ref)
     {
         return static_cast<Foo&&>(param);
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 &lt;&lt;&lt;<blablabla>&gt;&gt;&gt;&gt;&gt;&gt;
@@ -1181,25 +1178,25 @@ some strings do 'small string optimization' short strings are kept in the string
 for one argument:
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename T>
     void fwd(T && arg)  // uses universal ref; only here is origin type characteristics (const, ref type) of parameters deducible to forward
     {
         f(std::forward<T> (arg) ); // f is now called with calling type (T & forwarded to T &; T&& forwarded to T &&, etc)
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 for many arguments.
 
 <blockquote>
-    <code>
+    <code><pre>
     template<typename ... T > // ... - ellipsis (variadic template = repeat the same for several types)
     void fwd(T &&arg... arg )
     {
         f(std::forward<T>(arg) ... );
     }
-    </code>
+    </pre></code>
 
 </blockquote>
 forwarding fails if fwd(<expression>) is not compatible with f(<expression>)
@@ -1238,11 +1235,11 @@ forwarding of print to fwd creates ambiguous situation -&gt; fails. (explicit ca
 - one line functions can make stl algorithms usable
 
 <blockquote>
-    <code>
+    <code><pre>
        std::find_if( v.begin(), v.end(),
         [] (auto val) { return 0 < val && val < 10; } // this is the lambda expression.
          );
-    </code>
+    </pre></code>
 
 </blockquote>
 - closure class := each lambda expression generates a class that holds the lambda expression as member function. Note: captured variables are data members of the closure class.
@@ -1251,12 +1248,12 @@ forwarding of print to fwd creates ambiguous situation -&gt; fails. (explicit ca
 can copy closures (aka instances of closure class)
 
 <blockquote>
-    <code>
+    <code><pre>
 
        int x = 42;
        auto c1 = [x] (int y) { return x + y; } // c1 is closure instance ( 'captures' the value of x as data member)
 
-    </code>
+    </pre></code>
 
 </blockquote>
 (item 33) default capture mode is evil.
@@ -1269,7 +1266,7 @@ what to do with non local variables? I found this item very confusing, so i wrot
 Different capture modes:
 
 <blockquote>
-    <code>
+    <code><pre>
 
     int aaa;
     auto e = [aaa] (int c) { return c * val_; };
@@ -1282,7 +1279,7 @@ Different capture modes:
     auto e = [&] (int c) { return c * val_; };
     // copy by ref; can access data member of enclosing class + locals in enclosing scope.
 
-    </code>
+    </pre></code>
 
 </blockquote>
 ! static variables can be used inside lambda's but these are not 'captured' (not copied by value or reference into closure) !
@@ -1290,8 +1287,7 @@ Different capture modes:
 ------------------------------------------------------------------------
 
 <blockquote>
-    <code>
-    <pre><code>
+    <code><pre>>
     #include <stdio.h>
 
     class Foo
@@ -1356,11 +1352,8 @@ Different capture modes:
         auto d = [&] (int c) { printf("v=%p\n", &vall); return c * vall; };
         printf("res=%d\n", d( arg ) );
       }
-    </code>
+    </pre></code>
 
-</code>
-
-</pre>
 </blockquote>
 (item 34) init capture in C++14
 
@@ -1368,19 +1361,19 @@ Different capture modes:
 -   C++14 has more flexible mechanism for specifying capture: 'init captures'
 
 <blockquote>
-    <code>
+    <code><pre>
 
     auto pw = std::make_unique<Foo>();
 
     auto func = [ pw = std::move(pw) ]  // init capture has expression to initalize captured variables (here move unique_ptr into capture)
             { return pw->foo(); }x
-    </code>
+    </pre></code>
 
 </blockquote>
 - trick to do emulate this in C++11
 
 <blockquote>
-    <code>
+    <code><pre>
 
     auto pw = std::make_unique<Foo>();
 
@@ -1391,7 +1384,7 @@ Different capture modes:
 
             std::move(data)
         ) ;
-    </code>
+    </pre></code>
 
 </blockquote>
 -   std::bind returns function object, first part is the 'callable' (lambda); second part argument to be evaluated on call.
