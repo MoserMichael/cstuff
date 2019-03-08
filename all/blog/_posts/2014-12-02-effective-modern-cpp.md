@@ -61,7 +61,7 @@ my notes of Scott Meyers: 'Effective Modern C**' (Preview)
 
 different kinds of type deduction in C**:
 
-c++98 deduction for template&lt;&gt; member functions (like template<typename T> void f(const T &arg)
+c++98 deduction for template&lt;&gt; member functions (like template&lt;typename T&gt; void f(const T &arg)
 c++11 auto and decltypeg
 sc++14 decltype can be used with auto
 
@@ -71,7 +71,7 @@ sc++14 decltype can be used with auto
 
 <blockquote>
     <code><pre>
-    template<typename T>
+    template&lt;typename T&gt;
     void f(const T  &arg)
     </pre></code>
 </blockquote>
@@ -82,7 +82,7 @@ sc++14 decltype can be used with auto
 
 <blockquote>
     <code><pre>
-    template<typename T>
+    template&lt;typename T&gt;
     void f(const T  && arg)
     </pre></code>
 </blockquote>
@@ -93,7 +93,7 @@ sc++14 decltype can be used with auto
 
 <blockquote>
     <code><pre>
-    template<typename T>
+    template&lt;typename T&gt;
     void f(const T   arg)
     </pre></code>
 </blockquote>
@@ -107,7 +107,7 @@ But:
     <code><pre>
     // return size of array as a compile time constant
 
-    template<typename T, std::size_t N>
+    template&lt;typename T, std::size_t N&gt;
     constexpr std::size_t arraySize(T (&)[N])
     {
         return N;
@@ -127,9 +127,9 @@ But:
 
 
     const auto cx = x;
-    // cx is const int  (same deduction as in: template<typename t> void f(T param))
+    // cx is const int  (same deduction as in: template&lt;typename t&gt; void f(T param))
     const auto &rx = x;
-    // rx is const int (same deduction as in: template<typename t> void f(const T &param))
+    // rx is const int (same deduction as in: template&lt;typename t&gt; void f(const T &param))
 
     auto &&u1 = x;       // u1 is int &
     auto &&u2 = cx;      // u2 is const int &
@@ -177,7 +177,7 @@ allows to specify return type as returned type of decltype !!!
 
 <blockquote>
     <code><pre>
-    template<typename Container, typename index>
+    template&lt;typename Container, typename index&gt;
     auto foo(Container &c, Index &n) -> decltype(c[i])
     </pre></code>
 
@@ -190,7 +190,7 @@ C++14: the same trick can be done more concise:
 
 <blockquote>
     <code><pre>
-    template<typename Container, typename index>
+    template&lt;typename Container, typename index&gt;
     decltype(auto) foo(Container &c, Index &n)
     {
         return c[n];
@@ -216,7 +216,7 @@ What if you want foo to receive r-value references (to temporary objects?); refe
 
 <blockquote>
     <code><pre>
-    template<typename Container, typename index>
+    template&lt;typename Container, typename index&gt;
     decltype(auto) foo(Container &c, Index &n)
     {
        return std::forward<Container>(c) [n]; // don't we love C++ ?
@@ -229,7 +229,7 @@ in C++11 this looks like
 <blockquote>
     <code><pre>
 
-    template<typename Container, typename index>
+    template&lt;typename Container, typename index&gt;
     auto foo(Container &c, Index &n) -> decltype(std::forward<Container>(c) [i])
     {
         return c[i];
@@ -376,7 +376,7 @@ Now with using you can also do templated declarations
 
 <blockquote>
     <code><pre>
-    template<typename T>
+    template&lt;typename T&gt;
     using MyVec = std::vector<T, MyAlloc<T>>
     </pre></code>
 
@@ -387,7 +387,7 @@ then can use MyVec<int> instead of std::vector<int> ; (good for nested templates
 
 <blockquote>
     <code><pre>
-    template<typename T>
+    template&lt;typename T&gt;
     class MyHack
     {
        typename std::vector<T>::type Vect; // (vector<T>::type is the self type typedef, especially for this purpose !)
@@ -404,11 +404,11 @@ Now using can help you to get rid of this !!!
 <blockquote>
     <code><pre>
 
-    template<typename T>
+    template&lt;typename T&gt;
     using MyVec = std::vector<T, MyAlloc<T>>
 
 
-    template<typename T>
+    template&lt;typename T&gt;
     class MyHack
     {
 
@@ -461,11 +461,11 @@ basic\_ios( const basic\_ios & ) = delete; // c** way to mark the function as no
 
 <blockquote>
     <code><pre>
-    template<typename T>
+    template&lt;typename T&gt;
     void doIt(T *);
 
     //but not for char *
-    template<>
+    template&lt;&gt;
     void doIt(char *) = deleted.
     </pre></code>
 
@@ -644,7 +644,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
 
       // use universal references; forward: copies l-values and moves r=values;
       // problem: bloated object code, still two implementations (but setter coded once)
-      template<typename T>
+      template&lt;typename T&gt;
       void setName(T&& newName) { name = std::forward<T>(newName); }
 
 
@@ -728,10 +728,10 @@ Catch22: a templated constructor would not prevent the compiler to put in a defa
 <blockquote>
     <code><pre>
     class Widget {
-      template<typename T> // copy-construct Widget
+      template&lt;typename T&gt; // copy-construct Widget
       Widget(const T& rhs); // from anything
 
-      template<typename T> // copy-assign Widget
+      template&lt;typename T&gt; // copy-assign Widget
       Widget& operator=(const T& rhs);
 
     </pre></code>
@@ -829,7 +829,7 @@ C+*14: adds std::make\_unique (oversight that it was not in C11); so it is easy 
 
 <blockquote>
     <code><pre>
-    template<typename T, typename... Args>
+    template&lt;typename T, typename... Args&gt;
     std::unique_ptr<T> make_unique(Args&&... args)
     {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
@@ -881,7 +881,7 @@ this problem is so;ved by usage of std::make\_shared<Foo() instead
 
 <blockquote>
     <code><pre>
-      template<typename T>
+      template&lt;typename T&gt;
       void forward(T &&param)
       {
         printf("got here\n");
@@ -909,7 +909,7 @@ void FooMove(Foo && rvalue); // another rvalue reference
 
 Universal reference is a different case: caller can be rvalue or lvalue, const or non const
 
-template<T>
+template&lt;T&gt;
 void foo(t &&arg); // arg is universal reference; caller can be rvalue or lvalue, const or non const !!!
 
 auto &&val = value; //val is also a universal reference.
@@ -920,14 +920,14 @@ However this example is an rvalue reference
 
 <blockquote>
     <code><pre>
-    template<T>
+    template&lt;T&gt;
     void foo(std::vector<T> && arg ); // rvalue reference; as type must be vector.
 
 
-    template<T>
+    template&lt;T&gt;
     void foo(const T && arg ); // also rvalue reference; as const T is specified.
 
-    template<T>
+    template&lt;T&gt;
     class Foo
     {
         void add(T && arg );
@@ -952,7 +952,7 @@ example setter:
 
     class Foo
     {
-      template<typename T>
+      template&lt;typename T&gt;
       void setName(T &&newName) { name = std::move(newName); }
       std::sting name;
     }
@@ -969,7 +969,7 @@ foo.setName(n); // after the call n has been moved and its value is empty !!!!!!
     <code><pre>
     class Foo
     {
-      template<typename T>
+      template&lt;typename T&gt;
       void setName(T &&newName) { name = std::forward<T>(newName); } // correct form; copies where l-value reference, moves where r-value reference.
       std::string name;
     }
@@ -1006,7 +1006,7 @@ there are problems if the sane function is overloaded on universal ref and diffe
 <blockquote>
     <code><pre>
 
-    template<typename T>
+    template&lt;typename T&gt;
     void logAndAdd(T&& name)
     {
         log(now, "logAndAdd");
@@ -1031,7 +1031,7 @@ it does not help to add a class that does conversion
     <code><pre>
     class Person {
     public:
-       template<typename T> // this does not prevent the compiler from adding default move ctor !!!
+       template&lt;typename T&gt; // this does not prevent the compiler from adding default move ctor !!!
        explicit Person(T&& n);
 
        explicit Person(int idx);
@@ -1047,7 +1047,7 @@ it does not help to add a class that does conversion
 
 <blockquote>
     <code><pre>
-       template<typename T>
+       template&lt;typename T&gt;
        void logAndAdd(const T &ref);;
 
        void logAndAdd(int idx);
@@ -1059,14 +1059,14 @@ it does not help to add a class that does conversion
 <blockquote>
     <code><pre>
 
-    template<typename T>
+    template&lt;typename T&gt;
     void logAndAdd(T&& name)
     {
         logAndAddImpl(std::forward<T>(name),
             std::is_integral<typename std::remove_reference<T>::type>()
     }
 
-    template<typename T>
+    template&lt;typename T&gt;
     void logAndAddImpl(T&& name, std::false_type)  // non-integral types of logAndAdd
     {
       auto now = std::chrono::system_clock::now();
@@ -1096,7 +1096,7 @@ The same shit can be done to constructors, but what the fuck ??
 </blockquote>
 - but references to references can appear in type deduction
 
-template<typename T>
+template&lt;typename T&gt;
 void func(T&& param);
 
 if T is Foo & then this substitution turns out as
@@ -1113,7 +1113,7 @@ void func(Foo & && param); // reference to reference
 <blockquote>
     <code><pre>
 
-    template<typename T>
+    template&lt;typename T&gt;
     T&& forward(T&& param)
     {
         return static_cast<T&&>(param);
@@ -1179,7 +1179,7 @@ for one argument:
 
 <blockquote>
     <code><pre>
-    template<typename T>
+    template&lt;typename T&gt;
     void fwd(T && arg)  // uses universal ref; only here is origin type characteristics (const, ref type) of parameters deducible to forward
     {
         f(std::forward<T> (arg) ); // f is now called with calling type (T & forwarded to T &; T&& forwarded to T &&, etc)
@@ -1191,7 +1191,7 @@ for many arguments.
 
 <blockquote>
     <code><pre>
-    template<typename ... T > // ... - ellipsis (variadic template = repeat the same for several types)
+    template&lt;typename ... T &gt; // ... - ellipsis (variadic template = repeat the same for several types)
     void fwd(T &&arg... arg )
     {
         f(std::forward<T>(arg) ... );
