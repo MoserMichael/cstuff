@@ -302,7 +302,7 @@ But! if class Widget has this constructor
     <code><pre>
     class Widget
     {
-    public: Widget(std::initializer_list<bool> il)
+    public: Widget(std::initializer_list&lt;bool&gt; il)
 
     }
 
@@ -320,7 +320,7 @@ It gets worse:
     public:
       Widget(int i, bool b); // con #1
       Widget(int i, double d); // con #2
-      Widget(std::initializer_list<std::string> il); // con #3
+      Widget(std::initializer_list&lt;std::string&gt; il); // con #3
     };
 
     // calls con #2 (exact mach of parameter types)
@@ -368,22 +368,22 @@ Also with {} copy const and move constr. are called when they are most appropria
 (item 9) alias declarations better than typedef
 
 instead of
-typedef std::vector<int> IntVector;
+typedef std::vector&lt;int&gt; IntVector;
 
 do
 
-using IntVector = std::vector<int>;
+using IntVector = std::vector&lt;int&gt;;
 
 Now with using you can also do templated declarations
 
 <blockquote>
     <code><pre>
     template&lt;typename T&gt;
-    using MyVec = std::vector<T, MyAlloc<T>>
+    using MyVec = std::vector&lt;T, MyAlloc&lt;T&gt;&gt;
     </pre></code>
 
 </blockquote>
-then can use MyVec<int> instead of std::vector<int> ; (good for nested templates, but oh my)
+then can use MyVec&lt;int&gt; instead of std::vector&lt;int&gt; ; (good for nested templates, but oh my)
 
 - and for template writers it helps to get rid of typename:
 
@@ -392,8 +392,8 @@ then can use MyVec<int> instead of std::vector<int> ; (good for nested templates
     template&lt;typename T&gt;
     class MyHack
     {
-       typename std::vector<T>::type Vect; // (vector<T>::type is the self type typedef, especially for this purpose !)
-                           // so Vect is a 'dependent type' (oh my)
+       typename std::vector&lt;T&gt;::type Vect; // (vector&lt;T&gt;::type is the self type typedef, especially for this purpose !)
+                           // so Vect is a 'dependent type' (oh my&gt;)
 
       // if you want to use the template this way you have to use typename.
       Vect imp_;
@@ -407,14 +407,14 @@ Now using can help you to get rid of this !!!
     <code><pre>
 
     template&lt;typename T&gt;
-    using MyVec = std::vector<T, MyAlloc<T>>
+    using MyVec = std::vector&lt;T, MyAlloc&lt;T&gt;&gt;
 
 
     template&lt;typename T&gt;
     class MyHack
     {
 
-       MyVec<T> imp_; // works without typename
+       MyVec&lt;T&gt; imp_; // works without typename
     }
     </pre></code>
 
@@ -467,7 +467,7 @@ basic\_ios( const basic\_ios & ) = delete; // C++ way to mark the function as no
     void doIt(T *);
 
     //but not for char *
-    template&lt;&gt;
+    template&lt;typename T&gt;
     void doIt(char *) = deleted.
     </pre></code>
 
@@ -494,7 +494,7 @@ Now a small difference in type specs will create new overloaded function instead
     class Derived
     {
       // this will not compile; override says that foo
-      // name must override -> comply with the rules.
+      // name must override -&gt; comply with the rules.
       virtual foo(int a);
 
     //Now more about 'reference qualifiers'
@@ -518,7 +518,7 @@ this one would add cbegin for C++11 too:
 <blockquote>
     <code><pre>
     template <class C>
-    auto cbegin(const C& container) -> decltype(std::begin(container))
+    auto cbegin(const C& container) -&gt; decltype(std::begin(container))
     {
        /// works because const C& returns const iterator !!! (used to work in c++98)
        return std::begin(container);
@@ -535,7 +535,7 @@ this one would add cbegin for C++11 too:
     constexpr auto arraySize = 10;
     // arraySize is constant known during compilation
 
-    std::array<int, arraySize> data;
+    std::array&lt;int, arraySize&gt; data;
     // the size of an array must be known during compilation, so constexpr is fine
     </pre></code>
 
@@ -548,7 +548,7 @@ in C++11 constexpr function must consist of one return statement only; but we ca
     <code><pre>
     constexpr int pow(int base, int exp)
     {
-       return exp<=0 ? 1 : base * pow(base, exp-1);
+       return exp&lt;=0 ? 1 : base * pow(base, exp-1);
     }
     </pre></code>
 
@@ -603,12 +603,12 @@ C++11 std library adds
 <blockquote>
     <code><pre>
     std::mutex a;
-    std::lock_guard<std::mutex> guard(m);
+    std::lock_guard&lt;std::mutex&gt; guard(m);
     //automatic lock in constructor, unlock in destructor.
     </pre></code>
 
 </blockquote>
-std::atomic<int> cnt; // for atomic, non locking primitives. (has overloaded **,--, +=(int) and int operator())
+std::atomic&lt;int&gt; cnt; // for atomic, non locking primitives. (has overloaded **,--, +=(int) and int operator())
 
 (item 16) noexcept
 
@@ -647,7 +647,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
       // use universal references; forward: copies l-values and moves r=values;
       // problem: bloated object code, still two implementations (but setter coded once)
       template&lt;typename T&gt;
-      void setName(T&& newName) { name = std::forward<T>(newName); }
+      void setName(T&& newName) { name = std::forward&lt;T&gt;(newName); }
 
 
 
@@ -671,7 +671,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
 
 <blockquote>
     <code><pre>
-    std::list<string> lst;
+    std::list&lt;string&gt; lst;
     lst.push_back("aaaa"); // "aaa" does not match std::string; type conversion creates a temporary instance.
 
     // this one does the same: just that no temporary is created (used 'perfect' forwarding
@@ -687,7 +687,7 @@ C++11: a bit different: only unwind stack just befoe program exit (OMG); this pr
 any problems?
 if collection holds shared\_ptr then shared\_ptr with custom delete function can only be created by means of this construct:
 
-std::shared\_ptr<Gadget>( new Gadget(), customDeleter ); // where void customDeleter(Gadget \*); is the deleter.
+std::shared\_ptr&lt;Gadget&gt;( new Gadget(), customDeleter ); // where void customDeleter(Gadget \*); is the deleter.
 
 in this case there is no wayto avoid temporary object ! (also if exceptions are used then deleter is a must: if push\_back throws out of memory exception then deleter is the only way to get rid of newly created Gadget object. (for emplace function there would be no way to delete Gadget because the smart pointer is not yet constructed when new node is allocated - so nothing there to deal with exception)
 
@@ -752,14 +752,14 @@ in C++11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
 -   when smart pointe is deleted and it owns something, then owned pointer is deleted too; but if you want different treatment then custom deleter can be supplied.
     (example see further down)
 -   size of smart pointer without custom deleter is equal to sizeof(void\*).
-    create these with: std::<Foo *>::make\_unique(); // now New any more !!!!
+    create these with: std::&lt;Foo *&gt;::make\_unique(); // now New any more !!!!
 -   size of smart pointer with this deleter adds a second pointer data member (does delete to dispose of Foo when smart pointer obj. is destroyed)
 
 <blockquote>
     <code><pre>
        void deleteF(Foo *foo) { delete foo; printf("deleted foo %p\n", foo); }
 
-       std::unique<Foo, decltype(deleteF)> ptr( new Foo(), deleteF );
+       std::unique&lt;Foo, decltype(deleteF)&gt; ptr( new Foo(), deleteF );
     </pre></code>
 
 </blockquote>
@@ -769,7 +769,7 @@ in C++11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
     <code><pre>
        auto delF =[] (Foo *foo) { delete foo; printf("deleted foo\n",foo); }
 
-        std::unique<foo, decltype(delF)> ptr( new Foo, delf );
+        std::unique&lt;foo, decltype(delF)&gt; ptr( new Foo, delf );
 
     </pre></code>
 
@@ -783,9 +783,9 @@ in C++11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
 -   sizeof(shardpt\_t) - two pointers; one to owned object, the other to the control block (which consists of ref count and possibly the pointer to custom deleter)
 -   control block in addition to that also has a virtual function (WTF ! ); so each control block has ptr to vtable (didn't explain why that is too well)
 -   idiom for constructing smart\_ptr without deleter
-    auto ptr = std::make\_shared<Foo>();
+    auto ptr = std::make\_shared&lt;Foo&gt;();
 -   idiom for constructing smart\_ptr with deleter
-    std::smart\_ptr<Foo> ptr( new Foo(), deleterFun ); // thie way ptr is never passed to two instances of shared\_ptr -&gt; which would result to twice deletion.
+    std::smart\_ptr&lt;Foo&gt; ptr( new Foo(), deleterFun ); // thie way ptr is never passed to two instances of shared\_ptr -&gt; which would result to twice deletion.
 -   if you don't like this rule:
 
 <blockquote>
@@ -793,16 +793,16 @@ in C++11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
 
         // the base class always has pointer to the controll block;
         // so it can be asked repeatedly to create smart ptr instance using the same controll block
-        // by means of  std::enable_shared_from_this<Foo>::shared_from_this()
+        // by means of  std::enable_shared_from_this&lt;Foo&gt;::shared_from_this()
 
-        class Foo : public std::enable_shared_from_this<Foo>
+        class Foo : public std::enable_shared_from_this&lt;Foo&gt;
         {
         };
 
         Foo *ptr = new Foo();
         // both ptr1 and ptr2 will point to the same control block; so ptr is deleted only once.
-        auto ptr1 = ptr->shard_from_this();
-        auto ptr2 = ptr->shared_from_this();
+        auto ptr1 = ptr-&gt;shard_from_this();
+        auto ptr2 = ptr-&gt;shared_from_this();
     </pre></code>
 
 </blockquote>
@@ -812,13 +812,13 @@ in C++11: std::auto\_ptr is deprecated (because it is stupid and did move in cop
 
 - weak pointer can dangle, but you have a chance to detect that.
 
-auto autoptr1 = std::make\_shared<Foo> ()
+auto autoptr1 = std::make\_shared&lt;Foo&gt; ()
 
-std::weak\_ptr<Foo> weakptr( autoptr1 ); // weakptr, points to same control block as autoptr1, but does not increase ref count =&gt; weakptr can know when pointer has expired.
+std::weak\_ptr&lt;Foo&gt; weakptr( autoptr1 ); // weakptr, points to same control block as autoptr1, but does not increase ref count =&gt; weakptr can know when pointer has expired.
 
-std::shared\_ptr<Foo> sm2 = weapktr.lock(); // if autoptr1 still lives then sm2 != nullptr; if autoptr points to expired object: sm2 == nullptr
+std::shared\_ptr&lt;Foo&gt; sm2 = weapktr.lock(); // if autoptr1 still lives then sm2 != nullptr; if autoptr points to expired object: sm2 == nullptr
 
-- used to break refrence cycles (these create impossible problems with reference counting) a~~<span style="text-align:right;">b (pointer via shared pointer); b</span>~~&gt;a (pointer via weak pointer)
+- used to break refrence cycles (these create impossible problems with reference counting) a~~b (pointer via shared pointer); b;a (pointer via weak pointer)
 
 - example usage: a cache holds weakptrs, but returns shared\_ptrs; (what about exploding size of cache with invalid entries?)
 
@@ -832,16 +832,16 @@ C++14: adds std::make\_unique (oversight that it was not in C11); so it is easy 
 <blockquote>
     <code><pre>
     template&lt;typename T, typename... Args&gt;
-    std::unique_ptr<T> make_unique(Args&&... args)
+    std::unique_ptr&lt;T&gt; make_unique(Args&&... args)
     {
-        return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+        return std::unique_ptr&lt;T&gt;(new T(std::forward&lt;Args&gt;(args)...));
     }
     </pre></code>
 
 </blockquote>
 -   it is shorter to type
--   std::make\_shared<Foo>( new Foo() ); // two allocations: one for Foo and one for control block
--   std::make\_shared<Foo>(); // both Foo and control block allocated in the same allocation (next in memory)
+-   std::make\_shared&lt;Foo&gt;( new Foo() ); // two allocations: one for Foo and one for control block
+-   std::make\_shared&lt;Foo&gt;(); // both Foo and control block allocated in the same allocation (next in memory)
 
 this does not work if Foo has class specific new/delete; (because make\_shared does placement new on its own chunk that includes both Foo and control block !)
 
@@ -851,13 +851,13 @@ if refcount  0 then destructor of owned object (Foo) is invoked, but control blo
 
 - better for exception safety (!@\#)
 
-userofptr( std::shard\_ptr<Foo> ptr, int a);
+userofptr( std::shard\_ptr&lt;Foo&gt; ptr, int a);
 
-userofptr( std::shard\_ptr<Foo>(new Foo), call\_another\_fun() );
+userofptr( std::shard\_ptr&lt;Foo&gt;(new Foo), call\_another\_fun() );
 
 possible timeline (alowed by standard): new Foo, call\_another\_func(), constructor of shared\_ptr; if call\_another\_fun throws an exception then Foo \* is left dangling and is not cleaned up.
 
-this problem is so;ved by usage of std::make\_shared<Foo() instead
+this problem is so;ved by usage of std::make\_shared&lt;Foo&gt;() instead
 
 (item 24) -- i did not understand it too much ---
 
@@ -887,7 +887,7 @@ this problem is so;ved by usage of std::make\_shared<Foo() instead
       void forward(T &&param)
       {
         printf("got here\n");
-        process(  std::forward<T>(param) );
+        process(  std::forward&lt;T&gt;(param) );
       }
 
       Fooo f;
@@ -923,7 +923,7 @@ However this example is an rvalue reference
 <blockquote>
     <code><pre>
     template&lt;T&gt;
-    void foo(std::vector<T> && arg ); // rvalue reference; as type must be vector.
+    void foo(std::vector&lt;T&gt; && arg ); // rvalue reference; as type must be vector.
 
 
     template&lt;T&gt;
@@ -972,7 +972,7 @@ foo.setName(n); // after the call n has been moved and its value is empty !!!!!!
     class Foo
     {
       template&lt;typename T&gt;
-      void setName(T &&newName) { name = std::forward<T>(newName); } // correct form; copies where l-value reference, moves where r-value reference.
+      void setName(T &&newName) { name = std::forward&lt;T&gt;(newName); } // correct form; copies where l-value reference, moves where r-value reference.
       std::string name;
     }
 
@@ -996,7 +996,7 @@ foo.setName(n); // after the call n has been moved and its value is empty !!!!!!
     Matrix operator+(Matrix&& lhs, const Matrix& rhs)
     {
       lhs += rhs;
-      return std::forward<Matrix>(lhs); // here move makes sense (no RVO takes place); lhs is argument.
+      return std::forward&lt;Matrix&gt;(lhs); // here move makes sense (no RVO takes place); lhs is argument.
     }
     </pre></code>
 
@@ -1012,7 +1012,7 @@ there are problems if the sane function is overloaded on universal ref and diffe
     void logAndAdd(T&& name)
     {
         log(now, "logAndAdd");
-        names.emplace(std::forward<T>(name));
+        names.emplace(std::forward&lt;T&gt;(name));
     }
 
     void logAndAdd(int idx)
@@ -1064,8 +1064,8 @@ it does not help to add a class that does conversion
     template&lt;typename T&gt;
     void logAndAdd(T&& name)
     {
-        logAndAddImpl(std::forward<T>(name),
-            std::is_integral<typename std::remove_reference<T>::type>()
+        logAndAddImpl(std::forward&lt;T&gt;(name),
+            std::is_integral&lt;typename std::remove_reference&lt;T&gt;::type&gt;()
     }
 
     template&lt;typename T&gt;
@@ -1073,7 +1073,7 @@ it does not help to add a class that does conversion
     {
       auto now = std::chrono::system_clock::now();
       log(now, "logAndAdd"); // structure
-      names.emplace_back(std::forward<T>(name));
+      names.emplace_back(std::forward&lt;T&gt;(name));
     }
 
     void logAndAddImpl(int idx, std::true_type) // for integral types of logAndAdd
@@ -1118,7 +1118,7 @@ void func(Foo & && param); // reference to reference
     template&lt;typename T&gt;
     T&& forward(T&& param)
     {
-        return static_cast<T&&>(param);
+        return static_cast&lt;T&&&gt;(param);
     }
     </pre></code>
 
@@ -1131,14 +1131,14 @@ if T is Foo & (l-value ref)
     <code><pre>
     Foo& && forward(Foo& &&param)
     {
-        return static_cast<Foo& &&>(param);
+        return static_cast&lt;Foo& &&&gt;(param);
     }
 
-    // & && -> & (by rule of reference collapsing so result is
+    // & && -&gt; & (by rule of reference collapsing so result is
 
     Foo& forward(Foo& param)
     {
-        return static_cast<Foo&>(param);
+        return static_cast&lt;Foo&&gt;(param);
     }
     </pre></code>
 
@@ -1149,19 +1149,19 @@ if T is Foo && (r-value ref)
     <code><pre>
     Foo&& && forward(Foo&& &&param)
     {
-        return static_cast<Foo&& &&>(param);
+        return static_cast&lt;Foo&& &&&gt;(param);
     }
 
-    && && -> && (by rule of reference collapsing so result is
+    && && -&gt; && (by rule of reference collapsing so result is
 
     Foo&& forward(Foo&& param)
     {
-        return static_cast<Foo&&>(param);
+        return static_cast&lt;Foo&&&gt;(param);
     }
     </pre></code>
 
 </blockquote>
-&lt;&lt;&lt;<blablabla>&gt;&gt;&gt;&gt;&gt;&gt;
+&lt;&lt;&lt;&gt;&gt;&gt;&gt;&gt;&gt;
 
 (Item 31) limits of moving
 
@@ -1184,7 +1184,7 @@ for one argument:
     template&lt;typename T&gt;
     void fwd(T && arg)  // uses universal ref; only here is origin type characteristics (const, ref type) of parameters deducible to forward
     {
-        f(std::forward<T> (arg) ); // f is now called with calling type (T & forwarded to T &; T&& forwarded to T &&, etc)
+        f(std::forward&lt;T&gt; (arg) ); // f is now called with calling type (T & forwarded to T &; T&& forwarded to T &&, etc)
     }
     </pre></code>
 
@@ -1196,19 +1196,19 @@ for many arguments.
     template&lt;typename ... T &gt; // ... - ellipsis (variadic template = repeat the same for several types)
     void fwd(T &&arg... arg )
     {
-        f(std::forward<T>(arg) ... );
+        f(std::forward&lt;T&gt;(arg) ... );
     }
     </pre></code>
 
 </blockquote>
-forwarding fails if fwd(<expression>) is not compatible with f(<expression>)
+forwarding fails if fwd(&lt;expression&gt;) is not compatible with f(&lt;expression&gt;)
 
 - 0 for null pointer; type deduction find integer type, this is not forwarded to pointer; use nullptr as argument (unambiguous) and it works
 
 void f(void **); fwd(0); // T deduced as int; can't be forwarded to void**.
 
-- void f(std::list<int> arg);
-fwd({1, 2, 3}); // ambiguous: converts to std::initializer\_list only if fwd would be known to have signature fwd(std::initializer\_list<int> arg); this is not the case; otherwise would be parsed as f(1,2,3)
+- void f(std::list&lt;int&gt; arg);
+fwd({1, 2, 3}); // ambiguous: converts to std::initializer\_list only if fwd would be known to have signature fwd(std::initializer\_list&lt;int&gt; arg); this is not the case; otherwise would be parsed as f(1,2,3)
 
 workaround:
 
@@ -1239,7 +1239,7 @@ forwarding of print to fwd creates ambiguous situation -&gt; fails. (explicit ca
 <blockquote>
     <code><pre>
        std::find_if( v.begin(), v.end(),
-        [] (auto val) { return 0 < val && val < 10; } // this is the lambda expression.
+        [] (auto val) { return 0 &lt; val && val &lt; 10; } // this is the lambda expression.
          );
     </pre></code>
 
@@ -1290,7 +1290,7 @@ Different capture modes:
 
 <blockquote>
     <code><pre>>
-    #include <stdio.h>
+    #include &lt;stdio.h&gt;
 
     class Foo
     {
@@ -1311,10 +1311,10 @@ Different capture modes:
         //auto e = [val_] (int c) { return c * val_; };
 
         // reference of vall_ copied; capture points to class member
-        auto c = [=] (int c) { printf("v=%p\n", &val_);  return c * val_; }; //f-> val_; };
+        auto c = [=] (int c) { printf("v=%p\n", &val_);  return c * val_; }; //f-&gt; val_; };
         printf("res=%d\n", c( arg ) );
 
-        // reverence to this->vall_ copied; capture points to class member
+        // reverence to this-&gt;vall_ copied; capture points to class member
         auto d = [&] (int c) { printf("v=%p\n", &val_); return c * val_; };
 
         printf("res=%d\n", d( arg ) );
@@ -1365,10 +1365,10 @@ Different capture modes:
 <blockquote>
     <code><pre>
 
-    auto pw = std::make_unique<Foo>();
+    auto pw = std::make_unique&lt;Foo&gt;();
 
     auto func = [ pw = std::move(pw) ]  // init capture has expression to initalize captured variables (here move unique_ptr into capture)
-            { return pw->foo(); }x
+            { return pw-&gt;foo(); }x
     </pre></code>
 
 </blockquote>
@@ -1377,12 +1377,12 @@ Different capture modes:
 <blockquote>
     <code><pre>
 
-    auto pw = std::make_unique<Foo>();
+    auto pw = std::make_unique&lt;Foo&gt;();
 
-    auto pw = std::make_unique<Foo>();
+    auto pw = std::make_unique&lt;Foo&gt;();
         std::bind( // C++11 emulation
-            [](std::unique_ptr<Foo> & data) // of init capture
-            { return pw->foo() },
+            [](std::unique_ptr&lt;Foo&gt; & data) // of init capture
+            { return pw-&gt;foo() },
 
             std::move(data)
         ) ;
@@ -1390,10 +1390,10 @@ Different capture modes:
 
 </blockquote>
 -   std::bind returns function object, first part is the 'callable' (lambda); second part argument to be evaluated on call.
--   so when func is called, it copies the vector<double> data from outer scope into captured variable data (it is a member of the closure instance)
+-   so when func is called, it copies the vector&lt;double&gt; data from outer scope into captured variable data (it is a member of the closure instance)
 -   works because closure has the same lifetime as bind object.
 
-(item 35) '
+(item 35) 
 
 C++14 has lambdas with auto parameters
 
@@ -1401,6 +1401,6 @@ auto f = \[\](auto x){ return func(normalize(x)); };
 
 if you want to use forwarding for nromalize
 
-auto f = \[\](auto x){ return func( normalize( std::forward<decltype(x)>( x ) )); }; // type argument to std::forward deduced by decltype
+auto f = \[\](auto x){ return func( normalize( std::forward&lt;decltype(x)&gt;( x ) )); }; // type argument to std::forward deduced by decltype
 
 &lt;&lt;&lt;&lt; remaining items are about the concurrency API, i don't think that this is such a stellar thing &gt;&gt;&gt;&gt;&gt;
