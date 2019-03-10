@@ -374,8 +374,7 @@ similar concept?
 than compared to Greece) - working in quarries/mines/forests.
 - says forced resettlement (Assyrian empire was huge operator here, probably moved to fill abandoned
 areas![]() were probably known earlier and were practiced
-
-'the central role of bondage and coercion in creating and maintaining the grain-and-manpower nexus of 
+-  'the central role of bondage and coercion in creating and maintaining the grain-and-manpower nexus of 
 the early agrarian state would be perfectly evident'
 
 
@@ -455,16 +454,11 @@ areas were ‘barbarian’ by definition.
 conquer and extend its rule (Rome and Gaul); sometimes tributes were extracted from the state;
 sometimes a state was conquered (but then the invaders turned rulers); sometimes nomads became the
 cavalry of the state.
-
-Why did the ‘golden age of barbarians’ end around 1600? ‘As states and durable gunpowder empires
-grew, the ability of nonstate peoples to raid and dominate small states shrank at a pace that depended
-greatly on the region and its geography’. Still ‘barbarians’ were all slavers - and this trade made the core
-state stronger (at the expense of the fringes); they were often paid mercenaries of the state - this further
-eroded their own independence from the state.
+- Why did the ‘golden age of barbarians’ end around 1600? ‘As states and durable gunpowder empires grew, the ability of nonstate peoples to raid and dominate small states shrank at a pace that depended greatly on the region and its geography’. Still ‘barbarians’ were all slavers - and this trade made the core state stronger (at the expense of the fringes); they were often paid mercenaries of the state - this further eroded their own independence from the state.
 
 -----------------
 
-Other authors may have a totally different interpretation;
+Other authors do have a totally different perspective and interpretation;
 
 See Peter Turchin's "Ultrasociety: How 10000 Years of War Made Humans the greates cooperators on Earth"
 
@@ -475,6 +469,9 @@ The polities were competing with each other and had to become better at mobilizi
 here are my notes from reading this highly interesting book:
 
 ==============
+
+notes on "Ultrasociety: How 10000 Years of War Made Humans the greates cooperators on Earth" by Peter Turchin
+
 
 'cooperation is actually astonishingly difficult to achieve and, once achieved, hard to preserve' - is brittle, can always fail.
 
