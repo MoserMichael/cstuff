@@ -10,7 +10,9 @@ title: <notextile>Things do change, invariably</notextile>
 7 May 2018
 
 </p>
-Reviewing “Against the Grain - a deep history of the earliest states” by James C. Scott
+
+Reviewing “Against the Grain - a deep history of the earliest states” by James C. Scott and  "Ultrasociety: How 10000 Years of War Made Humans the greatest cooperators on Earth" by Peter Turchin
+
 
 What is the nature of a state and where did it come from? Is it primarily a benevolent framework that
 enables civilization or is it a mechanism of suppression? I guess you will get different answers
