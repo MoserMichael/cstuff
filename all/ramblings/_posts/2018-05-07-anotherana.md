@@ -460,7 +460,7 @@ cavalry of the state.
 
 Other authors do have a totally different perspective and interpretation;
 
-See Peter Turchin's "Ultrasociety: How 10000 Years of War Made Humans the greates cooperators on Earth"
+See Peter Turchin's "Ultrasociety: How 10000 Years of War Made Humans the greatest cooperators on Earth"
 
 The author maintains that early societies were very violent places - graves from this period have a lot of signs of inter personal violence. The early city-state reduced this level of violence and channeled it into conflicts between states - these are fought by a small number of warriors (well, all-out conflicts like WW2 on the eastern front don't quite fit in with this picture).
 The polities were competing with each other and had to become better at mobilizing the cooperation of the populace and had to get better at organizing this cooperating in general.
@@ -470,7 +470,7 @@ here are my notes from reading this highly interesting book:
 
 ==============
 
-notes on "Ultrasociety: How 10000 Years of War Made Humans the greates cooperators on Earth" by Peter Turchin
+notes on "Ultrasociety: How 10000 Years of War Made Humans the Greatest Cooperators on Earth" by Peter Turchin
 
 
 'cooperation is actually astonishingly difficult to achieve and, once achieved, hard to preserve' - is brittle, can always fail.
