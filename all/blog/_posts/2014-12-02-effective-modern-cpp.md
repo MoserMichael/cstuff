@@ -10,56 +10,57 @@ title: Effective post-modern C++
 2 December 2014
 
 </p>
-C** used to have default constructors, copy constructors, assignment operators, cast conversion constructor, constructors with arguments; each such feature is invoked by means of some non obvious syntactic construct.
+C++ used to have default constructors, copy constructors, assignment operators, cast conversion constructor, constructors with arguments; each such feature is invoked by means of some non obvious syntactic construct.
 
 With C++11 they added move constructors, move assignment operators, initializer constructor; and optional special constructors for r-rvalue references only. now suddenly one has to be a lawyer in order to understand all possible interactions between these features.
 
-Luckily there is Scott Meyers who can explain the resulting mess of regulations; "Effective Modern C**" (purchase [here](http://shop.oreilly.com/product/0636920033707.do) ) does a great job at explaining how all the new features of C+*11 and c*+14 fit together.
+Luckily there is Scott Meyers who can explain the resulting mess of regulations; "Effective Modern C++" (purchase [here](http://shop.oreilly.com/product/0636920033707.do) ) does a great job at explaining how all the new features of C++11 and c++14 fit together.
 
 is the added complexity worth it? I don't know, there are two opinions here:
 
-C** critics:
+C++ critics:
 
 -   many system programmers do not like the exception feature, because it makes it almost impossible to handle error conditions without some kind of subtle leaks.
--   system programmers often decry the a loss of control that comes with C**; compared to C it is harder to tell what code is being generated. (See Linus Thorvalds famous [C** rant](http://harmful.cat-v.org/software/c++/linus) )
+-   system programmers often decry the a loss of control that comes with C++; compared to C it is harder to tell what code is being generated. (See Linus Thorvalds famous [C++ rant](http://harmful.cat-v.org/software/c++/linus) )
 -   the many things done implicitly, this implicit nature of things makes it difficult to reason about the problem when things screw up (and they do). As the C++FQA put it [here](http://yosefk.com/c++fqa/mixing.html)
 
 <blockquote>
-"C** is not a higher-level language than C. The damage caused by low-level errors is still not limited. You still have to think about pointers and object life cycles and integer endianness and many other things. But on top of that, there's a huge amount of things done implicitly, like global initialization and destruction, stack unwinding, base/derived classes pointer adjustment, and many more things - and all of them combine with the low-level errors into a single deep, wide tar pit with the programmer in the middle.
+"C++ is not a higher-level language than C. The damage caused by low-level errors is still not limited. You still have to think about pointers and object life cycles and integer endianness and many other things. But on top of that, there's a huge amount of things done implicitly, like global initialization and destruction, stack unwinding, base/derived classes pointer adjustment, and many more things - and all of them combine with the low-level errors into a single deep, wide tar pit with the programmer in the middle.
 
-A good high-level language allows you to forget about many small details of program execution. A good low-level language allows you to control the many small details of program execution. C** is not much of a high-level language, but it's not a very good low-level language either."
+A good high-level language allows you to forget about many small details of program execution. A good low-level language allows you to control the many small details of program execution. C++ is not much of a high-level language, but it's not a very good low-level language either."
 
 </blockquote>
-C** fans:
+C++ fans:
 
--   application programmers really seem to value the expressiveness of C**;
--   'conservative' approach to software engineering (as Steve Yegge put it [more here](http://mosermichael.github.io/cstuff/all/blog/2014/11/09/steve-yegge-politics.html) ) in these quarters they don't like text based meta programming; however templates are considered to be powerful enough (somehow they don't mind the convoluted nature of C** templates)
--   in most shops they have coding guidelines that pick the desired C** features and formulate 'best practices'; the stated aim here is to create a 'manageable subset' of the language. Well results are mixed (it's usually like this with standardized regulations ...)
+-   application programmers really seem to value the expressiveness of C++;
+-   good library support (see stl, boost)
+-   'conservative' approach to software engineering (as Steve Yegge put it [more here](http://mosermichael.github.io/cstuff/all/blog/2014/11/09/steve-yegge-politics.html) ) in these quarters they don't like text based meta programming; however templates are considered to be powerful enough (somehow they don't mind the convoluted nature of C++ templates)
+-   in most shops they have coding guidelines that pick the desired C++ features ; the stated aim here is to create a 'manageable subset' of the language. Well results are mixed (it's usually like this with standardized regulations ...)
 
-On the plus side of things c+*11 and C14 do address real pressing problems of C*+98:
+On the plus side of things C++11 and C14 do address real pressing problems of C++98:
 
 -   the override specifier makes it hard to make errors while overriding virtual functions; now one constructor can call another one (Java had these feature for a long time)
--   move semantics can avoid unnecessary deletion of temporary objects (in C+*98: void foo(string &b,string &c) { string a = b* c; } // b + c used to be a wasted temporary copy, nowadays the data of this copy is moved right into a.
+-   move semantics can avoid unnecessary deletion of temporary objects (in C++98: void foo(string &b,string &c) { string a = b* c; } // b + c used to be a wasted temporary copy, nowadays the data of this copy is moved right into a.
     however this feature comes at the cost of great complexity. at least half of this book is about r-value references and move semantics.
--   auto keyword + type inference significantly reduces the verbosity of C** code. In 1983 the auto keyword used to be a feature of c**, but it was later dropped !!! Later it got adopted by languages like D and Java (since version 7); so the pressure was on C** standard committee to make the language more 'powerful'.
+-   auto keyword + type inference significantly reduces the verbosity of C++ code. In 1983 the auto keyword used to be a feature of C++, but it was later dropped !!! Later it got adopted by languages like D and Java (since version 7); so the pressure was on C++ standard committee to make the language more 'powerful'.
 -   there is some form of function invocation/computation at compile time. (but it can't be used for meta-programming)
 -   lambda functions are supposed to make stl::algorithms usable, but i doubt that this will happen: try to debug this code; i guess people will still prefer loops over std::algoritm .
     also keep figuring when captured variable is copied by value or by reference (you can even move stuff into the capture !)
 -   a richer standard library; std::uniqe\_ptr is nice (shared\_ptr & reference counting is messy and it always uses atomic/lockless reference count, no way to customize that); they added atomic(lockless) integer types, which is nice; the new concurrency API. STL collections add emplace - avoids creation of temporary values in some cases.
 
-I guess C+*11 is the result of 'evolutionary pressure' - over time other programming languages added a lot of features (some sort of type deduction and lambda functions) and the C*+ central committee decided that it had to catch up in order to stay relevant. It is funny that this multitude of features creates many ways of expressing the same thing - just like in Perl, the [postmodern programming language](http://www.wall.org/~larry/pm.html)
+I guess C++11 is the result of 'evolutionary pressure' - over time other programming languages added a lot of features (some sort of type deduction and lambda functions) and the C++ central committee decided that it had to catch up in order to stay relevant. It is funny that this multitude of features creates many ways of expressing the same thing - just like in Perl, the [postmodern programming language](http://www.wall.org/~larry/pm.html)
 
 the bottom line: for me it is advisable to read this mess in order to remain employable.
 
-Also here is a nice overview of "C+*11":https://en.wikipedia.org/wiki/C14 and "c14":https://en.wikipedia.org/wiki/C*+14 from wikipedia.
+Also here is a nice overview of "C++11":https://en.wikipedia.org/wiki/C14 and "c14":https://en.wikipedia.org/wiki/C++14 from wikipedia.
 
 ------------------------------------------------------------------------
 
-my notes of Scott Meyers: 'Effective Modern C**' (Preview)
+my notes of Scott Meyers: 'Effective Modern C++' (Preview)
 
 (Item1)
 
-different kinds of type deduction in C**:
+different kinds of type deduction in C++:
 
 c++98 deduction for template&lt;&gt; member functions (like template&lt;typename T&gt; void f(const T &arg)
 c++11 auto and decltypeg
@@ -75,6 +76,7 @@ sc++14 decltype can be used with auto
     void f(const T  &arg)
     </pre></code>
 </blockquote>
+
 -   can call f with references and value types (ignores if it is reference)
 -   if called with reference T is deduced to be type on the left of &.
 
@@ -149,10 +151,10 @@ auto type deduction != template type deduction) (special kind for :Universal ini
 <blockquote>
     <code><pre>
     auto x = { 1 };
-    // x is a std::initializer_list<int> and has an instance with value 27
+    // x is a std::initializer_list&lt;int&gt; and has an instance with value 27
 
     auto x = { 1, 2 };
-    // x is a std::initializer_list<int> and has an instance with values 1 and 2
+    // x is a std::initializer_list&lt;int&gt; and has an instance with values 1 and 2
 
     auto x = { 1, 2, 3.0 };
     // error: values in initializer list must be of the same type.
@@ -219,7 +221,7 @@ What if you want foo to receive r-value references (to temporary objects?); refe
     template&lt;typename Container, typename index&gt;
     decltype(auto) foo(Container &c, Index &n)
     {
-       return std::forward<Container>(c) [n]; // don't we love C++ ?
+       return std::forward&lt;Container&gt;(c) [n]; // don't we love C++ ?
     }
     </pre></code>
 
@@ -230,7 +232,7 @@ in C++11 this looks like
     <code><pre>
 
     template&lt;typename Container, typename index&gt;
-    auto foo(Container &c, Index &n) -> decltype(std::forward<Container>(c) [i])
+    auto foo(Container &c, Index &n) -&gt; decltype(std::forward&lt;Container&gt;(c) [i])
     {
         return c[i];
     }
@@ -267,7 +269,7 @@ watch this in C++14 !!!!
 
 (item 5) prefer auto
 
--   trivia: in 1983 C** had auto, but it was not accepted ! in C++11 it came back
+-   trivia: in 1983 C++ had auto, but it was not accepted ! in C++11 it came back
 -   (did not mention that Java and D also have auto ;-)
 -   advise: always use auto, this way you don't have uninitialized variables (well compiler would tell you that in any case, with optimization ;-)
 -   use of auto will avoid downcasting (if lhs type is narrower than actual type); or copying if automatic type conversion is invoked (due to declared type being different to actual type)
@@ -455,7 +457,7 @@ C++98: mark as private; and do not provide an implementation (so that linker err
 
 C++11: mark as deleted; this way usage of copy constr. just does not compile.
 
-basic\_ios( const basic\_ios & ) = delete; // c** way to mark the function as not callable ; also convention is to declare this public - compiler will then tell that this is not callable (calling private would be another compilation error)
+basic\_ios( const basic\_ios & ) = delete; // C++ way to mark the function as not callable ; also convention is to declare this public - compiler will then tell that this is not callable (calling private would be another compilation error)
 
 &gt; Want to prevent some template instantiation for some specific types from happening? use deleted
 
@@ -509,7 +511,7 @@ Now a small difference in type specs will create new overloaded function instead
 
 New in C++11 - stl collections have cbegin and cend - to return const iterators (and crbegin/crend - for const reverse iterators). (before that usage of const iterators was difficult)
 
-For maximum generality (for example in templates) use std::cbegin(container) - for build in arrays these are provided as global functions !) (in C+*14 std::cbegin©/std::cend© were added, but they already had std::begin©/std::end© in c*+11 !!!)
+For maximum generality (for example in templates) use std::cbegin(container) - for build in arrays these are provided as global functions !) (in C++14 std::cbegin©/std::cend© were added, but they already had std::begin©/std::end© in C++11 !!!)
 
 this one would add cbegin for C++11 too:
 
@@ -741,7 +743,7 @@ Catch22: a templated constructor would not prevent the compiler to put in a defa
 
 finally there is adequate support in the standard library for smart pointers !
 
-in C+*11: std::auto\_ptr is deprecated (because it is stupid and did move in copy operations; (did not have move semantics in c*+98)
+in C++11: std::auto\_ptr is deprecated (because it is stupid and did move in copy operations; (did not have move semantics in C++98)
 
 (item 20) std::unique\_ptr this is the only owner of the resource (meaning need to delete the managed object)
 
@@ -825,7 +827,7 @@ std::shared\_ptr<Foo> sm2 = weapktr.lock(); // if autoptr1 still lives then sm2 
 - limitation; still can't use these function without new if you need a custom deleter (see previous items)
 
 C++11: add std::make\_shared
-C+*14: adds std::make\_unique (oversight that it was not in C11); so it is easy to add for C*+11
+C++14: adds std::make\_unique (oversight that it was not in C11); so it is easy to add for C++11
 
 <blockquote>
     <code><pre>
