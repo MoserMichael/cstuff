@@ -52,7 +52,7 @@ I guess C++11 is the result of 'evolutionary pressure' - over time other program
 
 the bottom line: for me it is advisable to read this mess in order to remain employable.
 
-Also here is a nice overview of "C++11":https://en.wikipedia.org/wiki/C14 and "c14":https://en.wikipedia.org/wiki/C++14 from wikipedia.
+Also here is a nice overview of [C++11](https://en.wikipedia.org/wiki/C++11) and xa [c14](https://en.wikipedia.org/wiki/C++14) from wikipedia.
 
 ------------------------------------------------------------------------
 
