@@ -461,3 +461,207 @@ grew, the ability of nonstate peoples to raid and dominate small states shrank a
 greatly on the region and its geography’. Still ‘barbarians’ were all slavers - and this trade made the core
 state stronger (at the expense of the fringes); they were often paid mercenaries of the state - this further
 eroded their own independence from the state.
+
+-----------------
+
+Other authors may have a totally different interpretation;
+
+See Peter Turchin's "Ultrasociety: How 10000 Years of War Made Humans the greates cooperators on Earth"
+
+The author maintains that early societies were very violent places - graves from this period have a lot of signs of inter personal violence. The early city-state reduced this level of violence and channeled it into conflicts between states - these are fought by a small number of warriors (well, all-out conflicts like WW2 on the eastern front don't quite fit in with this picture).
+The polities were competing with each other and had to become better at mobilizing the cooperation of the populace and had to get better at organizing this cooperating in general.
+
+
+here are my notes from reading this highly interesting book:
+
+==============
+
+'cooperation is actually astonishingly difficult to achieve and, once achieved, hard to preserve' - is brittle, can always fail.
+
+For most of humanities history we had small tribes – everyone knew each other; how did human society change to big hives?
+lets measure cooperation by looking at big projects:
++ ISS - 3 million people years - a billion tax payers funded that.
++ Gothic cathedrals – 15.000 people years (300 builders working over 50 years) - several hundred thousand supporters/tax payers.
++ Colosseum - 12 thousand slaves for eight years - 30 million sesteros (they got that by looting/sacking Jerusalem)
++ Great pyramid of Giza – 400.000 people years.
++ Goebleki Teppe - neolithic structure - ??? (no written records)
+
+Goebleki Teppe - (estimated 240-300 people years) purpose was to bring people together (and build community and cooperation) - and then have festival with drink beer together.
+How did they build it? (small number of people over long period or lots of them over short period?)
+Poverty Point in Louisiana (1000 people years) - another neolithic structure was erected over short time (otherwise the rain would have washed away layered levels of different kinds of soil)
+
+Classifies polities by their size
+
++ foraging bands – 10s individuals
++ farming villages – 100s
++ simple chiefdom (several villages under one chief) - 1000s
++ complex chiefdom (three subordinate chiefs) - 10000s.
++ archaic states – 10000
++ macro-states – 1.000.000
++ mega-empires – 10.000.000
++ large-nation states = 100.000.000
+
+Between 1500BC and 1500BC they had mil.tech. based on adoption of horses – open plains with nomads would favor intensive warfare, hilly terrain would inhibit that.
+They modeled spread of agriculture and growth of states – and warfare would be a decisive part of the model.
+War as 'destructive creation' - it prompted institutes that support cooperation. (In Hinduism Shiva is both god of war and creation)
+
+- tribal societies were very violent (significant number of remains have marks of violent death); the 'peaceful savage' is a myth.
+- (still tribal society is very cooperative – easy to organize collective action in small groups; the wonder is that large groups are still cooperative – yet some have to sacrifice for this (like cops))
+- as society became more complex violence became more 'controlled' (and there is less of it). what happened?
+Many social theories: agriculture, hydraulic theory, conquest as social change, Marx: elites expropriate surplussed.
+Then biology came in: (attempts to unify by evolution) Darwin said that morality gives a huge advance ('The Descent of man'); also there is social Darwinism;
+Wilson: behavior is regulated by genes (Sociobiology); cultural evolution (they like math models here)
+- instead of asking 'how did empire X fail' he is asking 'how was empire X possible?' - at each growth step arrangements had to be found to allow coop. with strangers.
+- after empire gets big internal cohesion declines (not needed as wars have been won); elites no longer restrained by common goals grab it all, cooperation declines; empire declines.
+
+Enron: says CEO Skilling instituted internal in-group competition (lowest performers got fired – rank and yank) that destroyed cooperation and bred cheating/unethical behavior towards customers.
+Says 'rank and yank' is common practice – began in 70ies and 80ies when 'unwritten compact previously existing during a past period of growth and progress' was ended; Putnam: civic engagement lasted 30 years after New deal.
+“features of social life—networks, norms, and trust—that enable participants to act together more effectively to pursue shared objectives.”
+Elites were more cooperative back then. Since 80ies the elites are into competition & individualism of Ayn-Rand and Hayek (?) Social Darwinism where 'Greed is right, Greed works';
+Says crash of 2008 is similar to crash of the 1870ies.
+
+there is 'kin selection' - altruism is good for the species so this trait is beneficial for survival/evolution selects it in.
+Problem: doesn't work 'rational agents' would always prefer to defect from battle – the potential personal cost is too high.
+
+Dawkins 'selfish gene': evolution selects for self interest of passing your genes on
+still altruistic behavior can be evolutionary advantage if it helps to get close relatives through (kin selection)
+'tragedy of commons' - everyone wins if the commons is preserved, but your own benefit is to grab as much as possible (this destroys the commons).
+Dawkins says reciprocal altruism fixes this (handy to do good – and to get a favor in return)
+
+
+:: still all this does not explain behavior of unrelated individuals; also 'kin selection' and 'reciprocal altruism' work adversely in very large societies – here they take the form of nepotism and cronyism.
+Says that 'ultra society' is fundamentally different from small scale tribe and that it came out of cultural evolution.
+
+Sport teams: conflict of either help your peers (group goal of winning) or playing it out on yourself (goal of higher standing in group)
+'multilevel selection' deals with such conflicting situations.
+
+Should high performing team mates get higher pay? Cultural thing: Nordic countries (and Australia) are egalitarian so all team members get the same pay; Americans don't do that.
+Too unequal teams have great players – but the rest slack off (and in group competition makes you play against your own team), so they loose games (players work harder in more equal teams)
+(says they still do it because stars draw crowds, and wealthy backers overestimate the role of stars)
+Same for business.
+
+Multilevel selection says: in-group competition destroys cooperation/teams; competition between group creates cooperation/teams.
+That's why European soccer is relegating lowest performing teams to the lower league – rank and yank applied to groups.
+
+enter the very vague field of Cultural evolution – how do cultures progress?
+One problem – they classify clear stages of development (whereas different cultures took different paths).
+Another problem – how is cultural information represented in the brain? What is the subject of the study? - Don't know.
+What about concrete features - is trust of strangers (generalized trust) a cultural feature? Banfield: south Italy they don't trust strangers - this is used to explain their poverty.
+However attitudes seem to change over time – evolve.
+
+Price equation is supposed to explain how conflicting traits balance out – but i did not get it.
+(free riders are good for individual, but bad for society, altruism is bad for individual but good for society, anyway you need both of them in the long run)
+
+Says that the equation does not care if culture is transmitted by education or by genes or by imitation.
+Where did culture come from? Says that extremely variable/cyclic culture + long lifespan of Humans forced us to do behavioral adaptation (learning) instead of adapting the organism to changing conditions.
+
+Also if variation is allowed within an organization then the best approach can be selected (also follows from price equation). In-group competition must be reduced for a team to win.
+
+---
+Throwing stones is the first weapon of humans – homo erectus has shoulders for doing so (other apes are not very good at throwing) => Now can get bone marrow and meat; energy requirement for brains.
+Gintin, van Schaik say that projectile weapons (spears) made us human; Wranham says fire was important (digestive track shrank - more energy from cooked food enabled larger brains; family formed around fire...)
+Early Human forager societies were more egalitarian than Chimps or Gorillas (here the alpha male/beta beats up all the others and get all females, but there can be coalitions against alpha)
+Says that projectile weapons were equalizer and restraining the alpha males (easy to surprise the enemy with projectiles; can be used as collective attack; skill more important than physical strength)
+Also Humans do coalitions of ten or more individuals - tools and language help. (Chimps have two or maximum three); Leaders had to persuade and build consensus (not by force) = free riders get isolated and punished (moralistic punishment)
+social/political skills become important so that women can gain influence.
+competition between groups selects for those who developed corporation.
+
+
+====
+Enga island of New Guinea – had people still in stone age; here guys are busy with war - (this kills 35% of them).
+War is ceremonial business – not many get killed in each battle – but over time it accumulates (that's why they got the notion of 'primitive war' - misconception)
+Now all this fighting did not result in any cultural evolution – the tribes stay the same (surprise) - here everyone is suspicious of everybody else (outsiders could be spies)
+all Enga tribes had the same culture - both victors and those defeated; no evolution. (in other forest ares of Indonesia there is also a lot of linguistic diversity – means that no group got extinct; no intense competition; flatland of Eurasia is different – languages spread out)
+
+Ian Morris: wars between societies create competition and larger societies; in-group war (same society) does not create anything -
+Author says inconclusive wars do not select anyone out; Destruction of cultural traits means to 'select out' - can be genocide or ethnocide (assimilation of culture) or voluntary decision of a culture to change.
+
+Funny thing is that both anthropologists and military historians get the nature of warfare wrong – because they don't get asymmetric warfare or because they don't get the details right (important thing is mobility & strike at a distance)
+Western way of war' often glorifies short range combat (bayonets in WW1; hoplites in Greece) ; but mounted horsemen killing at a distance with bows are always more efficient (Parthian armored cavalry against Roman testudo (turtle formation); English archers at Agincourt; cannons in hundred year war)
+
+========
+
+Says early agricultural states were much more unequal than hunter gatherers – the leader would be deified and get total subordination / slavery is wide spread; women were much more suppressed.
+Example: Cook expedition was amazed how despotic Hawaiian chiefs were towards their subjects (included human sacrifice; deification of the ruler; etc)
+Bruce Trigger says all early societies were despotic, with human sacrifice, some with deified leader.
+Says commoners did not like their 'god rulers' too much in kind – songs preserved from the Shi Jing (500BC) say so.
+seems to take several thousand years from adoption of agriculture until you get archaic states with deified rulers.
+Examples of agricultural society that stayed small farm and did not get hierarchies – New Guinea, areas in South America, Africa
+Says size is important: once farming community gets larger than 10k people then it get hierarchical; large groups out competed the small ones ('increasing returns to scale')
+Wittvogel: large scale irrigation needed lot of work and required large groups and centralized administration – that became despotic.
+Problem: Russia for example needs no irrigation – but has despotism.
+Problem: Mesopotamia – irrigation systems were constructed on village level – don't need a centralized bureaucracy.
+Other advantages: long distance trade; food reserves to cope with famines.
+Leeuw: need large groups to solve complex problems + specialized knowledge. Larger groups create more problems - require even larger groups.
+Another theory: theocracies drove creation of states (me – problem: in Mesopotamia king and court were parallel structures)
+Example: Harrison: in Polynesia sometimes a clan tries to concentrate both priest + ruler position (normally these are separate); sometimes they manage.
+Still does not explain how these groups took hold – people would get rid of them (egalitarian impulse).
+Could 'economies of scale' persuade people that despotic rule is better?
+Oppenheimer: One reason is force - people internalized that they had to bow, and did so + religious propaganda. Did stratification arise spontaneously out of differentiation by wealth?
+Problem: Egypt old kingdom was not unified by force – unification came from within.
+Says the advantage is warfare – Lanchester's square law – twice the size of the army gives you twofold advantage (for raged weapons that allow simultaneous firing on flat terrain); this translates into selection pressure for larger polities that can field larger armies.
+Robert Michel: Iron law of oligarchy – all forms of organization end up as oligarchies.
+Robert Carneiro: temporary war chiefs would stay as permanent maximum leader => permanent chiefdom (were this went wrong: Arminius and Marabous got killed when they tried to extend their war chief position; Julius Cesar got killed by fans of the Roman Republic)
+Turchin says it was most likely a clique around the temporary war chief; as there is a lot of institutionalized opposition against usurpers – Roman Republic as an example of institutions that tried to avert usurpers.
+Still Octavian succeeded to become emperor – because he was modest, got popular support and people were tired of the civil wars.
+Same for Germanic society: 100BC – bands of marauding warriors; 1st century – alliances of tribes with centralized command (Arminius); 300BC – permanent confederations Ostrogoths, Visigoths, Merovingians; etc.
+
+How did we get states? Bottom up theory: agriculture allowed to sustain cities + division of labor; surpluses could feed priests and rulers. Now some theories favor economy, some religion, some war aspects.
+Problem: Goebeki Teppe and Poverty Point came before agriculture; whereas agriculture is supposed to be prerequisite.
+Problem: small communities do food sharing - but hoarding of surpluses would not be ethical.
+Problem: with agriculture people were more sick - (pathogens from cattle, field toil is hard, food is worse - from bones of remains )
+
+Turchin explains this as follows: (Pleistocene – last ice age) 12800-11800 – climate became really dry; plants became scarce -> conflict between tribes spiked; created pressure to make tribes bigger.
+Now need glue to keep society together – act of building stone henge and megaliths did the job (focus of collective action). Group selection for best fighters made them swallow the disadvantages of agriculture + everyone had to adopt it (came with institutions, property rights, etc).
+Property rights -> wealth differential (Mathew principle)
+Problems: communities have institutions for wealth redistribution – rich men are expected to donate significant means to festivals – to gain respect; greedy hording is not honorable. (that is called Big Man society)
+Says upstart could not keep temporary war chief privileges – but god kings could keep them (by combining position of king and priest/god)
+God kings were more effective warrior states - because ruler was not restrained by moral obligations (? internal cohesion problems?)
+
+The tide turned during the axial age: Mega empires have been formed (Achimenid empire; Maruyan empire; Han dynasty) - tens of millions subjects.
+Ashoka – founder of Buddhism comes of as a king that is concerned for the well being of his subjects! Also propaganda is not as bombastic as it used to be for the rulers of old. Same independently occurs in Judaism – an unrelated religions (Judaism).
+Says archaic states were fragile in time of peace - due to restiveness/internal upheaval caused by grave inequalities; for stability you need legitimate authority (hierarchy) ; not 'dominance' (R. Bellah)
+Axial age sees social criticism – by Prophets (Amos, Samuel); Buddha; Taoists/Confucians; Plato (?)
+
+Trigger: Mil-tech advance of horse (needs saddle and bridle)/chariots – later mounted cavalry/ + composite bows: both were pushed by nomads (1000BC) This intensified warfare.
+Iron use – was more abundant than Copper/tin; now mobile warfare was in.
+First ones to integrate cavalry + infantry + siege engines were the Achaemenids/Medes; Jaspers also thought that axial age was prompted because Nomads caused intensification of warfare.
+Greek Hoplites (armed infantry with shields) + phalanx formation could counter the mounted cavalry + archers; but it needed larger states to field huge armies and defend borders - this countered the disadvantage in mobility;
+needed large armies of commoners so it could no longer subject them by force alone (also had to give commoners weapons) ; elites became more receptive to message of prophets.
+
+Example: Rome at 500BC - the plebeians were hoplite warriors and went on strike (secessions); got concessions of more equality + share in the spoils in return for cooperation (? why didn't rome get an axial age religion back in the Republic; what about Stoicism ?)
+
+Here come axial age empires (Achemenid Persia, Rome, Han dynasty, Mauryan (? How could fragmented Greece do without a centralized one ?)
+Achaemenid empire had huge problems with stability - problem of uprisings. says Axial age religions became important to hold things togather (? Christianity came in towards the end of western Rome - Gibbons says it did them in ?)
+Still Zoroastrism; Budhism and Confucianism were all attempts to hold their empire togather.
+Mechanism is that large empires have multiple layered levels of idenity - one of these identities is the state religion of an empire; and that is a prerequisite for trust in large societies were people have to deal with strangers.
+Cooperation is higher in societies that believe in a big God (Norenzayan) who 1) knows your thoughts 2) evaluates if you are virtuous 3) punishes for transgression; fear of a bad afterlife will cause you to be a better cooperator (in large societies).
+Nonbelievers will not be trusted - don't get any deals; its very costly. Rulers have to take that into account (in US an atheist candidate for president will not be trusted).
+
+
+======
+Summary:
+
+if you measure eqauality on a graph over time then it follows a z curve - Humanoid/apes are very unequal with dominating alpha; early humans developed 'equalizers' and institutions that stood for it - also selected for the tribes that were able to achieve collective action;
+then advances of warfare turned larger batallions into the winning argument, so god-kings turned tyrants and took it all;
+then the model did not scale - further intensification made it important to have mega-empires that needed a more equal approach (axial age).
+
+Violence took a spike in the pleistocene (last ice age) - climate took turn for the worse - tribes fought over territory; groups that succeded to develop collective action won (team building done by doing megalyths)
+Later development saw decrease in violence (percentage wise always a decrease of casualties (? except for very bad wars that cut down half a significant portion of the population - ask the war widows in the USSR ?))
+Soedberg: half of deaths in foragging bands was due to interpersonal violence/'crime'.
+
+Pinker: reasons for decline in violence / monopoly of state on force - inhibits revenge impulse / Comerce - everybody wins from the exchange, no profit in dehumanising the 'enemy' / Feminization - violence no longer glorified, guys don't form gangs / cosmopolitanism - increases sympathy for the other one
+
+Problem: many reasons, here he searches for unifying causes – cooperation evolved, institutions & values got formed that diminish strive: you can have the best judges, but if everyone says that bribes are OK then it does not work.
+Problem: evolutionary psychology of Pinker focuses on motives of individuals, so he ignores the factor of cultural change over time and how states have arisen – cultural evolution does not have this problem because that is what it studies.
+Also helping your friends is OK in small societies – in state structures it takes the form of nepotism/cronyism.
+Problem: commerce not always zero sum game, can be very unequal – like in colonialism;
+
+In Mega empires the percentage wise number of casualties was falling – but importance of the rest of society to the war effort increased.
+Post WW-2 competition was who has the better economy and propaganda (and the biggest bombs...)
+
+Says cultural traits get adopted if they are of advantage: monogamy – it spread by imitation to Asian societies, but it also makes society more competitive: more equality among men & women, less in-group competition, less crime (less single males), more investment into offspring, more prosperous society.
+
+
+Prevention of failed states – as cooperation breaks down, so do states. finding out why cooperation happens will help to preserve it + effective policy recommendations.
+
