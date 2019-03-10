@@ -517,7 +517,7 @@ this one would add cbegin for C++11 too:
 
 <blockquote>
     <code><pre>
-    template <class C>
+    template &lt;class C&gt;
     auto cbegin(const C& container) -&gt; decltype(std::begin(container))
     {
        /// works because const C& returns const iterator !!! (used to work in c++98)
