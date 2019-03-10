@@ -1,6 +1,6 @@
 ---
 layout: post
-title: On the dreaded subject of programming interviews
+title: On the dreaded subject of interviews
 
 ---
 
