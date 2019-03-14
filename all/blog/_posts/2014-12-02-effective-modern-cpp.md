@@ -60,13 +60,14 @@ my notes of Scott Meyers: 'Effective Modern C++' (Preview)
 
 (Item1)
 
-different kinds of type deduction in C++:
+different kinds of type deduction in C++: understaning template type deduction is the key to understanding the auto feature.
 
-c++98 deduction for template&lt;&gt; member functions (like template&lt;typename T&gt; void f(const T &arg)
-c++11 auto and decltypeg
-sc++14 decltype can be used with auto
+same mechanism for:
+- c++98 deduction for template&lt;&gt; member functions (like template&lt;typename T&gt; void f(const T &arg)
+- c++11 auto and decltypeg
+- c++14 decltype (can be used with auto)
 
-- the same mechanism for type deduction applies to all three cases.
+(the same mechanism for type deduction applies to all three of the following cases)
 
 1) (template is reference (or point))
 
