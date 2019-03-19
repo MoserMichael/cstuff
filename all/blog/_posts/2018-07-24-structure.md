@@ -44,6 +44,9 @@ From the position of an individual: given all this information, I think the cruc
 - to what extent are there informal groups that are governing the show? (ouch - you probably will not ask such a question at an interview, however there are means of checking that, for example if you have a series of interviews at any given company you can look up if there is a common background from the CVs of your interviewer - nowadays almost everyone is on linked-in)
 - processes oriented vs. goal oriented; don't get me wrong - processes are very important, but the question is what counts in the end of the day? Can processes be adapted to fit a task, what amount of flexibility is there in the system? One way would be to figure out how the organization handled problems in the past - but I really would not know how to ask such questions in an interview.
  
+
+Of course who is going to hire you when you ask all these questions at an interview ... (nervous giggle). Now go figure...
+
 -------
 
 notes om [ THE TYRANNY of STRUCTURELESSNESS ](https://www.jofreeman.com/joreen/tyranny.htm)
