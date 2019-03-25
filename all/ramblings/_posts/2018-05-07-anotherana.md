@@ -32,11 +32,14 @@ laborer in a Mesopotamian city; city walls are primarily designed to keep their 
 the city wall (and to keep the enemy out of the gate); also, you need a great deal of violence to maintain
 a regime where the majority of the population are slaves.
 
-I think that the multitude of city-states in Mesopotamia led to an arms race between the polities - the
+Peter Turchin says that the multitude of city-states in Mesopotamia led to an arms race between the polities - the
 more populous cities with the bigger grain surplus were much stronger in this competition, so there was
 a strong ‘selection pressure’ towards bigger polities with bigger grain storage facilities. This led to
 more labor-intensive forms of agriculture and industry that given the could only be sustained by slavery
 - given that both agriculture and industry were of low productivity.
+  
+  Another guess is that flood-retreat agriculture had a serious problem: the floods brough in silt, and this was also leading to soil salinization (see [Salt and Silt in Ancient Mesopotamian Agriculture](http://faculty.bennington.edu/~kwoods/classes/enviro-hist/salt%20and%20silt%20in%20mesopotamia.pdf) That would in turn require more labor intensive forms of irrigation, and these would drive more complex forms of centralization around temples (these were in charge of the irrigation effort). Actually this possibility is no mentioned in 'Against the Grain'.
+
 
 Still, the collapse of a state often meant a return to smaller scale agriculture - that invariably would
 mean the deaths of many people. Also there is this thing called slave mentality - a person in bondage
