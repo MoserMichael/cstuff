@@ -38,7 +38,7 @@ a strong ‘selection pressure’ towards bigger polities with bigger grain stor
 more labor-intensive forms of agriculture and industry that given the could only be sustained by slavery,
  given that both agriculture and industry were of low productivity.
   
-  Another guess is that flood-retreat agriculture had a serious problem: the floods brough in silt, and this was also leading to soil salinization (see [Salt and Silt in Ancient Mesopotamian Agriculture](http://faculty.bennington.edu/~kwoods/classes/enviro-hist/salt%20and%20silt%20in%20mesopotamia.pdf) That would in turn require more labor intensive forms of irrigation, and these would drive more complex forms of centralization around temples (these were in charge of the irrigation effort). Actually this possibility is no mentioned in 'Against the Grain'.
+  Another guess is that flood-retreat agriculture had a serious problem: the floods brough in silt, and this was also leading to soil salinization (see [Salt and Silt in Ancient Mesopotamian Agriculture](http://faculty.bennington.edu/~kwoods/classes/enviro-hist/salt%20and%20silt%20in%20mesopotamia.pdf) That would in turn require more labor intensive forms of irrigation, and these would drive more complex forms of centralization around temples (Mesopotamian temples were in charge of the irrigation effort). Actually this possibility is no mentioned in 'Against the Grain'.
 
 
 Still, the collapse of a state often meant a return to smaller scale agriculture - that invariably would
