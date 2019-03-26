@@ -16,7 +16,7 @@ Industry trends: Michael on Software.
 Everyone in this Industry seems to have a playbook
 
 The big incumbents have the goal to stay on top of the heap;
-They might follow the advise of the following articles: [Smart companies try to commoditize their products’ complements] (https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/) ; another one of this is [“fire and motion”] (https://www.joelonsoftware.com/2002/01/06/fire-and-motion/)
+They might follow the advise of the following articles: [Smart companies try to commoditize their products’ complements](https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/) ; another one of this is [“fire and motion”](https://www.joelonsoftware.com/2002/01/06/fire-and-motion/)
 
 And the upstarts have a playbook of their own; [disrupt from the low end from position as substitute](https://www.youtube.com/watch?time_continue=11&v=rHdS_4GsKmg) says Clayton Christiensen
 
@@ -172,8 +172,7 @@ The book should set this right 'how to measure your life'
 
 ---------------------------
 
-https://www.youtube.com/watch?v=DfJ9ydhb53Q
-Clayton Christensen On Truth, God and Personal Courage
+[Clayton Christensen On Truth, God and Personal Courage](https://www.youtube.com/watch?v=DfJ9ydhb53Q)
 
 
 Q: what have you learned since (after many afflictions and illnesses) ?
