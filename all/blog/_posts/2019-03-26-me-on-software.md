@@ -30,9 +30,12 @@ What about ARM servers, they would have less of a requirement for cooling when c
 
 Another aspect is that every player in this game seems to have his own agenda and is pushing into a totally different direction. Also same thing can possibly be both a complement in one context and something completely disruptive if seen in a different context.
 
-My problem with grand models is that it is quite hard to understand a global picture while you are in the thick of it. You can analyze the industry in terms of big players only; but then you miss to see emerging trends and threats to these players; it only becomes possible to analyze the demise of these empires in retrospect.
+My problem with grand models is that it is quite hard to understand the global picture while you are in the thick of it. Ome might be analyzing the industry in terms of big players only; but then it is easy to miss emerging trends and threats to these players; 
+
 
 - - - - - - - - - - -
+
+
 Notes on “Strategy letter V” by Joel Spolsky [link](https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/)
 
 Says the following concept comes from microeconomics – which is less abstract and of more use than macroeconomics:
@@ -75,6 +78,7 @@ companies are not investing into innovations because of short term focus ; innov
 types of innovations:
 - potential innovations
 - sustaining innovations
+- efficiency innovations
 - disrupting products
 
 _potential innovations_ - potential products.
@@ -101,12 +105,27 @@ Ask:
 - How will everyone know about us?
 
 Ikea does a great job its because it is organized aroung the 'job to be done' (like Ikea);
-says customers like this approach because the alternative requires more work/effort to search parts for the customer.
+customers like this approach because the alternative requires more work/effort to search parts for the customer.
 
 _sustaining innovations_ - make an existing product better (most number).
 
 don't create growth because they replace existing things; but are important to sustain existing companies.
 
+_efficiency innovations_ - helps to produce more with less; keep us competitive, but reduce jobs and create cash flow;
+
+Examples: Wallmarts, Toyota production process. ;
+
+Abundance and scarcity: some things are scarce - like platinum; have to keep it , some things are abundant - sand, can waste it.
+Finance: Capital used to be scarce - now it is abundant (? probably for big players ?) ; also finance now measures success in ratios (metrics) rather than whole numbers (of dollars)
+Fractions should allow to performance of companies; (like metrics of 'return on net assets - RONA' / 'internal rate of return - IRR');
+RONA can be gamed by outsourcing rather than doing innovating products;
+IRR can be gamed by short range gains (long term investment is not good for it)
+Says growth is lost in the pursuit of these metrics. Also companies have a lot of cash on hand;
+
+Efficiency innovations pay off earlier (Pay off in a 6 months - 3 years) so they are prefered to disrupting products (these pay off in 5-10 years)
+
+Japan was growing fast because companies invested in disruptive products; (lots of examples) Since the late eighties they use these metrics - Japan didn't do a disruptive product ever since.
+USA is going the same way; result is that capital is used to create capital.
 
 _disrupting products_ - these create growth
 
@@ -127,26 +146,11 @@ Other examples: Phones :: Blackberry -> Apple -> Samsung (and friends).
 Disks :: Big disks -> small ones -> flash.
 Cars :: Ford; GM -> Toyota (Corona was affordable to students and disrupted Ford; went after Corolla, etc; now they also sell Lexus cars) -> Hyundai, Chinese are now killing them at the low end.
 
-Says they all disrupt the existing leader from the low ends; the upstarts compete against non-consumption by making consumption more affordable.
+_they all disrupt the existing leader from the low ends; the upstarts compete against non-consumption by making consumption more affordable._
 
-Q: are there big companies that did not get killed by new disrupting products/competing upstarts ?
+Q: are there big companies that survived new disrupting products/competing upstarts ?
+
 A: yes, Need to create a new business unit and new processes; like IBM that created new business units for mini computers; later new one for micro computers.
-
-efficiency innovations - helps us to produce more with less; keep us competitive, but reduce jobs and create cash flow;
-Examples: Wallmarts, Toyota production process. ;
-
-Why we are unable to sustain growth?
-
-Abundance and scarcity: some things are scarce - like platinum; have to keep it , some things are abundant - sand, can waste it.
-Finance: Capital used to be scarce - now it is abundant (? probably for big players ?) ; also finance now measures success in ratios (metrics) rather than whole numbers (of dollars)
-Fractions should allow to performance of companies; (like metrics of 'return on net assets - RONA' / 'internal rate of return - IRR');
-RONA can be gamed by outsourcing rather than doing innovating products;
-IRR can be gamed by short range gains (long term investment is not good for it)
-Efficiency innovations pay off earlier (Pay off in a 6 months - 3 years) so they are prefered to disrupting products (these pay off in 5-10 years)
-Says growth is lost in the pursuit of these metrics. Also companies have a lot of cash on hand;
-
-Japan was growing fast because companies invested in disruptive products; (lots of examples) Since the late eighties they use these metrics - Japan didn't do a disruptive product ever since.
-USA is going the same way; result is that capital is used to create capital.
 
 Q: what metrics are good ones for Google?
 
@@ -159,7 +163,7 @@ A: applications of AI will probably be pretty complicated; probably this will fo
 Q: what is actually the disrupting effect of an innovation ? The technology/the application/the market effect ?
 
 A: Word has a lot of connotations; the business model has to do with it, how it is deployed, and where (not the technology by itself)
-says Google is good at developing potentially disruptive technologies, but it is not good at creating business models that compete against non-consumption
+Google is good at developing potentially disruptive technologies, but it is not good at creating business models that compete against non-consumption (?)
 
 Q: certain products would not fit in with model of low end disruption: Uber/iPhone/Tesla started from the high end, not the low end ?
 
@@ -175,18 +179,19 @@ The intention was to have happy families says they failed because of wrong metri
 careers get this; kids don't show this- kids have problems, so they don't invest in them (its a long term investment)
 The book should set this right 'how to measure your life'
 
----------------------------
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 [Clayton Christensen On Truth, God and Personal Courage](https://www.youtube.com/watch?v=DfJ9ydhb53Q)
 
 
 Q: what have you learned since (after many afflictions and illnesses) ?
 
-A: Many attribute it to courage, he thinks differently: Says you need courage - if you have postponed work or undone work; that leads to fear when faced with danger.
-Says he has no fear because he is convinced that he led the right live according to God; so it's 'lets face another problem'
+A: Many attribute the speakers stand due to personal courage, he thinks differently: you do  need courage - if you have postponed work or undone work; that leads to fear when faced with danger.
+Says he has no fear because he is convinced that he has led the right live according to G-d; so his approach is 'lets face another problem'
 
 Q: what do you tell people who don't have faith?
-A: Says that everybody is religious - atheism is also a kind of religion (both have unprovable statement; both have view of life/code of ethics)
+
+A: everybody is religious in some way: atheism is similar to religion because its proposition is an unprovable statement (so it becomes kind of a religion). Common features: both Atheism and Religion  have view of life/code of ethic,
 
 says the conflict/distinction between science and religion is exaggerated - religious people don't want to face criticism of science, so they don't talk about Religion.
 Says that concept of Greek deities - Zeus is that of being outside of nature; so that science has nothing to do/is incompatible with this notion.
@@ -195,6 +200,7 @@ but Christiensen says that G-d is not outside of the universe, but within it and
 In this view science is not incompatible with Religion – the truth of science is not of a different nature/incompatible with truth of religion.
 
 Q: who knows that our understanding doesn't change and will be invalidated in the future.
+
 A: Can't know that - can hope that our knowledge is somehow converging with truth.
 
 
