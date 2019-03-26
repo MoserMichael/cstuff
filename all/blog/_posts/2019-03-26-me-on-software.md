@@ -68,14 +68,14 @@ Questions:
 - growth, were does it come from?
 - theories of management: many times they don't help at all! lots of aspects that explained by theory - example: no study of metrics.
 
-says that good metrics would be great for testing theories - like the theory of disruptions? do these metrics exist?
-
-Recessions - hits bottom and need some timer before hiring new people ; for the first six recessions after WWII it took 6 months from end of recession until start of hiring wave. 1991 - 15 months; and 2001 - 39 months; 2008 - six years (!).
+Observations:
+- says that good metrics would be great for testing theories - like the theory of disruptions? do these metrics exist?
+- Recessions - hits bottom and need some timer before hiring new people ; for the first six recessions after WWII it took 6 months from end of recession until start of hiring wave. 1991 - 15 months; and 2001 - 39 months; 2008 - six years (!).
 Longer gaps are due reasons related to finance (and availability of capital ?) - that is what's wrong about the economy.
-
-companies are not investing into innovations because of short term focus ; innovations are creating real growth.
+- companies are not investing into innovations because of short term focus ; innovations are creating real growth.
 
 types of innovations:
+
 - potential innovations
 - sustaining innovations
 - efficiency innovations
@@ -87,7 +87,7 @@ _potential innovations_ - potential products.
 - what should be studied is the customer needs (customers not always good at articulating their own needs), a product is there to satisfy a need; always ask 'what job does this thing solve'? that approach is better at predicting a good product (so it is better to study customer behavior to understand their needs)
 
 Research: how can McDonalds improve their milkshakes?
-Wrong approach: build profile of customer and ask them how to improve the product (disregards that an instance of the customer profile might not want the product at all)
+Wrong approach: build a profile of customers and ask them how to improve the product
 Right approach: ask existing customers why they use the product? How can we fulfill your needs (the job) better?
 Study: when are customers coming? What time? What are they doing with the product - take away or consume on the spot?
 Turns out 50% bought it in the morning and drove away ? Asked them 'what caused you to hire this milkshake' 'what was your substitute (focus question)' - so that we are not hungry on a long drive/commute.
@@ -193,11 +193,10 @@ Q: what do you tell people who don't have faith?
 
 A: everybody is religious in some way: atheism is similar to religion because its proposition is an unprovable statement (so it becomes kind of a religion). Common features: both Atheism and Religion  have view of life/code of ethic,
 
-says the conflict/distinction between science and religion is exaggerated - religious people don't want to face criticism of science, so they don't talk about Religion.
-Says that concept of Greek deities - Zeus is that of being outside of nature; so that science has nothing to do/is incompatible with this notion.
-
+says the conflict/distinction between science and religion is exaggerated - religious people don't want to face criticism by science, so they don't talk about Religion.
+Says that concept of Greek deities (liake Zeus) is that of being outside of nature; so that science has nothing to do/is incompatible with this notion.
 but Christiensen says that G-d is not outside of the universe, but within it and that he uses/is governed by natural laws in his actions.
-In this view science is not incompatible with Religion – the truth of science is not of a different nature/incompatible with truth of religion.
+In this view science is not incompatible with Religion, as the truth of science is not of a different nature/incompatible with truth of religion.
 
 Q: who knows that our understanding doesn't change and will be invalidated in the future.
 
