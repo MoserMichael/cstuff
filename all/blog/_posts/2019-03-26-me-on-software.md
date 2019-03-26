@@ -14,7 +14,7 @@ title: Michael on Software
 Everyone in this Industry seems to have a playbook
 
 The big incumbents have the goal to stay on top of the heap;
-They might follow the advise of the following articles: [Smart companies try to commoditize their products’ complements](https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/) ; another one of this is [“fire and motion”](https://www.joelonsoftware.com/2002/01/06/fire-and-motion/)
+They might follow the advise of the following articles by Joel Spolsky: [Smart companies try to commoditize their products’ complements](https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/) ; another one of this is [“fire and motion”](https://www.joelonsoftware.com/2002/01/06/fire-and-motion/)
 
 And the upstarts have a playbook of their own; [disrupt from the low end from position as substitute](https://www.youtube.com/watch?time_continue=11&v=rHdS_4GsKmg) says Clayton Christiensen
 
@@ -72,15 +72,15 @@ Longer gaps are due reasons related to finance (and availability of capital ?) -
 
 companies are not investing into innovations because of short term focus ; innovations are creating real growth.
 
-Four types of innovations:
-*potential innovations
-*sustaining innovations
-*disrupting products
+types of innovations:
+- potential innovations
+- sustaining innovations
+- disrupting products
 
 _potential innovations_ - potential products.
-* only 15-25 of all innovations will be financially rewarding - we don't know which one, so there are a lot of tries;
-* current marketing studies are crap - studying the customer is the wrong approach; they try to classify customers; and their properties (customer profiles) - which are not significant to the buying decision.
-* what should be studied is the customer needs (customers not always good at articulating their own needs), a product is there to satisfy a need; always ask 'what job does this thing solve'? that approach is better at predicting a good product (so it is better to study customer behavior to understand their needs)
+- only 15-25 of all innovations will be financially rewarding - we don't know which one, so there are a lot of tries;
+- current marketing studies are crap - studying the customer is the wrong approach; they try to classify customers; and their properties (customer profiles) - which are not significant to the buying decision.
+- what should be studied is the customer needs (customers not always good at articulating their own needs), a product is there to satisfy a need; always ask 'what job does this thing solve'? that approach is better at predicting a good product (so it is better to study customer behavior to understand their needs)
 
 Research: how can McDonalds improve their milkshakes?
 Wrong approach: build profile of customer and ask them how to improve the product (disregards that an instance of the customer profile might not want the product at all)
@@ -96,9 +96,9 @@ every Job/customer problem has a functional/emotional/social aspect;
 Then ask: what is the experiences are that will fulfill the job done? If these are associate with a brand/business then this would be great.
 
 Ask:
-* how will customers choose us and not the competition?
-* what can we do that other people can't ?
-* How will everyone know about us?
+- how will customers choose us and not the competition?
+- what can we do that other people can't ?
+- How will everyone know about us?
 
 Ikea does a great job its because it is organized aroung the 'job to be done' (like Ikea);
 says customers like this approach because the alternative requires more work/effort to search parts for the customer.
@@ -122,7 +122,6 @@ DEC did minicomputers; in good times they sold computers for 200.000$ at 45% mar
 Now the PC didn't matter for much of the eighties - DEC management cared about their current products, not the low starting PC that would disrupt them.
 
 Innovators dilemma: focus your limited resources on attempt to improve your existing product or care for currently not-relevant but potentially disrupting upstart?
-
 
 Other examples: Phones :: Blackberry -> Apple -> Samsung (and friends).
 Disks :: Big disks -> small ones -> flash.
