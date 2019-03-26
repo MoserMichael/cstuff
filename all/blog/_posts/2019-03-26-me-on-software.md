@@ -44,7 +44,7 @@ Says the following concept comes from microeconomics – which is less abstract 
 * Rule: demand for product increases if the complement becomes cheaper.
 
 Smart big companies strategy:
-* push down prices of product complements – turn them into commodities “Smart companies try to commoditize their products’ complements”
+* push down prices of product complements – turn them into commodities “Smart companies try to commoditize their products’ complements” (all to create demand for the core product!)
 * Example: IBM turned PC add-ins into commodity by documenting the architecture
 * MS didn’t sell an exclusive MS-DOS license to IBM – MS succeeded in turning the PC into a commodity of MS-DOS.
 * IBM invests in Open source systems and Linux: they want to commoditize the software environment to create more opportunities for their consulting business (and to drive demand for their own enterprise software and storage systems)
@@ -61,50 +61,54 @@ My notes on [Clayton Christensen: "Where does Growth come from?"](https://www.yo
 
 Questions:
 
-- success is hard to sustain; good management causes companies to stumble (!); wants to share his despair in that (as expert in management)
+- success is hard to sustain; good management causes companies to stumble (!); This creates despair for the author (as expert in management)
 - growth, were does it come from?
-- theories of management - many times they don't help at all ! lots of aspects that no theory exists - example: no study of metrics.
-says that good metrics would be great for testing theories - like the theory of disruptions? do these exist?
+- theories of management: many times they don't help at all! lots of aspects that explained by theory - example: no study of metrics.
 
-Recessions - hits bottom and need some timer before hiring new people ; First six recessions after WWII - it took 6 months until hire; 1991 - 15 months; and 2001 - 39 months; 2008 - six years (!).
-Says it is these larger gaps are due reasons related to finance (and over availability of capital ?) - says that is what's wrong about the economy.
+says that good metrics would be great for testing theories - like the theory of disruptions? do these metrics exist?
 
-companies are investing are into innovations ; investment means growth; so innovations is what is creating growth.
+Recessions - hits bottom and need some timer before hiring new people ; for the first six recessions after WWII it took 6 months from end of recession until start of hiring wave. 1991 - 15 months; and 2001 - 39 months; 2008 - six years (!).
+Longer gaps are due reasons related to finance (and availability of capital ?) - that is what's wrong about the economy.
+
+companies are not investing into innovations because of short term focus ; innovations are creating real growth.
 
 Four types of innovations:
+*potential innovations
+*sustaining innovations
+*disrupting products
 
-potential innovations - potential products.
-Says only 15-25 of all innovations will be financially rewarding - we don't know which one, so there are a lot of tries;
-says that's because current marketing studies are crap - studying the customer is the wrong approach; they try to classify customers; and their properties (customer profiles) - which are not significant to the buying decision.
-what should be studied is the customer needs, a product is there to satisfy a need; always ask 'what job does this thing solve'? that approach is better at predicting a good product.
+_potential innovations_ - potential products.
+* only 15-25 of all innovations will be financially rewarding - we don't know which one, so there are a lot of tries;
+* current marketing studies are crap - studying the customer is the wrong approach; they try to classify customers; and their properties (customer profiles) - which are not significant to the buying decision.
+* what should be studied is the customer needs (customers not always good at articulating their own needs), a product is there to satisfy a need; always ask 'what job does this thing solve'? that approach is better at predicting a good product (so it is better to study customer behavior to understand their needs)
 
 Research: how can McDonalds improve their milkshakes?
 Wrong approach: build profile of customer and ask them how to improve the product (disregards that an instance of the customer profile might not want the product at all)
 Right approach: ask existing customers why they use the product? How can we fulfill your needs (the job) better?
 Study: when are customers coming? What time? What are they doing with the product - take away or consume on the spot?
 Turns out 50% bought it in the morning and drove away ? Asked them 'what caused you to hire this milkshake' 'what was your substitute (focus question)' - so that we are not hungry on a long drive/commute.
-In the afternoon parents buy that for their kids - so they have something to talk over.
+In the afternoon parents buy that for their kids - so they have something to talk over when the kids are consuming the milkshake. 
 
-Customer is wrong unit of analysis - look at the customer problem/situation; and customer needs - to solve the problem that the situation creates.
+The Customer is wrong unit of analysis - look at the customer problem/situation; and customer needs - to solve the problem that the situation creates.
 The task description is static (makes it easy to fix it) - but technology to solve it changes quite a lot;
 every Job/customer problem has a functional/emotional/social aspect;
 
 Then ask: what is the experiences are that will fulfill the job done? If these are associate with a brand/business then this would be great.
 
 Ask:
-= how will customers choose us and not the competition?
-= what can we do that other people can't ?
-= How will everyone know about us?
+* how will customers choose us and not the competition?
+* what can we do that other people can't ?
+* How will everyone know about us?
 
 Ikea does a great job its because it is organized aroung the 'job to be done' (like Ikea);
 says customers like this approach because the alternative requires more work/effort to search parts for the customer.
 
-sustaining innovations - make an existing product better (most number).
+_sustaining innovations_ - make an existing product better (most number).
 
 don't create growth because they replace existing things; but are important to sustain existing companies.
 
 
-disrupting products - these create growth
+_disrupting products_ - these create growth
 
 Trajectory of improvements that customers are able to utilize (doesn't change too much).
 Trajectory of improvements that companies provide with better proucts - (lot larger than ability to utilize them) -> even not so good products are better than customer expectation.
@@ -142,26 +146,30 @@ IRR can be gamed by short range gains (long term investment is not good for it)
 Efficiency innovations pay off earlier (Pay off in a 6 months - 3 years) so they are prefered to disrupting products (these pay off in 5-10 years)
 Says growth is lost in the pursuit of these metrics. Also companies have a lot of cash on hand;
 
-
-Says Japan was growing fast because companies invested in disruptive products; (lots of examples) Since the late eighties they use these metrics - Japan didn't do a disruptive product ever since.
-Says USA is going the same way; result is that capital is used to create capital.
+Japan was growing fast because companies invested in disruptive products; (lots of examples) Since the late eighties they use these metrics - Japan didn't do a disruptive product ever since.
+USA is going the same way; result is that capital is used to create capital.
 
 Q: what metrics are good ones for Google?
+
 A: most metrics are concerned with the short term only; useless in the long run, so make up your own metrics.
 
 Q: Google invests in AI: what will be the remaining jobs for humans (if this succeeds) ?
+
 A: applications of AI will probably be pretty complicated; probably this will force us to hire more people.
 
 Q: what is actually the disrupting effect of an innovation ? The technology/the application/the market effect ?
+
 A: Word has a lot of connotations; the business model has to do with it, how it is deployed, and where (not the technology by itself)
 says Google is good at developing potentially disruptive technologies, but it is not good at creating business models that compete against non-consumption
 
 Q: certain products would not fit in with model of low end disruption: Uber/iPhone/Tesla started from the high end, not the low end ?
+
 A: theory is that Tesla is a sustaining innovation; says that BMW and porsche will give Tesla some heat (or acquire them); Says the transforming innovation will be cheap/small electric cars from China.
 Apple: they disrupted the laptop and succeeded. (didn't compete against blackberry; blackberry didn't have apps, that's what killed them); now Apple is being disrupted by cheap android phones.
 Uber? taxis are asset intensive (car + medallion) + keep the cars running for the whole day to get a small profit; now Ueber has no assets and variable costs, taxis can't compete with that; so its also 'from the low end' - but in terms of business model
 
 Q: measuring your life in a better way: how can employees do that? Why did you write that?
+
 A: if he analysis personal stories then he sees that (in business terms) the resource allocation process/metrics causes people to pursue a direction that they didn't want in the first place.
 Example: he sees his former friends at Harward reunions; with time fewer people appear at these events because they get divorced and don't want to talk about it.
 The intention was to have happy families says they failed because of wrong metrics (wrong objectives) - on immediate/tangible signs of achievements;
