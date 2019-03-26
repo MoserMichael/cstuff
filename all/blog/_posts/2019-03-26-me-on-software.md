@@ -11,8 +11,6 @@ title: Michael on Software
 26 March 2019
 </p>
 
-Industry trends: Michael on Software.
-
 Everyone in this Industry seems to have a playbook
 
 The big incumbents have the goal to stay on top of the heap;
