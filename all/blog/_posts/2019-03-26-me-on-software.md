@@ -22,16 +22,24 @@ Interesting that each article wants to promote itself as the big Truth; I think 
 
 Another thing is that these models look a bit apologetic, they describe the current state (that’s why the argument is quite convincing); It may by extension describe pattern of coming developments, but it might also fail to do so in the future.
 
-I think that when any player is creating value, he is by extension also creating  opportunities for other players. Its the law of unintended consequences that really counts – every action should be examined in terms of opportunities that it creates for other players, and not by the playbook that has been written in order to suite any given agenda.
+I think that when any player is creating value, he is by extension also creating opportunities for other players. Its the law of unintended consequences that really counts – every action should be examined in terms of opportunities that it creates for other players, sometimes these unintended side effects turn out to be of major importance; 
+Or: any ecosystem is creating opportunities for a whole range of actors, sometimes the effects af an action is not obvious at first, and the chain of events yields results that contradict the interests of the host/owner of the system.
 
-Another issue is that the industry is becoming a bit more complex and interdependent than in the 90ies and turn of the century: this cloud thing is making things quite complex – so big cloud providers are turning enterprise software into ‘complements’; now what is Kubernetes/Docker? Is it a complementing product, or will it lead for a push for hybrid clouds? Will hybrid clouds eventually cut into AWS/Azure/Google Cloud? 
+examples: 
+- Sun microsystem developed Java as a tool for (smart appliances)[https://en.wikipedia.org/wiki/Java_(software_platform)#History]; as a complementing product that would enable SUN to sell more hardware; several years later the major use case turned out to be enterprise software; now Java is a portable system, so that people started to use cheap x86 servers instead of expensive machines by Sun. 
+- The Facebook API as a tool for third-party integration was used by (Cambridge Analytica)[https://medium.com/tow-center/the-graph-api-key-points-in-the-facebook-and-cambridge-analytica-debacle-b69fe692d747], resulting into major fallout for Facebook.
+- I think very complex social networking sites are becoming hard to govern, because there is this multitude of players who also try to use the system to their own advantage.
+- Thinking in terms of an ecosystem of different players is harder, but may become necessary when systems start to involve a lot of actors.
+
+Another issue is that the industry is becoming a bit more complex and interdependent than in the 90ies and turn of the century: this cloud thing is making things quite complex – if big cloud providers are turning enterprise software into ‘complements’; now what is Kubernetes/Docker? Is it a complementing product, or will it lead for a push for hybrid clouds? Will hybrid clouds eventually cut into AWS/Azure/Google Cloud? 
 
 What about ARM servers, they would have less of a requirement for cooling when compared to x86 servers, so you could possibly pack more systems into a box at a lower purchasing cost. However Mr. Thorvalds says that this is unlikely to happen: x86 became so important because devlopers could use the same platform for development and deployment  [here](https://www.realworldtech.com/forum/?threadid=183440&curpostid=183486). Now the [Kubernetes book](https://www.oreilly.com/library/view/kubernetes-in-action/9781617293726/) has a fascinating example where they build a playground cluster out of raspberry pis. Now what will happen when these raspberries grow up and if it becomes easier to set up a private cloud rather then paying a cloud provider for its services?
 
 Another aspect is that every player in this game seems to have his own agenda and is pushing into a totally different direction. Also same thing can possibly be both a complement in one context and something completely disruptive if seen in a different context.
 
-My problem with grand models is that it is quite hard to understand the global picture while you are in the thick of it. Ome might be analyzing the industry in terms of big players only; but then it is easy to miss emerging trends and threats to these players; 
+My problem with grand models is that it is quite hard to understand the global picture while you are in the thick of it. One might be analyzing the industry in terms of big players only; but then it is easy to miss emerging trends and threats to these players; 
 
+Another distrinct possibility is that I am misunderstanding the whole picture; I guess time will tell.
 
 - - - - - - - - - - -
 
@@ -52,8 +60,14 @@ Smart big companies strategy:
 * MS didn’t sell an exclusive MS-DOS license to IBM – MS succeeded in turning the PC into a commodity of MS-DOS.
 * IBM invests in Open source systems and Linux: they want to commoditize the software environment to create more opportunities for their consulting business (and to drive demand for their own enterprise software and storage systems)
 * Netscape makes navigator free: they want to sell more http servers and by turning the browser into a commodity they drive demand for http servers (hello apache ;-) And Microsoft make Internet explorer free – so that the web as a commodity would drive demand for Windows installations.
-* Says Sun microsystems was acting strange with Java – which is portable – in that this would  be turning hardware into a commodity (and hardware was Sun’s core business)
-(I think the initial idea at Sun was to sell more ‘smart devices’ that run java, and that enterprise software was not the initial focus of the java platform).
+* Says Sun microsystems was acting strange/stupid by developing Java – which is portable. Due to this portability it did turn server hardware into a commodity (and server hardware was Sun’s core business)
+
+Me: I don't quite agree with his diagnosis of Sun and java (but I got the advantage of looking back ;-)
+I think the initial idea at Sun was to sell more ‘smart devices’ that run java, and that enterprise software was not the initial focus of the java platform, the end effect was something of an unintendended consequence due to the following reasons:
+- Java required a lot of memory and cpu resources; At that time this was too much for the limited hardware of small devices; however a  decade later there was android and its apps are based on JVM technology! Now Google somhow got the profit from this technology as it was the company that defined the Android platform; but that is a different story.
+- Java in the enterprise: Enterprise software turned into a major generator of revenue and here Sun was not a major player; however SUN tried hard to be one in middleware with EJB. This was not a success because EJB was hard to use and the emerging WEB architecture used a different path of development. It was a lost gamble, but that was not quite obvious at the time. 
+
+
 
 -------
 
@@ -191,12 +205,14 @@ Says he has no fear because he is convinced that he has led the right live accor
 
 Q: what do you tell people who don't have faith?
 
-A: everybody is religious in some way: atheism is similar to religion because its proposition is an unprovable statement (so it becomes kind of a religion). Common features: both Atheism and Religion  have view of life/code of ethic,
+A: atheism is similar to religion because its proposition is an unprovable statement (so it becomes kind of a religion). Common features: both Atheism and Religion  have view of life/code of ethic; Atheism as beliving in anprovable statement is therefore a kind of religion.
 
 says the conflict/distinction between science and religion is exaggerated - religious people don't want to face criticism by science, so they don't talk about Religion.
-Says that concept of Greek deities (liake Zeus) is that of being outside of nature; so that science has nothing to do/is incompatible with this notion.
-but Christiensen says that G-d is not outside of the universe, but within it and that he uses/is governed by natural laws in his actions.
-In this view science is not incompatible with Religion, as the truth of science is not of a different nature/incompatible with truth of religion.
+
+Says that concept of Greek deities (liake Zeus) is that of being outside of nature; so that science has nothing to do/is incompatible with the will of the deities.
+
+Christiensen says that G-d is not outside of the universe, but within it and that he uses/is governed by natural laws in his actions.
+In this view science is not incompatible with Religion, as the truth of science is part of the same realm as religion (or rather deal with the same concepts/have a shared language); as he sees Gods action as being subject to constraints of natural laws and science as studying these natural laws.
 
 Q: who knows that our understanding doesn't change and will be invalidated in the future.
 
