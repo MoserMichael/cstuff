@@ -26,7 +26,7 @@ I think that when any player is creating value, he is by extension also creating
 Or: any ecosystem is creating opportunities for a whole range of actors, sometimes the effects af an action is not obvious at first, and the chain of events yields results that contradict the interests of the host/owner of the system.
 
 examples: 
-- Sun microsystem developed Java as a tool for [smart appliances](https://en.wikipedia.org/wiki/Java_(software_platform)#History); as a complementing product that would enable SUN to sell more hardware; several years later the major use case turned out to be enterprise software; now Java is a portable system, so that people started to use cheap x86 servers instead of expensive machines by Sun. 
+- Sun microsystem developed Java as a tool for [smart appliances](https://en.wikipedia.org/wiki/Java_(software_platform)#History); as a complementing product that would enable SUN to sell more hardware; several years later the major use case turned out to be enterprise software; now Java is a portable system, so that people started to use Java with cheap x86 servers instead of driving the sales of more expensive machines by Sun. 
 - The Facebook API as a tool for third-party integration was used by [Cambridge Analytica](https://medium.com/tow-center/the-graph-api-key-points-in-the-facebook-and-cambridge-analytica-debacle-b69fe692d747), resulting into major fallout for Facebook.
 - I think very complex social networking sites are becoming hard to govern, because there is this multitude of players who also try to use the system to their own advantage.
 - Thinking in terms of an ecosystem of different players is harder, but may become necessary when systems start to involve a lot of actors.
