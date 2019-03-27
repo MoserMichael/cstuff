@@ -49,8 +49,8 @@ Says the following concept comes from microeconomics – which is less abstract 
 * Every product has substitutes and complements;
     * substitute – a product that is similar to but cheaper than the original (chicken substitute of beef)
     * Complement – a product that goes with another one (gas is a complement of cars)
-* Rule: demand for substitute increases when price of original product
-* Rule: demand for product increases if the complement becomes cheaper.
+* Rule: demand for substitute increases when price of original product rises; so the substitute becomes more attractive due to low price.
+* Rule: demand for product increases if the complement becomes cheaper; you get more opportunities with the product and it becomes more attractive.
 
 Smart big companies strategy:
 * push down prices of product complements – turn them into commodities “Smart companies try to commoditize their products’ complements” (all to create demand for the core product!)
