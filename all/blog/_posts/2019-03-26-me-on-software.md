@@ -203,7 +203,7 @@ Says he has no fear because he is convinced that he has led the right live accor
 
 Q: what do you tell people who don't have faith?
 
-A: atheism is similar to religion because its proposition is an unprovable statement (so it becomes kind of a religion). Common features: both Atheism and Religion  have view of life/code of ethic; Atheism as beliving in anprovable statement is therefore a kind of religion.
+A: atheism is similar to religion because its proposition is an unprovable statement (so it becomes kind of a religion); also both have common features: both Atheism and Religion do have a view of life/code of ethic;
 
 says the conflict/distinction between science and religion is exaggerated - religious people don't want to face criticism by science, so they don't talk about Religion.
 
