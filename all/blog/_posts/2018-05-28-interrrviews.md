@@ -17,6 +17,8 @@ title: On the dreaded subject of interviews
 
 Software companies invest a lot of thought into the interview process - it is supposed to determine the character of the workforce and by extension to shape the culture of a company. On the receiving side: the nature of the questions may give the interviewee some hints about the company / work culture at the place; The way they ask questions may also provide for some hints on the character of an interviewer; However, be warned: this guesswork may also lead to exactly the wrong conclusions - for example in larger companies one may not end up working for an interviewer, however a lot may depend on the personality of your future supervisor.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b56eAUCTLok" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 In any event: beware, all the information in this text should be taken with a grain of salt: people are imperfect - it may be that your interviewer is a swell person and the job is the job of your dreams; it's just that they don't know any better. In any event take the job that pays your bills and don't believe any advise you read on the internet.
 
 Approaches: there are potentially different priorities at evaluating prospective employees
