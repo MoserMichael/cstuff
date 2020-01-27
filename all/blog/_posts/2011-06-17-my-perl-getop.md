@@ -21,3 +21,9 @@ Here we can justify copy-paste by our desperate goal of running a PERL script on
 Now [here is the script](https://github.com/MoserMichael/cstuff/blob/master/scripts/m-getop.pl)
 As you can see, the getopt function receives an array, where each entry describes an option, this simplifies the function to the extent that we don't have to parse the argument specification.
 Otherwise it is all quite similar to the original [Getopt::Std](http://perldoc.perl.org/Getopt/Std.html)
+
+### almost ten years later.
+
+Nowadays perl5 is not quite used as a scripting language; in a corporate environment that is something that is frowned upon. Meanwhile they even added [hash tables to bash](https://stackoverflow.com/questions/1494178/how-to-define-hash-tables-in-bash), so that is supposed to be the way to go. (doing tasks that shell out to programs and do some text processing is less practical in python)
+
+Now those who didn't like perl5 got it much worse - bash is such an awful language.... (at least it has tracing in the form of set-x)
