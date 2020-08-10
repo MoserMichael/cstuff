@@ -990,9 +990,11 @@ EXPORT_C void *valloc(size_t size)
   return memalign( getpagesize(), size);
 }
 
+#pragma GCC diagnostic ignored "-Wnonnull-compare"
+ 
 EXPORT_C int posix_memalign(void **memptr, size_t boundary, size_t size)
 {
-  if (!memptr) {
+  if (memptr == NULL) {
      return EINVAL;
   } 
   *memptr = memalign( boundary, size );
@@ -1078,7 +1080,9 @@ EXPORT_C int mallopt(int arg, int value )
 // wrappers of C++ allocation functions
 //------------------------------------------------
 
-#ifdef  __cplusplus
+#ifdef  __cplusplus 
+#include <new>
+
 void* operator new(size_t sz) 
 {
   if (!ignore_this_process) {
@@ -1099,6 +1103,69 @@ void* operator new[] (size_t sz)
   }
 }
 
+
+
+// since c++ 11
+#if __cplusplus >= 201103 
+
+void* operator new  ( std::size_t count, const std::nothrow_t& tag ) {
+  (void) tag;
+  if (!ignore_this_process) {
+    return CUSTOM_MALLOC(count, 1, ALLOC_NEW_ARRAY);
+  } else {
+    return get_malloc() (count);
+  }
+}
+
+
+void* operator new[]( std::size_t count, const std::nothrow_t& tag ) {
+  (void) tag;
+  if (!ignore_this_process) {
+    return CUSTOM_MALLOC(count, 1, ALLOC_NEW_ARRAY);
+  } else {
+    return get_malloc() (count);
+  }
+}
+
+// since c++17
+#if __cplusplus >= 201703
+
+void* operator new  ( std::size_t count, std::align_val_t al ) {
+
+    return memalign( al, count);
+}
+
+void* operator new[]( std::size_t count, std::align_val_t al ) {
+    return memalign( al, count);
+}
+
+void* operator new  ( std::size_t count,
+                      std::align_val_t al, const std::nothrow_t& ) {
+    return memalign( al, count);
+}
+
+void* operator new[]( std::size_t count,
+                      std::align_val_t al, const std::nothrow_t& ) {
+    return memalign( al, count);
+}
+
+#endif
+
+// eof since c++ 11
+#endif
+
+
+// until c++11
+#if __cplusplus < 201103 
+
+void operator delete  ( void* ptr ) throw() {
+}
+
+void operator delete[]( void* ptr ) throw() {
+}
+
+
+#endif
 
 void operator delete (void *ptr) 
 {

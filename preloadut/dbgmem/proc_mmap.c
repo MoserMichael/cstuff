@@ -53,12 +53,12 @@ STATIC_C int get_process_name(char *rbuf, size_t buf_size)
       if (tok && strlen(tok) == 4 && tok[2] == 'x') {
 				
         // if it is then get the module path
-	for(i=0;i<4 && (tok = strtok( 0, " \t")) != 0;i++);
+        for(i=0; i<4 && (tok = strtok( 0, " \t")) != 0; i++);
 					
-	  if (tok) {
-	    strncpy(rbuf, tok, buf_size);
-	    ret = 0;
-	  }
+        if (tok) {
+           strncpy(rbuf, tok, buf_size);
+           ret = 0;
+        }
       }
     }
     close(fd);

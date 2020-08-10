@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 
 TARGETS="vtest cutils butils nutils tutils preloadut/dbgmem preloadut/tracemem"
 

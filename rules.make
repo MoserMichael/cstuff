@@ -12,7 +12,7 @@ endif
 # check if MODE is an allowed mode
 VALID_CFG="debug release release2 releaseBuild install"
 ifeq "$(strip $(findstring $(MODE),$(VALID_CFG)))" ""
-     $(error "MODE must be either $(VALID_CFG)")
+     $(error "MODE must be either $(VALID_CFG) current value of MODE $(MODE)")
 endif
 
 
@@ -291,8 +291,6 @@ $(1)__install_target_xx :  $($(1)_INSTALL)
 	$$(eval $$(call install-a-file,$$(call make_shared_lib_name,$(1),$(2)),$$(PREFIX)/lib))
 	
 endef
-
-$
 
 
 # --- define static library rules ---

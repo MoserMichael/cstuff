@@ -283,6 +283,7 @@ HASH_VALUE HASHFUNCTION_Bob_Jenkins(const void * keydata, ssize_t length)
  
     c += length;
  
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
     switch ( len ) {
     case 11: c += ( (unsigned)k[10] << 24 );
     case 10: c += ( (unsigned)k[9] << 16 );
