@@ -189,7 +189,7 @@
 # 
 # alias cd=cd_func
 
-if [[ `uname -o` == "Cygwin" ]]; then
+if [[ `uname -s` == "Cygwin" ]]; then
   # Windows has its own find.exe , so i rename the cygwin exe into findu
   FIND_EXE=findu
 else  

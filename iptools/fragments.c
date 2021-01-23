@@ -3,7 +3,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <ifaddrs.h>
 #include <unistd.h>

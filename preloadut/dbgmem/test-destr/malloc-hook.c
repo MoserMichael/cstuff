@@ -1,7 +1,7 @@
 #ifndef __GNUC__
 #define __GNUC__
 #endif
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 

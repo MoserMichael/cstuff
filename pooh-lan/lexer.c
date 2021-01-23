@@ -137,7 +137,7 @@ void yyerror (char const *);
 
 
 #define ECHO
-#define YY_NO_UNPUT
+//#define YY_NO_UNPUT
 
 
 
@@ -707,7 +707,7 @@ STRING_PART *parse_expression_sequence( LEXCONTEXT *pc, DBUF *parent,  char *end
     return 0;
   }
    		
-  while ( (c =  MY_YY_INPUT) != -1) {
+  while ( (c =  MY_YY_INPUT) != EOF && c!= 0) {
 
     if (parent) {
       DBUF_add( parent, &c, sizeof(char) );
@@ -770,7 +770,7 @@ STRING_PART * parse_string_sequence( LEXCONTEXT *pc, DBUF *parent, const char *s
   }
   
   		
-  while ( (c =  MY_YY_INPUT) != -1) {
+  while ( (c =  MY_YY_INPUT) != EOF && c!= 0) {
 	
     if (parent) {
       DBUF_add( parent, &c, sizeof(char) );
@@ -844,7 +844,7 @@ int parse_string_oneline( LEXCONTEXT *pc )
   while ( (c = MY_YY_INPUT) != '"' && c != EOF) {
     if (c == '\\') {
       c = MY_YY_INPUT;
-      if (c==EOF) {
+      if (c==EOF || c == 0) {
         break;
       }
       if (c=='\n') {

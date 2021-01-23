@@ -1,4 +1,4 @@
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdlib.h>
 #include <vector>
 #include <stdio.h>

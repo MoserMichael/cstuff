@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 
 char  *str_dup_and_rev(char *str, size_t *rlen )

@@ -217,7 +217,7 @@ DOUBLE		[0-9]+"."[0-9]+([Ee][+-][0-9]+)?
 "#" {
 
 	int c;
-	while ( (c =  MY_YY_INPUT) != EOF )  {
+	while ( (c =  MY_YY_INPUT) != EOF && c != 0)  {
 	
 	    if (c ==  '\n' ) {
 		break;

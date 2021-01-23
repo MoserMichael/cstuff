@@ -201,12 +201,19 @@ char *translate_token(const char *msg) {
 /*
    The token names start with TK_ by convention; this function turns them into something nice and readable.
  */
-char *translate_message(const char *msg)
+char *translate_message(const char *in_msg)
 {
     const char *pos, *tok;
     char *news, *npos;
     STRTK stok;
     DBUF dbuf;
+
+    char *msg;
+
+    msg = strdup(in_msg);
+    if (msg == 0) {
+        return "internal error";
+    }
 
     STRTK_init( &stok, " \t" );
     DBUF_init( &dbuf, 10 );
@@ -227,6 +234,7 @@ char *translate_message(const char *msg)
       pos = npos;
     }
     DBUF_add_null( &dbuf );
+    free(msg);
     
     return (char *) dbuf.buf;
 }

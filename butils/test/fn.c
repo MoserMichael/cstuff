@@ -1,7 +1,7 @@
 #include <vtest/vtest.h>
 #include <butils/fn.h>
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 void FN_test()

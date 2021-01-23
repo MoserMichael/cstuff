@@ -1,6 +1,6 @@
 #include "tokparser.h"                                                                      
 #include <string.h>                                                                      
-#include <malloc.h>                                                                      
+#include <stdlib.h>                                                                      
 
 int parse_token(const char *token, TOKENDEF *tkdef)
 {

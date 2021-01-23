@@ -576,6 +576,7 @@ int AST_EXPRESSION_unary_fold_constants( AST_EXPRESSION *scl)
        break;
       case TK_OP_NUM_SUBST:
         res_num =  - arg_num;
+        break;
       case TK_OP_LOGICAL_NEGATE: 
         res_num = arg_num != 0;
 	break;	

@@ -217,9 +217,9 @@ static int    sink_on_response_data         (HTTP_RESPONSE *response, int is_chu
   bf = rdata.chunk.bf;
   if (bf) { 
     if (rdata.chunk.chunk_no) {
-      len = snprintf( chunk_header, sizeof( chunk_header ),  "\r\n%x\r\n", BF_get_size(bf)  );
+      len = snprintf( chunk_header, sizeof( chunk_header ),  "\r\n%lx\r\n", BF_get_size(bf)  );
     } else {
-      len = snprintf( chunk_header, sizeof( chunk_header ),  "%x\r\n", BF_get_size(bf) );
+      len = snprintf( chunk_header, sizeof( chunk_header ),  "%lx\r\n", BF_get_size(bf) );
     }
     if ( (bf->start - bf->bf) < len) {
       MLOG_INFO( "Failed to send chunk - buffer did not reserved enough room before start of chunk data" );

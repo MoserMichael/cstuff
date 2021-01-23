@@ -29,6 +29,7 @@ OS_TYPE:=$(shell uname -o | sed -e 's\#/\#-\#g' -e 's\#(\#-\#g' -e 's\#)\#-\#g' 
 export OS_TYPE
 endif
 
+pooh_CFLAGS=-Wno-enum-conversion
 pooh_LDFLAGS-Cygwin=-Wl,--export-all-symbols
 pooh_LDFLAGS-GNU-Linux=-rdynamic -fPIC
 

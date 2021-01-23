@@ -25,7 +25,7 @@ ROOT_DIR=$(TOPDIR)
 endif
 
 ifeq "$(OS_TYPE)" ""
-OS_TYPE:=$(shell uname -o | sed -e 's\#/\#-\#g' -e 's\#(\#-\#g' -e 's\#)\#-\#g' )
+OS_TYPE:=$(shell uname -o | sed -e 's#/#-#g' -e 's\#(\#-\#g' -e 's\#)\#-\#g' )
 export OS_TYPE
 endif
 

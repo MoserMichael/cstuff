@@ -16,6 +16,8 @@ stack_SRC=stack.c
 
 stack_LIBS=c
 
+stack_CFLAGS=-Wno-frame-address
+
 stack_POSTBUILD=./stack.sh
 
    

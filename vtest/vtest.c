@@ -5,7 +5,7 @@
 #include "vtest.h"
 #include "vtestrunner.h"
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #ifdef WIN32
 #include <windows.h>

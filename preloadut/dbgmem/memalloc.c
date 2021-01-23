@@ -12,7 +12,7 @@
 #include "config.h"
 #include <execinfo.h>
 #include <unistd.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -20,6 +20,7 @@
 #include <wchar.h>
 #include <string.h>
 #include <dlfcn.h>
+#include <malloc.h>
 
 #include "../common.h"
 #include "memalloc.h"
@@ -1159,12 +1160,30 @@ void* operator new[]( std::size_t count,
 #if __cplusplus < 201103 
 
 void operator delete  ( void* ptr ) throw() {
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
 }
 
 void operator delete[]( void* ptr ) throw() {
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
 }
 
-
+// until c++11
 #endif
 
 void operator delete (void *ptr) 
@@ -1194,6 +1213,118 @@ void operator delete[] (void *ptr)
   }
 }
 
+// since c++ 11
+#if __cplusplus >= 201103 
+
+/*says it's a redefeinition
+void operator delete  ( void* ptr ) noexcept {
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
+}
+
+void operator delete[]( void* ptr ) noexcept {
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
+}
+*/
+
+// since c++ 14
+#if __cplusplus >= 201402 
+
+// says it's a redefinition of the thing without noexcept - but reference doesn't say so
+void operator delete  ( void* ptr, std::size_t sz ) /*noexcept*/ {
+  
+  (void) sz;
+
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
+}
+
+// says it's a redefinition of the thing without noexcept - but reference doesn't say so
+void operator delete[]( void* ptr, std::size_t sz ) /*noexcept*/ {
+
+  (void) sz;
+
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
+}
+
+
+// since c++17
+#if __cplusplus >= 201703
+
+void operator delete  ( void* ptr, std::align_val_t al, const std::nothrow_t& tag ) nexcept {
+  
+  (void) al;
+  (void) tag;
+
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
+}
+
+void operator delete[]( void* ptr, std::align_val_t al, const std::nothrow_t& tag  ) noexcept {
+
+  (void) al;
+  (void) tag;
+
+
+  if (dlsym_nesting) {
+    return;
+  }
+
+  if (!ignore_this_process) {
+    CUSTOM_FREE(ptr, ALLOC_NEW);
+  } else {
+    get_free() (ptr);
+  }
+}
+
+
+// since c++17
+#endif
+
+// since c++ 14
+#endif 
+
+// since c++ 11
+#endif
+
+// ifdef __cplusplus
 #endif
 
 

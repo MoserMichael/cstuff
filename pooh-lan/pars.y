@@ -1,6 +1,6 @@
 %locations
 %debug
-%pure-parser
+%define api.pure
 %parse-param { PARSECONTEXT *parse_context }
 %lex-param { YYLEX_PARAM } 
 

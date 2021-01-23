@@ -13,14 +13,14 @@
 #include "config.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 
 #include "memalloc.h"
 #include <dbgmemutil.h>
 #include <dlfcn.h>
 #include <errno.h>
-
+#include <malloc.h>
 
 typedef size_t  (*PFN_DBGMEM_CHECK_STRING_RANGE) (const void *arg_ptr, size_t str_bound, size_t add_length, DBGMEM_MACCESS_TYPE_STR atype, const char *function_name);
 

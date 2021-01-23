@@ -16,7 +16,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 size_t next_frame()
 {
