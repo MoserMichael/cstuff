@@ -20,7 +20,7 @@ int  add_filter( size_t vhost_id, const char *lib_name, const char *fact_functio
 int  parse_servlet_definition( char *arg,  char **lib_name, char **fact_function);
 int  parse_filter_definition( char *arg, size_t *vhost_id, char **lib_name, char **fact_function);
 
-
+// adding a comment to parse_cmd_line
 void parse_cmd_line(int argc, char *argv[]) {
 
   int c;

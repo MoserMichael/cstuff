@@ -1,6 +1,7 @@
 #include <webby/webby.h>
 #include <stdio.h>
 
+//adding a comment
 static SERVLET_STATUS hello_world_servlet_action( HTTP_servlet_request * request, HTTP_servlet_response *response, SERVLET_CONTEXT *context )
 { 
    URI *uri;
@@ -8,6 +9,7 @@ static SERVLET_STATUS hello_world_servlet_action( HTTP_servlet_request * request
    M_UNUSED(request);
    M_UNUSED(context);
  
+   // and another comment
    uri = HTTP_servlet_uri( request );
    if (strcmp( uri->path, "/helloworldservlet" ) != 0 ) {
      return SERVLET_REQUEST_IGNORED;
